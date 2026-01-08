@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Dilema Sesgo-Varianza (Bias-Variance Trade-off): concepto fundamental en Machine Learning sobre equilibrio entre underfitting y overfitting.">
+    <meta name="keywords"
+        content="Sesgo, Varianza, Bias-Variance Trade-off, Underfitting, Overfitting, Machine Learning, Error Total, Generalización">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Dilema Sesgo-Varianza (Bias-Variance Tradeoff) | iLERNA">
+    <meta property="og:description"
+        content="Aprende el concepto fundamental del trade-off entre sesgo y varianza, clave para construir modelos que generalicen correctamente.">
+    <meta property="og:type" content="article">
+    <title>Dilema Sesgo-Varianza (Bias-Variance Tradeoff) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.5/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Dilema Sesgo-Varianza</span>
+                </div>
+            </div>
+            <h1 class="text-center">Dilema Sesgo-Varianza</h1>
+            <p class="subtitle text-center">El Trade-off Fundamental en Machine Learning</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es el Bias-Variance Trade-off?</h2>
+                <p>
+                    El <strong>trade-off entre sesgo y varianza</strong> es uno de los conceptos más importantes en Machine Learning. Describe el problema fundamental de intentar minimizar simultáneamente dos fuentes de error que impiden que los algoritmos de aprendizaje supervisado generalicen más allá de su conjunto de entrenamiento.
+                </p>
+                <p>
+                    Este dilema es inevitable: <strong>reducir el sesgo aumenta la varianza, y reducir la varianza aumenta el sesgo</strong>. Encontrar el equilibrio óptimo es la clave para construir modelos que funcionen bien en datos nuevos, no solo en los datos de entrenamiento.
+                </p>
+
+                <!-- CAJA DE EJEMPLO NETFLIX -->
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">Ejemplo Real - Netflix</h3>
+                    <p>Netflix utiliza modelos de recomendación que equilibran cuidadosamente sesgo y varianza. Un modelo con alto sesgo recomendaría solo películas populares (demasiado simple), mientras que uno con alta varianza memorizaría tus preferencias exactas pero fallaría con nuevos géneros (demasiado complejo). El equilibrio permite recomendaciones precisas y descubrir contenido nuevo.</p>
+                </div>
+
+                <!-- COMPONENTES DEL ERROR TOTAL -->
+                <h3 style="color: #333333; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.875rem; font-weight: 700;">Componentes del Error Total</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Sesgo (Bias)</h4>
+                        <p>Error por suposiciones simplificadoras del modelo. Modelos con alto sesgo ignoran relaciones importantes en los datos.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Varianza (Variance)</h4>
+                        <p>Error por sensibilidad excesiva a fluctuaciones en el conjunto de entrenamiento. Modelos con alta varianza memorizan ruido.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Error Irreducible</h4>
+                        <p>Ruido inherente en los datos que ningún modelo puede eliminar. Representa el límite teórico de precisión.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Error Total</h4>
+                        <p>Suma de sesgo², varianza y error irreducible. El objetivo es minimizar esta suma encontrando el equilibrio óptimo.</p>
+                    </div>
+                </div>
+
+                <!-- FÓRMULA DEL ERROR TOTAL -->
+                <div class="highlight-box" style="background: #E8F7FA; border: 2px solid #49B9CE; margin-top: 2rem;">
+                    <h3 style="color: #49B9CE; text-align: center; margin-top: 0;">Fórmula del Error Esperado</h3>
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; text-align: center; margin: 1rem 0; color: #333333;">E[(y - ŷ)²] = Bias² + Variance + Irreducible Error</p>
+                    <p style="text-align: center;">Donde y es el valor real, ŷ es la predicción del modelo, y E[] representa el valor esperado</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: SESGO (BIAS) -->
+            <section class="section">
+                <h2 class="section-title">Sesgo (Bias): El Problema del Underfitting</h2>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #49B9CE; font-size: 1.875rem; font-weight: 700; margin-bottom: 0.75rem;">Definición y Características</h3>
+                    <p>
+                        El <strong>sesgo</strong> es el error introducido al aproximar un problema del mundo real (que puede ser extremadamente complejo) con un modelo más simple. Un modelo con <strong>alto sesgo</strong> hace suposiciones fuertes sobre la forma de los datos, ignorando patrones importantes.
+                    </p>
+
+                    <!-- VISUALIZACIÓN SVG DEL SESGO -->
+                    <svg viewBox="0 0 800 400" style="width: 100%; max-width: 800px; height: auto; border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 1.5rem auto;">
+                        <!-- Título -->
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Modelo con Alto Sesgo (Underfitting)</text>
+
+                        <!-- Ejes -->
+                        <line x1="80" y1="350" x2="720" y2="350" stroke="#333333" stroke-width="2"/>
+                        <line x1="80" y1="350" x2="80" y2="80" stroke="#333333" stroke-width="2"/>
+
+                        <!-- Etiquetas de ejes -->
+                        <text x="400" y="385" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat">Feature X</text>
+                        <text x="40" y="220" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90 40 220)">Target Y</text>
+
+                        <!-- Datos reales (puntos dispersos con patrón no lineal) -->
+                        <circle cx="120" cy="320" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="160" cy="280" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="200" cy="220" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="240" cy="180" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="280" cy="160" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="320" cy="155" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="360" cy="165" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="400" cy="185" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="440" cy="215" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="480" cy="255" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="520" cy="295" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="560" cy="325" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="600" cy="340" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="640" cy="345" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <circle cx="680" cy="342" r="6" fill="#8A7AAF" opacity="0.7"/>
+
+                        <!-- Línea del modelo (demasiado simple - recta) -->
+                        <line x1="100" y1="300" x2="700" y2="200" stroke="#49B9CE" stroke-width="4" stroke-dasharray="8,4"/>
+
+                        <!-- Flechas mostrando error -->
+                        <defs>
+                            <marker id="arrowred" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#FF5252"/>
+                            </marker>
+                        </defs>
+                        <path d="M 320 155 L 320 215" stroke="#FF5252" stroke-width="2" marker-end="url(#arrowred)" marker-start="url(#arrowred)"/>
+                        <path d="M 440 215 L 440 240" stroke="#FF5252" stroke-width="2" marker-end="url(#arrowred)" marker-start="url(#arrowred)"/>
+
+                        <!-- Leyenda -->
+                        <circle cx="120" cy="50" r="6" fill="#8A7AAF" opacity="0.7"/>
+                        <text x="135" y="55" font-size="13" fill="#555555" font-family="Montserrat">Datos reales</text>
+
+                        <line x1="250" y1="50" x2="290" y2="50" stroke="#49B9CE" stroke-width="4" stroke-dasharray="8,4"/>
+                        <text x="300" y="55" font-size="13" fill="#555555" font-family="Montserrat">Modelo lineal (demasiado simple)</text>
+
+                        <line x1="520" y1="48" x2="520" y2="58" stroke="#FF5252" stroke-width="2" marker-end="url(#arrowred)" marker-start="url(#arrowred)"/>
+                        <text x="530" y="55" font-size="13" fill="#555555" font-family="Montserrat">Error de predicción</text>
+
+                        <!-- Anotación -->
+                        <text x="400" y="130" font-size="14" font-weight="bold" fill="#FF5252" text-anchor="middle" font-family="Montserrat">El modelo no captura la curvatura de los datos</text>
+                    </svg>
+
+                    <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; margin-top: 1rem;">
+                        <h4 style="color: #49B9CE; margin-top: 0;">Interpretación</h4>
+                        <p>Este gráfico muestra un modelo lineal (línea azul discontinua) intentando ajustar datos con una relación no lineal (puntos morados). Las flechas rojas indican el gran error sistemático porque el modelo es <strong>demasiado simple</strong> para capturar el patrón real.</p>
+                    </div>
+                </div>
+
+                <!-- CARACTERÍSTICAS DEL ALTO SESGO -->
+                <h3 style="color: #49B9CE; font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem;">Síntomas de Alto Sesgo (Underfitting)</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Bajo rendimiento en entrenamiento</h4>
+                        <p>Error alto incluso con los datos de entrenamiento</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Bajo rendimiento en validación</h4>
+                        <p>Error similar al entrenamiento (ambos altos)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Modelo demasiado simple</h4>
+                        <p>Pocos parámetros o suposiciones muy restrictivas</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Ignora patrones importantes</h4>
+                        <p>No captura relaciones relevantes en los datos</p>
+                    </div>
+                </div>
+
+                <!-- EJEMPLOS DE MODELOS CON ALTO SESGO -->
+                <h3 style="color: #49B9CE; font-size: 1.875rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem;">Ejemplos de Modelos con Alto Sesgo</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Regresión Lineal Simple</h4>
+                        <p>En datos con relaciones no lineales complejas</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Naive Bayes</h4>
+                        <p>Asume independencia entre features (simplificación fuerte)</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Regresión Logística</h4>
+                        <p>Con pocos features en problemas complejos</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Árboles de Decisión Poco Profundos</h4>
+                        <p>Max_depth muy pequeño (ej: 1-2 niveles)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: VARIANZA -->
+            <section class="section">
+                <h2 class="section-title">Varianza: El Problema del Overfitting</h2>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #8A7AAF; font-size: 1.875rem; font-weight: 700; margin-bottom: 0.75rem;">Definición y Características</h3>
+                    <p>
+                        La <strong>varianza</strong> es el error causado por la sensibilidad excesiva del modelo a pequeñas fluctuaciones en el conjunto de entrenamiento. Un modelo con <strong>alta varianza</strong> presta demasiada atención a los datos de entrenamiento, incluyendo el ruido y las peculiaridades específicas de ese conjunto.
+                    </p>
+
+                    <!-- VISUALIZACIÓN SVG DE LA VARIANZA -->
+                    <svg viewBox="0 0 800 400" style="width: 100%; max-width: 800px; height: auto; border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 1.5rem auto;">
+                        <!-- Título -->
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Modelo con Alta Varianza (Overfitting)</text>
+
+                        <!-- Ejes -->
+                        <line x1="80" y1="350" x2="720" y2="350" stroke="#333333" stroke-width="2"/>
+                        <line x1="80" y1="350" x2="80" y2="80" stroke="#333333" stroke-width="2"/>
+
+                        <!-- Etiquetas de ejes -->
+                        <text x="400" y="385" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat">Feature X</text>
+                        <text x="40" y="220" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90 40 220)">Target Y</text>
+
+                        <!-- Datos reales (misma distribución que antes) -->
+                        <circle cx="120" cy="320" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="160" cy="280" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="200" cy="220" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="240" cy="180" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="280" cy="160" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="320" cy="155" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="360" cy="165" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="400" cy="185" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="440" cy="215" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="480" cy="255" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="520" cy="295" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="560" cy="325" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="600" cy="340" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="640" cy="345" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <circle cx="680" cy="342" r="6" fill="#49B9CE" opacity="0.7"/>
+
+                        <!-- Curva del modelo (demasiado compleja - pasa por todos los puntos) -->
+                        <path d="M 100 320 Q 140 290, 160 280 T 200 220 T 240 180 T 280 160 T 320 155 Q 340 160, 360 165 T 400 185 T 440 215 T 480 255 T 520 295 T 560 325 T 600 340 T 640 345 T 680 342 T 700 340"
+                              stroke="#8A7AAF" stroke-width="3" fill="none"/>
+
+                        <!-- Regiones de incertidumbre (predicciones inestables) -->
+                        <ellipse cx="180" cy="250" rx="40" ry="50" fill="#FF5252" opacity="0.15"/>
+                        <ellipse cx="420" cy="200" rx="40" ry="50" fill="#FF5252" opacity="0.15"/>
+
+                        <!-- Leyenda -->
+                        <circle cx="120" cy="50" r="6" fill="#49B9CE" opacity="0.7"/>
+                        <text x="135" y="55" font-size="13" fill="#555555" font-family="Montserrat">Datos reales</text>
+
+                        <line x1="250" y1="50" x2="290" y2="50" stroke="#8A7AAF" stroke-width="3"/>
+                        <text x="300" y="55" font-size="13" fill="#555555" font-family="Montserrat">Modelo polinomial (demasiado complejo)</text>
+
+                        <ellipse cx="535" cy="50" rx="15" ry="8" fill="#FF5252" opacity="0.15"/>
+                        <text x="555" y="55" font-size="13" fill="#555555" font-family="Montserrat">Zonas inestables</text>
+
+                        <!-- Anotación -->
+                        <text x="400" y="110" font-size="14" font-weight="bold" fill="#FF5252" text-anchor="middle" font-family="Montserrat">El modelo memoriza el ruido y generalizará mal</text>
+                    </svg>
+
+                    <div class="highlight-box" style="background: linear-gradient(to right, #F0EDF5, #E8F7FA); border-left: 4px solid #8A7AAF; margin-top: 1rem;">
+                        <h4 style="color: #8A7AAF; margin-top: 0;">Interpretación</h4>
+                        <p>Este modelo polinomial de alto grado (curva morada) pasa por casi todos los puntos de entrenamiento, pero la curva es <strong>demasiado compleja y serpenteante</strong>. Las zonas rojas muestran regiones donde pequeños cambios en los datos causarían grandes cambios en la predicción.</p>
+                    </div>
+                </div>
+
+                <!-- CARACTERÍSTICAS DE LA ALTA VARIANZA -->
+                <h3 style="color: #8A7AAF; font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem;">Síntomas de Alta Varianza (Overfitting)</h3>
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Excelente en entrenamiento</h4>
+                        <p>Error muy bajo o casi cero en datos de entrenamiento</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Malo en validación</h4>
+                        <p>Error significativamente mayor en datos nuevos</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Modelo demasiado complejo</h4>
+                        <p>Muchos parámetros o muy flexible</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Memoriza detalles irrelevantes</h4>
+                        <p>Captura ruido en lugar de patrones generales</p>
+                    </div>
+                </div>
+
+                <!-- EJEMPLOS DE MODELOS CON ALTA VARIANZA -->
+                <h3 style="color: #8A7AAF; font-size: 1.875rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem;">Ejemplos de Modelos con Alta Varianza</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Árboles de Decisión Profundos</h4>
+                        <p>Sin límite de profundidad (memorizan datos)</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">K-NN con K=1</h4>
+                        <p>Extremadamente sensible a puntos individuales</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Redes Neuronales Grandes</h4>
+                        <p>Sin regularización y con pocos datos</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">SVM con Kernel RBF</h4>
+                        <p>Con gamma muy alto (fronteras muy irregulares)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EL TRADE-OFF -->
+            <section class="section">
+                <h2 class="section-title">El Trade-off: Encontrando el Equilibrio Óptimo</h2>
+
+                <p style="font-size: 1.125rem; margin-bottom: 1.5rem;">
+                    El objetivo en Machine Learning no es eliminar completamente el sesgo o la varianza, sino <strong>encontrar el equilibrio óptimo</strong> que minimice el error total. Este es el punto donde la suma de sesgo² + varianza es mínima.
+                </p>
+
+                <!-- VISUALIZACIÓN DEL TRADE-OFF -->
+                <svg viewBox="0 0 850 500" style="width: 100%; max-width: 850px; height: auto; border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 1.5rem auto;">
+                    <!-- Título -->
+                    <text x="425" y="30" font-size="20" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Curva del Bias-Variance Trade-off</text>
+
+                    <!-- Ejes -->
+                    <line x1="80" y1="420" x2="780" y2="420" stroke="#333333" stroke-width="2"/>
+                    <line x1="80" y1="420" x2="80" y2="80" stroke="#333333" stroke-width="2"/>
+
+                    <!-- Etiquetas de ejes -->
+                    <text x="425" y="460" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat">Complejidad del Modelo →</text>
+                    <text x="40" y="250" font-size="14" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90 40 250)">Error</text>
+
+                    <!-- Marcas en eje X -->
+                    <text x="150" y="445" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Simple</text>
+                    <text x="425" y="445" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Óptimo</text>
+                    <text x="700" y="445" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Complejo</text>
+
+                    <!-- Curva de Sesgo² (decreciente) -->
+                    <path d="M 100 150 Q 250 140, 400 200 T 750 350"
+                          stroke="#49B9CE" stroke-width="4" fill="none"/>
+
+                    <!-- Curva de Varianza (creciente) -->
+                    <path d="M 100 380 Q 250 350, 400 280 T 750 120"
+                          stroke="#8A7AAF" stroke-width="4" fill="none"/>
+
+                    <!-- Curva de Error Total (forma de U) -->
+                    <path d="M 100 300 Q 250 240, 425 210 T 750 280"
+                          stroke="#FF5252" stroke-width="5" fill="none" stroke-dasharray="8,4"/>
+
+                    <!-- Línea vertical en el punto óptimo -->
+                    <line x1="425" y1="210" x2="425" y2="420" stroke="#8A7AAF" stroke-width="3" stroke-dasharray="6,3"/>
+
+                    <!-- Punto óptimo -->
+                    <circle cx="425" cy="210" r="8" fill="#8A7AAF" stroke="white" stroke-width="2"/>
+
+                    <!-- Regiones de underfitting y overfitting -->
+                    <rect x="90" y="95" width="200" height="40" fill="#49B9CE" opacity="0.15" rx="5"/>
+                    <text x="190" y="120" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">UNDERFITTING</text>
+                    <text x="190" y="135" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">(Alto Sesgo)</text>
+
+                    <rect x="560" y="95" width="200" height="40" fill="#8A7AAF" opacity="0.15" rx="5"/>
+                    <text x="660" y="120" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">OVERFITTING</text>
+                    <text x="660" y="135" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">(Alta Varianza)</text>
+
+                    <!-- Zona óptima -->
+                    <rect x="360" y="95" width="130" height="40" fill="#C5B9D8" opacity="0.3" rx="5"/>
+                    <text x="425" y="120" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">EQUILIBRIO</text>
+                    <text x="425" y="135" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">ÓPTIMO</text>
+
+                    <!-- Leyenda -->
+                    <line x1="120" y1="475" x2="170" y2="475" stroke="#49B9CE" stroke-width="4"/>
+                    <text x="180" y="480" font-size="13" fill="#555555" font-family="Montserrat">Sesgo² (Bias²)</text>
+
+                    <line x1="320" y1="475" x2="370" y2="475" stroke="#8A7AAF" stroke-width="4"/>
+                    <text x="380" y="480" font-size="13" fill="#555555" font-family="Montserrat">Varianza (Variance)</text>
+
+                    <line x1="550" y1="475" x2="600" y2="475" stroke="#FF5252" stroke-width="5" stroke-dasharray="8,4"/>
+                    <text x="610" y="480" font-size="13" fill="#555555" font-family="Montserrat">Error Total</text>
+                </svg>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border: 2px solid #333333; margin-top: 1.5rem;">
+                    <h3 style="color: #333333; margin-top: 0; text-align: center;">Interpretación de la Curva</h3>
+                    <ul style="line-height: 1.75; margin-left: 1.5rem;">
+                        <li><strong style="color: #49B9CE;">Lado izquierdo:</strong> Modelos simples con alto sesgo y baja varianza (underfitting)</li>
+                        <li><strong style="color: #8A7AAF;">Centro (punto morado):</strong> Equilibrio óptimo donde el error total es mínimo</li>
+                        <li><strong style="color: #8A7AAF;">Lado derecho:</strong> Modelos complejos con bajo sesgo y alta varianza (overfitting)</li>
+                        <li><strong style="color: #FF5252;">Curva roja discontinua:</strong> Error total = Sesgo² + Varianza + Error irreducible</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: TABLA COMPARATIVA -->
+            <section class="section">
+                <h2 class="section-title text-center">Comparación: Sesgo vs Varianza</h2>
+
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Alto Sesgo (Underfitting)</th>
+                                <th>Alta Varianza (Overfitting)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Complejidad del Modelo</strong></td>
+                                <td>Demasiado simple</td>
+                                <td>Demasiado complejo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Error de Entrenamiento</strong></td>
+                                <td>Alto</td>
+                                <td>Muy bajo o casi cero</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Error de Validación</strong></td>
+                                <td>Alto (similar a entrenamiento)</td>
+                                <td>Alto (mucho mayor que entrenamiento)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gap Entrenamiento-Validación</strong></td>
+                                <td>Pequeño</td>
+                                <td>Grande</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Suposiciones del Modelo</strong></td>
+                                <td>Muy restrictivas</td>
+                                <td>Muy flexibles</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Número de Parámetros</strong></td>
+                                <td>Pocos</td>
+                                <td>Muchos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Captura de Patrones</strong></td>
+                                <td>Ignora patrones relevantes</td>
+                                <td>Memoriza ruido irrelevante</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Generalización</strong></td>
+                                <td>Mala (modelo inútil)</td>
+                                <td>Mala (solo funciona en entrenamiento)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Solución Principal</strong></td>
+                                <td>Aumentar complejidad, más features</td>
+                                <td>Reducir complejidad, regularización</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ejemplo de Modelo</strong></td>
+                                <td>Regresión lineal simple</td>
+                                <td>Árbol de decisión sin límite de profundidad</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: ESTRATEGIAS PARA EQUILIBRAR -->
+            <section class="section">
+                <h2 class="section-title">Estrategias para Encontrar el Equilibrio</h2>
+
+                <!-- REDUCIR SESGO -->
+                <div class="feature-card" style="margin-bottom: 2rem; border: 2px solid #49B9CE;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">Técnicas para Reducir el Sesgo</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">1. Aumentar la complejidad del modelo</h4>
+                            <p>Usar modelos más expresivos (de lineal a polinomial, de shallow a deep)</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">2. Añadir más features</h4>
+                            <p>Ingeniería de características, interacciones, transformaciones no lineales</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">3. Reducir regularización</h4>
+                            <p>Disminuir lambda en L1/L2, permitir más libertad al modelo</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">4. Entrenar más tiempo</h4>
+                            <p>Más épocas en redes neuronales, más iteraciones en gradient descent</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">5. Cambiar arquitectura</h4>
+                            <p>Probar algoritmos diferentes (de lineal a kernel SVM, de shallow a ensemble)</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">6. Boost/Ensemble</h4>
+                            <p>Boosting (XGBoost, AdaBoost) combina modelos débiles para reducir sesgo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REDUCIR VARIANZA -->
+                <div class="feature-card secondary" style="margin-bottom: 2rem; border: 2px solid #8A7AAF;">
+                    <h3 style="color: #8A7AAF; margin-top: 0;">Técnicas para Reducir la Varianza</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">1. Aumentar datos de entrenamiento</h4>
+                            <p>Más datos → patrones más robustos. Data augmentation si es posible</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">2. Aplicar regularización</h4>
+                            <p>L1 (Lasso), L2 (Ridge), Elastic Net, Dropout en redes neuronales</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">3. Reducir complejidad</h4>
+                            <p>Menos capas/nodos, max_depth menor, podar árboles</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">4. Feature selection</h4>
+                            <p>Eliminar features irrelevantes, PCA para reducir dimensionalidad</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">5. Cross-validation</h4>
+                            <p>K-fold CV para evaluar y ajustar hiperparámetros de forma robusta</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">6. Ensemble (Bagging)</h4>
+                            <p>Random Forest, Bootstrap Aggregating promedia predicciones → reduce varianza</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TÉCNICAS EQUILIBRADAS -->
+                <div class="feature-card secondary" style="border: 2px solid #8A7AAF;">
+                    <h3 style="color: #8A7AAF; margin-top: 0;">Técnicas que Equilibran Ambos</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Early Stopping</h4>
+                            <p>Detener entrenamiento cuando error de validación deja de mejorar</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Ensemble Methods</h4>
+                            <p>Combinan múltiples modelos (Random Forest, Gradient Boosting)</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Validación Cruzada</h4>
+                            <p>Evalúa modelo en múltiples particiones para estimación robusta</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Optimización de Hiperparámetros</h4>
+                            <p>Grid Search, Random Search, Bayesian Optimization</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: CASOS REALES -->
+            <section class="section">
+                <h2 class="section-title text-center">Casos Reales del Mundo</h2>
+
+                <div class="grid-3">
+                    <!-- GOOGLE -->
+                    <div class="feature-card">
+                        <h3 class="color-primary">Google Search</h3>
+                        <p>
+                            Google utiliza <strong>modelos ensemble complejos</strong> (combinando centenas de señales) para ranking de resultados. Si tuvieran alto sesgo, todos verían los mismos resultados genéricos. Si tuvieran alta varianza, cada búsqueda sería impredecible.
+                        </p>
+                        <p><strong>Solución:</strong> Regularización sofisticada + validación con billions de queries reales + A/B testing continuo.</p>
+                    </div>
+
+                    <!-- FACEBOOK -->
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Facebook Newsfeed</h3>
+                        <p>
+                            El algoritmo de newsfeed equilibra mostrar contenido relevante sin memorizar exactamente qué clickeaste antes. <strong>Alto sesgo</strong> = todos ven lo mismo. <strong>Alta varianza</strong> = feed caótico sin coherencia.
+                        </p>
+                        <p><strong>Solución:</strong> Gradient Boosted Decision Trees + validación con 2.9B usuarios + feature engineering masivo.</p>
+                    </div>
+
+                    <!-- AMAZON -->
+                    <div class="feature-card">
+                        <h3 class="color-primary">Amazon Recommendations</h3>
+                        <p>
+                            Sistema de recomendación que balancea precisión (productos que comprarás) con diversidad (descubrir cosas nuevas). Collaborative filtering + content-based en ensemble.
+                        </p>
+                        <p><strong>Solución:</strong> Matrix factorization + deep learning + regularización L2 + extensive A/B testing (35% de ventas).</p>
+                    </div>
+
+                    <!-- SPOTIFY -->
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Spotify Discover Weekly</h3>
+                        <p>
+                            Playlist personalizada que debe conocer tus gustos pero también introducir canciones nuevas. <strong>Equilibrio perfecto</strong> entre exploración y explotación.
+                        </p>
+                        <p><strong>Solución:</strong> Collaborative filtering + NLP (análisis de letras) + audio embeddings + bandits algorithms.</p>
+                    </div>
+
+                    <!-- TESLA -->
+                    <div class="feature-card">
+                        <h3 class="color-primary">Tesla Autopilot</h3>
+                        <p>
+                            Conducción autónoma donde <strong>alto sesgo = accidentes</strong> (no detecta obstáculos) y <strong>alta varianza = comportamiento errático</strong> (frena sin razón). Crítico para seguridad.
+                        </p>
+                        <p><strong>Solución:</strong> Deep Neural Networks + data de 3M+ vehículos + validación exhaustiva + shadow mode testing.</p>
+                    </div>
+
+                    <!-- NETFLIX -->
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Netflix Recommendations</h3>
+                        <p>
+                            80% del contenido visto viene de recomendaciones. Debe balancear precisión (acertar tus gustos) con serendipity (descubrir nuevos géneros).
+                        </p>
+                        <p><strong>Solución:</strong> Matrix Factorization + Deep Learning + Bandits + 250 A/B tests simultáneos + billions de interacciones.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: CONSEJOS PRÁCTICOS -->
+            <section class="section">
+                <h2 class="section-title">Consejos Prácticos para el Diagnóstico</h2>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border: 2px solid #333333; padding: 2rem;">
+                    <h3 style="color: #333333; margin-top: 0; text-align: center;">Cómo Diagnosticar tu Modelo</h3>
+
+                    <div class="comparison-grid" style="margin-bottom: 2rem;">
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">1. Graficar Curvas de Aprendizaje</h4>
+                            <p>Plotea error de entrenamiento vs validación. Si ambos son altos → alto sesgo. Si hay gran gap → alta varianza.</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">2. Validación Cruzada</h4>
+                            <p>K-fold CV revela si alta varianza: grandes diferencias entre folds indica inestabilidad del modelo.</p>
+                        </div>
+                    </div>
+
+                    <!-- TABLA DE DIAGNÓSTICO -->
+                    <div style="overflow-x: auto;">
+                        <h4 style="color: #333333; text-align: center; margin-bottom: 1rem;">Tabla de Diagnóstico Rápido</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Síntoma</th>
+                                    <th>Problema</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Error train alto, error val alto</td>
+                                    <td style="text-align: center; color: #49B9CE; font-weight: 700;">Alto Sesgo</td>
+                                    <td>↑ Complejidad, + features, - regularización</td>
+                                </tr>
+                                <tr>
+                                    <td>Error train bajo, error val alto</td>
+                                    <td style="text-align: center; color: #8A7AAF; font-weight: 700;">Alta Varianza</td>
+                                    <td>+ Datos, + regularización, ↓ complejidad</td>
+                                </tr>
+                                <tr>
+                                    <td>Error train bajo, error val bajo</td>
+                                    <td style="text-align: center; color: #28a745; font-weight: 700;">Equilibrio ✓</td>
+                                    <td>¡Perfecto! Mantener y monitorear</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DATO CURIOSO FINAL -->
+            <section class="section">
+                <div class="warning-box">
+                    <h3 style="margin-top: 0;">¿Sabías que...?</h3>
+
+                    <p style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1rem;">
+                        El concepto de <strong>bias-variance trade-off</strong> fue formalizado matemáticamente por <strong>Stuart Geman y Donald Geman</strong> en 1992, pero sus raíces se remontan a los trabajos de estadística de los años 1950s. Es uno de los pocos conceptos que se mantiene relevante desde los modelos lineales simples hasta los LLMs más avanzados de hoy.
+                    </p>
+
+                    <div class="highlight-box" style="background: white; margin-top: 1rem;">
+                        <h4 style="color: #E65100; margin-top: 0;">El Premio Nobel de Economía 2021</h4>
+                        <p>
+                            Fue otorgado parcialmente a <strong>Guido Imbens y Joshua Angrist</strong> por trabajos que implícitamente gestionan el bias-variance trade-off en economía aplicada. Demostraron cómo diseñar experimentos y análisis que equilibren sesgo y varianza en la estimación de efectos causales - ¡el mismo principio fundamental aplicado a ciencias sociales!
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background: #E8D8F0; border: 2px solid #8A7AAF; margin-top: 1rem;">
+                        <p style="color: #333333; font-weight: 600; text-align: center; margin-bottom: 0;">
+                            <strong>Reflexión:</strong> En Machine Learning, como en la vida, el equilibrio es clave. No existe el modelo perfecto, solo el modelo <strong>suficientemente bueno</strong> para el problema específico que intentas resolver.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MAPA MENTAL MERMAID -->
+            <section class="section">
+                <h2 class="section-title">🧠 Mapa Mental: Dilema Sesgo-Varianza</h2>
+                <p style="text-align: center; color: #555555; margin-bottom: 2rem;">
+                    Visualización interactiva de los conceptos clave del trade-off sesgo-varianza
+                </p>
+                <div style="background: #FFFFFF; border-radius: 1.5rem; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); overflow-x: auto;">
+                    <pre class="mermaid">
+mindmap
+  root((Sesgo-Varianza))
+    Error Total
+      Sesgo²
+        Underfitting
+        Modelo Simple
+      Varianza
+        Overfitting
+        Modelo Complejo
+      Error Irreducible
+        Ruido Datos
+        Limite Teorico
+    Sesgo Alto
+      Sintomas
+        Error Train Alto
+        Error Val Alto
+        Predicciones Constantes
+      Causas
+        Modelo Simple
+        Features Insuficientes
+        Regularizacion Excesiva
+      Soluciones
+        Modelo Complejo
+        Mas Features
+        Reducir Regularizacion
+    Varianza Alta
+      Sintomas
+        Error Train Bajo
+        Error Val Alto
+        Gran Diferencia
+      Causas
+        Modelo Complejo
+        Pocos Datos
+        Sin Regularizacion
+      Soluciones
+        Mas Datos
+        Regularizacion
+        Simplificar Modelo
+        Dropout
+    Trade-off
+      Balance Optimo
+        Error Total Minimo
+        Generalizacion
+      Tecnicas
+        Cross-Validation
+        Curvas Aprendizaje
+        Grid Search
+      Estrategias
+        Early Stopping
+        Ensemble Methods
+        Bagging Boosting
+                    </pre>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

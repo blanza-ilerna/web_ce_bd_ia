@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reducción de Dimensionalidad - iLERNA</title>
+    <meta name="description" content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende los algoritmos de reducción de características: PCA, t-SNE, LDA y Autoencoders.">
+    <meta name="keywords" content="reducción dimensionalidad, PCA, t-SNE, LDA, autoencoders, feature reduction, machine learning, deep learning, maldición dimensionalidad, embeddings, Word2Vec, scikit-learn, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Reducción de Dimensionalidad - iLERNA">
+    <meta property="og:description" content="Curso de Especialización de Big Data e Inteligencia Artificial. Domina las técnicas de reducción de características.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="logo">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA">
+            </div>
+            <h1>Reducción de Dimensionalidad</h1>
+            <p class="subtitle">Algoritmos para Reducción de Características en Machine Learning</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-neutral">¿Por Qué Reducir Dimensionalidad?</h2>
+            <p>
+                La <strong>reducción de dimensionalidad</strong> es el proceso de disminuir el número de características (variables) en un dataset mientras se preserva la información más relevante. En Big Data, donde trabajamos con <strong>datasets de miles o millones de características</strong>, esta técnica es fundamental.
+            </p>
+            <p>
+                Los algoritmos de reducción combaten la <strong>"maldición de la dimensionalidad"</strong>: en espacios de alta dimensión, los puntos se vuelven equidistantes, los modelos overfittean y el tiempo de cómputo se dispara exponencialmente.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo Real:</p>
+                <p class="content">Google Translate procesa textos con vocabularios de 500,000+ palabras. Usa embeddings (Word2Vec) para reducir cada palabra a 300 dimensiones, permitiendo procesar 100 billones de traducciones/año con precisión del 94% en 133 idiomas.</p>
+            </div>
+
+            <h3 class="color-neutral">Beneficios Clave</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⚡ Velocidad</h4>
+                    <p>Reduce tiempo de entrenamiento de horas a minutos. Menos dimensiones = menos cálculos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📊 Visualización</h4>
+                    <p>Permite graficar datos de alta dimensión en 2D/3D para análisis exploratorio visual.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🎯 Precisión</h4>
+                    <p>Elimina ruido y características irrelevantes, mejorando la generalización del modelo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">💾 Almacenamiento</h4>
+                    <p>Reduce requisitos de memoria. Dataset de 10,000 → 100 dimensiones = 99% menos espacio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PCA -->
+        <section>
+            <h2 class="color-neutral">PCA: Principal Component Analysis</h2>
+
+            <h3 class="color-primary">🎯 Fundamento Matemático</h3>
+            <p>
+                <strong>PCA</strong> es el algoritmo de reducción más utilizado. Encuentra <strong>componentes principales</strong>: nuevos ejes ortogonales que maximizan la varianza de los datos. Transforma características correlacionadas en componentes independientes ordenados por importancia.
+            </p>
+
+            <!-- SVG PCA -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                <svg width="420" height="360" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="210" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">PCA: Proyección de Datos 3D → 2D</text>
+
+                    <!-- DATOS ORIGINALES 3D (representados en 2D con perspectiva) -->
+                    <text x="20" y="60" font-size="13" font-weight="bold" fill="#333333" font-family="Montserrat">1. Datos Originales (3D)</text>
+
+                    <!-- Ejes originales X, Y, Z -->
+                    <line x1="80" y1="180" x2="180" y2="180" stroke="#999" stroke-width="1"/>
+                    <text x="185" y="185" font-size="10" fill="#999" font-family="Montserrat">X</text>
+
+                    <line x1="80" y1="180" x2="80" y2="80" stroke="#999" stroke-width="1"/>
+                    <text x="75" y="75" font-size="10" fill="#999" font-family="Montserrat">Y</text>
+
+                    <line x1="80" y1="180" x2="40" y2="140" stroke="#999" stroke-width="1" stroke-dasharray="2,2"/>
+                    <text x="30" y="140" font-size="10" fill="#999" font-family="Montserrat">Z</text>
+
+                    <!-- Nube de puntos 3D -->
+                    <ellipse cx="110" cy="130" rx="45" ry="25" fill="#C5B9D8" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" transform="rotate(-20 110 130)"/>
+
+                    <!-- Puntos de datos -->
+                    <circle cx="95" cy="125" r="3" fill="#333"/>
+                    <circle cx="105" cy="135" r="3" fill="#333"/>
+                    <circle cx="115" cy="128" r="3" fill="#333"/>
+                    <circle cx="110" cy="120" r="3" fill="#333"/>
+                    <circle cx="120" cy="140" r="3" fill="#333"/>
+                    <circle cx="100" cy="138" r="3" fill="#333"/>
+                    <circle cx="125" cy="132" r="3" fill="#333"/>
+                    <circle cx="90" cy="130" r="3" fill="#333"/>
+
+                    <!-- PC1 y PC2 (componentes principales) -->
+                    <line x1="60" y1="155" x2="145" y2="105" stroke="#49B9CE" stroke-width="3"/>
+                    <text x="150" y="100" font-size="10" fill="#49B9CE" font-weight="bold" font-family="Montserrat">PC1</text>
+
+                    <line x1="75" y1="105" x2="125" y2="155" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="130" y="160" font-size="10" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">PC2</text>
+
+                    <!-- Flecha de transformación -->
+                    <path d="M 200 130 L 240 130" stroke="#333" stroke-width="3" marker-end="url(#arrow2)"/>
+                    <text x="220" y="120" font-size="11" fill="#333" font-weight="bold" font-family="Montserrat">PCA</text>
+
+                    <!-- DATOS PROYECTADOS 2D -->
+                    <text x="260" y="60" font-size="13" font-weight="bold" fill="#333333" font-family="Montserrat">2. Proyección 2D</text>
+
+                    <!-- Nuevos ejes PC1, PC2 -->
+                    <line x1="280" y1="180" x2="380" y2="180" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="385" y="185" font-size="11" fill="#49B9CE" font-weight="bold" font-family="Montserrat">PC1</text>
+
+                    <line x1="280" y1="180" x2="280" y2="80" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="275" y="75" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">PC2</text>
+
+                    <!-- Puntos proyectados -->
+                    <circle cx="295" cy="165" r="4" fill="#49B9CE"/>
+                    <circle cx="310" cy="155" r="4" fill="#49B9CE"/>
+                    <circle cx="320" cy="148" r="4" fill="#49B9CE"/>
+                    <circle cx="305" cy="170" r="4" fill="#49B9CE"/>
+                    <circle cx="330" cy="140" r="4" fill="#49B9CE"/>
+                    <circle cx="315" cy="160" r="4" fill="#49B9CE"/>
+                    <circle cx="340" cy="135" r="4" fill="#49B9CE"/>
+                    <circle cx="290" cy="172" r="4" fill="#49B9CE"/>
+
+                    <!-- Elipse de datos proyectados -->
+                    <ellipse cx="315" cy="155" rx="40" ry="20" fill="none" stroke="#49B9CE" stroke-width="2" stroke-dasharray="4,4" transform="rotate(-25 315 155)"/>
+
+                    <!-- Marcador de flecha -->
+                    <defs>
+                        <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+                        </marker>
+                    </defs>
+
+                    <!-- EXPLICACIÓN VARIANZA -->
+                    <rect x="20" y="210" width="380" height="130" fill="white" stroke="#e5e5e5" stroke-width="2" rx="8"/>
+
+                    <text x="30" y="235" font-size="12" font-weight="bold" fill="#333" font-family="Montserrat">Varianza Explicada:</text>
+
+                    <!-- Barra PC1 -->
+                    <rect x="30" y="245" width="250" height="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="4"/>
+                    <text x="35" y="260" font-size="11" fill="#333" font-weight="bold" font-family="Montserrat">PC1: 85% varianza</text>
+
+                    <!-- Barra PC2 -->
+                    <rect x="30" y="275" width="100" height="20" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="4"/>
+                    <text x="35" y="290" font-size="11" fill="#333" font-weight="bold" font-family="Montserrat">PC2: 12%</text>
+
+                    <!-- Barra PC3 (descartado) -->
+                    <rect x="30" y="305" width="25" height="20" fill="#f5f5f5" stroke="#999" stroke-width="2" rx="4"/>
+                    <text x="35" y="320" font-size="11" fill="#999" font-family="Montserrat">PC3: 3% (descartado)</text>
+
+                    <text x="300" y="265" font-size="10" fill="#49B9CE" font-family="Montserrat" font-weight="bold">Total retenido:</text>
+                    <text x="300" y="280" font-size="14" fill="#49B9CE" font-family="Montserrat" font-weight="bold">97%</text>
+                    <text x="300" y="295" font-size="9" fill="#555" font-family="Montserrat">Con solo 2 componentes</text>
+                </svg>
+
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 1: Centrar datos</p>
+                        <p class="content">Restar la media de cada característica (media = 0)</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 2: Matriz covarianza</p>
+                        <p class="content">Calcular correlaciones entre características</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 3: Autovectores</p>
+                        <p class="content">Obtener direcciones de máxima varianza</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 4: Proyección</p>
+                        <p class="content">Transformar datos a nuevos ejes PC</p>
+                    </div>
+                    <div class="prediction-box" style="margin-top: 0.5rem;">
+                        <p style="margin: 0;"><strong>Complejidad: O(n·d²)</strong></p>
+                        <p style="color: #777; font-size: 0.875rem; margin-top: 0.5rem;">n=muestras, d=dimensiones</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código PCA -->
+            <h3 class="color-primary">💻 Implementación PCA en Python</h3>
+            <div class="code-block">
+<pre><code class="language-python">from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_digits
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Cargar dataset de dígitos (64 dimensiones)
+digits = load_digits()
+X = digits.data  # 1797 muestras, 64 características (8x8 pixels)
+y = digits.target
+
+print(f"Dimensiones originales: {X.shape}")
+# Output: (1797, 64)
+
+# Paso 1: Estandarizar datos (importante para PCA)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Paso 2: Aplicar PCA para reducir a 2 componentes
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+print(f"Dimensiones reducidas: {X_pca.shape}")
+# Output: (1797, 2)
+
+# Analizar varianza explicada
+varianza = pca.explained_variance_ratio_
+print(f"PC1 explica: {varianza[0]*100:.2f}% de varianza")
+print(f"PC2 explica: {varianza[1]*100:.2f}% de varianza")
+print(f"Total retenido: {sum(varianza)*100:.2f}%")
+
+# Paso 3: Determinar número óptimo de componentes
+# Retener 95% de varianza
+pca_full = PCA(n_components=0.95)
+X_95 = pca_full.fit_transform(X_scaled)
+print(f"Componentes para 95% varianza: {X_95.shape[1]}")
+
+# Visualización 2D
+plt.figure(figsize=(10, 6))
+scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y,
+                     cmap='tab10', alpha=0.6, edgecolors='k')
+plt.xlabel(f'PC1 ({varianza[0]*100:.1f}% varianza)')
+plt.ylabel(f'PC2 ({varianza[1]*100:.1f}% varianza)')
+plt.title('PCA: Dígitos 64D → 2D')
+plt.colorbar(scatter, label='Dígito (0-9)')
+plt.grid(alpha=0.3)
+plt.show()
+
+# Reconstrucción inversa (opcional)
+X_reconstructed = pca.inverse_transform(X_pca)
+print(f"Error reconstrucción MSE: {np.mean((X_scaled - X_reconstructed)**2):.4f}")
+</code></pre>
+            </div>
+
+            <!-- Ventajas y Limitaciones PCA -->
+            <h3 class="color-neutral">⚖️ Ventajas y Limitaciones</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">✅ Ventajas</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Rápido y escalable (O(nd²))</li>
+                        <li>Elimina correlaciones</li>
+                        <li>Reduce ruido</li>
+                        <li>Interpretable (varianza explicada)</li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚠️ Limitaciones</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Asume relaciones lineales</li>
+                        <li>Sensible a escala (requiere normalización)</li>
+                        <li>Pierde interpretabilidad original</li>
+                        <li>No supervisado (ignora etiquetas)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- t-SNE -->
+        <section>
+            <h2 class="color-neutral">t-SNE: Visualización No Lineal</h2>
+
+            <h3 class="color-secondary">🌐 Principio de Funcionamiento</h3>
+            <p>
+                <strong>t-SNE</strong> (t-Distributed Stochastic Neighbor Embedding) es un algoritmo de <strong>reducción no lineal</strong> optimizado para <strong>visualización</strong>. Preserva la <strong>estructura local</strong> de los datos, agrupando puntos similares cerca y separando los distintos.
+            </p>
+
+            <!-- SVG t-SNE vs PCA -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                <svg width="440" height="380" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <text x="220" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">PCA vs t-SNE: Preservación de Estructura</text>
+
+                    <!-- LADO IZQUIERDO: PCA -->
+                    <text x="110" y="55" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">PCA (Lineal)</text>
+
+                    <rect x="20" y="70" width="180" height="140" fill="#E8F7FA" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="8"/>
+
+                    <!-- Clusters PCA (más dispersos) -->
+                    <!-- Cluster 1 (azul) -->
+                    <circle cx="60" cy="110" r="4" fill="#49B9CE"/>
+                    <circle cx="65" cy="105" r="4" fill="#49B9CE"/>
+                    <circle cx="70" cy="112" r="4" fill="#49B9CE"/>
+                    <circle cx="55" cy="115" r="4" fill="#49B9CE"/>
+
+                    <!-- Cluster 2 (rojo) -->
+                    <circle cx="120" cy="100" r="4" fill="#f44336"/>
+                    <circle cx="125" cy="95" r="4" fill="#f44336"/>
+                    <circle cx="130" cy="105" r="4" fill="#f44336"/>
+                    <circle cx="115" cy="108" r="4" fill="#f44336"/>
+
+                    <!-- Cluster 3 (verde) -->
+                    <circle cx="80" cy="165" r="4" fill="#4CAF50"/>
+                    <circle cx="85" cy="170" r="4" fill="#4CAF50"/>
+                    <circle cx="90" cy="160" r="4" fill="#4CAF50"/>
+                    <circle cx="75" cy="172" r="4" fill="#4CAF50"/>
+
+                    <!-- Cluster 4 (naranja) -->
+                    <circle cx="150" cy="170" r="4" fill="#FFA726"/>
+                    <circle cx="155" cy="165" r="4" fill="#FFA726"/>
+                    <circle cx="160" cy="175" r="4" fill="#FFA726"/>
+                    <circle cx="145" cy="178" r="4" fill="#FFA726"/>
+
+                    <!-- Solapamiento -->
+                    <ellipse cx="110" cy="130" rx="70" ry="50" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4,4"/>
+                    <text x="110" y="200" font-size="10" fill="#555" text-anchor="middle" font-family="Montserrat">Clusters solapados</text>
+
+                    <!-- LADO DERECHO: t-SNE -->
+                    <text x="330" y="55" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">t-SNE (No Lineal)</text>
+
+                    <rect x="240" y="70" width="180" height="140" fill="#F0EDF5" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+
+                    <!-- Clusters t-SNE (bien separados) -->
+                    <!-- Cluster 1 (azul) - arriba izquierda -->
+                    <ellipse cx="280" cy="100" rx="20" ry="15" fill="#A3E0EA" fill-opacity="0.4" stroke="#49B9CE" stroke-width="2"/>
+                    <circle cx="275" cy="100" r="4" fill="#49B9CE"/>
+                    <circle cx="280" cy="95" r="4" fill="#49B9CE"/>
+                    <circle cx="285" cy="102" r="4" fill="#49B9CE"/>
+                    <circle cx="280" cy="105" r="4" fill="#49B9CE"/>
+
+                    <!-- Cluster 2 (rojo) - arriba derecha -->
+                    <ellipse cx="370" cy="100" rx="20" ry="15" fill="#FFCDD2" fill-opacity="0.4" stroke="#f44336" stroke-width="2"/>
+                    <circle cx="365" cy="100" r="4" fill="#f44336"/>
+                    <circle cx="370" cy="95" r="4" fill="#f44336"/>
+                    <circle cx="375" cy="102" r="4" fill="#f44336"/>
+                    <circle cx="370" cy="105" r="4" fill="#f44336"/>
+
+                    <!-- Cluster 3 (verde) - abajo izquierda -->
+                    <ellipse cx="280" cy="170" rx="20" ry="15" fill="#C8E6C9" fill-opacity="0.4" stroke="#4CAF50" stroke-width="2"/>
+                    <circle cx="275" cy="170" r="4" fill="#4CAF50"/>
+                    <circle cx="280" cy="165" r="4" fill="#4CAF50"/>
+                    <circle cx="285" cy="172" r="4" fill="#4CAF50"/>
+                    <circle cx="280" cy="175" r="4" fill="#4CAF50"/>
+
+                    <!-- Cluster 4 (naranja) - abajo derecha -->
+                    <ellipse cx="370" cy="170" rx="20" ry="15" fill="#FFE0B2" fill-opacity="0.4" stroke="#FFA726" stroke-width="2"/>
+                    <circle cx="365" cy="170" r="4" fill="#FFA726"/>
+                    <circle cx="370" cy="165" r="4" fill="#FFA726"/>
+                    <circle cx="375" cy="172" r="4" fill="#FFA726"/>
+                    <circle cx="370" cy="175" r="4" fill="#FFA726"/>
+
+                    <text x="330" y="200" font-size="10" fill="#555" text-anchor="middle" font-family="Montserrat">Clusters bien separados</text>
+
+                    <!-- COMPARACIÓN ABAJO -->
+                    <rect x="20" y="230" width="400" height="135" fill="white" stroke="#e5e5e5" stroke-width="2" rx="8"/>
+
+                    <text x="30" y="255" font-size="12" font-weight="bold" fill="#333" font-family="Montserrat">Diferencias Clave:</text>
+
+                    <circle cx="35" cy="275" r="4" fill="#49B9CE"/>
+                    <text x="45" y="280" font-size="10" fill="#333" font-family="Montserrat"><tspan font-weight="bold">PCA:</tspan> Preserva distancias globales, rápido, proyección lineal</text>
+
+                    <circle cx="35" cy="295" r="4" fill="#8A7AAF"/>
+                    <text x="45" y="300" font-size="10" fill="#333" font-family="Montserrat"><tspan font-weight="bold">t-SNE:</tspan> Preserva vecindarios locales, lento, no lineal</text>
+
+                    <text x="35" y="320" font-size="10" fill="#555" font-family="Montserrat" font-style="italic">Casos de uso:</text>
+                    <text x="35" y="335" font-size="9" fill="#777" font-family="Montserrat">• PCA: Preprocesamiento, compresión, reducción inicial</text>
+                    <text x="35" y="350" font-size="9" fill="#777" font-family="Montserrat">• t-SNE: Visualización exploratoria, detección de clusters ocultos</text>
+                </svg>
+
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box secondary" style="margin-bottom: 0.75rem;">
+                        <p class="title" style="color: #8A7AAF;">Parámetro: perplexity</p>
+                        <p class="content">Balance entre estructura local/global. Típicamente 5-50 (30 por defecto).</p>
+                    </div>
+                    <div class="highlight-box secondary" style="margin-bottom: 0.75rem;">
+                        <p class="title" style="color: #8A7AAF;">Parámetro: learning_rate</p>
+                        <p class="content">Velocidad de optimización. Rango: 10-1000 (200 típico).</p>
+                    </div>
+                    <div class="highlight-box secondary" style="margin-bottom: 0.75rem;">
+                        <p class="title" style="color: #8A7AAF;">Parámetro: n_iter</p>
+                        <p class="content">Iteraciones de optimización. Mínimo 1000, ideal 2500+.</p>
+                    </div>
+                    <div class="prediction-box" style="margin-top: 0.5rem; background: #F0EDF5; border-color: #8A7AAF;">
+                        <p style="margin: 0;"><strong>Complejidad: O(n²)</strong></p>
+                        <p style="color: #777; font-size: 0.875rem; margin-top: 0.5rem;">Lento para n > 10,000 (usar PCA primero)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código t-SNE -->
+            <h3 class="color-secondary">💻 Implementación t-SNE</h3>
+            <div class="code-block">
+<pre><code class="language-python">from sklearn.manifold import TSNE
+from sklearn.datasets import load_digits
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import time
+
+# Cargar datos
+digits = load_digits()
+X, y = digits.data, digits.target
+
+# Escalar (importante)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Para datasets grandes (>10k): reducir con PCA primero
+# from sklearn.decomposition import PCA
+# pca = PCA(n_components=50)
+# X_pca = pca.fit_transform(X_scaled)
+
+# Aplicar t-SNE
+print("Ejecutando t-SNE (puede tardar minutos)...")
+start_time = time.time()
+
+tsne = TSNE(
+    n_components=2,        # Casi siempre 2D o 3D
+    perplexity=30,         # Ajustar según tamaño dataset
+    learning_rate=200,     # Learning rate
+    n_iter=2500,           # Más iteraciones = mejor calidad
+    random_state=42,
+    verbose=1              # Ver progreso
+)
+
+X_tsne = tsne.fit_transform(X_scaled)
+
+print(f"Tiempo: {time.time() - start_time:.2f}s")
+print(f"Divergencia KL final: {tsne.kl_divergence_:.4f}")
+
+# Visualización mejorada
+plt.figure(figsize=(12, 10))
+scatter = plt.scatter(
+    X_tsne[:, 0], X_tsne[:, 1],
+    c=y,
+    cmap='tab10',
+    alpha=0.7,
+    s=50,
+    edgecolors='black',
+    linewidth=0.5
+)
+plt.colorbar(scatter, label='Dígito (0-9)')
+plt.title('t-SNE: Visualización de Dígitos Manuscritos', fontsize=16)
+plt.xlabel('Dimensión t-SNE 1', fontsize=12)
+plt.ylabel('Dimensión t-SNE 2', fontsize=12)
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# COMPARACIÓN: PCA vs t-SNE
+from sklearn.decomposition import PCA
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+
+# PCA
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+ax1.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap='tab10', alpha=0.6)
+ax1.set_title(f'PCA: {sum(pca.explained_variance_ratio_)*100:.1f}% varianza')
+ax1.set_xlabel('PC1')
+ax1.set_ylabel('PC2')
+
+# t-SNE
+ax2.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y, cmap='tab10', alpha=0.6)
+ax2.set_title('t-SNE: Estructura local preservada')
+ax2.set_xlabel('Dimensión 1')
+ax2.set_ylabel('Dimensión 2')
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+            </div>
+
+            <!-- Ventajas y Limitaciones t-SNE -->
+            <h3 class="color-neutral">⚖️ Ventajas y Limitaciones</h3>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">✅ Ventajas</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Excelente visualización 2D/3D</li>
+                        <li>Captura relaciones no lineales</li>
+                        <li>Revela clusters ocultos</li>
+                        <li>Preserva vecindarios locales</li>
+                    </ul>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⚠️ Limitaciones</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Muy lento (O(n²))</li>
+                        <li>Solo para visualización (no inferencia)</li>
+                        <li>Resultados no deterministas</li>
+                        <li>Sensible a hiperparámetros</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Otros Métodos -->
+        <section>
+            <h2 class="color-neutral">Otros Métodos de Reducción</h2>
+
+            <!-- LDA -->
+            <h3 class="color-primary">📊 LDA: Linear Discriminant Analysis</h3>
+            <p>
+                <strong>LDA</strong> es un método <strong>supervisado</strong> que maximiza la separación entre clases. A diferencia de PCA, LDA usa las <strong>etiquetas de clase</strong> para encontrar proyecciones que discriminen mejor entre categorías.
+            </p>
+
+            <div class="expert-quote">
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🎯 Objetivo LDA</h4>
+                        <p style="font-size: 0.875rem;">Maximiza varianza inter-clase, minimiza varianza intra-clase</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">📈 Componentes LDA</h4>
+                        <p style="font-size: 0.875rem;">Máximo: min(n_clases-1, n_features). Ej: 10 clases → max 9 LDs</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">✅ Ventaja Principal</h4>
+                        <p style="font-size: 0.875rem;">Mejora rendimiento de clasificadores al enfocarse en separabilidad</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código LDA -->
+            <div class="code-block">
+<pre><code class="language-python">from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Dataset Iris (4 dimensiones, 3 clases)
+iris = load_iris()
+X, y = iris.data, iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# LDA: Reducir a 2 componentes (max = 3-1 = 2)
+lda = LinearDiscriminantAnalysis(n_components=2)
+X_train_lda = lda.fit_transform(X_train, y_train)
+X_test_lda = lda.transform(X_test)
+
+print(f"Dimensiones: 4D → 2D")
+print(f"Varianza explicada por LD: {lda.explained_variance_ratio_}")
+
+# LDA también puede clasificar directamente
+y_pred = lda.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred)*100:.2f}%")
+
+# Visualización
+import matplotlib.pyplot as plt
+plt.scatter(X_train_lda[:, 0], X_train_lda[:, 1], c=y_train, cmap='viridis')
+plt.xlabel('LD1')
+plt.ylabel('LD2')
+plt.title('LDA: Iris Dataset')
+plt.show()
+</code></pre>
+            </div>
+
+            <!-- Autoencoders -->
+            <h3 class="color-secondary" style="margin-top: 2.5rem;">🧠 Autoencoders: Deep Learning</h3>
+            <p>
+                Los <strong>autoencoders</strong> son redes neuronales que aprenden representaciones comprimidas de datos mediante <strong>codificación-decodificación</strong>. El cuello de botella (bottleneck) fuerza la compresión, creando una representación latente de baja dimensión.
+            </p>
+
+            <!-- Diagrama Autoencoder -->
+            <svg width="700" height="280" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Arquitectura de Autoencoder</text>
+
+                <!-- INPUT LAYER -->
+                <circle cx="50" cy="80" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="110" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="140" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="170" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="200" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="230" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <text x="50" y="260" font-size="11" fill="#333" text-anchor="middle" font-weight="bold" font-family="Montserrat">Input</text>
+                <text x="50" y="273" font-size="9" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">n = 784</text>
+
+                <!-- ENCODER HIDDEN 1 -->
+                <circle cx="150" cy="100" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5"/>
+                <circle cx="150" cy="130" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5"/>
+                <circle cx="150" cy="160" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5"/>
+                <circle cx="150" cy="190" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5"/>
+                <text x="150" y="215" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">256</text>
+
+                <!-- ENCODER HIDDEN 2 -->
+                <circle cx="240" cy="120" r="6" fill="#C5E1EC" stroke="#333" stroke-width="1.5"/>
+                <circle cx="240" cy="150" r="6" fill="#C5E1EC" stroke="#333" stroke-width="1.5"/>
+                <circle cx="240" cy="180" r="6" fill="#C5E1EC" stroke="#333" stroke-width="1.5"/>
+                <text x="240" y="200" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">128</text>
+
+                <!-- BOTTLENECK (LATENT) -->
+                <circle cx="350" cy="135" r="10" fill="#8A7AAF" stroke="#333" stroke-width="3"/>
+                <circle cx="350" cy="165" r="10" fill="#8A7AAF" stroke="#333" stroke-width="3"/>
+                <text x="350" y="195" font-size="11" fill="#8A7AAF" text-anchor="middle" font-weight="bold" font-family="Montserrat">Latent</text>
+                <text x="350" y="208" font-size="9" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">n = 32</text>
+
+                <rect x="330" y="120" width="40" height="70" fill="none" stroke="#8A7AAF" stroke-width="3" stroke-dasharray="4,4" rx="8"/>
+                <text x="350" y="110" font-size="10" fill="#8A7AAF" text-anchor="middle" font-style="italic" font-family="Montserrat">Cuello botella</text>
+
+                <!-- DECODER HIDDEN 1 -->
+                <circle cx="460" cy="120" r="6" fill="#C5B9D8" stroke="#333" stroke-width="1.5"/>
+                <circle cx="460" cy="150" r="6" fill="#C5B9D8" stroke="#333" stroke-width="1.5"/>
+                <circle cx="460" cy="180" r="6" fill="#C5B9D8" stroke="#333" stroke-width="1.5"/>
+                <text x="460" y="200" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">128</text>
+
+                <!-- DECODER HIDDEN 2 -->
+                <circle cx="550" cy="100" r="7" fill="#D8CFE8" stroke="#333" stroke-width="1.5"/>
+                <circle cx="550" cy="130" r="7" fill="#D8CFE8" stroke="#333" stroke-width="1.5"/>
+                <circle cx="550" cy="160" r="7" fill="#D8CFE8" stroke="#333" stroke-width="1.5"/>
+                <circle cx="550" cy="190" r="7" fill="#D8CFE8" stroke="#333" stroke-width="1.5"/>
+                <text x="550" y="215" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">256</text>
+
+                <!-- OUTPUT LAYER -->
+                <circle cx="650" cy="80" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="650" cy="110" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="650" cy="140" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="650" cy="170" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="650" cy="200" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <circle cx="650" cy="230" r="8" fill="#49B9CE" stroke="#333" stroke-width="2"/>
+                <text x="650" y="260" font-size="11" fill="#333" text-anchor="middle" font-weight="bold" font-family="Montserrat">Output</text>
+                <text x="650" y="273" font-size="9" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">n = 784</text>
+
+                <!-- Conexiones (sample) -->
+                <line x1="58" y1="140" x2="142" y2="130" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+                <line x1="158" y1="145" x2="232" y2="150" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+                <line x1="246" y1="150" x2="340" y2="150" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+                <line x1="360" y1="150" x2="454" y2="150" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+                <line x1="467" y1="150" x2="543" y2="145" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+                <line x1="557" y1="145" x2="642" y2="140" stroke="#ccc" stroke-width="0.5" opacity="0.4"/>
+
+                <!-- Etiquetas -->
+                <text x="100" y="50" font-size="10" fill="#49B9CE" font-weight="bold" font-family="Montserrat">ENCODER</text>
+                <line x1="50" y1="55" x2="280" y2="55" stroke="#49B9CE" stroke-width="2"/>
+
+                <text x="600" y="50" font-size="10" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">DECODER</text>
+                <line x1="420" y1="55" x2="650" y2="55" stroke="#8A7AAF" stroke-width="2"/>
+            </svg>
+
+            <!-- Código Autoencoder -->
+            <div class="code-block">
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+import numpy as np
+
+# Cargar MNIST (28x28 imágenes = 784 pixeles)
+(x_train, _), (x_test, _) = keras.datasets.mnist.load_data()
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train.reshape(-1, 784)
+x_test = x_test.reshape(-1, 784)
+
+# Definir arquitectura Autoencoder
+encoding_dim = 32  # Reducción: 784 → 32 (24x compresión)
+
+# Encoder
+input_img = keras.Input(shape=(784,))
+encoded = layers.Dense(256, activation='relu')(input_img)
+encoded = layers.Dense(128, activation='relu')(encoded)
+encoded = layers.Dense(encoding_dim, activation='relu')(encoded)  # Bottleneck
+
+# Decoder
+decoded = layers.Dense(128, activation='relu')(encoded)
+decoded = layers.Dense(256, activation='relu')(decoded)
+decoded = layers.Dense(784, activation='sigmoid')(decoded)
+
+# Modelo completo
+autoencoder = keras.Model(input_img, decoded)
+
+# Encoder separado (para extraer representación latente)
+encoder = keras.Model(input_img, encoded)
+
+# Compilar
+autoencoder.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['mse']
+)
+
+# Entrenar (reconstruir entrada)
+history = autoencoder.fit(
+    x_train, x_train,  # Input = Output (auto-supervisión)
+    epochs=50,
+    batch_size=256,
+    validation_data=(x_test, x_test),
+    verbose=1
+)
+
+# Extraer representaciones latentes (32D)
+X_encoded = encoder.predict(x_test)
+print(f"Reducción: 784D → {X_encoded.shape[1]}D")
+
+# Visualizar reconstrucciones
+import matplotlib.pyplot as plt
+decoded_imgs = autoencoder.predict(x_test[:10])
+
+fig, axes = plt.subplots(2, 10, figsize=(15, 3))
+for i in range(10):
+    # Original
+    axes[0, i].imshow(x_test[i].reshape(28, 28), cmap='gray')
+    axes[0, i].axis('off')
+    # Reconstruido
+    axes[1, i].imshow(decoded_imgs[i].reshape(28, 28), cmap='gray')
+    axes[1, i].axis('off')
+plt.suptitle('Original (arriba) vs Reconstruido (abajo)')
+plt.show()
+</code></pre>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section>
+            <h2 class="color-neutral" style="text-align: center;">Comparación Completa de Métodos</h2>
+
+            <div style="overflow-x: auto;">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th style="text-align: center;">PCA</th>
+                            <th style="text-align: center;">t-SNE</th>
+                            <th style="text-align: center;">LDA</th>
+                            <th style="text-align: center;">Autoencoder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 700;">Tipo</td>
+                            <td style="text-align: center;">Lineal</td>
+                            <td style="text-align: center;">No lineal</td>
+                            <td style="text-align: center;">Lineal</td>
+                            <td style="text-align: center;">No lineal</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Supervisión</td>
+                            <td style="text-align: center;">No supervisado</td>
+                            <td style="text-align: center;">No supervisado</td>
+                            <td style="text-align: center;">Supervisado</td>
+                            <td style="text-align: center;">Auto-supervisado</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Objetivo</td>
+                            <td style="text-align: center; font-size: 0.9rem;">Max varianza</td>
+                            <td style="text-align: center; font-size: 0.9rem;">Preservar vecindarios</td>
+                            <td style="text-align: center; font-size: 0.9rem;">Separar clases</td>
+                            <td style="text-align: center; font-size: 0.9rem;">Reconstruir input</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Velocidad</td>
+                            <td style="text-align: center;">⚡⚡⚡ Rápido</td>
+                            <td style="text-align: center;">🐌 Lento</td>
+                            <td style="text-align: center;">⚡⚡ Rápido</td>
+                            <td style="text-align: center;">🐌 Lento</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Complejidad</td>
+                            <td style="text-align: center;">O(nd²)</td>
+                            <td style="text-align: center;">O(n²)</td>
+                            <td style="text-align: center;">O(nd²)</td>
+                            <td style="text-align: center;">O(n·epochs)</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Inferencia nueva</td>
+                            <td style="text-align: center;">✅ Sí</td>
+                            <td style="text-align: center;">❌ No</td>
+                            <td style="text-align: center;">✅ Sí</td>
+                            <td style="text-align: center;">✅ Sí</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Mejor para</td>
+                            <td style="text-align: center; font-size: 0.88rem;">Preprocesamiento general</td>
+                            <td style="text-align: center; font-size: 0.88rem;">Visualización exploratoria</td>
+                            <td style="text-align: center; font-size: 0.88rem;">Clasificación supervisada</td>
+                            <td style="text-align: center; font-size: 0.88rem;">Imágenes, datos complejos</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Escalabilidad</td>
+                            <td style="text-align: center;">⭐⭐⭐ 100M+</td>
+                            <td style="text-align: center;">⭐ <10K</td>
+                            <td style="text-align: center;">⭐⭐ <1M</td>
+                            <td style="text-align: center;">⭐⭐ 10M+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Reales -->
+        <section>
+            <h2 class="color-neutral">Aplicaciones Reales</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary" style="background: linear-gradient(135deg, #E8F7FA 0%, #C5E1EC 100%);">
+                    <h3 class="color-primary" style="color: #1e7e9c;">🔍 Google Image Search</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Técnica:</strong> Autoencoders Convolucionales<br>
+                        <strong>Reducción:</strong> Imágenes 2048x2048x3 → 128D
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Aplicación:</strong> Búsqueda por similitud visual</li>
+                        <li><strong>Escala:</strong> Indexa 50+ mil millones de imágenes</li>
+                        <li><strong>Velocidad:</strong> <0.1s búsqueda en embedding compacto</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary" style="background: linear-gradient(135deg, #F0EDF5 0%, #D8CFE8 100%);">
+                    <h3 class="color-secondary" style="color: #6b5b95;">🧬 Análisis Genómico</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Institución:</strong> Instituto Broad (MIT/Harvard)<br>
+                        <strong>Técnica:</strong> PCA + t-SNE
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Datos:</strong> 20,000+ genes → 50 componentes (PCA)</li>
+                        <li><strong>Visualización:</strong> t-SNE 2D identifica subtipos cáncer</li>
+                        <li><strong>Resultado:</strong> Descubrimiento de 15 nuevos subtipos tumorales</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary" style="background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); border-color: #FFA726;">
+                    <h3 style="color: #E65100;">📱 Reconocimiento Facial</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Empresa:</strong> Face ID (Apple)<br>
+                        <strong>Técnica:</strong> LDA + Deep Autoencoders
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Pipeline:</strong> 30,000 puntos faciales → 128D embedding</li>
+                        <li><strong>Precisión:</strong> 99.997% (1 en 1 millón falsos positivos)</li>
+                        <li><strong>Velocidad:</strong> <600ms autenticación completa</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dato Curioso -->
+        <div class="curiosity-box">
+            <h4>💡 Dato Curioso: Word2Vec y la Analogía de Einstein</h4>
+            <div class="inner-box">
+                <p style="margin-bottom: 1rem;">
+                    En 2013, Google desarrolló <strong>Word2Vec</strong>, un algoritmo que reduce vocabularios de 500,000+ palabras a embeddings de <strong>300 dimensiones</strong>. Lo sorprendente: en este espacio comprimido, las relaciones semánticas se preservan como <strong>operaciones vectoriales</strong>.
+                </p>
+
+                <div style="background: white; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
+                    <h5 style="color: #E65100; font-weight: 700; margin-bottom: 0.5rem;">🧮 Álgebra de Palabras:</h5>
+                    <div class="prediction-box" style="margin-bottom: 0.5rem;">
+                        <p style="margin: 0.5rem 0;">vector("Rey") - vector("Hombre") + vector("Mujer") ≈ vector("Reina")</p>
+                        <p style="margin: 0.5rem 0;">vector("París") - vector("Francia") + vector("Italia") ≈ vector("Roma")</p>
+                        <p style="margin: 0.5rem 0;">vector("Einstein") - vector("Científico") + vector("Pintor") ≈ vector("Picasso")</p>
+                    </div>
+                    <p style="color: #555; font-size: 0.95rem; margin-top: 0.5rem;">Esta propiedad emerge <strong>automáticamente</strong> de la reducción dimensional sin programación explícita de reglas semánticas.</p>
+                </div>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="content" style="text-align: center; font-weight: 600;">
+                        🌐 <strong>GPT-4</strong> usa embeddings de <strong>12,288 dimensiones</strong>, reduciendo textos complejos a vectores que capturan significado, contexto e incluso sarcasmo. Esta compresión inteligente es clave para procesar 25,000+ palabras de contexto en tiempo real.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+</html>

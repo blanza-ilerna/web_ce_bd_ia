@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta name="description"
+        content="Aprendizaje No Supervisado: Clustering, Reducción de Dimensionalidad y Detección de Anomalías. Descubre patrones ocultos en datos sin etiquetas.">
+    <meta name="keywords"
+        content="aprendizaje no supervisado, clustering, K-Means, DBSCAN, PCA, t-SNE, detección de anomalías, machine learning, IA">
+    <title>Aprendizaje No Supervisado | iLERNA</title>
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Aprendizaje No Supervisado</span>
+                </div>
+            </div>
+            <h1 class="text-center">Aprendizaje No Supervisado</h1>
+            <p class="subtitle text-center">Descubriendo patrones ocultos en datos sin etiquetas</p>
+        </header>
+
+        <main>
+            <!-- Introducción -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es el Aprendizaje No Supervisado?</h2>
+                <p>El <strong>aprendizaje no supervisado</strong> es un paradigma del Machine Learning donde el
+                    algoritmo
+                    trabaja con datos <strong>sin etiquetas</strong>. A diferencia del aprendizaje supervisado, aquí no
+                    hay "respuestas correctas" previas. El algoritmo debe descubrir por sí mismo la estructura, patrones
+                    y relaciones ocultas en los datos.</p>
+
+                <div class="highlight-box primary">
+                    <h3 class="title">🎯 Objetivo Principal</h3>
+                    <p class="content">Descubrir la <strong>estructura inherente</strong> de los datos, identificar
+                        patrones naturales, agrupar elementos similares o reducir la complejidad mientras se preserva la
+                        información relevante.</p>
+                </div>
+
+                <h3>Características Clave</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🔍 Sin Etiquetas</h4>
+                        <p>Los datos no tienen respuestas predefinidas ni categorías conocidas de antemano</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🎯 Descubrimiento Autónomo</h4>
+                        <p>El algoritmo encuentra estructura y patrones por sí mismo sin supervisión humana</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">📊 Exploración de Datos</h4>
+                        <p>Ideal para análisis exploratorio cuando no conocemos la estructura subyacente</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">💡 Insights Inesperados</h4>
+                        <p>Puede revelar relaciones y patrones que no eran obvios inicialmente</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparación -->
+            <section class="section">
+                <h2 class="section-title">Supervisado vs No Supervisado</h2>
+                <p>Comprender las diferencias fundamentales entre estos dos paradigmas es esencial para elegir el
+                    enfoque
+                    correcto según el problema y los datos disponibles.</p>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Aprendizaje Supervisado</th>
+                                <th>Aprendizaje No Supervisado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Datos de entrada</strong></td>
+                                <td>Con etiquetas (X, y)</td>
+                                <td>Sin etiquetas (solo X)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Objetivo</strong></td>
+                                <td>Predecir salida conocida</td>
+                                <td>Descubrir estructura oculta</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tipo de problema</strong></td>
+                                <td>Clasificación, Regresión</td>
+                                <td>Clustering, Reducción dimensionalidad, Detección anomalías</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Evaluación</strong></td>
+                                <td>Comparar con etiquetas reales (accuracy, F1, RMSE)</td>
+                                <td>Métricas internas (silhouette, inercia, varianza explicada)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ejemplo</strong></td>
+                                <td>Clasificar emails como spam/no spam con ejemplos previos</td>
+                                <td>Agrupar clientes sin saber categorías de antemano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coste de datos</strong></td>
+                                <td>Alto (requiere etiquetar manualmente)</td>
+                                <td>Bajo (datos crudos sin procesar)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Interpretabilidad</strong></td>
+                                <td>Alta (se compara con verdad conocida)</td>
+                                <td>Moderada (requiere validación del dominio)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tipos Principales -->
+            <section class="section">
+                <h2 class="section-title">Tres Familias del Aprendizaje No Supervisado</h2>
+                <p>El aprendizaje no supervisado se divide en tres categorías principales, cada una con objetivos y
+                    aplicaciones específicas:</p>
+
+                <div class="grid-features">
+                    <!-- Clustering -->
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">1. Clustering (Agrupamiento)</h4>
+                        <p><strong>Objetivo:</strong> Dividir datos en grupos (clusters) donde elementos dentro del
+                            mismo grupo son más similares entre sí que con elementos de otros grupos.</p>
+
+                        <h5 style="margin-top: 1rem;">Algoritmos Principales</h5>
+                        <ul style="line-height: 1.7;">
+                            <li><strong>K-Means:</strong> Particiona datos en K clusters basándose en centroides</li>
+                            <li><strong>DBSCAN:</strong> Clustering basado en densidad, detecta formas arbitrarias y
+                                outliers</li>
+                            <li><strong>Hierarchical Clustering:</strong> Crea una jerarquía de clusters (dendrograma)
+                            </li>
+                            <li><strong>Gaussian Mixture Models (GMM):</strong> Modelado probabilístico con
+                                distribuciones gaussianas</li>
+                        </ul>
+
+                        <h5 style="margin-top: 1rem;">Aplicaciones</h5>
+                        <p style="font-size: 0.95rem;">Segmentación de clientes, agrupación de documentos, compresión de
+                            imágenes, detección de comunidades en redes sociales</p>
+                    </div>
+
+                    <!-- Reducción de Dimensionalidad -->
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">2. Reducción de Dimensionalidad</h4>
+                        <p><strong>Objetivo:</strong> Reducir el número de variables/características preservando la
+                            mayor cantidad de información relevante posible.</p>
+
+                        <h5 style="margin-top: 1rem;">Algoritmos Principales</h5>
+                        <ul style="line-height: 1.7;">
+                            <li><strong>PCA (Principal Component Analysis):</strong> Proyección lineal a componentes
+                                principales ortogonales</li>
+                            <li><strong>t-SNE:</strong> Visualización de datos de alta dimensión en 2D/3D</li>
+                            <li><strong>UMAP:</strong> Alternativa moderna a t-SNE, más rápida y escalable</li>
+                            <li><strong>Autoencoders:</strong> Redes neuronales que aprenden representaciones
+                                comprimidas</li>
+                        </ul>
+
+                        <h5 style="margin-top: 1rem;">Aplicaciones</h5>
+                        <p style="font-size: 0.95rem;">Visualización de datos complejos, preprocesamiento para ML,
+                            compresión de datos, eliminación de ruido</p>
+                    </div>
+
+                    <!-- Detección de Anomalías -->
+                    <div class="feature-card" style="border-top: 4px solid #DD6B20;">
+                        <h4 style="color: #DD6B20;">3. Detección de Anomalías</h4>
+                        <p><strong>Objetivo:</strong> Identificar puntos de datos que se desvían significativamente del
+                            patrón normal o esperado.</p>
+
+                        <h5 style="margin-top: 1rem;">Algoritmos Principales</h5>
+                        <ul style="line-height: 1.7;">
+                            <li><strong>Isolation Forest:</strong> Aísla anomalías mediante árboles aleatorios</li>
+                            <li><strong>One-Class SVM:</strong> Aprende la frontera de datos "normales"</li>
+                            <li><strong>LOF (Local Outlier Factor):</strong> Basado en densidad local</li>
+                            <li><strong>Autoencoders:</strong> Detectan anomalías por alto error de reconstrucción</li>
+                        </ul>
+
+                        <h5 style="margin-top: 1rem;">Aplicaciones</h5>
+                        <p style="font-size: 0.95rem;">Detección de fraude financiero, identificación de fallos en
+                            sistemas, detección de intrusiones en ciberseguridad</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- K-Means en Profundidad -->
+            <section class="section">
+                <h2 class="section-title">K-Means: El Algoritmo de Clustering Más Popular</h2>
+                <p>K-Means es un algoritmo iterativo que divide N observaciones en K clusters, donde cada observación
+                    pertenece al cluster con el centroide más cercano.</p>
+
+                <div class="highlight-box secondary">
+                    <h3 class="title">Algoritmo K-Means (K Clusters)</h3>
+                    <ol style="line-height: 2;">
+                        <li><strong>Inicialización:</strong> Seleccionar K centroides iniciales aleatoriamente</li>
+                        <li><strong>Asignación:</strong> Asignar cada punto al centroide más cercano (formando K
+                            clusters)</li>
+                        <li><strong>Actualización:</strong> Recalcular centroides como la media de puntos en cada
+                            cluster</li>
+                        <li><strong>Repetir</strong> pasos 2-3 hasta convergencia (centroides dejan de moverse)</li>
+                    </ol>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Ventajas y Limitaciones</h3>
+                <div class="grid-features">
+                    <div class="feature-card" style="border-left: 4px solid #4CAF50;">
+                        <h4 style="color: #4CAF50;">✅ Ventajas</h4>
+                        <ul style="line-height: 1.7;">
+                            <li>Simple e intuitivo de entender</li>
+                            <li>Rápido y escalable para grandes datasets</li>
+                            <li>Funciona bien con clusters esféricos y del mismo tamaño</li>
+                            <li>Fácil de implementar</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #E65100;">
+                        <h4 style="color: #E65100;">⚠️ Limitaciones</h4>
+                        <ul style="line-height: 1.7;">
+                            <li>Hay que especificar K de antemano (método del codo ayuda)</li>
+                            <li>Sensible a inicialización (usar K-Means++)</li>
+                            <li>Solo detecta clusters convexos/esféricos</li>
+                            <li>Sensible a outliers y escalas diferentes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="curiosity-box" style="margin-top: 2rem;">
+                    <h4>💡 Determinando el Número Óptimo de Clusters (K)</h4>
+                    <p><strong>Método del Codo (Elbow Method):</strong></p>
+                    <ol style="line-height: 1.8;">
+                        <li>Ejecutar K-Means con diferentes valores de K (por ejemplo, K=1 a K=10)</li>
+                        <li>Calcular la inercia (suma de distancias cuadradas al centroide más cercano) para cada K</li>
+                        <li>Graficar K vs Inercia</li>
+                        <li>Buscar el "codo" donde la reducción de inercia empieza a disminuir significativamente</li>
+                    </ol>
+                    <p style="margin-top: 1rem;"><strong>Otras métricas:</strong> Silhouette Score (mide cohesión
+                        intra-cluster y separación inter-cluster), Davies-Bouldin Index, Calinski-Harabasz Index</p>
+                </div>
+            </section>
+
+            <!-- DBSCAN -->
+            <section class="section">
+                <h2 class="section-title">DBSCAN: Clustering Basado en Densidad</h2>
+                <p><strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</strong> es un algoritmo
+                    que agrupa puntos que están estrechamente agrupados, marcando como outliers puntos en regiones de
+                    baja densidad.</p>
+
+                <div class="highlight-box primary">
+                    <h3 class="title">Conceptos Clave de DBSCAN</h3>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>ε (epsilon):</strong> Radio de vecindad alrededor de un punto</li>
+                        <li><strong>MinPts:</strong> Número mínimo de puntos dentro de ε para considerar un punto como
+                            "core point"</li>
+                        <li><strong>Core Point:</strong> Punto con al menos MinPts vecinos dentro de ε</li>
+                        <li><strong>Border Point:</strong> No es core point, pero está en la vecindad de un core point
+                        </li>
+                        <li><strong>Noise Point (Outlier):</strong> Ni core ni border point</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Ventajas de DBSCAN sobre K-Means</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🔢 No Requiere K</h4>
+                        <p>Descubre automáticamente el número de clusters sin especificarlo de antemano</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🌀 Formas Arbitrarias</h4>
+                        <p>Detecta clusters de formas no convexas (círculos, lunas, espirales)</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🎯 Detecta Outliers</h4>
+                        <p>Identifica y etiqueta puntos de ruido que no pertenecen a ningún cluster</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">💪 Robusto a Ruido</h4>
+                        <p>No fuerza todos los puntos a pertenecer a un cluster</p>
+                    </div>
+                </div>
+
+                <div class="curiosity-box" style="margin-top: 2rem;">
+                    <h4>💡 Cuándo Usar DBSCAN vs K-Means</h4>
+                    <p><strong>Usa K-Means cuando:</strong></p>
+                    <ul style="line-height: 1.7;">
+                        <li>Los clusters son aproximadamente esféricos y de tamaño similar</li>
+                        <li>Conoces el número de clusters de antemano</li>
+                        <li>Necesitas velocidad en datasets muy grandes</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Usa DBSCAN cuando:</strong></p>
+                    <ul style="line-height: 1.7;">
+                        <li>No conoces el número de clusters</li>
+                        <li>Esperas clusters de formas irregulares</li>
+                        <li>Necesitas identificar outliers explícitamente</li>
+                        <li>Los datos tienen variaciones de densidad</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PCA -->
+            <section class="section">
+                <h2 class="section-title">PCA: Reducción de Dimensionalidad</h2>
+                <p><strong>PCA (Principal Component Analysis)</strong> es una técnica de reducción de dimensionalidad
+                    que transforma datos a un nuevo sistema de coordenadas donde las nuevas variables (componentes
+                    principales) capturan la máxima varianza de los datos.</p>
+
+                <div class="highlight-box secondary">
+                    <h3 class="title">¿Cómo Funciona PCA?</h3>
+                    <ol style="line-height: 2;">
+                        <li><strong>Estandarización:</strong> Normalizar datos (media 0, desviación estándar 1)</li>
+                        <li><strong>Matriz de covarianza:</strong> Calcular covarianzas entre todas las variables</li>
+                        <li><strong>Autovectores y autovalores:</strong> Encontrar direcciones de máxima varianza</li>
+                        <li><strong>Ordenar componentes:</strong> Por autovalor descendente (más varianza primero)</li>
+                        <li><strong>Proyección:</strong> Transformar datos a los primeros k componentes principales</li>
+                    </ol>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Aplicaciones de PCA</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">📉 Visualización</h4>
+                        <p>Reducir datos de 100+ dimensiones a 2D/3D para visualizar</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">⚡ Aceleración</h4>
+                        <p>Reducir dimensiones antes de entrenar modelos (menos features = más rápido)</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🧹 Eliminación de Ruido</h4>
+                        <p>Remover componentes de baja varianza que suelen ser ruido</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🔗 Multicolinealidad</h4>
+                        <p>Eliminar correlación entre variables transformándolas a componentes ortogonales</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary" style="margin-top: 2rem;">
+                    <h4 class="title">📊 Interpretando Componentes Principales</h4>
+                    <p style="line-height: 1.7;" class="content">Cada componente principal es una <strong>combinación
+                            lineal</strong> de las variables originales. Los autovalores indican cuánta varianza captura
+                        cada componente:</p>
+                    <ul style="margin-top: 0.5rem; line-height: 1.8;">
+                        <li><strong>PC1:</strong> Dirección de máxima varianza (normalmente explica 30-70% de varianza
+                            total)</li>
+                        <li><strong>PC2:</strong> Segunda dirección de máxima varianza, ortogonal a PC1</li>
+                        <li><strong>PC3, PC4...:</strong> Componentes subsiguientes en orden descendente de varianza
+                        </li>
+                    </ul>
+                    <p style="margin-top: 1rem;" class="content">Se suele seleccionar el número de componentes que
+                        expliquen al
+                        menos el <strong>80-95% de la varianza acumulada</strong>.</p>
+                </div>
+            </section>
+
+            <!-- Detección de Anomalías -->
+            <section class="section">
+                <h2 class="section-title">Detección de Anomalías</h2>
+                <p>La detección de anomalías identifica observaciones que se desvían significativamente del
+                    comportamiento normal. Es crucial en aplicaciones donde identificar "lo raro" es más importante que
+                    clasificar "lo común".</p>
+
+                <h3>Métodos Principales</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Isolation Forest</h4>
+                        <p><strong>Idea:</strong> Anomalías son más fáciles de aislar que puntos normales</p>
+                        <ul style="font-size: 0.95rem; line-height: 1.7; margin-top: 0.5rem;">
+                            <li>Construye árboles de decisión aleatorios</li>
+                            <li>Anomalías requieren menos divisiones para aislarse</li>
+                            <li>Rápido y escalable</li>
+                            <li>Funciona bien en alta dimensionalidad</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">One-Class SVM</h4>
+                        <p><strong>Idea:</strong> Aprender la frontera que rodea datos normales</p>
+                        <ul style="font-size: 0.95rem; line-height: 1.7; margin-top: 0.5rem;">
+                            <li>Entrena solo con datos "normales"</li>
+                            <li>Encuentra hipersuperficie que separa normal de anómalo</li>
+                            <li>Efectivo en espacios de alta dimensión</li>
+                            <li>Puede usar kernels para fronteras no lineales</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">LOF (Local Outlier Factor)</h4>
+                        <p><strong>Idea:</strong> Comparar densidad local con vecinos</p>
+                        <ul style="font-size: 0.95rem; line-height: 1.7; margin-top: 0.5rem;">
+                            <li>Calcula densidad de puntos en vecindad</li>
+                            <li>Detecta anomalías contextuales (baja densidad relativa)</li>
+                            <li>Identifica outliers locales, no solo globales</li>
+                            <li>Sensible a elección de k-vecinos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="curiosity-box" style="margin-top: 2rem;">
+                    <h4>💡 Aplicaciones Críticas de Detección de Anomalías</h4>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Fraude Financiero:</strong> Transacciones con tarjeta sospechosas (monto inusual,
+                            ubicación atípica, horario extraño)</li>
+                        <li><strong>Ciberseguridad:</strong> Detección de intrusiones en redes (tráfico anómalo, accesos
+                            no autorizados)</li>
+                        <li><strong>Salud:</strong> Identificar resultados médicos anormales que requieren atención
+                            inmediata</li>
+                        <li><strong>Manufactura:</strong> Detectar productos defectuosos en líneas de producción</li>
+                        <li><strong>IoT:</strong> Fallos en sensores o comportamiento anómalo de dispositivos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Conclusión -->
+            <section class="section">
+                <h2 class="section-title">Conclusión: El Poder del Aprendizaje No Supervisado</h2>
+                <p>El aprendizaje no supervisado es fundamental en el ecosistema del Machine Learning moderno,
+                    especialmente en la era del Big Data donde etiquetar millones de observaciones es inviable.</p>
+
+                <div class="highlight-box primary">
+                    <h4 class="title">🔑 Puntos Clave para Recordar</h4>
+                    <ul style="line-height: 2;">
+                        <li><strong>No requiere etiquetas:</strong> Ideal cuando etiquetar datos es costoso, imposible o
+                            desconocemos las categorías</li>
+                        <li><strong>Descubrimiento exploratorio:</strong> Revela estructura oculta y patrones no obvios
+                            en los datos</li>
+                        <li><strong>Tres pilares:</strong> Clustering (agrupar), Reducción de Dimensionalidad
+                            (simplificar), Detección de Anomalías (encontrar rarezas)</li>
+                        <li><strong>Complementa el supervisado:</strong> Se usa frecuentemente como preprocesamiento
+                            antes de aprendizaje supervisado</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Flujo de Trabajo Típico</h3>
+                <ol style="font-size: 1.1rem; line-height: 2;">
+                    <li><strong>Exploración:</strong> Usar PCA o t-SNE para visualizar y entender datos</li>
+                    <li><strong>Clustering:</strong> Agrupar datos con K-Means o DBSCAN según características del
+                        problema</li>
+                    <li><strong>Validación:</strong> Evaluar clusters con métricas (silhouette, inercia) y conocimiento
+                        del dominio</li>
+                    <li><strong>Detección de anomalías:</strong> Identificar outliers con Isolation Forest o LOF</li>
+                    <li><strong>Iteración:</strong> Refinar hiperparámetros basándose en resultados</li>
+                </ol>
+
+                <div class="highlight-box secondary" style="margin-top: 2rem;">
+                    <p style="font-size: 1.1rem; line-height: 1.8;" class="content"><strong>Mensaje final:</strong> El
+                        aprendizaje no supervisado no reemplaza al supervisado, sino que lo complementa. Mientras el
+                        supervisado es una "linterna" que ilumina donde apuntas (categorías conocidas), el no
+                        supervisado es un "radar" que descubre lo que no sabías que existía. Ambos son herramientas
+                        esenciales en el arsenal del científico de datos.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

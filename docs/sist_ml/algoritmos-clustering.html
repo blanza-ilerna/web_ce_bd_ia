@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Clustering - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Domina los algoritmos de clustering: K-Means, DBSCAN y Hierarchical Clustering.">
+    <meta name="keywords"
+        content="clustering, K-Means, DBSCAN, hierarchical clustering, aprendizaje no supervisado, unsupervised learning, machine learning, segmentación clientes, detección anomalías, dendrograma, silhouette score, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Algoritmos de Clustering - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. Aprende clustering y aprendizaje no supervisado.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Algoritmos de Clustering</span>
+                </div>
+            </div>
+            <h1 class="text-center">Algoritmos de Clustering</h1>
+            <p class="subtitle text-center">Aprendizaje No Supervisado en Machine Learning</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-neutral">¿Qué es el Clustering?</h2>
+            <p>
+                El <strong>clustering</strong> (agrupamiento) es una técnica de <strong>aprendizaje no
+                    supervisado</strong> que agrupa datos similares sin etiquetas previas. A diferencia del aprendizaje
+                supervisado, donde conocemos las categorías de antemano, el clustering descubre patrones ocultos
+                automáticamente.
+            </p>
+            <p>
+                Los algoritmos de clustering son fundamentales en <strong>análisis exploratorio de datos</strong>,
+                segmentación de clientes, compresión de imágenes, detección de anomalías y sistemas de recomendación.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo Real:</p>
+                <p class="content">Netflix utiliza clustering para agrupar usuarios con gustos similares y crear
+                    perfiles de comportamiento, permitiendo recomendaciones personalizadas a 230+ millones de
+                    suscriptores sin necesidad de etiquetar manualmente cada preferencia.</p>
+            </div>
+
+            <h3 class="color-neutral">Conceptos Fundamentales</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Centroide</h4>
+                    <p>Punto central representativo de un cluster, calculado como la media de todos los puntos del
+                        grupo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Distancia Euclidiana</h4>
+                    <p>Métrica más común para medir similitud: √[(x₁-x₂)² + (y₁-y₂)²]. Cuanto menor, más similares son
+                        los puntos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Inercia (Inertia)</h4>
+                    <p>Suma de distancias al cuadrado entre puntos y sus centroides. Menor inercia = clusters más
+                        compactos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Silhouette Score</h4>
+                    <p>Métrica de calidad [-1, 1]. Valores cercanos a 1 indican clusters bien separados y cohesionados.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- K-Means -->
+        <section>
+            <h2 class="color-neutral">K-Means: El Algoritmo Clásico</h2>
+
+            <h3 class="color-primary">🎯 Funcionamiento</h3>
+            <p>
+                K-Means es el algoritmo de clustering más utilizado. Divide los datos en <strong>K clusters</strong>
+                (número predefinido) minimizando la varianza intra-cluster. Es rápido, escalable y fácil de implementar.
+            </p>
+
+            <!-- SVG K-Means Process -->
+            <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem;">
+                <svg width="500" height="650" viewBox="0 0 500 650"
+                    style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <!-- Definiciones (deben ir al principio) -->
+                    <defs>
+                        <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+                    </defs>
+
+                    <!-- Título -->
+                    <text x="250" y="35" font-size="22" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Proceso Iterativo de K-Means (K=3)</text>
+
+                    <!-- ==================== ITERACIÓN 1 ==================== -->
+                    <rect x="10" y="60" width="480" height="150" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1"
+                        rx="8" />
+
+                    <text x="25" y="90" font-size="18" font-weight="bold" fill="#333333" font-family="Montserrat">1.
+                        Inicialización</text>
+                    <text x="25" y="110" font-size="13" fill="#666" font-family="Montserrat">Seleccionar K centroides
+                        aleatorios</text>
+
+                    <!-- Centroides grandes con más espacio -->
+                    <circle cx="80" cy="150" r="12" fill="#49B9CE" stroke="#333" stroke-width="3" />
+                    <circle cx="180" cy="145" r="12" fill="#8A7AAF" stroke="#333" stroke-width="3" />
+                    <circle cx="130" cy="185" r="12" fill="#FFA726" stroke="#333" stroke-width="3" />
+
+                    <!-- Puntos de datos más espaciados -->
+                    <circle cx="60" cy="120" r="5" fill="#999" />
+                    <circle cx="100" cy="175" r="5" fill="#999" />
+                    <circle cx="155" cy="115" r="5" fill="#999" />
+                    <circle cx="205" cy="165" r="5" fill="#999" />
+                    <circle cx="110" cy="180" r="5" fill="#999" />
+                    <circle cx="150" cy="195" r="5" fill="#999" />
+
+                    <text x="240" y="160" font-size="14" fill="#555" font-family="Montserrat">Centroides
+                        aleatorios</text>
+
+                    <!-- Flecha simple 1 (acortada) -->
+                    <line x1="250" y1="220" x2="250" y2="260" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow1)" />
+
+                    <!-- ==================== ITERACIÓN 2 ==================== -->
+                    <rect x="10" y="265" width="480" height="170" fill="#f8f9fa" stroke="#e0e0e0" stroke-width="1"
+                        rx="8" />
+
+                    <text x="25" y="295" font-size="18" font-weight="bold" fill="#333333" font-family="Montserrat">2.
+                        Asignación</text>
+                    <text x="25" y="315" font-size="13" fill="#666" font-family="Montserrat">Asignar cada punto al
+                        centroide más cercano</text>
+
+                    <!-- Centroides más espaciados -->
+                    <circle cx="80" cy="365" r="12" fill="#49B9CE" stroke="#333" stroke-width="3" />
+                    <circle cx="180" cy="360" r="12" fill="#8A7AAF" stroke="#333" stroke-width="3" />
+                    <circle cx="130" cy="405" r="12" fill="#FFA726" stroke="#333" stroke-width="3" />
+
+                    <!-- Puntos asignados con más espacio -->
+                    <line x1="60" y1="335" x2="80" y2="365" stroke="#49B9CE" stroke-width="2" stroke-dasharray="4,4" />
+                    <circle cx="60" cy="335" r="6" fill="#49B9CE" />
+
+                    <line x1="100" y1="390" x2="80" y2="365" stroke="#49B9CE" stroke-width="2" stroke-dasharray="4,4" />
+                    <circle cx="100" cy="390" r="6" fill="#49B9CE" />
+
+                    <line x1="155" y1="330" x2="180" y2="360" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="4,4" />
+                    <circle cx="155" cy="330" r="6" fill="#8A7AAF" />
+
+                    <line x1="205" y1="380" x2="180" y2="360" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="4,4" />
+                    <circle cx="205" cy="380" r="6" fill="#8A7AAF" />
+
+                    <line x1="110" y1="395" x2="130" y2="405" stroke="#FFA726" stroke-width="2"
+                        stroke-dasharray="4,4" />
+                    <circle cx="110" cy="395" r="6" fill="#FFA726" />
+
+                    <line x1="150" y1="420" x2="130" y2="405" stroke="#FFA726" stroke-width="2"
+                        stroke-dasharray="4,4" />
+                    <circle cx="150" cy="420" r="6" fill="#FFA726" />
+
+                    <!-- Flecha simple 2 (acortada) -->
+                    <line x1="250" y1="445" x2="250" y2="485" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow1)" />
+
+                    <!-- ==================== ITERACIÓN 3 ==================== -->
+                    <rect x="10" y="490" width="480" height="100" fill="#e8f7fa" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+
+                    <text x="25" y="520" font-size="18" font-weight="bold" fill="#333333" font-family="Montserrat">3.
+                        Recalcular</text>
+                    <text x="25" y="540" font-size="13" fill="#666" font-family="Montserrat">Nuevos centroides = media
+                        de cada cluster</text>
+
+                    <!-- Centroides finales bien espaciados -->
+                    <ellipse cx="320" cy="550" rx="30" ry="25" fill="none" stroke="#49B9CE" stroke-width="3"
+                        stroke-dasharray="5,5" />
+                    <circle cx="320" cy="550" r="12" fill="#49B9CE" stroke="#333" stroke-width="4" />
+
+                    <ellipse cx="390" cy="550" rx="30" ry="25" fill="none" stroke="#8A7AAF" stroke-width="3"
+                        stroke-dasharray="5,5" />
+                    <circle cx="390" cy="550" r="12" fill="#8A7AAF" stroke="#333" stroke-width="4" />
+
+                    <ellipse cx="355" cy="567" rx="30" ry="25" fill="none" stroke="#FFA726" stroke-width="3"
+                        stroke-dasharray="5,5" />
+                    <circle cx="355" cy="567" r="12" fill="#FFA726" stroke="#333" stroke-width="4" />
+
+                    <!-- Nota final con más espacio -->
+                    <text x="250" y="615" font-size="11" fill="#777" text-anchor="middle" font-family="Montserrat"
+                        font-style="italic">Repetir hasta convergencia (centroides no cambian)</text>
+                </svg>
+
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 1: Inicialización</p>
+                        <p class="content">Seleccionar K centroides aleatorios</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 2: Asignación</p>
+                        <p class="content">Asignar cada punto al centroide más cercano</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-bottom: 0.75rem;">
+                        <p class="title">Paso 3: Actualización</p>
+                        <p class="content">Recalcular centroides como media del cluster</p>
+                    </div>
+                    <div class="prediction-box" style="margin-top: 0.5rem;">
+                        <p style="margin: 0;"><strong>Complejidad: O(n·k·i·d)</strong></p>
+                        <p style="color: #777; font-size: 0.875rem; margin-top: 0.5rem;">n=puntos, k=clusters,
+                            i=iteraciones, d=dimensiones</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código K-Means -->
+            <h3 class="color-primary">💻 Implementación en Python</h3>
+            <div class="code-block">
+                <pre><code class="language-python">from sklearn.cluster import KMeans
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generar datos sintéticos
+np.random.seed(42)
+X = np.concatenate([
+    np.random.randn(100, 2) + [2, 2],
+    np.random.randn(100, 2) + [-2, -2],
+    np.random.randn(100, 2) + [2, -2]
+])
+
+# Aplicar K-Means con K=3
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+y_pred = kmeans.fit_predict(X)
+
+# Obtener centroides y métricas
+centroides = kmeans.cluster_centers_
+inercia = kmeans.inertia_
+print(f"Inercia total: {inercia:.2f}")
+
+# Visualizar clusters
+plt.scatter(X[:, 0], X[:, 1], c=y_pred, cmap='viridis', alpha=0.6)
+plt.scatter(centroides[:, 0], centroides[:, 1],
+           c='red', marker='X', s=200, edgecolors='black')
+plt.title('K-Means: 3 Clusters')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.show()
+</code></pre>
+            </div>
+
+            <!-- Ventajas y Limitaciones K-Means -->
+            <h3 class="color-neutral">⚖️ Ventajas y Limitaciones</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">✅ Ventajas</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Rápido y escalable (O(n))</li>
+                        <li>Fácil de implementar</li>
+                        <li>Funciona bien con clusters esféricos</li>
+                        <li>Garantiza convergencia</li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚠️ Limitaciones</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Necesita definir K previamente</li>
+                        <li>Sensible a outliers</li>
+                        <li>Solo clusters convexos</li>
+                        <li>Inicialización aleatoria variable</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- DBSCAN -->
+        <section>
+            <h2 class="color-neutral">DBSCAN: Clustering Basado en Densidad</h2>
+
+            <h3 class="color-secondary">🌐 Principio de Funcionamiento</h3>
+            <p>
+                <strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) identifica
+                clusters como <strong>regiones densas</strong> separadas por áreas de baja densidad. A diferencia de
+                K-Means, <strong>no requiere especificar el número de clusters</strong> y puede detectar formas
+                arbitrarias.
+            </p>
+
+            <!-- SVG DBSCAN -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                <svg width="420" height="340"
+                    style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <text x="210" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">DBSCAN: Tipos de Puntos</text>
+
+                    <!-- CLUSTER 1 (Denso) -->
+                    <ellipse cx="120" cy="100" rx="70" ry="50" fill="#C5B9D8" fill-opacity="0.3" stroke="#8A7AAF"
+                        stroke-width="2" stroke-dasharray="5,5" />
+
+                    <!-- Core points (azul) -->
+                    <circle cx="120" cy="100" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="100" cy="90" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="140" cy="95" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="110" cy="115" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="135" cy="110" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+
+                    <!-- Radio epsilon -->
+                    <circle cx="120" cy="100" r="25" fill="none" stroke="#49B9CE" stroke-width="1"
+                        stroke-dasharray="3,3" />
+                    <line x1="120" y1="100" x2="145" y2="100" stroke="#49B9CE" stroke-width="1" />
+                    <text x="133" y="95" font-size="9" fill="#49B9CE" font-family="Montserrat">ε</text>
+
+                    <!-- Border points (naranja) -->
+                    <circle cx="80" cy="85" r="6" fill="#FFA726" stroke="#333" stroke-width="2" />
+                    <circle cx="160" cy="105" r="6" fill="#FFA726" stroke="#333" stroke-width="2" />
+
+                    <!-- CLUSTER 2 (Menos denso) -->
+                    <ellipse cx="300" cy="120" rx="60" ry="45" fill="#A3E0EA" fill-opacity="0.3" stroke="#49B9CE"
+                        stroke-width="2" stroke-dasharray="5,5" />
+
+                    <circle cx="300" cy="120" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="280" cy="110" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="320" cy="115" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="290" cy="135" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+
+                    <circle cx="260" cy="105" r="6" fill="#FFA726" stroke="#333" stroke-width="2" />
+                    <circle cx="340" cy="125" r="6" fill="#FFA726" stroke="#333" stroke-width="2" />
+
+                    <!-- Noise points (rojo) -->
+                    <circle cx="200" cy="80" r="5" fill="#f44336" stroke="#333" stroke-width="2" />
+                    <circle cx="210" cy="150" r="5" fill="#f44336" stroke="#333" stroke-width="2" />
+                    <circle cx="380" cy="90" r="5" fill="#f44336" stroke="#333" stroke-width="2" />
+                    <circle cx="50" cy="140" r="5" fill="#f44336" stroke="#333" stroke-width="2" />
+
+                    <!-- LEYENDA -->
+                    <rect x="20" y="200" width="380" height="125" fill="white" stroke="#e5e5e5" stroke-width="2"
+                        rx="8" />
+
+                    <text x="30" y="220" font-size="12" font-weight="bold" fill="#333" font-family="Montserrat">Tipos de
+                        Puntos en DBSCAN:</text>
+
+                    <!-- Core Point -->
+                    <circle cx="40" cy="245" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <text x="55" y="250" font-size="11" fill="#333" font-family="Montserrat">
+                        <tspan font-weight="bold">Core Point:</tspan> ≥ minPts vecinos dentro de ε
+                    </text>
+
+                    <!-- Border Point -->
+                    <circle cx="40" cy="270" r="6" fill="#FFA726" stroke="#333" stroke-width="2" />
+                    <text x="55" y="275" font-size="11" fill="#333" font-family="Montserrat">
+                        <tspan font-weight="bold">Border Point:</tspan> &lt; minPts vecinos, pero cerca de core
+                    </text>
+
+                    <!-- Noise Point -->
+                    <circle cx="40" cy="295" r="5" fill="#f44336" stroke="#333" stroke-width="2" />
+                    <text x="55" y="300" font-size="11" fill="#333" font-family="Montserrat">
+                        <tspan font-weight="bold">Noise (Outlier):</tspan> No cumple ninguna condición
+                    </text>
+                </svg>
+
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box secondary" style="margin-bottom: 0.75rem;">
+                        <p class="title" style="color: #8A7AAF;">Parámetro: ε (epsilon)</p>
+                        <p class="content">Radio máximo de vecindad para considerar puntos cercanos</p>
+                    </div>
+                    <div class="highlight-box secondary" style="margin-bottom: 0.75rem;">
+                        <p class="title" style="color: #8A7AAF;">Parámetro: minPts</p>
+                        <p class="content">Número mínimo de puntos para formar un cluster denso</p>
+                    </div>
+                    <div class="prediction-box" style="margin-top: 0.5rem; background: #F0EDF5; border-color: #8A7AAF;">
+                        <p style="margin: 0;"><strong>Complejidad: O(n log n)</strong></p>
+                        <p style="color: #777; font-size: 0.875rem; margin-top: 0.5rem;">Con índice espacial (e.g.,
+                            KD-Tree)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código DBSCAN -->
+            <h3 class="color-secondary">💻 Implementación DBSCAN</h3>
+            <div class="code-block">
+                <pre><code class="language-python">from sklearn.cluster import DBSCAN
+from sklearn.datasets import make_moons
+import numpy as np
+
+# Generar datos con formas no convexas (lunas)
+X, _ = make_moons(n_samples=300, noise=0.05, random_state=42)
+
+# Aplicar DBSCAN
+dbscan = DBSCAN(eps=0.3, min_samples=5)
+clusters = dbscan.fit_predict(X)
+
+# Identificar núcleos y ruido
+core_samples = np.zeros_like(clusters, dtype=bool)
+core_samples[dbscan.core_sample_indices_] = True
+
+n_clusters = len(set(clusters)) - (1 if -1 in clusters else 0)
+n_noise = list(clusters).count(-1)
+
+print(f"Clusters encontrados: {n_clusters}")
+print(f"Puntos de ruido (outliers): {n_noise}")
+
+# Visualización
+import matplotlib.pyplot as plt
+unique_labels = set(clusters)
+colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+
+for k, col in zip(unique_labels, colors):
+    if k == -1:
+        col = 'red'  # Ruido en rojo
+
+    class_member_mask = (clusters == k)
+
+    # Core points
+    xy = X[class_member_mask & core_samples]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=10)
+
+    # Border points
+    xy = X[class_member_mask & ~core_samples]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=6)
+
+plt.title(f'DBSCAN: {n_clusters} clusters + {n_noise} outliers')
+plt.show()
+</code></pre>
+            </div>
+
+            <!-- Ventajas y Limitaciones DBSCAN -->
+            <h3 class="color-neutral">⚖️ Ventajas y Limitaciones</h3>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">✅ Ventajas</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>No requiere especificar K</li>
+                        <li>Detecta formas arbitrarias</li>
+                        <li>Identifica outliers automáticamente</li>
+                        <li>Robusto a ruido</li>
+                    </ul>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⚠️ Limitaciones</h4>
+                    <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                        <li>Sensible a elección de ε y minPts</li>
+                        <li>Problemas con densidades variables</li>
+                        <li>Menos eficiente en alta dimensión</li>
+                        <li>Requiere ajuste de parámetros</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clustering Jerárquico -->
+        <section>
+            <h2 class="color-neutral">Clustering Jerárquico</h2>
+
+            <p>
+                El <strong>clustering jerárquico</strong> construye una jerarquía de clusters mediante dos enfoques:
+                <strong>aglomerativo</strong> (bottom-up) o <strong>divisivo</strong> (top-down). El método aglomerativo
+                es más común y produce un <strong>dendrograma</strong> que visualiza la estructura de agrupamiento.
+            </p>
+
+            <!-- Dendrograma SVG -->
+            <h3 class="color-primary">🌳 Dendrograma: Visualización Jerárquica</h3>
+            <svg width="700" height="380"
+                style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem; max-width: 100%;">
+                <text x="350" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">Dendrograma de Clustering Jerárquico Aglomerativo</text>
+
+                <!-- Eje Y (Distancia) -->
+                <line x1="50" y1="50" x2="50" y2="300" stroke="#333" stroke-width="2" />
+                <text x="25" y="175" font-size="12" fill="#333" font-family="Montserrat" writing-mode="tb"
+                    transform="rotate(180 25 175)">Distancia</text>
+
+                <!-- Marcas en eje Y -->
+                <line x1="45" y1="300" x2="50" y2="300" stroke="#333" stroke-width="1" />
+                <text x="40" y="305" font-size="10" fill="#555" text-anchor="end" font-family="Montserrat">0</text>
+
+                <line x1="45" y1="200" x2="50" y2="200" stroke="#333" stroke-width="1" />
+                <text x="40" y="205" font-size="10" fill="#555" text-anchor="end" font-family="Montserrat">5</text>
+
+                <line x1="45" y1="100" x2="50" y2="100" stroke="#333" stroke-width="1" />
+                <text x="40" y="105" font-size="10" fill="#555" text-anchor="end" font-family="Montserrat">10</text>
+
+                <line x1="45" y1="50" x2="50" y2="50" stroke="#333" stroke-width="1" />
+                <text x="40" y="55" font-size="10" fill="#555" text-anchor="end" font-family="Montserrat">15</text>
+
+                <!-- Puntos individuales (hojas) -->
+                <circle cx="100" cy="300" r="4" fill="#49B9CE" />
+                <text x="100" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">A</text>
+
+                <circle cx="150" cy="300" r="4" fill="#49B9CE" />
+                <text x="150" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">B</text>
+
+                <circle cx="250" cy="300" r="4" fill="#8A7AAF" />
+                <text x="250" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">C</text>
+
+                <circle cx="300" cy="300" r="4" fill="#8A7AAF" />
+                <text x="300" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">D</text>
+
+                <circle cx="450" cy="300" r="4" fill="#FFA726" />
+                <text x="450" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">E</text>
+
+                <circle cx="500" cy="300" r="4" fill="#FFA726" />
+                <text x="500" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">F</text>
+
+                <circle cx="580" cy="300" r="4" fill="#FFA726" />
+                <text x="580" y="320" font-size="10" fill="#333" text-anchor="middle" font-family="Montserrat">G</text>
+
+                <!-- Nivel 1: Primeros enlaces (distancia ~2) -->
+                <line x1="100" y1="300" x2="100" y2="270" stroke="#49B9CE" stroke-width="2" />
+                <line x1="150" y1="300" x2="150" y2="270" stroke="#49B9CE" stroke-width="2" />
+                <line x1="100" y1="270" x2="150" y2="270" stroke="#49B9CE" stroke-width="2" />
+
+                <line x1="250" y1="300" x2="250" y2="265" stroke="#8A7AAF" stroke-width="2" />
+                <line x1="300" y1="300" x2="300" y2="265" stroke="#8A7AAF" stroke-width="2" />
+                <line x1="250" y1="265" x2="300" y2="265" stroke="#8A7AAF" stroke-width="2" />
+
+                <line x1="450" y1="300" x2="450" y2="275" stroke="#FFA726" stroke-width="2" />
+                <line x1="500" y1="300" x2="500" y2="275" stroke="#FFA726" stroke-width="2" />
+                <line x1="450" y1="275" x2="500" y2="275" stroke="#FFA726" stroke-width="2" />
+
+                <!-- Nivel 2: Enlaces intermedios (distancia ~5) -->
+                <line x1="125" y1="270" x2="125" y2="200" stroke="#49B9CE" stroke-width="2" />
+                <line x1="275" y1="265" x2="275" y2="200" stroke="#8A7AAF" stroke-width="2" />
+                <line x1="125" y1="200" x2="275" y2="200" stroke="#333" stroke-width="2" />
+
+                <line x1="475" y1="275" x2="475" y2="220" stroke="#FFA726" stroke-width="2" />
+                <line x1="580" y1="300" x2="580" y2="220" stroke="#FFA726" stroke-width="2" />
+                <line x1="475" y1="220" x2="580" y2="220" stroke="#FFA726" stroke-width="2" />
+
+                <!-- Nivel 3: Enlace final (distancia ~10) -->
+                <line x1="200" y1="200" x2="200" y2="100" stroke="#333" stroke-width="3" />
+                <line x1="527" y1="220" x2="527" y2="100" stroke="#333" stroke-width="3" />
+                <line x1="200" y1="100" x2="527" y2="100" stroke="#333" stroke-width="3" />
+
+                <!-- Línea de corte (threshold) -->
+                <line x1="50" y1="180" x2="650" y2="180" stroke="#f44336" stroke-width="2" stroke-dasharray="8,4" />
+                <text x="660" y="185" font-size="11" fill="#f44336" font-weight="bold"
+                    font-family="Montserrat">Corte</text>
+
+                <!-- Clusters resultantes -->
+                <rect x="75" y="185" width="225" height="25" fill="#E8F7FA" fill-opacity="0.5" stroke="#49B9CE"
+                    stroke-width="2" rx="5" />
+                <text x="187" y="202" font-size="11" fill="#49B9CE" font-weight="bold" text-anchor="middle"
+                    font-family="Montserrat">Cluster 1</text>
+
+                <rect x="425" y="185" width="180" height="25" fill="#F0EDF5" fill-opacity="0.5" stroke="#8A7AAF"
+                    stroke-width="2" rx="5" />
+                <text x="515" y="202" font-size="11" fill="#8A7AAF" font-weight="bold" text-anchor="middle"
+                    font-family="Montserrat">Cluster 2</text>
+
+                <!-- Notas explicativas -->
+                <text x="350" y="350" font-size="11" fill="#555" font-family="Montserrat" font-weight="bold">Criterios
+                    de enlace:</text>
+                <text x="350" y="368" font-size="9" fill="#777" font-family="Montserrat">• <tspan font-weight="bold">
+                        Single:</tspan> distancia mínima entre clusters</text>
+            </svg>
+
+            <!-- Código Hierarchical -->
+            <h3 class="color-secondary">💻 Implementación Jerárquica</h3>
+            <div class="code-block">
+                <pre><code class="language-python">from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Datos de ejemplo
+X = np.array([[1, 2], [1.5, 1.8], [5, 8],
+              [8, 8], [1, 0.6], [9, 11]])
+
+# Método 1: Usando scipy para dendrograma
+Z = linkage(X, method='ward')  # Ward minimiza varianza intra-cluster
+
+plt.figure(figsize=(10, 5))
+dendrogram(Z, labels=['A', 'B', 'C', 'D', 'E', 'F'])
+plt.title('Dendrograma - Método Ward')
+plt.xlabel('Muestras')
+plt.ylabel('Distancia')
+plt.axhline(y=7, color='r', linestyle='--', label='Corte (2 clusters)')
+plt.legend()
+plt.show()
+
+# Método 2: Clustering con sklearn (especificando número de clusters)
+model = AgglomerativeClustering(n_clusters=2, linkage='ward')
+clusters = model.fit_predict(X)
+
+print(f"Clusters asignados: {clusters}")
+# Resultado: [0 0 1 1 0 1] → 2 grupos
+
+# Método 3: Criterios de enlace diferentes
+linkages = ['single', 'complete', 'average', 'ward']
+for link in linkages:
+    model = AgglomerativeClustering(n_clusters=2, linkage=link)
+    labels = model.fit_predict(X)
+    print(f"{link.capitalize()}: {labels}")
+</code></pre>
+            </div>
+
+            <!-- Criterios de Enlace -->
+            <h3 class="color-neutral">🔗 Criterios de Enlace (Linkage)</h3>
+            <div class="grid-features">
+                <div class="highlight-box primary" style="padding: 0.875rem;">
+                    <p class="title">Single Linkage</p>
+                    <p class="content" style="font-size: 0.875rem;">Distancia mínima entre puntos de dos clusters</p>
+                </div>
+                <div class="highlight-box secondary" style="padding: 0.875rem;">
+                    <p class="title" style="color: #8A7AAF;">Complete Linkage</p>
+                    <p class="content" style="font-size: 0.875rem;">Distancia máxima entre puntos de dos clusters</p>
+                </div>
+                <div class="highlight-box primary" style="padding: 0.875rem;">
+                    <p class="title">Average Linkage</p>
+                    <p class="content" style="font-size: 0.875rem;">Promedio de todas las distancias entre clusters</p>
+                </div>
+                <div class="highlight-box secondary" style="padding: 0.875rem;">
+                    <p class="title" style="color: #8A7AAF;">Ward Linkage</p>
+                    <p class="content" style="font-size: 0.875rem;">Minimiza varianza intra-cluster (más común)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section>
+            <h2 class="color-neutral" style="text-align: center;">Comparación de Algoritmos</h2>
+
+            <div style="overflow-x: auto;">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th style="text-align: center;">K-Means</th>
+                            <th style="text-align: center;">DBSCAN</th>
+                            <th style="text-align: center;">Hierarchical</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 700;">Tipo</td>
+                            <td style="text-align: center;">Partitional</td>
+                            <td style="text-align: center;">Density-based</td>
+                            <td style="text-align: center;">Hierarchical</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Requiere K</td>
+                            <td style="text-align: center;">✅ Sí</td>
+                            <td style="text-align: center;">❌ No</td>
+                            <td style="text-align: center;">⚠️ Opcional</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Forma clusters</td>
+                            <td style="text-align: center;">Esféricos</td>
+                            <td style="text-align: center;">Arbitraria</td>
+                            <td style="text-align: center;">Arbitraria</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Outliers</td>
+                            <td style="text-align: center;">Asignados forzosamente</td>
+                            <td style="text-align: center;">Detecta y separa</td>
+                            <td style="text-align: center;">Asignados</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Complejidad</td>
+                            <td style="text-align: center;">O(nki)</td>
+                            <td style="text-align: center;">O(n log n)</td>
+                            <td style="text-align: center;">O(n²)</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Escalabilidad</td>
+                            <td style="text-align: center;">⭐⭐⭐ Excelente</td>
+                            <td style="text-align: center;">⭐⭐ Buena</td>
+                            <td style="text-align: center;">⭐ Limitada</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Mejor para</td>
+                            <td style="text-align: center; font-size: 0.95rem;">Datos grandes, clusters esféricos</td>
+                            <td style="text-align: center; font-size: 0.95rem;">Formas complejas, ruido</td>
+                            <td style="text-align: center; font-size: 0.95rem;">Datasets pequeños, taxonomías</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Parámetros clave</td>
+                            <td style="text-align: center; font-size: 0.9rem;">n_clusters, n_init</td>
+                            <td style="text-align: center; font-size: 0.9rem;">eps, min_samples</td>
+                            <td style="text-align: center; font-size: 0.9rem;">n_clusters, linkage</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Aplicaciones en la Industria -->
+        <section>
+            <h2 class="color-neutral">Aplicaciones en la Industria</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary"
+                    style="background: linear-gradient(135deg, #E8F7FA 0%, #C5E1EC 100%);">
+                    <h3 class="color-primary" style="color: #1e7e9c;">📊 Segmentación de Clientes</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Empresa:</strong> Amazon<br>
+                        <strong>Algoritmo:</strong> K-Means + GMM<br>
+                        <strong>Datos:</strong> Historial de compras, navegación, demografía
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Uso:</strong> Crear perfiles de comprador</li>
+                        <li><strong>Resultado:</strong> Recomendaciones personalizadas que generan 35% de las ventas
+                        </li>
+                        <li><strong>Clusters:</strong> 8-12 segmentos principales</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary"
+                    style="background: linear-gradient(135deg, #F0EDF5 0%, #D8CFE8 100%);">
+                    <h3 class="color-secondary" style="color: #6b5b95;">🏥 Detección de Anomalías Médicas</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Hospital:</strong> Mayo Clinic<br>
+                        <strong>Algoritmo:</strong> DBSCAN<br>
+                        <strong>Datos:</strong> Imágenes médicas, análisis sangre
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Uso:</strong> Identificar patrones anormales</li>
+                        <li><strong>Resultado:</strong> 92% precisión en detección temprana de cáncer</li>
+                        <li><strong>Ventaja:</strong> Detecta casos raros automáticamente</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary"
+                    style="background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); border-color: #FFA726;">
+                    <h3 style="color: #E65100;">🌍 Análisis de Redes Sociales</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Empresa:</strong> Twitter (X)<br>
+                        <strong>Algoritmo:</strong> Hierarchical + Louvain<br>
+                        <strong>Datos:</strong> Grafos de usuarios, interacciones
+                    </p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Uso:</strong> Detectar comunidades y trending topics</li>
+                        <li><strong>Resultado:</strong> Identificar influencers y bots</li>
+                        <li><strong>Escala:</strong> 400M+ usuarios activos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dato Curioso: Método del Codo -->
+        <div class="curiosity-box">
+            <h4>💡 Dato Curioso: El Método del Codo (Elbow Method)</h4>
+            <div class="inner-box">
+                <p style="margin-bottom: 1rem;">
+                    Para elegir el <strong>número óptimo de clusters K</strong> en K-Means, se utiliza el "método del
+                    codo": graficar la <strong>inercia</strong> (suma de distancias al cuadrado) vs. K. El punto donde
+                    la curva forma un "codo" indica el K ideal, equilibrando precisión y simplicidad.
+                </p>
+
+                <div style="background: white; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
+                    <svg width="500" height="220"
+                        style="border: 2px solid #e5e5e5; border-radius: 0.75rem; background: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="250" y="20" font-size="14" font-weight="bold" fill="#E65100" text-anchor="middle"
+                            font-family="Montserrat">Método del Codo: Inercia vs. K</text>
+
+                        <!-- Ejes -->
+                        <line x1="50" y1="180" x2="450" y2="180" stroke="#333" stroke-width="2" />
+                        <line x1="50" y1="50" x2="50" y2="180" stroke="#333" stroke-width="2" />
+
+                        <!-- Etiquetas ejes -->
+                        <text x="250" y="205" font-size="12" fill="#333" text-anchor="middle"
+                            font-family="Montserrat">Número de Clusters (K)</text>
+                        <text x="25" y="115" font-size="12" fill="#333" font-family="Montserrat" writing-mode="tb"
+                            transform="rotate(180 25 115)">Inercia</text>
+
+                        <!-- Marcas K -->
+                        <text x="90" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">2</text>
+                        <text x="150" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">3</text>
+                        <text x="210" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">4</text>
+                        <text x="270" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">5</text>
+                        <text x="330" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">6</text>
+                        <text x="390" y="195" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">7</text>
+
+                        <!-- Curva de inercia -->
+                        <path d="M 90 70 Q 150 95, 210 120 Q 270 145, 390 165" stroke="#49B9CE" stroke-width="3"
+                            fill="none" />
+
+                        <!-- Puntos -->
+                        <circle cx="90" cy="70" r="5" fill="#49B9CE" />
+                        <circle cx="150" cy="95" r="5" fill="#49B9CE" />
+                        <circle cx="210" cy="120" r="5" fill="#49B9CE" />
+                        <circle cx="270" cy="145" r="5" fill="#49B9CE" />
+                        <circle cx="330" cy="155" r="5" fill="#49B9CE" />
+                        <circle cx="390" cy="165" r="5" fill="#49B9CE" />
+
+                        <!-- Punto del codo destacado -->
+                        <circle cx="210" cy="120" r="9" fill="none" stroke="#f44336" stroke-width="3" />
+                        <text x="230" y="110" font-size="11" fill="#f44336" font-weight="bold"
+                            font-family="Montserrat">← CODO</text>
+                        <text x="230" y="125" font-size="9" fill="#777" font-family="Montserrat">K óptimo = 4</text>
+
+                        <!-- Flecha indicativa -->
+                        <path d="M 220 115 L 212 118" stroke="#f44336" stroke-width="2" marker-end="url(#arrowred)" />
+
+                        <defs>
+                            <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f44336" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="content" style="text-align: center; font-weight: 600;">
+                        🎯 En la práctica, <strong>Spotify</strong> usa clustering (K=50+) para crear playlists
+                        automáticas como "Discover Weekly", analizando 1.5 billones de interacciones diarias de 500M+
+                        usuarios.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>

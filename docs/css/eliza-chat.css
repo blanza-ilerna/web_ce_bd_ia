@@ -1,0 +1,222 @@
+/* ELIZA Chat Interface Styles - iLERNA
+   Curso de Especialización en Inteligencia Artificial y Big Data
+   Estilos específicos para el chatbot ELIZA interactivo
+*/
+
+/* --- INTERACTIVE CHAT CONTAINER --- */
+.eliza-chat-container {
+    max-width: 42rem;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 2px solid #49B9CE;
+    overflow: hidden;
+}
+
+/* --- CHAT HEADER --- */
+.chat-header {
+    background: linear-gradient(135deg, #49B9CE 0%, #3A9FB3 100%);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 1.125rem;
+}
+
+/* --- CHAT MESSAGES AREA --- */
+.chat-messages {
+    height: 24rem;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #F0EDF5;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Scrollbar styling para el área de mensajes */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #E0DDE5;
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #8A7AAF;
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #71619b;
+}
+
+/* --- MESSAGE BUBBLES --- */
+.chat-message {
+    display: flex;
+    max-width: 80%;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-bubble {
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
+    line-height: 1.4;
+    font-size: 1rem;
+    color: #333;
+    word-wrap: break-word;
+}
+
+/* User messages (right side, purple) */
+.user-message {
+    align-self: flex-end;
+}
+
+.user-message .message-bubble {
+    background: linear-gradient(135deg, #8A7AAF 0%, #71619b 100%);
+    color: white;
+    border-bottom-right-radius: 0.25rem;
+    box-shadow: 0 2px 8px rgba(138, 122, 175, 0.3);
+}
+
+/* ELIZA messages (left side, gray) */
+.eliza-message {
+    align-self: flex-start;
+}
+
+.eliza-message .message-bubble {
+    background-color: #e5e5e5;
+    border-bottom-left-radius: 0.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- TYPING INDICATOR --- */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+}
+
+.typing-indicator span {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #8A7AAF;
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+/* --- CHAT FORM --- */
+.chat-form {
+    display: flex;
+    padding: 1rem;
+    border-top: 2px solid #49B9CE;
+    background: white;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    border: 2px solid #ccc;
+    border-radius: 2rem 0 0 2rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.chat-form input:focus {
+    border-color: #49B9CE;
+}
+
+.chat-form input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.chat-form button {
+    border: none;
+    background: linear-gradient(135deg, #8A7AAF 0%, #71619b 100%);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 2rem 2rem 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.chat-form button:hover {
+    background: linear-gradient(135deg, #71619b 0%, #5c4b8b 100%);
+    transform: scale(1.05);
+}
+
+.chat-form button:disabled {
+    background: #bcaed4;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .eliza-chat-container {
+        max-width: 100%;
+        margin: 1rem 0;
+    }
+
+    .chat-messages {
+        height: 20rem;
+    }
+
+    .chat-message {
+        max-width: 85%;
+    }
+
+    .message-bubble {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .chat-form input {
+        font-size: 0.9rem;
+        padding: 0.65rem 0.85rem;
+    }
+
+    .chat-form button {
+        padding: 0.65rem 1rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-messages {
+        height: 18rem;
+        padding: 0.75rem;
+    }
+
+    .chat-message {
+        max-width: 90%;
+    }
+
+    .message-bubble {
+        font-size: 0.85rem;
+    }
+
+    .chat-form {
+        padding: 0.75rem;
+    }
+}

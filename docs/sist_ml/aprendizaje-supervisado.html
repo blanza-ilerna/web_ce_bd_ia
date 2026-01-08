@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprendizaje Supervisado: Predicción con datos etiquetados. Algoritmos de clasificación y regresión, métricas de evaluación y aplicaciones prácticas en Machine Learning.">
+    <meta name="keywords"
+        content="Aprendizaje Supervisado, Clasificación, Regresión, Machine Learning, Regresión Logística, Árboles de Decisión, KNN, SVM, Naive Bayes, Random Forest, Métricas ML">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Aprendizaje Supervisado | iLERNA">
+    <meta property="og:description"
+        content="Aprende los fundamentos del Aprendizaje Supervisado: algoritmos de clasificación, regresión, métricas de evaluación y aplicaciones prácticas.">
+    <meta property="og:type" content="article">
+    <title>Aprendizaje Supervisado | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Aprendizaje Supervisado</span>
+                </div>
+            </div>
+            <h1 class="text-center">Aprendizaje Supervisado</h1>
+            <p class="subtitle text-center">Predicción con datos etiquetados: Algoritmos y aplicaciones prácticas</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es el Aprendizaje Supervisado?</h2>
+
+                <p>
+                    El <strong>aprendizaje supervisado</strong> es un paradigma del Machine Learning donde el algoritmo aprende de un conjunto de datos <strong>etiquetados</strong>. Es como tener un profesor que nos muestra ejemplos con sus respuestas correctas, y nosotros aprendemos el patrón para aplicarlo a nuevos casos.
+                </p>
+
+                <!-- Diagrama conceptual -->
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin: 2rem 0;">
+                    <svg width="400" height="250" viewBox="0 0 400 250" style="max-width: 100%; height: auto; border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; flex-shrink: 0;">
+                        <!-- Datos de entrada -->
+                        <rect x="20" y="40" width="100" height="170" rx="10" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="70" y="25" font-size="14" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">ENTRADA</text>
+                        <text x="70" y="70" font-size="12" font-family="Montserrat" fill="#333333" text-anchor="middle">🖼️ Imagen</text>
+                        <text x="70" y="95" font-size="11" font-family="Montserrat" fill="#555555" text-anchor="middle">Características</text>
+                        <rect x="35" y="105" width="70" height="8" fill="#49B9CE" opacity="0.3" rx="2"/>
+                        <rect x="35" y="120" width="70" height="8" fill="#49B9CE" opacity="0.3" rx="2"/>
+                        <rect x="35" y="135" width="70" height="8" fill="#49B9CE" opacity="0.3" rx="2"/>
+
+                        <text x="70" y="170" font-size="12" font-family="Montserrat" fill="#333333" text-anchor="middle" font-weight="700">Etiqueta:</text>
+                        <text x="70" y="190" font-size="14" font-family="Montserrat" fill="#49B9CE" text-anchor="middle" font-weight="700">"Gato"</text>
+
+                        <!-- Flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                        <line x1="130" y1="125" x2="170" y2="125" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Algoritmo -->
+                        <rect x="170" y="80" width="100" height="90" rx="10" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                        <text x="220" y="65" font-size="14" font-weight="700" font-family="Montserrat" fill="#8A7AAF" text-anchor="middle">ALGORITMO</text>
+                        <text x="220" y="115" font-size="12" font-family="Montserrat" fill="#333333" text-anchor="middle">Aprende</text>
+                        <text x="220" y="135" font-size="12" font-family="Montserrat" fill="#333333" text-anchor="middle">Patrones</text>
+                        <circle cx="220" cy="155" r="3" fill="#8A7AAF"/>
+                        <circle cx="210" cy="145" r="2" fill="#8A7AAF"/>
+                        <circle cx="230" cy="145" r="2" fill="#8A7AAF"/>
+
+                        <!-- Flecha -->
+                        <line x1="280" y1="125" x2="320" y2="125" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Predicción -->
+                        <rect x="320" y="80" width="60" height="90" rx="10" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="350" y="65" font-size="14" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">SALIDA</text>
+                        <text x="350" y="120" font-size="12" font-family="Montserrat" fill="#333333" text-anchor="middle" font-weight="700">Predicción</text>
+                        <text x="350" y="145" font-size="18" fill="#49B9CE" text-anchor="middle">✓</text>
+                        <text x="350" y="165" font-size="11" font-family="Montserrat" fill="#555555" text-anchor="middle">"Gato"</text>
+                    </svg>
+
+                    <div style="flex: 1; min-width: 220px;">
+                        <h3 style="color: #49B9CE; margin-bottom: 1rem;">Proceso de Aprendizaje</h3>
+                        <div class="comparison-grid">
+                            <div class="comparison-card">
+                                <h4 style="color: #49B9CE;">1. Entrenamiento</h4>
+                                <p>El modelo recibe datos con etiquetas correctas</p>
+                            </div>
+                            <div class="comparison-card">
+                                <h4 style="color: #8A7AAF;">2. Aprendizaje</h4>
+                                <p>Identifica patrones y relaciones en los datos</p>
+                            </div>
+                            <div class="comparison-card">
+                                <h4 style="color: #49B9CE;">3. Predicción</h4>
+                                <p>Aplica lo aprendido a datos nuevos sin etiqueta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">🎯 Objetivo Principal</h3>
+                    <p>
+                        Construir un modelo capaz de hacer <strong>predicciones precisas</strong> sobre nuevos datos basándose en patrones aprendidos de datos históricos etiquetados.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: SISTEMAS DE ETIQUETAS -->
+            <section class="section">
+                <h2 class="section-title">Sistemas de Etiquetas</h2>
+
+                <p>
+                    Las <strong>etiquetas</strong> (o labels) son las respuestas correctas asociadas a cada ejemplo de entrenamiento. La calidad y precisión de estas etiquetas es fundamental para el éxito del modelo.
+                </p>
+
+                <div class="comparison-grid" style="margin: 2rem 0;">
+                    <!-- Etiquetas categóricas -->
+                    <div class="feature-card">
+                        <div style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">🏷️</div>
+                        <h3 style="color: #49B9CE;">Etiquetas Categóricas</h3>
+                        <p>Clasifican datos en categorías discretas</p>
+                        <div class="highlight-box" style="background: #f9f9f9; margin-top: 1rem; padding: 0.75rem; box-sizing: border-box;">
+                            <h4 style="margin-top: 0; font-size: 1rem;">Ejemplos:</h4>
+                            <ul style="line-height: 1.6; padding-left: 1.2rem; margin: 0;">
+                                <li><strong>Binarias:</strong> Spam/No&nbsp;spam</li>
+                                <li><strong>Multiclase:</strong> Perro/Gato/Conejo</li>
+                                <li><strong>Etiquetas:</strong> Positivo/Negativo/Neutro</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Etiquetas numéricas -->
+                    <div class="feature-card secondary">
+                        <div style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">🔢</div>
+                        <h3 style="color: #8A7AAF;">Etiquetas Numéricas</h3>
+                        <p>Representan valores continuos o cantidades</p>
+                        <div class="highlight-box" style="background: #f9f9f9; margin-top: 1rem; padding: 0.75rem; box-sizing: border-box;">
+                            <h4 style="margin-top: 0; font-size: 1rem;">Ejemplos:</h4>
+                            <ul style="line-height: 1.6; padding-left: 1.2rem; margin: 0;">
+                                <li>Precio de vivienda: €250,000</li>
+                                <li>Temperatura: 23.5°C</li>
+                                <li>Calificación: 8.7/10</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proceso de etiquetado -->
+                <div class="highlight-box" style="background: white; border: 2px solid #49B9CE; margin: 2rem 0;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">Métodos de Etiquetado</h3>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">👤 Manual</h4>
+                            <p>Expertos humanos etiquetan cada dato individualmente</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">🤖 Semi-automático</h4>
+                            <p>Combinación de IA y revisión humana</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">👥 Crowdsourcing</h4>
+                            <p>Múltiples personas etiquetan (ej: Amazon MTurk)</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">📊 Programático</h4>
+                            <p>Reglas automáticas o datos ya disponibles</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4 style="margin-top: 0;">⚠️ Importante</h4>
+                    <p>
+                        La calidad de las etiquetas determina el rendimiento del modelo. Etiquetas incorrectas o inconsistentes pueden llevar a predicciones erróneas. El proceso de etiquetado puede ser costoso y consumir mucho tiempo.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: DOS TIPOS PRINCIPALES -->
+            <section class="section">
+                <h2 class="section-title">Dos Categorías Principales</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <!-- CLASIFICACIÓN -->
+                    <div class="feature-card" style="background: linear-gradient(135deg, #E8F7FA, #ffffff);">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <svg width="120" height="120" viewBox="0 0 120 120" style="max-width: 100%; height: auto;">
+                                <circle cx="35" cy="35" r="25" fill="#A3E0EA" fill-opacity="0.6" stroke="#49B9CE" stroke-width="3"/>
+                                <circle cx="85" cy="35" r="25" fill="#A3E0EA" fill-opacity="0.6" stroke="#49B9CE" stroke-width="3"/>
+                                <circle cx="35" cy="85" r="25" fill="#C5B9D8" fill-opacity="0.6" stroke="#8A7AAF" stroke-width="3"/>
+                                <circle cx="85" cy="85" r="25" fill="#C5B9D8" fill-opacity="0.6" stroke="#8A7AAF" stroke-width="3"/>
+                                <text x="35" y="40" font-size="16" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">A</text>
+                                <text x="85" y="40" font-size="16" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">A</text>
+                                <text x="35" y="90" font-size="16" font-weight="700" font-family="Montserrat" fill="#8A7AAF" text-anchor="middle">B</text>
+                                <text x="85" y="90" font-size="16" font-weight="700" font-family="Montserrat" fill="#8A7AAF" text-anchor="middle">B</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: #49B9CE; text-align: center; font-size: 1.875rem;">CLASIFICACIÓN</h3>
+                        <p style="text-align: center; font-size: 1.125rem; margin-bottom: 1rem;">
+                            Predice una <strong>categoría</strong> o <strong>clase</strong> discreta
+                        </p>
+                        <div class="highlight-box" style="background: white; margin-bottom: 1rem;">
+                            <h4 style="margin-top: 0;">Salida: Etiqueta categórica</h4>
+                            <p style="font-family: monospace; color: #49B9CE; font-size: 1.125rem;">Clase A, Clase B, Clase C...</p>
+                        </div>
+                        <div class="highlight-box" style="background: #f9f9f9;">
+                            <h4 style="margin-top: 0;">Ejemplos típicos:</h4>
+                            <ul style="line-height: 1.8;">
+                                <li>Email es spam o no spam</li>
+                                <li>Imagen contiene gato, perro o pájaro</li>
+                                <li>Cliente comprará o no comprará</li>
+                                <li>Tumor benigno o maligno</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- REGRESIÓN -->
+                    <div class="feature-card secondary" style="background: linear-gradient(135deg, #F0EDF5, #ffffff);">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <svg width="120" height="120" viewBox="0 0 120 120" style="max-width: 100%; height: auto;">
+                                <line x1="20" y1="100" x2="100" y2="100" stroke="#8A7AAF" stroke-width="2"/>
+                                <line x1="20" y1="100" x2="20" y2="20" stroke="#8A7AAF" stroke-width="2"/>
+                                <line x1="25" y1="90" x2="95" y2="30" stroke="#8A7AAF" stroke-width="3" stroke-dasharray="2,2"/>
+                                <circle cx="30" cy="85" r="4" fill="#8A7AAF"/>
+                                <circle cx="40" cy="75" r="4" fill="#8A7AAF"/>
+                                <circle cx="50" cy="65" r="4" fill="#8A7AAF"/>
+                                <circle cx="60" cy="55" r="4" fill="#8A7AAF"/>
+                                <circle cx="70" cy="45" r="4" fill="#8A7AAF"/>
+                                <circle cx="80" cy="40" r="4" fill="#8A7AAF"/>
+                                <circle cx="90" cy="35" r="4" fill="#8A7AAF"/>
+                                <text x="105" y="105" font-size="12" font-family="Montserrat" fill="#555555">X</text>
+                                <text x="15" y="15" font-size="12" font-family="Montserrat" fill="#555555">Y</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: #8A7AAF; text-align: center; font-size: 1.875rem;">REGRESIÓN</h3>
+                        <p style="text-align: center; font-size: 1.125rem; margin-bottom: 1rem;">
+                            Predice un <strong>valor numérico</strong> continuo
+                        </p>
+                        <div class="highlight-box" style="background: white; margin-bottom: 1rem;">
+                            <h4 style="margin-top: 0;">Salida: Número real</h4>
+                            <p style="font-family: monospace; color: #8A7AAF; font-size: 1.125rem;">23.7, 145.2, 0.85...</p>
+                        </div>
+                        <div class="highlight-box" style="background: #f9f9f9;">
+                            <h4 style="margin-top: 0;">Ejemplos típicos:</h4>
+                            <ul style="line-height: 1.8;">
+                                <li>Precio de una vivienda: €285,000</li>
+                                <li>Temperatura mañana: 24.5°C</li>
+                                <li>Ventas del próximo mes: €15,340</li>
+                                <li>Duración de un viaje: 42 minutos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: ALGORITMOS DE CLASIFICACIÓN -->
+            <section class="section">
+                <h2 class="section-title" style="color: #49B9CE;">Algoritmos de Clasificación</h2>
+
+                <!-- Regresión Logística -->
+                <div class="feature-card" style="margin-bottom: 2rem;">
+                    <h3 style="color: #49B9CE;">1. Regresión Logística</h3>
+                    <p>
+                        A pesar de su nombre, es un algoritmo de <strong>clasificación</strong>. Predice la probabilidad de que una instancia pertenezca a una clase específica.
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+                        <div style="flex: 1; min-width: 280px;">
+                            <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                                <p style="font-family: monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">
+                                    σ(z) = 1 / (1 + e^(-z))
+                                </p>
+                                <p style="font-size: 0.95rem;">Función sigmoide: transforma valores en probabilidades (0-1)</p>
+                            </div>
+
+                            <div class="highlight-box" style="background: #f9f9f9;">
+                                <h4 style="margin-top: 0;">⚙️ Características:</h4>
+                                <ul style="line-height: 1.8;">
+                                    <li>Rápido y eficiente</li>
+                                    <li>Interpretable (coeficientes claros)</li>
+                                    <li>Funciona bien con datos linealmente separables</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="flex: 1; min-width: 280px;">
+                            <div class="highlight-box" style="background: #E8F7FA; border-left: 3px solid #49B9CE;">
+                                <h4 style="color: #49B9CE; margin-top: 0;">📊 Casos de Uso</h4>
+                                <ul style="line-height: 1.8;">
+                                    <li><strong>Detección de spam</strong> en emails</li>
+                                    <li><strong>Diagnóstico médico</strong> binario (enfermo/sano)</li>
+                                    <li><strong>Predicción de churn</strong> (cliente se va o queda)</li>
+                                    <li><strong>Aprobación de créditos</strong> (sí/no)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Árboles de Decisión -->
+                <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                    <h3 style="color: #8A7AAF;">2. Árboles de Decisión</h3>
+                    <p>
+                        Modelo jerárquico que toma decisiones mediante una serie de preguntas, similar a un diagrama de flujo. Divide el espacio de características recursivamente.
+                    </p>
+
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <svg width="450" height="280" viewBox="0 0 450 280" style="max-width: 100%; height: auto; background: #fafafa; border-radius: 1rem; border: 2px solid #e5e5e5; padding: 0.5rem;">
+                            <!-- Raíz -->
+                            <rect x="175" y="10" width="100" height="40" rx="8" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="225" y="35" font-size="13" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">¿Edad > 30?</text>
+
+                            <!-- Ramas -->
+                            <line x1="200" y1="50" x2="100" y2="90" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="250" y1="50" x2="350" y2="90" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="145" y="75" font-size="11" font-family="Montserrat" fill="#555555">Sí</text>
+                            <text x="305" y="75" font-size="11" font-family="Montserrat" fill="#555555">No</text>
+
+                            <!-- Nodo izquierdo -->
+                            <rect x="50" y="90" width="100" height="40" rx="8" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="100" y="115" font-size="12" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">¿Ingreso > 50k?</text>
+
+                            <!-- Nodo derecho -->
+                            <rect x="300" y="90" width="100" height="40" rx="8" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="350" y="115" font-size="12" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">¿Estudios?</text>
+
+                            <!-- Hojas finales -->
+                            <line x1="75" y1="130" x2="50" y2="170" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="125" y1="130" x2="150" y2="170" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="325" y1="130" x2="300" y2="170" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="375" y1="130" x2="400" y2="170" stroke="#8A7AAF" stroke-width="2"/>
+
+                            <!-- Resultados -->
+                            <ellipse cx="50" cy="190" rx="45" ry="25" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+                            <text x="50" y="195" font-size="11" font-weight="700" font-family="Montserrat" fill="#155724" text-anchor="middle">APROBADO</text>
+
+                            <ellipse cx="150" cy="190" rx="45" ry="25" fill="#f8d7da" stroke="#dc3545" stroke-width="2"/>
+                            <text x="150" y="195" font-size="11" font-weight="700" font-family="Montserrat" fill="#721c24" text-anchor="middle">RECHAZADO</text>
+
+                            <ellipse cx="300" cy="190" rx="45" ry="25" fill="#f8d7da" stroke="#dc3545" stroke-width="2"/>
+                            <text x="300" y="195" font-size="11" font-weight="700" font-family="Montserrat" fill="#721c24" text-anchor="middle">RECHAZADO</text>
+
+                            <ellipse cx="400" cy="190" rx="45" ry="25" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+                            <text x="400" y="195" font-size="11" font-weight="700" font-family="Montserrat" fill="#155724" text-anchor="middle">APROBADO</text>
+                        </svg>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #28a745;">✅ Ventajas</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Muy interpretable</li>
+                                <li>No requiere escalado de datos</li>
+                                <li>Maneja datos no lineales</li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">📊 Casos de Uso</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Aprobación de préstamos</li>
+                                <li>Diagnóstico médico</li>
+                                <li>Segmentación de clientes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- K-Nearest Neighbors (KNN) -->
+                <div class="feature-card" style="margin-bottom: 2rem;">
+                    <h3 style="color: #49B9CE;">3. K-Nearest Neighbors (KNN)</h3>
+                    <p>
+                        Clasifica un nuevo dato basándose en los <strong>K vecinos más cercanos</strong>. Es un algoritmo "perezoso" que no construye un modelo explícito durante el entrenamiento.
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+                        <svg width="250" height="250" viewBox="0 0 250 250" style="max-width: 100%; height: auto; flex-shrink: 0; border: 2px solid #e5e5e5; border-radius: 1rem; background: #fafafa;">
+                            <!-- Puntos clase A (azul) -->
+                            <circle cx="60" cy="60" r="8" fill="#49B9CE"/>
+                            <circle cx="80" cy="70" r="8" fill="#49B9CE"/>
+                            <circle cx="70" cy="90" r="8" fill="#49B9CE"/>
+                            <circle cx="50" cy="80" r="8" fill="#49B9CE"/>
+                            <circle cx="90" cy="50" r="8" fill="#49B9CE"/>
+
+                            <!-- Puntos clase B (morado) -->
+                            <circle cx="160" cy="160" r="8" fill="#8A7AAF"/>
+                            <circle cx="180" cy="170" r="8" fill="#8A7AAF"/>
+                            <circle cx="170" cy="190" r="8" fill="#8A7AAF"/>
+                            <circle cx="150" cy="180" r="8" fill="#8A7AAF"/>
+                            <circle cx="190" cy="150" r="8" fill="#8A7AAF"/>
+
+                            <!-- Punto nuevo a clasificar -->
+                            <circle cx="120" cy="120" r="10" fill="yellow" stroke="#333333" stroke-width="3"/>
+                            <text x="120" y="155" font-size="14" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">?</text>
+
+                            <!-- Radio de búsqueda K=3 -->
+                            <circle cx="120" cy="120" r="70" fill="none" stroke="#49B9CE" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+
+                            <!-- Leyenda -->
+                            <rect x="10" y="210" width="230" height="35" fill="white" rx="5" stroke="#e5e5e5" stroke-width="1"/>
+                            <circle cx="30" cy="222" r="5" fill="#49B9CE"/>
+                            <text x="45" y="227" font-size="11" font-family="Montserrat" fill="#333333">Clase A</text>
+                            <circle cx="120" cy="222" r="5" fill="#8A7AAF"/>
+                            <text x="135" y="227" font-size="11" font-family="Montserrat" fill="#333333">Clase B</text>
+                        </svg>
+
+                        <div style="flex: 1; min-width: 280px;">
+                            <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                                <p style="font-family: monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">
+                                    Clase = mayoría_entre_K_vecinos
+                                </p>
+                                <p style="font-size: 0.95rem;">El nuevo punto se clasifica según la clase más común entre sus K vecinos más cercanos</p>
+                            </div>
+
+                            <div class="highlight-box" style="background: #E8F7FA; border-left: 3px solid #49B9CE; margin-bottom: 1rem;">
+                                <h4 style="color: #49B9CE; margin-top: 0;">🎯 Parámetro K:</h4>
+                                <ul style="line-height: 1.7;">
+                                    <li><strong>K pequeño:</strong> Sensible al ruido</li>
+                                    <li><strong>K grande:</strong> Más robusto pero menos preciso</li>
+                                    <li><strong>K impar:</strong> Evita empates en clasificación binaria</li>
+                                </ul>
+                            </div>
+
+                            <div class="highlight-box" style="background: #f9f9f9;">
+                                <h4 style="margin-top: 0;">📊 Casos de Uso:</h4>
+                                <ul style="line-height: 1.7;">
+                                    <li>Sistemas de recomendación</li>
+                                    <li>Reconocimiento de patrones</li>
+                                    <li>Clasificación de imágenes simples</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Vector Machines (SVM) -->
+                <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                    <h3 style="color: #8A7AAF;">4. Support Vector Machines (SVM)</h3>
+                    <p>
+                        Encuentra el <strong>hiperplano óptimo</strong> que mejor separa las clases, maximizando el margen entre ellas. Muy efectivo en espacios de alta dimensionalidad.
+                    </p>
+
+                    <div class="comparison-grid" style="margin-top: 1rem;">
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">⚙️ Conceptos Clave</h4>
+                            <ul style="line-height: 1.8;">
+                                <li><strong>Vectores de soporte:</strong> Puntos críticos más cercanos al hiperplano</li>
+                                <li><strong>Kernel:</strong> Transforma datos a dimensiones superiores</li>
+                                <li><strong>Margen:</strong> Distancia entre clases</li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">📊 Casos de Uso</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Clasificación de texto (spam)</li>
+                                <li>Reconocimiento facial</li>
+                                <li>Análisis de sentimientos</li>
+                                <li>Bioinformática</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); margin-top: 1rem; border-left: 4px solid #8A7AAF;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div>
+                                <h4 style="color: #28a745; margin-top: 0;">✅ Ventajas</h4>
+                                <ul style="line-height: 1.7;">
+                                    <li>Muy efectivo en alta dimensionalidad</li>
+                                    <li>Robusto contra overfitting</li>
+                                    <li>Funciona bien con datos no lineales</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 style="color: #C62828; margin-top: 0;">⚠️ Desventajas</h4>
+                                <ul style="line-height: 1.7;">
+                                    <li>Lento con datasets grandes</li>
+                                    <li>Sensible a la escala de los datos</li>
+                                    <li>Menos interpretable</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Naive Bayes -->
+                <div class="feature-card" style="margin-bottom: 2rem;">
+                    <h3 style="color: #49B9CE;">5. Naive Bayes</h3>
+                    <p>
+                        Basado en el <strong>teorema de Bayes</strong>, asume independencia entre características. Muy rápido y eficiente, especialmente para clasificación de texto.
+                    </p>
+
+                    <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; margin: 1rem 0;">
+                        <p style="font-family: monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">
+                            P(Clase|Datos) = P(Datos|Clase) × P(Clase) / P(Datos)
+                        </p>
+                        <p style="font-size: 0.95rem;">Calcula la probabilidad de cada clase dados los datos observados</p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">⚡ Ventajas</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Muy rápido</li>
+                                <li>Funciona bien con poco datos</li>
+                                <li>Bueno para alta dimensionalidad</li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">📊 Casos de Uso</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Filtros de spam</li>
+                                <li>Análisis de sentimientos</li>
+                                <li>Clasificación de documentos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Random Forest -->
+                <div class="feature-card secondary">
+                    <h3 style="color: #8A7AAF;">6. Random Forest (Bosque Aleatorio)</h3>
+                    <p>
+                        Conjunto de múltiples árboles de decisión que votan para la predicción final. Reduce overfitting y mejora precisión mediante <strong>ensemble learning</strong>.
+                    </p>
+
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <svg width="400" height="180" viewBox="0 0 400 180" style="max-width: 100%; height: auto; background: #fafafa; border-radius: 1rem; border: 2px solid #e5e5e5; padding: 0.5rem;">
+                            <!-- Árbol 1 -->
+                            <rect x="20" y="20" width="50" height="30" rx="5" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="45" y="40" font-size="11" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">Árbol 1</text>
+                            <line x1="35" y1="50" x2="25" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <line x1="55" y1="50" x2="65" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <circle cx="25" cy="85" r="8" fill="#8A7AAF"/>
+                            <circle cx="65" cy="85" r="8" fill="#8A7AAF"/>
+
+                            <!-- Árbol 2 -->
+                            <rect x="110" y="20" width="50" height="30" rx="5" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="135" y="40" font-size="11" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">Árbol 2</text>
+                            <line x1="125" y1="50" x2="115" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <line x1="145" y1="50" x2="155" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <circle cx="115" cy="85" r="8" fill="#8A7AAF"/>
+                            <circle cx="155" cy="85" r="8" fill="#8A7AAF"/>
+
+                            <!-- Árbol 3 -->
+                            <rect x="200" y="20" width="50" height="30" rx="5" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="225" y="40" font-size="11" font-weight="700" font-family="Montserrat" fill="#333333" text-anchor="middle">Árbol 3</text>
+                            <line x1="215" y1="50" x2="205" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <line x1="235" y1="50" x2="245" y2="80" stroke="#8A7AAF" stroke-width="1.5"/>
+                            <circle cx="205" cy="85" r="8" fill="#8A7AAF"/>
+                            <circle cx="245" cy="85" r="8" fill="#8A7AAF"/>
+
+                            <!-- ... más árboles -->
+                            <text x="300" y="40" font-size="18" font-weight="700" font-family="Montserrat" fill="#8A7AAF">...</text>
+                            <text x="350" y="40" font-size="11" font-family="Montserrat" fill="#555555">N árboles</text>
+
+                            <!-- Votación -->
+                            <line x1="45" y1="100" x2="200" y2="140" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="135" y1="100" x2="200" y2="140" stroke="#8A7AAF" stroke-width="2"/>
+                            <line x1="225" y1="100" x2="200" y2="140" stroke="#8A7AAF" stroke-width="2"/>
+
+                            <rect x="150" y="140" width="100" height="35" rx="8" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+                            <text x="200" y="155" font-size="12" font-weight="700" font-family="Montserrat" fill="#155724" text-anchor="middle">VOTACIÓN</text>
+                            <text x="200" y="168" font-size="10" font-family="Montserrat" fill="#155724" text-anchor="middle">Predicción final</text>
+                        </svg>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: #28a745;">✅ Ventajas</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Alta precisión</li>
+                                <li>Reduce overfitting</li>
+                                <li>Maneja datos faltantes</li>
+                                <li>Estima importancia de características</li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">📊 Casos de Uso</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Detección de fraude</li>
+                                <li>Clasificación de clientes</li>
+                                <li>Predicción de enfermedades</li>
+                                <li>Sistemas de recomendación</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: ALGORITMOS DE REGRESIÓN -->
+            <section class="section">
+                <h2 class="section-title" style="color: #8A7AAF;">Algoritmos de Regresión</h2>
+
+                <!-- Regresión Lineal -->
+                <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                    <h3 style="color: #8A7AAF;">1. Regresión Lineal</h3>
+                    <p>
+                        Modelo fundamental que predice valores continuos mediante una <strong>relación lineal</strong> entre variables. Base de muchos algoritmos más complejos.
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+                        <svg width="300" height="250" viewBox="0 0 300 250" style="max-width: 100%; height: auto; flex-shrink: 0; border: 2px solid #e5e5e5; border-radius: 1rem; background: #fafafa;">
+                            <!-- Ejes -->
+                            <line x1="40" y1="210" x2="280" y2="210" stroke="#333333" stroke-width="2"/>
+                            <line x1="40" y1="210" x2="40" y2="30" stroke="#333333" stroke-width="2"/>
+
+                            <!-- Etiquetas -->
+                            <text x="290" y="215" font-size="14" font-family="Montserrat" fill="#555555">X</text>
+                            <text x="25" y="25" font-size="14" font-family="Montserrat" fill="#555555">Y</text>
+
+                            <!-- Puntos de datos -->
+                            <circle cx="70" cy="180" r="5" fill="#8A7AAF"/>
+                            <circle cx="100" cy="160" r="5" fill="#8A7AAF"/>
+                            <circle cx="130" cy="135" r="5" fill="#8A7AAF"/>
+                            <circle cx="160" cy="115" r="5" fill="#8A7AAF"/>
+                            <circle cx="190" cy="90" r="5" fill="#8A7AAF"/>
+                            <circle cx="220" cy="70" r="5" fill="#8A7AAF"/>
+                            <circle cx="250" cy="55" r="5" fill="#8A7AAF"/>
+
+                            <!-- Línea de regresión -->
+                            <line x1="50" y1="195" x2="270" y2="45" stroke="#49B9CE" stroke-width="3"/>
+
+                            <!-- Ecuación -->
+                            <text x="150" y="240" font-size="14" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">y = mx + b</text>
+                        </svg>
+
+                        <div style="flex: 1; min-width: 280px;">
+                            <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #8A7AAF; margin-bottom: 1rem;">
+                                <p style="font-family: monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">
+                                    y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ
+                                </p>
+                                <p style="font-size: 0.95rem;">
+                                    <strong>y:</strong> Variable objetivo<br>
+                                    <strong>x:</strong> Variables predictoras<br>
+                                    <strong>β:</strong> Coeficientes a aprender
+                                </p>
+                            </div>
+
+                            <div class="highlight-box" style="background: #f9f9f9;">
+                                <h4 style="margin-top: 0;">📊 Casos de Uso:</h4>
+                                <ul style="line-height: 1.7;">
+                                    <li>Predicción de precios inmobiliarios</li>
+                                    <li>Pronóstico de ventas</li>
+                                    <li>Estimación de salarios</li>
+                                    <li>Análisis de tendencias</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regresión Polinómica -->
+                <div class="feature-card" style="margin-bottom: 2rem;">
+                    <h3 style="color: #49B9CE;">2. Regresión Polinómica</h3>
+                    <p>
+                        Extensión de regresión lineal que puede capturar <strong>relaciones no lineales</strong> mediante términos polinómicos.
+                    </p>
+
+                    <div class="comparison-grid" style="margin-top: 1rem;">
+                        <div class="comparison-card">
+                            <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE;">
+                                <p style="font-family: monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">
+                                    y = β₀ + β₁x + β₂x² + β₃x³
+                                </p>
+                                <p style="font-size: 0.95rem;">Añade potencias de las variables para capturar curvas</p>
+                            </div>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">📊 Casos de Uso</h4>
+                            <ul style="line-height: 1.7;">
+                                <li>Trayectorias físicas</li>
+                                <li>Crecimiento poblacional</li>
+                                <li>Curvas de aprendizaje</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ridge y Lasso -->
+                <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                    <h3 style="color: #8A7AAF;">3. Ridge y Lasso (Regresión Regularizada)</h3>
+                    <p>
+                        Variantes de regresión lineal que añaden <strong>penalización</strong> para prevenir overfitting y manejar multicolinealidad.
+                    </p>
+
+                    <div class="comparison-grid" style="margin-top: 1rem;">
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Ridge (L2)</h4>
+                            <p style="font-family: monospace; margin-bottom: 0.5rem;">Penalización: λΣβ²</p>
+                            <p>Reduce los coeficientes pero no los elimina</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">Lasso (L1)</h4>
+                            <p style="font-family: monospace; margin-bottom: 0.5rem;">Penalización: λΣ|β|</p>
+                            <p>Puede eliminar características (selección automática)</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: #f9f9f9; margin-top: 1rem;">
+                        <h4 style="margin-top: 0;">📊 Casos de Uso:</h4>
+                        <ul style="line-height: 1.7;">
+                            <li>Datasets con muchas características</li>
+                            <li>Problemas con multicolinealidad</li>
+                            <li>Selección de características importantes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SVR y Random Forest Regressor -->
+                <div class="feature-card">
+                    <h3 style="color: #49B9CE;">4. Otros Algoritmos de Regresión</h3>
+
+                    <div class="comparison-grid" style="margin-top: 1rem;">
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">SVR (Support Vector Regression)</h4>
+                            <p style="margin-bottom: 0.5rem;">Versión de SVM para regresión</p>
+                            <p><strong>Uso:</strong> Relaciones no lineales complejas</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #8A7AAF;">Random Forest Regressor</h4>
+                            <p style="margin-bottom: 0.5rem;">Ensemble de árboles para regresión</p>
+                            <p><strong>Uso:</strong> Alta precisión, datos complejos</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 style="color: #49B9CE;">Gradient Boosting</h4>
+                            <p style="margin-bottom: 0.5rem;">Ensemble secuencial potente</p>
+                            <p><strong>Uso:</strong> Competiciones, máxima precisión</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: PROCESO DE ENTRENAMIENTO -->
+            <section class="section">
+                <h2 class="section-title">Proceso de Entrenamiento</h2>
+
+                <div style="margin: 2rem 0;">
+                    <svg width="700" height="200" viewBox="0 0 700 200" style="max-width: 100%; height: auto; border: 2px solid #e5e5e5; border-radius: 1rem; background: #fafafa; padding: 0.5rem;">
+                        <!-- Paso 1: Datos -->
+                        <rect x="10" y="60" width="100" height="80" rx="10" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="60" y="50" font-size="13" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">1. DATOS</text>
+                        <text x="60" y="95" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">Dataset</text>
+                        <text x="60" y="110" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">completo</text>
+                        <text x="60" y="125" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">con etiquetas</text>
+
+                        <!-- Flecha -->
+                        <line x1="120" y1="100" x2="150" y2="100" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Paso 2: División -->
+                        <rect x="150" y="40" width="120" height="50" rx="8" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                        <text x="210" y="30" font-size="13" font-weight="700" font-family="Montserrat" fill="#8A7AAF" text-anchor="middle">2. DIVISIÓN</text>
+                        <text x="210" y="70" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">Entrenamiento 80%</text>
+
+                        <rect x="150" y="110" width="120" height="50" rx="8" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                        <text x="210" y="140" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">Prueba 20%</text>
+
+                        <!-- Flecha -->
+                        <line x1="280" y1="65" x2="310" y2="85" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Paso 3: Entrenamiento -->
+                        <rect x="310" y="60" width="100" height="80" rx="10" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="360" y="50" font-size="13" font-weight="700" font-family="Montserrat" fill="#49B9CE" text-anchor="middle">3. ENTRENAR</text>
+                        <text x="360" y="95" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">Algoritmo</text>
+                        <text x="360" y="110" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">aprende</text>
+                        <text x="360" y="125" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">patrones</text>
+
+                        <!-- Flecha -->
+                        <line x1="420" y1="100" x2="450" y2="100" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Paso 4: Validación -->
+                        <rect x="450" y="60" width="100" height="80" rx="10" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                        <text x="500" y="50" font-size="13" font-weight="700" font-family="Montserrat" fill="#8A7AAF" text-anchor="middle">4. VALIDAR</text>
+                        <text x="500" y="95" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">Evaluar</text>
+                        <text x="500" y="110" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">con datos</text>
+                        <text x="500" y="125" font-size="11" font-family="Montserrat" fill="#333333" text-anchor="middle">de prueba</text>
+
+                        <!-- Flecha -->
+                        <line x1="560" y1="100" x2="590" y2="100" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"/>
+
+                        <!-- Paso 5: Modelo -->
+                        <rect x="590" y="60" width="100" height="80" rx="10" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+                        <text x="640" y="50" font-size="13" font-weight="700" font-family="Montserrat" fill="#28a745" text-anchor="middle">5. MODELO</text>
+                        <text x="640" y="95" font-size="11" font-family="Montserrat" fill="#155724" text-anchor="middle">Listo para</text>
+                        <text x="640" y="110" font-size="11" font-family="Montserrat" fill="#155724" text-anchor="middle">predecir</text>
+                        <text x="640" y="125" font-size="11" font-family="Montserrat" fill="#155724" text-anchor="middle">nuevos datos</text>
+                    </svg>
+                </div>
+
+                <div class="grid-features" style="margin-bottom: 2rem;">
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">1️⃣ Recolección de Datos</h4>
+                        <p>Reunir dataset con características (X) y etiquetas (y)</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">2️⃣ División Train/Test</h4>
+                        <p>Típicamente 80% entrenamiento, 20% prueba</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">3️⃣ Entrenamiento</h4>
+                        <p>El algoritmo ajusta sus parámetros con datos de entrenamiento</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">4️⃣ Evaluación</h4>
+                        <p>Medir rendimiento con datos de prueba no vistos</p>
+                    </div>
+
+                    <div class="feature-card" style="background: #d4edda; border-color: #28a745;">
+                        <h4 style="color: #28a745;">5️⃣ Despliegue</h4>
+                        <p style="color: #155724;">Usar modelo en producción con datos reales</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">💡 Validación Cruzada</h3>
+                    <p>
+                        Técnica avanzada que divide los datos en K subconjuntos, entrenando K veces con diferentes combinaciones para obtener una estimación más robusta del rendimiento.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: MÉTRICAS DE EVALUACIÓN -->
+            <section class="section">
+                <h2 class="section-title">Métricas de Evaluación</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <!-- Métricas de Clasificación -->
+                    <div>
+                        <h3 style="color: #49B9CE; margin-bottom: 1rem;">Para Clasificación</h3>
+
+                        <div class="feature-card" style="margin-bottom: 1rem;">
+                            <h4 style="color: #49B9CE;">Accuracy (Exactitud)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                (TP + TN) / Total
+                            </p>
+                            <p>Proporción de predicciones correctas</p>
+                        </div>
+
+                        <div class="feature-card" style="margin-bottom: 1rem;">
+                            <h4 style="color: #49B9CE;">Precision (Precisión)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                TP / (TP + FP)
+                            </p>
+                            <p>De los predichos como positivos, cuántos lo son realmente</p>
+                        </div>
+
+                        <div class="feature-card" style="margin-bottom: 1rem;">
+                            <h4 style="color: #49B9CE;">Recall (Sensibilidad)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                TP / (TP + FN)
+                            </p>
+                            <p>De los realmente positivos, cuántos detectamos</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 style="color: #49B9CE;">F1-Score</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                2 × (Precision × Recall) / (Precision + Recall)
+                            </p>
+                            <p>Media armónica de precisión y recall</p>
+                        </div>
+                    </div>
+
+                    <!-- Métricas de Regresión -->
+                    <div>
+                        <h3 style="color: #8A7AAF; margin-bottom: 1rem;">Para Regresión</h3>
+
+                        <div class="feature-card secondary" style="margin-bottom: 1rem;">
+                            <h4 style="color: #8A7AAF;">MAE (Error Absoluto Medio)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                Σ|y - ŷ| / n
+                            </p>
+                            <p>Promedio de las diferencias absolutas</p>
+                        </div>
+
+                        <div class="feature-card secondary" style="margin-bottom: 1rem;">
+                            <h4 style="color: #8A7AAF;">MSE (Error Cuadrático Medio)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                Σ(y - ŷ)² / n
+                            </p>
+                            <p>Penaliza más los errores grandes</p>
+                        </div>
+
+                        <div class="feature-card secondary" style="margin-bottom: 1rem;">
+                            <h4 style="color: #8A7AAF;">RMSE (Raíz del MSE)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                √MSE
+                            </p>
+                            <p>En las mismas unidades que la variable objetivo</p>
+                        </div>
+
+                        <div class="feature-card secondary">
+                            <h4 style="color: #8A7AAF;">R² (Coeficiente de Determinación)</h4>
+                            <p style="font-family: monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                                1 - (SS_res / SS_tot)
+                            </p>
+                            <p>Proporción de varianza explicada (0 a 1)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: #E8F7FA; border-left: 4px solid #49B9CE; margin-top: 2rem;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">🎯 Selección de Métrica</h3>
+                    <p>
+                        La elección de la métrica depende del problema: usa <strong>Recall</strong> cuando los falsos negativos son críticos (ej: detección de cáncer), <strong>Precision</strong> cuando los falsos positivos son costosos (ej: spam), y <strong>F1-Score</strong> para un balance.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: RESUMEN -->
+            <section class="section">
+                <h2 class="section-title" style="color: #49B9CE;">Resumen</h2>
+
+                <div class="highlight-box" style="background: #f9f9f9; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.125rem; margin-bottom: 1rem;">
+                        El <strong>aprendizaje supervisado</strong> es el paradigma más utilizado en Machine Learning gracias a su efectividad y aplicabilidad en una amplia gama de problemas reales.
+                    </p>
+
+                    <ul style="font-size: 1.125rem; line-height: 2;">
+                        <li><strong style="color: #49B9CE;">Datos etiquetados:</strong> Requiere ejemplos con respuestas correctas</li>
+                        <li><strong style="color: #8A7AAF;">Dos tipos:</strong> Clasificación (categorías) y Regresión (valores numéricos)</li>
+                        <li><strong style="color: #49B9CE;">Múltiples algoritmos:</strong> Cada uno con fortalezas específicas</li>
+                        <li><strong style="color: #8A7AAF;">Proceso estructurado:</strong> Entrenamiento, validación y evaluación</li>
+                        <li><strong style="color: #49B9CE;">Métricas específicas:</strong> Según el tipo de problema</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Clasificación</h4>
+                        <p>Predice categorías discretas usando algoritmos como Regresión Logística, Árboles de Decisión, KNN, SVM, Naive Bayes y Random Forest.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Regresión</h4>
+                        <p>Predice valores numéricos continuos usando Regresión Lineal, Polinómica, Ridge, Lasso, SVR y Gradient Boosting.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Evaluación</h4>
+                        <p>Accuracy, Precision, Recall y F1-Score para clasificación. MAE, MSE, RMSE y R² para regresión.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

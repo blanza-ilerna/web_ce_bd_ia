@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIZA: El Primer Chatbot - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Descubre ELIZA, el primer chatbot de la historia y el fascinante Efecto ELIZA.">
+    <meta name="keywords"
+        content="ELIZA, chatbot, Joseph Weizenbaum, Efecto ELIZA, historia IA, procesamiento lenguaje natural, NLP, pattern matching, inteligencia artificial, MIT, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="ELIZA: El Primer Chatbot - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. Conoce ELIZA y su legado en la IA moderna.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/eliza-chat.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>ELIZA: El Primer Chatbot</span>
+                </div>
+            </div>
+            <h1 class="text-center">ELIZA: El Primer Chatbot</h1>
+            <p class="subtitle text-center">Un encuentro con la máquina que nos hizo creer que entendía</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Introducción: La Psicoterapeuta Artificial</h2>
+            <p>
+                En 1966, en el MIT, un informático llamado <strong>Joseph Weizenbaum</strong> creó un programa que
+                cambiaría para siempre nuestra percepción de las máquinas: <strong>ELIZA</strong>. Diseñado para simular
+                una conversación con una psicoterapeuta rogeriana, ELIZA no entendía nada, pero su habilidad para
+                reformular las preguntas de los usuarios creó una poderosa ilusión de empatía.
+            </p>
+            <p>
+                Esta lección explora cómo un programa relativamente simple pudo engañar a tantos, el famoso "Efecto
+                ELIZA" que reveló, y por qué su legado es más relevante que nunca en la era de ChatGPT y la IA
+                generativa.
+            </p>
+            <div class="highlight-box primary">
+                <p class="title">🎯 Contexto Histórico</p>
+                <p class="content">ELIZA fue creada en una época en que las computadoras ocupaban habitaciones enteras y
+                    la interacción se realizaba a través de terminales de texto. Fue una de las primeras demostraciones
+                    de que las máquinas podían participar en un diálogo de apariencia humana.</p>
+            </div>
+        </section>
+
+        <!-- Funcionamiento -->
+        <section>
+            <h2 class="color-secondary">El Truco Maestro: ¿Cómo Funcionaba ELIZA?</h2>
+            <p>
+                El genio de ELIZA no residía en una inteligencia compleja, sino en un ingenioso sistema de
+                <strong>reconocimiento de patrones y sustitución de palabras clave</strong>. No tenía comprensión real
+                del lenguaje, solo seguía un guion (script) predefinido.
+            </p>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔍 Reconocimiento de Patrones</h4>
+                    <p>ELIZA buscaba palabras clave en la entrada del usuario (ej: "madre", "recuerdo", "siento").</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔄 Reglas de Transformación</h4>
+                    <p>A cada palabra clave se asociaba una regla para reformular la frase (ej: "Mi madre..." se
+                        transforma en "¿Qué más te cuenta tu madre?").</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">💬 Respuestas Genéricas</h4>
+                    <p>Si no encontraba palabras clave, usaba respuestas ambiguas como "Continúe...", "Entiendo." o
+                        "Cuénteme más.".</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🧠 Memoria Mínima</h4>
+                    <p>Podía recordar ciertos temas para mencionarlos más tarde si la conversación se estancaba.</p>
+                </div>
+            </div>
+            <div class="highlight-box secondary">
+                <p class="title">📜 Ejemplo de una Regla de ELIZA</p>
+                <div class="content" style="font-family: 'Courier New', monospace; font-size: 1rem;">
+                    <p><strong class="color-secondary">USUARIO:</strong> "Recuerdo que mi padre era muy estricto."</p>
+                    <p><strong style="color: #555;">REGLA:</strong> Si encuentra "recuerdo que (.*)", responder con
+                        "¿Piensa a menudo en {0}?"</p>
+                    <p><strong class="color-primary">ELIZA:</strong> "¿Piensa a menudo en que su padre era muy
+                        estricto?"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Interactivo -->
+        <section>
+            <h2 class="color-primary">👩‍💻 Hable con ELIZA: Una Simulación</h2>
+            <p>A continuación, puede interactuar con una recreación del programa ELIZA. Intente tener una "sesión" con
+                ella. Observe cómo responde, cómo desvía las preguntas y cómo crea la ilusión de comprensión. Pruebe a
+                usar palabras como "madre", "padre", "siento", "necesito" o "recuerdo".</p>
+            <div id="eliza-chat" class="eliza-chat-container">
+                <div class="chat-header">Sesión con ELIZA</div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will be injected here by JavaScript -->
+                </div>
+                <form class="chat-form" id="chat-form">
+                    <input type="text" id="chat-input" placeholder="Escriba su respuesta..." autocomplete="off">
+                    <button type="submit" id="chat-submit">➔</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Efecto ELIZA -->
+        <section>
+            <h2 class="color-secondary">El "Efecto ELIZA": Cuando Creemos Demasiado</h2>
+            <p>
+                Weizenbaum quedó horrorizado al ver la reacción de la gente. Su propia secretaria, sabiendo que era un
+                programa, le pidió que saliera de la habitación para poder tener una conversación "privada" con ELIZA.
+                Esto le llevó a definir el <strong>"Efecto ELIZA"</strong>:
+            </p>
+            <div class="expert-quote">
+                <p class="quote-text">"La tendencia inconsciente de las personas a atribuir comprensión, inteligencia y
+                    emociones a un programa informático basándose en respuestas superficiales que imitan el
+                    comportamiento humano."</p>
+                <p class="quote-author">— Definición del Efecto ELIZA</p>
+            </div>
+        </section>
+
+        <!-- Comparativa -->
+        <section>
+            <h2 class="color-primary">📊 Comparativa: ELIZA vs. IA Moderna</h2>
+            <p>El salto de ELIZA a los modelos de lenguaje actuales como Gemini o ChatGPT es astronómico. La siguiente
+                tabla destaca las diferencias fundamentales.</p>
+            <div style="overflow-x: auto;">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>ELIZA (1966)</th>
+                            <th>IA Moderna (ChatGPT, Gemini)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 700;">Paradigma</td>
+                            <td>Basado en reglas (Pattern Matching)</td>
+                            <td>Redes Neuronales (Transformers)</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Conocimiento</td>
+                            <td>Codificado a mano (~200 reglas)</td>
+                            <td>Aprendido de petabytes de texto</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Generación</td>
+                            <td>Selecciona y transforma plantillas</td>
+                            <td>Genera texto nuevo y original</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Comprensión</td>
+                            <td>Nula. Simulación superficial.</td>
+                            <td>Comprensión contextual avanzada</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Escala</td>
+                            <td>~200 líneas de código</td>
+                            <td>Trillones de parámetros</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Lecciones del Legado -->
+        <section>
+            <h2 class="color-secondary">🎓 Lecciones del Legado de ELIZA</h2>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎭 La Ilusión de la Inteligencia</h4>
+                    <p>ELIZA nos enseñó que no se necesita una verdadera inteligencia para parecer inteligente. Una
+                        lección vital para evaluar críticamente las IAs de hoy.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">👥 Pionera en HCI</h4>
+                    <p>Fue uno de los primeros programas en centrarse en la Interacción Humano-Computadora, abriendo un
+                        campo de estudio completamente nuevo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚖️ Ética y Responsabilidad</h4>
+                    <p>El "Efecto ELIZA" planteó por primera vez preguntas éticas sobre el impacto emocional de la IA en
+                        los humanos y la responsabilidad de sus creadores.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🤖 El Test de Turing en Práctica</h4>
+                    <p>Aunque no lo pasó formalmente, ELIZA fue el primer programa que hizo que la gente considerara
+                        seriamente el Test de Turing en un contexto práctico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dato Curioso -->
+        <div class="curiosity-box">
+            <h4>💡 Dato Curioso: ¿De dónde viene el nombre?</h4>
+            <div class="inner-box">
+                <p>El nombre "ELIZA" es una referencia a Eliza Doolittle, la protagonista de la obra "Pigmalión" (y el
+                    musical "My Fair Lady"). Al igual que el personaje, que aprende a hablar como una dama de la alta
+                    sociedad, el programa ELIZA "aprendía" a conversar como una psicoterapeuta.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/eliza.js"></script>
+</body>
+
+</html>

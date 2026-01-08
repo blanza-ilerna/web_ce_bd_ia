@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquinas de Vectores de Soporte (SVM) - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende sobre las Máquinas de Vectores de Soporte (SVM) y el truco del kernel.">
+    <meta name="keywords"
+        content="SVM, Support Vector Machine, Máquinas de Vectores de Soporte, Vladimir Vapnik, kernel trick, truco del kernel, RBF, clasificación, margen máximo, vectores de soporte, scikit-learn, machine learning, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Máquinas de Vectores de Soporte (SVM) - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. El clasificador elegante que encuentra la mejor frontera entre mundos de datos.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+
+    <!-- Prism.js CSS para resaltado de código Python -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Máquinas de Vectores de Soporte (SVM)</span>
+                </div>
+            </div>
+            <h1 class="text-center">Máquinas de Vectores de Soporte (SVM)</h1>
+            <p class="subtitle text-center">El clasificador elegante que encuentra la "mejor" frontera entre mundos de
+                datos</p>
+        </header>
+
+        <!-- SECCIÓN 1: LA BÚSQUEDA DE LA FRONTERA ÓPTIMA -->
+        <section>
+            <h2>La Búsqueda de la Frontera Óptima</h2>
+            <p>
+                A mediados de los 90, mientras las redes neuronales vivían su resurgimiento, un algoritmo diferente,
+                basado en sólidos principios de la teoría de aprendizaje estadístico, ganó una inmensa popularidad. Las
+                <strong>Máquinas de Vectores de Soporte (SVM)</strong>, desarrolladas por <strong>Vladimir
+                    Vapnik</strong> y sus colegas en los Laboratorios Bell, ofrecieron una nueva y poderosa forma de
+                abordar problemas de clasificación.
+            </p>
+            <p>
+                La idea central de SVM es simple pero profunda: en lugar de encontrar cualquier frontera que separe dos
+                clases de datos, busca encontrar la <strong>mejor frontera posible</strong>. ¿Y qué significa "la
+                mejor"? Aquella que está lo más lejos posible de los puntos de datos de ambas clases. Este concepto se
+                conoce como <strong>maximización del margen</strong>.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 2: LA INTUICIÓN -->
+        <section>
+            <h2>La Intuición: La Calle Más Ancha</h2>
+            <p>
+                Imagina que los puntos de datos de dos clases son casas a ambos lados de una calle. Un Perceptrón simple
+                podría dibujar una línea en cualquier lugar de la calle para separarlas. Una SVM, en cambio, intenta
+                trazar la línea justo en el medio de la calle y hacer que la calle (el <strong>margen</strong>) sea lo
+                más ancha posible.
+            </p>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg width="90%" viewBox="0 0 400 250" style="max-width: 600px;">
+                    <defs>
+                        <marker id="arrow-svm" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+                        </marker>
+                    </defs>
+                    <!-- Puntos Clase A -->
+                    <circle cx="50" cy="50" r="5" fill="#8A7AAF" />
+                    <circle cx="80" cy="100" r="5" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                    <circle cx="120" cy="70" r="5" fill="#8A7AAF" />
+                    <!-- Puntos Clase B -->
+                    <circle cx="350" cy="200" r="5" fill="#49B9CE" />
+                    <circle cx="320" cy="150" r="5" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                    <circle cx="280" cy="180" r="5" fill="#49B9CE" />
+                    <!-- Hiperplano y Márgenes -->
+                    <line x1="20" y1="230" x2="380" y2="20" stroke="#333" stroke-width="2.5" stroke-dasharray="5 5" />
+                    <line x1="50" y1="200" x2="350" y2="50" stroke="#8A7AAF" stroke-width="1.5" />
+                    <line x1="0" y1="260" x2="410" y2="-10" stroke="#49B9CE" stroke-width="1.5" />
+                    <!-- Margen -->
+                    <path d="M 195 125 L 165 155" stroke="#333" marker-end="url(#arrow-svm)" />
+                    <path d="M 205 135 L 235 105" stroke="#333" marker-end="url(#arrow-svm)" />
+                    <text x="200" y="100" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Margen Máximo</text>
+                    <!-- Vectores de Soporte -->
+                    <text x="5" y="115" font-size="12" fill="#8A7AAF" font-family="Montserrat">Vectores de</text>
+                    <text x="25" y="130" font-size="12" fill="#8A7AAF" font-family="Montserrat">Soporte</text>
+                    <text x="325" y="135" font-size="12" fill="#49B9CE" font-family="Montserrat">Vectores de</text>
+                    <text x="345" y="150" font-size="12" fill="#49B9CE" font-family="Montserrat">Soporte</text>
+                </svg>
+            </div>
+
+            <ul style="line-height: 1.75; padding-left: 1.5rem;">
+                <li style="margin-bottom: 0.75rem;"><strong>Hiperplano de Decisión:</strong> Es la línea central (en 2D)
+                    que separa las clases.</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Margen:</strong> Es la "calle" entre las dos clases,
+                    delimitada por los puntos más cercanos de cada clase. El objetivo de SVM es maximizar el ancho de
+                    esta calle.</li>
+                <li><strong>Vectores de Soporte:</strong> Son los puntos de datos que se encuentran en el borde del
+                    margen (los puntos con un círculo negro en el gráfico). Son cruciales porque son los únicos puntos
+                    que "soportan" o definen el hiperplano. Si moviéramos cualquier otro punto, el hiperplano no
+                    cambiaría. ¡Esto hace que SVM sea muy eficiente en memoria!</li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 3: EL TRUCO DEL KERNEL -->
+        <section>
+            <h2>El Superpoder de SVM: El Truco del Kernel</h2>
+            <p>
+                "Todo esto está muy bien para datos que se pueden separar con una línea recta (linealmente separables),
+                pero ¿qué pasa con datos más complejos?", te preguntarás. Aquí es donde entra en juego la idea más
+                brillante de las SVM: el <strong>truco del kernel (kernel trick)</strong>.
+            </p>
+
+            <div class="highlight-box secondary">
+                <h3 class="color-secondary">La Idea del Kernel</h3>
+                <p class="content">Si no puedes separar los datos en su dimensión actual, proyéctalos a una dimensión
+                    superior donde sí puedas separarlos.</p>
+            </div>
+
+            <p>
+                Imagina datos en un círculo dentro de otro. No hay una línea recta que pueda separarlos. Pero si
+                aplicamos una transformación que empuja el centro hacia arriba, convirtiendo el plano 2D en una
+                superficie 3D, los datos se vuelven separables por un plano. El "truco del kernel" es una forma
+                matemática muy eficiente de obtener el resultado de esta transformación a una dimensión superior
+                <strong>sin tener que realizar los cálculos computacionalmente costosos de la transformación en
+                    sí</strong>. Simplemente se sustituye el producto punto de los vectores por una función kernel.
+            </p>
+
+            <p style="margin-top: 1.5rem; margin-bottom: 0.75rem;"><strong>Los kernels más comunes son:</strong></p>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Linear</h4>
+                    <p>Para datos linealmente separables. El kernel más simple y rápido.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Poly</h4>
+                    <p>Kernel polinómico. Útil para relaciones no lineales pero con estructura polinomial.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">RBF (Radial Basis Function)</h4>
+                    <p>El más popular y potente. Puede manejar fronteras de decisión muy complejas. Es el predeterminado
+                        en la mayoría de las implementaciones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EJEMPLOS CON PYTHON -->
+        <section>
+            <h2>SVM en Acción: Ejemplos con Python</h2>
+            <p style="margin-bottom: 1.5rem;">
+                La librería <code>scikit-learn</code> en Python hace que usar SVM sea muy sencillo. Veamos dos ejemplos:
+                uno lineal y otro no lineal.
+            </p>
+
+            <h3 style="color: #49B9CE; margin-top: 2rem; margin-bottom: 1rem;">Ejemplo 1: SVM Lineal</h3>
+            <p style="margin-bottom: 1rem;">Aquí generamos datos que son claramente separables por una línea y usamos un
+                kernel lineal.</p>
+
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import svm
+from sklearn.datasets import make_blobs
+
+# 1. Creamos datos linealmente separables
+X, y = make_blobs(n_samples=50, centers=2, random_state=6)
+
+# 2. Creamos y entrenamos el modelo SVM
+clf = svm.SVC(kernel='linear', C=1000)
+clf.fit(X, y)
+
+# 3. Visualizamos los resultados
+plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+
+# Trazamos el hiperplano y los márgenes
+ax = plt.gca()
+xlim = ax.get_xlim()
+ylim = ax.get_ylim()
+
+xx = np.linspace(xlim[0], xlim[1], 30)
+yy = np.linspace(ylim[0], ylim[1], 30)
+YY, XX = np.meshgrid(yy, xx)
+xy = np.vstack([XX.ravel(), YY.ravel()]).T
+Z = clf.decision_function(xy).reshape(XX.shape)
+
+ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5,
+           linestyles=['--', '-', '--'])
+
+# Marcamos los vectores de soporte
+ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=100,
+           linewidth=1, facecolors='none', edgecolors='k')
+plt.show()</code></pre>
+
+            <h3 style="color: #49B9CE; margin-top: 2.5rem; margin-bottom: 1rem;">Ejemplo 2: SVM No Lineal (Kernel RBF)
+            </h3>
+            <p style="margin-bottom: 1rem;">Ahora, generamos datos en círculos concéntricos, imposibles de separar con
+                una línea, y vemos cómo el kernel RBF lo resuelve sin problemas.</p>
+
+            <pre><code class="language-python">from sklearn.datasets import make_circles
+
+# 1. Creamos datos no linealmente separables
+X, y = make_circles(n_samples=100, factor=.1, noise=.1, random_state=1)
+
+# 2. Usamos un kernel RBF (gaussiano)
+clf = svm.SVC(kernel='rbf', gamma=0.7, C=1000)
+clf.fit(X, y)
+
+# 3. Visualizamos (código de visualización similar al anterior)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+
+ax = plt.gca()
+xlim = ax.get_xlim()
+ylim = ax.get_ylim()
+
+xx = np.linspace(xlim[0], xlim[1], 30)
+yy = np.linspace(ylim[0], ylim[1], 30)
+YY, XX = np.meshgrid(yy, xx)
+xy = np.vstack([XX.ravel(), YY.ravel()]).T
+Z = clf.decision_function(xy).reshape(XX.shape)
+
+ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5,
+           linestyles=['--', '-', '--'])
+
+ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=100,
+           linewidth=1, facecolors='none', edgecolors='k')
+plt.show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 5: HIPERPARÁMETROS -->
+        <section>
+            <h2>Ajustando una SVM: El Balance entre C y Gamma</h2>
+            <p style="margin-bottom: 1.5rem;">El rendimiento de una SVM depende críticamente de sus hiperparámetros. Los
+                dos más importantes son:</p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">C (Parámetro de Regularización)</h4>
+                    <p>Controla el balance entre tener un margen lo más ancho posible y clasificar correctamente todos
+                        los puntos de entrenamiento.</p>
+                    <ul style="margin-top: 0.75rem; padding-left: 1.25rem;">
+                        <li><strong>C bajo:</strong> Permite un margen más ancho y más errores de clasificación (más
+                            "suave").</li>
+                        <li><strong>C alto:</strong> Intenta clasificar todo correctamente, resultando en un margen más
+                            estrecho y un posible sobreajuste (overfitting).</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Gamma (para el kernel RBF)</h4>
+                    <p>Define cuánta influencia tiene un único ejemplo de entrenamiento.</p>
+                    <ul style="margin-top: 0.75rem; padding-left: 1.25rem;">
+                        <li><strong>Gamma bajo:</strong> Un punto tiene una influencia lejana (frontera más suave).</li>
+                        <li><strong>Gamma alto:</strong> La influencia es cercana (frontera más compleja y ajustada a
+                            los datos), lo que también puede llevar al sobreajuste.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: VENTAJAS Y DESVENTAJAS -->
+        <section>
+            <h2>Ventajas y Desventajas</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">✓ Ventajas</h3>
+                    <ul class="content" style="padding-left: 1.25rem;">
+                        <li style="margin-bottom: 0.5rem;">Efectivo en espacios de alta dimensión.</li>
+                        <li style="margin-bottom: 0.5rem;">Sigue siendo eficaz incluso si el número de dimensiones es
+                            mayor que el número de muestras.</li>
+                        <li style="margin-bottom: 0.5rem;">Usa un subconjunto de puntos de entrenamiento (vectores de
+                            soporte), por lo que es eficiente en memoria.</li>
+                        <li>Muy versátil gracias a los diferentes kernels.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 style="color: #E65100;">✗ Desventajas</h3>
+                    <ul class="content" style="padding-left: 1.25rem;">
+                        <li style="margin-bottom: 0.5rem;">El entrenamiento puede ser lento en conjuntos de datos muy
+                            grandes.</li>
+                        <li style="margin-bottom: 0.5rem;">No funciona bien con datos muy ruidosos o con clases que se
+                            solapan mucho.</li>
+                        <li style="margin-bottom: 0.5rem;">La elección del kernel y los hiperparámetros (C, gamma) es
+                            crucial y a menudo requiere una búsqueda exhaustiva (Grid Search).</li>
+                        <li>El modelo no es directamente interpretable; es una "caja negra".</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+
+    <!-- Prism.js para resaltado de sintaxis Python -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para botón de copiar código -->
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>

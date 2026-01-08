@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Representación del Conocimiento en IA - Estructuras formales para el razonamiento: Redes Semánticas, Marcos, Lógica y Ontologías">
+    <meta name="keywords"
+        content="Representación del Conocimiento, Redes Semánticas, Frames, Lógica de Predicados, Ontologías, Knowledge Graphs, Inteligencia Artificial Simbólica">
+    <meta name="author" content="Bjlanza">
+    <title>Representación del Conocimiento | Modelos de IA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            background: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        Curso de Especialización en IA y Big Data
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Representación del Conocimiento</span>
+                </div>
+            </div>
+            <h1 class="text-center">Representación del Conocimiento</h1>
+            <p class="subtitle text-center">Estructurando la Información para el Razonamiento Automático</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: DEFINICIÓN E HISTORIA -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es y cuándo surge?</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.1rem; line-height: 1.8;">
+                        La <strong>Representación del Conocimiento</strong> (KR) es el campo de la IA dedicado a
+                        representar información sobre el mundo en una forma que un sistema informático pueda utilizar
+                        para resolver tareas complejas.
+                        Surgió formalmente en la década de 1950, impulsada por la necesidad de que los primeros
+                        programas de IA no solo calcularan números, sino que manipularan <strong>conceptos
+                            simbólicos</strong>.
+                    </p>
+                </div>
+
+                <div class="grid-features mt-2">
+                    <div class="feature-card">
+                        <h3>📜 Los Pioneros</h3>
+                        <ul style="line-height: 1.6;">
+                            <li><strong><a href="https://es.wikipedia.org/wiki/John_McCarthy" target="_blank"
+                                        style="color: #49B9CE; text-decoration: none;">John McCarthy</a>
+                                    (1958):</strong> Propuso el "Advice Taker", el primer programa
+                                hipotético con sentido común basado en lógica formal.</li>
+                            <li><strong><a href="https://es.wikipedia.org/wiki/Marvin_Minsky" target="_blank"
+                                        style="color: #49B9CE; text-decoration: none;">Marvin Minsky</a>
+                                    (1974):</strong> Introdujo los "Frames" como estructura para
+                                organizar el conocimiento estereotipado.</li>
+                            <li><strong><a href="https://es.wikipedia.org/wiki/Allen_Newell" target="_blank"
+                                        style="color: #49B9CE; text-decoration: none;">Newell</a> & <a
+                                        href="https://es.wikipedia.org/wiki/Herbert_Simon" target="_blank"
+                                        style="color: #49B9CE; text-decoration: none;">Simon</a> (1976):</strong>
+                                Formularon la hipótesis del "Sistema de Símbolos
+                                Físicos", base de la IA simbólica.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card" style="border: none; background: #f8f9fa;">
+                        <h3>🚧 El "Cuello de Botella"</h3>
+                        <p>
+                            En los años 80, durante el auge de los sistemas expertos, se identificó el <strong>Knowledge
+                                Acquisition Bottleneck</strong>: la inmensa dificultad de transferir el conocimiento
+                            intuitivo de un experto humano a reglas formales de una máquina.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: TÉCNICAS (EXPANDIDO) -->
+            <section class="section">
+                <h2 class="section-title">Técnicas de Formalización</h2>
+                <p style="margin-bottom: 2rem;">
+                    Existen diversas formas de modelar el conocimiento. A continuación, detallamos las cuatro
+                    estructuras más influyentes en la historia de la IA:
+                </p>
+
+                <!-- TÉCNICA 1: REDES SEMÁNTICAS -->
+                <div class="highlight-box"
+                    style="margin-bottom: 2rem; border-left: 5px solid #49B9CE; background-color: #fcfcfc;">
+                    <h3 class="color-primary" style="margin-top: 0;">1. Redes Semánticas</h3>
+                    <p class="mb-2">
+                        Estructuras gráficas formadas por <strong>nodos</strong> (conceptos) y <strong>arcos</strong>
+                        (relaciones) que conectan estos conceptos. Permiten una navegación rápida por asociaciones
+                        mentales.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Originadas en la psicología cognitiva con los modelos de Ross Quillian (1968), estas redes
+                        intentan imitar la memoria asociativa humana. Su principal ventaja es la <strong>herencia de
+                            propiedades</strong>: si un nodo "Ave" tiene la propiedad "vuela", cualquier nodo conectado
+                        por una relación "es_un" (como "Canario") hereda automáticamente esta capacidad, salvo que se
+                        especifique una excepción (como "Pingüino").
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        A nivel computacional, facilitan enormemente la inferencia por propagación. Para responder
+                        "¿Tiene un canario piel?", el sistema simplemente recorre el grafo hacia arriba: Canario → Ave →
+                        Animal (tiene piel). Sin embargo, su debilidad histórica fue la falta de semántica estandarizada
+                        en los enlaces, lo que a veces generaba ambigüedades lógicas que técnicas posteriores intentaron
+                        resolver.
+                    </p>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <!-- Ejemplo 1 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #49B9CE; margin-top: 0;">🌍 Ejemplo 1: Geografía Europea</h4>
+                            <div style="font-family: monospace; font-size: 0.85rem; text-align: center;">
+                                [París] --(capital_de)--> [Francia] --(en)--> [Europa]
+                            </div>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #666;">Permite inferir tránsito: Si
+                                estoy en París, estoy en Europa.</p>
+                        </div>
+
+                        <!-- Ejemplo 2 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #49B9CE; margin-top: 0;">👥 Ejemplo 2: Red Social</h4>
+                            <div style="font-family: monospace; font-size: 0.85rem; text-align: center;">
+                                [Ana] --(amiga_de)--> [Bob] --(le_gusta)--> [Sushi]
+                            </div>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #666;">Base para recomendaciones:
+                                Ana podría estar interesada en Sushi por influencia social.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TÉCNICA 2: MARCOS (FRAMES) -->
+                <div class="highlight-box secondary"
+                    style="margin-bottom: 2rem; border-left: 5px solid #8A7AAF; background-color: #fcfcfc;">
+                    <h3 class="color-secondary" style="margin-top: 0;">2. Marcos (Frames)</h3>
+                    <p class="mb-2">
+                        Plantillas que representan objetos o situaciones típicas. Utilizan "slots" (ranuras) para
+                        atributos, que pueden tener valores por defecto. Son ideales para manejar expectativas y
+                        situaciones donde falta información.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Marvin Minsky propuso los Frames como una teoría unificada de la percepción. La idea central es
+                        que, al enfrentarnos a una situación nueva, recuperamos de nuestra memoria una estructura
+                        preexistente (el marco) y la adaptamos a la realidad actual cambiando solo los detalles
+                        necesarios. Esto explica la eficiencia del razonamiento humano y nuestra capacidad de "rellenar
+                        huecos" con supuestos plausibles.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Técnicamente, un frame puede contener no solo datos estáticos, sino también procedimientos
+                        (llamados "demons") que se disparan automáticamente cuando se consulta o modifica un dato. Por
+                        ejemplo, un slot "Edad" podría tener un procedimiento adjunto que se actualiza automáticamente
+                        si cambia la "Fecha de Nacimiento". Esta estructura evolucionó directamiente hacia los "Objetos"
+                        en la programación orientada a objetos moderna.
+                    </p>
+
+                    <div style="margin-top: 1rem;">
+                        <h4 style="color: #333;">Usos Principales:</h4>
+                        <ul style="font-size: 0.9rem; margin-bottom: 1rem;">
+                            <li><strong>Procesamiento de Lenguaje Natural:</strong> Para entender una historia, el
+                                sistema activa un frame (ej. "Fiesta de Cumpleaños") y busca llenar los slots (quién
+                                cumple, dónde es, qué regalo).</li>
+                            <li><strong>Sistemas Expertos Médicos:</strong> Un frame "Paciente" agrupa historial,
+                                síntomas y diagnósticos previos.</li>
+                        </ul>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <!-- Ejemplo 1 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #8A7AAF; margin-top: 0;">🏨 Ejemplo 1: Reserva Hotel</h4>
+                            <code
+                                style="display: block; background: #f4f4f4; padding: 0.5rem; font-size: 0.8rem; border-radius: 5px;">
+                                Frame: RESERVA<br>
+                                - Cliente: ?<br>
+                                - Tipo: <span style="color:#888;">(Default: Doble)</span><br>
+                                - Pagado: <span style="color:#888;">(Default: No)</span>
+                            </code>
+                        </div>
+
+                        <!-- Ejemplo 2 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #8A7AAF; margin-top: 0;">🖥️ Ejemplo 2: Ventana GUI</h4>
+                            <code
+                                style="display: block; background: #f4f4f4; padding: 0.5rem; font-size: 0.8rem; border-radius: 5px;">
+                                Frame: VENTANA<br>
+                                - Pos_X: 100, Pos_Y: 100<br>
+                                - Título: "Mi App"<br>
+                                - Botones: [Min, Max, Cerrar]
+                            </code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TÉCNICA 3: LÓGICA DE PREDICADOS -->
+                <div class="highlight-box"
+                    style="margin-bottom: 2rem; border-left: 5px solid #DD6B20; background-color: #fcfcfc;">
+                    <h3 style="color: #DD6B20; margin-top: 0;">3. Lógica de Predicados</h3>
+                    <p class="mb-2">
+                        Lenguaje formal preciso basado en axiomas matemáticos. Permite expresar hechos complejos y
+                        realizar deducciones irrefutables mediante reglas de inferencia.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Es la aproximación más rigurosa a la representación del conocimiento. A diferencia de las redes
+                        semánticas informales, la lógica de primer orden posee una semántica inequívoca: cada sentencia
+                        es verdadera o falsa sin ambigüedad. Permite el uso de cuantificadores como "para todo" (∀) y
+                        "existe" (∃), lo que otorga una enorme potencia expresiva para modelar leyes universales y
+                        condiciones existenciales.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Sin embargo, este rigor tiene un precio: la complejidad computacional. Demostrar teoremas en
+                        lógica de primer orden es un problema semidecidible (no siempre se puede garantizar que el
+                        programa termine). Por ello, en aplicaciones prácticas como Prolog o bases de datos deductivas,
+                        se suelen utilizar subconjuntos restringidos de la lógica (como las cláusulas de Horn) para
+                        asegurar que el sistema responda en un tiempo razonable.
+                    </p>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <!-- Ejemplo 1 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #DD6B20; margin-top: 0;">👪 Ejemplo 1: Genealogía</h4>
+                            <code
+                                style="background: #282c34; color: #abb2bf; padding: 0.5rem; display:block; border-radius: 5px; font-size: 0.8rem;">
+                                ∀x,y,z (Padre(x,y) ∧ Padre(y,z) → Abuelo(x,z))
+                            </code>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #666;">Define reglas familiares
+                                universales.</p>
+                        </div>
+
+                        <!-- Ejemplo 2 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #DD6B20; margin-top: 0;">🤖 Ejemplo 2: Robótica</h4>
+                            <code
+                                style="background: #282c34; color: #abb2bf; padding: 0.5rem; display:block; border-radius: 5px; font-size: 0.8rem;">
+                                Sobre(CajaA, Mesa) ∧ Libre(CajaA) → PuedeMover(CajaA)
+                            </code>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #666;">Planificación de acciones
+                                automática.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TÉCNICA 4: ONTOLOGÍAS -->
+                <div class="highlight-box secondary"
+                    style="margin-bottom: 2rem; border-left: 5px solid #4CAF50; background-color: #fcfcfc;">
+                    <h3 style="color: #4CAF50; margin-top: 0;">4. Ontologías</h3>
+                    <p class="mb-2">
+                        Especificación explícita de una conceptualización compartida. Define vocabulario común para un
+                        dominio, sus clases, propiedades y relaciones jerárquicas.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Las ontologías van un paso más allá de las taxonomías simples. No solo clasifican conceptos
+                        (Jerarquía de Clases), sino que definen axiomas, restricciones y propiedades ricas (como
+                        relaciones inversas o transitivas). Son el estándar de oro para la interoperabilidad: permiten
+                        que dos sistemas informáticos diferentes que "hablan" sobre medicina o comercio electrónico se
+                        entiendan sin ambigüedades, compartiendo un mismo modelo del mundo.
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Hoy en día, se construyen utilizando lenguajes estándar de la W3C como OWL (Web Ontology
+                        Language) y RDF. Son la columna vertebral de la Web Semántica y de los modernos "Knowledge
+                        Graphs" empresariales. Una buena ontología permite no solo organizar datos, sino descubrir nuevo
+                        conocimiento oculto mediante motores de inferencia que analizan las relaciones definidas en su
+                        estructura.
+                    </p>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <!-- Ejemplo 1 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #4CAF50; margin-top: 0;">🛒 Ejemplo 1: E-commerce</h4>
+                            <p style="font-size: 0.85rem;"><strong>Schema.org:</strong><br>Producto > Electrónica >
+                                Laptop.</p>
+                            <p style="font-size: 0.85rem; color: #666;">Búsqueda semántica: "Busca portátiles" devuelve
+                                Laptops gracias a la jerarquía.</p>
+                        </div>
+
+                        <!-- Ejemplo 2 -->
+                        <div
+                            style="flex: 1; background: white; border: 1px solid #eee; padding: 1rem; border-radius: 8px; min-width: 280px;">
+                            <h4 style="color: #4CAF50; margin-top: 0;">🧬 Ejemplo 2: Medicina</h4>
+                            <p style="font-size: 0.85rem;"><strong>Gene Ontology (GO):</strong><br>Gen BRCA1
+                                "participa_en" Reparación ADN.</p>
+                            <p style="font-size: 0.85rem; color: #666;">Permite a investigadores cruzar datos de
+                                distintos laboratorios.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: KNOWLEDGE GRAPHS -->
+            <section class="section">
+                <h2 class="section-title">🚀 La Evolución: Knowledge Graphs</h2>
+                <p>
+                    Los <strong>Grafos de Conocimiento</strong> (Knowledge Graphs) representan la aplicación moderna y a
+                    gran escala de estos conceptos. Combinan la flexibilidad de las <strong>redes semánticas</strong>
+                    con el rigor de las <strong>ontologías</strong> para interconectar cantidades masivas de datos
+                    heterogéneos.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p>
+                        Un Knowledge Graph no simplemente "conoce" datos, sino que entiende cómo se relacionan las
+                        entidades del mundo real.
+                    </p>
+                </div>
+
+                <h3 class="color-primary mt-2">Casos de Éxito Actuales</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🔍 Google Knowledge Graph</h4>
+                        <p>Cuando buscas "Leonardo da Vinci", Google muestra un panel con su fecha de nacimiento, obras
+                            y personas relacionadas. No extrae esto de un solo texto, sino de su grafo global de miles
+                            de millones de hechos.</p>
+                    </div>
+                    <div class="feature-card"> <!-- Sin border/secondary -->
+                        <h4>🏢 LinkedIn Economic Graph</h4>
+                        <p>Modela la economía global mapeando relaciones entre miembros, empresas, habilidades y empleos
+                            para detectar tendencias laborales y oportunidades.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📚 DBpedia & Wikidata</h4>
+                        <p>Versiones estructuradas de Wikipedia que permiten hacer consultas complejas (SPARQL), como:
+                            <em>"Lista de todos los científicos nacidos en el siglo XIX que ganaron un Nobel de
+                                Física"</em>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CONCLUSIÓN CRÍTICA -->
+            <section class="section">
+                <h2 class="section-title">Análisis Crítico</h2>
+                <div class="comparison-grid">
+                    <div class="highlight-box primary">
+                        <h3 class="color-primary">✅ Transparencia y Explicabilidad</h3>
+                        <p>
+                            A diferencia de las redes neuronales ("cajas negras"), estas técnicas son
+                            <strong>transparentes</strong>. Si el sistema deduce un diagnóstico, podemos rastrear
+                            exactamente qué reglas lógicas aplicó.
+                        </p>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <h3 class="color-secondary">⚠️ El Reto de la Escalabilidad</h3>
+                        <p>
+                            El principal límite histórico ha sido el costo humano de codificar estas reglas. Hoy, la
+                            tendencia es la <strong>IA Neuro-Simbólica</strong>, que usa Deep Learning para aprender
+                            automáticamente estas estructuras de conocimiento.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESQUEMA SUMMARY EN MERMAID -->
+            <section class="section">
+                <h2 class="section-title text-center">Resumen Estructural</h2>
+                <div class="mermaid">
+                    mindmap
+                      root((Representacion del Conocimiento))
+                        Tecnicas
+                          Redes Semanticas
+                            Nodos y Arcos
+                            Herencia
+                          Marcos Frames
+                            Slots
+                            Valores por Defecto
+                          Logica
+                            Predicados
+                            Reglas de Inferencia
+                          Ontologias
+                            Vocabulario Compartido
+                            Jerarquias
+                        Desafios
+                          Adquisicion
+                            Cuello de Botella
+                          Escalabilidad
+                            Coste Humano
+                        Evolucion Actual
+                          Knowledge Graphs
+                            Google
+                            LinkedIn
+                          IA Neuro simbolica
+                            Hibridacion
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="logo-text" style="font-size: 1.5rem; margin-bottom: 1rem;">iLERNA</div>
+                <h3 style="font-size: 1rem;">Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank"
+                        style="color: inherit; text-decoration: none;">www.ilerna.es</a></p>
+                <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7;">
+                    <p>Centro oficial de FP online y presencial.</p>
+                    <p>Titulaciones 100% oficiales.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#49B9CE',
+                primaryTextColor: '#FFFFFF',
+                primaryBorderColor: '#49B9CE',
+                secondaryColor: '#8A7AAF',
+                secondaryTextColor: '#FFFFFF',
+                secondaryBorderColor: '#8A7AAF',
+                tertiaryColor: '#E8F7FA',
+                tertiaryTextColor: '#333333',
+                tertiaryBorderColor: '#49B9CE',
+                lineColor: '#8A7AAF',
+                textColor: '#333333',
+                mainBkg: '#FFFFFF',
+                nodeBorder: '#49B9CE',
+                fontSize: '14px',
+                fontFamily: 'Montserrat, sans-serif'
+            }
+        });
+    </script>
+</body>
+
+</html>

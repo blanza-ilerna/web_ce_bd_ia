@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Árboles de Decisión: algoritmos de aprendizaje supervisado interpretables. Entropía, Information Gain, Índice Gini, CART y técnicas de poda.">
+    <meta name="keywords"
+        content="Árboles de Decisión, Machine Learning, CART, Entropía, Gini, Overfitting, Poda, Clasificación, Regresión">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Árboles de Decisión | iLERNA">
+    <meta property="og:description"
+        content="Aprende cómo funcionan los árboles de decisión, sus criterios de división y técnicas para prevenir overfitting.">
+    <meta property="og:type" content="article">
+    <title>Árboles de Decisión | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Árboles de Decisión</span>
+                </div>
+            </div>
+            <h1 class="text-center">Árboles de Decisión</h1>
+            <p class="subtitle text-center">Algoritmos de Aprendizaje Supervisado Interpretables y Versátiles</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué son los Árboles de Decisión?</h2>
+                <p>
+                    Los <strong>árboles de decisión</strong> son algoritmos de aprendizaje supervisado que toman
+                    decisiones mediante una <strong>estructura jerárquica de preguntas</strong> tipo "sí/no". Funcionan
+                    como un diagrama de flujo donde cada nodo interno representa una pregunta sobre un atributo, cada
+                    rama representa la respuesta, y cada hoja contiene la predicción final.
+                </p>
+                <div class="highlight-box" style="border-left: 5px solid #49B9CE;">
+                    <p style="font-size: 1.1rem;">
+                        Son únicos porque producen <strong>reglas de decisión interpretables</strong> que los humanos
+                        pueden entender fácilmente, a diferencia de las "cajas negras" como redes neuronales. Sirven
+                        tanto para <strong>clasificación</strong> (predecir categorías) como para
+                        <strong>regresión</strong> (predecir valores continuos).
+                    </p>
+                </div>
+
+                <div class="warning-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5);">
+                    <h3 style="margin-top: 0;">🏦 Ejemplo Real: American Express</h3>
+                    <p>
+                        American Express utiliza árboles de decisión para detectar fraude en transacciones en tiempo
+                        real. El modelo evalúa 100+ variables (ubicación, monto, hora, historial) en microsegundos y
+                        bloquea automáticamente transacciones sospechosas, previniendo pérdidas de $2B+ anuales con
+                        99.7% de precisión.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: CONCEPTOS FUNDAMENTALES -->
+            <section class="section">
+                <h2 class="section-title">Conceptos Fundamentales</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Nodo Raíz</h4>
+                        <p>
+                            Primer nodo del árbol que contiene todos los datos. Representa la primera pregunta más
+                            importante.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Nodos Internos</h4>
+                        <p>
+                            Nodos de decisión que dividen los datos según una condición. Cada uno representa una
+                            pregunta sobre los datos.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Hojas (Nodos Terminales)</h4>
+                        <p>
+                            Nodos finales sin divisiones adicionales. Contienen la predicción: clase (clasificación) o
+                            valor (regresión).
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Profundidad del Árbol</h4>
+                        <p>
+                            Número máximo de niveles desde la raíz hasta las hojas. Mayor profundidad = mayor
+                            complejidad del modelo.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: ANATOMÍA DEL ÁRBOL -->
+            <section class="section">
+                <h2 class="section-title">Anatomía de un Árbol de Decisión</h2>
+                <p>
+                    Un árbol de decisión se construye <strong>de arriba hacia abajo</strong> (top-down), comenzando con
+                    la raíz y dividiendo recursivamente los datos hasta alcanzar un criterio de parada. Veamos un
+                    ejemplo completo:
+                </p>
+
+                <h3 style="color: #49B9CE; margin-top: 2rem;">🌳 Ejemplo: ¿Jugar al Tenis?</h3>
+                <div class="highlight-box" style="background-color: #fafafa; padding: 2rem;">
+                    <svg width="900" height="550" style="display: block; margin: 0 auto; max-width: 100%;">
+                        <!-- Título -->
+                        <text x="450" y="25" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Árbol de Decisión: ¿Jugar al Tenis Hoy?</text>
+
+                        <!-- NIVEL 0: RAÍZ -->
+                        <rect x="375" y="50" width="150" height="60" fill="#49B9CE" stroke="#1e7e9c" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="73" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">RAÍZ</text>
+                        <text x="450" y="90" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Clima = ?</text>
+                        <text x="450" y="104" font-size="10" fill="#E8F7FA" text-anchor="middle"
+                            font-family="Montserrat">14 muestras</text>
+
+                        <!-- Flechas nivel 0 a nivel 1 -->
+                        <line x1="410" y1="110" x2="200" y2="150" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="290" y="135" font-size="11" fill="#333333" font-family="Montserrat">Soleado</text>
+
+                        <line x1="450" y1="110" x2="450" y2="150" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="455" y="135" font-size="11" fill="#333333" font-family="Montserrat">Nublado</text>
+
+                        <line x1="490" y1="110" x2="700" y2="150" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="610" y="135" font-size="11" fill="#333333" font-family="Montserrat">Lluvioso</text>
+
+                        <!-- NIVEL 1: NODOS INTERNOS -->
+                        <rect x="125" y="160" width="150" height="55" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="8" />
+                        <text x="200" y="180" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Humedad = ?</text>
+                        <text x="200" y="198" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">5 muestras</text>
+
+                        <rect x="375" y="160" width="150" height="55" fill="#4CAF50" stroke="#2E7D32" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="180" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">✓ JUGAR</text>
+                        <text x="450" y="198" font-size="10" fill="#E8F5E9" text-anchor="middle"
+                            font-family="Montserrat">4 muestras | 100%</text>
+
+                        <rect x="625" y="160" width="150" height="55" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="8" />
+                        <text x="700" y="180" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Viento = ?</text>
+                        <text x="700" y="198" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">5 muestras</text>
+
+                        <!-- Flechas nivel 1 a nivel 2 -->
+                        <line x1="170" y1="215" x2="130" y2="260" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="135" y="242" font-size="10" fill="#333333" font-family="Montserrat">Alta</text>
+
+                        <line x1="230" y1="215" x2="270" y2="260" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="260" y="242" font-size="10" fill="#333333" font-family="Montserrat">Normal</text>
+
+                        <line x1="670" y1="215" x2="630" y2="260" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="635" y="242" font-size="10" fill="#333333" font-family="Montserrat">Fuerte</text>
+
+                        <line x1="730" y1="215" x2="770" y2="260" stroke="#333333" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="760" y="242" font-size="10" fill="#333333" font-family="Montserrat">Débil</text>
+
+                        <!-- NIVEL 2: HOJAS -->
+                        <rect x="55" y="270" width="150" height="50" fill="#FF6B6B" stroke="#C62828" stroke-width="3"
+                            rx="8" />
+                        <text x="130" y="292" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">✗ NO JUGAR</text>
+                        <text x="130" y="308" font-size="10" fill="#FFEBEE" text-anchor="middle"
+                            font-family="Montserrat">3 muestras | 100%</text>
+
+                        <rect x="225" y="270" width="150" height="50" fill="#4CAF50" stroke="#2E7D32" stroke-width="3"
+                            rx="8" />
+                        <text x="300" y="292" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">✓ JUGAR</text>
+                        <text x="300" y="308" font-size="10" fill="#E8F5E9" text-anchor="middle"
+                            font-family="Montserrat">2 muestras | 100%</text>
+
+                        <rect x="555" y="270" width="150" height="50" fill="#FF6B6B" stroke="#C62828" stroke-width="3"
+                            rx="8" />
+                        <text x="630" y="292" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">✗ NO JUGAR</text>
+                        <text x="630" y="308" font-size="10" fill="#FFEBEE" text-anchor="middle"
+                            font-family="Montserrat">2 muestras | 100%</text>
+
+                        <rect x="725" y="270" width="150" height="50" fill="#4CAF50" stroke="#2E7D32" stroke-width="3"
+                            rx="8" />
+                        <text x="800" y="292" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">✓ JUGAR</text>
+                        <text x="800" y="308" font-size="10" fill="#E8F5E9" text-anchor="middle"
+                            font-family="Montserrat">3 muestras | 100%</text>
+
+                        <!-- Marcadores de flecha -->
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333333" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #8A7AAF; margin-top: 2rem;">
+                    <h4 style="color: #8A7AAF; margin-top: 0;">📜 Reglas Extraídas del Árbol</h4>
+                    <p><strong style="color: #4CAF50;">Regla 1:</strong> SI Clima = Nublado → JUGAR (100% confianza)</p>
+                    <p><strong style="color: #4CAF50;">Regla 2:</strong> SI Clima = Soleado AND Humedad = Normal → JUGAR
+                    </p>
+                    <p><strong style="color: #4CAF50;">Regla 3:</strong> SI Clima = Lluvioso AND Viento = Débil → JUGAR
+                    </p>
+                    <p><strong style="color: #FF6B6B;">Regla 4:</strong> SI Clima = Soleado AND Humedad = Alta → NO
+                        JUGAR</p>
+                    <p style="margin-bottom: 0;"><strong style="color: #FF6B6B;">Regla 5:</strong> SI Clima = Lluvioso
+                        AND Viento = Fuerte → NO JUGAR</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CRITERIOS DE DIVISIÓN -->
+            <section class="section">
+                <h2 class="section-title">Criterios de División: ¿Cómo Elegir la Mejor Pregunta?</h2>
+                <p>
+                    El algoritmo debe decidir <strong>qué pregunta hacer en cada nodo</strong> para dividir los datos de
+                    manera óptima. El objetivo es crear divisiones que <strong>separen mejor las clases</strong>
+                    (clasificación) o <strong>reduzcan la varianza</strong> (regresión).
+                </p>
+
+                <h3 style="color: #49B9CE; margin-top: 2rem;">1. Entropía e Information Gain</h3>
+                <div class="feature-card">
+                    <p>
+                        La <strong>entropía</strong> mide el <strong>desorden o impureza</strong> de un conjunto de
+                        datos. Valores altos = datos mezclados (malos), valores bajos = datos homogéneos (buenos). El
+                        algoritmo busca divisiones que <strong>maximicen la reducción de entropía</strong>.
+                    </p>
+
+                    <div class="code-example" style="margin: 1.5rem 0;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.3rem; color: #49B9CE; font-weight: 700; text-align: center;">
+                            Entropía(S) = -Σ pᵢ log₂(pᵢ)
+                        </p>
+                        <p style="text-align: center; margin-top: 0.75rem;">pᵢ = proporción de clase i en el conjunto S
+                        </p>
+                        <p style="text-align: center; font-size: 0.95rem; margin-top: 0.5rem;">
+                            Entropía = 0 → Todos misma clase (perfecto) | Entropía = 1 → Clases mezcladas 50/50 (peor)
+                        </p>
+                    </div>
+
+                    <div class="code-example" style="margin: 1.5rem 0;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.3rem; color: #49B9CE; font-weight: 700; text-align: center;">
+                            IG(S, A) = Entropía(S) - Σ (|Sᵥ|/|S|) × Entropía(Sᵥ)
+                        </p>
+                        <p style="text-align: center; margin-top: 0.75rem;">
+                            A = atributo, Sᵥ = subconjunto tras dividir por valor v del atributo A
+                        </p>
+                        <p style="text-align: center; font-size: 0.95rem; margin-top: 0.5rem;">
+                            Se elige el atributo A que maximice IG (mayor reducción de entropía)
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background-color: #f9f9f9;">
+                        <h5 style="color: #49B9CE; margin-top: 0;">📊 Ejemplo Numérico:</h5>
+                        <p>Conjunto inicial: 9 "Sí" y 5 "No" (total = 14)</p>
+                        <p style="font-family: 'Courier New', monospace; margin: 0.5rem 0;">
+                            Entropía(S) = -(9/14)log₂(9/14) - (5/14)log₂(5/14) = 0.940
+                        </p>
+                        <p style="margin-top: 1rem;">Dividir por atributo "Clima":</p>
+                        <ul style="margin-left: 1.5rem; font-size: 0.95rem;">
+                            <li>Soleado: 2 Sí, 3 No → Entropía = 0.971</li>
+                            <li>Nublado: 4 Sí, 0 No → Entropía = 0.000</li>
+                            <li>Lluvioso: 3 Sí, 2 No → Entropía = 0.971</li>
+                        </ul>
+                        <p style="font-family: 'Courier New', monospace; margin: 0.75rem 0;">
+                            IG(Clima) = 0.940 - [(5/14)×0.971 + (4/14)×0.000 + (5/14)×0.971] = 0.247
+                        </p>
+                        <p style="color: #4CAF50; font-weight: 700; margin-bottom: 0;">
+                            ✓ "Clima" reduce la entropía en 0.247 bits → Buena división
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="color: #8A7AAF; margin-top: 2rem;">2. Índice Gini (Impureza de Gini)</h3>
+                <div class="feature-card secondary">
+                    <p>
+                        Alternativa más simple y rápida que la entropía. Mide la <strong>probabilidad de clasificar
+                            incorrectamente</strong> un elemento al azar. Usado por defecto en <strong>scikit-learn
+                            (CART algorithm)</strong>.
+                    </p>
+
+                    <div class="code-example" style="margin: 1.5rem 0;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.3rem; color: #8A7AAF; font-weight: 700; text-align: center;">
+                            Gini(S) = 1 - Σ pᵢ²
+                        </p>
+                        <p style="text-align: center; margin-top: 0.75rem;">pᵢ = proporción de clase i en el conjunto S
+                        </p>
+                        <p style="text-align: center; font-size: 0.95rem; margin-top: 0.5rem;">
+                            Gini = 0 → Nodo puro (perfecto) | Gini = 0.5 → Máxima impureza (50/50 binario)
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background-color: #f9f9f9;">
+                        <h5 style="color: #8A7AAF; margin-top: 0;">📊 Ejemplo con mismo dataset:</h5>
+                        <p>Conjunto inicial: 9 "Sí" y 5 "No"</p>
+                        <p style="font-family: 'Courier New', monospace; margin: 0.5rem 0;">
+                            Gini(S) = 1 - [(9/14)² + (5/14)²] = 1 - [0.41 + 0.13] = 0.459
+                        </p>
+                        <p style="margin-top: 1rem;">Tras dividir por "Nublado":</p>
+                        <p style="font-family: 'Courier New', monospace; margin: 0.5rem 0;">
+                            Gini = 1 - [(4/4)² + (0/4)²] = 1 - 1 = 0.000
+                        </p>
+                        <p style="color: #4CAF50; font-weight: 700; margin-bottom: 0;">
+                            ✓ Gini = 0 → Nodo 100% puro (todos "Sí")
+                        </p>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; margin-top: 2rem;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Entropía + IG</th>
+                                <th>Índice Gini</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cálculo</strong></td>
+                                <td>Logarítmico (más costoso)</td>
+                                <td>Cuadrático (más rápido)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Interpretación</strong></td>
+                                <td>Teoría de información</td>
+                                <td>Probabilidad error</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso en algoritmos</strong></td>
+                                <td>ID3, C4.5</td>
+                                <td>CART (scikit-learn)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sensibilidad</strong></td>
+                                <td>Más sensible a cambios</td>
+                                <td>Menos sensible</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rendimiento práctico</strong></td>
+                                <td>Similares resultados</td>
+                                <td>Similares resultados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: OVERFITTING Y PODA -->
+            <section class="section">
+                <h2 class="section-title">Overfitting y Técnicas de Poda</h2>
+                <p>
+                    Los árboles de decisión sin restricciones tienden a <strong>sobreajustarse</strong> (overfitting):
+                    memorizan los datos de entrenamiento pero fallan con datos nuevos. Un árbol demasiado profundo
+                    aprende el ruido en lugar de patrones reales.
+                </p>
+
+                <h3 style="color: #49B9CE; margin-top: 2rem;">✂️ Técnicas para Prevenir Overfitting</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Pre-Poda (Pre-pruning)</h4>
+                        <p>
+                            Detener el crecimiento del árbol <strong>durante la construcción</strong> mediante
+                            hiperparámetros:
+                        </p>
+                        <ul style="margin-top: 1rem;">
+                            <li><strong>max_depth</strong>: Limitar profundidad (ej: 3-10)</li>
+                            <li><strong>min_samples_split</strong>: Mínimo para dividir (ej: 10-50)</li>
+                            <li><strong>min_samples_leaf</strong>: Mínimo en hojas (ej: 5-20)</li>
+                            <li><strong>max_leaf_nodes</strong>: Número máximo de hojas</li>
+                            <li><strong>min_impurity_decrease</strong>: Ganancia mínima requerida</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Post-Poda (Post-pruning)</h4>
+                        <p>
+                            Dejar crecer el árbol completo y luego <strong>eliminar ramas</strong> que no mejoran
+                            rendimiento en validación:
+                        </p>
+                        <ul style="margin-top: 1rem;">
+                            <li><strong>Cost Complexity Pruning</strong> (ccp_alpha en sklearn)</li>
+                            <li>Evaluar subárboles con validación cruzada</li>
+                            <li>Eliminar ramas con bajo impacto</li>
+                            <li>Más preciso pero más costoso computacionalmente</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="margin-top: 0;">💡 Recomendaciones Prácticas</h4>
+                    <ul>
+                        <li><strong>Empieza simple:</strong> max_depth=3 o 5, luego incrementa gradualmente</li>
+                        <li><strong>Usa validación cruzada:</strong> Para encontrar hiperparámetros óptimos</li>
+                        <li><strong>Pre-poda es más rápida:</strong> Preferida en producción</li>
+                        <li><strong>Post-poda más precisa:</strong> Cuando tiempo de cómputo no es crítico</li>
+                        <li><strong>Monitorea gap train/test:</strong> Si test << train → overfitting</li>
+                        <li><strong>Considera ensembles:</strong> Random Forest o Gradient Boosting son más robustos
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: ALGORITMO DE CONSTRUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">Algoritmo de Construcción del Árbol</h2>
+                <p>
+                    Los árboles de decisión se construyen usando un enfoque <strong>greedy (codicioso)
+                        recursivo</strong> llamado <strong>división recursiva binaria</strong>. El algoritmo más común
+                    es <strong>CART (Classification and Regression Trees)</strong>.
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">🔄 Pseudocódigo del Algoritmo CART</div>
+                    <pre><code class="language-python">function construir_arbol(datos, profundidad_actual):
+    """
+    Construye un árbol de decisión recursivamente
+    """
+    # CASO BASE 1: Todos los ejemplos son de la misma clase
+    if todos_misma_clase(datos):
+        return crear_hoja(clase_mayoritaria)
+
+    # CASO BASE 2: Alcanzamos profundidad máxima
+    if profundidad_actual >= max_profundidad:
+        return crear_hoja(clase_mayoritaria)
+
+    # CASO BASE 3: Muy pocas muestras (min_samples_split)
+    if len(datos) < min_samples_split:
+        return crear_hoja(clase_mayoritaria)
+
+    # PASO RECURSIVO: Encontrar mejor división
+    mejor_atributo, mejor_umbral = encontrar_mejor_division(datos)
+
+    # Si no hay mejora, crear hoja
+    if mejora_insignificante:
+        return crear_hoja(clase_mayoritaria)
+
+    # Dividir datos según mejor atributo
+    datos_izquierda = datos[atributo <= umbral]
+    datos_derecha = datos[atributo > umbral]
+
+    # Crear nodo interno
+    nodo = NodoInterno(atributo=mejor_atributo, umbral=mejor_umbral)
+
+    # RECURSIÓN: construir subárboles
+    nodo.izquierda = construir_arbol(datos_izquierda, profundidad_actual + 1)
+    nodo.derecha = construir_arbol(datos_derecha, profundidad_actual + 1)
+
+    return nodo</code></pre>
+                </div>
+
+                <h3 style="color: #8A7AAF; margin-top: 2rem;">⚙️ Parámetros de Control (Hiperparámetros)</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">max_depth</h4>
+                        <p>Profundidad máxima del árbol. Más profundo = más complejo = riesgo de overfitting.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">min_samples_split</h4>
+                        <p>Mínimo de muestras para dividir un nodo. Previene divisiones de datos escasos.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">min_samples_leaf</h4>
+                        <p>Mínimo de muestras en una hoja. Evita hojas con muy pocos ejemplos.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">criterion</h4>
+                        <p>Función de medida: 'gini' (rápido) o 'entropy' (más teórico). Resultados similares.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); margin-top: 2rem;">
+                    <h4 style="margin-top: 0;">🔍 Proceso Paso a Paso:</h4>
+                    <ol style="line-height: 1.8; margin-left: 1.5rem;">
+                        <li><strong>Inicio:</strong> Todos los datos en la raíz</li>
+                        <li><strong>Evaluar:</strong> Calcular impureza (Gini/Entropía) del nodo actual</li>
+                        <li><strong>Buscar:</strong> Probar TODAS las posibles divisiones (atributo + umbral)</li>
+                        <li><strong>Calcular:</strong> Para cada división, calcular ganancia de información</li>
+                        <li><strong>Elegir:</strong> Seleccionar división con mayor ganancia</li>
+                        <li><strong>Dividir:</strong> Crear dos nodos hijos con datos separados</li>
+                        <li><strong>Recursión:</strong> Repetir proceso en cada hijo</li>
+                        <li><strong>Parar:</strong> Cuando se alcance criterio de parada (profundidad, muestras, pureza)
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: DATO CURIOSO -->
+            <section class="section">
+                <div class="warning-box">
+                    <h3 style="margin-top: 0;">💡 Dato Curioso: El Origen de CART</h3>
+                    <p>
+                        El algoritmo <strong>CART (Classification and Regression Trees)</strong> fue desarrollado por
+                        <strong>Leo Breiman, Jerome Friedman, Richard Olshen y Charles Stone en 1984</strong> en la
+                        Universidad de Stanford. Su libro "Classification and Regression Trees" sigue siendo una
+                        referencia fundamental.
+                    </p>
+                    <div class="highlight-box" style="margin-top: 1rem;">
+                        <p style="margin-bottom: 0;">
+                            🌟 <strong>Curiosidad:</strong> Leo Breiman también inventó <strong>Random Forest</strong>
+                            (2001), uno de los algoritmos más exitosos del ML moderno. Random Forest utiliza cientos de
+                            árboles de decisión trabajando juntos, logrando precisiones del 95%+ en problemas complejos.
+                            ¡Netflix usa Random Forest para recomendar películas y series!
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>
+        // Funcionalidad para copiar bloques de código
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block, index) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

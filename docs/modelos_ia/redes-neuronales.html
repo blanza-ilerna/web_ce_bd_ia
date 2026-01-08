@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducción a las Redes Neuronales Artificiales: funcionamiento, algoritmos de optimización y aplicaciones prácticas.">
+    <meta name="keywords"
+        content="Redes Neuronales, Deep Learning, Backpropagation, Gradient Descent, SGD, Adam, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Redes Neuronales Artificiales | iLERNA">
+    <meta property="og:description"
+        content="Aprende cómo funcionan las redes neuronales artificiales, sus algoritmos de optimización y sus aplicaciones en el mundo real.">
+    <meta property="og:type" content="article">
+    <title>Redes Neuronales Artificiales | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Redes Neuronales</span>
+                </div>
+            </div>
+            <h1 class="text-center">Redes Neuronales Artificiales</h1>
+            <p class="subtitle text-center">Modelos inspirados en el cerebro humano para el aprendizaje automático</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué son las Redes Neuronales Artificiales?</h2>
+                <p>
+                    Las <strong>redes neuronales artificiales (RNA)</strong> son modelos matemáticos formados por capas
+                    de unidades llamadas <strong>neuronas artificiales</strong>. Cada una de estas neuronas transforma
+                    sus entradas mediante una <strong>función de activación</strong> y transmite la salida a otras
+                    neuronas.
+                </p>
+                <div class="highlight-box" style="border-left: 5px solid #49B9CE;">
+                    <p style="font-size: 1.1rem;">
+                        Destacan por su capacidad para <strong>aproximar funciones complejas</strong> y detectar
+                        <strong>patrones no lineales</strong>, aunque su interpretabilidad es limitada (a menudo se
+                        consideran "cajas negras").
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: FUNCIONAMIENTO -->
+            <section class="section">
+                <h2 class="section-title">⚙️ Funcionamiento Básico</h2>
+                <p style="margin-bottom: 2rem;">
+                    El aprendizaje en una red neuronal se basa principalmente en dos fases fundamentales:
+                </p>
+
+                <div class="grid-features">
+                    <!-- Propagación -->
+                    <div class="feature-card">
+                        <h3>➡️ Propagación (Forward Propagation)</h3>
+                        <p>
+                            Las entradas se combinan y avanzan a través de las capas de la red (capa de entrada, capas
+                            ocultas, capa de salida) hasta generar una predicción final.
+                        </p>
+                        <div class="highlight-box" style="background-color: #E8F7FA; border-left: 3px solid #49B9CE;">
+                            <p style="font-size: 0.95rem;">
+                                <strong>Proceso:</strong> Cada neurona recibe señales de entrada, las multiplica por
+                                pesos específicos, suma los resultados y aplica una función de activación para producir
+                                su salida.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Retro-propagación -->
+                    <div class="feature-card secondary">
+                        <h3>⬅️ Retro-propagación (Backpropagation)</h3>
+                        <p>
+                            El sistema calcula el error entre la salida real y la esperada, y ajusta los
+                            <strong>pesos de conexión</strong> hacia atrás para minimizar este error en futuras
+                            iteraciones.
+                        </p>
+                        <div class="highlight-box" style="background-color: #F3F0F7; border-left: 3px solid #8A7AAF;">
+                            <p style="font-size: 0.95rem;">
+                                <strong>Objetivo:</strong> Utilizar el gradiente del error para actualizar los pesos de
+                                forma que la red mejore progresivamente sus predicciones.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: ARQUITECTURA -->
+            <section class="section">
+                <h2 class="section-title">🏗️ Arquitectura de una Red Neuronal</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Capa de Entrada</h4>
+                        <p>
+                            Recibe los datos originales (píxeles de una imagen, palabras de un texto, valores
+                            numéricos, etc.).
+                        </p>
+                        <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                            <li>Número de neuronas = número de características de entrada</li>
+                            <li>No realiza procesamiento, solo distribuye datos</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Capas Ocultas</h4>
+                        <p>
+                            Transforman progresivamente las entradas mediante funciones de activación no lineales.
+                        </p>
+                        <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                            <li>Pueden ser una o muchas capas</li>
+                            <li>Extraen características de diferentes niveles de abstracción</li>
+                            <li>Aquí reside el "aprendizaje profundo"</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #DD6B20;">Capa de Salida</h4>
+                        <p>
+                            Produce la predicción final: clasificación, regresión, probabilidades, etc.
+                        </p>
+                        <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                            <li>Clasificación binaria: 1 neurona (sigmoid)</li>
+                            <li>Clasificación multi-clase: N neuronas (softmax)</li>
+                            <li>Regresión: 1 neurona (lineal)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EJEMPLOS DE APLICACIÓN -->
+            <section class="section">
+                <h2 class="section-title">🚀 Ejemplos de Aplicación</h2>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h3>📝 Reconocimiento de Patrones</h3>
+                        <p>
+                            Reconocimiento de escritura manual (OCR), reconocimiento de voz (dictado en móviles,
+                            asistentes virtuales), identificación de rostros en fotografías.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> Google Lens, sistemas de dictado de Apple/Android, Face ID
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3>📈 Predicción y Análisis</h3>
+                        <p>
+                            Predicción de demanda energética, forecasting de series temporales, predicción de precios
+                            bursátiles, diagnóstico médico asistido.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> Predicción de consumo eléctrico, pronóstico meteorológico,
+                            detección de anomalías cardíacas
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>🚗 Visión Artificial</h3>
+                        <p>
+                            Sistemas de visión artificial en vehículos autónomos para detectar obstáculos, señales de
+                            tráfico, peatones y otros vehículos en tiempo real.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> Tesla Autopilot, Waymo, detección de objetos con YOLO
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3>💬 Procesamiento del Lenguaje</h3>
+                        <p>
+                            Traducción automática, generación de texto, análisis de sentimientos, chatbots
+                            conversacionales y sistemas de preguntas y respuestas.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> ChatGPT, Google Translate, análisis de reseñas de productos
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>🎨 Generación de Contenido</h3>
+                        <p>
+                            Generación de imágenes (DALL-E, Midjourney), música, deepfakes, síntesis de voz y
+                            composición automática de contenido creativo.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> Stable Diffusion, Midjourney, DALL-E 3, síntesis de voz ElevenLabs
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3>🎮 Juegos y Simulación</h3>
+                        <p>
+                            Agentes que aprenden a jugar videojuegos (Atari, Dota 2, StarCraft), sistemas de
+                            recomendación y optimización de estrategias.
+                        </p>
+                        <div class="code-example" style="margin-top: 1rem; font-size: 0.85rem;">
+                            <strong>Ejemplo:</strong> AlphaGo, OpenAI Five, DeepMind AlphaStar
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: ALGORITMOS DE OPTIMIZACIÓN -->
+            <section class="section">
+                <h2 class="section-title">⚡ Algoritmos de Optimización</h2>
+                <p style="margin-bottom: 2rem;">
+                    Para minimizar el error durante el entrenamiento, se utilizan algoritmos que ajustan los pesos de
+                    la red. Los más comunes son:
+                </p>
+
+                <div class="grid-features">
+                    <!-- Gradient Descent -->
+                    <div class="feature-card">
+                        <h3>📉 Gradient Descent (Descenso del Gradiente)</h3>
+                        <p>
+                            Calcula el gradiente de la función de error utilizando <strong>todo el conjunto de
+                                datos</strong> para actualizar los pesos. Es preciso pero lento en grandes datasets.
+                        </p>
+                        <div class="highlight-box" style="background-color: #E8F7FA; border-left: 3px solid #49B9CE; margin-top: 1rem;">
+                            <p style="font-size: 0.9rem;">
+                                <strong>Ventajas:</strong> Convergencia suave y estable<br>
+                                <strong>Desventajas:</strong> Muy lento con millones de datos, puede quedar atrapado en
+                                mínimos locales
+                            </p>
+                        </div>
+                        <div class="code-example" style="margin-top: 1rem;">
+                            <strong>Fórmula:</strong> θ = θ - α ∇J(θ)<br>
+                            <span style="font-size: 0.85rem;">Donde α es la tasa de aprendizaje y ∇J(θ) es el
+                                gradiente</span>
+                        </div>
+                    </div>
+
+                    <!-- SGD -->
+                    <div class="feature-card secondary">
+                        <h3>🎲 SGD (Stochastic Gradient Descent)</h3>
+                        <p>
+                            Actualiza los pesos usando <strong>una sola muestra</strong> (o un pequeño lote/batch) a la
+                            vez. Es mucho más rápido y ayuda a escapar de mínimos locales, aunque introduce más
+                            variabilidad.
+                        </p>
+                        <div class="highlight-box" style="background-color: #F3F0F7; border-left: 3px solid #8A7AAF; margin-top: 1rem;">
+                            <p style="font-size: 0.9rem;">
+                                <strong>Ventajas:</strong> Rápido, puede escapar de mínimos locales, ideal para datasets
+                                grandes<br>
+                                <strong>Desventajas:</strong> Convergencia ruidosa, puede oscilar cerca del mínimo
+                            </p>
+                        </div>
+                        <div class="code-example" style="margin-top: 1rem;">
+                            <strong>Variante popular:</strong> Mini-batch SGD<br>
+                            <span style="font-size: 0.85rem;">Usa lotes pequeños (32-256 muestras) para balancear
+                                velocidad y estabilidad</span>
+                        </div>
+                    </div>
+
+                    <!-- Adam -->
+                    <div class="feature-card">
+                        <h3>🚀 Adam (Adaptive Moment Estimation)</h3>
+                        <p>
+                            Combina las ventajas de otros métodos. Adapta la tasa de aprendizaje para cada peso de forma
+                            individual, manteniendo promedios móviles de gradientes pasados y sus cuadrados.
+                        </p>
+                        <div class="highlight-box" style="background-color: #FFF3E0; border-left: 3px solid #DD6B20; margin-top: 1rem;">
+                            <p style="font-size: 0.9rem;">
+                                <strong>Por qué es popular:</strong> Funciona bien "out of the box" sin necesidad de
+                                ajustar muchos hiperparámetros. Es el optimizador por defecto en muchos frameworks.<br>
+                                <strong>Ventajas:</strong> Converge rápido, tasa de aprendizaje adaptativa, maneja ruido
+                                eficientemente
+                            </p>
+                        </div>
+                        <div class="code-example" style="margin-top: 1rem;">
+                            <strong>Hiperparámetros típicos:</strong><br>
+                            <span style="font-size: 0.85rem;">
+                                β₁ = 0.9 (momento de primer orden)<br>
+                                β₂ = 0.999 (momento de segundo orden)<br>
+                                ε = 10⁻⁸ (estabilidad numérica)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- RMSprop -->
+                    <div class="feature-card secondary">
+                        <h3>📊 RMSprop (Root Mean Square Propagation)</h3>
+                        <p>
+                            Ajusta la tasa de aprendizaje para cada parámetro dividiendo el gradiente por una media
+                            móvil de sus magnitudes recientes. Especialmente útil en redes recurrentes.
+                        </p>
+                        <div class="highlight-box" style="background-color: #E8F5E9; border-left: 3px solid #4CAF50; margin-top: 1rem;">
+                            <p style="font-size: 0.9rem;">
+                                <strong>Ventajas:</strong> Bueno para problemas no estacionarios, funciona bien con RNNs<br>
+                                <strong>Uso común:</strong> Recomendado por Geoffrey Hinton para redes recurrentes
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: FUNCIONES DE ACTIVACIÓN -->
+            <section class="section">
+                <h2 class="section-title">⚡ Funciones de Activación</h2>
+                <p style="margin-bottom: 2rem;">
+                    Las funciones de activación introducen <strong>no linealidad</strong> en la red, permitiéndole
+                    aprender patrones complejos. Sin ellas, una red neuronal profunda sería equivalente a una regresión
+                    lineal simple.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">ReLU (Rectified Linear Unit)</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                            f(x) = max(0, x)
+                        </p>
+                        <p>La más popular actualmente. Rápida de calcular y evita el problema de gradientes que
+                            desaparecen.</p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>✅ Rápida computacionalmente</li>
+                            <li>✅ Evita gradientes desvanecientes</li>
+                            <li>⚠️ Puede sufrir "neuronas muertas" (siempre devuelven 0)</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Sigmoid</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                            f(x) = 1 / (1 + e⁻ˣ)
+                        </p>
+                        <p>Mapea valores a un rango (0, 1). Útil en la capa de salida para clasificación binaria.</p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>✅ Salida interpretable como probabilidad</li>
+                            <li>⚠️ Sufre de gradientes desvanecientes</li>
+                            <li>⚠️ No es zero-centered</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #DD6B20;">Tanh (Tangente Hiperbólica)</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                            f(x) = (eˣ - e⁻ˣ) / (eˣ + e⁻ˣ)
+                        </p>
+                        <p>Similar a sigmoid pero mapea a (-1, 1). Zero-centered, lo que facilita el entrenamiento.</p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>✅ Zero-centered</li>
+                            <li>✅ Mejor que sigmoid en capas ocultas</li>
+                            <li>⚠️ También sufre gradientes desvanecientes</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #4CAF50;">Softmax</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                            f(xᵢ) = eˣⁱ / Σⱼ eˣʲ
+                        </p>
+                        <p>Convierte un vector de valores en una distribución de probabilidad. Ideal para clasificación
+                            multi-clase.</p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>✅ Salidas suman 1 (probabilidades)</li>
+                            <li>✅ Estándar para clasificación multi-clase</li>
+                            <li>Se usa solo en la capa de salida</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: DESAFÍOS Y CONSIDERACIONES -->
+            <section class="section">
+                <h2 class="section-title">⚠️ Desafíos y Consideraciones</h2>
+                <div class="warning-box">
+                    <h3 style="margin-top: 0;">Problemas Comunes en el Entrenamiento</h3>
+                    <div class="grid-features" style="margin-top: 1rem;">
+                        <div class="feature-card">
+                            <h4 style="color: #D32F2F;">Sobreajuste (Overfitting)</h4>
+                            <p>
+                                La red memoriza los datos de entrenamiento en lugar de aprender patrones generales.
+                                Funciona muy bien en entrenamiento pero mal en datos nuevos.
+                            </p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <strong>Soluciones:</strong> Dropout, regularización L1/L2, más datos de entrenamiento,
+                                data augmentation
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 style="color: #D32F2F;">Gradientes Desvanecientes</h4>
+                            <p>
+                                En redes profundas, los gradientes se vuelven extremadamente pequeños al retropropagarse,
+                                haciendo que las capas iniciales no aprendan.
+                            </p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <strong>Soluciones:</strong> Usar ReLU, inicialización adecuada (Xavier/He), Batch
+                                Normalization, arquitecturas residuales (ResNet)
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 style="color: #D32F2F;">Gradientes Explosivos</h4>
+                            <p>
+                                Los gradientes crecen exponencialmente, causando que los pesos se actualicen de forma
+                                descontrolada (valores NaN o Inf).
+                            </p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <strong>Soluciones:</strong> Gradient clipping, tasas de aprendizaje más pequeñas,
+                                inicialización cuidadosa
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 style="color: #D32F2F;">Caja Negra</h4>
+                            <p>
+                                Las redes neuronales son difíciles de interpretar. No es claro por qué toman ciertas
+                                decisiones, lo que es problemático en dominios críticos (medicina, finanzas).
+                            </p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <strong>Soluciones:</strong> XAI (Explainable AI), LIME, SHAP, visualización de
+                                activaciones, attention maps
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: FRAMEWORKS Y HERRAMIENTAS -->
+            <section class="section">
+                <h2 class="section-title">🛠️ Frameworks y Herramientas Populares</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #FF6F00;">TensorFlow / Keras</h4>
+                        <p style="font-size: 0.9rem;">
+                            Framework de código abierto desarrollado por Google. Keras ofrece una API de alto nivel
+                            sobre TensorFlow.
+                        </p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>Ecosistema completo: TensorFlow Lite (móviles), TensorFlow.js (web)</li>
+                            <li>Ideal para producción a gran escala</li>
+                            <li>Excelente documentación y comunidad</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #EE4C2C;">PyTorch</h4>
+                        <p style="font-size: 0.9rem;">
+                            Framework desarrollado por Meta (Facebook). Muy popular en investigación por su flexibilidad
+                            y estilo "pythónico".
+                        </p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>Grafos de computación dinámicos</li>
+                            <li>Depuración más intuitiva</li>
+                            <li>Preferido en entornos académicos</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #76B900;">scikit-learn</h4>
+                        <p style="font-size: 0.9rem;">
+                            Biblioteca de machine learning clásico, incluye implementaciones de redes neuronales simples
+                            (MLPClassifier).
+                        </p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>Ideal para problemas pequeños/medianos</li>
+                            <li>Interfaz consistente y simple</li>
+                            <li>No optimizado para deep learning</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #00C4CC;">JAX</h4>
+                        <p style="font-size: 0.9rem;">
+                            Framework de Google para computación numérica de alto rendimiento, usado en investigación
+                            avanzada de ML.
+                        </p>
+                        <ul style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <li>Diferenciación automática avanzada</li>
+                            <li>Compilación XLA para aceleración</li>
+                            <li>Ideal para investigación cutting-edge</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 9: CONCLUSIÓN -->
+            <section class="section">
+                <h2 class="section-title">🎯 Conclusión</h2>
+                <div class="highlight-box" style="border-left: 5px solid #4CAF50;">
+                    <p style="font-size: 1.05rem; line-height: 1.8;">
+                        Las <strong>redes neuronales artificiales</strong> han revolucionado campos como la visión por
+                        computadora, el procesamiento del lenguaje natural y los sistemas de recomendación. Su capacidad
+                        para aprender representaciones jerárquicas de datos las convierte en herramientas extremadamente
+                        poderosas.
+                    </p>
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 1rem;">
+                        Sin embargo, requieren grandes cantidades de datos, recursos computacionales significativos y un
+                        ajuste cuidadoso de hiperparámetros. Además, su naturaleza de "caja negra" plantea desafíos
+                        éticos y prácticos en aplicaciones críticas.
+                    </p>
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 1rem;">
+                        El futuro del deep learning pasa por redes más eficientes, interpretables y que requieran menos
+                        datos para entrenarse, acercándose más a cómo aprenden los humanos.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

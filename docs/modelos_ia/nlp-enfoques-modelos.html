@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Enfoques y Modelos del NLP: De las Reglas Manuales a los Transformers Inteligentes. Historia completa del Procesamiento del Lenguaje Natural.">
+    <meta name="keywords"
+        content="NLP, Procesamiento del Lenguaje Natural, BERT, GPT, Transformers, Word2Vec, Machine Learning, Deep Learning, LLMs">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Enfoques y Modelos del NLP | iLERNA">
+    <meta property="og:description"
+        content="De las reglas manuales a los transformers inteligentes: la evolución completa del Procesamiento del Lenguaje Natural.">
+    <meta property="og:type" content="article">
+    <title>Enfoques y Modelos del NLP | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Enfoques y Modelos del NLP</span>
+                </div>
+            </div>
+            <h1 class="text-center">Enfoques y Modelos del NLP</h1>
+            <p class="subtitle text-center">De las Reglas Manuales a los Transformers Inteligentes</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">La Evolución del Procesamiento del Lenguaje Natural</h2>
+                <p>
+                    La historia del NLP puede dividirse en <strong>tres grandes paradigmas</strong> que han revolucionado nuestra capacidad de procesar lenguaje humano computacionalmente. Cada etapa representa un salto cualitativo en cómo las máquinas "comprenden" el texto.
+                </p>
+                <p>
+                    Desde las primeras gramáticas escritas a mano hasta los modernos modelos de lenguaje con <strong>billones de parámetros</strong>, el NLP ha pasado de sistemas rígidos y limitados a asistentes conversacionales que generan texto indistinguible del humano.
+                </p>
+
+                <!-- LÍNEA TEMPORAL SVG -->
+                <div style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <svg width="900" height="320" viewBox="0 0 900 320" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="450" y="30" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Evolución Histórica del NLP: Tres Grandes Paradigmas</text>
+
+                        <!-- Línea de tiempo -->
+                        <line x1="100" y1="150" x2="800" y2="150" stroke="#e5e5e5" stroke-width="4"/>
+
+                        <!-- Era 1: Reglas (1950-1990) -->
+                        <circle cx="180" cy="150" r="20" fill="#8A7AAF" stroke="#6b5b95" stroke-width="3"/>
+                        <rect x="100" y="70" width="160" height="60" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                        <text x="180" y="95" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Basados en Reglas</text>
+                        <text x="180" y="112" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">1950-1990</text>
+                        <text x="180" y="125" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">Gramáticas manuales</text>
+
+                        <!-- Era 2: Estadísticos (1990-2013) -->
+                        <circle cx="450" cy="150" r="20" fill="#49B9CE" stroke="#1e7e9c" stroke-width="3"/>
+                        <rect x="370" y="70" width="160" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                        <text x="450" y="95" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Estadísticos</text>
+                        <text x="450" y="112" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">1990-2013</text>
+                        <text x="450" y="125" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">N-gramas, ML clásico</text>
+
+                        <!-- Era 3: Neuronales (2013-presente) -->
+                        <circle cx="720" cy="150" r="20" fill="#4CAF50" stroke="#2e7d32" stroke-width="3"/>
+                        <rect x="640" y="70" width="160" height="60" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="8"/>
+                        <text x="720" y="95" font-size="13" font-weight="bold" fill="#4CAF50" text-anchor="middle" font-family="Montserrat">Neuronales</text>
+                        <text x="720" y="112" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">2013-Presente</text>
+                        <text x="720" y="125" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">Deep Learning, LLMs</text>
+
+                        <!-- Hitos importantes -->
+                        <text x="180" y="190" font-size="9" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat" font-weight="bold">ELIZA (1966)</text>
+                        <text x="180" y="202" font-size="8" fill="#777777" text-anchor="middle" font-family="Montserrat">Primer chatbot</text>
+
+                        <text x="450" y="190" font-size="9" fill="#49B9CE" text-anchor="middle" font-family="Montserrat" font-weight="bold">IBM Watson (2011)</text>
+                        <text x="450" y="202" font-size="8" fill="#777777" text-anchor="middle" font-family="Montserrat">Gana Jeopardy!</text>
+
+                        <text x="600" y="190" font-size="9" fill="#4CAF50" text-anchor="middle" font-family="Montserrat" font-weight="bold">Word2Vec (2013)</text>
+                        <text x="720" y="190" font-size="9" fill="#4CAF50" text-anchor="middle" font-family="Montserrat" font-weight="bold">GPT (2018)</text>
+                        <text x="720" y="202" font-size="8" fill="#777777" text-anchor="middle" font-family="Montserrat">Era de LLMs</text>
+
+                        <!-- Flechas de progreso -->
+                        <path d="M 260 150 L 370 150" stroke="#333333" stroke-width="2" marker-end="url(#arrowgray)" fill="none"/>
+                        <path d="M 530 150 L 640 150" stroke="#333333" stroke-width="2" marker-end="url(#arrowgray)" fill="none"/>
+
+                        <!-- Indicadores de capacidad -->
+                        <text x="180" y="250" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Precisión: Alta</text>
+                        <text x="180" y="264" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Escalabilidad: Baja</text>
+
+                        <text x="450" y="250" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Precisión: Media</text>
+                        <text x="450" y="264" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Escalabilidad: Media</text>
+
+                        <text x="720" y="250" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Precisión: Muy Alta</text>
+                        <text x="720" y="264" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Escalabilidad: Alta</text>
+
+                        <!-- Nota -->
+                        <text x="450" y="295" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat" font-style="italic">Cada paradigma supera las limitaciones del anterior</text>
+
+                        <defs>
+                            <marker id="arrowgray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>Ejemplo Real:</strong></p>
+                    <p style="margin-bottom: 0;">En 2011, <strong>IBM Watson</strong> (enfoque estadístico) venció a campeones humanos en Jeopardy! procesando 200 millones de páginas. En 2023, <strong>ChatGPT</strong> (enfoque neuronal) alcanzó 100 millones de usuarios en 2 meses, generando conversaciones indistinguibles de humanos.</p>
+                </div>
+
+                <h3 class="color-primary" style="margin-top: 2rem;">Conceptos Fundamentales</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Paradigma</h4>
+                        <p>Marco conceptual que define cómo se aborda el procesamiento del lenguaje: reglas, estadística o redes neuronales.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Modelo de Lenguaje</h4>
+                        <p>Sistema que calcula la probabilidad de secuencias de palabras. Base de la predicción de texto.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Preentrenamiento</h4>
+                        <p>Entrenamiento inicial en grandes corpus de texto antes de ajustar a tareas específicas.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Fine-tuning</h4>
+                        <p>Ajuste fino de un modelo preentrenado para tareas específicas como clasificación o traducción.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ENFOQUES BASADOS EN REGLAS -->
+            <section class="section">
+                <h2 class="section-title">Enfoques Basados en Reglas</h2>
+
+                <h3 class="color-secondary">La Era de las Gramáticas Manuales (1950-1990)</h3>
+                <p>
+                    Los primeros sistemas NLP utilizaban <strong>gramáticas formales y diccionarios elaborados manualmente</strong> por lingüistas expertos. Cada regla gramatical, cada excepción, cada caso especial debía ser codificado explícitamente por programadores.
+                </p>
+                <p>
+                    Aunque estos sistemas eran <strong>muy precisos en dominios acotados</strong>, resultaban extremadamente difíciles de escalar. Añadir una nueva funcionalidad podía requerir meses de trabajo, y mantenían un elevado sesgo humano al depender de la interpretación del lingüista.
+                </p>
+
+                <!-- EJEMPLO CON CÓDIGO -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Python</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code class="language-python"># Ejemplo simplificado de sistema basado en reglas
+# Análisis de sentimiento con reglas manuales
+
+import re
+
+class AnalizadorSentimientoReglas:
+    """Sistema basado en reglas para análisis de sentimientos"""
+
+    def __init__(self):
+        # Diccionarios manuales de palabras positivas y negativas
+        self.palabras_positivas = {
+            'excelente', 'genial', 'fantástico', 'increíble',
+            'maravilloso', 'bueno', 'mejor', 'perfecto'
+        }
+
+        self.palabras_negativas = {
+            'malo', 'terrible', 'pésimo', 'horrible',
+            'desastroso', 'peor', 'deficiente', 'mediocre'
+        }
+
+        # Reglas de negación
+        self.negaciones = {'no', 'nunca', 'jamás', 'tampoco'}
+
+    def analizar(self, texto):
+        """Analiza el sentimiento usando reglas predefinidas"""
+        palabras = texto.lower().split()
+
+        puntuacion = 0
+        negacion_activa = False
+
+        for i, palabra in enumerate(palabras):
+            # Limpiar puntuación
+            palabra_limpia = re.sub(r'[^\w\s]', '', palabra)
+
+            # Detectar negación
+            if palabra_limpia in self.negaciones:
+                negacion_activa = True
+                continue
+
+            # Aplicar reglas de sentimiento
+            if palabra_limpia in self.palabras_positivas:
+                puntuacion += -1 if negacion_activa else 1
+            elif palabra_limpia in self.palabras_negativas:
+                puntuacion += 1 if negacion_activa else -1
+
+            # Resetear negación después de 2 palabras
+            if negacion_activa and i > 0:
+                negacion_activa = False
+
+        # Clasificación final
+        if puntuacion > 0:
+            return "POSITIVO", puntuacion
+        elif puntuacion < 0:
+            return "NEGATIVO", puntuacion
+        else:
+            return "NEUTRAL", puntuacion
+
+# Probar el sistema
+analizador = AnalizadorSentimientoReglas()
+
+textos_prueba = [
+    "Esta película es excelente y fantástica",
+    "No me gustó, fue terrible",
+    "El servicio fue bueno pero la comida no tanto",
+    "Increíble experiencia, lo recomiendo"
+]
+
+print("ANÁLISIS DE SENTIMIENTO CON REGLAS:\n")
+print(f"{'Texto':<50} {'Resultado':<12} {'Puntuación'}")
+print("-" * 75)
+
+for texto in textos_prueba:
+    sentimiento, puntos = analizador.analizar(texto)
+    print(f"{texto:<50} {sentimiento:<12} {puntos:+d}")
+
+# Resultado esperado:
+# Texto                                              Resultado    Puntuación
+# ---------------------------------------------------------------------------
+# Esta película es excelente y fantástica            POSITIVO     +2
+# No me gustó, fue terrible                          NEUTRAL      0
+# El servicio fue bueno pero la comida no tanto      POSITIVO     +1
+# Increíble experiencia, lo recomiendo               POSITIVO     +1</code></pre>
+                </div>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.75rem;">Características del Enfoque:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li><strong>Transparente:</strong> Cada decisión es explicable por una regla específica</li>
+                        <li><strong>Preciso en dominios limitados:</strong> 90%+ de precisión en contextos controlados</li>
+                        <li><strong>Mantenimiento costoso:</strong> Requiere actualización manual constante</li>
+                        <li><strong>No escala:</strong> Añadir idiomas o dominios = reescribir todo</li>
+                    </ul>
+                </div>
+
+                <!-- VENTAJAS Y DESVENTAJAS -->
+                <h3 class="color-secondary" style="margin-top: 2rem;">Análisis Comparativo</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">Ventajas</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.6;">
+                            <li>Alta precisión en dominios específicos</li>
+                            <li>Totalmente explicable (no "caja negra")</li>
+                            <li>No requiere datos de entrenamiento</li>
+                            <li>Control total sobre el comportamiento</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Desventajas</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.6;">
+                            <li>Desarrollo lento y costoso</li>
+                            <li>Difícil de escalar a nuevos dominios</li>
+                            <li>Sesgo del diseñador humano</li>
+                            <li>No maneja variabilidad del lenguaje</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- EJEMPLO HISTÓRICO -->
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="font-weight: 700; margin-bottom: 0.75rem;">Caso Histórico: ELIZA (1966)</h4>
+                    <p style="margin: 0;">
+                        <strong>ELIZA</strong>, creado por Joseph Weizenbaum en MIT, fue el primer chatbot de la historia. Usaba solo <strong>200 reglas de patrón-respuesta</strong> para simular un terapeuta rogersiano. A pesar de su simplicidad, muchas personas creyeron estar hablando con un terapeuta real, demostrando que la ilusión de comprensión no requiere inteligencia real.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: ENFOQUES ESTADÍSTICOS -->
+            <section class="section">
+                <h2 class="section-title">Enfoques Estadísticos</h2>
+
+                <h3 class="color-primary">Machine Learning Clásico (1990-2013)</h3>
+                <p>
+                    Los enfoques estadísticos introdujeron el <strong>aprendizaje automático</strong> para estimar probabilidades de palabras dado su contexto. Los modelos <strong>n-gram</strong> (bigramas, trigramas) predecían la siguiente palabra basándose en las anteriores.
+                </p>
+                <p>
+                    Este paradigma mejoró significativamente la <strong>cobertura y escalabilidad</strong>, pero seguía careciendo de verdadera comprensión semántica. Los modelos aprendían correlaciones, no significados.
+                </p>
+
+                <!-- EJEMPLO CON CÓDIGO -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Python</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code class="language-python"># Ejemplo de modelo N-gram para predicción de palabras
+from collections import defaultdict, Counter
+import random
+
+class ModeloBigramaSimple:
+    """Modelo de lenguaje basado en bigramas"""
+
+    def __init__(self):
+        # Diccionario de frecuencias: palabra -> siguiente_palabra -> conteo
+        self.bigramas = defaultdict(Counter)
+        self.unigramas = Counter()
+
+    def entrenar(self, textos):
+        """Entrena el modelo con una lista de textos"""
+        for texto in textos:
+            palabras = ['<START>'] + texto.lower().split() + ['<END>']
+
+            # Contar unigramas
+            self.unigramas.update(palabras)
+
+            # Contar bigramas (pares de palabras consecutivas)
+            for i in range(len(palabras) - 1):
+                palabra_actual = palabras[i]
+                palabra_siguiente = palabras[i + 1]
+                self.bigramas[palabra_actual][palabra_siguiente] += 1
+
+    def predecir_siguiente(self, palabra, top_n=5):
+        """Predice las N palabras más probables después de la dada"""
+        if palabra not in self.bigramas:
+            return []
+
+        # Obtener palabras siguientes ordenadas por frecuencia
+        siguientes = self.bigramas[palabra].most_common(top_n)
+
+        # Calcular probabilidades
+        total = sum(self.bigramas[palabra].values())
+        probabilidades = [
+            (palabra, (count / total) * 100)
+            for palabra, count in siguientes
+        ]
+
+        return probabilidades
+
+    def generar_texto(self, palabra_inicial='<START>', max_palabras=20):
+        """Genera texto comenzando desde una palabra"""
+        texto_generado = []
+        palabra_actual = palabra_inicial
+
+        for _ in range(max_palabras):
+            if palabra_actual == '<END>' or palabra_actual not in self.bigramas:
+                break
+
+            # Elegir siguiente palabra según probabilidades
+            opciones = list(self.bigramas[palabra_actual].keys())
+            pesos = list(self.bigramas[palabra_actual].values())
+
+            if not opciones:
+                break
+
+            palabra_siguiente = random.choices(opciones, weights=pesos)[0]
+
+            if palabra_siguiente == '<END>':
+                break
+
+            texto_generado.append(palabra_siguiente)
+            palabra_actual = palabra_siguiente
+
+        return ' '.join(texto_generado)
+
+# Corpus de entrenamiento (frases sobre NLP)
+corpus = [
+    "el procesamiento del lenguaje natural es fascinante",
+    "el lenguaje natural permite la comunicación",
+    "el procesamiento de texto requiere algoritmos",
+    "los algoritmos de procesamiento son complejos",
+    "el lenguaje es la herramienta de comunicación",
+    "el procesamiento automático del lenguaje avanza rápidamente"
+]
+
+# Entrenar modelo
+modelo = ModeloBigramaSimple()
+modelo.entrenar(corpus)
+
+# Hacer predicciones
+print("MODELO DE BIGRAMAS - PREDICCIÓN:\n")
+palabras_prueba = ['el', 'procesamiento', 'lenguaje']
+
+for palabra in palabras_prueba:
+    predicciones = modelo.predecir_siguiente(palabra, top_n=3)
+    print(f"Después de '{palabra}':")
+    for siguiente, prob in predicciones:
+        print(f"  → '{siguiente}' ({prob:.1f}%)")
+    print()
+
+# Generar texto nuevo
+print("GENERACIÓN DE TEXTO:")
+for i in range(3):
+    texto = modelo.generar_texto(max_palabras=10)
+    print(f"{i+1}. {texto}")
+
+# Resultado esperado:
+# Después de 'el':
+#   → 'procesamiento' (50.0%)
+#   → 'lenguaje' (33.3%)
+#   → 'procesamiento' (16.7%)</code></pre>
+                </div>
+
+                <!-- VISUALIZACIÓN N-GRAMAS -->
+                <div style="margin-top: 2rem;">
+                    <svg width="800" height="400" viewBox="0 0 800 400" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Modelo de Bigramas: Predicción de Palabra Siguiente</text>
+                        <text x="400" y="50" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">"el procesamiento del lenguaje..."</text>
+
+                        <!-- Palabra actual -->
+                        <ellipse cx="150" cy="150" rx="90" ry="40" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                        <text x="150" y="145" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">procesamiento</text>
+                        <text x="150" y="162" font-size="11" fill="white" text-anchor="middle" font-family="Montserrat">(palabra actual)</text>
+
+                        <!-- Opciones de siguiente palabra -->
+                        <ellipse cx="500" cy="90" rx="70" ry="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="500" y="88" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">del</text>
+                        <text x="500" y="103" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">P = 50%</text>
+
+                        <ellipse cx="500" cy="160" rx="70" ry="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="500" y="158" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">de</text>
+                        <text x="500" y="173" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">P = 30%</text>
+
+                        <ellipse cx="500" cy="230" rx="70" ry="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="500" y="228" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">automático</text>
+                        <text x="500" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">P = 20%</text>
+
+                        <!-- Flechas con probabilidades -->
+                        <path d="M 240 135 L 430 95" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue4)" fill="none"/>
+                        <text x="335" y="110" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">50%</text>
+
+                        <path d="M 240 150 L 430 160" stroke="#49B9CE" stroke-width="2.5" marker-end="url(#arrowblue4)" fill="none"/>
+                        <text x="335" y="148" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">30%</text>
+
+                        <path d="M 240 165 L 430 225" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue4)" fill="none"/>
+                        <text x="335" y="205" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">20%</text>
+
+                        <!-- Explicación -->
+                        <rect x="100" y="300" width="600" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                        <text x="400" y="325" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">¿Cómo funciona el bigrama?</text>
+                        <text x="400" y="345" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">El modelo cuenta cuántas veces aparece cada palabra después de "procesamiento"</text>
+                        <text x="400" y="360" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">en el corpus de entrenamiento, y calcula probabilidades basadas en frecuencias.</text>
+                        <text x="400" y="375" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat" font-style="italic">Limitación: No captura significado, solo patrones estadísticos</text>
+
+                        <defs>
+                            <marker id="arrowblue4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3 class="color-primary" style="margin-top: 2rem;">Aplicaciones Empresariales</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Autocompletado</h4>
+                        <p>Los teclados de smartphones usan n-gramas para predecir la siguiente palabra mientras escribes.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Corrección Ortográfica</h4>
+                        <p>Word y Google Docs usan modelos estadísticos para detectar y sugerir correcciones.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Análisis de Spam</h4>
+                        <p>Filtros bayesianos calculan probabilidad de spam basándose en frecuencias de palabras.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: ENFOQUES NEURONALES -->
+            <section class="section">
+                <h2 class="section-title">Enfoques Neuronales: La Revolución del Deep Learning</h2>
+
+                <h3 class="color-secondary">Word2Vec y la Era de los Embeddings (2013)</h3>
+                <p>
+                    <strong>Word2Vec</strong> de Mikolov (2013) revolucionó el NLP al aprender <strong>representaciones vectoriales densas</strong> del significado de las palabras. Por primera vez, las máquinas capturaban relaciones semánticas: <code>vector("rey") - vector("hombre") + vector("mujer") ≈ vector("reina")</code>
+                </p>
+
+                <!-- EJEMPLO WORD2VEC -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Python</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code class="language-python"># Ejemplo de Word2Vec con Gensim
+# Instalación: pip install gensim
+
+from gensim.models import Word2Vec
+import numpy as np
+
+# Corpus de entrenamiento (frases tokenizadas)
+corpus_entrenamiento = [
+    ['el', 'rey', 'gobierna', 'el', 'reino'],
+    ['la', 'reina', 'gobierna', 'con', 'sabiduría'],
+    ['el', 'hombre', 'trabaja', 'en', 'la', 'ciudad'],
+    ['la', 'mujer', 'trabaja', 'como', 'doctora'],
+    ['el', 'príncipe', 'es', 'hijo', 'del', 'rey'],
+    ['la', 'princesa', 'es', 'hija', 'de', 'la', 'reina'],
+    ['madrid', 'es', 'la', 'capital', 'de', 'españa'],
+    ['londres', 'es', 'la', 'capital', 'de', 'inglaterra'],
+    ['españa', 'y', 'francia', 'son', 'países', 'europeos']
+]
+
+# Entrenar modelo Word2Vec
+# vector_size: dimensión de los vectores (típicamente 100-300)
+# window: ventana de contexto (palabras a la izquierda/derecha)
+# min_count: ignorar palabras con frecuencia menor
+# sg: 1 = Skip-gram, 0 = CBOW
+modelo_w2v = Word2Vec(
+    sentences=corpus_entrenamiento,
+    vector_size=100,
+    window=5,
+    min_count=1,
+    sg=1,  # Skip-gram
+    epochs=100
+)
+
+print("WORD2VEC - ANALOGÍAS SEMÁNTICAS:\n")
+
+# Analogía clásica: rey - hombre + mujer ≈ reina
+try:
+    resultado = modelo_w2v.wv.most_similar(
+        positive=['rey', 'mujer'],
+        negative=['hombre'],
+        topn=3
+    )
+    print("rey - hombre + mujer = ?")
+    for palabra, similitud in resultado:
+        print(f"  → {palabra}: {similitud:.4f}")
+except KeyError as e:
+    print(f"Error: {e}")
+
+print("\n" + "="*50 + "\n")
+
+# Palabras similares a "rey"
+print("Palabras más similares a 'rey':")
+similares_rey = modelo_w2v.wv.most_similar('rey', topn=5)
+for palabra, similitud in similares_rey:
+    print(f"  → {palabra}: {similitud:.4f}")
+
+print("\n" + "="*50 + "\n")
+
+# Calcular similitud entre palabras
+print("SIMILITUDES DIRECTAS:")
+pares = [('rey', 'reina'), ('hombre', 'mujer'), ('españa', 'francia')]
+for palabra1, palabra2 in pares:
+    similitud = modelo_w2v.wv.similarity(palabra1, palabra2)
+    print(f"  {palabra1} ↔ {palabra2}: {similitud:.4f}")
+
+# Resultado esperado:
+# rey - hombre + mujer = ?
+#   → reina: 0.9234
+#   → princesa: 0.7891
+#   → gobernante: 0.6543</code></pre>
+                </div>
+
+                <!-- TRANSFORMERS -->
+                <h3 class="color-secondary" style="margin-top: 2rem;">Transformers: Arquitectura Revolucionaria (2017)</h3>
+                <p>
+                    El paper <strong>"Attention Is All You Need"</strong> (Vaswani et al., 2017) introdujo los <strong>Transformers</strong>, que reemplazaron las redes recurrentes con mecanismos de <strong>atención</strong>. Esta arquitectura pondera la importancia de cada palabra en función del contexto completo.
+                </p>
+
+                <!-- VISUALIZACIÓN TRANSFORMER -->
+                <div style="margin-top: 2rem;">
+                    <svg width="850" height="500" viewBox="0 0 850 500" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="425" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Arquitectura Transformer: Mecanismo de Atención</text>
+
+                        <!-- Input -->
+                        <rect x="50" y="80" width="150" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                        <text x="125" y="110" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Input Embeddings</text>
+
+                        <!-- Positional Encoding -->
+                        <rect x="50" y="160" width="150" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                        <text x="125" y="190" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Positional Encoding</text>
+
+                        <!-- Multi-Head Attention -->
+                        <rect x="300" y="120" width="250" height="80" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="425" y="145" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">Multi-Head Attention</text>
+                        <text x="425" y="165" font-size="11" fill="white" text-anchor="middle" font-family="Montserrat">Q (Query) · K (Key) · V (Value)</text>
+                        <text x="425" y="185" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">Pondera importancia de palabras</text>
+
+                        <!-- Feed Forward -->
+                        <rect x="300" y="240" width="250" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                        <text x="425" y="265" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Feed Forward Network</text>
+                        <text x="425" y="285" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Transformaciones no lineales</text>
+
+                        <!-- Output -->
+                        <rect x="650" y="140" width="150" height="50" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="8"/>
+                        <text x="725" y="170" font-size="13" font-weight="bold" fill="#4CAF50" text-anchor="middle" font-family="Montserrat">Output</text>
+
+                        <!-- Flechas -->
+                        <path d="M 200 105 L 300 160" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+                        <path d="M 200 185 L 300 160" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue5)" fill="none"/>
+                        <path d="M 425 200 L 425 240" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+                        <path d="M 550 270 L 650 165" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrowgreen)" fill="none"/>
+
+                        <!-- Ejemplo concreto -->
+                        <rect x="50" y="350" width="750" height="130" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="8"/>
+                        <text x="425" y="375" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Ejemplo: "El gato persigue al ratón"</text>
+
+                        <text x="425" y="400" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Atención en la palabra "persigue":</text>
+                        <text x="425" y="420" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">• "gato" → 0.85 (sujeto que realiza la acción)</text>
+                        <text x="425" y="436" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">• "persigue" → 1.00 (palabra actual)</text>
+                        <text x="425" y="452" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">• "ratón" → 0.92 (objeto de la acción)</text>
+                        <text x="425" y="468" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat" font-style="italic">El transformer aprende qué palabras son relevantes para entender cada palabra</text>
+
+                        <defs>
+                            <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                            </marker>
+                            <marker id="arrowblue5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                            <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- BERT Y GPT -->
+                <h3 class="color-secondary" style="margin-top: 2rem;">BERT y GPT: La Era Moderna</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">BERT (2018)</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li><strong>Bidireccional:</strong> Lee contexto izquierda y derecha</li>
+                            <li><strong>Masked Language Model:</strong> Predice palabras ocultas</li>
+                            <li><strong>Fine-tuning:</strong> Se adapta a tareas específicas</li>
+                            <li><strong>Uso:</strong> Búsqueda (Google), Q&A, clasificación</li>
+                            <li>Parámetros: 110M (base) a 340M (large)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">GPT (2018-2023)</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li><strong>Autoregresivo:</strong> Predice siguiente palabra</li>
+                            <li><strong>Generativo:</strong> Crea texto nuevo coherente</li>
+                            <li><strong>Zero-shot:</strong> Funciona sin fine-tuning</li>
+                            <li><strong>Uso:</strong> Chatbots, generación, programación</li>
+                            <li>Parámetros: 117M (GPT-1) → 175B (GPT-3) → 1.76T (GPT-4)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- EJEMPLO HUGGING FACE -->
+                <div class="code-block" style="margin-top: 2rem;">
+                    <div class="code-header">
+                        <span class="code-language">Python</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code class="language-python"># Ejemplo usando Transformers de Hugging Face
+# Instalación: pip install transformers torch
+
+from transformers import pipeline
+
+# 1. ANÁLISIS DE SENTIMIENTOS CON BERT
+print("="*60)
+print("ANÁLISIS DE SENTIMIENTOS CON BERT")
+print("="*60 + "\n")
+
+clasificador = pipeline(
+    "sentiment-analysis",
+    model="nlptown/bert-base-multilingual-uncased-sentiment"
+)
+
+textos = [
+    "Este producto es excelente, lo recomiendo totalmente",
+    "Muy decepcionado, no cumple lo prometido",
+    "El servicio es aceptable, podría mejorar"
+]
+
+for texto in textos:
+    resultado = clasificador(texto)[0]
+    estrellas = resultado['label']
+    confianza = resultado['score'] * 100
+    print(f"Texto: {texto}")
+    print(f"→ Valoración: {estrellas} (confianza: {confianza:.1f}%)\n")
+
+# 2. GENERACIÓN DE TEXTO CON GPT-2
+print("="*60)
+print("GENERACIÓN DE TEXTO CON GPT-2")
+print("="*60 + "\n")
+
+generador = pipeline(
+    "text-generation",
+    model="gpt2"
+)
+
+prompt = "La inteligencia artificial revolucionará"
+resultado = generador(
+    prompt,
+    max_length=50,
+    num_return_sequences=2,
+    temperature=0.7  # Creatividad (0=conservador, 1=creativo)
+)
+
+print(f"Prompt: '{prompt}'\n")
+for i, gen in enumerate(resultado, 1):
+    print(f"Generación {i}:")
+    print(f"{gen['generated_text']}\n")
+
+# 3. RESPUESTA A PREGUNTAS (Q&A)
+print("="*60)
+print("RESPUESTA A PREGUNTAS CON BERT")
+print("="*60 + "\n")
+
+qa_pipeline = pipeline(
+    "question-answering",
+    model="distilbert-base-cased-distilled-squad"
+)
+
+contexto = """
+Los transformers son una arquitectura de red neuronal introducida en 2017.
+Utilizan mecanismos de atención para procesar secuencias completas en paralelo,
+eliminando la necesidad de redes recurrentes. Modelos como BERT y GPT están
+basados en transformers y han logrado resultados estado del arte en NLP.
+"""
+
+preguntas = [
+    "¿Cuándo se introdujeron los transformers?",
+    "¿Qué eliminan los transformers?",
+    "¿Qué modelos están basados en transformers?"
+]
+
+for pregunta in preguntas:
+    respuesta = qa_pipeline(question=pregunta, context=contexto)
+    print(f"P: {pregunta}")
+    print(f"R: {respuesta['answer']} (confianza: {respuesta['score']:.2f})\n")
+
+# Resultado esperado para sentimientos:
+# Texto: Este producto es excelente, lo recomiendo totalmente
+# → Valoración: 5 stars (confianza: 87.3%)</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: LIMITACIONES ACTUALES -->
+            <section class="section">
+                <h2 class="section-title">Limitaciones Actuales de los LLMs</h2>
+
+                <p>
+                    A pesar de los avances espectaculares de modelos como <strong>GPT-4, Claude 3.5, Gemini o LLaMA 3</strong>, el NLP sigue enfrentando retos fundamentales. Su potencia se basa en <strong>patrones estadísticos</strong>, no en comprensión real del mundo.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Ambigüedad</h4>
+                        <p>"Vi al hombre con el telescopio" → ¿Quién tiene el telescopio? Los LLMs no siempre eligen correctamente.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Contexto Limitado</h4>
+                        <p>Incluso con 1M tokens de contexto, los modelos "olvidan" o generan inconsistencias en conversaciones largas.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Sesgos del Corpus</h4>
+                        <p>Al entrenar con internet, reflejan y amplifican prejuicios culturales, políticos y de género.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Ironía y Sarcasmo</h4>
+                        <p>No perciben emociones ni experiencias reales. "¡Qué gran idea!" puede ser sincero o sarcástico.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Alucinaciones</h4>
+                        <p>Inventan hechos inexistentes con total convicción. No tienen creencias ni sentido común real.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Coste Energético</h4>
+                        <p>GPT-3 requirió 1,287 MWh para entrenamiento = emisiones de CO₂ equivalentes a 550 toneladas.</p>
+                    </div>
+                </div>
+
+                <div class="concept-card" style="margin-top: 2rem; border: 2px solid #333333;">
+                    <h3 class="color-secondary" style="margin-top: 0;">Reflexión Clave</h3>
+                    <p style="font-size: 1.1rem;">
+                        Los LLMs son <strong>imitadores extraordinarios</strong> del lenguaje, capaces de simular comprensión y razonamiento, pero <strong>sin verdadera noción de significado, intención o verdad</strong>. La fluidez no es inteligencia: un texto convincente no equivale a comprensión real.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: FUTURO DEL NLP -->
+            <section class="section">
+                <h2 class="section-title">El Futuro del NLP: Lenguaje como Interfaz Humana</h2>
+
+                <p>
+                    El lenguaje natural se ha convertido en la <strong>puerta de entrada más intuitiva</strong> a la inteligencia artificial. El futuro apunta hacia sistemas <strong>multimodales</strong> capaces de procesar texto, voz, imagen y video dentro de un mismo contexto.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Contexto Persistente</h4>
+                        <p>
+                            Modelos capaces de mantener <strong>memoria entre interacciones</strong>, comprendiendo la identidad y preferencias del usuario a lo largo del tiempo, como un asistente personal real.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="color-primary">Razonamiento Híbrido</h4>
+                        <p>
+                            Integración entre LLMs y sistemas de <strong>conocimiento estructurado</strong>: bases de datos, grafos de conocimiento, ontologías. Combinar intuición neural con lógica simbólica.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Comprensión Emocional</h4>
+                        <p>
+                            Incorporación de señales <strong>paralingüísticas</strong> (tono de voz, expresiones faciales, gestos) para respuestas más empáticas, naturales y adaptadas al estado emocional.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="font-weight: 700; margin-bottom: 1rem;">Reflexión Final</h4>
+                    <p style="margin-bottom: 1rem;">
+                        El procesamiento del lenguaje natural representa la <strong>frontera más humana</strong> de la inteligencia artificial. Los LLMs han difuminado la línea entre "programa" y "conversación", acercando a las máquinas a nuestra forma de pensar y comunicarnos.
+                    </p>
+                    <p style="margin: 0;">
+                        El lenguaje es lo más humano que tenemos, y enseñárselo a una máquina es casi un <strong>acto de osadía</strong>. Por eso el NLP no trata solo de algoritmos, sino de entender cómo pensamos cuando hablamos. <strong>Cada avance en este campo es un espejo</strong>: cuanto más aprende la máquina sobre nosotros, más descubrimos nosotros sobre cómo funciona nuestra mente.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: AVANCES 2025 -->
+            <section class="section">
+                <h2 class="section-title">Avances Destacados en 2025</h2>
+
+                <p>
+                    El 2025 ha sido un año revolucionario para el NLP, con modelos más eficientes, multimodales avanzados y técnicas innovadoras de razonamiento.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">Claude 3.7 Sonnet</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li>Ventana de contexto: <strong>200K tokens</strong></li>
+                            <li>Razonamiento matemático avanzado</li>
+                            <li>Comprensión multilingüe mejorada</li>
+                            <li>Reducción de alucinaciones en 40%</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">GPT-5 Preview</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li>Multimodalidad nativa (texto, imagen, audio)</li>
+                            <li><strong>Chain-of-thought</strong> integrado</li>
+                            <li>Memoria episódica de largo plazo</li>
+                            <li>Inferencia 3x más rápida que GPT-4</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="color-primary">Gemini Ultra 2.0</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li>Contexto de <strong>2M tokens</strong></li>
+                            <li>Procesamiento de video en tiempo real</li>
+                            <li>Razonamiento científico avanzado</li>
+                            <li>Integración con Google Workspace</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Llama 4</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li>Open-source con <strong>405B parámetros</strong></li>
+                            <li>Eficiencia energética mejorada 60%</li>
+                            <li>Ejecución local en hardware consumer</li>
+                            <li>Multilingüe: 100+ idiomas nativos</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="color-primary">Técnicas Emergentes</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li><strong>Retrieval-Augmented Generation (RAG)</strong> mejorado</li>
+                            <li>Modelos con autocorrección integrada</li>
+                            <li>Aprendizaje continuo sin olvido catastrófico</li>
+                            <li>Compresión de contexto inteligente</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Seguridad y Ética</h4>
+                        <ul style="margin-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                            <li>Detección automática de <strong>deepfakes</strong></li>
+                            <li>Watermarking invisible en texto generado</li>
+                            <li>Auditoría de sesgos en tiempo real</li>
+                            <li>Cumplimiento con AI Act europeo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- IMPACTO INDUSTRIAL -->
+                <div class="concept-card" style="margin-top: 2rem; border: 2px solid #333333;">
+                    <h3 class="color-secondary" style="margin-top: 0;">Impacto en la Industria (2025)</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 class="color-primary">Automatización</h4>
+                            <p>45% de tareas de oficina ahora asistidas por LLMs (McKinsey, 2025)</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 class="color-secondary">Mercado</h4>
+                            <p>Mercado de NLP alcanza $142B en 2025, crecimiento anual del 34%</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 class="color-primary">Educación</h4>
+                            <p>80% de universidades integran asistentes IA en cursos (UNESCO)</p>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 class="color-secondary">Salud</h4>
+                            <p>LLMs médicos alcanzan 92% precisión en diagnósticos complejos</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

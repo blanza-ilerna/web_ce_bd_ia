@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoría de Árboles y DAGs | Estructuras Jerárquicas</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        /* Estilos específicos para visualizaciones SVG inline */
+        .svg-container {
+            border: 2px solid #e5e5e5;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background-color: #fafafa;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        @media (min-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+
+        <header class="hero">
+            <h1>🌳 DAG y Árboles</h1>
+            <p class="subtitle">Grafos Acíclicos Dirigidos y Estructuras Jerárquicas</p>
+            <p class="hero-description">Domina las estructuras fundamentales para Big Data, Machine Learning y sistemas distribuidos</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>¿Qué son los DAG y los Árboles?</h2>
+            </div>
+            <div class="theory-content">
+                <div class="theory-text">
+                    <p>Un <strong>DAG (Directed Acyclic Graph)</strong> o Grafo Acíclico Dirigido es una estructura de datos fundamental en ciencias de la computación que representa relaciones entre elementos mediante nodos conectados por aristas direccionales, con la restricción crítica de que <strong>no contiene ciclos</strong>. Esto significa que siguiendo las flechas nunca podemos volver al punto de partida.</p>
+                    <p>Los <strong>árboles</strong> son un caso especial de DAG donde cada nodo (excepto la raíz) tiene exactamente <strong>un único padre</strong>. Son las estructuras jerárquicas más utilizadas en programación, bases de datos y sistemas de archivos.</p>
+
+                    <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin: 1.5rem 0;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">💡 Ejemplo Real:</p>
+                        <p style="color: #555555; font-size: 1rem;">Apache Spark utiliza DAGs para representar el flujo de transformaciones de datos. Cada nodo representa una operación (map, filter, reduce) y las aristas muestran las dependencias. Facebook usa árboles para representar estructuras sociales y jerarquías de grupos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin: 2rem 0 1rem;">Conceptos Fundamentales</h3>
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">Nodo (Vértice)</h3>
+                    <p>Elemento fundamental que almacena datos. En árboles: raíz, nodos internos y hojas.</p>
+                </div>
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">Arista (Edge)</h3>
+                    <p>Conexión direccional entre nodos. Define relaciones padre-hijo o dependencias entre operaciones.</p>
+                </div>
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">Acíclico</h3>
+                    <p>Propiedad que garantiza que no existen caminos que regresen al nodo original. Esencial para evitar loops infinitos.</p>
+                </div>
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">Ordenamiento Topológico</h3>
+                    <p>Secuencia lineal de nodos donde cada nodo aparece antes que sus dependientes. Crucial para scheduling de tareas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZACIÓN DAG VS ÁRBOL -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>Diferencia Visual: DAG vs Árbol</h2>
+            </div>
+
+            <div class="comparison-grid">
+                <div>
+                    <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem;">🌳 Estructura de un Árbol</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem;">
+                        En un árbol, cada nodo (excepto la raíz) tiene <strong>exactamente un padre</strong>. Es la estructura más restrictiva pero también la más común.
+                    </p>
+
+                    <div class="svg-container">
+                        <svg width="100%" viewBox="0 0 700 350" style="max-width: 700px; height: auto; display: block; margin: 0 auto;">
+                            <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle">ÁRBOL: Cada nodo tiene un único padre</text>
+
+                            <circle cx="350" cy="60" r="25" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"/>
+                            <text x="350" y="67" font-size="14" font-weight="bold" fill="white" text-anchor="middle">A</text>
+                            <text x="350" y="105" font-size="11" fill="#8A7AAF" text-anchor="middle">RAÍZ</text>
+
+                            <line x1="350" y1="85" x2="200" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                            <line x1="350" y1="85" x2="350" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                            <line x1="350" y1="85" x2="500" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+
+                            <circle cx="200" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="200" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">B</text>
+
+                            <circle cx="350" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="350" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">C</text>
+
+                            <circle cx="500" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="500" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">D</text>
+
+                            <line x1="200" y1="182" x2="130" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                            <line x1="200" y1="182" x2="270" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                            <line x1="350" y1="182" x2="350" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+
+                            <circle cx="130" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="130" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">E</text>
+
+                            <circle cx="270" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="270" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">F</text>
+
+                            <circle cx="350" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                            <text x="350" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">G</text>
+
+                            <text x="200" y="315" font-size="11" fill="#777777" text-anchor="middle">HOJAS (nodos sin hijos)</text>
+
+                            <rect x="450" y="235" width="220" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                            <text x="560" y="258" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle">✓ UN SOLO PADRE</text>
+                            <text x="560" y="278" font-size="10" fill="#555555" text-anchor="middle">Cada nodo tiene máximo</text>
+                            <text x="560" y="293" font-size="10" fill="#555555" text-anchor="middle">una arista de entrada</text>
+                            <text x="560" y="308" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle">NO hay caminos alternativos</text>
+
+                            <defs>
+                                <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem;">🔀 Estructura de un DAG General</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem;">
+                        En un DAG general, un nodo puede tener <strong>múltiples padres</strong>, permitiendo representar dependencias complejas. Es más flexible pero también más complejo de gestionar.
+                    </p>
+
+                    <div class="svg-container">
+                        <svg width="100%" viewBox="0 0 700 380" style="max-width: 700px; height: auto; display: block; margin: 0 auto;">
+                            <text x="350" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle">DAG: Un nodo puede tener múltiples padres</text>
+
+                            <circle cx="200" cy="70" r="25" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                            <text x="200" y="77" font-size="14" font-weight="bold" fill="white" text-anchor="middle">A</text>
+
+                            <circle cx="500" cy="70" r="25" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                            <text x="500" y="77" font-size="14" font-weight="bold" fill="white" text-anchor="middle">B</text>
+
+                            <line x1="200" y1="95" x2="280" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="200" y1="95" x2="420" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="500" y1="95" x2="420" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="500" y1="95" x2="560" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+
+                            <circle cx="280" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                            <text x="280" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">C</text>
+
+                            <circle cx="420" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                            <text x="420" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">D</text>
+                            <text x="420" y="145" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle">2 PADRES</text>
+
+                            <circle cx="560" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                            <text x="560" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">E</text>
+
+                            <line x1="280" y1="192" x2="350" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="420" y1="192" x2="350" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="420" y1="192" x2="490" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                            <line x1="560" y1="192" x2="490" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+
+                            <circle cx="350" cy="267" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                            <text x="350" y="273" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">F</text>
+                            <text x="350" y="242" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle">2 PADRES</text>
+
+                            <circle cx="490" cy="267" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                            <text x="490" y="273" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">G</text>
+                            <text x="490" y="242" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle">2 PADRES</text>
+
+                            <rect x="50" y="130" width="180" height="100" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                            <text x="140" y="153" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">✓ MÚLTIPLES PADRES</text>
+                            <text x="140" y="173" font-size="10" fill="#555555" text-anchor="middle">Nodos pueden tener</text>
+                            <text x="140" y="188" font-size="10" fill="#555555" text-anchor="middle">varias aristas de entrada</text>
+                            <text x="140" y="208" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle">Representa dependencias</text>
+                            <text x="140" y="223" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle">complejas</text>
+
+                            <rect x="50" y="300" width="600" height="50" fill="#FFF3E0" stroke="#FFA726" stroke-width="2" rx="8"/>
+                            <text x="350" y="320" font-size="11" fill="#E65100" font-weight="bold" text-anchor="middle">⚠️ PROPIEDAD ACÍCLICA: No se puede regresar a un nodo visitado siguiendo las flechas</text>
+                            <text x="350" y="338" font-size="10" fill="#555555" text-anchor="middle">Esto garantiza que no hay ciclos infinitos y permite ordenamiento topológico</text>
+
+                            <defs>
+                                <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TIPOS DE ÁRBOLES -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>Tipos de Árboles Principales</h2>
+            </div>
+
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">🌲 Árbol Binario</h3>
+                    <p>Cada nodo tiene como máximo <strong>2 hijos</strong> (izquierdo y derecho).</p>
+                    <span class="type-badge">Max 2 hijos</span>
+                    <p class="type-example"><strong>Aplicaciones:</strong> Expresiones aritméticas, parsers, árboles de decisión (ML), Huffman coding</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">🔍 BST (Binary Search Tree)</h3>
+                    <p>Árbol binario ordenado: hijo izquierdo &lt; padre &lt; hijo derecho.</p>
+                    <span class="type-badge">O(log n) promedio</span>
+                    <p class="type-example"><strong>Uso:</strong> Búsqueda rápida, ordenamiento. MySQL y PostgreSQL usan variantes (B-Trees)</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">⚖️ Árbol AVL</h3>
+                    <p>BST <strong>auto-balanceado</strong>. Diferencia de alturas entre subárboles ≤ 1.</p>
+                    <span class="type-badge">O(log n) garantizado</span>
+                    <p class="type-example"><strong>Garantía:</strong> Siempre O(log n). Usado en bases de datos in-memory</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">📚 B-Tree / B+ Tree</h3>
+                    <p>Árbol con <strong>múltiples hijos</strong> por nodo. Optimizado para acceso a disco.</p>
+                    <span class="type-badge">Nodos grandes</span>
+                    <p class="type-example"><strong>Usado en:</strong> MySQL InnoDB, PostgreSQL índices, sistemas de archivos (NTFS, ext4)</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">🏔️ Heap (Montículo)</h3>
+                    <p>Árbol binario completo donde padre ≥ hijos (max-heap) o padre ≤ hijos (min-heap).</p>
+                    <span class="type-badge">Priority Queue</span>
+                    <p class="type-example"><strong>Aplicaciones:</strong> Colas de prioridad, Heapsort O(n log n), algoritmo de Dijkstra</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">🔤 Trie (Prefix Tree)</h3>
+                    <p>Árbol de búsqueda de cadenas. Cada nodo representa un carácter.</p>
+                    <span class="type-badge">O(m) búsqueda</span>
+                    <p class="type-example"><strong>Casos de uso:</strong> Autocompletado (Google Search), correctores ortográficos, enrutamiento IP</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PROPIEDADES -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>Propiedades y Métricas de Árboles</h2>
+            </div>
+
+            <div class="concepts-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">📏</div>
+                    <h3>Altura y Profundidad</h3>
+                    <p><strong>Altura del árbol:</strong> Longitud del camino más largo desde la raíz hasta una hoja.<br>
+                    <strong>Profundidad de un nodo:</strong> Número de aristas desde la raíz hasta ese nodo.</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">🔢</div>
+                    <h3>Número de Nodos</h3>
+                    <p><strong>Árbol binario completo:</strong> n = 2^(h+1) - 1<br>
+                    Ejemplo: Altura 3 → n = 2⁴ - 1 = 15 nodos</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">⚖️</div>
+                    <h3>Factor de Balance</h3>
+                    <p><strong>FB = altura(izq) - altura(der)</strong><br>
+                    FB = 0: Perfectamente balanceado<br>
+                    FB = ±1: Aceptable (AVL)<br>
+                    |FB| &gt; 1: Desbalanceado (requiere rotación)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: RECORRIDOS -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🚶 Algoritmos de Recorrido</h2>
+            </div>
+
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75;">
+                Los recorridos definen el orden en que visitamos los nodos de un árbol. Son fundamentales para búsqueda, serialización y procesamiento de datos jerárquicos.
+            </p>
+
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">Preorder (NLR)</h3>
+                    <p><strong>Orden:</strong> Nodo → Izq → Der</p>
+                    <span class="type-badge">1, 2, 4, 5, 3, 6, 7</span>
+                    <p class="type-example"><strong>Uso:</strong> Copiar árbol, serialización, evaluación de expresiones prefijas</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">Inorder (LNR)</h3>
+                    <p><strong>Orden:</strong> Izq → Nodo → Der</p>
+                    <span class="type-badge">4, 2, 5, 1, 6, 3, 7</span>
+                    <p class="type-example"><strong>Uso:</strong> BST ordenado ascendente, evaluación de expresiones infijas</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">Postorder (LRN)</h3>
+                    <p><strong>Orden:</strong> Izq → Der → Nodo</p>
+                    <span class="type-badge">4, 5, 2, 6, 7, 3, 1</span>
+                    <p class="type-example"><strong>Uso:</strong> Eliminar árbol, evaluar expresiones posfijas, calcular espacio en disco</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">BFS / Level-order</h3>
+                    <p><strong>Recorrido por niveles:</strong><br>Nivel 0: 1<br>Nivel 1: 2, 3<br>Nivel 2: 4, 5, 6, 7</p>
+                    <span class="type-badge">1, 2, 3, 4, 5, 6, 7</span>
+                    <p class="type-example"><strong>Uso:</strong> Camino más corto, análisis por capas, serialización por niveles</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: APLICACIONES EN BIG DATA -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🚀 Aplicaciones en Big Data e IA</h2>
+            </div>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">⚡</div>
+                    <h3 style="color: #49B9CE;">Apache Spark</h3>
+                    <ul>
+                        <li>Utiliza <strong>DAG</strong> para flujo de transformaciones distribuidas (RDD)</li>
+                        <li>Optimización del plan de ejecución</li>
+                        <li>Detección de dependencias</li>
+                        <li>Paralelización automática</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🤖</div>
+                    <h3 style="color: #8A7AAF;">Machine Learning</h3>
+                    <ul>
+                        <li>Random Forest, XGBoost, LightGBM: <strong>árboles de decisión</strong></li>
+                        <li>Netflix: Ensemble de 500+ árboles de decisión</li>
+                        <li>Amazon: Árboles con 150M nodos para recomendaciones</li>
+                        <li>Clasificación y regresión a escala</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🗄️</div>
+                    <h3 style="color: #49B9CE;">Bases de Datos</h3>
+                    <ul>
+                        <li>MySQL y PostgreSQL: <strong>B-Trees</strong> para índices</li>
+                        <li>Búsquedas O(log n) en millones de registros</li>
+                        <li>Facebook: Índices B-Tree para 3 billones de publicaciones</li>
+                        <li>Google: B-Trees para 3.5 mil millones de búsquedas diarias</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">📦</div>
+                    <h3 style="color: #8A7AAF;">Compresión</h3>
+                    <ul>
+                        <li>Algoritmo Huffman: <strong>árboles binarios</strong></li>
+                        <li>Usado en ZIP, JPEG, MP3</li>
+                        <li>WhatsApp: Comprime 100 mil millones de mensajes diarios</li>
+                        <li>Compresión sin pérdida eficiente</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">⛓️</div>
+                    <h3 style="color: #49B9CE;">Blockchain</h3>
+                    <ul>
+                        <li><strong>Merkle Trees:</strong> Árboles binarios de hashes</li>
+                        <li>Bitcoin y Ethereum: Verificación de datos</li>
+                        <li>Cada bloque: Merkle Tree de 2000+ transacciones</li>
+                        <li>Verificación eficiente de integridad</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🌿</div>
+                    <h3 style="color: #8A7AAF;">Control de Versiones</h3>
+                    <ul>
+                        <li>Git usa <strong>DAG</strong> para historial de commits</li>
+                        <li>GitHub: 100+ millones de repositorios</li>
+                        <li>Representación de ramas y merges</li>
+                        <li>Gestión de dependencias entre commits</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARACIÓN TABLA -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📊 Comparación de Estructuras</h2>
+            </div>
+
+            <div class="table-container">
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Estructura</th>
+                            <th>Padres por nodo</th>
+                            <th>Búsqueda</th>
+                            <th>Inserción</th>
+                            <th>Caso de uso típico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Árbol Binario</strong></td>
+                            <td>1</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Expresiones, parsers</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BST</strong></td>
+                            <td>1</td>
+                            <td>O(log n)*</td>
+                            <td>O(log n)*</td>
+                            <td>Búsqueda rápida, ordenamiento</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AVL Tree</strong></td>
+                            <td>1</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                            <td>Garantía de rendimiento</td>
+                        </tr>
+                        <tr>
+                            <td><strong>B-Tree</strong></td>
+                            <td>1</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                            <td>Bases de datos, filesystems</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Heap</strong></td>
+                            <td>1</td>
+                            <td>O(n)</td>
+                            <td>O(log n)</td>
+                            <td>Priority queues, scheduling</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trie</strong></td>
+                            <td>1</td>
+                            <td>O(m)</td>
+                            <td>O(m)</td>
+                            <td>Autocompletado, diccionarios</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DAG General</strong></td>
+                            <td>≥ 1 (múltiple)</td>
+                            <td>Varía</td>
+                            <td>Varía</td>
+                            <td>Workflows, pipelines, Git, Spark</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="table-note">
+                * En BST: O(log n) promedio si está balanceado, O(n) en el peor caso (árbol degenerado).<br>
+                m = longitud de la cadena a buscar en Trie.
+            </p>
+        </section>
+
+        <!-- CONCLUSIONES -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎯 Puntos Clave</h2>
+            </div>
+
+            <div class="comparison-grid">
+                <div style="background: #E8F7FA; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; text-align: center;">Árboles</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem;">
+                        <li><strong>Caso especial</strong> de DAG</li>
+                        <li><strong>Un único padre</strong> por nodo</li>
+                        <li>Recorridos: DFS (pre/in/post) y BFS</li>
+                        <li>Eficiencia: O(log n) con balance</li>
+                        <li><strong>Uso masivo:</strong> BD, ML, compresión</li>
+                    </ul>
+                </div>
+
+                <div style="background: #F0EDF5; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; text-align: center;">DAG General</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem;">
+                        <li><strong>Múltiples padres</strong> permitidos</li>
+                        <li><strong>Sin ciclos</strong> (acíclico)</li>
+                        <li>Ordenamiento topológico</li>
+                        <li>Representa <strong>dependencias</strong></li>
+                        <li><strong>Uso:</strong> Spark, Git, workflows</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 2rem; border-radius: 1rem; border: 2px solid #333333; text-align: center; margin-top: 2rem;">
+                <p style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">💡 Conclusión</p>
+                <p style="font-size: 1.05rem; color: #555555; line-height: 1.7;">
+                    Los <strong>árboles</strong> son la columna vertebral de las estructuras de datos eficientes, mientras que los <strong>DAG</strong> permiten modelar dependencias complejas en sistemas distribuidos modernos. Dominar estas estructuras es esencial para trabajar con Big Data, Machine Learning y sistemas de alta escala.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+</body>
+</html>

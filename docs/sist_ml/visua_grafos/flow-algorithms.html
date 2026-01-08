@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Flujo en Redes | Ford-Fulkerson & Edmonds-Karp</title>
+    <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+        <header>
+            <h1>💧 Algoritmos de Flujo en Redes</h1>
+            <p class="subtitle">Visualización interactiva de Ford-Fulkerson, Edmonds-Karp y Dinic</p>
+        </header>
+
+        <!-- Visualización del Grafo - Ocupa todo el ancho -->
+        <div class="graph-section">
+            <div class="section-title">
+                <span class="icon">📊</span>
+                Red de flujo de ejemplo
+            </div>
+            <div id="graph-container"></div>
+            <div class="graph-footer">
+                <div class="footer-left">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot default"></div>
+                            <span>Sin visitar</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot queued" id="legendQueued"></div>
+                            <span id="legendQueuedText">En cola</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot current-bfs" id="legendCurrent"></div>
+                            <span>Nodo actual</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot visited"></div>
+                            <span>Visitado</span>
+                        </div>
+                    </div>
+
+                    <div class="visit-order-inline">
+                        <div class="visit-order-label">✅ Camino de aumento:</div>
+                        <div class="visit-order" id="visitOrder"></div>
+                    </div>
+
+                    <div class="data-structure-inline">
+                        <div class="structure-header-inline">
+                            <span class="structure-label">🗃️ Estructura:</span>
+                            <span class="structure-type bfs-type" id="structureType">DFS</span>
+                            <span class="structure-indicator" id="structureIndicator">Pila</span>
+                        </div>
+                        <div class="structure-items" id="structureItems"></div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="inline-controls">
+                        <div class="controls">
+                            <button class="control-btn primary" id="startBtn" onclick="startSearch()">
+                                ▶ Iniciar
+                            </button>
+                            <button class="control-btn" id="stepBtn" onclick="stepSearch()">
+                                ⏭<br>Paso
+                            </button>
+                            <button class="control-btn" id="resetBtn" onclick="resetGraph()">
+                                ↺ Reset
+                            </button>
+                        </div>
+                        <div class="speed-control" id="speedControl">
+                            <label>Velocidad</label>
+                            <input type="range" id="speedSlider" min="100" max="2000" value="800" onchange="updateSpeed()">
+                        </div>
+                    </div>
+
+                    <div class="inline-progress">
+                        <div class="step-counter">
+                            <div class="label">Paso</div>
+                            <span class="current" id="stepNumber">0</span>
+                            <span class="total">/ <span id="totalSteps">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algoritmo y Variantes - Layout horizontal -->
+        <div class="algorithm-section">
+            <div class="algorithm-row">
+                <div class="algorithm-selector-horizontal">
+                    <div class="section-label">⚙️ Algoritmo:</div>
+                    <button class="algo-btn bfs active" onclick="selectAlgorithm('ford-fulkerson')">
+                        Ford-Fulkerson
+                        <span class="algo-label">Flujo máximo</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('edmonds-karp')">
+                        Edmonds-Karp
+                        <span class="algo-label">FF con BFS</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('dinic')">
+                        Dinic
+                        <span class="algo-label">Level graph</span>
+                    </button>
+                </div>
+
+                <div class="variants-selector-horizontal" id="fordFulkersonVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h active" onclick="selectFordFulkersonVariant('standard')">Estándar (con DFS)</button>
+                    <button class="variant-btn-h" onclick="selectFordFulkersonVariant('step-by-step')">Paso a Paso</button>
+                    <button class="variant-btn-h" onclick="selectFordFulkersonVariant('augmenting-paths')">Caminos de Aumento</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="edmondsKarpVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectEdmondsKarpVariant('standard')">Estándar (con BFS)</button>
+                    <button class="variant-btn-h-dfs" onclick="selectEdmondsKarpVariant('comparison')">Comparación con Ford-Fulkerson</button>
+                    <button class="variant-btn-h-dfs" onclick="selectEdmondsKarpVariant('optimized')">Optimizado</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="dinicVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectDinicVariant('standard')">Estándar (con level graph)</button>
+                    <button class="variant-btn-h-dfs" onclick="selectDinicVariant('blocking-flow')">Blocking Flow</button>
+                    <button class="variant-btn-h-dfs" onclick="selectDinicVariant('performance')">Comparación de rendimiento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pseudocódigo y Explicación -->
+        <div class="code-explanation-layout">
+            <div class="panel pseudocode-panel">
+                <div class="panel-title">💻 Pseudocódigo</div>
+                <div class="pseudocode" id="pseudocode">
+                    <div class="line" data-line="1"><span class="keyword">Ford-Fulkerson</span>(grafo, fuente, sumidero):</div>
+                    <div class="line" data-line="2">  flujo_max ← 0</div>
+                    <div class="line" data-line="3">  grafo_residual ← crear_grafo_residual(grafo)</div>
+                    <div class="line" data-line="4">  <span class="keyword">mientras</span> existe camino de aumento:</div>
+                    <div class="line" data-line="5">    camino ← DFS(grafo_residual, fuente, sumidero)</div>
+                    <div class="line" data-line="6">    <span class="keyword">si</span> no camino: <span class="keyword">romper</span></div>
+                    <div class="line" data-line="7">    flujo_camino ← min(capacidades residuales en camino)</div>
+                    <div class="line" data-line="8">    <span class="keyword">para cada</span> arista en camino:</div>
+                    <div class="line" data-line="9">      grafo_residual[u][v] ← grafo_residual[u][v] - flujo_camino</div>
+                    <div class="line" data-line="10">      grafo_residual[v][u] ← grafo_residual[v][u] + flujo_camino</div>
+                    <div class="line" data-line="11">    flujo_max ← flujo_max + flujo_camino</div>
+                    <div class="line" data-line="12">  <span class="keyword">retornar</span> flujo_max</div>
+                </div>
+            </div>
+
+            <div class="panel explanation-panel">
+                <div class="panel-title">📖 Explicación</div>
+                <div class="algorithm-explanation" id="algorithmExplanation">
+                    <h4>Ford-Fulkerson Estándar</h4>
+                    <p>Encuentra el flujo máximo desde una fuente a un sumidero en una red de flujo.</p>
+                    <ul>
+                        <li><strong>Estructura:</strong> DFS para encontrar caminos de aumento</li>
+                        <li><strong>Aplicación:</strong> Redes de transporte, asignación de recursos, matching bipartito</li>
+                        <li><strong>Complejidad:</strong> O(E × f) donde f es el flujo máximo</li>
+                        <li><strong>Teorema:</strong> Max-Flow Min-Cut: el flujo máximo = corte mínimo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparativa de algoritmos - Al final -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                Comparativa de algoritmos de flujo
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>🌊 Ford-Fulkerson</h3>
+                    <p><strong>Método del camino de aumento:</strong> Encuentra el flujo máximo iterativamente buscando caminos de aumento con DFS.</p>
+                    <span class="structure-badge">📥 DFS (Pila)</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Características Principales:</h4>
+                    <ul>
+                        <li>Utiliza <strong>DFS</strong> para encontrar caminos de aumento</li>
+                        <li>Construye un <strong>grafo residual</strong> dinámicamente</li>
+                        <li>No garantiza tiempo polinomial en el peor caso</li>
+                        <li>Complejidad depende del valor del flujo máximo</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar (con DFS):</strong> Implementación clásica con búsqueda en profundidad</li>
+                        <li><strong>Paso a Paso:</strong> Visualiza cada iteración del algoritmo</li>
+                        <li><strong>Caminos de Aumento:</strong> Muestra todos los caminos encontrados</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(E × f) donde f es el flujo máximo | O(V) espacio
+                    </div>
+                </div>
+                <div class="algo-card dfs-card">
+                    <h3>⚡ Edmonds-Karp</h3>
+                    <p><strong>Ford-Fulkerson con BFS:</strong> Variante que usa BFS para encontrar el camino de aumento más corto.</p>
+                    <span class="structure-badge">📚 BFS (Cola)</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Características Principales:</h4>
+                    <ul>
+                        <li>Utiliza <strong>BFS</strong> en lugar de DFS</li>
+                        <li>Encuentra el camino con <strong>menos aristas</strong></li>
+                        <li>Garantiza tiempo <strong>polinomial</strong></li>
+                        <li>Más predecible que Ford-Fulkerson</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar (con BFS):</strong> Implementación clásica de Edmonds-Karp</li>
+                        <li><strong>Comparación con Ford-Fulkerson:</strong> Visualiza diferencias en la búsqueda</li>
+                        <li><strong>Optimizado:</strong> Con optimizaciones de implementación</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V × E²) tiempo | O(V) espacio
+                    </div>
+                </div>
+                <div class="algo-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0ea5e9;">
+                    <h3>🚀 Dinic</h3>
+                    <p><strong>Level graph y blocking flow:</strong> Algoritmo más eficiente usando grafos de niveles y flujos bloqueantes.</p>
+                    <span class="structure-badge" style="background: #e0f2fe; color: #0369a1;">📊 Level Graph + DFS</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Características Principales:</h4>
+                    <ul>
+                        <li>Construye un <strong>level graph</strong> con BFS</li>
+                        <li>Encuentra <strong>blocking flows</strong> con DFS</li>
+                        <li>Mucho más eficiente que Edmonds-Karp</li>
+                        <li>Utilizado en aplicaciones de alto rendimiento</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar (con level graph):</strong> Implementación completa de Dinic</li>
+                        <li><strong>Blocking Flow:</strong> Visualiza la búsqueda de flujos bloqueantes</li>
+                        <li><strong>Comparación de rendimiento:</strong> Compara con otros algoritmos</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V² × E) tiempo | O(V + E) espacio
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teorema Max-Flow Min-Cut -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">🎓</span>
+                Teorema Max-Flow Min-Cut
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
+                    <h3>⚖️ Teorema Fundamental</h3>
+                    <p><strong>El flujo máximo es igual al corte mínimo:</strong> En cualquier red de flujo, el valor del flujo máximo desde la fuente al sumidero es igual a la capacidad del corte mínimo.</p>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #d97706;">Definiciones:</h4>
+                    <ul>
+                        <li><strong>Flujo:</strong> Asignación de valores a las aristas que respeta las capacidades y conservación</li>
+                        <li><strong>Corte:</strong> Partición de nodos en dos conjuntos S y T (fuente ∈ S, sumidero ∈ T)</li>
+                        <li><strong>Capacidad del corte:</strong> Suma de capacidades de aristas de S a T</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #d97706;">Implicaciones:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li>Todo flujo es menor o igual que todo corte</li>
+                        <li>Si encontramos un flujo igual a un corte, ambos son óptimos</li>
+                        <li>Los algoritmos de flujo encuentran implícitamente el corte mínimo</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-left: 4px solid #a855f7;">
+                    <h3>📐 Grafo Residual</h3>
+                    <p><strong>Representación de capacidades disponibles:</strong> El grafo residual muestra qué flujo adicional puede enviarse por cada arista.</p>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #9333ea;">Construcción:</h4>
+                    <ul>
+                        <li><strong>Capacidad residual directa:</strong> capacidad - flujo actual</li>
+                        <li><strong>Capacidad residual inversa:</strong> flujo actual (permite "deshacer" flujo)</li>
+                        <li><strong>Camino de aumento:</strong> Camino de s a t con capacidad residual > 0</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #9333ea;">Propiedades:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li>Se actualiza después de cada aumento de flujo</li>
+                        <li>Las aristas inversas permiten corregir decisiones subóptimas</li>
+                        <li>El algoritmo termina cuando no hay más caminos de aumento</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-left: 4px solid #22c55e;">
+                    <h3>🔍 Conservación de Flujo</h3>
+                    <p><strong>Ley de conservación:</strong> En cada nodo (excepto fuente y sumidero), el flujo entrante debe ser igual al flujo saliente.</p>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #16a34a;">Restricciones:</h4>
+                    <ul>
+                        <li><strong>Capacidad:</strong> 0 ≤ flujo(u,v) ≤ capacidad(u,v)</li>
+                        <li><strong>Conservación:</strong> ∑ flujo_in(v) = ∑ flujo_out(v) para v ≠ s,t</li>
+                        <li><strong>Antisimetría:</strong> flujo(u,v) = -flujo(v,u)</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #16a34a;">Verificación:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li>El flujo total que sale de la fuente = flujo total que entra al sumidero</li>
+                        <li>Ningún nodo acumula o genera flujo</li>
+                        <li>Todas las capacidades se respetan</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aplicaciones -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">🎯</span>
+                Aplicaciones de los Algoritmos de Flujo
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>🚚 Redes de Transporte</h3>
+                    <ul>
+                        <li><strong>Logística:</strong> Maximizar el transporte de mercancías entre ciudades</li>
+                        <li><strong>Tráfico:</strong> Optimizar flujo de vehículos en carreteras</li>
+                        <li><strong>Distribución:</strong> Planificar rutas de entrega óptimas</li>
+                        <li><strong>Tuberías:</strong> Calcular capacidad máxima de redes de agua/gas</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card dfs-card">
+                    <h3>💼 Asignación de Recursos</h3>
+                    <ul>
+                        <li><strong>Matching bipartito:</strong> Asignar trabajadores a tareas</li>
+                        <li><strong>Scheduling:</strong> Programación de horarios y recursos</li>
+                        <li><strong>Load balancing:</strong> Distribución de carga en servidores</li>
+                        <li><strong>Asignación de personal:</strong> Optimizar equipos de trabajo</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0ea5e9;">
+                    <h3>🌐 Redes y Telecomunicaciones</h3>
+                    <ul>
+                        <li><strong>Bandwidth:</strong> Maximizar ancho de banda en redes</li>
+                        <li><strong>Routing:</strong> Enrutamiento óptimo de paquetes</li>
+                        <li><strong>Network design:</strong> Diseño de topologías de red</li>
+                        <li><strong>CDN:</strong> Distribución de contenido eficiente</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
+                    <h3>🔬 Otras Aplicaciones</h3>
+                    <ul>
+                        <li><strong>Image segmentation:</strong> Separación de objetos en imágenes (min-cut)</li>
+                        <li><strong>Baseball elimination:</strong> Determinar si un equipo puede ganar</li>
+                        <li><strong>Circulation:</strong> Problemas de circulación con demandas</li>
+                        <li><strong>Survey design:</strong> Optimización de encuestas y muestreo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <script src="js/flow-algorithms.js"></script>
+</body>
+</html>

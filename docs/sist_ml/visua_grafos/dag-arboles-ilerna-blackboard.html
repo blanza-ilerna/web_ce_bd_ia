@@ -1,0 +1,679 @@
+<!-- LECCIÓN ADAPTADA PARA BLACKBOARD LMS: DAG Y ÁRBOLES EN ESTRUCTURAS DE DATOS -->
+<div style="font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%); min-height: 100vh; padding: 2rem; margin: 0;">
+    
+    <!-- Importar fuente Montserrat -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+
+    <div style="max-width: 72rem; margin: 0 auto;">
+        <!-- HEADER -->
+        <header style="text-align: center; margin-bottom: 3rem;">
+            <div style="margin-bottom: 2rem;">
+                <svg width="113" height="23" viewBox="0 0 113 23" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 50px; width: auto;">
+                    <path d="M7.45569 0H11.5032V19.0851H21.1728V22.7469H7.45569V0Z" fill="#010202"/>
+                    <path d="M23.7545 0H38.8238V3.66183H27.802V9.25214H38.243V12.914H27.802V19.0851H39.4001V22.7469H23.7545V0Z" fill="#010202"/>
+                    <path d="M42.0952 0H49.9996C51.0932 0 52.1459 0.0998269 53.1623 0.304018C54.1787 0.50821 55.0863 0.857604 55.8758 1.34766C56.6699 1.84226 57.3006 2.50475 57.7725 3.33966C58.2444 4.17458 58.4804 5.23637 58.4804 6.52051C58.4804 8.17219 58.0266 9.55162 57.1146 10.6633C56.2025 11.775 54.9048 12.4511 53.2122 12.6871L59.2518 22.7424H54.3693L49.1012 13.1045H46.1472V22.7424H42.0997V0H42.0952ZM49.2918 9.63783C49.868 9.63783 50.4489 9.61061 51.0251 9.55616C51.6014 9.50171 52.1323 9.37465 52.6178 9.17046C53.0988 8.96627 53.489 8.65771 53.7885 8.24026C54.088 7.8228 54.2377 7.23745 54.2377 6.48875C54.2377 5.82626 54.0971 5.29083 53.8203 4.88244C53.5435 4.47406 53.1759 4.17004 52.7267 3.96585C52.2775 3.76166 51.7784 3.63007 51.2339 3.56201C50.6893 3.49848 50.1584 3.46672 49.6412 3.46672H46.1381V9.63783H49.2872H49.2918Z" fill="#010202"/>
+                    <path d="M61.8655 0H67.2289L78.2507 16.9025H78.3142V0H82.3618V22.7469H77.2207L65.9765 5.2999H65.913V22.7469H61.8655V0Z" fill="#010202"/>
+                    <path d="M94.2457 0H97.7487L107.55 22.7469H102.922L100.802 17.5423H90.9378L88.8823 22.7469H84.3537L94.2457 0ZM99.3868 14.0711L95.8838 4.81892L92.3172 14.0711H99.3868Z" fill="#010202"/>
+                    <path d="M4.04753 5.44971H0V22.747H4.04753V5.44971Z" fill="#010202"/>
+                    <path d="M4.04753 0H0V4.04299H4.04753V0Z" fill="#47B4C9"/>
+                    <path d="M113 18.7041H108.957V22.7471H113V18.7041Z" fill="#47B4C9"/>
+                </svg>
+            </div>
+            <h1 style="font-size: 3.75rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">DAG y Árboles</h1>
+            <p style="font-size: 1.25rem; color: #333333; font-weight: 400; font-family: 'Montserrat', sans-serif;">Grafos Acíclicos Dirigidos y Estructuras Jerárquicas en Big Data</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">¿Qué son los DAG y los Árboles?</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                Un <strong>DAG (Directed Acyclic Graph)</strong> o Grafo Acíclico Dirigido es una estructura de datos fundamental en ciencias de la computación que representa relaciones entre elementos mediante nodos conectados por aristas direccionales, con la restricción crítica de que <strong>no contiene ciclos</strong>. Esto significa que siguiendo las flechas nunca podemos volver al punto de partida.
+            </p>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                Los <strong>árboles</strong> son un caso especial de DAG donde cada nodo (excepto la raíz) tiene exactamente <strong>un único padre</strong>. Son las estructuras jerárquicas más utilizadas en programación, bases de datos y sistemas de archivos.
+            </p>
+            
+            <!-- CAJA DE EJEMPLO -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">Ejemplo Real:</p>
+                <p style="color: #555555; font-size: 1rem; font-family: 'Montserrat', sans-serif;">Apache Spark utiliza DAGs para representar el flujo de transformaciones de datos. Cada nodo representa una operación (map, filter, reduce) y las aristas muestran las dependencias. Facebook usa árboles para representar estructuras sociales y jerarquías de grupos.</p>
+            </div>
+
+            <!-- CONCEPTOS EN GRID -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Conceptos Fundamentales</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Nodo (Vértice)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Elemento fundamental que almacena datos. En árboles: raíz, nodos internos y hojas.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Arista (Edge)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Conexión direccional entre nodos. Define relaciones padre-hijo o dependencias entre operaciones.</p>
+                </div>
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Acíclico</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Propiedad que garantiza que no existen caminos que regresen al nodo original. Esencial para evitar loops infinitos.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Ordenamiento Topológico</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Secuencia lineal de nodos donde cada nodo aparece antes que sus dependientes. Crucial para scheduling de tareas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZACIÓN DAG VS ÁRBOL -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Diferencia Visual: DAG vs Árbol</h2>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🌳 Estructura de un Árbol</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">
+                    En un árbol, cada nodo (excepto la raíz) tiene <strong>exactamente un padre</strong>. Es la estructura más restrictiva pero también la más común.
+                </p>
+                
+                <svg width="700" height="350" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 2rem auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">ÁRBOL: Cada nodo tiene un único padre</text>
+                    
+                    <!-- Raíz -->
+                    <circle cx="350" cy="60" r="25" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"/>
+                    <text x="350" y="67" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">A</text>
+                    <text x="350" y="105" font-size="11" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">RAÍZ</text>
+                    
+                    <!-- Nivel 1 -->
+                    <line x1="350" y1="85" x2="200" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    <line x1="350" y1="85" x2="350" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    <line x1="350" y1="85" x2="500" y2="135" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    
+                    <circle cx="200" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="200" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">B</text>
+                    
+                    <circle cx="350" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="350" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">C</text>
+                    
+                    <circle cx="500" cy="160" r="22" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="500" y="166" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">D</text>
+                    
+                    <!-- Nivel 2 -->
+                    <line x1="200" y1="182" x2="130" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    <line x1="200" y1="182" x2="270" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    
+                    <line x1="350" y1="182" x2="350" y2="232" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"/>
+                    
+                    <circle cx="130" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="130" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">E</text>
+                    
+                    <circle cx="270" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="270" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">F</text>
+                    
+                    <circle cx="350" cy="257" r="20" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"/>
+                    <text x="350" y="263" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">G</text>
+                    
+                    <text x="200" y="315" font-size="11" fill="#777777" text-anchor="middle" font-family="Montserrat">HOJAS (nodos sin hijos)</text>
+                    <line x1="130" y1="277" x2="130" y2="305" stroke="#777777" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="270" y1="277" x2="270" y2="305" stroke="#777777" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="350" y1="277" x2="350" y2="305" stroke="#777777" stroke-width="1" stroke-dasharray="3,3"/>
+                    
+                    <!-- Etiqueta característica -->
+                    <rect x="450" y="235" width="220" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                    <text x="560" y="258" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">✓ UN SOLO PADRE</text>
+                    <text x="560" y="278" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Cada nodo tiene máximo</text>
+                    <text x="560" y="293" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">una arista de entrada</text>
+                    <text x="560" y="308" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle" font-family="Montserrat">NO hay caminos alternativos</text>
+                    
+                    <defs>
+                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        </marker>
+                    </defs>
+                </svg>
+                
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🔀 Estructura de un DAG General</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">
+                    En un DAG general, un nodo puede tener <strong>múltiples padres</strong>, permitiendo representar dependencias complejas. Es más flexible pero también más complejo de gestionar.
+                </p>
+                
+                <svg width="700" height="380" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="350" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">DAG: Un nodo puede tener múltiples padres</text>
+                    
+                    <!-- Nivel superior -->
+                    <circle cx="200" cy="70" r="25" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                    <text x="200" y="77" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">A</text>
+                    
+                    <circle cx="500" cy="70" r="25" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                    <text x="500" y="77" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">B</text>
+                    
+                    <!-- Nivel medio -->
+                    <line x1="200" y1="95" x2="280" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="200" y1="95" x2="420" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="500" y1="95" x2="420" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="500" y1="95" x2="560" y2="145" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    
+                    <circle cx="280" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="280" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">C</text>
+                    
+                    <circle cx="420" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="420" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">D</text>
+                    <text x="420" y="145" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle" font-family="Montserrat">2 PADRES</text>
+                    
+                    <circle cx="560" cy="170" r="22" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="560" y="176" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">E</text>
+                    
+                    <!-- Nivel inferior -->
+                    <line x1="280" y1="192" x2="350" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="420" y1="192" x2="350" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="420" y1="192" x2="490" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    <line x1="560" y1="192" x2="490" y2="242" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"/>
+                    
+                    <circle cx="350" cy="267" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="350" y="273" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">F</text>
+                    <text x="350" y="242" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle" font-family="Montserrat">2 PADRES</text>
+                    
+                    <circle cx="490" cy="267" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="490" y="273" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">G</text>
+                    <text x="490" y="242" font-size="9" fill="#E65100" font-weight="bold" text-anchor="middle" font-family="Montserrat">2 PADRES</text>
+                    
+                    <!-- Etiqueta característica -->
+                    <rect x="50" y="130" width="180" height="100" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="140" y="153" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">✓ MÚLTIPLES PADRES</text>
+                    <text x="140" y="173" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Nodos pueden tener</text>
+                    <text x="140" y="188" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">varias aristas de entrada</text>
+                    <text x="140" y="208" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle" font-family="Montserrat">Representa dependencias</text>
+                    <text x="140" y="223" font-size="10" fill="#333333" font-weight="bold" text-anchor="middle" font-family="Montserrat">complejas</text>
+                    
+                    <!-- Advertencia de acíclico -->
+                    <rect x="50" y="300" width="600" height="50" fill="#FFF3E0" stroke="#FFA726" stroke-width="2" rx="8"/>
+                    <text x="350" y="320" font-size="11" fill="#E65100" font-weight="bold" text-anchor="middle" font-family="Montserrat">⚠️ PROPIEDAD ACÍCLICA: No se puede regresar a un nodo visitado siguiendo las flechas</text>
+                    <text x="350" y="338" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Esto garantiza que no hay ciclos infinitos y permite ordenamiento topológico</text>
+                    
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TIPOS DE ÁRBOLES -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Tipos de Árboles Principales</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Árbol Binario -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🌲 Árbol Binario</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        Cada nodo tiene como máximo <strong>2 hijos</strong> (izquierdo y derecho).
+                    </p>
+                    <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Aplicaciones:</p>
+                        <ul style="color: #555555; font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                            <li>Expresiones aritméticas</li>
+                            <li>Árboles de decisión (ML)</li>
+                            <li>Huffman coding (compresión)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- BST -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🔍 BST (Binary Search Tree)</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        Árbol binario ordenado: hijo izquierdo &lt; padre &lt; hijo derecho.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Complejidad búsqueda:</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.1rem; color: #8A7AAF; font-weight: 700; font-family: 'Montserrat', sans-serif;">O(log n) promedio</p>
+                        <p style="color: #555555; font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">MySQL, PostgreSQL usan variantes (B-Trees)</p>
+                    </div>
+                </div>
+                
+                <!-- AVL -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">⚖️ Árbol AVL</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        BST <strong>auto-balanceado</strong>. Diferencia de alturas entre subárboles ≤ 1.
+                    </p>
+                    <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Garantía:</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.1rem; color: #49B9CE; font-weight: 700; font-family: 'Montserrat', sans-serif;">O(log n) siempre</p>
+                        <p style="color: #555555; font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">Usado en bases de datos in-memory</p>
+                    </div>
+                </div>
+                
+                <!-- B-Tree -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">📚 B-Tree / B+ Tree</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        Árbol con <strong>múltiples hijos</strong> por nodo. Optimizado para disco.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Usado en:</p>
+                        <ul style="color: #555555; font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                            <li><strong>MySQL InnoDB</strong> (índices)</li>
+                            <li><strong>PostgreSQL</strong> (índices)</li>
+                            <li><strong>Sistemas de archivos</strong> (NTFS, ext4)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Heap -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🏔️ Heap (Montículo)</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        Árbol binario completo donde padre ≥ hijos (max-heap) o padre ≤ hijos (min-heap).
+                    </p>
+                    <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Aplicaciones:</p>
+                        <ul style="color: #555555; font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                            <li>Priority queues</li>
+                            <li>Heapsort (O(n log n))</li>
+                            <li>Algoritmo de Dijkstra</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Trie -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🔤 Trie (Prefix Tree)</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                        Árbol de búsqueda de cadenas. Cada nodo representa un carácter.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; margin-bottom: 0.5rem; font-weight: 700;">Casos de uso:</p>
+                        <ul style="color: #555555; font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                            <li>Autocompletado (Google Search)</li>
+                            <li>Correctores ortográficos</li>
+                            <li>Enrutamiento IP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: PROPIEDADES DE LOS ÁRBOLES -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Propiedades y Métricas de Árboles</h2>
+            
+            <!-- Altura y Profundidad -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">📏 Altura y Profundidad</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">Altura del árbol:</p>
+                        <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Longitud del camino más largo desde la raíz hasta una hoja.</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 1rem; color: #49B9CE; margin-top: 0.5rem; font-weight: 700;">altura = max(profundidad de todas las hojas)</p>
+                    </div>
+                    <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">Profundidad de un nodo:</p>
+                        <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Número de aristas desde la raíz hasta ese nodo.</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 1rem; color: #49B9CE; margin-top: 0.5rem; font-weight: 700;">profundidad(raíz) = 0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Número de Nodos -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🔢 Número de Nodos</h3>
+                <div style="background: #F0EDF5; padding: 1.25rem; border-radius: 0.75rem; border: 2px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.25rem; font-weight: 700; color: #8A7AAF; margin-bottom: 0.75rem; text-align: center; font-family: 'Montserrat', sans-serif;">Árbol Binario Completo</p>
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.5rem; color: #333333; font-weight: 700; text-align: center; margin: 1rem 0;">n = 2^(h+1) - 1</p>
+                    <p style="color: #555555; text-align: center; font-size: 1rem; font-family: 'Montserrat', sans-serif;">donde h = altura del árbol</p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; margin-top: 1rem;">
+                        <p style="color: #555555; font-size: 0.95rem; font-family: 'Montserrat', sans-serif;"><strong>Ejemplo:</strong> Altura 3 → n = 2⁴ - 1 = <strong>15 nodos</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">⚖️ Factor de Balance</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                    En árboles AVL, el factor de balance de un nodo es la diferencia de alturas entre sus subárboles izquierdo y derecho.
+                </p>
+                <div style="background: #E8F7FA; padding: 1.25rem; border-radius: 0.75rem; border: 2px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.3rem; color: #333333; font-weight: 700; text-align: center; margin-bottom: 0.5rem;">FB = altura(izq) - altura(der)</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+                        <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; text-align: center;">
+                            <p style="font-family: 'Courier New', monospace; color: #2E7D32; font-weight: 700; font-size: 1.1rem;">FB = 0</p>
+                            <p style="color: #555555; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">Perfectamente balanceado</p>
+                        </div>
+                        <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; text-align: center;">
+                            <p style="font-family: 'Courier New', monospace; color: #F57C00; font-weight: 700; font-size: 1.1rem;">FB = ±1</p>
+                            <p style="color: #555555; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">Aceptable (AVL)</p>
+                        </div>
+                        <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; text-align: center;">
+                            <p style="font-family: 'Courier New', monospace; color: #C62828; font-weight: 700; font-size: 1.1rem;">|FB| &gt; 1</p>
+                            <p style="color: #555555; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">Desbalanceado (rotar)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: RECORRIDOS DE ÁRBOLES -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">🚶 Algoritmos de Recorrido</h2>
+            
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                Los recorridos definen el orden en que visitamos los nodos de un árbol. Son fundamentales para búsqueda, serialización y procesamiento de datos jerárquicos.
+            </p>
+
+            <div style="margin-bottom: 2rem;">
+                <svg width="500" height="280" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                    <text x="250" y="25" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Árbol de ejemplo para recorridos</text>
+                    
+                    <!-- Árbol -->
+                    <circle cx="250" cy="60" r="20" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"/>
+                    <text x="250" y="67" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">1</text>
+                    
+                    <line x1="250" y1="80" x2="150" y2="120" stroke="#49B9CE" stroke-width="2"/>
+                    <line x1="250" y1="80" x2="350" y2="120" stroke="#49B9CE" stroke-width="2"/>
+                    
+                    <circle cx="150" cy="140" r="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="150" y="147" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">2</text>
+                    
+                    <circle cx="350" cy="140" r="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="350" y="147" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">3</text>
+                    
+                    <line x1="150" y1="160" x2="100" y2="200" stroke="#49B9CE" stroke-width="2"/>
+                    <line x1="150" y1="160" x2="200" y2="200" stroke="#49B9CE" stroke-width="2"/>
+                    <line x1="350" y1="160" x2="300" y2="200" stroke="#49B9CE" stroke-width="2"/>
+                    <line x1="350" y1="160" x2="400" y2="200" stroke="#49B9CE" stroke-width="2"/>
+                    
+                    <circle cx="100" cy="220" r="18" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="100" y="226" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">4</text>
+                    
+                    <circle cx="200" cy="220" r="18" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="200" y="226" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">5</text>
+                    
+                    <circle cx="300" cy="220" r="18" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="300" y="226" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">6</text>
+                    
+                    <circle cx="400" cy="220" r="18" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="400" y="226" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">7</text>
+                    
+                    <text x="250" y="265" font-size="11" fill="#777777" text-anchor="middle" font-family="Montserrat">Los números indican el contenido de cada nodo</text>
+                </svg>
+            </div>
+
+            <!-- DFS: Preorder, Inorder, Postorder -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🔍 DFS (Depth-First Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                    Explora primero en profundidad antes de retroceder. Tres variantes según el orden de visita:
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem; color: #8A7AAF; font-weight: 700;">Preorder (NLR)</p>
+                        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Orden:</strong> Nodo → Izq → Der</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.85rem; color: #333333; background: white; padding: 0.5rem; border-radius: 0.5rem; font-weight: 700;">1, 2, 4, 5, 3, 6, 7</p>
+                        <p style="color: #555555; font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Uso:</strong> Copiar árbol, serialización</p>
+                    </div>
+                    
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem; color: #8A7AAF; font-weight: 700;">Inorder (LNR)</p>
+                        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Orden:</strong> Izq → Nodo → Der</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.85rem; color: #333333; background: white; padding: 0.5rem; border-radius: 0.5rem; font-weight: 700;">4, 2, 5, 1, 6, 3, 7</p>
+                        <p style="color: #555555; font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Uso:</strong> BST ordenado ascendente</p>
+                    </div>
+                    
+                    <div style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem; color: #8A7AAF; font-weight: 700;">Postorder (LRN)</p>
+                        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Orden:</strong> Izq → Der → Nodo</p>
+                        <p style="font-family: 'Courier New', monospace; font-size: 0.85rem; color: #333333; background: white; padding: 0.5rem; border-radius: 0.5rem; font-weight: 700;">4, 5, 2, 6, 7, 3, 1</p>
+                        <p style="color: #555555; font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;"><strong>Uso:</strong> Eliminar árbol, evaluar expresiones</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BFS -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">📊 BFS (Breadth-First Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                    Recorre el árbol <strong>por niveles</strong>, visitando todos los nodos de un nivel antes de pasar al siguiente.
+                </p>
+                <div style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem; color: #49B9CE; font-weight: 700;">Level-order traversal</p>
+                    <p style="color: #555555; font-size: 0.95rem; margin-bottom: 0.75rem; font-family: 'Montserrat', sans-serif;"><strong>Recorrido por niveles:</strong></p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
+                        <p style="color: #555555; font-size: 0.9rem; font-family: 'Montserrat', sans-serif;">Nivel 0: <span style="font-family: 'Courier New', monospace; font-weight: 700; color: #333333;">1</span></p>
+                        <p style="color: #555555; font-size: 0.9rem; font-family: 'Montserrat', sans-serif;">Nivel 1: <span style="font-family: 'Courier New', monospace; font-weight: 700; color: #333333;">2, 3</span></p>
+                        <p style="color: #555555; font-size: 0.9rem; font-family: 'Montserrat', sans-serif;">Nivel 2: <span style="font-family: 'Courier New', monospace; font-weight: 700; color: #333333;">4, 5, 6, 7</span></p>
+                    </div>
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #333333; background: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: 700; text-align: center;">Resultado: 1, 2, 3, 4, 5, 6, 7</p>
+                    <p style="color: #555555; font-size: 0.9rem; margin-top: 0.75rem; font-family: 'Montserrat', sans-serif;"><strong>Aplicaciones:</strong> Encontrar camino más corto, análisis por capas, serialización por niveles</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: APLICACIONES EN BIG DATA -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">🚀 Aplicaciones de DAG y Árboles en Big Data</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <!-- Apache Spark -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">⚡ Apache Spark</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        Utiliza <strong>DAG</strong> para representar el flujo de transformaciones distribuidas (RDD → transformaciones → acciones).
+                    </p>
+                    <div style="background: #E8F7FA; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 Ventaja del DAG:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Optimización del plan de ejecución, detección de dependencias y paralelización automática.</p>
+                    </div>
+                </div>
+                
+                <!-- Machine Learning -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🤖 Árboles de Decisión</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        Random Forest, XGBoost y LightGBM usan <strong>árboles binarios</strong> para clasificación y regresión.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 Ejemplo Netflix:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Sistema de recomendación con ensemble de 500+ árboles de decisión.</p>
+                    </div>
+                </div>
+                
+                <!-- Bases de Datos -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🗄️ Índices de BD</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        MySQL y PostgreSQL usan <strong>B-Trees</strong> para indexar millones de registros con búsquedas O(log n).
+                    </p>
+                    <div style="background: #E8F7FA; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 Facebook:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Índices B-Tree para búsqueda instantánea en 3 billones de publicaciones.</p>
+                    </div>
+                </div>
+                
+                <!-- Compresión -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">📦 Compresión Huffman</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        Algoritmo de compresión basado en <strong>árboles binarios</strong>. Usado en ZIP, JPEG, MP3.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 WhatsApp:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Comprime 100 mil millones de mensajes diarios usando árboles Huffman.</p>
+                    </div>
+                </div>
+                
+                <!-- Blockchain -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">⛓️ Merkle Trees</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        Árboles binarios de hashes usados en <strong>Bitcoin</strong> y <strong>Ethereum</strong> para verificación de datos.
+                    </p>
+                    <div style="background: #E8F7FA; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 Bitcoin:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Cada bloque contiene un Merkle Tree de todas las transacciones (2000+ tx/bloque).</p>
+                    </div>
+                </div>
+                
+                <!-- Git -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🌿 Control de Versiones</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                        Git usa un <strong>DAG</strong> para representar el historial de commits y las ramas del proyecto.
+                    </p>
+                    <div style="background: #F0EDF5; padding: 0.875rem; border-radius: 0.75rem;">
+                        <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem; font-family: 'Montserrat', sans-serif;">🔹 GitHub:</p>
+                        <p style="color: #555555; font-size: 0.875rem; line-height: 1.4; font-family: 'Montserrat', sans-serif;">Gestiona 100+ millones de repositorios con estructuras DAG de commits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: COMPARACIÓN TABLA -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">📊 Comparación de Estructuras</h2>
+            
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <thead>
+                        <tr style="background: linear-gradient(to right, #49B9CE, #8A7AAF);">
+                            <th style="padding: 1rem; text-align: left; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Estructura</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Padres por nodo</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Búsqueda</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Inserción</th>
+                            <th style="padding: 1rem; text-align: left; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Caso de uso típico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #E8F7FA;">
+                            <td style="padding: 1rem; font-weight: 700; color: #333333; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Árbol Binario</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">O(n)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">O(n)</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Expresiones, parsers</td>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 1rem; font-weight: 700; color: #333333; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">BST</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">O(log n)*</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">O(log n)*</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Búsqueda rápida, ordenamiento</td>
+                        </tr>
+                        <tr style="background: #E8F7FA;">
+                            <td style="padding: 1rem; font-weight: 700; color: #333333; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">AVL Tree</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(log n)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(log n)</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Garantía de rendimiento</td>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 1rem; font-weight: 700; color: #333333; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">B-Tree</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(log n)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(log n)</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Bases de datos, filesystems</td>
+                        </tr>
+                        <tr style="background: #F0EDF5;">
+                            <td style="padding: 1rem; font-weight: 700; color: #8A7AAF; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Heap</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">O(n)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(log n)</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Priority queues, scheduling</td>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 1rem; font-weight: 700; color: #8A7AAF; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Trie</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">1</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(m)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5; font-weight: 700; color: #2E7D32;">O(m)</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Autocompletado, diccionarios</td>
+                        </tr>
+                        <tr style="background: #E8D8F0;">
+                            <td style="padding: 1rem; font-weight: 700; color: #8A7AAF; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">DAG General</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-weight: 700; color: #E65100; font-family: 'Montserrat', sans-serif;">≥ 1 (múltiple)</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">Varía</td>
+                            <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; border: 1px solid #e5e5e5;">Varía</td>
+                            <td style="padding: 1rem; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Workflows, pipelines, Git</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p style="color: #777777; font-size: 0.9rem; margin-top: 1rem; font-style: italic; font-family: 'Montserrat', sans-serif;">
+                * En BST: O(log n) promedio si está balanceado, O(n) en el peor caso (árbol degenerado). 
+                <br>
+                m = longitud de la cadena a buscar en Trie.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 8: CONCLUSIONES -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; text-align: center; font-family: 'Montserrat', sans-serif;">🎯 Puntos Clave</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: #E8F7FA; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">Árboles</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Caso especial</strong> de DAG</li>
+                        <li><strong>Un único padre</strong> por nodo</li>
+                        <li>Recorridos: DFS (pre/in/post) y BFS</li>
+                        <li>Eficiencia: O(log n) con balance</li>
+                        <li><strong>Uso masivo:</strong> BD, ML, compresión</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #F0EDF5; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">DAG General</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Múltiples padres</strong> permitidos</li>
+                        <li><strong>Sin ciclos</strong> (acíclico)</li>
+                        <li>Ordenamiento topológico</li>
+                        <li>Representa <strong>dependencias</strong></li>
+                        <li><strong>Uso:</strong> Spark, Git, workflows</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 2rem; border-radius: 1rem; border: 2px solid #333333; text-align: center;">
+                <p style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                    💡 Conclusión
+                </p>
+                <p style="font-size: 1.05rem; color: #555555; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                    Los <strong>árboles</strong> son la columna vertebral de las estructuras de datos eficientes, mientras que los <strong>DAG</strong> permiten modelar dependencias complejas en sistemas distribuidos modernos. Dominar estas estructuras es esencial para trabajar con Big Data, Machine Learning y sistemas de alta escala.
+                </p>
+            </div>
+        </section>
+
+        <!-- DATO CURIOSO -->
+        <div style="margin-top: 2rem; background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726; margin-bottom: 2rem;">
+            <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">💡 ¿Sabías que...?</h4>
+            
+            <p style="color: #555555; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif; margin-bottom: 1rem;">
+                Google procesa más de <strong>3.5 mil millones de búsquedas diarias</strong> utilizando <strong>B-Trees</strong> para indexar billones de páginas web. Cada consulta requiere atravesar árboles con millones de nodos en menos de 0.5 segundos.
+            </p>
+
+            <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
+                <p style="color: #555555; font-size: 1rem; line-height: 1.7; font-family: 'Montserrat', sans-serif; margin-bottom: 0.75rem;">
+                    <strong>Facebook's Social Graph</strong> (la red de conexiones entre usuarios) se modela como un <strong>grafo dirigido gigante</strong> con más de 3 mil millones de nodos (usuarios) y trillones de aristas (amistades, likes, compartidos). Aunque contiene ciclos (A conoce a B, B conoce a C, C conoce a A), internamente Facebook usa <strong>múltiples DAGs</strong> para optimizar consultas específicas como "amigos en común" o "sugerencias de amistad".
+                </p>
+                <p style="color: #555555; font-size: 1rem; line-height: 1.7; font-family: 'Montserrat', sans-serif;">
+                    <strong>Amazon</strong> usa árboles de decisión con más de <strong>150 millones de nodos</strong> para su sistema de recomendaciones, procesando el comportamiento de 300 millones de clientes activos.
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer style="text-align: center; color: #555555; margin-top: 3rem; padding: 2rem; border-top: 3px solid #49B9CE; background: white; border-radius: 1rem;">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 2rem; font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">iLERNA</h3>
+                <p style="font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" style="color: #49B9CE; text-decoration: none; font-weight: 700; font-size: 1rem; font-family: 'Montserrat', sans-serif;" target="_blank">www.ilerna.es</a>
+            </div>
+            <p style="font-size: 0.875rem; color: #777777; font-family: 'Montserrat', sans-serif;">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        </footer>
+    </div>
+</div>

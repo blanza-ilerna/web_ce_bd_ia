@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo McCulloch-Pitts - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Descubre el primer modelo matemático de neurona artificial creado por McCulloch y Pitts en 1943.">
+    <meta name="keywords"
+        content="McCulloch-Pitts, Warren McCulloch, Walter Pitts, neurona artificial, modelo matemático, redes neuronales, historia IA, umbral activación, neurona binaria, computación neuronal, 1943, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Modelo McCulloch-Pitts - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. El nacimiento de la neurona artificial y los fundamentos de la computación neuronal.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Modelo McCulloch-Pitts</span>
+                </div>
+            </div>
+            <h1 class="text-center">El Nacimiento de la Neurona Artificial</h1>
+            <p class="subtitle text-center">El modelo McCulloch-Pitts: la chispa que encendió la computación neuronal
+            </p>
+        </header>
+
+        <!-- SECCIÓN 1: EL PRIMER MODELO MATEMÁTICO -->
+        <section>
+            <h2>El Primer Modelo Matemático</h2>
+            <p>
+                En <strong>1943</strong>, en plena Segunda Guerra Mundial, el neurofisiólogo <strong>Warren
+                    McCulloch</strong> y el lógico <strong>Walter Pitts</strong> colaboraron para crear algo
+                revolucionario. En su influyente publicación <em>"A Logical Calculus of Ideas Immanent in Nervous
+                    Activity"</em>, presentaron el primer modelo matemático de una neurona artificial.
+            </p>
+            <p>
+                Su objetivo era simple pero profundo: entender si las operaciones lógicas del pensamiento podían ser
+                implementadas por redes de neuronas simples. Demostraron que una red de estas neuronas "formales" podía,
+                en teoría, <strong>realizar cualquier cálculo lógico</strong>, sentando así las bases teóricas de las
+                redes neuronales y la inteligencia artificial.
+            </p>
+
+            <div class="highlight-box primary">
+                <h3 class="color-primary">Publicación Original</h3>
+                <p class="content" style="font-style: italic; margin-bottom: 0.75rem;">
+                    "A Logical Calculus of Ideas Immanent in Nervous Activity"
+                </p>
+                <p class="content" style="font-size: 0.95rem;">
+                    McCulloch, W. S., & Pitts, W. (1943). Bulletin of Mathematical Biophysics, 5(4), 115-133.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ANATOMÍA DE UNA NEURONA -->
+        <section>
+            <h2>Anatomía de una Neurona McCulloch-Pitts</h2>
+            <p class="mb-2">
+                El modelo es una simplificación elegante de una neurona biológica. Sus componentes clave son:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔌 Entradas Binarias</h4>
+                    <p>Cada neurona recibe una o más entradas (<code>x₁, x₂, ...</code>), que solo pueden ser <strong>0
+                            (apagado)</strong> o <strong>1 (encendido)</strong>.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚖️ Pesos</h4>
+                    <p>A cada entrada se le asigna un peso (<code>w₁, w₂, ...</code>). En el modelo original, estos
+                        pesos son fijos y pueden ser <strong>excitatorios (positivos)</strong> o <strong>inhibitorios
+                            (negativos)</strong>.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">➕ Función de Suma</h4>
+                    <p>La neurona suma los productos de cada entrada por su peso correspondiente.</p>
+                    <div class="prediction-box" style="margin-top: 0.75rem;">
+                        Suma = x₁·w₁ + x₂·w₂ + ...
+                    </div>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎯 Umbral de Activación</h4>
+                    <p>La neurona tiene un umbral de activación fijo (<strong>θ</strong>). Si la suma es mayor o igual
+                        al umbral, la neurona se "dispara" y su salida es <strong>1</strong>. Si no, su salida es
+                        <strong>0</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box secondary" style="margin-top: 2rem;">
+                <h3 class="color-secondary">Regla de Activación</h3>
+                <div class="prediction-box" style="margin-top: 1rem; margin-bottom: 1rem;">
+                    Salida = (Suma ≥ θ) ? 1 : 0
+                </div>
+                <p class="content" style="margin-bottom: 0;">
+                    <strong>En resumen:</strong> La neurona calcula una suma ponderada de sus entradas y, si esta suma
+                    alcanza un umbral, se activa. Es un simple dispositivo de decisión binario.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: DIAGRAMA DE LA NEURONA -->
+        <section>
+            <h2>Visualización del Modelo</h2>
+            <p class="mb-1">
+                A continuación se muestra un diagrama completo de cómo funciona una neurona McCulloch-Pitts:
+            </p>
+
+            <h3 class="color-primary mt-2 mb-1 text-center">Funcionamiento de la Neurona McCulloch-Pitts</h3>
+
+            <div class="bg-gray-light p-2 border-radius-1 border-light">
+                <svg width="100%" viewBox="0 0 900 400" style="max-width: 1100px; margin: 0 auto; display: block;">
+                    <defs>
+                        <marker id="arrow-mp" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+
+                    <!-- Título principal -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Neurona McCulloch-Pitts</text>
+
+                    <!-- INPUTS (Izquierda) -->
+                    <text x="80" y="80" font-size="14" font-weight="bold" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Entradas Binarias</text>
+                    <text x="80" y="100" font-size="11" fill="#777" font-family="Montserrat" text-anchor="middle">(0 o
+                        1)</text>
+
+                    <!-- Input 1 - Activo (1) -->
+                    <circle cx="80" cy="140" r="18" fill="#49B9CE" stroke="#3A97AD" stroke-width="2.5" />
+                    <circle cx="80" cy="140" r="12" fill="#8FD9E8" stroke="none" />
+                    <text x="110" y="145" font-size="12" fill="#333" font-family="Montserrat">x₁ = 1</text>
+
+                    <!-- Input 2 - Activo (1) -->
+                    <circle cx="80" cy="200" r="18" fill="#49B9CE" stroke="#3A97AD" stroke-width="2.5" />
+                    <circle cx="80" cy="200" r="12" fill="#8FD9E8" stroke="none" />
+                    <text x="110" y="205" font-size="12" fill="#333" font-family="Montserrat">x₂ = 1</text>
+
+                    <!-- Input 3 - Inactivo (0) -->
+                    <circle cx="80" cy="260" r="18" fill="#E0E0E0" stroke="#999" stroke-width="2.5" />
+                    <circle cx="80" cy="260" r="12" fill="#F5F5F5" stroke="none" />
+                    <text x="110" y="265" font-size="12" fill="#777" font-family="Montserrat">x₃ = 0</text>
+
+                    <!-- Input 4 - Activo (1) -->
+                    <circle cx="80" cy="320" r="18" fill="#49B9CE" stroke="#3A97AD" stroke-width="2.5" />
+                    <circle cx="80" cy="320" r="12" fill="#8FD9E8" stroke="none" />
+                    <text x="110" y="325" font-size="12" fill="#333" font-family="Montserrat">x₄ = 1</text>
+
+                    <!-- WEIGHTS (Conexiones con etiquetas) -->
+                    <!-- Weight 1 - Excitatorio -->
+                    <line x1="98" y1="140" x2="320" y2="200" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow-mp)" />
+                    <rect x="170" y="150" width="90" height="22" fill="#49B9CE" rx="11" />
+                    <text x="215" y="165" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">w₁ = +2</text>
+
+                    <!-- Weight 2 - Excitatorio -->
+                    <line x1="98" y1="200" x2="320" y2="200" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow-mp)" />
+                    <rect x="160" y="185" width="90" height="22" fill="#49B9CE" rx="11" />
+                    <text x="205" y="200" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">w₂ = +1</text>
+
+                    <!-- Weight 3 - Inhibitorio (inactivo) -->
+                    <line x1="98" y1="260" x2="320" y2="200" stroke="#999" stroke-width="2.5" stroke-dasharray="4 2"
+                        marker-end="url(#arrow-mp)" opacity="0.5" />
+                    <rect x="170" y="218" width="90" height="22" fill="#999" rx="11" opacity="0.5" />
+                    <text x="215" y="233" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">w₃ = -1</text>
+
+                    <!-- Weight 4 - Excitatorio -->
+                    <line x1="98" y1="320" x2="320" y2="200" stroke="#8A7AAF" stroke-width="3"
+                        marker-end="url(#arrow-mp)" />
+                    <rect x="170" y="258" width="90" height="22" fill="#8A7AAF" rx="11" />
+                    <text x="215" y="273" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">w₄ = +1</text>
+
+                    <!-- Nota sobre pesos -->
+                    <text x="230" y="345" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle"
+                        font-style="italic">Pesos fijos (no hay aprendizaje)</text>
+                    <text x="230" y="360" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle"
+                        font-style="italic">Excitatorios (+) e Inhibitorios (-)</text>
+
+                    <!-- NEURONA CENTRAL (Círculo dividido) -->
+                    <circle cx="450" cy="200" r="100" fill="none" stroke="#49B9CE" stroke-width="4" />
+
+                    <!-- Línea divisoria horizontal -->
+                    <line x1="350" y1="200" x2="550" y2="200" stroke="#49B9CE" stroke-width="2" />
+
+                    <!-- Parte superior: SUMA -->
+                    <path d="M 450 100 A 100 100 0 0 1 550 200 L 350 200 A 100 100 0 0 1 450 100 Z" fill="#F0EDF5"
+                        opacity="0.7" />
+
+                    <!-- Texto Suma -->
+                    <text x="450" y="135" font-size="15" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Suma Ponderada</text>
+                    <text x="450" y="153" font-size="10" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">(Entradas × Pesos)</text>
+
+                    <!-- Fórmula Sigma -->
+                    <text x="450" y="185" font-size="22" font-weight="bold" fill="#8A7AAF" font-family="Montserrat"
+                        text-anchor="middle">Σ(w×x)</text>
+
+                    <!-- Parte inferior: UMBRAL -->
+                    <path d="M 350 200 L 550 200 A 100 100 0 0 1 450 300 A 100 100 0 0 1 350 200 Z" fill="#E8F7FA"
+                        opacity="0.7" />
+
+                    <!-- Texto Umbral -->
+                    <text x="450" y="225" font-size="15" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Umbral (θ)</text>
+                    <text x="450" y="245" font-size="18" fill="#49B9CE" font-weight="bold" font-family="Montserrat"
+                        text-anchor="middle">θ = 2</text>
+
+                    <!-- Regla de activación -->
+                    <text x="450" y="268" font-size="11" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Salida = 1 si Σ ≥ θ</text>
+                    <text x="450" y="283" font-size="11" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Salida = 0 en otro caso</text>
+
+                    <!-- Flecha hacia OUTPUT -->
+                    <line x1="550" y1="200" x2="660" y2="200" stroke="#8A7AAF" stroke-width="4"
+                        marker-end="url(#arrow-mp)" />
+
+                    <!-- OUTPUT (Derecha) -->
+                    <text x="750" y="80" font-size="14" font-weight="bold" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Salida Binaria</text>
+                    <text x="750" y="100" font-size="11" fill="#777" font-family="Montserrat" text-anchor="middle">(0 o
+                        1)</text>
+
+                    <!-- Círculo de salida principal -->
+                    <circle cx="750" cy="200" r="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" />
+
+                    <!-- Líneas de conexión a indicadores -->
+                    <line x1="795" y1="180" x2="820" y2="165" stroke="#E65100" stroke-width="2" />
+                    <line x1="795" y1="220" x2="820" y2="235" stroke="#4CAF50" stroke-width="2" />
+
+                    <!-- Indicadores 0 y 1 fuera del círculo -->
+                    <circle cx="835" cy="165" r="16" fill="white" stroke="#E65100" stroke-width="2.5" />
+                    <text x="835" y="172" font-size="16" font-weight="bold" fill="#E65100" font-family="Montserrat"
+                        text-anchor="middle">0</text>
+
+                    <circle cx="835" cy="235" r="16" fill="white" stroke="#4CAF50" stroke-width="2.5" />
+                    <text x="835" y="242" font-size="16" font-weight="bold" fill="#4CAF50" font-family="Montserrat"
+                        text-anchor="middle">1</text>
+
+                    <!-- Descripción del output -->
+                    <text x="750" y="280" font-size="10" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Ejemplo: Σ = 1×2 + 1×1 + 0×(-1) + 1×1 = 4</text>
+                    <text x="750" y="295" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle">Como
+                        4 ≥ 2, la salida es 1 (activada)</text>
+                </svg>
+            </div>
+
+            <div class="curiosity-box mt-2">
+                <h4>💡 Ejemplo Explicado</h4>
+                <p>En este ejemplo, la neurona tiene cuatro entradas binarias: <strong>x₁=1</strong>,
+                    <strong>x₂=1</strong>, <strong>x₃=0</strong> y <strong>x₄=1</strong>. Los pesos son
+                    <strong>w₁=+2</strong> (excitatorio fuerte), <strong>w₂=+1</strong> (excitatorio),
+                    <strong>w₃=-1</strong> (inhibitorio), y <strong>w₄=+1</strong> (excitatorio). El umbral es
+                    <strong>θ=2</strong>.
+                </p>
+                <p class="mt-1">La suma ponderada es: <strong>1×2 + 1×1 + 0×(-1) + 1×1 = 4</strong></p>
+                <p class="mt-1">Como <strong>4 ≥ 2</strong>, la neurona se activa y produce una salida
+                    de <strong>1</strong>. Si la suma hubiera sido menor que 2, la salida habría sido
+                    <strong>0</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: IMPLEMENTANDO COMPUERTAS LÓGICAS -->
+        <section>
+            <h2>Implementando Compuertas Lógicas</h2>
+            <p class="mb-2">
+                Una de las contribuciones más importantes de McCulloch y Pitts fue demostrar que su modelo podía
+                implementar todas las operaciones lógicas básicas. Veamos cómo:
+            </p>
+
+            <div class="styled-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Compuerta</th>
+                            <th>Entradas</th>
+                            <th>Pesos</th>
+                            <th>Umbral (θ)</th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>AND</strong></td>
+                            <td>x₁, x₂</td>
+                            <td>w₁=1, w₂=1</td>
+                            <td>θ=2</td>
+                            <td>Activa solo si ambas entradas son 1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OR</strong></td>
+                            <td>x₁, x₂</td>
+                            <td>w₁=1, w₂=1</td>
+                            <td>θ=1</td>
+                            <td>Activa si al menos una entrada es 1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NOT</strong></td>
+                            <td>x₁</td>
+                            <td>w₁=-1</td>
+                            <td>θ=0</td>
+                            <td>Invierte la entrada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box primary mt-2">
+                <h3 class="color-primary">Implicación Histórica</h3>
+                <p class="content">
+                    Al demostrar que las neuronas artificiales podían implementar cualquier función lógica, McCulloch y
+                    Pitts probaron teóricamente que <strong>las redes de neuronas artificiales eran computacionalmente
+                        universales</strong>. Esto significaba que, en principio, podían realizar cualquier cálculo que
+                    un ordenador tradicional pudiera hacer.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: LIMITACIONES -->
+        <section>
+            <h2>Limitaciones del Modelo</h2>
+            <p class="mb-2">
+                A pesar de su importancia histórica, el modelo McCulloch-Pitts tiene varias limitaciones fundamentales:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-warning">⚠️ Pesos Fijos</h4>
+                    <p>Los pesos son fijos y definidos manualmente. <strong>No hay aprendizaje automático</strong>. Esto
+                        significa que no puede adaptarse a nuevos datos sin intervención humana.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-warning">⚠️ Binariedad Estricta</h4>
+                    <p>Solo acepta entradas binarias (0 o 1) y produce salidas binarias. No puede trabajar con valores
+                        continuos o graduales.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-warning">⚠️ Sin Memoria Temporal</h4>
+                    <p>El modelo original no tiene memoria ni estado interno. Cada computación es independiente del
+                        pasado.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-warning">⚠️ Umbral Fijo</h4>
+                    <p>El umbral de activación es fijo, lo que limita la flexibilidad del modelo para adaptarse a
+                        diferentes contextos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: LEGADO -->
+        <section>
+            <h2>El Legado del Modelo McCulloch-Pitts</h2>
+            <p>
+                A pesar de sus limitaciones, el modelo McCulloch-Pitts fue <strong>absolutamente fundamental</strong>
+                para el desarrollo de la inteligencia artificial y las redes neuronales. Su trabajo:
+            </p>
+
+            <ul style="line-height: 1.75; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                <li style="margin-bottom: 0.75rem;">Proporcionó el <strong>primer modelo matemático riguroso</strong> de
+                    una neurona.</li>
+                <li style="margin-bottom: 0.75rem;">Demostró que las redes de neuronas artificiales eran
+                    <strong>computacionalmente universales</strong>.
+                </li>
+                <li style="margin-bottom: 0.75rem;">Inspiró directamente el desarrollo del <strong><a
+                            href="perceptron.html">Perceptrón de Rosenblatt (1957)</a></strong>, que introdujo el
+                    concepto de pesos ajustables y aprendizaje
+                    automático.</li>
+                <li style="margin-bottom: 0.75rem;">Sentó las bases conceptuales para todas las arquitecturas de redes
+                    neuronales modernas, incluidas las <strong>redes neuronales profundas (deep learning)</strong>.</li>
+            </ul>
+
+            <div class="curiosity-box">
+                <h4>🎓 Curiosidad Histórica</h4>
+                <p>Walter Pitts era un prodigio autodidacta que nunca obtuvo un título universitario formal. A los 12
+                    años, leyó los tres volúmenes de "Principia Mathematica" de Bertrand Russell y Alfred North
+                    Whitehead, y encontró varios errores que comunicó a Russell en una carta. Su colaboración con
+                    McCulloch cambió el curso de la ciencia de la computación.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: BIOGRAFÍAS Y RECURSOS -->
+        <section>
+            <h2>📚 Biografías Relacionadas</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary"><a href="https://es.wikipedia.org/wiki/Warren_McCulloch" target="_blank"
+                            style="text-decoration: none; color: inherit;">Warren McCulloch 🔗</a></h4>
+                    <p>Neurofisiólogo y cibernetista estadounidense, conocido por su trabajo fundacional en la
+                        arquitectura del cerebro.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary"><a href="https://es.wikipedia.org/wiki/Walter_Pitts" target="_blank"
+                            style="text-decoration: none; color: inherit;">Walter Pitts 🔗</a></h4>
+                    <p>Lógico y neurofisiólogo computacional, una figura clave pero trágica en el nacimiento de la IA.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary"><a href="https://es.wikipedia.org/wiki/Frank_Rosenblatt" target="_blank"
+                            style="text-decoration: none; color: inherit;">Frank Rosenblatt 🔗</a></h4>
+                    <p>Psicólogo creador del Perceptrón, el siguiente gran paso evolutivo de la neurona de
+                        McCulloch-Pitts.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary"><a href="https://es.wikipedia.org/wiki/Bertrand_Russell" target="_blank"
+                            style="text-decoration: none; color: inherit;">Bertrand Russell 🔗</a></h4>
+                    <p>Filósofo, matemático y lógico británico, cuya obra inspiró al joven Walter Pitts.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary mt-2">
+                <h3 class="color-primary">Siguiente Lección</h3>
+                <p class="content">
+                    Descubre cómo la idea de McCulloch y Pitts evolucionó hacia una máquina capaz de aprender:
+                    <br>
+                    <strong><a href="perceptron.html" style="font-size: 1.1rem;">👉 El Perceptrón de
+                            Rosenblatt</a></strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

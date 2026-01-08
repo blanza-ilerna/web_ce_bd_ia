@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos y Complejidad Algorítmica - iLERNA</title>
+    <meta name="description" content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende sobre algoritmos, complejidad algorítmica y notación Big O.">
+    <meta name="keywords" content="algoritmos, complejidad algorítmica, Big O, notación O grande, complejidad temporal, complejidad espacial, O(n), O(log n), O(n²), eficiencia algoritmos, estructuras datos, ILERNA, Big Data, optimización">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Algoritmos y Complejidad Algorítmica - iLERNA">
+    <meta property="og:description" content="Curso de Especialización de Big Data e Inteligencia Artificial. Domina la complejidad algorítmica y optimización.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="logo-container">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" class="logo">
+            </div>
+            <h1>Algoritmos y Complejidad Algorítmica</h1>
+            <p class="subtitle">Entendiendo la eficiencia y el rendimiento de los algoritmos</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN A LOS ALGORITMOS -->
+        <section>
+            <h2>¿Qué es un Algoritmo?</h2>
+            <p>
+                Un <strong>algoritmo</strong> es una secuencia finita y bien definida de pasos o instrucciones diseñadas para resolver un problema específico o realizar una tarea. Los algoritmos son fundamentales en la programación y en la informática, ya que describen cómo procesar datos de entrada para obtener resultados deseados.
+            </p>
+
+            <!-- CAJA DE EJEMPLO -->
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo: Algoritmo para hacer café</p>
+                <p class="content">1. Llenar la cafetera con agua<br>2. Añadir café molido al filtro<br>3. Encender la cafetera<br>4. Esperar a que termine<br>5. Servir el café en una taza</p>
+            </div>
+
+            <!-- CONCEPTOS EN GRID -->
+            <h3>Características de un Buen Algoritmo</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Finito</h4>
+                    <p>Debe terminar después de un número finito de pasos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Definido</h4>
+                    <p>Cada paso debe estar claramente especificado sin ambigüedades.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Entrada</h4>
+                    <p>Debe tener cero o más entradas bien definidas.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Salida</h4>
+                    <p>Debe producir al menos una salida o resultado.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Efectivo</h4>
+                    <p>Cada paso debe ser realizable y lo suficientemente básico.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Eficiente</h4>
+                    <p>Debe resolver el problema de manera óptima en tiempo y espacio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: COMPLEJIDAD ALGORÍTMICA -->
+        <section>
+            <h2>Complejidad Algorítmica</h2>
+
+            <p>
+                La <strong>complejidad algorítmica</strong> mide los recursos necesarios (tiempo y espacio) que requiere un algoritmo para resolver un problema en función del tamaño de la entrada. Existen dos tipos principales:
+            </p>
+
+            <div class="grid-two-columns">
+                <!-- COMPLEJIDAD TEMPORAL -->
+                <div class="bordered-box primary">
+                    <h3 class="color-primary">⏱️ Complejidad Temporal</h3>
+                    <p>Mide el <strong>tiempo de ejecución</strong> del algoritmo en función del tamaño de la entrada (n).</p>
+                    <div class="highlight-box primary">
+                        <p class="content">Pregunta clave: ¿Cuántas operaciones realiza?</p>
+                    </div>
+                </div>
+
+                <!-- COMPLEJIDAD ESPACIAL -->
+                <div class="bordered-box secondary">
+                    <h3 class="color-secondary">💾 Complejidad Espacial</h3>
+                    <p>Mide la <strong>cantidad de memoria</strong> que necesita el algoritmo durante su ejecución.</p>
+                    <div class="highlight-box secondary">
+                        <p class="content">Pregunta clave: ¿Cuánta memoria utiliza?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISUALIZACIÓN DE CONCEPTO -->
+            <div style="margin-top: 2rem;">
+                <h3 class="color-primary">Analogía Visual</h3>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                    <svg width="400" height="250" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa;">
+                        <!-- Eje Y (Tiempo) -->
+                        <line x1="50" y1="220" x2="50" y2="30" stroke="#333333" stroke-width="2"/>
+                        <text x="20" y="25" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat">Tiempo</text>
+                        <polygon points="50,30 45,40 55,40" fill="#333333"/>
+
+                        <!-- Eje X (Tamaño entrada) -->
+                        <line x1="50" y1="220" x2="380" y2="220" stroke="#333333" stroke-width="2"/>
+                        <text x="300" y="245" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat">Tamaño (n)</text>
+                        <polygon points="380,220 370,215 370,225" fill="#333333"/>
+
+                        <!-- Curva O(n²) - Cuadrática -->
+                        <path d="M 60 210 Q 150 180, 240 100 T 370 50" stroke="#8A7AAF" stroke-width="3" fill="none"/>
+                        <text x="280" y="70" font-size="16" font-weight="bold" fill="#8A7AAF" font-family="Montserrat">O(n²)</text>
+
+                        <!-- Curva O(n) - Lineal -->
+                        <path d="M 60 210 L 370 80" stroke="#49B9CE" stroke-width="3" fill="none"/>
+                        <text x="280" y="120" font-size="16" font-weight="bold" fill="#49B9CE" font-family="Montserrat">O(n)</text>
+
+                        <!-- Curva O(1) - Constante -->
+                        <line x1="60" y1="170" x2="370" y2="170" stroke="#333333" stroke-width="3"/>
+                        <text x="280" y="165" font-size="16" font-weight="bold" fill="#333333" font-family="Montserrat">O(1)</text>
+
+                        <text x="150" y="20" font-size="12" font-weight="bold" fill="#555555" font-family="Montserrat">A mayor n, mayor diferencia</text>
+                    </svg>
+                    <div style="flex: 1; min-width: 250px;">
+                        <p style="color: #555555; margin-bottom: 0.75rem; font-size: 1.125rem;">
+                            <strong style="color: #333333;">O(1)</strong> - Como abrir un libro en cualquier página: siempre toma el mismo tiempo.
+                        </p>
+                        <p style="color: #555555; margin-bottom: 0.75rem; font-size: 1.125rem;">
+                            <strong style="color: #49B9CE;">O(n)</strong> - Como leer un libro página por página: el tiempo crece linealmente.
+                        </p>
+                        <p style="color: #555555; font-size: 1.125rem;">
+                            <strong style="color: #8A7AAF;">O(n²)</strong> - Como comparar cada página con todas las demás: el tiempo crece exponencialmente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: NOTACIÓN BIG O -->
+        <section>
+            <h2>Notación Big O (O Grande)</h2>
+
+            <p>
+                La <strong>notación Big O</strong> es una forma matemática de describir el comportamiento asintótico de un algoritmo, es decir, cómo crece el tiempo de ejecución cuando el tamaño de la entrada tiende a infinito. Se enfoca en el <strong>peor caso</strong> y elimina constantes y términos de menor orden.
+            </p>
+
+            <!-- TABLA DE COMPLEJIDADES -->
+            <div class="highlight-box primary">
+                <h3 class="title">Complejidades Comunes (de mejor a peor)</h3>
+                <div style="display: grid; gap: 0.75rem;">
+                    <div class="prediction-box" style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #2d8a3e;">O(1)</span>
+                        <span style="color: #555555;">Constante</span>
+                        <span style="color: #2d8a3e; font-weight: 700;">Excelente ⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #49B9CE;">O(log n)</span>
+                        <span style="color: #555555;">Logarítmica</span>
+                        <span style="color: #49B9CE; font-weight: 700;">Muy buena ⭐⭐⭐⭐</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #49B9CE;">O(n)</span>
+                        <span style="color: #555555;">Lineal</span>
+                        <span style="color: #49B9CE; font-weight: 700;">Buena ⭐⭐⭐</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #8A7AAF;">O(n log n)</span>
+                        <span style="color: #555555;">Lineal-logarítmica</span>
+                        <span style="color: #8A7AAF; font-weight: 700;">Aceptable ⭐⭐</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #d9534f;">O(n²)</span>
+                        <span style="color: #555555;">Cuadrática</span>
+                        <span style="color: #d9534f; font-weight: 700;">Mala ⭐</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #d9534f;">O(2ⁿ)</span>
+                        <span style="color: #555555;">Exponencial</span>
+                        <span style="color: #d9534f; font-weight: 700;">Muy mala ❌</span>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; display: grid; grid-template-columns: 120px 1fr 150px; gap: 1rem;">
+                        <span style="font-weight: 700; color: #d9534f;">O(n!)</span>
+                        <span style="color: #555555;">Factorial</span>
+                        <span style="color: #d9534f; font-weight: 700;">Terrible ❌❌</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRÁFICA COMPARATIVA INTERACTIVA -->
+            <h3 class="color-primary">Comparación Visual de Complejidades (Interactivo)</h3>
+
+            <!-- Controles interactivos -->
+            <div class="highlight-box primary" style="padding: 1.5rem; border: 2px solid #49B9CE;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #333333; font-size: 1.125rem; display: block; margin-bottom: 0.5rem;">
+                        Tamaño de entrada (n): <span id="nValue" class="color-primary">100</span>
+                    </label>
+                    <input type="range" id="nSlider" min="10" max="1000" value="100" step="10"
+                           style="width: 100%; height: 8px; border-radius: 5px; background: #d3d3d3; outline: none; cursor: pointer;">
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_o1" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #2d8a3e; font-weight: 700;">O(1)</span>
+                        <span id="val_o1" style="color: #555555;">1</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_ologn" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #49B9CE; font-weight: 700;">O(log n)</span>
+                        <span id="val_ologn" style="color: #555555;">7</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_on" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #1e7e9c; font-weight: 700;">O(n)</span>
+                        <span id="val_on" style="color: #555555;">100</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_onlogn" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #8A7AAF; font-weight: 700;">O(n log n)</span>
+                        <span id="val_onlogn" style="color: #555555;">700</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_on2" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #d9534f; font-weight: 700;">O(n²)</span>
+                        <span id="val_on2" style="color: #555555;">10,000</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="check_o2n" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #a94442; font-weight: 700;">O(2ⁿ)</span>
+                        <span id="val_o2n" style="color: #555555;">∞</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Canvas para el gráfico -->
+            <div style="position: relative; border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; padding: 1rem;">
+                <svg id="complexityGraph" width="100%" height="400" viewBox="0 0 700 450" style="max-width: 700px; display: block; margin: 0 auto;">
+                    <!-- El contenido será generado por JavaScript -->
+                </svg>
+
+                <!-- Tooltip -->
+                <div id="tooltip" style="position: absolute; display: none; background: rgba(51, 51, 51, 0.95); color: white; padding: 0.75rem; border-radius: 0.5rem; pointer-events: none; font-size: 0.875rem; white-space: nowrap; z-index: 1000;"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EJEMPLOS PRÁCTICOS -->
+        <section>
+            <h2>Ejemplos Prácticos de Complejidad</h2>
+
+            <!-- EJEMPLO 1: O(1) -->
+            <div class="bordered-box" style="border-color: #2d8a3e;">
+                <h3 style="color: #2d8a3e;">1. O(1) - Complejidad Constante</h3>
+                <p>El tiempo de ejecución no depende del tamaño de la entrada. Siempre toma el mismo tiempo.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def obtener_primer_elemento(lista):
+    return lista[0]</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: #e8f5e9; border-color: #2d8a3e;">
+                    <p class="content" style="color: #333333; font-weight: 700;">
+                        ✓ Acceso directo a un elemento del array<br>
+                        ✓ Inserción al inicio de una lista enlazada<br>
+                        ✓ Operaciones hash en diccionarios
+                    </p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO 2: O(log n) -->
+            <div class="bordered-box primary">
+                <h3 class="color-primary">2. O(log n) - Complejidad Logarítmica</h3>
+                <p>El algoritmo divide el problema en partes más pequeñas en cada iteración. Muy eficiente para grandes conjuntos de datos.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def busqueda_binaria(lista_ordenada, objetivo):
+    izquierda, derecha = 0, len(lista_ordenada) - 1
+
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+
+        if lista_ordenada[medio] == objetivo:
+            return medio
+        elif lista_ordenada[medio] < objetivo:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+
+    return -1</code></pre>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="content" style="font-weight: 700;">
+                        ✓ Búsqueda binaria en array ordenado<br>
+                        ✓ Operaciones en árboles balanceados (AVL, Red-Black)<br>
+                        ✓ Algoritmos divide y conquista
+                    </p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO 3: O(n) -->
+            <div class="bordered-box primary">
+                <h3 class="color-primary">3. O(n) - Complejidad Lineal</h3>
+                <p>El tiempo de ejecución crece proporcionalmente al tamaño de la entrada.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def buscar_elemento(lista, objetivo):
+    for elemento in lista:
+        if elemento == objetivo:
+            return True
+    return False</code></pre>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="content" style="font-weight: 700;">
+                        ✓ Recorrer un array o lista completa<br>
+                        ✓ Búsqueda lineal<br>
+                        ✓ Encontrar el máximo o mínimo
+                    </p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO 4: O(n log n) -->
+            <div class="bordered-box secondary">
+                <h3 class="color-secondary">4. O(n log n) - Complejidad Lineal-Logarítmica</h3>
+                <p>Común en algoritmos de ordenación eficientes. Combina el crecimiento lineal con el logarítmico.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def merge_sort(lista):
+    if len(lista) <= 1:
+        return lista
+
+    medio = len(lista) // 2
+    izquierda = merge_sort(lista[:medio])
+    derecha = merge_sort(lista[medio:])
+
+    return merge(izquierda, derecha)
+
+def merge(izq, der):
+    resultado = []
+    i = j = 0
+
+    while i < len(izq) and j < len(der):
+        if izq[i] < der[j]:
+            resultado.append(izq[i])
+            i += 1
+        else:
+            resultado.append(der[j])
+            j += 1
+
+    resultado.extend(izq[i:])
+    resultado.extend(der[j:])
+    return resultado</code></pre>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="content" style="font-weight: 700;">
+                        ✓ Merge Sort<br>
+                        ✓ Quick Sort (caso promedio)<br>
+                        ✓ Heap Sort
+                    </p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO 5: O(n²) -->
+            <div class="bordered-box" style="border-color: #d9534f;">
+                <h3 style="color: #d9534f;">5. O(n²) - Complejidad Cuadrática</h3>
+                <p>Común en algoritmos con bucles anidados. El tiempo crece cuadráticamente con la entrada.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def bubble_sort(lista):
+    n = len(lista)
+
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if lista[j] > lista[j + 1]:
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+
+    return lista</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: #f2dede; border-color: #d9534f;">
+                    <p class="content" style="color: #333333; font-weight: 700;">
+                        ⚠️ Bubble Sort<br>
+                        ⚠️ Insertion Sort<br>
+                        ⚠️ Selection Sort<br>
+                        (Ineficiente para grandes conjuntos de datos)
+                    </p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO 6: O(2ⁿ) -->
+            <div class="bordered-box" style="border-color: #a94442;">
+                <h3 style="color: #a94442;">6. O(2ⁿ) - Complejidad Exponencial</h3>
+                <p>Muy ineficiente. El tiempo se duplica con cada elemento adicional. Solo viable para entradas muy pequeñas.</p>
+
+                <div class="code-block">
+<pre><code class="language-python">def fibonacci_recursivo(n):
+    if n <= 1:
+        return n
+    return fibonacci_recursivo(n - 1) + fibonacci_recursivo(n - 2)</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: #f9e0e0; border-color: #a94442;">
+                    <p class="content" style="color: #a94442; font-weight: 700;">
+                        ❌ Fibonacci recursivo sin memoización<br>
+                        ❌ Subconjuntos de un conjunto (power set)<br>
+                        ❌ Torres de Hanoi<br>
+                        (Impracticable para n > 30)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: TABLA COMPARATIVA -->
+        <section>
+            <h2>Comparación de Crecimiento</h2>
+            <p>Esta tabla muestra cómo crece el número de operaciones para diferentes complejidades según el tamaño de entrada:</p>
+
+            <div class="table-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Complejidad</th>
+                            <th>n = 10</th>
+                            <th>n = 100</th>
+                            <th>n = 1,000</th>
+                            <th>n = 10,000</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prediction-box" style="color: #2d8a3e; font-weight: 700;">O(1)</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr>
+                            <td class="prediction-box" style="color: #49B9CE; font-weight: 700;">O(log n)</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">13</td>
+                        </tr>
+                        <tr>
+                            <td class="prediction-box" style="color: #1e7e9c; font-weight: 700;">O(n)</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;">1,000</td>
+                            <td style="text-align: center;">10,000</td>
+                        </tr>
+                        <tr>
+                            <td class="prediction-box" style="color: #8A7AAF; font-weight: 700;">O(n log n)</td>
+                            <td style="text-align: center;">30</td>
+                            <td style="text-align: center;">700</td>
+                            <td style="text-align: center;">10,000</td>
+                            <td style="text-align: center;">130,000</td>
+                        </tr>
+                        <tr>
+                            <td class="prediction-box" style="color: #d9534f; font-weight: 700;">O(n²)</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;">10,000</td>
+                            <td style="text-align: center;">1,000,000</td>
+                            <td style="text-align: center; font-weight: 700; color: #d9534f;">100,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="prediction-box" style="color: #a94442; font-weight: 700;">O(2ⁿ)</td>
+                            <td style="text-align: center;">1,024</td>
+                            <td style="text-align: center; font-weight: 700; color: #d9534f;">1.26 × 10³⁰</td>
+                            <td style="text-align: center; font-weight: 700; color: #a94442;">∞ (Impracticable)</td>
+                            <td style="text-align: center; font-weight: 700; color: #a94442;">∞ (Impracticable)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="curiosity-box" style="background: #fff8e1; border-color: #ffa726;">
+                <h3 style="color: #e65100;">⚠️ Importante</h3>
+                <p>
+                    <strong>La diferencia se hace crítica con grandes volúmenes de datos.</strong> Un algoritmo O(n²) con 10,000 elementos realizará 100 millones de operaciones, mientras que uno O(n log n) solo realizará 130,000 operaciones. ¡Elegir el algoritmo correcto es fundamental!
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: REGLAS PARA CALCULAR COMPLEJIDAD -->
+        <section>
+            <h2>Reglas para Calcular la Complejidad</h2>
+
+            <div class="grid-features">
+                <!-- REGLA 1 -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">1. Eliminar constantes</h4>
+                    <p style="margin-bottom: 0.5rem;">O(2n) → O(n)</p>
+                    <p style="font-size: 0.95rem;">Las constantes no afectan el crecimiento asintótico.</p>
+                </div>
+
+                <!-- REGLA 2 -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">2. Tomar el término dominante</h4>
+                    <p style="margin-bottom: 0.5rem;">O(n² + n) → O(n²)</p>
+                    <p style="font-size: 0.95rem;">El término de mayor orden domina el crecimiento.</p>
+                </div>
+
+                <!-- REGLA 3 -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">3. Operaciones secuenciales se suman</h4>
+                    <p style="margin-bottom: 0.5rem;">O(n) + O(n) → O(2n) → O(n)</p>
+                    <p style="font-size: 0.95rem;">Dos bucles seguidos se suman, luego se simplifica.</p>
+                </div>
+
+                <!-- REGLA 4 -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">4. Operaciones anidadas se multiplican</h4>
+                    <p style="margin-bottom: 0.5rem;">O(n) × O(n) → O(n²)</p>
+                    <p style="font-size: 0.95rem;">Bucles anidados multiplican la complejidad.</p>
+                </div>
+
+                <!-- REGLA 5 -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">5. Entradas diferentes, variables diferentes</h4>
+                    <p style="margin-bottom: 0.5rem;">O(a + b) o O(a × b)</p>
+                    <p style="font-size: 0.95rem;">Si hay dos entradas distintas, usar variables diferentes.</p>
+                </div>
+
+                <!-- REGLA 6 -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">6. Logaritmos en divisiones</h4>
+                    <p style="margin-bottom: 0.5rem;">División repetida → O(log n)</p>
+                    <p style="font-size: 0.95rem;">Cuando el problema se divide por la mitad cada vez.</p>
+                </div>
+            </div>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <div class="highlight-box primary" style="margin-top: 2rem;">
+                <h3 class="title">Ejemplo de Cálculo</h3>
+                <div class="code-block">
+<pre><code class="language-python">def ejemplo(arr):
+    suma = 0                    # O(1)
+    for i in arr:               # O(n)
+        suma += i               # O(1)
+    for i in arr:               # O(n)
+        print(i)                # O(1)
+    return suma                 # O(1)</code></pre>
+                </div>
+                <div class="prediction-box" style="margin-top: 1rem; font-size: 1.125rem;">
+                    Complejidad total: O(1) + O(n) + O(n) + O(1) = O(2n + 2) = <strong class="color-primary">O(n)</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: CONSEJOS PRÁCTICOS -->
+        <section>
+            <h2>Consejos para Optimizar Algoritmos</h2>
+
+            <div style="display: grid; gap: 1rem;">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">✓ Usa estructuras de datos apropiadas</h3>
+                    <p class="content">Diccionarios (hash maps) para búsquedas O(1), árboles balanceados para O(log n), etc.</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">✓ Evita bucles innecesarios</h3>
+                    <p class="content">Combina operaciones cuando sea posible para reducir el número de iteraciones.</p>
+                </div>
+
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">✓ Considera el trade-off espacio-tiempo</h3>
+                    <p class="content">A veces usar más memoria puede reducir significativamente el tiempo de ejecución (memoización).</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">✓ Divide y conquista</h3>
+                    <p class="content">Dividir problemas grandes en subproblemas más pequeños suele mejorar la eficiencia.</p>
+                </div>
+
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">✓ Analiza el caso promedio, no solo el peor</h3>
+                    <p class="content">Quick Sort es O(n²) en el peor caso pero O(n log n) en promedio, siendo muy eficiente en la práctica.</p>
+                </div>
+            </div>
+
+            <!-- RESUMEN FINAL -->
+            <div style="margin-top: 2rem; background: linear-gradient(135deg, #49B9CE 0%, #8A7AAF 100%); padding: 2rem; border-radius: 1rem; color: white;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem; text-align: center;">🎯 Puntos Clave</h3>
+                <ul style="font-size: 1.125rem; line-height: 2; list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">✦ La complejidad mide cómo crece el tiempo/espacio con el tamaño de entrada</li>
+                    <li style="margin-bottom: 0.5rem;">✦ Big O describe el peor caso y comportamiento asintótico</li>
+                    <li style="margin-bottom: 0.5rem;">✦ O(1) es constante, O(log n) es muy eficiente, O(n²) es ineficiente</li>
+                    <li style="margin-bottom: 0.5rem;">✦ Elegir el algoritmo correcto es crítico para el rendimiento</li>
+                    <li>✦ Siempre considera el contexto: datos pequeños vs. grandes volúmenes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/complexity-graph.js"></script>
+</body>
+</html>

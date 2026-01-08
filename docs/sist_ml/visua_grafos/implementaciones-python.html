@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementaciones en Python | Algoritmos de Grafos</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Prism.js CSS - Tema One Dark -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <style>
+        .code-section {
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .code-header {
+            background: linear-gradient(135deg, var(--azul-ilerna) 0%, var(--morado) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 3px solid var(--azul-ilerna);
+        }
+
+        .code-header h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.875rem;
+            color: white;
+        }
+
+        .code-header p {
+            margin: 0;
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+
+        .code-body {
+            padding: 0;
+        }
+
+        .code-description {
+            padding: 1.5rem 2rem;
+            background: var(--fondo-azul);
+            border-left: 4px solid var(--azul-ilerna);
+            margin: 0;
+        }
+
+        .code-description h4 {
+            color: var(--azul-ilerna);
+            margin: 0 0 0.75rem 0;
+            font-size: 1.125rem;
+        }
+
+        .code-description p {
+            margin: 0 0 1rem 0;
+            line-height: 1.8;
+            color: var(--gris-texto);
+            font-size: 1.125rem;
+        }
+
+        .code-description ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: var(--gris-texto);
+            font-size: 1.125rem;
+        }
+
+        .code-description ul li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            background: var(--fondo-morado);
+            color: var(--morado);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        pre[class*="language-"] {
+            margin: 0;
+            border-radius: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .line-numbers .line-numbers-rows {
+            border-right-color: #444;
+        }
+
+        .algo-nav {
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .algo-nav h3 {
+            margin: 0 0 1rem 0;
+            color: var(--azul-ilerna);
+            font-size: 1.875rem;
+        }
+
+        .algo-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .algo-nav li {
+            margin: 0.75rem 0;
+        }
+
+        .algo-nav a {
+            color: var(--gris-texto);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 1.125rem;
+        }
+
+        .algo-nav a:hover {
+            background: var(--fondo-azul);
+            color: var(--azul-ilerna);
+            transform: translateX(5px);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .algo-nav {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+
+        <header class="hero">
+            <h1>💻 Implementaciones en Python</h1>
+            <p class="subtitle">Código listo para usar de todos los algoritmos de grafos</p>
+            <p class="hero-description">Implementaciones completas, optimizadas y comentadas de los algoritmos fundamentales de teoría de grafos</p>
+        </header>
+
+        <section class="visualizations-section">
+            <div class="content-grid">
+                <!-- Navegación lateral -->
+                <div class="algo-nav">
+                    <h3>Algoritmos</h3>
+                    <ul>
+                        <li><a href="#bfs">BFS</a></li>
+                        <li><a href="#dfs">DFS</a></li>
+                        <li><a href="#dijkstra">Dijkstra</a></li>
+                        <li><a href="#bellman-ford">Bellman-Ford</a></li>
+                        <li><a href="#floyd-warshall">Floyd-Warshall</a></li>
+                        <li><a href="#astar">A*</a></li>
+                        <li><a href="#prim">Prim (MST)</a></li>
+                        <li><a href="#kruskal">Kruskal (MST)</a></li>
+                        <li><a href="#tarjan">Tarjan SCC</a></li>
+                        <li><a href="#ford-fulkerson">Ford-Fulkerson</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contenido principal -->
+                <div>
+                    <!-- BFS -->
+                    <div class="code-section" id="bfs">
+                        <div class="code-header">
+                            <h3>🌊 BFS - Búsqueda en Anchura</h3>
+                            <p>Explora el grafo nivel por nivel usando una cola FIFO</p>
+                        </div>
+                        <div class="code-body">
+                            <div class="code-description">
+                                <h4>Descripción del Algoritmo</h4>
+                                <p>BFS recorre el grafo nivel por nivel, visitando todos los nodos a distancia k antes de visitar nodos a distancia k+1. Usa una cola FIFO para mantener el orden de exploración.</p>
+                                <ul>
+                                    <li><strong>Aplicaciones:</strong> Camino más corto en grafos no ponderados, componentes conexas, niveles de árbol</li>
+                                    <li><strong>Estructura de datos:</strong> Cola (FIFO)</li>
+                                    <li><strong>Complejidad:</strong> <span class="complexity-badge">O(V + E) tiempo | O(V) espacio</span></li>
+                                </ul>
+                            </div>
+                            <pre class="line-numbers"><code class="language-python">from collections import deque
+from typing import List, Dict, Set
+
+def bfs(graph: Dict[int, List[int]], start: int) -> List[int]:
+    """
+    Realiza búsqueda en anchura (BFS) desde un nodo inicial.
+
+    Args:
+        graph: Diccionario de listas de adyacencia {nodo: [vecinos]}
+        start: Nodo inicial para comenzar la búsqueda
+
+    Returns:
+        Lista de nodos en el orden en que fueron visitados
+    """
+    visited: Set[int] = set()
+    queue: deque = deque([start])
+    order: List[int] = []
+
+    visited.add(start)
+
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+
+        # Explorar vecinos no visitados
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+    return order
+
+
+def bfs_shortest_path(graph: Dict[int, List[int]], start: int, goal: int) -> List[int]:
+    """
+    Encuentra el camino más corto entre dos nodos usando BFS.
+
+    Args:
+        graph: Diccionario de listas de adyacencia
+        start: Nodo inicial
+        goal: Nodo objetivo
+
+    Returns:
+        Lista representando el camino más corto, o lista vacía si no hay camino
+    """
+    if start == goal:
+        return [start]
+
+    visited: Set[int] = {start}
+    queue: deque = deque([(start, [start])])
+
+    while queue:
+        node, path = queue.popleft()
+
+        for neighbor in graph.get(node, []):
+            if neighbor == goal:
+                return path + [neighbor]
+
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+
+    return []  # No se encontró camino
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Crear un grafo de ejemplo
+    graph = {
+        0: [1, 2],
+        1: [0, 3, 4],
+        2: [0, 5],
+        3: [1],
+        4: [1, 5],
+        5: [2, 4]
+    }
+
+    print("Orden de visita BFS desde nodo 0:")
+    print(bfs(graph, 0))
+
+    print("\nCamino más corto de 0 a 5:")
+    print(bfs_shortest_path(graph, 0, 5))
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- DFS -->
+                    <div class="code-section" id="dfs">
+                        <div class="code-header">
+                            <h3>🏊 DFS - Búsqueda en Profundidad</h3>
+                            <p>Explora el grafo tan profundo como sea posible antes de retroceder</p>
+                        </div>
+                        <div class="code-body">
+                            <div class="code-description">
+                                <h4>Descripción del Algoritmo</h4>
+                                <p>DFS explora cada rama del grafo hasta su máxima profundidad antes de retroceder. Puede implementarse recursivamente o con una pila explícita.</p>
+                                <ul>
+                                    <li><strong>Aplicaciones:</strong> Detección de ciclos, orden topológico, componentes conexas, resolución de laberintos</li>
+                                    <li><strong>Estructura de datos:</strong> Pila (LIFO) o recursión</li>
+                                    <li><strong>Complejidad:</strong> <span class="complexity-badge">O(V + E) tiempo | O(V) espacio</span></li>
+                                </ul>
+                            </div>
+                            <pre class="line-numbers"><code class="language-python">from typing import List, Dict, Set
+
+def dfs_recursive(graph: Dict[int, List[int]], start: int,
+                  visited: Set[int] = None, order: List[int] = None) -> List[int]:
+    """
+    Realiza DFS recursivo desde un nodo inicial.
+
+    Args:
+        graph: Diccionario de listas de adyacencia
+        start: Nodo inicial
+        visited: Conjunto de nodos visitados (para uso interno)
+        order: Lista de orden de visita (para uso interno)
+
+    Returns:
+        Lista de nodos en el orden en que fueron visitados
+    """
+    if visited is None:
+        visited = set()
+    if order is None:
+        order = []
+
+    visited.add(start)
+    order.append(start)
+
+    for neighbor in graph.get(start, []):
+        if neighbor not in visited:
+            dfs_recursive(graph, neighbor, visited, order)
+
+    return order
+
+
+def dfs_iterative(graph: Dict[int, List[int]], start: int) -> List[int]:
+    """
+    Realiza DFS iterativo usando una pila explícita.
+
+    Args:
+        graph: Diccionario de listas de adyacencia
+        start: Nodo inicial
+
+    Returns:
+        Lista de nodos en el orden en que fueron visitados
+    """
+    visited: Set[int] = set()
+    stack: List[int] = [start]
+    order: List[int] = []
+
+    while stack:
+        node = stack.pop()
+
+        if node not in visited:
+            visited.add(node)
+            order.append(node)
+
+            # Agregar vecinos no visitados a la pila
+            # Invertir para mantener orden consistente
+            for neighbor in reversed(graph.get(node, [])):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+
+    return order
+
+
+def detect_cycle(graph: Dict[int, List[int]]) -> bool:
+    """
+    Detecta si existe un ciclo en un grafo dirigido usando DFS.
+
+    Args:
+        graph: Diccionario de listas de adyacencia
+
+    Returns:
+        True si hay ciclo, False en caso contrario
+    """
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color: Dict[int, int] = {node: WHITE for node in graph}
+
+    def has_cycle(node: int) -> bool:
+        color[node] = GRAY
+
+        for neighbor in graph.get(node, []):
+            if color.get(neighbor, WHITE) == GRAY:
+                return True  # Ciclo detectado (back edge)
+            if color.get(neighbor, WHITE) == WHITE:
+                if has_cycle(neighbor):
+                    return True
+
+        color[node] = BLACK
+        return False
+
+    # Verificar desde todos los nodos no visitados
+    for node in graph:
+        if color[node] == WHITE:
+            if has_cycle(node):
+                return True
+
+    return False
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    graph = {
+        0: [1, 2],
+        1: [3],
+        2: [3],
+        3: [4],
+        4: []
+    }
+
+    print("DFS Recursivo desde nodo 0:")
+    print(dfs_recursive(graph, 0))
+
+    print("\nDFS Iterativo desde nodo 0:")
+    print(dfs_iterative(graph, 0))
+
+    print("\n¿Tiene ciclo?", detect_cycle(graph))
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Dijkstra -->
+                    <div class="code-section" id="dijkstra">
+                        <div class="code-header">
+                            <h3>🎯 Dijkstra - Camino Más Corto</h3>
+                            <p>Algoritmo greedy para caminos más cortos con pesos no negativos</p>
+                        </div>
+                        <div class="code-body">
+                            <div class="code-description">
+                                <h4>Descripción del Algoritmo</h4>
+                                <p>Dijkstra encuentra el camino más corto desde un nodo origen a todos los demás nodos en un grafo con pesos no negativos, usando una cola de prioridad (heap).</p>
+                                <ul>
+                                    <li><strong>Aplicaciones:</strong> GPS y navegación, routing de redes, planificación de rutas</li>
+                                    <li><strong>Estructura de datos:</strong> Min-Heap (cola de prioridad)</li>
+                                    <li><strong>Complejidad:</strong> <span class="complexity-badge">O((V + E) log V) tiempo | O(V) espacio</span></li>
+                                </ul>
+                            </div>
+                            <pre class="line-numbers"><code class="language-python">import heapq
+from typing import Dict, List, Tuple
+from collections import defaultdict
+
+def dijkstra(graph: Dict[int, List[Tuple[int, int]]], start: int) -> Dict[int, int]:
+    """
+    Algoritmo de Dijkstra para encontrar caminos más cortos.
+
+    Args:
+        graph: Diccionario {nodo: [(vecino, peso), ...]}
+        start: Nodo inicial
+
+    Returns:
+        Diccionario {nodo: distancia_mínima_desde_start}
+    """
+    # Inicializar distancias con infinito
+    distances: Dict[int, int] = {node: float('inf') for node in graph}
+    distances[start] = 0
+
+    # Cola de prioridad: (distancia, nodo)
+    pq: List[Tuple[int, int]] = [(0, start)]
+    visited: set = set()
+
+    while pq:
+        current_dist, node = heapq.heappop(pq)
+
+        # Saltar si ya procesamos este nodo
+        if node in visited:
+            continue
+
+        visited.add(node)
+
+        # Si encontramos una distancia mayor, continuar
+        if current_dist > distances[node]:
+            continue
+
+        # Relajar aristas
+        for neighbor, weight in graph.get(node, []):
+            distance = current_dist + weight
+
+            # Si encontramos un camino más corto
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+
+    return distances
+
+
+def dijkstra_with_path(graph: Dict[int, List[Tuple[int, int]]],
+                       start: int, goal: int) -> Tuple[int, List[int]]:
+    """
+    Dijkstra que retorna tanto la distancia como el camino completo.
+
+    Args:
+        graph: Diccionario {nodo: [(vecino, peso), ...]}
+        start: Nodo inicial
+        goal: Nodo objetivo
+
+    Returns:
+        Tupla (distancia, camino)
+    """
+    distances: Dict[int, int] = {node: float('inf') for node in graph}
+    distances[start] = 0
+    previous: Dict[int, int] = {}
+
+    pq: List[Tuple[int, int]] = [(0, start)]
+
+    while pq:
+        current_dist, node = heapq.heappop(pq)
+
+        if node == goal:
+            break
+
+        if current_dist > distances[node]:
+            continue
+
+        for neighbor, weight in graph.get(node, []):
+            distance = current_dist + weight
+
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous[neighbor] = node
+                heapq.heappush(pq, (distance, neighbor))
+
+    # Reconstruir camino
+    path: List[int] = []
+    current = goal
+    while current != start:
+        path.append(current)
+        if current not in previous:
+            return (float('inf'), [])  # No hay camino
+        current = previous[current]
+    path.append(start)
+    path.reverse()
+
+    return (distances[goal], path)
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Grafo ponderado: {nodo: [(vecino, peso), ...]}
+    graph = {
+        0: [(1, 4), (2, 1)],
+        1: [(3, 1)],
+        2: [(1, 2), (3, 5)],
+        3: [(4, 3)],
+        4: []
+    }
+
+    print("Distancias desde nodo 0:")
+    distances = dijkstra(graph, 0)
+    for node, dist in sorted(distances.items()):
+        print(f"  Nodo {node}: {dist}")
+
+    print("\nCamino más corto de 0 a 4:")
+    dist, path = dijkstra_with_path(graph, 0, 4)
+    print(f"  Distancia: {dist}")
+    print(f"  Camino: {' → '.join(map(str, path))}")
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Bellman-Ford -->
+                    <div class="code-section" id="bellman-ford">
+                        <div class="code-header">
+                            <h3>⚡ Bellman-Ford - Caminos con Pesos Negativos</h3>
+                            <p>Encuentra caminos más cortos y detecta ciclos negativos</p>
+                        </div>
+                        <div class="code-body">
+                            <div class="code-description">
+                                <h4>Descripción del Algoritmo</h4>
+                                <p>Bellman-Ford calcula caminos más cortos incluso con pesos negativos y puede detectar ciclos negativos. Relaja todas las aristas V-1 veces.</p>
+                                <ul>
+                                    <li><strong>Aplicaciones:</strong> Routing con costos variables, detección de arbitraje, sistemas con costos negativos</li>
+                                    <li><strong>Ventaja:</strong> Funciona con pesos negativos</li>
+                                    <li><strong>Complejidad:</strong> <span class="complexity-badge">O(V × E) tiempo | O(V) espacio</span></li>
+                                </ul>
+                            </div>
+                            <pre class="line-numbers"><code class="language-python">from typing import Dict, List, Tuple, Optional
+
+def bellman_ford(edges: List[Tuple[int, int, int]],
+                 num_nodes: int, start: int) -> Tuple[Dict[int, float], bool]:
+    """
+    Algoritmo de Bellman-Ford para caminos más cortos con pesos negativos.
+
+    Args:
+        edges: Lista de tuplas (origen, destino, peso)
+        num_nodes: Número total de nodos
+        start: Nodo inicial
+
+    Returns:
+        Tupla (distancias, tiene_ciclo_negativo)
+    """
+    # Inicializar distancias
+    distances: Dict[int, float] = {i: float('inf') for i in range(num_nodes)}
+    distances[start] = 0
+
+    # Relajar aristas V-1 veces
+    for _ in range(num_nodes - 1):
+        for u, v, weight in edges:
+            if distances[u] != float('inf') and distances[u] + weight < distances[v]:
+                distances[v] = distances[u] + weight
+
+    # Verificar ciclos negativos
+    has_negative_cycle = False
+    for u, v, weight in edges:
+        if distances[u] != float('inf') and distances[u] + weight < distances[v]:
+            has_negative_cycle = True
+            break
+
+    return (distances, has_negative_cycle)
+
+
+def bellman_ford_with_path(edges: List[Tuple[int, int, int]],
+                           num_nodes: int, start: int, goal: int) -> Optional[Tuple[float, List[int]]]:
+    """
+    Bellman-Ford que retorna camino completo.
+
+    Args:
+        edges: Lista de tuplas (origen, destino, peso)
+        num_nodes: Número de nodos
+        start: Nodo inicial
+        goal: Nodo objetivo
+
+    Returns:
+        Tupla (distancia, camino) o None si hay ciclo negativo
+    """
+    distances: Dict[int, float] = {i: float('inf') for i in range(num_nodes)}
+    distances[start] = 0
+    predecessor: Dict[int, Optional[int]] = {i: None for i in range(num_nodes)}
+
+    # Relajar aristas
+    for _ in range(num_nodes - 1):
+        for u, v, weight in edges:
+            if distances[u] != float('inf') and distances[u] + weight < distances[v]:
+                distances[v] = distances[u] + weight
+                predecessor[v] = u
+
+    # Detectar ciclo negativo
+    for u, v, weight in edges:
+        if distances[u] != float('inf') and distances[u] + weight < distances[v]:
+            return None  # Ciclo negativo detectado
+
+    # Reconstruir camino
+    if distances[goal] == float('inf'):
+        return None  # No hay camino
+
+    path: List[int] = []
+    current = goal
+    while current is not None:
+        path.append(current)
+        current = predecessor[current]
+    path.reverse()
+
+    return (distances[goal], path)
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Lista de aristas: (origen, destino, peso)
+    edges = [
+        (0, 1, 4),
+        (0, 2, 1),
+        (2, 1, 2),
+        (1, 3, 1),
+        (2, 3, 5),
+        (3, 4, 3)
+    ]
+
+    num_nodes = 5
+
+    distances, has_cycle = bellman_ford(edges, num_nodes, 0)
+    print("Distancias desde nodo 0:")
+    for node, dist in sorted(distances.items()):
+        print(f"  Nodo {node}: {dist}")
+    print(f"¿Tiene ciclo negativo? {has_cycle}")
+
+    result = bellman_ford_with_path(edges, num_nodes, 0, 4)
+    if result:
+        dist, path = result
+        print(f"\nCamino de 0 a 4: {' → '.join(map(str, path))} (distancia: {dist})")
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Continúa con más algoritmos... -->
+                    <div class="code-section">
+                        <div class="code-header" style="background: var(--fondo-azul); color: var(--azul-ilerna); border-bottom: 3px solid var(--azul-ilerna);">
+                            <h3>📦 Más Algoritmos Disponibles</h3>
+                            <p style="color: var(--gris-texto);">Los algoritmos restantes se agregarán en breve</p>
+                        </div>
+                        <div class="code-body">
+                            <div class="code-description">
+                                <h4>Próximamente</h4>
+                                <ul>
+                                    <li>Floyd-Warshall - Todos los pares de caminos más cortos</li>
+                                    <li>A* - Búsqueda heurística con función de costo</li>
+                                    <li>Prim - Árbol de expansión mínima (MST)</li>
+                                    <li>Kruskal - MST con Union-Find</li>
+                                    <li>Tarjan - Componentes fuertemente conexas</li>
+                                    <li>Ford-Fulkerson - Flujo máximo en redes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+</body>
+</html>

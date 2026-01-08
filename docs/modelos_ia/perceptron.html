@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptrones y el Invierno de la IA - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Descubre el Perceptrón, sus limitaciones y cómo causó el primer invierno de la IA.">
+    <meta name="keywords"
+        content="perceptron, perceptrón, Frank Rosenblatt, XOR, problema XOR, separabilidad lineal, Minsky Papert, invierno IA, redes neuronales, neurona artificial, aprendizaje automático, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Perceptrones y el Invierno de la IA - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. El libro que detuvo la investigación en IA durante 20 años.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Perceptrones y el Invierno de la IA</span>
+                </div>
+            </div>
+            <h1 class="text-center">Perceptrones: Limitaciones Descubiertas</h1>
+            <p class="subtitle text-center">El libro que detuvo la investigación en redes neuronales durante 20 años</p>
+        </header>
+
+        <!-- SECCIÓN 1: NACIMIENTO DEL PERCEPTRÓN -->
+        <section>
+            <h2>El Nacimiento del Perceptrón: La Primera Neurona Artificial</h2>
+            <p>
+                Mucho antes de la controversia, el Perceptrón nació en un clima de gran optimismo. En
+                <strong>1957</strong>, el psicólogo <strong>Frank Rosenblatt</strong> en el Laboratorio Aeronáutico de
+                Cornell propuso el Perceptrón como un modelo simplificado de una neurona biológica. La idea era
+                revolucionaria: una máquina que podía aprender de la experiencia.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🧠 Inspiración Biológica</h4>
+                    <p>Rosenblatt se inspiró en cómo las neuronas en el cerebro reciben señales a través de las
+                        dendritas, las procesan en el cuerpo celular y envían una señal de salida a través del axón si
+                        se alcanza un cierto umbral. El Perceptrón imitaba este proceso con entradas, pesos y una
+                        función de activación.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📰 Optimismo Desbordado</h4>
+                    <p>La invención generó un enorme revuelo. La prensa de la época, incluido el New York Times, llegó a
+                        proclamar que estábamos al borde de crear máquinas conscientes que podrían caminar, hablar y
+                        reproducirse, alimentando las grandes expectativas de la primera era de la IA.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary">
+                <h3 class="color-primary">La Máquina Física: El Mark I Perceptron</h3>
+                <p class="content">El pináculo de este trabajo fue la construcción del <strong>Mark I
+                        Perceptron</strong>, el primer ordenador neurocomputador del mundo, diseñado específicamente
+                    para el reconocimiento de imágenes. No era una simulación, sino una máquina electromecánica
+                    tangible:</p>
+                <ul class="mt-1">
+                    <li style="margin-bottom: 0.75rem;"><strong>Entrada Visual:</strong> Utilizaba una "cámara"
+                        compuesta por una matriz de <strong>400 fotocélulas (20x20)</strong> que podían capturar
+                        imágenes simples.</li>
+                    <li style="margin-bottom: 0.75rem;"><strong>Conexiones Aleatorias:</strong> Las fotocélulas se
+                        conectaban a las neuronas a través de un panel de conexiones, imitando la aparente aleatoriedad
+                        de las conexiones neuronales en el cerebro.</li>
+                    <li style="margin-bottom: 0.75rem;"><strong>Pesos Físicos:</strong> Los "pesos" de la red no eran
+                        números en una memoria, sino <strong>potenciómetros físicos</strong>.</li>
+                    <li><strong>Aprendizaje Motorizado:</strong> El proceso de aprendizaje era electromecánico. Cuando
+                        la máquina cometía un error, unos <strong>motores eléctricos ajustaban los
+                            potenciómetros</strong> para corregir los pesos, implementando así la regla de aprendizaje
+                        del Perceptrón.</li>
+                </ul>
+                <p style="margin-top: 1rem; font-style: italic;">Aunque tuvo éxito reconociendo algunas letras del
+                    alfabeto, su incapacidad para aprender patrones más complejos (como los no separables linealmente)
+                    fue una premonición de las limitaciones que Minsky y Papert formalizarían más tarde.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ANATOMÍA -->
+        <section>
+            <h2>Anatomía de un Perceptrón</h2>
+            <p class="mb-1-5">
+                Para entender sus limitaciones, primero debemos entender cómo funciona un Perceptrón. Es un clasificador
+                binario lineal que consta de cuatro partes principales:
+            </p>
+
+            <ol class="list-disc-padded" style="line-height: 1.75;">
+                <li style="margin-bottom: 1rem;"><strong>Entradas (Inputs):</strong> Son las características de los
+                    datos. Cada entrada <code>xi</code> tiene un <strong>peso</strong> asociado <code>wi</code>.</li>
+                <li style="margin-bottom: 1rem;"><strong>Pesos (Weights):</strong> Determinan la importancia de cada
+                    entrada. El aprendizaje consiste en ajustar estos pesos.</li>
+                <li style="margin-bottom: 1rem;"><strong>Función de Suma (Summation):</strong> Multiplica cada entrada
+                    por su peso y suma todos los resultados, añadiendo un término de sesgo (bias <code>b</code>).</li>
+                <li style="margin-bottom: 1rem;"><strong>Función de Activación:</strong> Compara el resultado de la suma
+                    con un umbral. Si la suma es mayor que el umbral, la neurona "se dispara" (salida 1); de lo
+                    contrario, no (salida 0).</li>
+            </ol>
+
+            <div class="prediction-box" style="text-align: center; font-size: 1.1rem; margin: 2rem 0;">
+                Salida = ((x₁·w₁) + (x₂·w₂) + ... + b) > 0 ? 1 : 0
+            </div>
+
+            <h3 style="color: #49B9CE; margin-top: 2.5rem; margin-bottom: 1.5rem; text-align: center;">Cómo Funciona en
+                4 Pasos</h3>
+
+            <div style="background: #fafafa; padding: 2.5rem 2rem; border-radius: 1rem; border: 1px solid #e5e5e5;">
+                <svg width="100%" viewBox="0 0 900 400" style="max-width: 1100px; margin: 0 auto; display: block;">
+                    <defs>
+                        <marker id="arrow-perceptron" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6"
+                            markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+
+                    <!-- Título principal -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">La Anatomía de un Perceptrón</text>
+
+                    <!-- INPUTS (Izquierda) -->
+                    <text x="80" y="80" font-size="14" font-weight="bold" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Entradas</text>
+                    <text x="80" y="100" font-size="11" fill="#777" font-family="Montserrat" text-anchor="middle">(p.
+                        ej., IQ, CGPA)</text>
+
+                    <!-- Input 1 -->
+                    <circle cx="80" cy="140" r="18" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2.5" />
+                    <circle cx="80" cy="140" r="12" fill="#C5B9D8" stroke="none" />
+
+                    <!-- Input 2 -->
+                    <circle cx="80" cy="200" r="18" fill="#49B9CE" stroke="#3A97AD" stroke-width="2.5" />
+                    <circle cx="80" cy="200" r="12" fill="#8FD9E8" stroke="none" />
+
+                    <!-- Input 3 -->
+                    <circle cx="80" cy="260" r="18" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2.5" />
+                    <circle cx="80" cy="260" r="12" fill="#C5B9D8" stroke="none" />
+
+                    <!-- Input 4 -->
+                    <circle cx="80" cy="320" r="18" fill="#49B9CE" stroke="#3A97AD" stroke-width="2.5" />
+                    <circle cx="80" cy="320" r="12" fill="#8FD9E8" stroke="none" />
+
+                    <!-- WEIGHTS (Conexiones con etiquetas) -->
+                    <!-- Weight 1 - Alto -->
+                    <line x1="98" y1="140" x2="320" y2="200" stroke="#8A7AAF" stroke-width="3"
+                        marker-end="url(#arrow-perceptron)" />
+                    <rect x="180" y="150" width="70" height="22" fill="#8A7AAF" rx="11" />
+                    <text x="215" y="165" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">W1 (Alto)</text>
+
+                    <!-- Weight 2 - Medio -->
+                    <line x1="98" y1="200" x2="320" y2="200" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow-perceptron)" />
+                    <rect x="160" y="185" width="90" height="22" fill="#49B9CE" rx="11" />
+                    <text x="205" y="200" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">W2 (Medio)</text>
+
+                    <!-- Weight 3 - Bajo -->
+                    <line x1="98" y1="260" x2="320" y2="200" stroke="#8A7AAF" stroke-width="3"
+                        marker-end="url(#arrow-perceptron)" />
+                    <rect x="180" y="218" width="70" height="22" fill="#8A7AAF" rx="11" />
+                    <text x="215" y="233" font-size="11" font-weight="bold" fill="white" font-family="Montserrat"
+                        text-anchor="middle">W3 (Bajo)</text>
+
+                    <!-- Weight 4 - Muy Bajo -->
+                    <line x1="98" y1="320" x2="320" y2="200" stroke="#49B9CE" stroke-width="2.5" stroke-dasharray="4 2"
+                        marker-end="url(#arrow-perceptron)" />
+
+                    <!-- Nota sobre pesos -->
+                    <text x="230" y="345" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle"
+                        font-style="italic">Los pesos determinan la importancia</text>
+                    <text x="230" y="360" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle"
+                        font-style="italic">(Mayor peso = más influencia)</text>
+
+                    <!-- PERCEPTRÓN CENTRAL (Círculo grande dividido) -->
+                    <circle cx="450" cy="200" r="100" fill="none" stroke="#49B9CE" stroke-width="4" />
+
+                    <!-- Línea divisoria horizontal -->
+                    <line x1="350" y1="200" x2="550" y2="200" stroke="#49B9CE" stroke-width="2" />
+
+                    <!-- Parte superior: SUMA -->
+                    <path d="M 450 100 A 100 100 0 0 1 550 200 L 350 200 A 100 100 0 0 1 450 100 Z" fill="#F0EDF5"
+                        opacity="0.7" />
+
+                    <!-- Texto Suma -->
+                    <text x="450" y="135" font-size="15" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Suma</text>
+                    <text x="450" y="153" font-size="10" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">(Entradas Ponderadas + Sesgo)</text>
+
+                    <!-- Fórmula Sigma -->
+                    <text x="450" y="185" font-size="22" font-weight="bold" fill="#8A7AAF" font-family="Montserrat"
+                        text-anchor="middle">Σ(w×x) + b</text>
+
+                    <!-- Parte inferior: FUNCIÓN DE ACTIVACIÓN -->
+                    <path d="M 350 200 L 550 200 A 100 100 0 0 1 450 300 A 100 100 0 0 1 350 200 Z" fill="#E8F7FA"
+                        opacity="0.7" />
+
+                    <!-- Texto Activación -->
+                    <text x="450" y="225" font-size="15" font-weight="bold" fill="#333" font-family="Montserrat"
+                        text-anchor="middle">Función de Activación</text>
+                    <text x="450" y="242" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle">(p.
+                        ej., Función Escalón)</text>
+
+                    <!-- Gráfica de función escalón -->
+                    <line x1="410" y1="270" x2="430" y2="270" stroke="#49B9CE" stroke-width="2" />
+                    <line x1="430" y1="270" x2="430" y2="255" stroke="#49B9CE" stroke-width="2" />
+                    <line x1="430" y1="255" x2="450" y2="255" stroke="#49B9CE" stroke-width="2" />
+                    <path d="M 430 270 L 430 255" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="2 2" />
+                    <text x="415" y="285" font-size="9" fill="#777" font-family="Montserrat">0</text>
+                    <text x="437" y="285" font-size="9" fill="#777" font-family="Montserrat">1</text>
+
+                    <!-- Flecha hacia OUTPUT -->
+                    <line x1="550" y1="200" x2="660" y2="200" stroke="#8A7AAF" stroke-width="4"
+                        marker-end="url(#arrow-perceptron)" />
+
+                    <!-- OUTPUT (Derecha) -->
+                    <text x="750" y="80" font-size="14" font-weight="bold" fill="#555" font-family="Montserrat"
+                        text-anchor="middle">Salida</text>
+                    <text x="750" y="100" font-size="11" fill="#777" font-family="Montserrat" text-anchor="middle">(p.
+                        ej., 0 o 1)</text>
+
+                    <!-- Círculo de salida principal -->
+                    <circle cx="750" cy="200" r="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" />
+
+                    <!-- Líneas de conexión a indicadores -->
+                    <line x1="795" y1="180" x2="820" y2="165" stroke="#E65100" stroke-width="2" />
+                    <line x1="795" y1="220" x2="820" y2="235" stroke="#4CAF50" stroke-width="2" />
+
+                    <!-- Indicadores 0 y 1 fuera del círculo -->
+                    <circle cx="835" cy="165" r="16" fill="white" stroke="#E65100" stroke-width="2.5" />
+                    <text x="835" y="172" font-size="16" font-weight="bold" fill="#E65100" font-family="Montserrat"
+                        text-anchor="middle">0</text>
+
+                    <circle cx="835" cy="235" r="16" fill="white" stroke="#4CAF50" stroke-width="2.5" />
+                    <text x="835" y="242" font-size="16" font-weight="bold" fill="#4CAF50" font-family="Montserrat"
+                        text-anchor="middle">1</text>
+
+                    <!-- Descripción del output -->
+                    <text x="750" y="280" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle">Toma
+                        múltiples entradas, las procesa</text>
+                    <text x="750" y="295" font-size="10" fill="#555" font-family="Montserrat" text-anchor="middle">y
+                        produce una única salida.</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: REGLA DE APRENDIZAJE -->
+        <section>
+            <h2>La Regla de Aprendizaje del Perceptrón</h2>
+            <p>La magia del Perceptrón reside en su capacidad para aprender de los datos. El algoritmo de aprendizaje es
+                un proceso iterativo que ajusta los pesos para minimizar los errores de clasificación. Funciona así:</p>
+
+            <ol style="padding-left: 1.5rem; line-height: 1.75;">
+                <li style="margin-bottom: 1rem;"><strong>Inicialización:</strong> Los pesos (w) y el sesgo (b) se
+                    inicializan con valores aleatorios pequeños o con ceros.</li>
+                <li style="margin-bottom: 1rem;"><strong>Iteración sobre los datos:</strong> Para cada ejemplo de
+                    entrenamiento (con sus entradas x y su salida correcta d):
+                    <ul style="padding-left: 1.5rem; margin-top: 0.75rem;">
+                        <li>Se calcula la salida del Perceptrón (y) usando los pesos actuales.</li>
+                        <li>Se calcula el error: error = d - y.</li>
+                        <li>Si el error es distinto de cero (la clasificación es incorrecta), se actualizan los pesos y
+                            el sesgo.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 1rem;"><strong>Regla de Actualización:</strong> Cada peso se ajusta en
+                    proporción a la entrada correspondiente y al error:</li>
+            </ol>
+
+            <div class="prediction-box" style="text-align: center; font-size: 1.1rem;">
+                w<sub>i</sub>(nuevo) = w<sub>i</sub>(actual) + α · (salida_esperada - salida_real) · x<sub>i</sub>
+            </div>
+
+            <p style="margin-top: 1rem;">
+                Donde <strong>α (alfa)</strong> es la <strong>tasa de aprendizaje (learning rate)</strong>, un número
+                pequeño (ej. 0.1) que controla cuán grandes son los ajustes en cada paso. El proceso se repite hasta que
+                el Perceptrón clasifica correctamente todos los ejemplos de entrenamiento. Rosenblatt demostró que si
+                los datos son linealmente separables, este algoritmo <strong>siempre</strong> encontrará una solución en
+                un número finito de pasos.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 4: PUBLICACIÓN CLAVE -->
+        <section>
+            <h2>La Publicación Clave: 'Perceptrons'</h2>
+            <div class="highlight-box primary">
+                <blockquote style="font-size: 1.25rem; font-style: italic; color: #555555; margin: 0 0 1rem 0;">
+                    "En 1969, Marvin Minsky y Seymour Papert publican 'Perceptrons', un libro que demuestra
+                    matemáticamente las limitaciones fundamentales de las redes neuronales de una sola capa."
+                </blockquote>
+                <cite style="display: block; text-align: right; color: #8A7AAF; font-style: normal; line-height: 1.5;">
+                    — Minsky, M., & Papert, S. (1969). Perceptrons. MIT Press.<br>
+                    DOI: <a href="https://doi.org/10.7551/mitpress/5231.001.0001" target="_blank"
+                        style="color: #8A7AAF; text-decoration: none;">10.7551/mitpress/5231.001.0001</a>
+                </cite>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: PROBLEMA XOR -->
+        <section>
+            <h2>La Limitación Fundamental: El Problema XOR</h2>
+            <p style="margin-bottom: 1.5rem;">
+                La demostración más famosa del libro fue que un Perceptrón de una sola capa no puede resolver problemas
+                que no son <strong>linealmente separables</strong>. El ejemplo canónico es la función lógica <strong>XOR
+                    (O exclusivo)</strong>. Un Perceptrón traza una única línea recta (o un plano en más dimensiones)
+                para clasificar los datos, pero es imposible separar las salidas de XOR con una sola línea.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🧩 ¿Qué es XOR?</h4>
+                    <p>XOR devuelve 'verdadero' si y solo si las entradas son diferentes.</p>
+                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0.5rem;">
+                        <li>0 XOR 0 = <strong class="color-warning">0 (Falso)</strong></li>
+                        <li>0 XOR 1 = <strong class="color-primary">1 (Verdadero)</strong></li>
+                        <li>1 XOR 0 = <strong class="color-primary">1 (Verdadero)</strong></li>
+                        <li>1 XOR 1 = <strong class="color-warning">0 (Falso)</strong></li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📏 Separabilidad Lineal</h4>
+                    <p>Un problema es linealmente separable si se puede trazar una única línea recta para separar los
+                        puntos de datos de dos clases diferentes. Como veremos, XOR no cumple esta condición.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: VISUALIZACIÓN XOR -->
+        <section>
+            <h2>Visualización Interactiva del Problema XOR</h2>
+            <p style="color: #555555; margin-bottom: 1.5rem;">Haz clic en los puntos de entrada para ver su
+                clasificación. Observa cómo ninguna línea recta puede separar los puntos azules (salida 1) de los
+                anaranjados (salida 0).</p>
+
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <svg id="xor-svg" width="300" height="300"
+                    style="background-color: #fafafa; border-radius: 0.5rem; border: 1px solid #e5e5e5; flex-shrink: 0;">
+                    <!-- Ejes -->
+                    <line x1="40" y1="260" x2="270" y2="260" stroke="#888" stroke-width="1" />
+                    <line x1="40" y1="260" x2="40" y2="30" stroke="#888" stroke-width="1" />
+                    <text x="275" y="265" font-size="12" fill="#555" font-family="Montserrat">x₁</text>
+                    <text x="25" y="25" font-size="12" fill="#555" font-family="Montserrat">x₂</text>
+                    <text x="37" y="275" font-size="10" fill="#555" font-family="Montserrat">0</text>
+                    <text x="217" y="275" font-size="10" fill="#555" font-family="Montserrat">1</text>
+                    <text x="25" y="263" font-size="10" fill="#555" font-family="Montserrat">0</text>
+                    <text x="25" y="83" font-size="10" fill="#555" font-family="Montserrat">1</text>
+
+                    <!-- Línea de decisión (imposible) -->
+                    <line x1="20" y1="150" x2="280" y2="150" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="4 4" />
+                    <text x="180" y="140" fill="#8A7AAF" font-size="10" style="font-weight: bold;"
+                        font-family="Montserrat">Línea de Decisión</text>
+
+                    <!-- Puntos XOR -->
+                    <circle id="xor-circle-0" cx="40" cy="260" r="6" fill="#E65100"
+                        style="cursor: pointer; transition: all 0.2s;" />
+                    <circle id="xor-circle-1" cx="40" cy="80" r="6" fill="#49B9CE"
+                        style="cursor: pointer; transition: all 0.2s;" />
+                    <circle id="xor-circle-2" cx="220" cy="260" r="6" fill="#49B9CE"
+                        style="cursor: pointer; transition: all 0.2s;" />
+                    <circle id="xor-circle-3" cx="220" cy="80" r="6" fill="#E65100"
+                        style="cursor: pointer; transition: all 0.2s;" />
+                </svg>
+
+                <div style="width: 100%; max-width: 400px; flex-grow: 1;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <button id="xor-button-0"
+                            style="padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; border: 2px solid transparent; background-color: white; transition: all 0.2s; font-family: 'Montserrat', sans-serif;">Entrada:
+                            (0, 0)</button>
+                        <button id="xor-button-1"
+                            style="padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; border: 2px solid transparent; background-color: white; transition: all 0.2s; font-family: 'Montserrat', sans-serif;">Entrada:
+                            (0, 1)</button>
+                        <button id="xor-button-2"
+                            style="padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; border: 2px solid transparent; background-color: white; transition: all 0.2s; font-family: 'Montserrat', sans-serif;">Entrada:
+                            (1, 0)</button>
+                        <button id="xor-button-3"
+                            style="padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; border: 2px solid transparent; background-color: white; transition: all 0.2s; font-family: 'Montserrat', sans-serif;">Entrada:
+                            (1, 1)</button>
+                    </div>
+                    <div id="xor-output"
+                        style="background-color: #fafafa; padding: 1rem; border-radius: 0.5rem; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; border: 2px dashed #e5e5e5; color: #555555; font-family: 'Montserrat', sans-serif;">
+                        Selecciona un punto de entrada.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: EL IMPACTO -->
+        <section>
+            <h2>El Impacto: El Primer Invierno de la IA</h2>
+            <p class="mb-1-5">
+                El libro de Minsky y Papert tuvo un efecto devastador en la investigación de redes neuronales. Los
+                organismos de financiación, como DARPA en EE.UU., interpretaron las conclusiones como una prueba de que
+                las redes neuronales eran un callejón sin salida.
+            </p>
+
+            <div
+                style="position: relative; border-left: 3px solid #C5B9D8; margin-left: 1.5rem; padding-left: 1rem; display: flex; flex-direction: column; gap: 2rem;">
+                <div style="display: flex; align-items: flex-start; gap: 1.5rem;">
+                    <div
+                        style="flex-shrink: 0; width: 40px; height: 40px; background-color: #49B9CE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #f5f5f5; margin-left: -33px;">
+                        1</div>
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--color-primary); margin: 0;">1969:
+                            Publicación
+                            de "Perceptrons"</h3>
+                        <p style="color: var(--text-medium); margin-top: 0.5rem; margin-bottom: 0;">Minsky y Papert
+                            publican su
+                            libro, demostrando las limitaciones de las redes de una capa.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 1.5rem;">
+                    <div
+                        style="flex-shrink: 0; width: 40px; height: 40px; background-color: #FFA726; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #f5f5f5; margin-left: -33px;">
+                        2</div>
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--color-warning); margin: 0;">
+                            Principios de 1970:
+                            Recortes de Financiación</h3>
+                        <p style="color: var(--text-medium); margin-top: 0.5rem; margin-bottom: 0;">Agencias como DARPA
+                            retiran
+                            fondos a la investigación en redes neuronales, interpretando el libro como una prueba de su
+                            inutilidad.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 1.5rem;">
+                    <div
+                        style="flex-shrink: 0; width: 40px; height: 40px; background-color: var(--color-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #f5f5f5; margin-left: -33px;">
+                        3</div>
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--color-secondary); margin: 0;">1974
+                            - 1980: El
+                            Primer Invierno de la IA</h3>
+                        <p style="color: var(--text-medium); margin-top: 0.5rem; margin-bottom: 0;">La investigación se
+                            estanca. El
+                            campo de las redes neuronales queda prácticamente abandonado durante casi una década, con
+                            muy pocos avances significativos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: REFLEXIONES FINALES -->
+        <section>
+            <h2>Reflexiones Finales</h2>
+            <p style="margin-bottom: 1rem;">
+                Aunque el análisis de "Perceptrons" era matemáticamente correcto para las redes de una sola capa, sus
+                conclusiones fueron generalizadas en exceso. Hoy sabemos que las <strong>redes neuronales multicapa
+                    (deep learning)</strong> pueden resolver el problema XOR y tareas mucho más complejas.
+            </p>
+            <p>
+                La historia de "Perceptrons" es una lección crucial sobre el rigor científico, la interpretación de
+                resultados y cómo el pesimismo puede frenar el progreso, a veces durante décadas. No fue hasta la década
+                de 1980, con el desarrollo del algoritmo de <strong>retropropagación (backpropagation)</strong>, que las
+                redes neuronales comenzaron su lento resurgimiento.
+            </p>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/xor-visualization.js"></script>
+</body>
+
+</html>

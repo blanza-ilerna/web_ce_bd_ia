@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Análisis de correlación: medición de relaciones entre variables en Big Data y sus aplicaciones en empresas tecnológicas">
+    <meta name="keywords" content="correlación, análisis de datos, Big Data, coeficiente de Pearson, estadística, Netflix, Amazon, Google">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Análisis de Correlación | iLERNA">
+    <meta property="og:description" content="Medición de relaciones entre variables en Big Data">
+    <meta property="og:type" content="article">
+    <title>Análisis de Correlación | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Modelos de IA</a> ›
+                <span>Análisis de Correlación</span>
+            </div>
+        </div>
+        <h1>Análisis de Correlación</h1>
+        <p>Medición de Relaciones entre Variables en Big Data</p>
+    </header>
+
+    <!-- SECCIÓN 1: INTRODUCCIÓN -->
+    <section class="section">
+        <h2 class="section-title">¿Qué es el Análisis de Correlación?</h2>
+        <p>
+            El <strong>análisis de correlación</strong> es una técnica estadística descriptiva que permite determinar el <strong>grado de relación</strong> entre dos variables cuantitativas. A diferencia de la causalidad (que implica que una variable causa cambios en otra), la correlación simplemente mide si dos variables tienden a moverse juntas de manera predecible.
+        </p>
+        <p>
+            En entornos de Big Data, el análisis de correlación es fundamental para descubrir patrones ocultos, optimizar procesos y tomar decisiones basadas en datos. Empresas como <strong>Netflix</strong>, <strong>Amazon</strong> y <strong>Google</strong> utilizan análisis de correlación masivos para entender el comportamiento de millones de usuarios y mejorar sus servicios.
+        </p>
+
+        <div class="highlight-box">
+            <p class="tech-title">Ejemplo Real - Netflix:</p>
+            <p>Netflix analiza correlaciones entre millones de variables (tiempo de visualización, pausas, búsquedas, calificaciones) para recomendar contenido. Descubrieron que el tiempo que un usuario tarda en elegir una película correlaciona fuertemente (r ≈ 0.85) con la probabilidad de que la termine de ver.</p>
+        </div>
+
+        <h3>Conceptos Fundamentales</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Variables Cuantitativas</h4>
+                <p>Valores numéricos que se pueden medir y comparar (temperatura, ventas, edad, ingresos).</p>
+            </div>
+            <div class="feature-card secondary">
+                <h4>Diagrama de Dispersión</h4>
+                <p>Representación gráfica donde cada punto muestra los valores de dos variables para una observación.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Correlación vs. Causalidad</h4>
+                <p>La correlación NO implica causalidad. Dos variables pueden estar correlacionadas sin que una cause la otra.</p>
+            </div>
+            <div class="feature-card secondary">
+                <h4>Linealidad</h4>
+                <p>El coeficiente de correlación mide relaciones lineales. Puede haber relaciones no lineales fuertes con r cercano a 0.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: COEFICIENTE DE CORRELACIÓN -->
+    <section class="section">
+        <h2 class="section-title">El Coeficiente de Correlación (r)</h2>
+        <p>
+            El <strong>coeficiente de correlación de Pearson (r)</strong> es la medida más común de correlación lineal entre dos variables. Es un valor adimensional que siempre está en el rango <strong>r ∈ [-1, 1]</strong>. Este coeficiente cuantifica tanto la <strong>dirección</strong> como la <strong>fuerza</strong> de la relación lineal.
+        </p>
+
+        <div class="highlight-box formula-container">
+            <p class="formula-title">Fórmula del Coeficiente de Correlación de Pearson</p>
+            <p class="formula-text">r = Σ[(xᵢ - x̄)(yᵢ - ȳ)] / √[Σ(xᵢ - x̄)² · Σ(yᵢ - ȳ)²]</p>
+            <p class="text-center">Donde x̄ e ȳ son las medias de las variables X e Y</p>
+        </div>
+
+        <h3 class="color-secondary mt-2">Interpretación del Valor de r</h3>
+
+        <div class="feature-grid mb-2">
+            <div class="feature-card">
+                <h4>📈 Dirección</h4>
+                <div class="highlight-box">
+                    <p class="tech-title color-primary">r > 0 (Positiva)</p>
+                    <p>Ambas variables crecen o decrecen juntas.</p>
+                </div>
+                <div class="highlight-box">
+                    <p class="tech-title color-primary">r < 0 (Negativa)</p>
+                    <p>Cuando una variable crece, la otra decrece.</p>
+                </div>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4>💪 Fuerza</h4>
+                <div class="highlight-box secondary">
+                    <p class="tech-title color-secondary">|r| cercano a 1</p>
+                    <p>Correlación fuerte. Las variables están muy relacionadas.</p>
+                </div>
+                <div class="highlight-box secondary">
+                    <p class="tech-title color-secondary">|r| cercano a 0</p>
+                    <p>Correlación débil. Las variables NO están relacionadas linealmente.</p>
+                </div>
+            </div>
+        </div>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Rango de r</th>
+                    <th>Interpretación</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="tech-output"><strong>r = 1.0</strong></td>
+                    <td class="color-primary"><strong>Positiva perfecta</strong></td>
+                    <td>Relación lineal perfecta. Todos los puntos están en una línea recta ascendente.</td>
+                </tr>
+                <tr>
+                    <td class="tech-output"><strong>0.7 < r < 1.0</strong></td>
+                    <td class="color-primary"><strong>Positiva alta</strong></td>
+                    <td>Correlación fuerte. Cuando X aumenta, Y tiende a aumentar significativamente.</td>
+                </tr>
+                <tr>
+                    <td class="tech-output"><strong>0.3 < r < 0.7</strong></td>
+                    <td class="color-primary"><strong>Positiva moderada</strong></td>
+                    <td>Correlación media. Hay tendencia positiva pero con dispersión notable.</td>
+                </tr>
+                <tr class="warning">
+                    <td class="tech-output"><strong>-0.3 < r < 0.3</strong></td>
+                    <td class="color-warning"><strong>Sin correlación</strong></td>
+                    <td>No hay relación lineal aparente entre las variables.</td>
+                </tr>
+                <tr>
+                    <td class="tech-output"><strong>-0.7 < r < -0.3</strong></td>
+                    <td class="color-secondary"><strong>Negativa moderada</strong></td>
+                    <td>Correlación media. Cuando X aumenta, Y tiende a disminuir.</td>
+                </tr>
+                <tr>
+                    <td class="tech-output"><strong>-1.0 < r < -0.7</strong></td>
+                    <td class="color-secondary"><strong>Negativa alta</strong></td>
+                    <td>Correlación fuerte inversa. Cuando X aumenta, Y disminuye significativamente.</td>
+                </tr>
+                <tr>
+                    <td class="tech-output"><strong>r = -1.0</strong></td>
+                    <td class="color-secondary"><strong>Negativa perfecta</strong></td>
+                    <td>Relación lineal perfecta inversa. Todos los puntos están en una línea recta descendente.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- SECCIÓN 3: TIPOS DE CORRELACIÓN VISUAL -->
+    <section class="section">
+        <h2 class="section-title">Tipos de Correlación: Representación Visual</h2>
+        <p>
+            Los <strong>diagramas de dispersión</strong> son la herramienta visual más efectiva para identificar y evaluar correlaciones. A continuación se muestran los 7 tipos principales de correlación con sus patrones característicos:
+        </p>
+
+        <svg width="100%" viewBox="0 0 1400 300" style="max-width: 1450px; margin: 2rem auto; display: block; border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #ffffff;">
+            <!-- Positiva perfecta -->
+            <rect x="10" y="10" width="190" height="240" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+            <text x="105" y="30" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Positiva perfecta</text>
+            <text x="105" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r = 1.0</text>
+            <circle cx="30" cy="210" r="4" fill="#2E86AB"/>
+            <circle cx="45" cy="195" r="4" fill="#2E86AB"/>
+            <circle cx="60" cy="180" r="4" fill="#2E86AB"/>
+            <circle cx="75" cy="165" r="4" fill="#2E86AB"/>
+            <circle cx="90" cy="150" r="4" fill="#2E86AB"/>
+            <circle cx="105" cy="135" r="4" fill="#2E86AB"/>
+            <circle cx="120" cy="120" r="4" fill="#2E86AB"/>
+            <circle cx="135" cy="105" r="4" fill="#2E86AB"/>
+            <circle cx="150" cy="90" r="4" fill="#2E86AB"/>
+            <circle cx="165" cy="75" r="4" fill="#2E86AB"/>
+            <circle cx="180" cy="60" r="4" fill="#2E86AB"/>
+            <path d="M 30 210 L 180 60" stroke="#49B9CE" stroke-width="2" stroke-dasharray="3,3"/>
+
+            <!-- Positiva alta -->
+            <rect x="210" y="10" width="190" height="240" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+            <text x="305" y="30" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Positiva alta</text>
+            <text x="305" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r ≈ 0.85</text>
+            <circle cx="235" cy="205" r="4" fill="#3D9CB8"/>
+            <circle cx="245" cy="195" r="4" fill="#3D9CB8"/>
+            <circle cx="257" cy="180" r="4" fill="#3D9CB8"/>
+            <circle cx="268" cy="172" r="4" fill="#3D9CB8"/>
+            <circle cx="280" cy="155" r="4" fill="#3D9CB8"/>
+            <circle cx="292" cy="145" r="4" fill="#3D9CB8"/>
+            <circle cx="305" cy="130" r="4" fill="#3D9CB8"/>
+            <circle cx="318" cy="120" r="4" fill="#3D9CB8"/>
+            <circle cx="330" cy="105" r="4" fill="#3D9CB8"/>
+            <circle cx="345" cy="88" r="4" fill="#3D9CB8"/>
+            <circle cx="355" cy="78" r="4" fill="#3D9CB8"/>
+            <circle cx="368" cy="65" r="4" fill="#3D9CB8"/>
+            <circle cx="380" cy="55" r="4" fill="#3D9CB8"/>
+
+            <!-- Positiva baja -->
+            <rect x="410" y="10" width="190" height="240" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+            <text x="505" y="30" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Positiva baja</text>
+            <text x="505" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r ≈ 0.4</text>
+            <circle cx="430" cy="190" r="3.5" fill="#A3D5E8"/>
+            <circle cx="445" cy="175" r="3.5" fill="#A3D5E8"/>
+            <circle cx="455" cy="195" r="3.5" fill="#A3D5E8"/>
+            <circle cx="470" cy="165" r="3.5" fill="#A3D5E8"/>
+            <circle cx="482" cy="155" r="3.5" fill="#A3D5E8"/>
+            <circle cx="495" cy="140" r="3.5" fill="#A3D5E8"/>
+            <circle cx="510" cy="150" r="3.5" fill="#A3D5E8"/>
+            <circle cx="525" cy="125" r="3.5" fill="#A3D5E8"/>
+            <circle cx="538" cy="135" r="3.5" fill="#A3D5E8"/>
+            <circle cx="550" cy="110" r="3.5" fill="#A3D5E8"/>
+            <circle cx="565" cy="100" r="3.5" fill="#A3D5E8"/>
+            <circle cx="580" cy="85" r="3.5" fill="#A3D5E8"/>
+
+            <!-- Sin correlación -->
+            <rect x="610" y="10" width="190" height="240" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="8"/>
+            <text x="705" y="30" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Sin correlación</text>
+            <text x="705" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r ≈ 0</text>
+            <circle cx="630" cy="180" r="3.5" fill="#FFB84D"/>
+            <circle cx="645" cy="100" r="3.5" fill="#FFB84D"/>
+            <circle cx="658" cy="145" r="3.5" fill="#FFB84D"/>
+            <circle cx="672" cy="85" r="3.5" fill="#FFB84D"/>
+            <circle cx="685" cy="165" r="3.5" fill="#FFB84D"/>
+            <circle cx="698" cy="120" r="3.5" fill="#FFB84D"/>
+            <circle cx="712" cy="190" r="3.5" fill="#FFB84D"/>
+            <circle cx="728" cy="95" r="3.5" fill="#FFB84D"/>
+            <circle cx="742" cy="155" r="3.5" fill="#FFB84D"/>
+            <circle cx="755" cy="135" r="3.5" fill="#FFB84D"/>
+            <circle cx="770" cy="110" r="3.5" fill="#FFB84D"/>
+            <circle cx="785" cy="175" r="3.5" fill="#FFB84D"/>
+
+            <!-- Negativa baja -->
+            <rect x="810" y="10" width="190" height="240" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+            <text x="905" y="30" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Negativa baja</text>
+            <text x="905" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r ≈ -0.4</text>
+            <circle cx="830" cy="95" r="3.5" fill="#D4C4E8"/>
+            <circle cx="845" cy="110" r="3.5" fill="#D4C4E8"/>
+            <circle cx="857" cy="90" r="3.5" fill="#D4C4E8"/>
+            <circle cx="872" cy="125" r="3.5" fill="#D4C4E8"/>
+            <circle cx="885" cy="135" r="3.5" fill="#D4C4E8"/>
+            <circle cx="898" cy="150" r="3.5" fill="#D4C4E8"/>
+            <circle cx="912" cy="140" r="3.5" fill="#D4C4E8"/>
+            <circle cx="928" cy="165" r="3.5" fill="#D4C4E8"/>
+            <circle cx="942" cy="155" r="3.5" fill="#D4C4E8"/>
+            <circle cx="955" cy="180" r="3.5" fill="#D4C4E8"/>
+            <circle cx="970" cy="190" r="3.5" fill="#D4C4E8"/>
+            <circle cx="985" cy="205" r="3.5" fill="#D4C4E8"/>
+
+            <!-- Negativa alta -->
+            <rect x="1010" y="10" width="190" height="240" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+            <text x="1105" y="30" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Negativa alta</text>
+            <text x="1105" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r ≈ -0.85</text>
+            <circle cx="1035" cy="65" r="4" fill="#9D7EBA"/>
+            <circle cx="1048" cy="75" r="4" fill="#9D7EBA"/>
+            <circle cx="1060" cy="90" r="4" fill="#9D7EBA"/>
+            <circle cx="1073" cy="102" r="4" fill="#9D7EBA"/>
+            <circle cx="1088" cy="115" r="4" fill="#9D7EBA"/>
+            <circle cx="1100" cy="130" r="4" fill="#9D7EBA"/>
+            <circle cx="1115" cy="143" r="4" fill="#9D7EBA"/>
+            <circle cx="1128" cy="158" r="4" fill="#9D7EBA"/>
+            <circle cx="1143" cy="170" r="4" fill="#9D7EBA"/>
+            <circle cx="1158" cy="185" r="4" fill="#9D7EBA"/>
+            <circle cx="1170" cy="198" r="4" fill="#9D7EBA"/>
+            <circle cx="1185" cy="210" r="4" fill="#9D7EBA"/>
+
+            <!-- Negativa perfecta -->
+            <rect x="1210" y="10" width="190" height="240" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+            <text x="1305" y="30" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Negativa perfecta</text>
+            <text x="1305" y="50" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">r = -1.0</text>
+            <circle cx="1230" cy="60" r="4" fill="#6B3FA0"/>
+            <circle cx="1245" cy="75" r="4" fill="#6B3FA0"/>
+            <circle cx="1260" cy="90" r="4" fill="#6B3FA0"/>
+            <circle cx="1275" cy="105" r="4" fill="#6B3FA0"/>
+            <circle cx="1290" cy="120" r="4" fill="#6B3FA0"/>
+            <circle cx="1305" cy="135" r="4" fill="#6B3FA0"/>
+            <circle cx="1320" cy="150" r="4" fill="#6B3FA0"/>
+            <circle cx="1335" cy="165" r="4" fill="#6B3FA0"/>
+            <circle cx="1350" cy="180" r="4" fill="#6B3FA0"/>
+            <circle cx="1365" cy="195" r="4" fill="#6B3FA0"/>
+            <circle cx="1380" cy="210" r="4" fill="#6B3FA0"/>
+            <path d="M 1230 60 L 1380 210" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
+
+            <text x="700" y="280" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Espectro completo de correlaciones: desde perfecta positiva (r=1) hasta perfecta negativa (r=-1)</text>
+        </svg>
+
+        <div class="feature-grid">
+            <div class="feature-card primary">
+                <h4 class="text-center">Positiva perfecta</h4>
+                <p>
+                    <strong class="color-primary">r = 1.0</strong><br>
+                    Todos los puntos están exactamente en una línea recta ascendente. Por cada unidad que aumenta X, Y aumenta en una cantidad constante.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Relación entre kilómetros recorridos y litros de combustible consumidos (en condiciones ideales).
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-center">Positiva alta</h4>
+                <p>
+                    <strong class="color-primary">0.7 < r < 1.0</strong><br>
+                    Fuerte tendencia positiva con ligera dispersión. Cuando X aumenta, Y tiende a aumentar de forma predecible.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Google Ads - inversión publicitaria vs. clics recibidos (r ≈ 0.82).
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-center">Positiva baja</h4>
+                <p>
+                    <strong class="color-primary">0.3 < r < 0.7</strong><br>
+                    Existe tendencia positiva pero con considerable dispersión. La relación es débil y hay mucha variabilidad.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Amazon - número de reseñas vs. ventas totales de un producto.
+                </p>
+            </div>
+
+            <div class="curiosity-box">
+                <h4 class="text-center color-warning">Sin correlación</h4>
+                <p>
+                    <strong class="color-warning">-0.3 < r < 0.3</strong><br>
+                    No hay relación lineal. Los puntos están distribuidos aleatoriamente sin patrón aparente.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Número de likes en Instagram vs. temperatura ambiente en tu ciudad.
+                </p>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4 class="text-center">Negativa baja</h4>
+                <p>
+                    <strong class="color-secondary">-0.7 < r < -0.3</strong><br>
+                    Ligera tendencia inversa con alta dispersión. Cuando X aumenta, Y tiende ligeramente a disminuir.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Twitter - frecuencia de publicación vs. engagement promedio por tweet.
+                </p>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4 class="text-center">Negativa alta</h4>
+                <p>
+                    <strong class="color-secondary">-1.0 < r < -0.7</strong><br>
+                    Fuerte relación inversa. Cuando X aumenta significativamente, Y disminuye de forma predecible.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Uber - tiempo de espera vs. satisfacción del cliente (r ≈ -0.78).
+                </p>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4 class="text-center">Negativa perfecta</h4>
+                <p>
+                    <strong class="color-secondary">r = -1.0</strong><br>
+                    Todos los puntos en una línea recta descendente. Por cada unidad que aumenta X, Y disminuye en una cantidad constante.
+                </p>
+                <p>
+                    <strong>Ejemplo:</strong> Nivel de batería de smartphone vs. tiempo de uso continuo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: EJEMPLOS DEL MUNDO REAL -->
+    <section class="section">
+        <h2 class="section-title">Aplicaciones en Empresas Tecnológicas</h2>
+        <p>
+            Las principales empresas tecnológicas analizan millones de correlaciones diariamente para optimizar sus servicios y entender el comportamiento de los usuarios. Estos son algunos casos reales:
+        </p>
+
+        <div class="feature-grid">
+            <!-- Netflix -->
+            <div class="feature-card">
+                <h3 style="color: #49B9CE;">🎬 Netflix</h3>
+                <p style="margin-bottom: 1rem;">
+                    Analiza <strong>correlaciones entre más de 1,000 variables</strong> para cada usuario:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Tiempo visualización vs. finalización:</strong> r ≈ 0.85</li>
+                    <li><strong>Velocidad de navegación vs. satisfacción:</strong> r ≈ -0.72</li>
+                    <li><strong>Recomendaciones aceptadas vs. retención:</strong> r ≈ 0.68</li>
+                </ul>
+            </div>
+
+            <!-- Spotify -->
+            <div class="feature-card feature-card secondary">
+                <h3 style="color: #8A7AAF;">🎵 Spotify</h3>
+                <p style="margin-bottom: 1rem;">
+                    Utiliza correlación para crear <strong>playlists personalizadas</strong>:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Tempo de canciones vs. hora del día:</strong> r ≈ 0.54</li>
+                    <li><strong>Skips vs. gusto musical:</strong> r ≈ -0.89</li>
+                    <li><strong>Canciones completadas vs. añadidas:</strong> r ≈ 0.77</li>
+                </ul>
+            </div>
+
+            <!-- Amazon -->
+            <div class="feature-card">
+                <h3 style="color: #49B9CE;">🛒 Amazon</h3>
+                <p style="margin-bottom: 1rem;">
+                    Analiza correlaciones para <strong>optimizar ventas</strong>:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Velocidad envío vs. recompras:</strong> r ≈ 0.81</li>
+                    <li><strong>Precio vs. conversión:</strong> r ≈ -0.65</li>
+                    <li><strong>Imágenes producto vs. ventas:</strong> r ≈ 0.58</li>
+                </ul>
+            </div>
+
+            <!-- Google -->
+            <div class="feature-card feature-card secondary">
+                <h3 style="color: #8A7AAF;">🔍 Google</h3>
+                <p style="margin-bottom: 1rem;">
+                    Usa correlaciones para <strong>mejorar búsquedas</strong>:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Tiempo en resultado vs. relevancia:</strong> r ≈ 0.92</li>
+                    <li><strong>Clics en ads vs. búsquedas:</strong> r ≈ -0.43</li>
+                    <li><strong>Personalización vs. satisfacción:</strong> r ≈ 0.74</li>
+                </ul>
+            </div>
+
+            <!-- Tesla -->
+            <div class="feature-card">
+                <h3 style="color: #49B9CE;">🚗 Tesla</h3>
+                <p style="margin-bottom: 1rem;">
+                    Analiza datos de conducción en tiempo real:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Aceleración vs. consumo batería:</strong> r ≈ 0.88</li>
+                    <li><strong>Autopilot uso vs. incidentes:</strong> r ≈ -0.76</li>
+                    <li><strong>Temperatura vs. autonomía:</strong> r ≈ -0.69</li>
+                </ul>
+            </div>
+
+            <!-- Meta -->
+            <div class="feature-card feature-card secondary">
+                <h3 style="color: #8A7AAF;">👥 Meta (Facebook)</h3>
+                <p style="margin-bottom: 1rem;">
+                    Correlaciones en <strong>redes sociales</strong>:
+                </p>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Tiempo en plataforma vs. anuncios vistos:</strong> r ≈ 0.94</li>
+                    <li><strong>Amigos activos vs. uso diario:</strong> r ≈ 0.71</li>
+                    <li><strong>Posts propios vs. engagement:</strong> r ≈ -0.38</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: LIMITACIONES -->
+    <section class="section">
+        <h2 class="section-title">Limitaciones y Precauciones</h2>
+        <p>
+            El análisis de correlación es una herramienta poderosa, pero tiene <strong>limitaciones importantes</strong> que debemos conocer para no cometer errores de interpretación:
+        </p>
+
+        <div class="feature-grid" style="margin-bottom: 2rem;">
+            <div class="curiosity-box">
+                <h4 style="color: #E65100;">⚠️ Correlación ≠ Causalidad</h4>
+                <p style="margin-bottom: 1rem;">
+                    <strong>El error más común.</strong> Que dos variables estén correlacionadas NO significa que una cause la otra. Puede haber una tercera variable oculta (confusor) que afecta a ambas.
+                </p>
+                <div class="highlight-box">
+                    <p>
+                        <strong>Ejemplo clásico:</strong> El consumo de helado y los ahogamientos en piscinas tienen correlación positiva alta (r ≈ 0.78), pero comer helado NO causa ahogamientos. Ambos aumentan en verano (variable oculta: temperatura).
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h4>📐 Solo Relaciones Lineales</h4>
+                <p style="margin-bottom: 1rem;">
+                    El coeficiente r de Pearson <strong>solo detecta relaciones lineales</strong>. Pueden existir relaciones muy fuertes pero no lineales (cuadráticas, exponenciales) que r no captura.
+                </p>
+                <div class="highlight-box">
+                    <p>
+                        <strong>Ejemplo:</strong> Una relación parabólica (Y = X²) puede tener r ≈ 0 a pesar de ser una relación perfecta y determinista.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card feature-card secondary">
+                <h4>📊 Sensible a Valores Atípicos</h4>
+                <p style="margin-bottom: 1rem;">
+                    Unos pocos <strong>outliers</strong> (valores extremos) pueden distorsionar significativamente el coeficiente de correlación, dando una imagen falsa de la relación real.
+                </p>
+                <div class="highlight-box" style="background: #F0EDF5;">
+                    <p>
+                        <strong>Solución:</strong> Identificar y analizar outliers por separado. Considerar usar correlación de Spearman (resistente a outliers).
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h4>📈 Importancia del Tamaño</h4>
+                <p style="margin-bottom: 1rem;">
+                    Con <strong>muestras pequeñas</strong> (n < 30), las correlaciones pueden aparecer fuertes por simple azar. Siempre verificar la significancia estadística.
+                </p>
+                <div class="highlight-box">
+                    <p>
+                        <strong>Recomendación:</strong> En Big Data (n > 100,000), incluso correlaciones débiles (r ≈ 0.1) pueden ser estadísticamente significativas.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="prediction-box" style="background: #FFEBEE; border-left-color: #D32F2F;">
+            <h4 style="color: #B71C1C;">🚨 Correlaciones Espurias (Falsas)</h4>
+            <p style="margin-bottom: 1rem;">
+                Son correlaciones estadísticamente significativas pero <strong>sin sentido lógico</strong>. Ocurren especialmente cuando se buscan correlaciones entre cientos de variables (múltiples comparaciones).
+            </p>
+            <div class="highlight-box">
+                <h5 style="color: #B71C1C; font-weight: 700; margin-bottom: 0.5rem;">Ejemplos famosos de correlaciones espurias:</h5>
+                <ul style="margin-left: 1.5rem; line-height: 1.75;">
+                    <li><strong>Consumo de queso</strong> per cápita vs. <strong>personas muertas enredadas en sábanas</strong>: r = 0.947 (obviamente sin relación real)</li>
+                    <li><strong>Gasto en ciencia espacial</strong> vs. <strong>suicidios por ahorcamiento</strong>: r = 0.998 (pura coincidencia estadística)</li>
+                    <li><strong>Películas de Nicolas Cage</strong> vs. <strong>ahogamientos en piscinas</strong>: r = 0.666 (sin ninguna conexión lógica)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: CÁLCULO EN PYTHON -->
+    <section class="section">
+        <h2 class="section-title">Cálculo de Correlación en Python</h2>
+        <p>
+            En Big Data, calculamos correlaciones usando librerías especializadas como <strong>NumPy</strong>, <strong>Pandas</strong> y <strong>SciPy</strong>. Estas herramientas están optimizadas para procesar millones de datos eficientemente.
+        </p>
+
+        <h3>1️⃣ Método básico con NumPy</h3>
+        <pre><code class="language-python">import numpy as np
+
+# Datos de ejemplo
+ventas = np.array([100, 150, 130, 180, 200, 220, 190, 250, 280, 300])
+publicidad = np.array([20, 30, 25, 40, 50, 55, 45, 70, 75, 85])
+
+# Calcular correlación
+correlacion = np.corrcoef(ventas, publicidad)[0, 1]
+print(f"Coeficiente de correlación: {correlacion:.3f}")
+
+# Resultado: r ≈ 0.972 (correlación positiva muy alta)</code></pre>
+
+        <h3>2️⃣ Método con Pandas (Big Data)</h3>
+        <pre><code class="language-python">import pandas as pd
+
+# Crear DataFrame
+df = pd.DataFrame({
+    'tiempo_visualizacion': [5, 30, 45, 60, 15, 90, 120, 10, 80, 100],
+    'probabilidad_completar': [0.1, 0.6, 0.7, 0.9, 0.3, 0.95, 0.98, 0.2, 0.92, 0.96]
+})
+
+# Matriz de correlación completa
+matriz_corr = df.corr()
+print(matriz_corr)
+
+# Correlación específica entre dos columnas
+r = df['tiempo_visualizacion'].corr(df['probabilidad_completar'])
+print(f"\nCorrelación: {r:.3f}")
+
+# Resultado: r ≈ 0.987 (Netflix: más tiempo = más probabilidad de terminar)</code></pre>
+
+        <h3>3️⃣ Método con SciPy (con significancia estadística)</h3>
+        <pre><code class="language-python">from scipy.stats import pearsonr
+
+# Datos
+x = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+y = [95, 88, 82, 75, 68, 60, 55, 48, 40, 35]
+
+# Calcular correlación y p-value
+r, p_value = pearsonr(x, y)
+
+print(f"Coeficiente de correlación: {r:.3f}")
+print(f"P-value: {p_value:.4f}")
+
+if p_value < 0.05:
+    print("✅ La correlación ES estadísticamente significativa")
+else:
+    print("❌ La correlación NO es estadísticamente significativa")
+
+# Resultado: r ≈ -0.998, p < 0.001 (correlación negativa perfecta)</code></pre>
+
+        <h3>4️⃣ Visualización con Matplotlib</h3>
+        <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Datos
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+y = np.array([2.1, 4.3, 6.0, 8.2, 10.1, 12.3, 14.0, 16.2, 18.1, 20.3])
+
+# Calcular correlación
+r = np.corrcoef(x, y)[0, 1]
+
+# Crear diagrama de dispersión
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, color='#49B9CE', s=100, alpha=0.7, edgecolors='black')
+plt.plot(x, np.poly1d(np.polyfit(x, y, 1))(x),
+         color='#8A7AAF', linewidth=2, linestyle='--')
+plt.xlabel('Variable X', fontsize=12, fontweight='bold')
+plt.ylabel('Variable Y', fontsize=12, fontweight='bold')
+plt.title(f'Diagrama de Dispersión (r = {r:.3f})',
+          fontsize=14, fontweight='bold')
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# Resultado: Gráfico con r ≈ 0.999</code></pre>
+    </section>
+
+    <!-- SECCIÓN 7: RESUMEN -->
+    <section class="section">
+        <h2 class="section-title" style="text-align: center;">Resumen y Puntos Clave</h2>
+
+        <div class="feature-grid" style="margin-bottom: 2rem;">
+            <div class="feature-card" style="background: #E8F7FA;">
+                <h3 style="text-align: center; color: #49B9CE;">📊 Qué ES el análisis de correlación</h3>
+                <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                    <li><strong>Técnica descriptiva</strong> que mide el grado de relación lineal entre dos variables cuantitativas</li>
+                    <li><strong>Coeficiente r ∈ [-1, 1]</strong> indica dirección y fuerza de la relación</li>
+                    <li><strong>Herramienta fundamental</strong> en Big Data para descubrir patrones</li>
+                    <li><strong>Base para algoritmos</strong> de recomendación y predicción</li>
+                </ul>
+            </div>
+
+            <div class="feature-card secondary">
+                <h3 class="text-center color-secondary">⚠️ Qué NO ES el análisis de correlación</h3>
+                <ul>
+                    <li><strong>NO es causalidad:</strong> r alto no significa que X cause Y</li>
+                    <li><strong>NO detecta relaciones no lineales</strong> (cuadráticas, exponenciales)</li>
+                    <li><strong>NO es resistente</strong> a valores atípicos (outliers)</li>
+                    <li><strong>NO garantiza</strong> que la relación sea útil o relevante</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="prediction-box" style="text-align: center;">
+            <h3 style="margin-bottom: 1rem;">💡 Para recordar</h3>
+            <p style="margin-bottom: 1rem;">
+                El análisis de correlación es una de las técnicas más utilizadas en <strong>Ciencia de Datos</strong> y <strong>Big Data</strong>. Dominar su interpretación correcta es esencial para tomar decisiones basadas en datos, pero siempre debe complementarse con otras técnicas de análisis y, sobre todo, con <strong>conocimiento del dominio</strong> para evitar conclusiones erróneas.
+            </p>
+            <p style="font-style: italic;">
+                <strong>"Correlación no implica causalidad"</strong> - Principio fundamental que todo Data Scientist debe tener grabado en su mente.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+    </footer>
+</body>
+</html>

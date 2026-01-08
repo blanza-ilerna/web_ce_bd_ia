@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="url" content="https://www.ilerna.es/">
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende las diferencias entre IA Discriminativa y IA Generativa: dos paradigmas fundamentales del Machine Learning.">
+    <meta name="keywords"
+        content="IA discriminativa, IA generativa, machine learning, modelos generativos, modelos discriminativos, GANs, GPT, transformers, deep learning, clasificación, generación contenido, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="IA Discriminativa vs IA Generativa - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. Comparativa completa entre modelos discriminativos y generativos.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+    <title>IA Discriminativa vs IA Generativa - iLERNA</title>
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>IA Discriminativa vs Generativa</span>
+                </div>
+            </div>
+            <h1 class="text-center">IA Discriminativa vs IA Generativa</h1>
+            <p class="subtitle text-center">Dos enfoques fundamentales del Machine Learning</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section>
+            <h2>Introducción</h2>
+            <p>
+                En el campo del <strong>Machine Learning</strong> y la <strong>Inteligencia Artificial</strong>, existen
+                dos paradigmas fundamentales que definen cómo las máquinas aprenden de los datos: los <strong>modelos
+                    discriminativos</strong> y los <strong>modelos generativos</strong>. Cada enfoque tiene objetivos,
+                técnicas y aplicaciones distintas que son cruciales para entender el panorama actual de la IA.
+            </p>
+
+            <p>
+                Mientras que los modelos discriminativos se centran en <strong>clasificar y distinguir</strong> entre
+                diferentes categorías de datos, los modelos generativos buscan <strong>crear y generar</strong> nuevos
+                datos similares a los originales. Esta diferencia fundamental determina sus casos de uso y aplicaciones
+                en el mundo real.
+            </p>
+
+            <!-- DIAGRAMA CONCEPTUAL -->
+            <div class="highlight-box primary">
+                <p class="title">Pregunta fundamental:</p>
+                <div class="content">
+                    <p><strong class="color-primary">Discriminativa:</strong> "¿A qué clase pertenece?"</p>
+                    <p><strong class="color-secondary">Generativa:</strong> "¿Cómo crear nuevas muestras?"</p>
+                </div>
+            </div>
+
+            <!-- CONCEPTOS CLAVE -->
+            <h3>Conceptos Clave</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">P(Y|X)</h4>
+                    <p>Probabilidad condicional de la etiqueta Y dado los datos X. Enfoque de modelos discriminativos.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">P(X|Y)</h4>
+                    <p>Probabilidad de los datos X dada una etiqueta Y. Enfoque de modelos generativos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Frontera de Decisión</h4>
+                    <p>Límite que separa diferentes clases. Los modelos discriminativos aprenden directamente estas
+                        fronteras.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Distribución de Datos</h4>
+                    <p>Patrón estadístico de los datos. Los modelos generativos aprenden y pueden recrear estas
+                        distribuciones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: IA DISCRIMINATIVA -->
+        <section>
+            <h2>Inteligencia Artificial Discriminativa</h2>
+
+            <h3 class="color-primary">¿Qué es?</h3>
+            <p>
+                Los <strong>modelos discriminativos</strong> están diseñados para aprender la <strong>frontera de
+                    decisión</strong> entre diferentes clases de datos. Su objetivo principal es modelar la probabilidad
+                condicional <strong>P(Y|X)</strong>, es decir, la probabilidad de una etiqueta Y dados los datos de
+                entrada X.
+            </p>
+
+            <p>
+                En lugar de modelar cómo se generan los datos, estos modelos se centran directamente en la tarea de
+                <strong>clasificación o regresión</strong>, aprendiendo a distinguir entre diferentes categorías de
+                manera eficiente.
+            </p>
+
+            <!-- VISUAL CON SVG -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-top: 1.5rem;">
+                <div class="svg-container">
+                    <svg width="350" height="280" viewBox="0 0 350 280">
+                        <!-- Ejes -->
+                        <line x1="30" y1="250" x2="330" y2="250" stroke="#333" stroke-width="2" />
+                        <line x1="30" y1="250" x2="30" y2="30" stroke="#333" stroke-width="2" />
+
+                        <!-- Etiquetas -->
+                        <text x="330" y="270" font-size="14" fill="#555555" font-weight="700">X₁</text>
+                        <text x="10" y="25" font-size="14" fill="#555555" font-weight="700">X₂</text>
+
+                        <!-- Puntos Clase A (Azul) -->
+                        <circle cx="80" cy="80" r="8" fill="#49B9CE" opacity="0.8" />
+                        <circle cx="100" cy="100" r="8" fill="#49B9CE" opacity="0.8" />
+                        <circle cx="90" cy="120" r="8" fill="#49B9CE" opacity="0.8" />
+                        <circle cx="70" cy="110" r="8" fill="#49B9CE" opacity="0.8" />
+                        <circle cx="110" cy="90" r="8" fill="#49B9CE" opacity="0.8" />
+                        <circle cx="85" cy="140" r="8" fill="#49B9CE" opacity="0.8" />
+
+                        <!-- Puntos Clase B (Morado) -->
+                        <circle cx="220" cy="180" r="8" fill="#8A7AAF" opacity="0.8" />
+                        <circle cx="240" cy="160" r="8" fill="#8A7AAF" opacity="0.8" />
+                        <circle cx="260" cy="190" r="8" fill="#8A7AAF" opacity="0.8" />
+                        <circle cx="230" cy="210" r="8" fill="#8A7AAF" opacity="0.8" />
+                        <circle cx="250" cy="200" r="8" fill="#8A7AAF" opacity="0.8" />
+                        <circle cx="270" cy="170" r="8" fill="#8A7AAF" opacity="0.8" />
+
+                        <!-- Línea de decisión -->
+                        <line x1="140" y1="50" x2="200" y2="240" stroke="#333333" stroke-width="3"
+                            stroke-dasharray="5,5" />
+
+                        <!-- Etiquetas de clases -->
+                        <text x="60" y="65" font-size="16" font-weight="700" fill="#49B9CE">Clase A</text>
+                        <text x="240" y="145" font-size="16" font-weight="700" fill="#8A7AAF">Clase B</text>
+
+                        <!-- Título -->
+                        <text x="175" y="20" font-size="16" font-weight="700" fill="#333333"
+                            text-anchor="middle">Frontera de Decisión</text>
+                    </svg>
+                </div>
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box primary">
+                        <p class="title">Objetivo</p>
+                        <p class="content">Encontrar la mejor frontera que separe las clases</p>
+                    </div>
+                    <div class="highlight-box primary">
+                        <p class="title">Entrada</p>
+                        <p class="content">Datos etiquetados (X, Y)</p>
+                    </div>
+                    <div class="highlight-box primary" style="margin-top: 1rem;">
+                        <p class="title" style="color: #49B9CE; font-size: 1.125rem;">Salida: Clasificación directa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJEMPLOS DE MODELOS -->
+            <div class="bordered-box primary" style="margin-top: 2rem;">
+                <h3 class="color-primary">Ejemplos de Modelos Discriminativos</h3>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Regresión Logística</h4>
+                        <p>Clasificación binaria con sigmoide.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">SVM</h4>
+                        <p>Hiperplano con máximo margen.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Redes Neuronales</h4>
+                        <p>CNN, RNN para visión y texto.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Random Forests</h4>
+                        <p>Ensemble de árboles de decisión.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">XGBoost</h4>
+                        <p>Boosting que corrige errores.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">K-NN</h4>
+                        <p>Clasificación por vecinos cercanos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo Práctico: Detector de Spam</p>
+                <div class="content">
+                    <p><strong>Entrada:</strong> Email con características</p>
+                    <p><strong>Salida:</strong> "Spam" o "No Spam"</p>
+                    <p><strong>Modelo:</strong> Aprende la frontera sin entender cómo se generan los emails.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: IA GENERATIVA -->
+        <section>
+            <h2>Inteligencia Artificial Generativa</h2>
+
+            <h3 class="color-secondary">¿Qué es?</h3>
+            <p>
+                Los <strong>modelos generativos</strong> aprenden la <strong>distribución de probabilidad</strong> de
+                los datos de entrenamiento. Su objetivo es modelar <strong>P(X)</strong> o <strong>P(X|Y)</strong>,
+                permitiéndoles generar nuevas muestras que son estadísticamente similares a los datos originales.
+            </p>
+
+            <p>
+                Estos modelos no solo clasifican, sino que <strong>comprenden la estructura interna</strong> de los
+                datos, lo que les permite crear contenido completamente nuevo: imágenes, texto, música, código, etc.
+            </p>
+
+            <!-- VISUAL CON SVG -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-top: 1.5rem;">
+                <div class="svg-container">
+                    <svg width="350" height="280" viewBox="0 0 350 280">
+                        <!-- Título -->
+                        <text x="175" y="25" font-size="16" font-weight="700" fill="#333333"
+                            text-anchor="middle">Distribución Aprendida</text>
+
+                        <!-- Ejes -->
+                        <line x1="30" y1="250" x2="330" y2="250" stroke="#333" stroke-width="2" />
+                        <line x1="30" y1="250" x2="30" y2="50" stroke="#333" stroke-width="2" />
+
+                        <!-- Distribución (curva gaussiana simplificada) -->
+                        <path
+                            d="M 50,240 Q 80,210 100,180 Q 120,150 140,120 Q 160,90 175,70 Q 190,90 210,120 Q 230,150 250,180 Q 270,210 300,240"
+                            fill="none" stroke="#8A7AAF" stroke-width="3" />
+
+                        <!-- Área bajo la curva -->
+                        <path
+                            d="M 50,240 Q 80,210 100,180 Q 120,150 140,120 Q 160,90 175,70 Q 190,90 210,120 Q 230,150 250,180 Q 270,210 300,240 L 300,250 L 50,250 Z"
+                            fill="#8A7AAF" opacity="0.2" />
+
+                        <!-- Puntos generados (sobre la curva) -->
+                        <circle cx="100" cy="180" r="6" fill="#8A7AAF" />
+                        <circle cx="140" cy="120" r="6" fill="#8A7AAF" />
+                        <circle cx="175" cy="70" r="6" fill="#8A7AAF" />
+                        <circle cx="210" cy="120" r="6" fill="#8A7AAF" />
+                        <circle cx="250" cy="180" r="6" fill="#8A7AAF" />
+
+                        <!-- Flechas de muestreo -->
+                        <path d="M 100,200 L 100,240" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)" />
+                        <path d="M 175,90 L 175,240" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)" />
+                        <path d="M 250,200 L 250,240" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)" />
+
+                        <!-- Definir marcador de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#49B9CE" />
+                            </marker>
+                        </defs>
+
+                        <!-- Etiquetas -->
+                        <text x="330" y="270" font-size="14" fill="#555555" font-weight="700">Espacio de datos</text>
+                        <text x="10" y="45" font-size="14" fill="#555555" font-weight="700">P(X)</text>
+                        <text x="150" y="270" font-size="12" fill="#49B9CE" font-weight="700">Muestras generadas</text>
+                    </svg>
+                </div>
+                <div style="flex: 1; min-width: 280px;">
+                    <div class="highlight-box secondary">
+                        <p class="title">Objetivo</p>
+                        <p class="content">Aprender la distribución de datos y generar nuevas muestras</p>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <p class="title">Entrada</p>
+                        <p class="content">Datos de entrenamiento (pueden no estar etiquetados)</p>
+                    </div>
+                    <div class="highlight-box secondary" style="margin-top: 1rem;">
+                        <p class="title" style="color: #8A7AAF; font-size: 1.125rem;">Salida: Datos sintéticos nuevos
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJEMPLOS DE MODELOS -->
+            <div class="bordered-box secondary" style="margin-top: 2rem;">
+                <h3 class="color-secondary">Ejemplos de Modelos Generativos</h3>
+
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">GANs</h4>
+                        <p>Generador vs Discriminador.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">VAEs</h4>
+                        <p>Autoencoders variacionales.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Transformers</h4>
+                        <p>GPT, BERT para texto y código.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Diffusion Models</h4>
+                        <p>DALL-E, Midjourney para imágenes.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Normalizing Flows</h4>
+                        <p>Transformaciones invertibles.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">WaveNet</h4>
+                        <p>Generación de audio y música.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Práctico: Generador de Rostros</p>
+                <div class="content">
+                    <p><strong>Entrada:</strong> Miles de rostros reales</p>
+                    <p><strong>Proceso:</strong> Aprende características y patrones</p>
+                    <p><strong>Salida:</strong> Rostros nuevos de personas que no existen</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: COMPARACIÓN -->
+        <section>
+            <h2>Comparación Directa</h2>
+
+            <!-- TABLA COMPARATIVA -->
+            <div style="overflow-x: auto;">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th class="color-primary">Discriminativa</th>
+                            <th class="color-secondary">Generativa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 700;">Objetivo Principal</td>
+                            <td>Clasificar y predecir etiquetas</td>
+                            <td>Generar nuevos datos sintéticos</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Qué Modela</td>
+                            <td>P(Y|X) - Probabilidad de etiqueta dado dato</td>
+                            <td>P(X) o P(X|Y) - Distribución de datos</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Enfoque</td>
+                            <td>Frontera de decisión entre clases</td>
+                            <td>Estructura interna y patrones de datos</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Datos Necesarios</td>
+                            <td>Requiere etiquetas (supervisado)</td>
+                            <td>Puede trabajar sin etiquetas</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Complejidad Computacional</td>
+                            <td>Generalmente más eficiente</td>
+                            <td>Más costoso (aprende distribución completa)</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Aplicaciones Típicas</td>
+                            <td>Detección, clasificación, regresión</td>
+                            <td>Creación de contenido, data augmentation</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 700;">Interpretabilidad</td>
+                            <td>Más directa (decisión clara)</td>
+                            <td>Más compleja (espacio latente)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FÓRMULAS MATEMÁTICAS -->
+            <div class="bordered-box primary" style="margin-top: 2rem;">
+                <h3 class="color-primary">Fundamento Matemático</h3>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                    <div class="highlight-box primary" style="text-align: center;">
+                        <p class="title">Modelos Discriminativos</p>
+                        <p
+                            style="font-family: 'Courier New', monospace; font-size: 1.5rem; color: #333; font-weight: 700; margin: 1rem 0;">
+                            P(Y | X) = f(X; θ)
+                        </p>
+                        <p class="content">Aprenden directamente la probabilidad de la clase Y dados los datos X</p>
+                    </div>
+
+                    <div class="highlight-box secondary" style="text-align: center;">
+                        <p class="title">Modelos Generativos</p>
+                        <p
+                            style="font-family: 'Courier New', monospace; font-size: 1.5rem; color: #333; font-weight: 700; margin: 1rem 0;">
+                            P(X, Y) = P(X | Y) × P(Y)
+                        </p>
+                        <p class="content">Aprenden la distribución conjunta y pueden generar nuevos datos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREGUNTA CLAVE -->
+            <div class="highlight-box primary" style="margin-top: 2rem;">
+                <p class="title" style="text-align: center; font-size: 1.125rem;">💡 Pregunta Clave para Elegir</p>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div class="bordered-box primary">
+                        <p class="title color-primary">¿Clasificar o predecir?</p>
+                        <p>→ Modelos discriminativos</p>
+                    </div>
+                    <div class="bordered-box secondary">
+                        <p class="title color-secondary">¿Crear contenido nuevo?</p>
+                        <p>→ Modelos generativos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CASOS DE USO -->
+        <section>
+            <h2>Casos de Uso en el Mundo Real</h2>
+
+            <!-- CASOS DISCRIMINATIVOS -->
+            <div class="bordered-box primary">
+                <h3 class="color-primary">📊 Aplicaciones Discriminativas</h3>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🏥 Diagnóstico Médico</h4>
+                        <p>Clasificar radiografías y detectar enfermedades.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🚗 Conducción Autónoma</h4>
+                        <p>Detectar peatones y obstáculos.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">💳 Detección de Fraude</h4>
+                        <p>Identificar transacciones fraudulentas.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">📧 Filtro de Spam</h4>
+                        <p>Clasificar emails como spam.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">😊 Análisis de Sentimiento</h4>
+                        <p>Clasificar opiniones de usuarios.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">👤 Reconocimiento Facial</h4>
+                        <p>Identificar personas en sistemas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASOS GENERATIVOS -->
+            <div class="bordered-box secondary">
+                <h3 class="color-secondary">🎨 Aplicaciones Generativas</h3>
+
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🖼️ Generación de Arte</h4>
+                        <p>DALL-E, Midjourney: texto a imagen.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">✍️ Asistentes de Escritura</h4>
+                        <p>ChatGPT para texto y código.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🎵 Composición Musical</h4>
+                        <p>MusicGen, AIVA: crear música.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🎬 Deepfakes</h4>
+                        <p>Cambio de rostros y efectos visuales.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">💊 Descubrimiento de Fármacos</h4>
+                        <p>Generar moléculas para medicamentos.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🎮 Contenido de Videojuegos</h4>
+                        <p>Niveles y personajes procedurales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODELOS HÍBRIDOS -->
+            <div class="challenge-box">
+                <h3>🔀 Enfoques Híbridos</h3>
+                <p>Algunos sistemas modernos combinan <strong>ambos enfoques</strong>:</p>
+                <ul style="text-align: left; margin: 1rem auto; max-width: 600px;">
+                    <li><strong>GANs:</strong> Discriminador + Generador trabajando juntos</li>
+                    <li><strong>Data Augmentation:</strong> Generativos crean datos para discriminativos</li>
+                    <li><strong>Transfer Learning:</strong> Pre-entrenamiento generativo + ajuste discriminativo</li>
+                    <li><strong>Semi-supervised:</strong> Combinación de datos etiquetados y no etiquetados</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: TENDENCIAS ACTUALES -->
+        <section>
+            <h2>Tendencias y Futuro</h2>
+
+            <div class="grid-features">
+                <!-- BOOM GENERATIVO -->
+                <div class="bordered-box secondary">
+                    <h3 class="color-secondary">🚀 Boom de la IA Generativa</h3>
+                    <p>Desde 2022-2023, explosión en modelos generativos:</p>
+                    <ul>
+                        <li>ChatGPT y LLMs conversacionales</li>
+                        <li>DALL-E, Midjourney (text-to-image)</li>
+                        <li>GitHub Copilot (código)</li>
+                        <li>Democratización del contenido</li>
+                    </ul>
+                </div>
+
+                <!-- DISCRIMINATIVOS EVOLUCIONAN -->
+                <div class="bordered-box primary">
+                    <h3 class="color-primary">⚡ Discriminativos Eficientes</h3>
+                    <p>Modelos discriminativos siguen siendo esenciales:</p>
+                    <ul>
+                        <li>Menor costo computacional</li>
+                        <li>Edge AI (dispositivos móviles)</li>
+                        <li>Tiempo real crítico</li>
+                        <li>Interpretabilidad y auditoría</li>
+                    </ul>
+                </div>
+
+                <!-- CONVERGENCIA -->
+                <div class="bordered-box neutral">
+                    <h3>🔗 Convergencia</h3>
+                    <p>El futuro es la integración:</p>
+                    <ul>
+                        <li>Modelos multimodales</li>
+                        <li>Foundation models pre-entrenados</li>
+                        <li>Sistemas híbridos</li>
+                        <li>IA explicable y responsable</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESUMEN FINAL -->
+        <section>
+            <h2 class="color-primary" style="text-align: center;">📚 Resumen Ejecutivo</h2>
+
+            <div class="grid-features">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary" style="text-align: center; font-size: 1.4rem; margin-bottom: 1rem;">IA
+                        Discriminativa</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem;">
+                        <li><strong>Objetivo:</strong> Clasificar y predecir</li>
+                        <li><strong>Aprende:</strong> P(Y|X) - fronteras</li>
+                        <li><strong>Ventajas:</strong> Eficiente e interpretable</li>
+                        <li><strong>Usos:</strong> Detección y diagnóstico</li>
+                        <li><strong>Ejemplos:</strong> SVM, CNN, RF</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary" style="text-align: center; font-size: 1.4rem; margin-bottom: 1rem;">IA
+                        Generativa</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem;">
+                        <li><strong>Objetivo:</strong> Crear contenido nuevo</li>
+                        <li><strong>Aprende:</strong> P(X) - distribuciones</li>
+                        <li><strong>Ventajas:</strong> Creativa y versátil</li>
+                        <li><strong>Usos:</strong> Arte, texto y música</li>
+                        <li><strong>Ejemplos:</strong> GPT, GANs, DALL-E</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="challenge-box">
+                <h3>💡 Conclusión Clave</h3>
+                <p>
+                    Ambos enfoques son <strong>complementarios y esenciales</strong> en el ecosistema de la IA moderna.
+                    Los modelos discriminativos destacan en <strong>eficiencia y precisión</strong> para clasificación,
+                    mientras que los generativos revolucionan la <strong>creatividad y generación</strong> de contenido.
+                    El futuro está en la <strong>combinación inteligente</strong> de ambos paradigmas.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

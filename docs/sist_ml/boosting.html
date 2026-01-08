@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Algoritmos de Boosting: AdaBoost, Gradient Boosting, XGBoost. Aprende cómo el aprendizaje secuencial mejora modelos débiles en Machine Learning.">
+    <meta name="keywords"
+        content="Boosting, AdaBoost, Gradient Boosting, XGBoost, Ensemble Learning, Machine Learning, Sequential Learning, Weak Learners">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Algoritmos de Boosting | iLERNA">
+    <meta property="og:description"
+        content="Aprende cómo funcionan los algoritmos de Boosting: AdaBoost, Gradient Boosting y XGBoost. Aprendizaje secuencial y reducción de sesgo.">
+    <meta property="og:type" content="article">
+    <title>Algoritmos de Boosting | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Algoritmos de Boosting</span>
+                </div>
+            </div>
+            <h1 class="text-center">Algoritmos de Boosting</h1>
+            <p class="subtitle text-center">Aprender de los errores: La evolución secuencial de los modelos</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es Boosting?</h2>
+                <p>
+                    <strong>Boosting</strong> es una familia de algoritmos de <strong>Ensemble Learning</strong> que
+                    convierte modelos débiles (weak learners) en un modelo fuerte. A diferencia del Bagging (donde los
+                    modelos son independientes), en Boosting los modelos se entrenan de forma <strong>secuencial</strong>.
+                </p>
+                <p>
+                    Cada nuevo modelo intenta <strong>corregir los errores</strong> cometidos por los modelos anteriores. Es
+                    como un equipo de expertos donde cada uno se especializa en resolver los casos que los demás encontraron
+                    difíciles.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Secuencial</h4>
+                        <p>
+                            El modelo N depende del modelo N-1. No se pueden entrenar en paralelo.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #8A7AAF;">Foco en Errores</h4>
+                        <p>
+                            Se da más peso a las observaciones mal clasificadas anteriormente.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 style="color: #49B9CE;">Reducción de Sesgo</h4>
+                        <p>
+                            Principalmente reduce el <strong>bias</strong> (sesgo), haciendo modelos muy precisos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: EL PROCESO DE BOOSTING -->
+            <section class="section">
+                <h2 class="section-title">¿Cómo funciona? (Paso a paso)</h2>
+
+                <div style="margin: 2rem 0;">
+                    <svg viewBox="0 0 800 300" style="width: 100%; max-width: 100%; display: block; border: 2px solid #e5e5e5; border-radius: 1rem; background: #fafafa; padding: 1rem;">
+                        <!-- Definiciones de gradientes -->
+                        <defs>
+                            <linearGradient id="modelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#6AD1E3;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="errorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#A594C9;stop-opacity:1" />
+                            </linearGradient>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+                            </marker>
+                        </defs>
+
+                        <!-- Paso 1 -->
+                        <g transform="translate(50, 50)">
+                            <rect x="0" y="0" width="180" height="120" rx="10" fill="#f9f9f9" stroke="#cccccc"
+                                stroke-width="2" />
+                            <text x="90" y="30" text-anchor="middle" font-family="Montserrat" font-weight="700"
+                                fill="#333">Datos Originales</text>
+                            <!-- Puntos -->
+                            <circle cx="40" cy="60" r="5" fill="#49B9CE" />
+                            <circle cx="60" cy="80" r="5" fill="#49B9CE" />
+                            <circle cx="140" cy="60" r="5" fill="#FF5252" /> <!-- Error -->
+                            <circle cx="120" cy="90" r="5" fill="#49B9CE" />
+
+                            <text x="90" y="110" text-anchor="middle" font-family="Montserrat" font-size="12" fill="#555">Modelo
+                                Débil 1</text>
+                        </g>
+
+                        <!-- Flecha 1 -->
+                        <path d="M240 110 L290 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                        <!-- Paso 2 -->
+                        <g transform="translate(300, 50)">
+                            <rect x="0" y="0" width="180" height="120" rx="10" fill="#f9f9f9" stroke="#cccccc"
+                                stroke-width="2" />
+                            <text x="90" y="30" text-anchor="middle" font-family="Montserrat" font-weight="700"
+                                fill="#333">Ponderación</text>
+                            <!-- Puntos con peso -->
+                            <circle cx="40" cy="60" r="3" fill="#49B9CE" opacity="0.5" />
+                            <circle cx="60" cy="80" r="3" fill="#49B9CE" opacity="0.5" />
+                            <circle cx="140" cy="60" r="12" fill="#FF5252" opacity="0.8" /> <!-- Error enfatizado -->
+                            <circle cx="120" cy="90" r="3" fill="#49B9CE" opacity="0.5" />
+
+                            <text x="90" y="110" text-anchor="middle" font-family="Montserrat" font-size="12" fill="#555">Modelo
+                                Débil 2</text>
+                        </g>
+
+                        <!-- Flecha 2 -->
+                        <path d="M490 110 L540 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                        <!-- Paso 3 -->
+                        <g transform="translate(550, 50)">
+                            <rect x="0" y="0" width="180" height="120" rx="10" fill="url(#modelGrad)" stroke="none" />
+                            <text x="90" y="65" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="18"
+                                fill="#fff">Modelo Fuerte</text>
+                            <text x="90" y="90" text-anchor="middle" font-family="Montserrat" font-size="12" fill="#fff">Suma
+                                Ponderada</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="highlight-box" style="background: #E8F7FA; border-left: 4px solid #49B9CE;">
+                    <h3 style="color: #49B9CE; margin-top: 0;">Proceso de Boosting</h3>
+                    <ol style="line-height: 1.8;">
+                        <li>Se entrena un <strong>modelo base</strong> (generalmente un árbol poco profundo).</li>
+                        <li>Se identifican los <strong>errores</strong> (instancias mal clasificadas).</li>
+                        <li>Se asigna <strong>mayor peso</strong> a esos errores para el siguiente modelo.</li>
+                        <li>El proceso se repite y finalmente se combinan todos los modelos en una votación ponderada.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: ALGORITMOS PRINCIPALES -->
+            <section class="section">
+                <h2 class="section-title">Algoritmos Estrella</h2>
+                <p>
+                    Los algoritmos de Boosting más populares han revolucionado el Machine Learning competitivo y aplicado.
+                    Cada uno introduce mejoras incrementales sobre el concepto original:
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h3 style="color: #8A7AAF;">AdaBoost</h3>
+                        <h4 style="color: #8A7AAF; font-size: 1rem; margin-top: 0.5rem;">(Adaptive Boosting)</h4>
+                        <p>
+                            El pionero. Ajusta los pesos de las <strong>instancias</strong> de datos.
+                            Si un dato es difícil de clasificar, su peso aumenta para que el siguiente árbol se centre en
+                            él. Creado por Freund y Schapire en 1996, ganó el Premio Gödel en 2003.
+                        </p>
+                        <div class="highlight-box" style="background: #F0EDF5; margin-top: 1rem; border-left: 3px solid #8A7AAF;">
+                            <p style="font-size: 0.95rem; margin: 0;">
+                                <strong>Caso de uso:</strong> Clasificación binaria, detección de rostros (Viola-Jones),
+                                problemas con clases desbalanceadas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 style="color: #49B9CE;">Gradient Boosting</h3>
+                        <h4 style="color: #49B9CE; font-size: 1rem; margin-top: 0.5rem;">(Gradient Boosting Machines - GBM)</h4>
+                        <p>
+                            Generalización matemática. En lugar de pesos, entrena nuevos modelos para predecir los
+                            <strong>residuos</strong> (la diferencia entre el valor real y el predicho) del modelo anterior.
+                            Usa descenso de gradiente para minimizar la función de pérdida.
+                        </p>
+                        <div class="highlight-box" style="background: #E8F7FA; margin-top: 1rem; border-left: 3px solid #49B9CE;">
+                            <p style="font-size: 0.95rem; margin: 0;">
+                                <strong>Caso de uso:</strong> Regresión y clasificación multi-clase, ranking, predicción
+                                de series temporales.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3 style="color: #8A7AAF;">XGBoost</h3>
+                        <h4 style="color: #8A7AAF; font-size: 1rem; margin-top: 0.5rem;">(Extreme Gradient Boosting)</h4>
+                        <p>
+                            La versión optimizada y más popular en competiciones (Kaggle).
+                            Incluye regularización para evitar overfitting, manejo automático de valores nulos, ejecución
+                            paralela y distribuida, y múltiples optimizaciones algorítmicas.
+                        </p>
+                        <div class="highlight-box" style="background: #F0EDF5; margin-top: 1rem; border-left: 3px solid #8A7AAF;">
+                            <p style="font-size: 0.95rem; margin: 0;">
+                                <strong>Caso de uso:</strong> Ganador de mayoría de competiciones Kaggle, sistemas de
+                                recomendación, fraud detection, CTR prediction.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 style="color: #49B9CE;">LightGBM & CatBoost</h3>
+                        <h4 style="color: #49B9CE; font-size: 1rem; margin-top: 0.5rem;">(Variantes Modernas)</h4>
+                        <p>
+                            <strong>LightGBM</strong> (Microsoft): Usa "leaf-wise" growth y técnicas de histograma para
+                            entrenamiento ultra-rápido. <strong>CatBoost</strong> (Yandex): Manejo nativo de variables
+                            categóricas y menor overfitting por defecto.
+                        </p>
+                        <div class="highlight-box" style="background: #E8F7FA; margin-top: 1rem; border-left: 3px solid #49B9CE;">
+                            <p style="font-size: 0.95rem; margin: 0;">
+                                <strong>Caso de uso:</strong> Datasets enormes (LightGBM), datos con muchas categorías (CatBoost).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EJEMPLO PRÁCTICO ADABOOST VS GRADIENT BOOSTING -->
+            <section class="section">
+                <h2 class="section-title">Ejemplo en Python: AdaBoost vs Gradient Boosting</h2>
+                <p>
+                    Implementación sencilla usando <code>scikit-learn</code> para clasificar datos de cáncer de mama.
+                    Comparamos ambos algoritmos para ver sus diferencias en rendimiento:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">Python - Comparación AdaBoost vs Gradient Boosting</div>
+                    <pre><code class="language-python">from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# 1. Cargar datos
+data = load_breast_cancer()
+X, y = data.data, data.target
+
+# 2. Dividir en train y test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 3. AdaBoost
+# Usa árboles muy pequeños (stumps) por defecto
+ada = AdaBoostClassifier(n_estimators=100, random_state=42)
+ada.fit(X_train, y_train)
+ada_pred = ada.predict(X_test)
+
+# 4. Gradient Boosting
+# Usa árboles más profundos y optimiza residuos
+gb = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, random_state=42)
+gb.fit(X_train, y_train)
+gb_pred = gb.predict(X_test)
+
+# 5. Resultados
+print(f"AdaBoost Accuracy: {accuracy_score(y_test, ada_pred):.4f}")
+print(f"Gradient Boosting Accuracy: {accuracy_score(y_test, gb_pred):.4f}")
+
+# Salida esperada (aprox):
+# AdaBoost Accuracy: 0.9737
+# Gradient Boosting Accuracy: 0.9649</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 1.5rem;">
+                    <h4 style="color: #E65100; margin-top: 0;">Interpretación de Resultados</h4>
+                    <p>
+                        En este ejemplo, AdaBoost supera ligeramente a Gradient Boosting. Esto es típico en datasets
+                        pequeños y limpios. Sin embargo, Gradient Boosting suele ser superior en datasets complejos
+                        con ruido, especialmente en problemas de regresión.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: XGBOOST EJEMPLO COMPLETO -->
+            <section class="section">
+                <h2 class="section-title">XGBoost: El Rey del Boosting</h2>
+                <p>
+                    XGBoost es el algoritmo de Boosting más potente y popular. Incluye optimizaciones avanzadas como
+                    regularización L1/L2, pruning de árboles, manejo de valores faltantes y ejecución paralela.
+                    Veamos un ejemplo completo con optimización de hiperparámetros:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">Python - XGBoost con Grid Search</div>
+                    <pre><code class="language-python">import xgboost as xgb
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report
+import pandas as pd
+
+# 1. Cargar datos
+data = load_breast_cancer()
+X, y = data.data, data.target
+
+# 2. Dividir datos
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 3. Crear modelo base XGBoost
+xgb_model = xgb.XGBClassifier(
+    objective='binary:logistic',
+    eval_metric='logloss',
+    random_state=42
+)
+
+# 4. Grid de hiperparámetros
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [3, 5, 7],
+    'learning_rate': [0.01, 0.1, 0.3],
+    'subsample': [0.8, 0.9, 1.0],
+    'colsample_bytree': [0.8, 0.9, 1.0],
+    'gamma': [0, 0.1, 0.2],
+    'reg_alpha': [0, 0.1, 1],  # Regularización L1
+    'reg_lambda': [0, 1, 10]   # Regularización L2
+}
+
+# 5. Grid Search con validación cruzada
+grid_search = GridSearchCV(
+    xgb_model,
+    param_grid,
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1,
+    verbose=1
+)
+grid_search.fit(X_train, y_train)
+
+# 6. Mejor modelo
+best_xgb = grid_search.best_estimator_
+print(f"\nMejores parámetros: {grid_search.best_params_}")
+print(f"Mejor score CV: {grid_search.best_score_:.4f}")
+
+# 7. Evaluación en test
+y_pred = best_xgb.predict(X_test)
+print(f"\nAccuracy en Test: {accuracy_score(y_test, y_pred):.4f}")
+print("\nReporte de clasificación:")
+print(classification_report(y_test, y_pred, target_names=data.target_names))
+
+# 8. Importancia de características
+importances = best_xgb.feature_importances_
+feature_importance = pd.DataFrame({
+    'feature': data.feature_names,
+    'importance': importances
+}).sort_values('importance', ascending=False)
+
+print("\nTop 10 características más importantes:")
+print(feature_importance.head(10))
+
+# 9. Curva de aprendizaje (opcional)
+eval_set = [(X_train, y_train), (X_test, y_test)]
+best_xgb.fit(X_train, y_train, eval_set=eval_set, verbose=False)
+
+# Obtener historial de evaluación
+results = best_xgb.evals_result()
+print(f"\nError final en Train: {results['validation_0']['logloss'][-1]:.4f}")
+print(f"Error final en Test: {results['validation_1']['logloss'][-1]:.4f}")</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); margin-top: 1.5rem; border-left: 4px solid #49B9CE;">
+                    <h4 style="color: #49B9CE; margin-top: 0;">Hiperparámetros Clave de XGBoost</h4>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>n_estimators:</strong> Número de árboles. Más árboles = mejor rendimiento pero mayor tiempo.</li>
+                        <li><strong>max_depth:</strong> Profundidad máxima de cada árbol. Controla complejidad (típico: 3-10).</li>
+                        <li><strong>learning_rate:</strong> Tasa de aprendizaje. Valores bajos (0.01-0.1) requieren más árboles pero generalizan mejor.</li>
+                        <li><strong>subsample:</strong> Fracción de muestras usadas por árbol. Reduce overfitting (típico: 0.8-1.0).</li>
+                        <li><strong>colsample_bytree:</strong> Fracción de características usadas por árbol (similar a Random Forest).</li>
+                        <li><strong>gamma:</strong> Reducción mínima de pérdida para hacer un split. Mayor = más conservador.</li>
+                        <li><strong>reg_alpha/reg_lambda:</strong> Regularización L1/L2 para prevenir overfitting.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: BAGGING VS BOOSTING -->
+            <section class="section">
+                <h2 class="section-title">Bagging vs Boosting: El Duelo Final</h2>
+                <p>
+                    Tanto Bagging como Boosting son técnicas de Ensemble Learning, pero tienen enfoques y objetivos
+                    fundamentalmente diferentes. Entender cuándo usar cada uno es crucial:
+                </p>
+
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>Bagging (Random Forest)</th>
+                                <th>Boosting (XGBoost, AdaBoost)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Construcción</strong></td>
+                                <td>Paralela (Independiente)</td>
+                                <td>Secuencial (Dependiente)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Objetivo Principal</strong></td>
+                                <td>Reducir Varianza (Overfitting)</td>
+                                <td>Reducir Sesgo (Underfitting)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Modelos Base</strong></td>
+                                <td>Árboles profundos (complejos)</td>
+                                <td>Árboles poco profundos (débiles)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Muestreo de Datos</strong></td>
+                                <td>Bootstrap (con reemplazo)</td>
+                                <td>Ponderación adaptativa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Combinación</strong></td>
+                                <td>Votación/Promedio simple</td>
+                                <td>Votación ponderada</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Riesgo de Overfitting</strong></td>
+                                <td>Bajo (robusto al ruido)</td>
+                                <td>Alto (sensible al ruido/outliers)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Velocidad de Entrenamiento</strong></td>
+                                <td>Rápida (paralelizable)</td>
+                                <td>Más lenta (secuencial)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sensibilidad a Outliers</strong></td>
+                                <td>Baja (robusto)</td>
+                                <td>Alta (puede sobreajustar)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Interpretabilidad</strong></td>
+                                <td>Baja (muchos árboles)</td>
+                                <td>Baja (secuencia compleja)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mejor para</strong></td>
+                                <td>Datos ruidosos, alta dimensionalidad</td>
+                                <td>Máxima precisión, competiciones</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="margin-top: 0;">¿Cuándo usar cada técnica?</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                        <div>
+                            <h5 style="color: #49B9CE; margin-bottom: 0.5rem;">Usa Bagging si:</h5>
+                            <ul style="line-height: 1.8;">
+                                <li>Tus datos tienen mucho ruido u outliers</li>
+                                <li>Necesitas entrenamiento rápido (paralelizable)</li>
+                                <li>Quieres un modelo robusto y estable</li>
+                                <li>Tienes alta varianza (overfitting)</li>
+                                <li>Necesitas importancia de características</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #8A7AAF; margin-bottom: 0.5rem;">Usa Boosting si:</h5>
+                            <ul style="line-height: 1.8;">
+                                <li>Buscas la máxima precisión posible</li>
+                                <li>Tus datos son limpios (pocos outliers)</li>
+                                <li>Tienes alto sesgo (underfitting)</li>
+                                <li>Estás en una competición (Kaggle)</li>
+                                <li>Puedes dedicar más tiempo al tuning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: VENTAJAS Y DESVENTAJAS DEL BOOSTING -->
+            <section class="section">
+                <h2 class="section-title">Ventajas y Desventajas del Boosting</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                    <div class="feature-card">
+                        <h3 style="color: #4CAF50; margin-top: 0;">Ventajas</h3>
+                        <ul style="line-height: 1.8; margin-left: 1.5rem;">
+                            <li><strong>Alta precisión:</strong> Generalmente supera a otros algoritmos en precisión.</li>
+                            <li><strong>Reduce bias:</strong> Convierte modelos débiles en modelos muy potentes.</li>
+                            <li><strong>Versatilidad:</strong> Funciona bien en clasificación, regresión y ranking.</li>
+                            <li><strong>Manejo de datos:</strong> XGBoost maneja valores faltantes automáticamente.</li>
+                            <li><strong>Importancia de características:</strong> Identifica variables más relevantes.</li>
+                            <li><strong>Poco preprocesamiento:</strong> No requiere normalización ni escalado.</li>
+                            <li><strong>Ganador de Kaggle:</strong> Algoritmo más usado en competiciones de ML.</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 style="color: #C62828; margin-top: 0;">Desventajas</h3>
+                        <ul style="line-height: 1.8; margin-left: 1.5rem;">
+                            <li><strong>Sensible a outliers:</strong> Puede sobreajustarse a datos anómalos.</li>
+                            <li><strong>Entrenamiento secuencial:</strong> No se puede paralelizar completamente.</li>
+                            <li><strong>Tiempo de entrenamiento:</strong> Más lento que Bagging o modelos simples.</li>
+                            <li><strong>Riesgo de overfitting:</strong> Requiere ajuste cuidadoso de hiperparámetros.</li>
+                            <li><strong>Complejidad:</strong> Muchos hiperparámetros para optimizar.</li>
+                            <li><strong>Caja negra:</strong> Difícil de interpretar (cientos de árboles secuenciales).</li>
+                            <li><strong>Curva de aprendizaje:</strong> Requiere experiencia para usar correctamente.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); margin-top: 2rem; border-left: 4px solid #8A7AAF;">
+                    <h4 style="color: #8A7AAF; margin-top: 0;">Consejos para Evitar Overfitting en Boosting</h4>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Reduce learning_rate:</strong> Valores bajos (0.01-0.05) generalizan mejor.</li>
+                        <li><strong>Limita max_depth:</strong> Árboles poco profundos (3-7) previenen complejidad excesiva.</li>
+                        <li><strong>Usa regularización:</strong> reg_alpha y reg_lambda en XGBoost son muy efectivos.</li>
+                        <li><strong>Early stopping:</strong> Detén el entrenamiento cuando el error de validación deje de mejorar.</li>
+                        <li><strong>Subsample:</strong> Usa solo una fracción de datos por árbol (0.7-0.9).</li>
+                        <li><strong>Cross-validation:</strong> Siempre valida con CV para detectar overfitting temprano.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: APLICACIONES REALES -->
+            <section class="section">
+                <h2 class="section-title">Aplicaciones Reales del Boosting</h2>
+                <p>
+                    Los algoritmos de Boosting dominan en aplicaciones industriales y competiciones de Machine Learning
+                    gracias a su precisión superior. Estos son algunos casos de éxito:
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Kaggle Competitions</h4>
+                        <p>
+                            XGBoost y LightGBM han ganado más del <strong>70% de las competiciones Kaggle</strong> en
+                            los últimos años. Son la primera opción para tabular data en ML competitivo.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Sistemas de Recomendación</h4>
+                        <p>
+                            Netflix, Amazon y Spotify usan Gradient Boosting para predecir preferencias de usuarios.
+                            XGBoost procesa billones de eventos diarios para recomendar contenido personalizado.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Detección de Fraude</h4>
+                        <p>
+                            Bancos como PayPal, Visa y Mastercard usan XGBoost para detectar transacciones fraudulentas
+                            en tiempo real, analizando patrones complejos en millones de transacciones.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Publicidad Digital</h4>
+                        <p>
+                            Google Ads, Facebook Ads y Baidu usan Gradient Boosting para predecir CTR (Click-Through Rate)
+                            y optimizar pujas en subastas de publicidad programática.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 style="color: #49B9CE;">Medicina Predictiva</h4>
+                        <p>
+                            Hospitales usan XGBoost para predecir readmisiones, mortalidad, y respuesta a tratamientos.
+                            Superó a modelos tradicionales en predicción de diabetes y enfermedades cardíacas.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 style="color: #8A7AAF;">Búsqueda y Ranking</h4>
+                        <p>
+                            Bing de Microsoft usa LambdaMART (variante de Gradient Boosting) para ranking de resultados
+                            de búsqueda. Yandex desarrolló CatBoost específicamente para su motor de búsqueda.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 2rem;">
+                    <h4 style="color: #E65100; margin-top: 0;">Caso de Éxito: Airbnb</h4>
+                    <p>
+                        Airbnb usa XGBoost en su algoritmo de <strong>Smart Pricing</strong> para predecir el precio
+                        óptimo de cada propiedad. El modelo analiza más de 70 características (ubicación, amenidades,
+                        estacionalidad, eventos locales) y procesa millones de anuncios diariamente. Resultado: aumentó
+                        las reservas un 9% y los ingresos de los hosts un 4% en promedio.
+                    </p>
+                    <p style="margin-top: 1rem; margin-bottom: 0;">
+                        Según su equipo de Data Science, probaron Random Forest, redes neuronales y regresión lineal,
+                        pero XGBoost superó a todos en precisión y velocidad de inferencia.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 9: COMPARACIÓN DE LIBRERÍAS -->
+            <section class="section">
+                <h2 class="section-title">Comparación de Librerías de Boosting</h2>
+                <p>
+                    Existen varias implementaciones de Gradient Boosting, cada una con sus ventajas. Aquí comparamos
+                    las más populares:
+                </p>
+
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>XGBoost</th>
+                                <th>LightGBM</th>
+                                <th>CatBoost</th>
+                                <th>scikit-learn GB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Organización</strong></td>
+                                <td>DMLC (Open Source)</td>
+                                <td>Microsoft</td>
+                                <td>Yandex</td>
+                                <td>scikit-learn</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Velocidad</strong></td>
+                                <td>Rápida</td>
+                                <td>Muy rápida</td>
+                                <td>Media-Rápida</td>
+                                <td>Lenta</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Precisión</strong></td>
+                                <td>Excelente</td>
+                                <td>Excelente</td>
+                                <td>Excelente</td>
+                                <td>Buena</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Manejo de Categóricas</strong></td>
+                                <td>Requiere encoding</td>
+                                <td>Requiere encoding</td>
+                                <td>Nativo (built-in)</td>
+                                <td>Requiere encoding</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Overfitting</strong></td>
+                                <td>Medio (requiere tuning)</td>
+                                <td>Medio-Alto</td>
+                                <td>Bajo (mejor default)</td>
+                                <td>Medio</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Memoria</strong></td>
+                                <td>Media</td>
+                                <td>Baja (eficiente)</td>
+                                <td>Alta</td>
+                                <td>Media</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GPU Support</strong></td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Distribución</strong></td>
+                                <td>Sí (Dask, Spark)</td>
+                                <td>Sí (Dask, Spark)</td>
+                                <td>Limitada</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mejor para</strong></td>
+                                <td>Uso general, Kaggle</td>
+                                <td>Datasets grandes</td>
+                                <td>Datos categóricos</td>
+                                <td>Prototipado rápido</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Instalación</strong></td>
+                                <td>pip install xgboost</td>
+                                <td>pip install lightgbm</td>
+                                <td>pip install catboost</td>
+                                <td>Incluido en sklearn</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="margin-top: 0;">Recomendaciones de Uso</h4>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>XGBoost:</strong> Tu primera opción. Equilibrio perfecto entre velocidad, precisión y comunidad.</li>
+                        <li><strong>LightGBM:</strong> Si tienes millones de filas o necesitas entrenamiento ultra-rápido.</li>
+                        <li><strong>CatBoost:</strong> Si tu dataset tiene muchas variables categóricas o quieres menos overfitting por defecto.</li>
+                        <li><strong>scikit-learn GB:</strong> Solo para prototipado rápido o cuando no puedas instalar dependencias adicionales.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 10: DATO CURIOSO -->
+            <section class="section">
+                <div class="warning-box">
+                    <h3 style="margin-top: 0;">Dato Curioso: El Origen de AdaBoost</h3>
+                    <p>
+                        <strong>AdaBoost</strong> fue inventado por <strong>Yoav Freund</strong> y <strong>Robert Schapire</strong>
+                        en 1996. El algoritmo fue tan revolucionario que les valió el <strong>Premio Gödel 2003</strong>,
+                        uno de los premios más prestigiosos en Ciencias de la Computación Teórica.
+                    </p>
+                    <div class="highlight-box" style="margin-top: 1rem; background: linear-gradient(to right, #E8F7FA, #F0EDF5);">
+                        <p style="margin-bottom: 0;">
+                            <strong>Curiosidad adicional:</strong> El paper original de AdaBoost tiene más de 15,000 citas
+                            y revolucionó el campo del Machine Learning. Fue el primer algoritmo práctico en demostrar que
+                            combinar modelos "débiles" podía crear un clasificador arbitrariamente preciso. La teoría detrás
+                            de AdaBoost también inspiró el desarrollo de XGBoost 15 años después, que hoy domina Kaggle.
+                            ¡La ciencia construye sobre ciencia!
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

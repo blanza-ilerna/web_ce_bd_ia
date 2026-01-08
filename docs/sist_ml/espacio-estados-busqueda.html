@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Espacio de Estados y Estrategias de Búsqueda - Sistemas de ML">
+    <meta name="keywords" content="Espacio de Estados, Búsqueda, Algoritmos, A*, BFS, DFS">
+    <meta name="author" content="Bjlanza">
+    <title>Espacio de Estados y Estrategias de Búsqueda | Sistemas de ML</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Sistemas de ML</a> →
+                <span>Espacio de Estados y Búsqueda</span>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="text-center">Espacio de Estados y Estrategias de Búsqueda</h1>
+        <p class="subtitle text-center">Fundamentos de la Resolución de Problemas en Inteligencia Artificial</p>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2>Introducción: Resolviendo Problemas con IA</h2>
+            <p>
+                La <strong>resolución de problemas mediante búsqueda</strong> es uno de los pilares fundamentales de la Inteligencia Artificial. Desde encontrar la ruta más corta en un GPS hasta resolver un cubo de Rubik o jugar al ajedrez, todos estos desafíos comparten una característica común: pueden modelarse como la <strong>exploración de un espacio de estados</strong> en busca de una solución óptima.
+            </p>
+            <p>
+                Un <strong>espacio de estados</strong> representa todas las configuraciones posibles de un problema, mientras que las <strong>estrategias de búsqueda</strong> son los algoritmos que exploran este espacio de manera eficiente para encontrar la solución. La diferencia entre una búsqueda eficiente y una ineficiente puede significar la diferencia entre segundos y años de cómputo.
+            </p>
+
+            <div class="highlight-box">
+                <p class="tech-title">🗺️ Ejemplo Real: Google Maps</p>
+                <p>Cuando calculas una ruta en Google Maps, el sistema explora millones de estados posibles (intersecciones, calles) usando el algoritmo <strong>A*</strong>, que combina la distancia recorrida con una estimación heurística de la distancia restante. Esto permite encontrar la ruta óptima en milisegundos, evaluando solo una fracción del espacio total de estados.</p>
+            </div>
+
+            <h3 class="color-primary mt-2">Conceptos Fundamentales</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Estado</h4>
+                    <p>Configuración específica del problema en un momento dado. Ejemplo: posición actual en un mapa.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Acción</h4>
+                    <p>Operación que transforma un estado en otro. Ejemplo: moverse de una intersección a otra.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Estado Inicial</h4>
+                    <p>Punto de partida del problema. Ejemplo: tu ubicación actual al abrir el GPS.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Estado Meta</h4>
+                    <p>Configuración que satisface el objetivo. Ejemplo: destino final en tu ruta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ESPACIO DE ESTADOS -->
+        <section class="section">
+            <h2>El Espacio de Estados</h2>
+
+            <h3 class="color-primary">🌐 Definición y Representación</h3>
+            <p>
+                El <strong>espacio de estados</strong> es el conjunto de todas las configuraciones posibles del problema, junto con las transiciones que las conectan. Se puede visualizar como un <strong>grafo</strong> en el que:
+            </p>
+
+            <ul style="margin-left: 1.5rem; line-height: 1.75; margin-bottom: 1.5rem;">
+                <li><strong>Los nodos</strong> representan estados (configuraciones del problema)</li>
+                <li><strong>Las aristas</strong> representan acciones (transiciones entre estados)</li>
+                <li><strong>Los pesos</strong> en las aristas representan el coste de cada acción</li>
+            </ul>
+
+            <!-- VISUALIZACIÓN SVG DEL GRAFO -->
+            <svg width="800" height="500" style="border: 2px solid var(--border-color); border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                <text x="400" y="30" font-size="18" font-weight="bold" fill="var(--color-primary)" text-anchor="middle" font-family="Montserrat">Espacio de Estados como Grafo</text>
+                <text x="400" y="50" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">Ejemplo: Navegación entre ciudades</text>
+
+                <circle cx="100" cy="150" r="40" fill="#A8E6A1" stroke="#4CAF50" stroke-width="3"/>
+                <text x="100" y="145" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Madrid</text>
+                <text x="100" y="160" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">(Inicio)</text>
+
+                <circle cx="300" cy="100" r="35" fill="#E8F7FA" stroke="var(--color-primary)" stroke-width="2"/>
+                <text x="300" y="105" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Zaragoza</text>
+
+                <circle cx="500" cy="150" r="35" fill="#E8F7FA" stroke="var(--color-primary)" stroke-width="2"/>
+                <text x="500" y="155" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Valencia</text>
+
+                <circle cx="300" cy="280" r="35" fill="#E8F7FA" stroke="var(--color-primary)" stroke-width="2"/>
+                <text x="300" y="285" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Toledo</text>
+
+                <circle cx="700" cy="150" r="40" fill="#FFE5B4" stroke="#FFA726" stroke-width="3"/>
+                <text x="700" y="145" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Barcelona</text>
+                <text x="700" y="160" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">(Meta)</text>
+
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#555555"/>
+                    </marker>
+                </defs>
+
+                <line x1="135" y1="135" x2="265" y2="110" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="200" y="115" font-size="11" fill="var(--color-primary)" font-weight="bold" font-family="Montserrat">315km</text>
+
+                <line x1="335" y1="105" x2="465" y2="145" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="400" y="120" font-size="11" fill="var(--color-primary)" font-weight="bold" font-family="Montserrat">355km</text>
+
+                <line x1="535" y1="155" x2="660" y2="155" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="597" y="145" font-size="11" fill="var(--color-primary)" font-weight="bold" font-family="Montserrat">349km</text>
+
+                <line x1="125" y1="180" x2="270" y2="265" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="200" y="235" font-size="11" fill="var(--color-primary)" font-weight="bold" font-family="Montserrat">72km</text>
+
+                <line x1="300" y1="315" x2="490" y2="180" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="380" y="260" font-size="11" fill="var(--color-primary)" font-weight="bold" font-family="Montserrat">290km</text>
+
+                <rect x="50" y="380" width="700" height="90" fill="white" stroke="var(--border-color)" stroke-width="2" rx="8"/>
+                <text x="400" y="405" font-size="14" font-weight="bold" fill="var(--color-secondary)" text-anchor="middle" font-family="Montserrat">Componentes del Problema</text>
+                <text x="400" y="430" font-size="12" fill="#333333" text-anchor="middle" font-family="Montserrat">• Estado Inicial: Madrid | • Estado Meta: Barcelona</text>
+                <text x="400" y="450" font-size="12" fill="#333333" text-anchor="middle" font-family="Montserrat">• Acciones: Viajar entre ciudades conectadas</text>
+                <text x="400" y="465" font-size="12" fill="#333333" text-anchor="middle" font-family="Montserrat">• Coste: Distancia en kilómetros</text>
+            </svg>
+
+            <h3 class="color-secondary mt-2">Características del Espacio de Estados</h3>
+            <div class="comparison-grid">
+                <div class="highlight-box">
+                    <h4 class="color-primary">📐 Tamaño del Espacio</h4>
+                    <p>Número total de estados posibles. Puede ser finito (8-puzzle con 9!/2 = 181,440 estados) o infinito (ajedrez con ~10⁴³ posiciones legales).</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h4 class="color-secondary">🌳 Factor de Ramificación</h4>
+                    <p>Número promedio de acciones disponibles desde cada estado. El ajedrez tiene factor ~35, mientras que el parchís tiene ~10.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4 class="color-primary">📏 Profundidad de la Solución</h4>
+                    <p>Número mínimo de pasos desde el estado inicial a la meta. Afecta directamente la complejidad del problema.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ESTRATEGIAS DE BÚSQUEDA NO INFORMADA -->
+        <section class="section">
+            <h2>Estrategias de Búsqueda No Informada</h2>
+            <p>
+                Las <strong>búsquedas no informadas</strong> (o ciegas) exploran el espacio sin usar conocimiento específico del dominio. Solo distinguen estados meta de no-meta.
+            </p>
+
+            <h3 class="color-primary mt-2">1. Búsqueda en Anchura (BFS - Breadth-First Search)</h3>
+            <div class="highlight-box">
+                <p><strong>Estrategia:</strong> Explora todos los nodos a profundidad <em>d</em> antes de explorar nodos a profundidad <em>d+1</em>.</p>
+                <p><strong>Implementación:</strong> Usa una cola FIFO (First In, First Out)</p>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="tech-title">Características:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li>✅ <strong>Completo:</strong> Encuentra solución si existe</li>
+                        <li>✅ <strong>Óptimo:</strong> Si todos los costes son iguales</li>
+                        <li>❌ <strong>Complejidad espacial alta:</strong> O(b^d) - guarda todos los nodos</li>
+                        <li>❌ <strong>Complejidad temporal alta:</strong> O(b^d)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-block" style="margin-top: 1.5rem;">
+<pre><code class="language-python">def bfs(grafo, inicio, meta):
+    cola = deque([inicio])
+    visitados = {inicio}
+    padres = {inicio: None}
+
+    while cola:
+        actual = cola.popleft()
+
+        if actual == meta:
+            return reconstruir_camino(padres, meta)
+
+        for vecino in grafo[actual]:
+            if vecino not in visitados:
+                visitados.add(vecino)
+                padres[vecino] = actual
+                cola.append(vecino)
+
+    return None  # No hay solución
+</code></pre>
+            </div>
+
+            <h3 class="color-secondary mt-2">2. Búsqueda en Profundidad (DFS - Depth-First Search)</h3>
+            <div class="highlight-box secondary">
+                <p><strong>Estrategia:</strong> Explora tan profundo como sea posible antes de retroceder.</p>
+                <p><strong>Implementación:</strong> Usa una pila LIFO (Last In, First Out)</p>
+
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <p class="tech-title">Características:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li>✅ <strong>Complejidad espacial baja:</strong> O(b·m) donde m es profundidad máxima</li>
+                        <li>❌ <strong>No completo:</strong> Puede quedarse en bucles infinitos</li>
+                        <li>❌ <strong>No óptimo:</strong> Encuentra cualquier solución, no necesariamente la mejor</li>
+                        <li>⚠️ <strong>Útil para:</strong> Espacios muy grandes donde BFS es inviable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="color-primary mt-2">3. Búsqueda de Coste Uniforme (UCS - Uniform Cost Search)</h3>
+            <div class="highlight-box">
+                <p><strong>Estrategia:</strong> Expande el nodo con menor coste acumulado g(n) desde el inicio.</p>
+                <p><strong>Implementación:</strong> Usa una cola de prioridad (heap)</p>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="tech-title">Características:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li>✅ <strong>Completo:</strong> Encuentra solución si existe</li>
+                        <li>✅ <strong>Óptimo:</strong> Garantiza encontrar la ruta de menor coste</li>
+                        <li>⚠️ <strong>Diferencia con BFS:</strong> BFS es UCS cuando todos los costes son iguales</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: BÚSQUEDA INFORMADA (HEURÍSTICA) -->
+        <section class="section">
+            <h2>Estrategias de Búsqueda Informada</h2>
+            <p>
+                Las <strong>búsquedas informadas</strong> usan conocimiento específico del problema mediante <strong>heurísticas</strong>: funciones que estiman el coste desde un estado hasta la meta.
+            </p>
+
+            <h3 class="color-primary mt-2">Función Heurística h(n)</h3>
+            <div class="highlight-box">
+                <p>
+                    <strong>Definición:</strong> h(n) estima el coste desde el nodo n hasta el objetivo más cercano.
+                </p>
+                <p>
+                    <strong>Propiedad clave:</strong> Una heurística es <strong>admisible</strong> si nunca sobreestima el coste real (h(n) ≤ coste real).
+                </p>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="tech-title">Ejemplos de Heurísticas:</p>
+                    <p>• <strong>Distancia Manhattan:</strong> |x₁-x₂| + |y₁-y₂| (navegación en cuadrícula)</p>
+                    <p>• <strong>Distancia Euclidiana:</strong> √[(x₁-x₂)² + (y₁-y₂)²] (navegación libre)</p>
+                    <p>• <strong>Número de piezas mal colocadas:</strong> 8-puzzle</p>
+                </div>
+            </div>
+
+            <h3 class="color-secondary mt-2">4. Algoritmo A* (A-Star)</h3>
+            <div class="highlight-box secondary">
+                <p><strong>Estrategia:</strong> Combina el coste acumulado g(n) con la estimación heurística h(n).</p>
+                <p style="text-align: center; font-size: 1.3rem; font-weight: 700; color: var(--color-secondary); margin: 1rem 0;">
+                    f(n) = g(n) + h(n)
+                </p>
+                <p style="text-align: center;">
+                    <strong>g(n):</strong> Coste real desde inicio hasta n<br/>
+                    <strong>h(n):</strong> Estimación heurística desde n hasta meta<br/>
+                    <strong>f(n):</strong> Estimación del coste total de la solución
+                </p>
+
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <p class="tech-title">Características de A*:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li>✅ <strong>Completo:</strong> Encuentra solución si existe</li>
+                        <li>✅ <strong>Óptimo:</strong> Si h(n) es admisible</li>
+                        <li>✅ <strong>Eficiente:</strong> Explora solo estados prometedores</li>
+                        <li>🌟 <strong>Estándar de facto:</strong> Pathfinding en juegos, GPS, robótica</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-block" style="margin-top: 1.5rem;">
+<pre><code class="language-python">import heapq
+
+def a_star(grafo, inicio, meta, heuristica):
+    frontera = [(heuristica(inicio, meta), 0, inicio)]
+    visitados = set()
+    g_score = {inicio: 0}
+    padres = {inicio: None}
+
+    while frontera:
+        f, g, actual = heapq.heappop(frontera)
+
+        if actual in visitados:
+            continue
+        visitados.add(actual)
+
+        if actual == meta:
+            return reconstruir_camino(padres, meta), g
+
+        for vecino, coste in grafo[actual]:
+            nuevo_g = g + coste
+
+            if vecino not in g_score or nuevo_g < g_score[vecino]:
+                g_score[vecino] = nuevo_g
+                f_score = nuevo_g + heuristica(vecino, meta)
+                heapq.heappush(frontera, (f_score, nuevo_g, vecino))
+                padres[vecino] = actual
+
+    return None, float('inf')  # No hay solución
+</code></pre>
+            </div>
+
+            <h3 class="color-primary mt-2">5. Búsqueda Greedy (Voraz)</h3>
+            <div class="highlight-box">
+                <p><strong>Estrategia:</strong> Expande el nodo que parece más cercano a la meta según h(n).</p>
+                <p style="text-align: center; font-size: 1.3rem; font-weight: 700; color: var(--color-primary); margin: 1rem 0;">
+                    f(n) = h(n)
+                </p>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <p class="tech-title">Características:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li>✅ <strong>Muy rápido:</strong> Menor complejidad que A*</li>
+                        <li>❌ <strong>No óptimo:</strong> Puede encontrar soluciones subóptimas</li>
+                        <li>⚠️ <strong>Usar cuando:</strong> Velocidad > optimalidad</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: TABLA COMPARATIVA -->
+        <section class="section">
+            <h2 class="text-center">Comparación de Estrategias de Búsqueda</h2>
+
+            <div class="table-container">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Completo</th>
+                            <th>Óptimo</th>
+                            <th>Comp. Temporal</th>
+                            <th>Comp. Espacial</th>
+                            <th>Uso Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>BFS</strong></td>
+                            <td>✅ Sí</td>
+                            <td>✅ Sí*</td>
+                            <td>O(b^d)</td>
+                            <td>O(b^d)</td>
+                            <td>Costes uniformes, profundidad baja</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DFS</strong></td>
+                            <td>❌ No**</td>
+                            <td>❌ No</td>
+                            <td>O(b^m)</td>
+                            <td>O(b·m)</td>
+                            <td>Espacios grandes, solución rápida</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UCS</strong></td>
+                            <td>✅ Sí</td>
+                            <td>✅ Sí</td>
+                            <td>O(b^(C*/ε))</td>
+                            <td>O(b^(C*/ε))</td>
+                            <td>Costes variables, ruta óptima</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Greedy</strong></td>
+                            <td>❌ No</td>
+                            <td>❌ No</td>
+                            <td>O(b^m)</td>
+                            <td>O(b^m)</td>
+                            <td>Velocidad crítica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>A*</strong></td>
+                            <td>✅ Sí</td>
+                            <td>✅ Sí***</td>
+                            <td>O(b^d)</td>
+                            <td>O(b^d)</td>
+                            <td>Pathfinding, navegación</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box mt-2">
+                <p style="font-size: 0.95rem; line-height: 1.6;">
+                    <strong>Notas:</strong><br/>
+                    * BFS óptimo si costes uniformes<br/>
+                    ** DFS completo en grafos finitos con detección de ciclos<br/>
+                    *** A* óptimo si heurística es admisible<br/>
+                    <strong>Notación:</strong> b=factor ramificación, d=profundidad solución, m=profundidad máxima, C*=coste óptimo, ε=coste mínimo arista
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: APLICACIONES REALES -->
+        <section class="section">
+            <h2>Aplicaciones Reales de Búsqueda en IA</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3 style="color: var(--color-primary);">🎮 Videojuegos</h3>
+                    <p><strong>Algoritmo:</strong> A* con heurística Manhattan</p>
+                    <p><strong>Uso:</strong> Pathfinding de NPCs (Non-Player Characters). Juegos como StarCraft, League of Legends, The Sims usan A* para mover personajes evitando obstáculos.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 style="color: var(--color-secondary);">🗺️ Navegación GPS</h3>
+                    <p><strong>Algoritmo:</strong> Variantes de A* (Contraction Hierarchies)</p>
+                    <p><strong>Uso:</strong> Google Maps, Waze, Apple Maps calculan rutas óptimas considerando tráfico, peajes y distancia.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3 style="color: var(--color-primary);">🤖 Robótica</h3>
+                    <p><strong>Algoritmo:</strong> RRT (Rapidly-exploring Random Trees) + A*</p>
+                    <p><strong>Uso:</strong> Planificación de trayectorias para brazos robóticos en fábricas, drones autónomos y vehículos autoguiados (AGV).</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 style="color: var(--color-secondary);">♟️ Juegos de Mesa</h3>
+                    <p><strong>Algoritmo:</strong> Minimax con poda Alpha-Beta</p>
+                    <p><strong>Uso:</strong> Motores de ajedrez (Stockfish), damas, Go (AlphaGo combina búsqueda con redes neuronales).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: REGLA DE ORO -->
+        <section class="section">
+            <div class="comparison-grid">
+                <div class="highlight-box">
+                    <h3 class="text-center color-primary">🔵 Búsqueda No Informada</h3>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Usar cuando:</strong> No hay heurística disponible</li>
+                        <li><strong>BFS:</strong> Garantía de optimalidad, memoria disponible</li>
+                        <li><strong>DFS:</strong> Espacios grandes, memoria limitada</li>
+                        <li><strong>UCS:</strong> Costes variables, ruta óptima necesaria</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 class="text-center color-secondary">🟣 Búsqueda Informada</h3>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Usar cuando:</strong> Existe heurística admisible</li>
+                        <li><strong>A*:</strong> Estándar para navegación y pathfinding</li>
+                        <li><strong>Greedy:</strong> Velocidad crítica, optimalidad secundaria</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="curiosity-box mt-2">
+                <h4>💡 Dato Curioso: AlphaGo y Búsqueda Combinada</h4>
+                <p>
+                    <strong>AlphaGo</strong>, la IA de Google DeepMind que derrotó al campeón mundial de Go en 2016, combina búsqueda en árbol (variante de A*) con redes neuronales profundas. Evalúa <strong>280 millones de posiciones</strong> para decidir cada movimiento, reduciendo el espacio de búsqueda de 10¹⁷⁰ estados posibles a una fracción manejable. Esta combinación de búsqueda tradicional con machine learning representa el estado del arte en IA para juegos complejos.
+                </p>
+                <div class="highlight-box" style="margin-top: 1rem; text-align: center;">
+                    <p>
+                        🏆 <strong>Impacto:</strong> Demostró que problemas considerados "demasiado complejos" para IA podían resolverse con estrategias de búsqueda avanzadas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box secondary mt-2" style="text-align: center;">
+                <h4>🎯 Regla de Oro</h4>
+                <p style="font-size: 1.125rem;">
+                    "La mejor estrategia de búsqueda depende del problema. Analiza el espacio de estados, define una heurística admisible si es posible, y elige el algoritmo que equilibre <strong>optimalidad, eficiencia y recursos disponibles</strong>."
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

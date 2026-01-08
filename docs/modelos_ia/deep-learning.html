@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Deep Learning y Redes Neuronales Profundas: MLP, CNN, RNN, LSTM, Transformers, GANs y Autoencoders. Arquitecturas completas con ejemplos prácticos.">
+    <meta name="keywords"
+        content="Deep Learning, Redes Neuronales, MLP, CNN, RNN, LSTM, Transformers, GANs, Autoencoders, TensorFlow, Keras">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Deep Learning y Redes Neuronales Profundas | iLERNA">
+    <meta property="og:description"
+        content="Guía completa de arquitecturas de Deep Learning: desde perceptrones hasta Transformers y GANs.">
+    <meta property="og:type" content="article">
+    <title>Deep Learning y Redes Neuronales Profundas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Deep Learning</span>
+                </div>
+            </div>
+            <h1 class="text-center">Deep Learning y Redes Neuronales Profundas</h1>
+            <p class="subtitle text-center">Arquitecturas de Aprendizaje Profundo: MLP, CNN, RNN, Transformers, GANs y
+                Autoencoders</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es Deep Learning?</h2>
+                <p>
+                    El <strong>Deep Learning</strong> (Aprendizaje Profundo) es un subcampo del Machine Learning basado
+                    en <strong>redes neuronales artificiales</strong> con <strong>múltiples capas ocultas</strong>. A
+                    diferencia del ML tradicional, el DL aprende automáticamente representaciones jerárquicas de
+                    características, desde patrones simples hasta conceptos abstractos complejos.
+                </p>
+                <p>
+                    El término "profundo" se refiere a la <strong>profundidad de la red</strong>: cantidad de capas
+                    entre la entrada y salida. Redes modernas como <strong>GPT-4</strong> tienen hasta 120+ capas con
+                    1.76 trillones de parámetros.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>Ejemplo Real:</strong></p>
+                    <p style="margin-bottom: 0;">AlphaFold 2 de DeepMind usa redes neuronales profundas para predecir
+                        estructuras 3D de proteínas con precisión del 92.4%, revolucionando la biología molecular. En
+                        2022, predijo la estructura de 200+ millones de proteínas en meses, trabajo que habría tomado
+                        siglos con métodos tradicionales.</p>
+                </div>
+
+                <h3 class="color-primary" style="margin-top: 2rem;">Conceptos Fundamentales</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Neurona Artificial</h4>
+                        <p>Unidad básica: suma ponderada de entradas + función de activación. Inspirada en neuronas
+                            biológicas.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Backpropagation</h4>
+                        <p>Algoritmo de entrenamiento que propaga el error hacia atrás, ajustando pesos mediante
+                            gradiente descendente.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Función de Activación</h4>
+                        <p>Introduce no linealidad. Comunes: ReLU, Sigmoid, Tanh, Softmax. ReLU es la más usada
+                            actualmente.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Epoch</h4>
+                        <p>Una pasada completa del dataset durante entrenamiento. Redes profundas requieren 100-1000+
+                            epochs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: MLP - PERCEPTRÓN MULTICAPA -->
+            <section class="section">
+                <h2 class="section-title">MLP: Perceptrón Multicapa (Feedforward)</h2>
+
+                <h3 class="color-primary" style="margin-top: 1.5rem;">Arquitectura Básica</h3>
+                <p>
+                    El <strong>Perceptrón Multicapa</strong> es la arquitectura más simple de red neuronal profunda.
+                    Consiste en <strong>capas totalmente conectadas</strong> (dense/fully connected) donde cada neurona
+                    se conecta con todas las de la capa siguiente. Flujo unidireccional: entrada → capas ocultas →
+                    salida.
+                </p>
+
+                <!-- VISUALIZACIÓN SVG MLP -->
+                <div style="margin: 2rem 0;">
+                    <svg width="500" height="270"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%; display: block; margin: 0 auto;">
+                        <text x="250" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Perceptrón Multicapa (MLP)</text>
+
+                        <!-- INPUT LAYER -->
+                        <text x="50" y="60" font-size="12" fill="#333" font-weight="bold" font-family="Montserrat"
+                            text-anchor="middle">Input</text>
+                        <circle cx="50" cy="100" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="140" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="180" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="220" r="8" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <text x="50" y="250" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Capa entrada</text>
+                        <text x="50" y="262" font-size="8" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">n features</text>
+
+                        <!-- HIDDEN LAYER 1 -->
+                        <text x="170" y="60" font-size="12" fill="#333" font-weight="bold" font-family="Montserrat"
+                            text-anchor="middle">Hidden 1</text>
+                        <circle cx="170" cy="90" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="170" cy="125" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="170" cy="160" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="170" cy="195" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="170" cy="230" r="7" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <text x="170" y="250" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">128 neuronas</text>
+
+                        <!-- HIDDEN LAYER 2 -->
+                        <text x="290" y="60" font-size="12" fill="#333" font-weight="bold" font-family="Montserrat"
+                            text-anchor="middle">Hidden 2</text>
+                        <circle cx="290" cy="90" r="7" fill="#C5B9D8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="290" cy="125" r="7" fill="#C5B9D8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="290" cy="160" r="7" fill="#C5B9D8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="290" cy="195" r="7" fill="#C5B9D8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="290" cy="230" r="7" fill="#C5B9D8" stroke="#333" stroke-width="1.5" />
+                        <text x="290" y="250" font-size="8" fill="#555" text-anchor="middle" font-family="Montserrat">64
+                            neuronas</text>
+
+                        <!-- OUTPUT LAYER -->
+                        <text x="410" y="60" font-size="12" fill="#333" font-weight="bold" font-family="Montserrat"
+                            text-anchor="middle">Output</text>
+                        <circle cx="410" cy="130" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="410" cy="170" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <text x="410" y="210" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Capa salida</text>
+                        <text x="410" y="222" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">n classes</text>
+
+                        <!-- Conexiones (sample) -->
+                        <line x1="58" y1="100" x2="163" y2="90" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="58" y1="100" x2="163" y2="125" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="58" y1="100" x2="163" y2="160" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+
+                        <line x1="58" y1="180" x2="163" y2="160" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="58" y1="180" x2="163" y2="195" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+
+                        <line x1="177" y1="125" x2="283" y2="125" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="177" y1="125" x2="283" y2="160" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="177" y1="160" x2="283" y2="160" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+
+                        <line x1="297" y1="125" x2="402" y2="130" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="297" y1="160" x2="402" y2="170" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="297" y1="195" x2="402" y2="170" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                    </svg>
+                </div>
+
+                <!-- OPERACIÓN NEURONA (Explicación extraída) -->
+                <div class="concept-card">
+                    <div style="flex: 1 1 300px;">
+                        <h4 class="color-primary" style="margin-top: 0;">Operación de cada neurona:</h4>
+                        <div class="formula-block">
+                            y = f(Σ(w<sub>i</sub> · x<sub>i</sub>) + b)
+                        </div>
+                        <ul style="margin: 0; padding-left: 1.2rem; color: #555; font-size: 0.9rem;">
+                            <li><strong>w<sub>i</sub></strong>: pesos de conexiones</li>
+                            <li><strong>b</strong>: sesgo (bias)</li>
+                            <li><strong>f</strong>: función de activación</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1 1 200px; border-left: 2px solid #e5e5e5; padding-left: 2rem;">
+                        <h4 class="color-secondary" style="margin-top: 0;">Funciones de activación:</h4>
+                        <ul style="margin: 0; padding-left: 0; list-style: none; color: #555; font-size: 0.9rem;">
+                            <li style="margin-bottom: 0.5rem;"><code class="code-badge">ReLU</code> : max(0, x)</li>
+                            <li style="margin-bottom: 0.5rem;"><code class="code-badge">Sigmoid</code> :
+                                1/(1+e<sup>-x</sup>)</li>
+                            <li><code class="code-badge">Tanh</code> :
+                                (e<sup>x</sup>-e<sup>-x</sup>)/(e<sup>x</sup>+e<sup>-x</sup>)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-primary">Totalmente Conectado</h4>
+                        <p>Cada neurona conectada con todas las de la capa siguiente</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Feedforward</h4>
+                        <p>Flujo unidireccional sin bucles (no recurrente)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">Universal Approximator</h4>
+                        <p>Teorema: MLP puede aproximar cualquier función continua</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>Cálculo de Parámetros</h4>
+                        <p style="font-family: 'Courier New', monospace; font-weight: bold;">Parámetros = Σ(n_i ·
+                            n_{i+1} + n_{i+1})</p>
+                        <p style="font-size: 0.8rem; margin-top: 0.2rem;">n_i = neuronas capa i (pesos + bias)</p>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO MLP -->
+                <h3 class="color-primary" style="margin-top: 2rem;">Implementación MLP en TensorFlow/Keras</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - MLP para clasificación de dígitos</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Cargar dataset (dígitos manuscritos)
+digits = load_digits()
+X, y = digits.data, digits.target
+
+# Dividir y normalizar
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Definir arquitectura MLP
+model = keras.Sequential([
+    # Capa de entrada (64 features)
+    layers.Input(shape=(64,)),
+
+    # Capa oculta 1
+    layers.Dense(128, activation='relu', name='hidden1'),
+    layers.Dropout(0.3),  # Regularización: previene overfitting
+
+    # Capa oculta 2
+    layers.Dense(64, activation='relu', name='hidden2'),
+    layers.Dropout(0.2),
+
+    # Capa de salida (10 clases: dígitos 0-9)
+    layers.Dense(10, activation='softmax', name='output')
+])
+
+# Ver resumen de arquitectura
+model.summary()
+
+# Compilar modelo
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Entrenar
+history = model.fit(
+    X_train, y_train,
+    epochs=50,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluar
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f"\nAccuracy en test: {test_acc*100:.2f}%")
+
+# Predecir
+predictions = model.predict(X_test[:5])
+predicted_classes = np.argmax(predictions, axis=1)
+print(f"Predicciones: {predicted_classes}")
+print(f"Reales: {y_test[:5]}")
+
+# Guardar modelo
+model.save('mlp_digits.h5')</code></pre>
+                </div>
+
+                <!-- CASOS DE USO MLP -->
+                <h3 style="margin-top: 2rem;">Casos de Uso</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Clasificación Tabular</h4>
+                        <p>Datos estructurados, predicción de churn, scoring crediticio</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Regresión</h4>
+                        <p>Predicción de precios, forecasting de demanda</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Gaming AI</h4>
+                        <p>Atari games, estrategias simples (ej: CartPole)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CNN -->
+            <section class="section">
+                <h2 class="section-title">CNN: Redes Neuronales Convolucionales</h2>
+
+                <h3 class="color-secondary" style="margin-top: 1.5rem;">Especialización en Visión</h3>
+                <p>
+                    Las <strong>CNNs</strong> están diseñadas para procesar datos con <strong>estructura
+                        espacial</strong> (imágenes, video). Usan <strong>filtros convolucionales</strong> que detectan
+                    patrones locales (bordes, texturas, formas), construyendo representaciones jerárquicas desde píxeles
+                    hasta objetos completos.
+                </p>
+
+                <!-- VISUALIZACIÓN CNN -->
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="200"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura CNN: Clasificación de Imágenes</text>
+
+                        <defs>
+                            <!-- Flecha más pequeña y sutil -->
+                            <marker id="arrowSmall" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L6,3 z" fill="#555" />
+                            </marker>
+                        </defs>
+
+                        <!-- Eje Central Y ≈ 100 -->
+
+                        <!-- INPUT IMAGE (70x70) -> y=65 -->
+                        <rect x="30" y="65" width="70" height="70" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="4" />
+                        <text x="65" y="150" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Imagen</text>
+                        <text x="65" y="163" font-size="8" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">224x224x3</text>
+
+                        <!-- ARROW 1 -->
+                        <line x1="105" y1="100" x2="125" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- CONV1 (60x60) -> y=70 -->
+                        <rect x="130" y="70" width="60" height="60" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="4" />
+                        <text x="160" y="145" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Conv2D</text>
+                        <text x="160" y="156" font-size="7" fill="#555" text-anchor="middle" font-family="Montserrat">32
+                            filtros 3x3</text>
+                        <text x="160" y="168" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">222x222x32</text>
+
+                        <!-- ARROW 2 -->
+                        <line x1="195" y1="100" x2="210" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- POOLING 1 (50x50) -> y=75 -->
+                        <rect x="215" y="75" width="50" height="50" fill="#FFE0B2" stroke="#FFA726" stroke-width="2"
+                            rx="4" />
+                        <text x="240" y="140" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">MaxPool</text>
+                        <text x="240" y="151" font-size="7" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">2x2</text>
+                        <text x="240" y="163" font-size="8" fill="#FFA726" text-anchor="middle"
+                            font-family="Montserrat">111x111x32</text>
+
+                        <!-- ARROW 3 -->
+                        <line x1="270" y1="100" x2="285" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- CONV2 (55x55) -> y=72.5 -->
+                        <rect x="290" y="72.5" width="55" height="55" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="4" />
+                        <text x="317" y="143" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Conv2D</text>
+                        <text x="317" y="151" font-size="7" fill="#555" text-anchor="middle" font-family="Montserrat">64
+                            filtros 3x3</text>
+                        <text x="317" y="163" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">111x111x64</text>
+
+                        <!-- ARROW 4 -->
+                        <line x1="345" y1="100" x2="360" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- POOLING 2 (45x45) -> y=77.5 -->
+                        <rect x="365" y="77.5" width="45" height="45" fill="#FFE0B2" stroke="#FFA726" stroke-width="2"
+                            rx="4" />
+                        <text x="387" y="138" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">MaxPool</text>
+                        <text x="387" y="148" font-size="7" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">2x2</text>
+                        <text x="387" y="160" font-size="8" fill="#FFA726" text-anchor="middle"
+                            font-family="Montserrat">55x55x64</text>
+
+                        <!-- ARROW 5 -->
+                        <line x1="410" y1="100" x2="430" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- FLATTEN (Vertical Bar) -->
+                        <rect x="435" y="50" width="10" height="100" fill="#666" stroke="#333" stroke-width="1" />
+                        <text x="440" y="165" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Flat</text>
+
+                        <!-- ARROW 6 -->
+                        <line x1="445" y1="100" x2="465" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- DENSE 1 -->
+                        <rect x="470" y="60" width="15" height="80" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1" />
+                        <text x="477" y="155" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Dense</text>
+                        <text x="477" y="165" font-size="7" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">128</text>
+
+                        <!-- DENSE 2 (Output) -->
+                        <rect x="500" y="70" width="15" height="60" fill="#8A7AAF" stroke="#666" stroke-width="1" />
+                        <text x="507" y="145" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Output</text>
+                        <text x="507" y="155" font-size="7" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">10</text>
+
+                        <!-- CONNECTIONS (Symbolic) -->
+                        <line x1="485" y1="100" x2="500" y2="100" stroke="#ccc" stroke-width="1"
+                            stroke-dasharray="2,2" />
+
+                        <!-- OUTPUT ARROW -->
+                        <line x1="515" y1="100" x2="535" y2="100" stroke="#333" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- PREDICTION TEXT -->
+                        <text x="560" y="105" font-size="12" fill="#4CAF50" font-weight="bold" font-family="Montserrat">
+                            "Gato" (98%)
+                        </text>
+
+                    </svg>
+                </div>
+
+                <!-- Explicación Componentes (Movido fuera del SVG) -->
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-secondary">Convolutional Layer</h4>
+                        <p>Aplica <strong>filtros</strong> (kernels) que se deslizan sobre la imagen para detectar
+                            patrones como bordes, texturas o formas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-warning-medium">Pooling Layer</h4>
+                        <p>Reduce la dimensionalidad (downsampling) manteniendo las características importantes. Hace la
+                            red más ligera e invariante a pequeñas traslaciones.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">Flatten & Dense</h4>
+                        <p>Aplana los mapas de características 2D a un vector 1D para alimentar capas densas clásicas
+                            que realizan la clasificación final.</p>
+                    </div>
+                </div>
+
+                <!-- Ventajas y Arquitecturas -->
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Ventajas</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li>Menos parámetros que MLP (pesos compartidos)</li>
+                            <li>Invarianza a traslación</li>
+                            <li>Aprende jerarquías visuales</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Arquitecturas Clave</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li><strong>LeNet-5 (1998):</strong> Pionera (dígitos)</li>
+                            <li><strong>AlexNet (2012):</strong> Boom del Deep Learning</li>
+                            <li><strong>ResNet (2015):</strong> Redes muy profundas (skip connections)</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">Aplicaciones</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li>Diagnóstico Médico (Rayos X)</li>
+                            <li>Vehículos Autónomos</li>
+                            <li>Reconocimiento Facial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- APLICACIONES CNN -->
+                <h3 style="margin-top: 2rem;">Aplicaciones Revolucionarias</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Diagnóstico Médico</h4>
+                        <p>Google Health usa CNNs para detectar cáncer de mama en mamografías con 94.5% precisión,
+                            superando a radiólogos humanos.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Vehículos Autónomos</h4>
+                        <p>Tesla Autopilot procesa 8 cámaras simultáneas con CNNs a 36 FPS para detección de objetos,
+                            carriles y señales.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Reconocimiento Facial</h4>
+                        <p>Face ID de Apple usa CNN con 30,000 proyecciones IR para autenticación 3D con 1/1,000,000
+                            tasa error.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: RNN -->
+            <section class="section">
+                <h2 class="section-title">RNN: Redes Neuronales Recurrentes</h2>
+
+                <h3 class="color-primary" style="margin-top: 1.5rem;">Memoria Temporal</h3>
+                <p>
+                    Las <strong>RNNs</strong> procesan <strong>secuencias</strong> (texto, audio, series temporales)
+                    manteniendo un <strong>estado oculto</strong> que actúa como memoria. A diferencia de MLP/CNN,
+                    tienen <strong>bucles de retroalimentación</strong>.
+                </p>
+
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="480"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">RNN Simple vs LSTM: Procesamiento Secuencial</text>
+
+                        <!-- RNN SIMPLE (ARRIBA) -->
+                        <text x="30" y="55" font-size="13" font-weight="bold" fill="#333" font-family="Montserrat">RNN
+                            Simple (Vanilla)</text>
+
+                        <!-- Unfolded RNN -->
+
+                        <!-- ARROW DEFINITIONS -->
+                        <defs>
+                            <marker id="arrowSmallPurple" markerWidth="6" markerHeight="6" refX="5" refY="3"
+                                orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L6,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <!-- TIME STEP 1 (t=1) -->
+                        <g transform="translate(0, 30)">
+                            <text x="120" y="80" font-size="10" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">x(1) = "El"</text>
+                            <rect x="100" y="100" width="40" height="40" fill="#A3E0EA" stroke="#49B9CE"
+                                stroke-width="2" rx="4" />
+                            <text x="120" y="125" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">h(1)</text>
+
+                            <!-- Flecha input -> h1 -->
+                            <line x1="120" y1="85" x2="120" y2="100" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+
+                            <!-- Flecha h1 -> output -->
+                            <line x1="120" y1="140" x2="120" y2="155" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+                            <text x="120" y="165" font-size="10" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">y(1)</text>
+                        </g>
+
+                        <!-- CONNECTION 1-2 -->
+                        <line x1="140" y1="150" x2="180" y2="150" stroke="#8A7AAF" stroke-width="2"
+                            marker-end="url(#arrowSmallPurple)" />
+
+                        <!-- TIME STEP 2 (t=2) -->
+                        <g transform="translate(0, 30)">
+                            <text x="200" y="80" font-size="10" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">x(2) = "gato"</text>
+                            <rect x="180" y="100" width="40" height="40" fill="#A3E0EA" stroke="#49B9CE"
+                                stroke-width="2" rx="4" />
+                            <text x="200" y="125" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">h(2)</text>
+
+                            <!-- Flecha input -> h2 -->
+                            <line x1="200" y1="85" x2="200" y2="100" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+                        </g>
+
+                        <!-- CONNECTION 2-3 -->
+                        <line x1="220" y1="150" x2="260" y2="150" stroke="#8A7AAF" stroke-width="2"
+                            marker-end="url(#arrowSmallPurple)" />
+
+                        <!-- TIME STEP 3 (t=3) -->
+                        <g transform="translate(0, 30)">
+                            <text x="280" y="80" font-size="10" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">x(3) = "está"</text>
+                            <rect x="260" y="100" width="40" height="40" fill="#A3E0EA" stroke="#49B9CE"
+                                stroke-width="2" rx="4" />
+                            <text x="280" y="125" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">h(3)</text>
+
+                            <!-- Flecha input -> h3 -->
+                            <line x1="280" y1="85" x2="280" y2="100" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+
+                            <!-- Flecha h3 -> output -->
+                            <line x1="280" y1="140" x2="280" y2="155" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+                            <text x="280" y="165" font-size="10" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">y(3)</text>
+                        </g>
+
+                        <!-- LSTM (ABAJO) - SHIFTED DOWN -->
+                        <g transform="translate(0, 30)">
+                            <line x1="20" y1="185" x2="730" y2="185" stroke="#e5e5e5" stroke-width="2"
+                                stroke-dasharray="5,5" />
+
+                            <text x="30" y="210" font-size="13" font-weight="bold" fill="#333"
+                                font-family="Montserrat">LSTM (Long Short-Term Memory)</text>
+
+                            <!-- LSTM Cell Box -->
+                            <rect x="150" y="230" width="300" height="150" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="2" rx="10" />
+                            <text x="160" y="250" font-size="11" fill="#8A7AAF" font-weight="bold"
+                                font-family="Montserrat">LSTM Cell</text>
+
+                            <!-- Internal Gates -->
+                            <!-- Forget Gate -->
+                            <rect x="190" y="300" width="30" height="30" fill="#FFA726" stroke="#E65100"
+                                stroke-width="1" />
+                            <text x="205" y="318" font-size="9" fill="white" text-anchor="middle"
+                                font-family="Montserrat">f</text>
+                            <text x="205" y="342" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Forget</text>
+
+                            <!-- Input Gate -->
+                            <rect x="250" y="300" width="30" height="30" fill="#4CAF50" stroke="#2E7D32"
+                                stroke-width="1" />
+                            <text x="265" y="318" font-size="9" fill="white" text-anchor="middle"
+                                font-family="Montserrat">i</text>
+                            <text x="265" y="342" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Input</text>
+
+                            <!-- Output Gate -->
+                            <rect x="310" y="300" width="30" height="30" fill="#49B9CE" stroke="#00838F"
+                                stroke-width="1" />
+                            <text x="325" y="318" font-size="9" fill="white" text-anchor="middle"
+                                font-family="Montserrat">o</text>
+                            <text x="325" y="342" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Output</text>
+
+                            <!-- Cell State Line -->
+                            <line x1="130" y1="270" x2="470" y2="270" stroke="#333" stroke-width="2"
+                                marker-end="url(#arrowSmall)" />
+                            <text x="140" y="265" font-size="10" fill="#333" font-family="Montserrat">C(t-1)</text>
+                            <text x="460" y="265" font-size="10" fill="#333" font-family="Montserrat">C(t)</text>
+
+                            <!-- X Operator -->
+                            <circle cx="205" cy="270" r="8" fill="white" stroke="#333" stroke-width="1" />
+                            <text x="205" y="273" font-size="10" fill="#333" text-anchor="middle">×</text>
+
+                            <!-- Plus Operator -->
+                            <circle cx="265" cy="270" r="8" fill="white" stroke="#333" stroke-width="1" />
+                            <text x="265" y="273" font-size="10" fill="#333" text-anchor="middle">+</text>
+
+                            <!-- Hidden State Line -->
+                            <line x1="130" y1="360" x2="470" y2="360" stroke="#333" stroke-width="2"
+                                marker-end="url(#arrowSmall)" />
+                            <text x="140" y="355" font-size="10" fill="#333" font-family="Montserrat">h(t-1)</text>
+                            <text x="460" y="355" font-size="10" fill="#333" font-family="Montserrat">h(t)</text>
+
+                            <!-- Input x(t) -->
+                            <line x1="250" y1="400" x2="250" y2="360" stroke="#333" stroke-width="1.5"
+                                marker-end="url(#arrowSmall)" />
+                            <text x="250" y="415" font-size="10" fill="#333" text-anchor="middle"
+                                font-family="Montserrat">x(t)</text>
+                        </g>
+
+                    </svg>
+                </div>
+
+                <!-- CÓDIGO LSTM -->
+                <h3 class="color-primary" style="margin-top: 2rem;">Implementación LSTM: Análisis de Sentimientos</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - LSTM para clasificación de texto</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Parámetros
+vocab_size = 10000  # Tamaño del vocabulario
+maxlen = 200        # Longitud máxima de secuencia
+embedding_dim = 128
+
+# Arquitectura LSTM
+model = keras.Sequential([
+    # Capa de Embedding: Convierte enteros (palabras) a vectores densos
+    layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=maxlen),
+
+    # Capa LSTM
+    # return_sequences=False: solo devuelve la salida del último paso de tiempo
+    layers.LSTM(64, dropout=0.2, recurrent_dropout=0.2),
+
+    # Capa de salida
+    layers.Dense(1, activation='sigmoid')
+])
+
+model.summary()
+
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])</code></pre>
+                </div>
+
+                <!-- COMPARACIÓN RNN/LSTM/GRU -->
+                <h3 style="margin-top: 2rem;">RNN vs LSTM vs GRU</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">RNN Simple</h4>
+                        <p>✓ Rápido<br>✗ Vanishing gradient<br>✗ Memoria corta</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">LSTM</h4>
+                        <p>✓ Memoria larga<br>✓ Estado del arte<br>✗ Más lento, más parámetros</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">GRU</h4>
+                        <p>✓ Balance LSTM/RNN<br>✓ Menos parámetros<br>✓ Rendimiento similar LSTM</p>
+                    </div>
+                </div>
+
+                <!-- APLICACIONES -->
+                <h3 style="margin-top: 2rem;">Aplicaciones</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">NLP</h4>
+                        <p>Traducción, chatbots, sentiment analysis</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Audio</h4>
+                        <p>Reconocimiento voz, generación música</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Series Temporales</h4>
+                        <p>Forecasting, predicción bolsa</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: AUTOENCODER -->
+            <section class="section">
+                <h2 class="section-title">Autoencoders: Aprendizaje de Representaciones</h2>
+
+                <h3 class="color-primary" style="margin-top: 1.5rem;">Codificación-Decodificación</h3>
+                <p>
+                    Los <strong>Autoencoders</strong> son redes neuronales que aprenden a <strong>comprimir</strong>
+                    (encoder) y <strong>reconstruir</strong> (decoder) datos. El objetivo es minimizar la diferencia
+                    entre la entrada original y la reconstruida.
+                </p>
+
+                <!-- VISUALIZACIÓN AUTOENCODER -->
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="320"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura Autoencoder: Compresión y Reconstrucción</text>
+
+                        <!-- INPUT LAYER -->
+                        <text x="50" y="80" font-size="11" fill="#333" font-weight="bold"
+                            font-family="Montserrat">Input</text>
+                        <circle cx="50" cy="95" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="120" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="145" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="170" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="195" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="220" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="245" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <text x="50" y="275" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">n = 784</text>
+                        <text x="50" y="287" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">(28x28 img)</text>
+
+                        <!-- ENCODER ARROWS -->
+                        <path d="M 65 170 Q 150 170, 200 170" stroke="#333" stroke-width="1.5" fill="none"
+                            marker-end="url(#arrowSmall)" />
+                        <text x="135" y="160" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Encoder</text>
+
+                        <!-- LATENT SPACE (BOTTLENECK) -->
+                        <text x="250" y="110" font-size="11" fill="#333" font-weight="bold" text-anchor="middle"
+                            font-family="Montserrat">Latent Space (z)</text>
+                        <rect x="235" y="130" width="30" height="80" fill="#8A7AAF" stroke="#333" stroke-width="2"
+                            rx="4" />
+                        <text x="250" y="235" font-size="9" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">n = 32</text>
+                        <text x="250" y="247" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Compresión</text>
+
+                        <!-- DECODER ARROWS -->
+                        <path d="M 280 170 Q 360 170, 440 170" stroke="#333" stroke-width="1.5" fill="none"
+                            marker-end="url(#arrowSmall)" />
+                        <text x="360" y="160" font-size="10" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Decoder</text>
+
+                        <!-- OUTPUT LAYER -->
+                        <text x="500" y="80" font-size="11" fill="#333" font-weight="bold" text-anchor="middle"
+                            font-family="Montserrat">Output</text>
+                        <circle cx="500" cy="95" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="120" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="145" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="170" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="195" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="220" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="500" cy="245" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <text x="500" y="275" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Reconstrucción</text>
+
+                        <!-- VISUAL EXAMPLE -->
+                        <text x="560" y="175" font-size="16" fill="#333" text-anchor="middle">≈</text>
+                        <rect x="650" y="145" width="50" height="50" fill="#ccc" stroke="#333" stroke-width="1" />
+                        <text x="675" y="175" font-size="20" fill="white" text-anchor="middle"
+                            font-family="Arial">7</text>
+                        <text x="675" y="215" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Imagen</text>
+
+                    </svg>
+                </div>
+
+                <!-- Loss Function Section -->
+                <div class="row" style="margin-top: 2rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 class="color-secondary">Función de Pérdida (Loss)</h4>
+                        <div class="highlight-box secondary"
+                            style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <p
+                                style="font-family: 'Courier New', monospace; font-weight: bold; margin: 0; text-align: center;">
+                                MSE = (1/n) * Σ (input - output)²
+                            </p>
+                        </div>
+                        <p style="font-size: 0.95rem; color: #555;">
+                            Se minimiza el <strong>Error Cuadrático Medio</strong> entre la entrada original y la salida
+                            reconstruida.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO AUTOENCODER -->
+                <h3 class="color-primary" style="margin-top: 2rem;">Implementación Autoencoder para MNIST</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - Autoencoder básico</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers, losses, models
+
+# Encoder
+input_img = layers.Input(shape=(784,))
+encoded = layers.Dense(32, activation='relu')(input_img)
+
+# Decoder
+decoded = layers.Dense(784, activation='sigmoid')(encoded)
+
+# Autoencoder
+autoencoder = models.Model(input_img, decoded)
+
+# Encoder separado (para usar latent space)
+encoder = models.Model(input_img, encoded)
+
+autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
+
+# Entrenar
+autoencoder.fit(
+    x_train, x_train,  # Input = Output (aprendizaje no supervisado)
+    epochs=50,
+    batch_size=256,
+    shuffle=True,
+    validation_data=(x_test, x_test)
+)
+
+# Visualizar resultados
+encoded_imgs = encoder.predict(x_test)
+decoded_imgs = autoencoder.predict(x_test)
+
+import matplotlib.pyplot as plt
+
+n = 10  # Cuántos dígitos mostrar
+plt.figure(figsize=(20, 4))
+for i in range(n):
+    # Original
+    ax = plt.subplot(2, n, i + 1)
+    plt.imshow(x_test[i].reshape(28, 28), cmap='gray')
+    plt.title("Original")
+    plt.axis('off')
+
+    # Reconstruida
+    ax = plt.subplot(2, n, i + 1 + n)
+    plt.imshow(decoded_imgs[i].reshape(28, 28), cmap='gray')
+    plt.title("Reconstruida")
+    plt.axis('off')
+
+plt.suptitle(f'Autoencoder: 784D → {encoding_dim}D → 784D')
+plt.tight_layout()
+plt.show()
+
+# GUARDAR MODELO
+autoencoder.save('autoencoder_mnist.h5')
+encoder.save('encoder_mnist.h5')</code></pre>
+                </div>
+
+                <!-- VARIANTES DE AUTOENCODERS -->
+                <h3 style="margin-top: 2rem;">Variantes de Autoencoders</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Denoising AE</h4>
+                        <p>Entrena con datos corruptos, reconstruye limpios. Elimina ruido de imágenes/audio.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Sparse AE</h4>
+                        <p>Regularización L1 para activaciones dispersas. Aprende features más interpretables.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">VAE (Variational)</h4>
+                        <p>Latent space probabilístico (μ, σ). Genera nuevas muestras. Base de Stable Diffusion.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Convolutional AE</h4>
+                        <p>Usa Conv2D/Deconv. Especializado en imágenes, preserva estructura espacial.</p>
+                    </div>
+                </div>
+
+                <!-- APLICACIONES REALES -->
+                <h3 style="margin-top: 2rem;">Aplicaciones en la Industria</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Stable Diffusion</h4>
+                        <p><strong>VAE + Diffusion:</strong> Genera imágenes fotorrealistas desde texto. Latent space de
+                            512D permite interpolación suave entre conceptos.</p>
+                        <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">Used by Midjourney, DALL-E 2</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Detección Fraude</h4>
+                        <p><strong>PayPal/Visa:</strong> Autoencoders detectan transacciones anómalas. Entrenan con
+                            datos legítimos; alto error reconstrucción = posible fraude.</p>
+                        <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">95%+ precisión, reduce falsos
+                            positivos 70%</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">Resonancia Magnética</h4>
+                        <p><strong>Siemens/GE Healthcare:</strong> Comprime escáneres MRI 10:1 sin pérdida perceptible.
+                            Reduce tiempo escaneo de 45 a 5 minutos.</p>
+                        <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">Mejora experiencia pacientes,
+                            reduce costos</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: TRANSFORMERS Y GANs -->
+            <section class="section">
+                <h2 class="section-title">Arquitecturas Avanzadas</h2>
+
+                <!-- TRANSFORMERS -->
+                <h3 class="color-secondary" style="margin-top: 1.5rem;">Transformers: "Attention Is All You Need"</h3>
+                <p>
+                    Los <strong>Transformers</strong> revolucionaron NLP en 2017. Reemplazan recurrencia con
+                    <strong>self-attention</strong>: cada token atiende a todos los demás simultáneamente, permitiendo
+                    <strong>paralelización masiva</strong> y captura de dependencias a cualquier distancia. Base de GPT,
+                    BERT, ChatGPT.
+                </p>
+
+                <div class="highlight-box secondary">
+                    <h4 class="color-secondary" style="margin-top: 0;">Mecanismo de Atención</h4>
+                    <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                        Attention(Q, K, V) = softmax(QK^T / √d_k) · V</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                        <li><strong>Q (Query):</strong> "¿Qué busco?"</li>
+                        <li><strong>K (Key):</strong> "¿Qué tengo?"</li>
+                        <li><strong>V (Value):</strong> "¿Qué información devuelvo?"</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">GPT-4</h4>
+                        <p>1.76T parámetros, 120 capas, arquitectura decoder-only</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">BERT</h4>
+                        <p>340M parámetros, bidireccional, encoder-only</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">T5</h4>
+                        <p>11B parámetros, encoder-decoder completo</p>
+                    </div>
+                </div>
+
+                <!-- GANs -->
+                <h3 class="color-primary" style="margin-top: 2.5rem;">GANs: Redes Generativas Adversarias</h3>
+                <p>
+                    Las <strong>GANs</strong> son dos redes compitiendo: <strong>Generator</strong> crea datos falsos,
+                    <strong>Discriminator</strong> distingue reales de falsos. Competencia = mejora mutua hasta generar
+                    imágenes, voces y videos indistinguibles de reales.
+                </p>
+
+                <!-- Diagrama GAN -->
+                <div style="margin: 2rem 0;">
+                    <svg width="700" height="320"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="350" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura GAN: Juego Adversarial</text>
+
+                        <!-- Define arrow markers -->
+                        <defs>
+                            <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                            </marker>
+                            <!-- Defined as empty (vacia) with red stroke -->
+                            <marker id="arrowred2" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+                                <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#f44336" stroke-width="1.5" />
+                            </marker>
+                        </defs>
+
+                        <!-- GROUP SHIFTED DOWN BY 30px -->
+                        <g transform="translate(0, 30)">
+                            <!-- Ruido (Input) -->
+                            <circle cx="50" cy="130" r="20" fill="#f5f5f5" stroke="#999" stroke-width="2" />
+                            <text x="50" y="135" font-size="10" fill="#333" text-anchor="middle"
+                                font-family="Montserrat">Ruido</text>
+                            <text x="50" y="165" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">z ~
+                                N(0,1)</text>
+
+                            <!-- Generator -->
+                            <rect x="120" y="90" width="120" height="80" fill="#E8F7FA" stroke="#49B9CE"
+                                stroke-width="3" rx="8" />
+                            <text x="180" y="115" font-size="12" fill="#49B9CE" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">GENERATOR</text>
+                            <text x="180" y="135" font-size="9" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Red
+                                neuronal profunda</text>
+                            <text x="180" y="150" font-size="9" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">(Deconv
+                                layers)</text>
+                            <text x="180" y="163" font-size="8" fill="#49B9CE" text-anchor="middle"
+                                font-family="Courier New">G(z) →
+                                imagen falsa</text>
+
+                            <!-- Flecha ruido → generator -->
+                            <path d="M 70 130 L 115 130" stroke="#333" stroke-width="2" marker-end="url(#arrow5)" />
+
+                            <!-- Imagen generada -->
+                            <rect x="280" y="105" width="50" height="50" fill="#A3E0EA" stroke="#49B9CE"
+                                stroke-width="2" rx="4" />
+                            <text x="305" y="185" font-size="9" fill="#49B9CE" text-anchor="middle"
+                                font-family="Montserrat">Fake</text>
+
+                            <!-- Flecha generator → fake -->
+                            <path d="M 240 130 L 275 130" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrow5)" />
+
+                            <!-- Imagen real -->
+                            <rect x="280" y="30" width="50" height="50" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2"
+                                rx="4" />
+                            <text x="305" y="20" font-size="9" fill="#4CAF50" text-anchor="middle"
+                                font-family="Montserrat">Real</text>
+                            <text x="305" y="100" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Dataset
+                                real</text>
+
+                            <!-- Discriminator -->
+                            <rect x="400" y="60" width="120" height="110" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="3" rx="8" />
+                            <text x="460" y="85" font-size="12" fill="#8A7AAF" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">DISCRIMINATOR</text>
+                            <text x="460" y="105" font-size="9" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">Red
+                                neuronal</text>
+                            <text x="460" y="120" font-size="9" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">(Conv
+                                layers)</text>
+                            <text x="460" y="140" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                                font-family="Courier New">D(x) →
+                                [0,1]</text>
+                            <text x="460" y="155" font-size="8" fill="#555" text-anchor="middle"
+                                font-family="Montserrat">0=Fake,
+                                1=Real</text>
+
+                            <!-- Flechas → discriminator -->
+                            <path d="M 330 55 L 395 90" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrow5)" />
+                            <path d="M 330 130 L 395 125" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrow5)" />
+
+                            <!-- Output discriminator -->
+                            <ellipse cx="600" cy="115" rx="60" ry="35" fill="white" stroke="#333" stroke-width="2" />
+                            <text x="600" y="110" font-size="10" fill="#4CAF50" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">Real: 0.95</text>
+                            <text x="600" y="125" font-size="10" fill="#f44336" text-anchor="middle" font-weight="bold"
+                                font-family="Montserrat">Fake: 0.05</text>
+
+                            <!-- Flecha discriminator → output -->
+                            <path d="M 520 115 L 535 115" stroke="#333" stroke-width="2" marker-end="url(#arrow5)" />
+
+                            <!-- Backprop loop -->
+                            <path d="M 460 175 Q 350 230, 180 185" stroke="#f44336" stroke-width="2"
+                                stroke-dasharray="5,5" marker-end="url(#arrowred2)" />
+                            <text x="350" y="245" font-size="12" fill="#f44336" text-anchor="middle"
+                                font-family="Montserrat">Backpropagation: Mejorar G para engañar D</text>
+                        </g>
+
+                    </svg>
+                </div>
+
+                <!-- Aplicaciones GANs -->
+
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-primary">Totalmente Conectado</h4>
+                        <p>Cada neurona conectada con todas las de la capa siguiente</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Feedforward</h4>
+                        <p>Flujo unidireccional sin bucles (no recurrente)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">Universal Approximator</h4>
+                        <p>Teorema: MLP puede aproximar cualquier función continua</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>Cálculo de Parámetros</h4>
+                        <p style="font-family: 'Courier New', monospace; font-weight: bold;">Parámetros = Σ(n_i ·
+                            n_{i+1} + n_{i+1})</p>
+                        <p style="font-size: 0.8rem; margin-top: 0.2rem;">n_i = neuronas capa i (pesos + bias)</p>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO MLP -->
+                <h3 class="color-primary" style="margin-top: 2rem;">Implementación MLP en TensorFlow/Keras</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - MLP para clasificación de dígitos</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Cargar dataset (dígitos manuscritos)
+digits = load_digits()
+X, y = digits.data, digits.target
+
+# Dividir y normalizar
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Definir arquitectura MLP
+model = keras.Sequential([
+    # Capa de entrada (64 features)
+    layers.Input(shape=(64,)),
+
+    # Capa oculta 1
+    layers.Dense(128, activation='relu', name='hidden1'),
+    layers.Dropout(0.3),  # Regularización: previene overfitting
+
+    # Capa oculta 2
+    layers.Dense(64, activation='relu', name='hidden2'),
+    layers.Dropout(0.2),
+
+    # Capa de salida (10 clases: dígitos 0-9)
+    layers.Dense(10, activation='softmax', name='output')
+])
+
+# Ver resumen de arquitectura
+model.summary()
+
+# Compilar modelo
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Entrenar
+history = model.fit(
+    X_train, y_train,
+    epochs=50,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluar
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f"\nAccuracy en test: {test_acc*100:.2f}%")
+
+# Predecir
+predictions = model.predict(X_test[:5])
+predicted_classes = np.argmax(predictions, axis=1)
+print(f"Predicciones: {predicted_classes}")
+print(f"Reales: {y_test[:5]}")
+
+# Guardar modelo
+model.save('mlp_digits.h5')</code></pre>
+                </div>
+
+                <!-- CASOS DE USO MLP -->
+                <h3 style="margin-top: 2rem;">Casos de Uso</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Clasificación Tabular</h4>
+                        <p>Datos estructurados, predicción de churn, scoring crediticio</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Regresión</h4>
+                        <p>Predicción de precios, forecasting de demanda</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Gaming AI</h4>
+                        <p>Atari games, estrategias simples (ej: CartPole)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CNN -->
+            <section class="section">
+                <h2 class="section-title">CNN: Redes Neuronales Convolucionales</h2>
+
+                <h3 class="color-secondary" style="margin-top: 1.5rem;">Especialización en Visión</h3>
+                <p>
+                    Las <strong>CNNs</strong> están diseñadas para procesar datos con <strong>estructura
+                        espacial</strong> (imágenes, video). Usan <strong>filtros convolucionales</strong> que detectan
+                    patrones locales (bordes, texturas, formas), construyendo representaciones jerárquicas desde píxeles
+                    hasta objetos completos.
+                </p>
+
+                <!-- VISUALIZACIÓN CNN -->
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="200"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura CNN: Clasificación de Imágenes</text>
+
+                        <defs>
+                            <!-- Flecha más pequeña y sutil -->
+                            <marker id="arrowSmall" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L6,3 z" fill="#555" />
+                            </marker>
+                        </defs>
+
+                        <!-- Eje Central Y ≈ 100 -->
+
+                        <!-- INPUT IMAGE (70x70) -> y=65 -->
+                        <rect x="30" y="65" width="70" height="70" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="4" />
+                        <text x="65" y="150" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Imagen</text>
+                        <text x="65" y="163" font-size="8" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">224x224x3</text>
+
+                        <!-- ARROW 1 -->
+                        <line x1="105" y1="100" x2="125" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- CONV1 (60x60) -> y=70 -->
+                        <rect x="130" y="70" width="60" height="60" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="4" />
+                        <text x="160" y="145" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Conv2D</text>
+                        <text x="160" y="156" font-size="7" fill="#555" text-anchor="middle" font-family="Montserrat">32
+                            filtros 3x3</text>
+                        <text x="160" y="168" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">222x222x32</text>
+
+                        <!-- ARROW 2 -->
+                        <line x1="195" y1="100" x2="210" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- POOLING 1 (50x50) -> y=75 -->
+                        <rect x="215" y="75" width="50" height="50" fill="#FFE0B2" stroke="#FFA726" stroke-width="2"
+                            rx="4" />
+                        <text x="240" y="140" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">MaxPool</text>
+                        <text x="240" y="151" font-size="7" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">2x2</text>
+                        <text x="240" y="163" font-size="8" fill="#FFA726" text-anchor="middle"
+                            font-family="Montserrat">111x111x32</text>
+
+                        <!-- ARROW 3 -->
+                        <line x1="270" y1="100" x2="285" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- CONV2 (55x55) -> y=72.5 -->
+                        <rect x="290" y="72.5" width="55" height="55" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="4" />
+                        <text x="317" y="143" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Conv2D</text>
+                        <text x="317" y="154" font-size="7" fill="#555" text-anchor="middle" font-family="Montserrat">64
+                            filtros</text>
+                        <text x="317" y="166" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">109x109x64</text>
+
+                        <!-- ARROW 4 -->
+                        <line x1="345" y1="100" x2="360" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- POOLING 2 (45x45) -> y=77.5 -->
+                        <rect x="365" y="77.5" width="45" height="45" fill="#FFE0B2" stroke="#FFA726" stroke-width="2"
+                            rx="4" />
+                        <text x="387" y="138" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">MaxPool</text>
+                        <text x="387" y="150" font-size="8" fill="#FFA726" text-anchor="middle"
+                            font-family="Montserrat">54x54x64</text>
+
+                        <!-- ARROW 5 -->
+                        <line x1="410" y1="100" x2="425" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- FLATTEN (35x40) -> y=80 -->
+                        <rect x="430" y="80" width="35" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="4" />
+                        <text x="447" y="135" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Flatten</text>
+                        <text x="447" y="148" font-size="8" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">186,624</text>
+
+                        <!-- ARROW 6 -->
+                        <line x1="470" y1="100" x2="490" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- DENSE LAYERS -->
+                        <circle cx="505" cy="85" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="505" cy="100" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="505" cy="115" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <text x="505" y="138" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Dense 128</text>
+
+                        <!-- ARROW 7 -->
+                        <line x1="520" y1="100" x2="565" y2="100" stroke="#555" stroke-width="1.5"
+                            marker-end="url(#arrowSmall)" />
+
+                        <!-- OUTPUT -->
+                        <circle cx="580" cy="80" r="7" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="580" cy="100" r="7" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="580" cy="120" r="7" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <text x="580" y="145" font-size="9" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Softmax</text>
+                        <text x="580" y="157" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">n_classes</text>
+                    </svg>
+                </div>
+
+                <!-- Explicación Componentes (Movido fuera del SVG) -->
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-secondary">Convolutional Layer</h4>
+                        <p>Aplica <strong>filtros</strong> (kernels) que se deslizan sobre la imagen para detectar
+                            patrones como bordes, texturas o formas.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-warning-medium">Pooling Layer</h4>
+                        <p>Reduce la dimensionalidad (downsampling) manteniendo las características importantes. Hace la
+                            red más ligera e invariante a pequeñas traslaciones.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">Flatten & Dense</h4>
+                        <p>Aplana los mapas de características 2D a un vector 1D para alimentar capas densas clásicas
+                            que realizan la clasificación final.</p>
+                    </div>
+                </div>
+
+                <!-- Ventajas y Arquitecturas -->
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Ventajas</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li>Menos parámetros que MLP (pesos compartidos)</li>
+                            <li>Invarianza a traslación</li>
+                            <li>Aprende jerarquías visuales</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Arquitecturas Clave</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li><strong>LeNet-5 (1998):</strong> Pionera (dígitos)</li>
+                            <li><strong>AlexNet (2012):</strong> Boom del Deep Learning</li>
+                            <li><strong>ResNet (2015):</strong> Conexiones residuales</li>
+                            <li><strong>YOLO:</strong> Detección en tiempo real</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">Aplicaciones</h4>
+                        <ul style="font-size: 0.9rem; padding-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                            <li>Diagnóstico Médico (Rayos X)</li>
+                            <li>Vehículos Autónomos</li>
+                            <li>Reconocimiento Facial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO CNN -->
+                <h3 style="color: #8A7AAF; margin-top: 2rem;">Implementación CNN para CIFAR-10</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - CNN para clasificación de imágenes</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Cargar CIFAR-10 (60,000 imágenes 32x32x3 RGB)
+(X_train, y_train), (X_test, y_test) = keras.datasets.cifar10.load_data()
+
+# Normalizar pixeles [0,255] → [0,1]
+X_train = X_train.astype('float32') / 255.0
+X_test = X_test.astype('float32') / 255.0
+
+# Definir CNN
+model = keras.Sequential([
+    # Bloque Convolucional 1
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same',
+                  input_shape=(32, 32, 3)),
+    layers.BatchNormalization(),
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+
+    # Bloque Convolucional 2
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.BatchNormalization(),
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+
+    # Bloque Convolucional 3
+    layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+    layers.BatchNormalization(),
+    layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+
+    # Clasificador
+    layers.Flatten(),
+    layers.Dense(256, activation='relu'),
+    layers.BatchNormalization(),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')  # 10 clases CIFAR-10
+])
+
+model.summary()
+
+# Compilar
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Data Augmentation (mejora generalización)
+datagen = keras.preprocessing.image.ImageDataGenerator(
+    rotation_range=15,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    horizontal_flip=True
+)
+datagen.fit(X_train)
+
+# Entrenar
+history = model.fit(
+    datagen.flow(X_train, y_train, batch_size=64),
+    epochs=50,
+    validation_data=(X_test, y_test),
+    callbacks=[
+        keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=5),
+        keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
+    ]
+)
+
+# Evaluar
+test_loss, test_acc = model.evaluate(X_test, y_test)
+print(f"Test Accuracy: {test_acc*100:.2f}%")</code></pre>
+                </div>
+
+                <!-- APLICACIONES CNN -->
+                <h3 style="margin-top: 2rem;">Aplicaciones Revolucionarias</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Diagnóstico Médico</h4>
+                        <p>Google Health usa CNNs para detectar cáncer de mama en mamografías con 94.5% precisión,
+                            superando a radiólogos humanos.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Vehículos Autónomos</h4>
+                        <p>Tesla Autopilot procesa 8 cámaras simultáneas con CNNs a 36 FPS para detección de objetos,
+                            carriles y señales.</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Reconocimiento Facial</h4>
+                        <p>Face ID de Apple usa CNN con 30,000 proyecciones IR para autenticación 3D con 1/1,000,000
+                            tasa error.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: RNN, LSTM, GRU -->
+            <section class="section">
+                <h2 class="section-title">RNN: Redes Neuronales Recurrentes</h2>
+
+                <h3 class="color-primary" style="margin-top: 1.5rem;">Memoria Temporal</h3>
+                <p>
+                    Las <strong>RNNs</strong> procesan <strong>secuencias</strong> (texto, audio, series temporales)
+                    manteniendo un <strong>estado oculto</strong> que actúa como memoria. A diferencia de MLP/CNN,
+                    tienen conexiones recurrentes que permiten procesar inputs de longitud variable y capturar
+                    dependencias temporales.
+                </p>
+
+                <!-- VISUALIZACIÓN RNN vs LSTM -->
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="480"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">RNN Simple vs LSTM: Procesamiento Secuencial</text>
+
+                        <defs>
+                            <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                            <!-- Nueva flecha pequeña morada para horizontales -->
+                            <marker id="arrowSmallPurple" markerWidth="6" markerHeight="6" refX="5" refY="3"
+                                orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L6,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <!-- RNN SIMPLE (ARRIBA) -->
+                        <text x="30" y="55" font-size="13" font-weight="bold" fill="#333" font-family="Montserrat">RNN
+                            Simple (Vanilla)</text>
+
+                        <!-- Unfolded RNN (Redundant text removed) -->
+
+                        <!-- Time step 1 -->
+                        <rect x="80" y="120" width="60" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="110" y="155" font-size="11" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">RNN</text>
+                        <text x="110" y="80" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">t=0: "El"</text>
+
+                        <!-- Time step 2 -->
+                        <rect x="200" y="120" width="60" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="230" y="155" font-size="11" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">RNN</text>
+                        <text x="230" y="80" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">t=1: "gato"</text>
+
+                        <!-- Time step 3 -->
+                        <rect x="320" y="120" width="60" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="350" y="155" font-size="11" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">RNN</text>
+                        <text x="350" y="80" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">t=2: "está"</text>
+
+                        <!-- Time step 4 -->
+                        <rect x="440" y="120" width="60" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="470" y="155" font-size="11" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">RNN</text>
+                        <text x="470" y="80" font-size="9" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">t=3: "..."</text>
+
+                        <!-- Hidden state connections (Moved down +30, smaller arrows) -->
+                        <path d="M 140 150 L 195 150" stroke="#8A7AAF" stroke-width="3"
+                            marker-end="url(#arrowSmallPurple)" />
+                        <text x="167" y="145" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">h₀</text>
+
+                        <path d="M 260 150 L 315 150" stroke="#8A7AAF" stroke-width="3"
+                            marker-end="url(#arrowSmallPurple)" />
+                        <text x="287" y="145" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">h₁</text>
+
+                        <path d="M 380 150 L 435 150" stroke="#8A7AAF" stroke-width="3"
+                            marker-end="url(#arrowSmallPurple)" />
+                        <text x="407" y="145" font-size="8" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">h₂</text>
+
+                        <!-- Output arrows (Moved down to maintain relative position to rects) -->
+                        <path d="M 110 120 L 110 95" stroke="#333" stroke-width="2" marker-end="url(#arrow4)" />
+                        <path d="M 230 120 L 230 95" stroke="#333" stroke-width="2" marker-end="url(#arrow4)" />
+                        <path d="M 350 120 L 350 95" stroke="#333" stroke-width="2" marker-end="url(#arrow4)" />
+                        <path d="M 470 120 L 470 95" stroke="#333" stroke-width="2" marker-end="url(#arrow4)" />
+
+                        <!-- Problema: Vanishing gradient (Moved down +30) -->
+                        <rect x="560" y="120" width="160" height="60" fill="#FFCDD2" stroke="#f44336" stroke-width="2"
+                            rx="6" />
+                        <text x="640" y="140" font-size="10" fill="#f44336" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">⚠️ Problema RNN:</text>
+                        <text x="640" y="155" font-size="9" fill="#333" text-anchor="middle"
+                            font-family="Montserrat">Vanishing Gradient</text>
+                        <text x="640" y="168" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">Memoria corta (~10 pasos)</text>
+
+                        <!-- LSTM (ABAJO) - Shifted down +30 -->
+                        <line x1="20" y1="210" x2="730" y2="210" stroke="#e5e5e5" stroke-width="2" />
+
+                        <text x="30" y="240" font-size="13" font-weight="bold" fill="#333" font-family="Montserrat">LSTM
+                            (Long Short-Term Memory)</text>
+
+                        <!-- LSTM Cell detailed -->
+                        <rect x="150" y="260" width="450" height="180" fill="white" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="375" y="280" font-size="12" fill="#8A7AAF" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Celda LSTM: 3 Compuertas (Gates)</text>
+
+                        <!-- Forget Gate -->
+                        <ellipse cx="220" cy="320" rx="50" ry="30" fill="#FFE0B2" stroke="#FFA726" stroke-width="2" />
+                        <text x="220" y="322" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Forget Gate</text>
+                        <text x="220" y="335" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">σ(W_f · [h,x])</text>
+                        <text x="220" y="365" font-size="8" fill="#777" text-anchor="middle"
+                            font-family="Montserrat">Decide qué olvidar</text>
+
+                        <!-- Input Gate -->
+                        <ellipse cx="375" cy="320" rx="50" ry="30" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2" />
+                        <text x="375" y="322" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Input Gate</text>
+                        <text x="375" y="335" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">σ(W_i · [h,x])</text>
+                        <text x="375" y="365" font-size="8" fill="#777" text-anchor="middle"
+                            font-family="Montserrat">Qué info nueva guardar</text>
+
+                        <!-- Output Gate -->
+                        <ellipse cx="530" cy="320" rx="50" ry="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="530" y="322" font-size="10" fill="#333" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Output Gate</text>
+                        <text x="530" y="335" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">σ(W_o · [h,x])</text>
+                        <text x="530" y="365" font-size="8" fill="#777" text-anchor="middle"
+                            font-family="Montserrat">Qué info sacar</text>
+
+                        <!-- Cell State -->
+                        <rect x="180" y="385" width="390" height="25" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="4" />
+                        <text x="375" y="402" font-size="10" fill="#49B9CE" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Cell State (C_t): Memoria de largo plazo</text>
+
+                        <!-- Ventajas LSTM -->
+                        <text x="30" y="465" font-size="10" fill="#4CAF50" font-weight="bold" font-family="Montserrat">✓
+                            Captura dependencias largas (100+ pasos)</text>
+                        <text x="400" y="465" font-size="10" fill="#4CAF50" font-weight="bold"
+                            font-family="Montserrat">✓ Resuelve vanishing gradient</text>
+                    </svg>
+                </div>
+
+                <!-- CÓDIGO LSTM -->
+                <h3 class="color-primary" style="margin-top: 2rem;">Implementación LSTM: Análisis de Sentimientos</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - LSTM para clasificación de texto</div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.datasets import imdb
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+# Cargar dataset IMDB (reseñas de películas)
+vocab_size = 10000
+max_length = 200
+
+(X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=vocab_size)
+
+# Padding de secuencias (longitud fija)
+X_train = pad_sequences(X_train, maxlen=max_length, padding='post')
+X_test = pad_sequences(X_test, maxlen=max_length, padding='post')
+
+# Modelo LSTM
+model = keras.Sequential([
+    # Embedding layer: palabra → vector denso
+    layers.Embedding(vocab_size, 128, input_length=max_length),
+
+    # LSTM bidireccional (procesa adelante y atrás)
+    layers.Bidirectional(layers.LSTM(64, return_sequences=True)),
+    layers.Dropout(0.3),
+
+    # Segunda capa LSTM
+    layers.Bidirectional(layers.LSTM(32)),
+    layers.Dropout(0.3),
+
+    # Clasificador
+    layers.Dense(64, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(1, activation='sigmoid')  # Binario: positivo/negativo
+])
+
+model.summary()
+
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
+# Entrenar
+history = model.fit(
+    X_train, y_train,
+    epochs=10,
+    batch_size=128,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluar
+test_loss, test_acc = model.evaluate(X_test, y_test)
+print(f"Test Accuracy: {test_acc*100:.2f}%")
+
+# ALTERNATIVA: GRU (más rápido, menos parámetros)
+model_gru = keras.Sequential([
+    layers.Embedding(vocab_size, 128, input_length=max_length),
+    layers.GRU(64, return_sequences=True),  # GRU en vez de LSTM
+    layers.GRU(32),
+    layers.Dense(1, activation='sigmoid')
+])</code></pre>
+                </div>
+
+                <!-- COMPARACIÓN RNN/LSTM/GRU -->
+                <h3 style="margin-top: 2rem;">RNN vs LSTM vs GRU</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">RNN Simple</h4>
+                        <p>✓ Rápido<br>✗ Vanishing gradient<br>✗ Memoria corta</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">LSTM</h4>
+                        <p>✓ Memoria larga<br>✓ Estado del arte<br>✗ Más lento, más parámetros</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-warning-medium">GRU</h4>
+                        <p>✓ Balance LSTM/RNN<br>✓ Menos parámetros<br>✓ Rendimiento similar LSTM</p>
+                    </div>
+                </div>
+
+                <!-- APLICACIONES -->
+                <h3 style="margin-top: 2rem;">Aplicaciones</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">NLP</h4>
+                        <p>Traducción, chatbots, sentiment analysis</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">Audio</h4>
+                        <p>Reconocimiento voz, generación música</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 class="color-primary">Series Temporales</h4>
+                        <p>Forecasting, predicción bolsa</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: AUTOENCODERS -->
+            <section class="section">
+                <h2 class="section-title">Autoencoders: Aprendizaje de Representaciones</h2>
+
+                <h3 class="color-primary" style="margin-top: 1.5rem;">Codificación-Decodificación</h3>
+                <p>
+                    Los <strong>Autoencoders</strong> son redes neuronales que aprenden a <strong>comprimir</strong>
+                    (encoder) y <strong>reconstruir</strong> (decoder) datos. El objetivo es minimizar la diferencia
+                    entre entrada y salida, forzando a la red a aprender una <strong>representación comprimida</strong>
+                    útil en el cuello de botella (bottleneck).
+                </p>
+                <p>
+                    A diferencia de redes supervisadas, los autoencoders son <strong>auto-supervisados</strong>: la
+                    entrada es también la salida objetivo. Aprenden representaciones latentes sin necesidad de
+                    etiquetas.
+                </p>
+
+                <!-- VISUALIZACIÓN AUTOENCODER -->
+                <div style="margin: 2rem 0;">
+                    <svg width="750" height="320"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <text x="375" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura Autoencoder: Compresión y Reconstrucción</text>
+
+                        <!-- INPUT LAYER -->
+                        <text x="50" y="80" font-size="11" fill="#333" font-weight="bold"
+                            font-family="Montserrat">Input</text>
+                        <circle cx="50" cy="95" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="120" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="145" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="170" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="195" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="220" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <circle cx="50" cy="245" r="7" fill="#49B9CE" stroke="#333" stroke-width="2" />
+                        <text x="50" y="275" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">n = 784</text>
+                        <text x="50" y="287" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">(28x28 img)</text>
+
+                        <!-- ENCODER LAYER 1 -->
+                        <circle cx="150" cy="105" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="150" cy="135" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="150" cy="165" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="150" cy="195" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <circle cx="150" cy="225" r="6" fill="#A3E0EA" stroke="#333" stroke-width="1.5" />
+                        <text x="150" y="248" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">256</text>
+
+                        <!-- ENCODER LAYER 2 -->
+                        <circle cx="235" cy="125" r="5" fill="#C5E1EC" stroke="#333" stroke-width="1.5" />
+                        <circle cx="235" cy="150" r="5" fill="#C5E1EC" stroke="#333" stroke-width="1.5" />
+                        <circle cx="235" cy="175" r="5" fill="#C5E1EC" stroke="#333" stroke-width="1.5" />
+                        <circle cx="235" cy="200" r="5" fill="#C5E1EC" stroke="#333" stroke-width="1.5" />
+                        <text x="235" y="220" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">128</text>
+
+                        <!-- BOTTLENECK (LATENT SPACE) -->
+                        <rect x="305" y="145" width="90" height="50" fill="#8A7AAF" fill-opacity="0.2" stroke="#8A7AAF"
+                            stroke-width="3" rx="8" stroke-dasharray="5,5" />
+                        <circle cx="330" cy="160" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="330" cy="185" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="370" cy="160" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+                        <circle cx="370" cy="185" r="8" fill="#8A7AAF" stroke="#333" stroke-width="2" />
+
+                        <text x="350" y="135" font-size="11" fill="#8A7AAF" text-anchor="middle" font-weight="bold"
+                            font-family="Montserrat">Latent Space</text>
+                        <text x="350" y="210" font-size="9" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">n = 32</text>
+                        <text x="350" y="222" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">(Representación comprimida)</text>
+
+                        <!-- DECODER LAYER 1 -->
+                        <circle cx="465" cy="125" r="5" fill="#D8CFE8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="465" cy="150" r="5" fill="#D8CFE8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="465" cy="175" r="5" fill="#D8CFE8" stroke="#333" stroke-width="1.5" />
+                        <circle cx="465" cy="200" r="5" fill="#D8CFE8" stroke="#333" stroke-width="1.5" />
+                        <text x="465" y="220" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">128</text>
+
+                        <!-- DECODER LAYER 2 -->
+                        <circle cx="550" cy="105" r="6" fill="#E8D8F0" stroke="#333" stroke-width="1.5" />
+                        <circle cx="550" cy="135" r="6" fill="#E8D8F0" stroke="#333" stroke-width="1.5" />
+                        <circle cx="550" cy="165" r="6" fill="#E8D8F0" stroke="#333" stroke-width="1.5" />
+                        <circle cx="550" cy="195" r="6" fill="#E8D8F0" stroke="#333" stroke-width="1.5" />
+                        <circle cx="550" cy="225" r="6" fill="#E8D8F0" stroke="#333" stroke-width="1.5" />
+                        <text x="550" y="248" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">256</text>
+
+                        <!-- OUTPUT LAYER (RECONSTRUCCIÓN) -->
+                        <text x="650" y="80" font-size="11" fill="#333" font-weight="bold"
+                            font-family="Montserrat">Output</text>
+                        <circle cx="650" cy="95" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="120" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="145" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="170" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="195" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="220" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <circle cx="650" cy="245" r="7" fill="#49B9CE" stroke="#333" stroke-width="2"
+                            stroke-dasharray="2,2" />
+                        <text x="650" y="275" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">n = 784</text>
+                        <text x="650" y="287" font-size="8" fill="#555" text-anchor="middle"
+                            font-family="Montserrat">(Reconstruida)</text>
+
+                        <!-- Conexiones muestra -->
+                        <line x1="57" y1="145" x2="143" y2="165" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="157" y1="165" x2="228" y2="175" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="240" y1="162" x2="320" y2="170" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="380" y1="172" x2="458" y2="175" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="472" y1="165" x2="543" y2="165" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+                        <line x1="557" y1="165" x2="643" y2="170" stroke="#ccc" stroke-width="0.5" opacity="0.3" />
+
+                        <!-- Etiquetas ENCODER/DECODER -->
+                        <text x="150" y="50" font-size="12" fill="#49B9CE" font-weight="bold"
+                            font-family="Montserrat">ENCODER</text>
+                        <line x1="50" y1="55" x2="280" y2="55" stroke="#49B9CE" stroke-width="3" />
+                        <path d="M 280 55 L 290 50 L 290 60 Z" fill="#49B9CE" />
+
+                        <text x="550" y="50" font-size="12" fill="#8A7AAF" font-weight="bold"
+                            font-family="Montserrat">DECODER</text>
+                        <line x1="420" y1="55" x2="650" y2="55" stroke="#8A7AAF" stroke-width="3" />
+                        <path d="M 650 55 L 660 50 L 660 60 Z" fill="#8A7AAF" />
+                    </svg>
+                </div>
+
+                <!-- Explicación Autoencoder (Extracted) -->
+                <div
+                    style="margin-top: 1.5rem; background: white; border: 2px solid #e5e5e5; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); display: flex; flex-wrap: wrap; gap: 2rem;">
+                    <div style="flex: 1 1 300px;">
+                        <h4 style="color: #333; margin-top: 0; font-family: 'Montserrat', sans-serif;">Función de
+                            Pérdida (Loss):</h4>
+                        <div
+                            style="background: #E8F7FA; padding: 0.75rem; border-radius: 0.5rem; font-family: 'Courier New', monospace; font-weight: bold; color: #333; margin-bottom: 0.75rem; display: inline-block;">
+                            MSE = (1/n) Σ (x<sub>original</sub> - x<sub>reconstruida</sub>)²
+                        </div>
+                        <p style="margin: 0; color: #555; font-size: 0.9rem;">
+                            <strong>Objetivo:</strong> Minimizar la diferencia entre la entrada original y la salida
+                            reconstruida.
+                        </p>
+                    </div>
+                    <div style="flex: 1 1 300px; border-left: 2px solid #e5e5e5; padding-left: 2rem;">
+                        <h4 style="color: #8A7AAF; margin-top: 0; font-family: 'Montserrat', sans-serif;">Aplicaciones
+                            clave:</h4>
+                        <ul style="margin: 0; padding-left: 1.2rem; list-style: none; color: #555; font-size: 0.9rem;">
+                            <li>✓ Reducción de dimensionalidad</li>
+                            <li>✓ Denoising (eliminar ruido)</li>
+                            <li>✓ Detección de anomalías</li>
+                            <li>✓ Compresión de datos</li>
+                        </ul>
+                    </div>
+                </div>
+    </div>
+
+    <!-- CÓDIGO AUTOENCODER -->
+    <h3 class="color-primary" style="margin-top: 2rem;">Implementación Autoencoder para MNIST</h3>
+    <div class="code-block">
+        <div class="code-header">Python - Autoencoder básico</div>
+        <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Cargar MNIST
+(x_train, _), (x_test, _) = keras.datasets.mnist.load_data()
+
+# Normalizar y reshape
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train.reshape(-1, 784)  # 28x28 → 784
+x_test = x_test.reshape(-1, 784)
+
+print(f"Train shape: {x_train.shape}")  # (60000, 784)
+
+# DEFINIR AUTOENCODER
+encoding_dim = 32  # Compresión: 784 → 32 (24.5x reducción)
+
+# INPUT
+input_img = keras.Input(shape=(784,))
+
+# ENCODER
+encoded = layers.Dense(256, activation='relu')(input_img)
+encoded = layers.Dense(128, activation='relu')(encoded)
+encoded = layers.Dense(encoding_dim, activation='relu')(encoded)  # Bottleneck
+
+# DECODER
+decoded = layers.Dense(128, activation='relu')(encoded)
+decoded = layers.Dense(256, activation='relu')(decoded)
+decoded = layers.Dense(784, activation='sigmoid')(decoded)  # Salida [0,1]
+
+# MODELO COMPLETO
+autoencoder = keras.Model(input_img, decoded)
+
+# ENCODER SEPARADO (para extraer representaciones)
+encoder = keras.Model(input_img, encoded)
+
+# COMPILAR
+autoencoder.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',  # o 'mse' para MSE
+    metrics=['mse']
+)
+
+autoencoder.summary()
+
+# ENTRENAR (input = output: auto-supervisado)
+history = autoencoder.fit(
+    x_train, x_train,  # ¡Input = Target!
+    epochs=50,
+    batch_size=256,
+    shuffle=True,
+    validation_data=(x_test, x_test),
+    verbose=1
+)
+
+# EVALUAR
+test_loss = autoencoder.evaluate(x_test, x_test, verbose=0)
+print(f"Test Loss: {test_loss}")
+
+# EXTRAER REPRESENTACIONES LATENTES
+encoded_imgs = encoder.predict(x_test)
+print(f"Latent representation shape: {encoded_imgs.shape}")  # (10000, 32)
+
+# RECONSTRUIR IMÁGENES
+decoded_imgs = autoencoder.predict(x_test)
+
+# VISUALIZAR RESULTADOS
+n = 10
+plt.figure(figsize=(20, 4))
+for i in range(n):
+    # Original
+    ax = plt.subplot(2, n, i + 1)
+    plt.imshow(x_test[i].reshape(28, 28), cmap='gray')
+    plt.title("Original")
+    plt.axis('off')
+
+    # Reconstruida
+    ax = plt.subplot(2, n, i + 1 + n)
+    plt.imshow(decoded_imgs[i].reshape(28, 28), cmap='gray')
+    plt.title("Reconstruida")
+    plt.axis('off')
+
+plt.suptitle(f'Autoencoder: 784D → {encoding_dim}D → 784D')
+plt.tight_layout()
+plt.show()
+
+# GUARDAR MODELO
+autoencoder.save('autoencoder_mnist.h5')
+encoder.save('encoder_mnist.h5')</code></pre>
+    </div>
+
+    <!-- VARIANTES DE AUTOENCODERS -->
+    <h3 style="margin-top: 2rem;">Variantes de Autoencoders</h3>
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h4 class="color-primary">Denoising AE</h4>
+            <p>Entrena con datos corruptos, reconstruye limpios. Elimina ruido de imágenes/audio.</p>
+        </div>
+        <div class="comparison-card">
+            <h4 class="color-secondary">Sparse AE</h4>
+            <p>Regularización L1 para activaciones dispersas. Aprende features más interpretables.</p>
+        </div>
+        <div class="comparison-card">
+            <h4 class="color-warning-medium">VAE (Variational)</h4>
+            <p>Latent space probabilístico (μ, σ). Genera nuevas muestras. Base de Stable Diffusion.</p>
+        </div>
+        <div class="comparison-card">
+            <h4 class="color-primary">Convolutional AE</h4>
+            <p>Usa Conv2D/Deconv. Especializado en imágenes, preserva estructura espacial.</p>
+        </div>
+    </div>
+
+    <!-- APLICACIONES REALES -->
+    <h3 style="margin-top: 2rem;">Aplicaciones en la Industria</h3>
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h4 class="color-primary">Stable Diffusion</h4>
+            <p><strong>VAE + Diffusion:</strong> Genera imágenes fotorrealistas desde texto. Latent space de
+                512D permite interpolación suave entre conceptos.</p>
+            <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">Used by Midjourney, DALL-E 2</p>
+        </div>
+
+        <div class="comparison-card">
+            <h4 class="color-secondary">Detección Fraude</h4>
+            <p><strong>PayPal/Visa:</strong> Autoencoders detectan transacciones anómalas. Entrenan con
+                datos legítimos; alto error reconstrucción = posible fraude.</p>
+            <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">95%+ precisión, reduce falsos
+                positivos 70%</p>
+        </div>
+
+        <div class="comparison-card">
+            <h4 class="color-warning-medium">Resonancia Magnética</h4>
+            <p><strong>Siemens/GE Healthcare:</strong> Comprime escáneres MRI 10:1 sin pérdida perceptible.
+                Reduce tiempo escaneo de 45 a 5 minutos.</p>
+            <p style="font-size: 0.85rem; color: #777; margin-top: 0.5rem;">Mejora experiencia pacientes,
+                reduce costos</p>
+        </div>
+    </div>
+    </section>
+
+    <!-- SECCIÓN 6: TRANSFORMERS Y GANs -->
+    <section class="section">
+        <h2 class="section-title">Arquitecturas Avanzadas</h2>
+
+        <!-- TRANSFORMERS -->
+        <h3 class="color-secondary" style="margin-top: 1.5rem;">Transformers: "Attention Is All You Need"</h3>
+        <p>
+            Los <strong>Transformers</strong> revolucionaron NLP en 2017. Reemplazan recurrencia con
+            <strong>self-attention</strong>: cada token atiende a todos los demás simultáneamente, permitiendo
+            <strong>paralelización masiva</strong> y captura de dependencias a cualquier distancia. Base de GPT,
+            BERT, ChatGPT.
+        </p>
+
+        <div class="highlight-box secondary">
+            <h4 class="color-secondary" style="margin-top: 0;">Mecanismo de Atención</h4>
+            <p style="font-family: 'Courier New', monospace; font-size: 1rem; margin-bottom: 0.5rem;">
+                Attention(Q, K, V) = softmax(QK^T / √d_k) · V</p>
+            <ul style="margin-left: 1.5rem; line-height: 1.6;">
+                <li><strong>Q (Query):</strong> "¿Qué busco?"</li>
+                <li><strong>K (Key):</strong> "¿Qué tengo?"</li>
+                <li><strong>V (Value):</strong> "¿Qué información devuelvo?"</li>
+            </ul>
+        </div>
+
+        <div class="comparison-grid" style="margin-top: 1.5rem;">
+            <div class="comparison-card">
+                <h4 class="color-secondary">GPT-4</h4>
+                <p>1.76T parámetros, 120 capas, arquitectura decoder-only</p>
+            </div>
+            <div class="comparison-card">
+                <h4 class="color-primary">BERT</h4>
+                <p>340M parámetros, bidireccional, encoder-only</p>
+            </div>
+            <div class="comparison-card">
+                <h4 class="color-secondary">T5</h4>
+                <p>11B parámetros, encoder-decoder completo</p>
+            </div>
+        </div>
+
+        <!-- GANs -->
+        <h3 class="color-primary" style="margin-top: 2.5rem;">GANs: Redes Generativas Adversarias</h3>
+        <p>
+            Las <strong>GANs</strong> son dos redes compitiendo: <strong>Generator</strong> crea datos falsos,
+            <strong>Discriminator</strong> distingue reales de falsos. Competencia = mejora mutua hasta generar
+            imágenes, voces y videos indistinguibles de reales.
+        </p>
+
+        <!-- Diagrama GAN -->
+        <div style="margin: 2rem 0;">
+            <svg width="700" height="280"
+                style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                <text x="350" y="25" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">Arquitectura GAN: Juego Adversarial</text>
+
+                <!-- Ruido (Input) -->
+                <circle cx="50" cy="130" r="20" fill="#f5f5f5" stroke="#999" stroke-width="2" />
+                <text x="50" y="135" font-size="10" fill="#333" text-anchor="middle"
+                    font-family="Montserrat">Ruido</text>
+                <text x="50" y="165" font-size="8" fill="#555" text-anchor="middle" font-family="Montserrat">z ~
+                    N(0,1)</text>
+
+                <!-- Generator -->
+                <rect x="120" y="90" width="120" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8" />
+                <text x="180" y="115" font-size="12" fill="#49B9CE" text-anchor="middle" font-weight="bold"
+                    font-family="Montserrat">GENERATOR</text>
+                <text x="180" y="135" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">Red
+                    neuronal profunda</text>
+                <text x="180" y="150" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">(Deconv
+                    layers)</text>
+                <text x="180" y="163" font-size="8" fill="#49B9CE" text-anchor="middle" font-family="Courier New">G(z) →
+                    imagen falsa</text>
+
+                <!-- Flecha ruido → generator -->
+                <path d="M 70 130 L 115 130" stroke="#333" stroke-width="2" marker-end="url(#arrow5)" />
+
+                <!-- Imagen generada -->
+                <rect x="280" y="105" width="50" height="50" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="4" />
+                <text x="305" y="185" font-size="9" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">Fake</text>
+
+                <!-- Flecha generator → fake -->
+                <path d="M 240 130 L 275 130" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrow5)" />
+
+                <!-- Imagen real -->
+                <rect x="280" y="30" width="50" height="50" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2" rx="4" />
+                <text x="305" y="20" font-size="9" fill="#4CAF50" text-anchor="middle"
+                    font-family="Montserrat">Real</text>
+                <text x="305" y="100" font-size="8" fill="#555" text-anchor="middle" font-family="Montserrat">Dataset
+                    real</text>
+
+                <!-- Discriminator -->
+                <rect x="400" y="60" width="120" height="110" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8" />
+                <text x="460" y="85" font-size="12" fill="#8A7AAF" text-anchor="middle" font-weight="bold"
+                    font-family="Montserrat">DISCRIMINATOR</text>
+                <text x="460" y="105" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">Red
+                    neuronal</text>
+                <text x="460" y="120" font-size="9" fill="#555" text-anchor="middle" font-family="Montserrat">(Conv
+                    layers)</text>
+                <text x="460" y="140" font-size="8" fill="#8A7AAF" text-anchor="middle" font-family="Courier New">D(x) →
+                    [0,1]</text>
+                <text x="460" y="155" font-size="8" fill="#555" text-anchor="middle" font-family="Montserrat">0=Fake,
+                    1=Real</text>
+
+                <!-- Flechas → discriminator -->
+                <path d="M 330 55 L 395 90" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrow5)" />
+                <path d="M 330 130 L 395 125" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrow5)" />
+
+                <!-- Output discriminator -->
+                <ellipse cx="600" cy="115" rx="60" ry="35" fill="white" stroke="#333" stroke-width="2" />
+                <text x="600" y="110" font-size="10" fill="#4CAF50" text-anchor="middle" font-weight="bold"
+                    font-family="Montserrat">Real: 0.95</text>
+                <text x="600" y="125" font-size="10" fill="#f44336" text-anchor="middle" font-weight="bold"
+                    font-family="Montserrat">Fake: 0.05</text>
+
+                <!-- Flecha discriminator → output -->
+                <path d="M 520 115 L 535 115" stroke="#333" stroke-width="2" marker-end="url(#arrow5)" />
+
+                <!-- Backprop loop -->
+                <path d="M 460 175 Q 350 230, 180 185" stroke="#f44336" stroke-width="2" stroke-dasharray="5,5"
+                    marker-end="url(#arrowred2)" />
+                <text x="350" y="245" font-size="9" fill="#f44336" text-anchor="middle"
+                    font-family="Montserrat">Backpropagation: Mejorar G para engañar D</text>
+
+                <defs>
+                    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                        markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                    </marker>
+                    <marker id="arrowred2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                        markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#f44336" />
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+
+        <!-- Aplicaciones GANs -->
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h4 class="color-primary">Generación Imágenes</h4>
+                <p>DALL-E, Midjourney, StyleGAN</p>
+            </div>
+            <div class="comparison-card">
+                <h4 class="color-secondary">Deepfakes</h4>
+                <p>Síntesis facial, cambio voz</p>
+            </div>
+            <div class="comparison-card">
+                <h4 class="color-primary">Arte</h4>
+                <p>NFTs, transferencia estilo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 7: TABLA COMPARATIVA FINAL -->
+    <section class="section">
+        <h2 class="section-title text-center">Comparación Completa de Arquitecturas</h2>
+
+        <div style="overflow-x: auto;">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Arquitectura</th>
+                        <th style="text-align: center;">Mejor Para</th>
+                        <th style="text-align: center;">Datos</th>
+                        <th style="text-align: center;">Complejidad</th>
+                        <th style="text-align: center;">Ejemplo Famoso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MLP</strong></td>
+                        <td style="text-align: center;">Datos tabulares, clasificación simple</td>
+                        <td style="text-align: center;">Vectores 1D</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">O(n·w)</td>
+                        <td style="text-align: center;">AlphaGo (parte)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CNN</strong></td>
+                        <td style="text-align: center;">Imágenes, video, visión</td>
+                        <td style="text-align: center;">Matrices 2D/3D</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">O(k²·d)</td>
+                        <td style="text-align: center;">ResNet-152</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RNN/LSTM</strong></td>
+                        <td style="text-align: center;">Secuencias, series temporales</td>
+                        <td style="text-align: center;">Secuencias 1D</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">O(n·t)</td>
+                        <td style="text-align: center;">Google Translate (antiguo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transformer</strong></td>
+                        <td style="text-align: center;">NLP, texto, lenguaje</td>
+                        <td style="text-align: center;">Secuencias tokens</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">O(n²·d)</td>
+                        <td style="text-align: center;">GPT-4, BERT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Autoencoder</strong></td>
+                        <td style="text-align: center;">Compresión, reducción dimensionalidad</td>
+                        <td style="text-align: center;">Cualquier tipo</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">Variable</td>
+                        <td style="text-align: center;">VAE, Stable Diffusion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GAN</strong></td>
+                        <td style="text-align: center;">Generación de datos sintéticos</td>
+                        <td style="text-align: center;">Imágenes, audio</td>
+                        <td style="text-align: center; font-family: 'Courier New', monospace;">O(2·modelo)</td>
+                        <td style="text-align: center;">StyleGAN3, DALL-E</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 8: DATO CURIOSO -->
+    <section class="section">
+        <div class="warning-box" style="background: linear-gradient(to right, #FFF8DC, #FFE0B2);">
+            <h3 class="color-warning" style="margin-top: 0;">Dato Curioso: El Costo de Entrenar GPT-4</h3>
+            <p style="margin-bottom: 1rem;">
+                Entrenar <strong>GPT-4</strong> (1.76 trillones de parámetros) costó aproximadamente
+                <strong>$100 millones USD</strong> y requirió:
+            </p>
+
+            <ul style="margin-left: 1.5rem; line-height: 1.8; margin-bottom: 1rem;">
+                <li><strong>25,000 GPUs NVIDIA A100</strong> (80GB cada una) trabajando simultáneamente</li>
+                <li><strong>100+ días continuos</strong> de entrenamiento (2,400+ horas)</li>
+                <li><strong>~1.2 exaflops</strong> de capacidad computacional total</li>
+                <li><strong>13 trillones de tokens</strong> procesados (equivalente a leer Wikipedia 50,000
+                    veces)</li>
+                <li><strong>Consumo eléctrico:</strong> Similar a una ciudad pequeña durante 3 meses</li>
+            </ul>
+
+            <div class="highlight-box secondary" style="margin-top: 1rem;">
+                <p style="text-align: center; font-weight: 600; margin-bottom: 0;">
+                    El cerebro humano tiene ~86 mil millones de neuronas y 100 trillones de sinapsis. GPT-4
+                    tiene 1.76 trillones de parámetros. Aún estamos lejos de igualar la eficiencia energética
+                    del cerebro: <strong>20W vs 25MW de GPT-4</strong> durante entrenamiento.
+                </p>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+            <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+            <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+            <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        </div>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>
+        // Funcionalidad para copiar bloques de código
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block, index) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

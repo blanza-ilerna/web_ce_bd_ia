@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda Heurística | A* & Greedy</title>
+    <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+        <header>
+            <h1>🎯 Algoritmos de Búsqueda Heurística</h1>
+            <p class="subtitle">Visualización interactiva de A*, Greedy Best-First y variantes</p>
+        </header>
+
+        <!-- Visualización del Grafo - Ocupa todo el ancho -->
+        <div class="graph-section">
+            <div class="section-title">
+                <span class="icon">📊</span>
+                Grafo ponderado con heurística
+            </div>
+            <div id="graph-container"></div>
+            <div class="graph-footer">
+                <div class="footer-left">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot default"></div>
+                            <span>Sin visitar</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot queued" id="legendQueued"></div>
+                            <span id="legendQueuedText">En cola abierta</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot current-bfs" id="legendCurrent"></div>
+                            <span>Nodo actual</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot visited"></div>
+                            <span>Lista cerrada</span>
+                        </div>
+                    </div>
+
+                    <div class="visit-order-inline">
+                        <div class="visit-order-label">✅ Orden de visita:</div>
+                        <div class="visit-order" id="visitOrder"></div>
+                    </div>
+
+                    <div class="data-structure-inline">
+                        <div class="structure-header-inline">
+                            <span class="structure-label">🗃️ Estructura:</span>
+                            <span class="structure-type bfs-type" id="structureType">Cola de Prioridad (f)</span>
+                            <span class="structure-indicator" id="structureIndicator">Min f(n)</span>
+                        </div>
+                        <div class="structure-items" id="structureItems"></div>
+                    </div>
+
+                    <div class="heuristic-info-inline">
+                        <div class="heuristic-label">📐 Valores heurísticos:</div>
+                        <div class="heuristic-values" id="heuristicValues"></div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="inline-controls">
+                        <div class="controls">
+                            <button class="control-btn primary" id="startBtn" onclick="startSearch()">
+                                ▶ Iniciar
+                            </button>
+                            <button class="control-btn" id="stepBtn" onclick="stepSearch()">
+                                ⏭<br>Paso
+                            </button>
+                            <button class="control-btn" id="resetBtn" onclick="resetGraph()">
+                                ↺ Reset
+                            </button>
+                        </div>
+                        <div class="speed-control" id="speedControl">
+                            <label>Velocidad</label>
+                            <input type="range" id="speedSlider" min="100" max="2000" value="800" onchange="updateSpeed()">
+                        </div>
+                    </div>
+
+                    <div class="inline-progress">
+                        <div class="step-counter">
+                            <div class="label">Paso</div>
+                            <span class="current" id="stepNumber">0</span>
+                            <span class="total">/ <span id="totalSteps">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algoritmo y Variantes - Layout horizontal -->
+        <div class="algorithm-section">
+            <div class="algorithm-row">
+                <div class="algorithm-selector-horizontal">
+                    <div class="section-label">⚙️ Algoritmo:</div>
+                    <button class="algo-btn bfs active" onclick="selectAlgorithm('astar')">
+                        A* (A-Star)
+                        <span class="algo-label">Búsqueda óptima</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('greedy')">
+                        Greedy Best-First
+                        <span class="algo-label">Voraz heurístico</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('idastar')">
+                        IDA*
+                        <span class="algo-label">A* iterativo</span>
+                    </button>
+                </div>
+
+                <div class="variants-selector-horizontal" id="astarVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h active" onclick="selectAStarVariant('manhattan')">Manhattan</button>
+                    <button class="variant-btn-h" onclick="selectAStarVariant('euclidean')">Euclidiana</button>
+                    <button class="variant-btn-h" onclick="selectAStarVariant('chebyshev')">Chebyshev</button>
+                    <button class="variant-btn-h" onclick="selectAStarVariant('weighted')">A* Ponderado</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="greedyVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectGreedyVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h-dfs" onclick="selectGreedyVariant('beam')">Beam Search</button>
+                    <button class="variant-btn-h-dfs" onclick="selectGreedyVariant('hill-climbing')">Hill Climbing</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="idastarVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectIDAStarVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h-dfs" onclick="selectIDAStarVariant('rbfs')">RBFS</button>
+                    <button class="variant-btn-h-dfs" onclick="selectIDAStarVariant('sma')">SMA*</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pseudocódigo y Explicación -->
+        <div class="code-explanation-layout">
+            <div class="panel pseudocode-panel">
+                <div class="panel-title">💻 Pseudocódigo</div>
+                <div class="pseudocode" id="pseudocode">
+                    <div class="line" data-line="1"><span class="keyword">A*</span>(inicio, meta, h):</div>
+                    <div class="line" data-line="2">  abierta ← Cola_Prioridad([inicio])</div>
+                    <div class="line" data-line="3">  cerrada ← {}, g[inicio] ← 0</div>
+                    <div class="line" data-line="4">  f[inicio] ← g[inicio] + h(inicio)</div>
+                    <div class="line" data-line="5">  <span class="keyword">mientras</span> abierta no vacía:</div>
+                    <div class="line" data-line="6">    actual ← abierta.<span class="keyword">extraer_min_f()</span></div>
+                    <div class="line" data-line="7">    <span class="keyword">si</span> actual == meta: <span class="keyword">retornar</span> reconstruir_camino()</div>
+                    <div class="line" data-line="8">    cerrada.<span class="keyword">añadir</span>(actual)</div>
+                    <div class="line" data-line="9">    <span class="keyword">para cada</span> vecino de actual:</div>
+                    <div class="line" data-line="10">      <span class="keyword">si</span> vecino en cerrada: <span class="keyword">continuar</span></div>
+                    <div class="line" data-line="11">      g_temp ← g[actual] + costo(actual, vecino)</div>
+                    <div class="line" data-line="12">      <span class="keyword">si</span> vecino no en abierta o g_temp < g[vecino]:</div>
+                    <div class="line" data-line="13">        g[vecino] ← g_temp</div>
+                    <div class="line" data-line="14">        f[vecino] ← g[vecino] + h(vecino)</div>
+                    <div class="line" data-line="15">        abierta.<span class="keyword">insertar</span>(vecino, f[vecino])</div>
+                </div>
+            </div>
+
+            <div class="panel explanation-panel">
+                <div class="panel-title">📖 Explicación</div>
+                <div class="algorithm-explanation" id="algorithmExplanation">
+                    <h4>A* con Heurística Manhattan</h4>
+                    <p>Algoritmo de búsqueda informada que encuentra el camino más corto usando una función de evaluación f(n) = g(n) + h(n).</p>
+                    <ul>
+                        <li><strong>g(n):</strong> Costo real desde el inicio hasta el nodo n</li>
+                        <li><strong>h(n):</strong> Estimación heurística desde n hasta la meta (distancia Manhattan)</li>
+                        <li><strong>f(n):</strong> Costo total estimado del mejor camino que pasa por n</li>
+                        <li><strong>Optimalidad:</strong> Garantiza camino óptimo si h es admisible (nunca sobreestima)</li>
+                        <li><strong>Complejidad:</strong> O(b^d) tiempo y espacio, pero mucho más eficiente que Dijkstra</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparativa de algoritmos - Al final -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                Comparativa de algoritmos heurísticos
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>⭐ A* (A-Star)</h3>
+                    <p><strong>Búsqueda informada óptima:</strong> Combina costo real y estimación heurística para encontrar el camino óptimo eficientemente.</p>
+                    <span class="structure-badge">📥 Cola de Prioridad (f = g + h)</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Características Principales:</h4>
+                    <ul>
+                        <li>Usa función <strong>f(n) = g(n) + h(n)</strong></li>
+                        <li><strong>Completo y óptimo</strong> si h es admisible</li>
+                        <li>Más eficiente que Dijkstra con buena heurística</li>
+                        <li>Ampliamente usado en videojuegos, robótica y navegación</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Heurísticas Disponibles:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Manhattan:</strong> |x1-x2| + |y1-y2| - Para movimiento en rejilla (4 direcciones)</li>
+                        <li><strong>Euclidiana:</strong> √((x1-x2)² + (y1-y2)²) - Distancia en línea recta</li>
+                        <li><strong>Chebyshev:</strong> max(|x1-x2|, |y1-y2|) - Para movimiento en 8 direcciones</li>
+                        <li><strong>A* Ponderado:</strong> f(n) = g(n) + w×h(n) - Sacrifica optimalidad por velocidad</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(b^d) | Espacio: O(b^d) | Típicamente muy inferior en práctica
+                    </div>
+                </div>
+
+                <div class="algo-card dfs-card">
+                    <h3>🚀 Greedy Best-First Search</h3>
+                    <p><strong>Búsqueda voraz:</strong> Expande el nodo que parece más cercano a la meta según la heurística, ignorando el costo acumulado.</p>
+                    <span class="structure-badge">📚 Cola de Prioridad (solo h)</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Características Principales:</h4>
+                    <ul>
+                        <li>Solo usa <strong>h(n)</strong>, ignora g(n)</li>
+                        <li><strong>No garantiza optimalidad</strong></li>
+                        <li>Muy rápido, pero puede encontrar soluciones subóptimas</li>
+                        <li>Útil cuando velocidad > calidad de solución</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> Greedy clásico con cola de prioridad</li>
+                        <li><strong>Beam Search:</strong> Limita número de nodos en memoria (k mejores)</li>
+                        <li><strong>Hill Climbing:</strong> Solo expande el mejor vecino (local search)</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(b^m) peor caso | Espacio: O(b^m) | Muy rápido en práctica
+                    </div>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0ea5e9;">
+                    <h3>🔄 IDA* (Iterative Deepening A*)</h3>
+                    <p><strong>A* con profundización iterativa:</strong> Combina la optimalidad de A* con el bajo uso de memoria de la búsqueda en profundidad.</p>
+                    <span class="structure-badge" style="background: #e0f2fe; color: #0369a1;">🔁 Búsqueda Iterativa</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Características Principales:</h4>
+                    <ul>
+                        <li>Realiza <strong>búsquedas DFS sucesivas</strong> con límite f creciente</li>
+                        <li><strong>Óptimo y completo</strong> como A*</li>
+                        <li><strong>O(d) espacio</strong> vs O(b^d) de A*</li>
+                        <li>Ideal para espacios de búsqueda enormes con RAM limitada</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> IDA* clásico con umbral f creciente</li>
+                        <li><strong>RBFS:</strong> Recursive Best-First Search (rastrea segundo mejor)</li>
+                        <li><strong>SMA*:</strong> Simplified Memory-bounded A* (olvida peores nodos)</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(b^d) tiempo | O(d) espacio | Mejor que A* en RAM
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <script src="js/heuristic-search.js"></script>
+</body>
+</html>

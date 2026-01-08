@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio de Estados y Estrategias de Búsqueda | iLERNA</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+
+        <header class="hero">
+            <h1>🧭 Espacio de Estados y Estrategias de Búsqueda</h1>
+            <p class="subtitle">Fundamentos de la Resolución de Problemas en IA</p>
+            <p class="hero-description">Aprende cómo la IA explora espacios de estados para encontrar soluciones óptimas a problemas complejos</p>
+        </header>
+
+        <!-- Introducción -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎯 Introducción: Resolviendo Problemas con IA</h2>
+            </div>
+            <p style="margin-bottom: 1rem;">
+                La <strong>resolución de problemas mediante búsqueda</strong> es uno de los pilares fundamentales de la Inteligencia Artificial. Desde encontrar la ruta más corta en un GPS hasta resolver un cubo de Rubik o jugar al ajedrez, todos estos desafíos comparten una característica común: pueden modelarse como la <strong>exploración de un espacio de estados</strong> en busca de una solución óptima.
+            </p>
+            <p style="margin-bottom: 2rem;">
+                Un <strong>espacio de estados</strong> representa todas las configuraciones posibles de un problema, mientras que las <strong>estrategias de búsqueda</strong> son los algoritmos que exploran este espacio de manera eficiente para encontrar la solución. La diferencia entre una búsqueda eficiente y una ineficiente puede significar la diferencia entre segundos y años de cómputo.
+            </p>
+
+            <div class="concept-card" style="padding: 1.5rem; background: linear-gradient(to right, var(--fondo-azul), var(--fondo-morado)); border-radius: 12px; border-left: 4px solid var(--azul-ilerna); margin-bottom: 2rem;">
+                <h4 style="color: var(--azul-ilerna); margin-bottom: 0.75rem; font-size: 1.1rem;">🗺️ Ejemplo Real: Google Maps</h4>
+                <p style="margin: 0; color: var(--gris-texto);">Cuando calculas una ruta en Google Maps, el sistema explora millones de estados posibles (intersecciones, calles) usando el algoritmo <strong>A*</strong>, que combina la distancia recorrida con una estimación heurística de la distancia restante. Esto permite encontrar la ruta óptima en milisegundos, evaluando solo una fracción del espacio total de estados.</p>
+            </div>
+
+            <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">Conceptos Fundamentales</h3>
+            <div class="graph-types-grid">
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Estado</h3>
+                    <p>Configuración específica del problema en un momento dado.</p>
+                    <p class="type-example"><strong>Ejemplo:</strong> Posición actual en un mapa</p>
+                </div>
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Acción</h3>
+                    <p>Operación que transforma un estado en otro.</p>
+                    <p class="type-example"><strong>Ejemplo:</strong> Moverse de una intersección a otra</p>
+                </div>
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Estado Inicial</h3>
+                    <p>Punto de partida del problema.</p>
+                    <p class="type-example"><strong>Ejemplo:</strong> Tu ubicación actual al abrir el GPS</p>
+                </div>
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Estado Meta</h3>
+                    <p>Configuración que satisface el objetivo.</p>
+                    <p class="type-example"><strong>Ejemplo:</strong> Destino final en tu ruta</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Espacio de Estados -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🌐 El Espacio de Estados</h2>
+            </div>
+
+            <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">Definición y Representación</h3>
+            <p style="margin-bottom: 1rem;">
+                El <strong>espacio de estados</strong> es el conjunto de todas las configuraciones posibles del problema, junto con las transiciones que las conectan. Se puede visualizar como un <strong>grafo</strong> en el que:
+            </p>
+
+            <ul style="color: var(--gris-texto); margin-left: 2rem; margin-bottom: 2rem; line-height: 1.8;">
+                <li><strong>Los nodos</strong> representan estados (configuraciones del problema)</li>
+                <li><strong>Las aristas</strong> representan acciones (transiciones entre estados)</li>
+                <li><strong>Los pesos</strong> en las aristas representan el coste de cada acción</li>
+            </ul>
+
+            <div class="concept-card" style="padding: 1.5rem; background: white; border-radius: 12px; border: 2px solid var(--gris-bordes); margin-bottom: 2rem;">
+                <h4 style="color: var(--negro-texto); margin-bottom: 1rem; text-align: center;">Ejemplo: Navegación entre Ciudades</h4>
+                <p style="text-align: center; color: var(--gris-texto); margin-bottom: 1rem; font-style: italic;">
+                    Verde = Estado Inicial | Azul = Estados Intermedios | Rojo = Estado Meta
+                </p>
+                <p style="text-align: center; color: var(--gris-texto); font-size: 0.9rem;">
+                    Cada ciudad es un estado, cada carretera es una acción con un coste (kilómetros). El objetivo es encontrar el camino de coste mínimo de Madrid a Barcelona.
+                </p>
+            </div>
+
+            <div class="graph-types-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Factores Clave</h3>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto); line-height: 1.8;">
+                        <li><strong>Tamaño del espacio:</strong> Número total de estados posibles</li>
+                        <li><strong>Factor de ramificación:</strong> Número promedio de acciones por estado</li>
+                        <li><strong>Profundidad de la solución:</strong> Número de pasos hasta la meta</li>
+                    </ul>
+                </div>
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Explosión Combinatoria</h3>
+                    <p>El espacio de estados crece exponencialmente con la profundidad.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">Estados = b^d</span>
+                    <p class="type-example">b = ramificación, d = profundidad</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Búsqueda Ciega -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🔍 Estrategias de Búsqueda Ciega (No Informada)</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">
+                Los algoritmos de <strong>búsqueda ciega</strong> exploran el espacio de estados sin información adicional sobre qué tan cerca está un estado de la meta. Solo conocen si han alcanzado el objetivo o no.
+            </p>
+
+            <div class="graph-types-grid">
+                <!-- BFS -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">🌊 BFS - Búsqueda en Anchura</h3>
+                    <p>Explora todos los nodos de un nivel antes de pasar al siguiente. Usa una <strong>cola FIFO</strong>.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">Cola FIFO</span>
+
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fondo-azul); border-radius: 8px; border-left: 4px solid var(--azul-ilerna);">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>✅ Ventajas:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.85rem; color: var(--gris-texto); line-height: 1.6;">
+                            <li>Garantiza solución óptima (costes uniformes)</li>
+                            <li>Completo: siempre encuentra solución si existe</li>
+                            <li>Camino más corto en grafos no ponderados</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 0.5rem; padding: 0.75rem; background: #ffe5e5; border-radius: 8px; border-left: 4px solid #f44336;">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>⚠️ Desventajas:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.85rem; color: var(--gris-texto); line-height: 1.6;">
+                            <li>Consume mucha memoria: O(b^d)</li>
+                            <li>Almacena todos los nodos de cada nivel</li>
+                        </ul>
+                    </div>
+
+                    <p class="type-example" style="margin-top: 1rem;"><strong>Aplicación:</strong> Redes sociales (conexión más corta entre usuarios)</p>
+                </div>
+
+                <!-- DFS -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">🏊 DFS - Búsqueda en Profundidad</h3>
+                    <p>Explora una rama completa antes de retroceder. Usa una <strong>pila LIFO</strong> o recursión.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">Pila LIFO</span>
+
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fondo-morado); border-radius: 8px; border-left: 4px solid var(--morado);">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>✅ Ventajas:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.85rem; color: var(--gris-texto); line-height: 1.6;">
+                            <li>Menos memoria que BFS: O(d)</li>
+                            <li>Solo almacena el camino actual</li>
+                            <li>Eficiente para árboles profundos</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 0.5rem; padding: 0.75rem; background: #ffe5e5; border-radius: 8px; border-left: 4px solid #f44336;">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>⚠️ Desventajas:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.85rem; color: var(--gris-texto); line-height: 1.6;">
+                            <li>Puede quedar atrapada en ramas infinitas</li>
+                            <li>No garantiza solución óptima</li>
+                        </ul>
+                    </div>
+
+                    <p class="type-example" style="margin-top: 1rem;"><strong>Aplicación:</strong> Laberintos, árboles de decisión</p>
+                </div>
+
+                <!-- UCS -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">💰 UCS - Coste Uniforme</h3>
+                    <p>Prioriza el camino con <strong>menor coste acumulado</strong>. Usa una <strong>cola de prioridad</strong>.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">Cola Prioridad</span>
+
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fondo-azul); border-radius: 8px; border-left: 4px solid var(--azul-ilerna);">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>✅ Ventajas:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.85rem; color: var(--gris-texto); line-height: 1.6;">
+                            <li>Garantiza solución óptima siempre</li>
+                            <li>Expande nodos de menor coste primero</li>
+                            <li>Ideal para costes no uniformes</li>
+                        </ul>
+                    </div>
+
+                    <p class="type-example" style="margin-top: 1rem;"><strong>Aplicación:</strong> Dijkstra para rutas GPS</p>
+                </div>
+            </div>
+
+            <!-- Tabla Comparativa -->
+            <h3 style="color: var(--negro-texto); margin: 2rem 0 1rem 0;">Comparación de Algoritmos Ciegos</h3>
+            <div class="table-container">
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Estructura</th>
+                            <th>Completo</th>
+                            <th>Óptimo</th>
+                            <th>Tiempo</th>
+                            <th>Memoria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>BFS</strong></td>
+                            <td>Cola FIFO</td>
+                            <td>✅ Sí</td>
+                            <td>✅ Sí*</td>
+                            <td>O(b^d)</td>
+                            <td>O(b^d)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DFS</strong></td>
+                            <td>Pila LIFO</td>
+                            <td>❌ No*</td>
+                            <td>❌ No</td>
+                            <td>O(b^m)</td>
+                            <td>O(bm)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UCS</strong></td>
+                            <td>Cola Prioridad</td>
+                            <td>✅ Sí</td>
+                            <td>✅ Sí</td>
+                            <td>O(b^(1+C*/ε))</td>
+                            <td>O(b^(1+C*/ε))</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="table-note">* BFS es óptimo con costes uniformes. DFS no es completo en grafos con ciclos sin control de profundidad.</p>
+        </section>
+
+        <!-- Búsqueda Informada -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎯 Estrategias de Búsqueda Informada (Heurística)</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">
+                Los algoritmos de <strong>búsqueda informada</strong> utilizan <strong>conocimiento adicional</strong> sobre el problema (heurísticas) para guiar la búsqueda hacia la solución de manera más eficiente.
+            </p>
+
+            <div class="concept-card" style="padding: 1.5rem; background: linear-gradient(135deg, var(--fondo-azul) 0%, var(--fondo-morado) 100%); border-radius: 12px; margin-bottom: 2rem;">
+                <h4 style="color: var(--azul-ilerna); margin-bottom: 0.75rem;">💡 ¿Qué es una Heurística?</h4>
+                <p style="margin: 0; color: var(--gris-texto);">Una <strong>heurística</strong> es una función h(n) que estima el coste del camino más barato desde un nodo n hasta la meta. Es una "pista inteligente" que ayuda al algoritmo a tomar mejores decisiones sin explorar todo el espacio de estados.</p>
+            </div>
+
+            <div class="graph-types-grid">
+                <!-- A* -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">⭐ A* (A-Estrella)</h3>
+                    <p>El algoritmo de búsqueda informada más popular. Combina coste real g(n) con heurística h(n).</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">f(n) = g(n) + h(n)</span>
+
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fondo-azul); border-radius: 8px;">
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--gris-texto);"><strong>g(n)</strong> = Coste real desde inicio hasta n</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--gris-texto);"><strong>h(n)</strong> = Coste estimado de n hasta meta</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--gris-texto);"><strong>f(n)</strong> = Coste total estimado</p>
+                    </div>
+
+                    <p class="type-example" style="margin-top: 1rem;"><strong>Aplicación:</strong> Google Maps, navegación de robots, videojuegos</p>
+                </div>
+
+                <!-- Greedy -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">🚀 Greedy (Voraz)</h3>
+                    <p>Busca primero el nodo que parece más cercano a la meta según la heurística.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">f(n) = h(n)</span>
+
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fondo-morado); border-radius: 8px;">
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--gris-texto);"><strong>Ventaja:</strong> Muy rápido, baja complejidad</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--gris-texto);"><strong>Desventaja:</strong> No garantiza solución óptima</p>
+                    </div>
+
+                    <p class="type-example" style="margin-top: 1rem;"><strong>Aplicación:</strong> Aproximaciones rápidas cuando el óptimo no es crítico</p>
+                </div>
+
+                <!-- Heurísticas Comunes -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">📏 Heurísticas Comunes</h3>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 0.9rem; line-height: 1.8;">
+                        <li><strong>Distancia Euclidiana:</strong> Línea recta en 2D/3D</li>
+                        <li><strong>Distancia Manhattan:</strong> Suma de diferencias de coordenadas</li>
+                        <li><strong>Distancia Chebyshev:</strong> Máxima diferencia de coordenadas</li>
+                        <li><strong>Diagonal:</strong> Combina Manhattan y Chebyshev</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Propiedades de las Heurísticas -->
+            <div class="concept-card" style="margin-top: 2rem; padding: 2rem; background: white; border-radius: 12px; border: 2px solid var(--azul-ilerna);">
+                <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">🎓 Propiedades de las Heurísticas</h3>
+
+                <div class="graph-types-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div>
+                        <h4 style="color: var(--azul-ilerna); font-size: 1rem; margin-bottom: 0.5rem;">Admisible</h4>
+                        <p style="margin: 0; color: var(--gris-texto); font-size: 0.9rem;">Nunca sobreestima el coste real. Garantiza que A* encuentre la solución óptima.</p>
+                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: var(--fondo-azul); border-radius: 6px;">
+                            <code style="font-size: 0.85rem; color: var(--azul-ilerna);">h(n) ≤ h*(n)</code>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--morado); font-size: 1rem; margin-bottom: 0.5rem;">Consistente (Monótona)</h4>
+                        <p style="margin: 0; color: var(--gris-texto); font-size: 0.9rem;">La estimación disminuye a medida que nos acercamos a la meta.</p>
+                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: var(--fondo-morado); border-radius: 6px;">
+                            <code style="font-size: 0.85rem; color: var(--morado);">h(n) ≤ c(n,n') + h(n')</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparación Final -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>⚖️ Comparación: Búsqueda Ciega vs. Informada</h2>
+            </div>
+
+            <div class="graph-types-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="concept-card" style="padding: 1.5rem; background: var(--fondo-azul); border-radius: 12px; border: 2px solid var(--azul-ilerna);">
+                    <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">🔵 Búsqueda Ciega</h3>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); line-height: 1.8;">
+                        <li>No usa información del dominio</li>
+                        <li>Explora sistemáticamente</li>
+                        <li>Completa pero puede ser ineficiente</li>
+                        <li>BFS, DFS, UCS</li>
+                    </ul>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: white; border-radius: 8px;">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>Cuándo usar:</strong> Espacios pequeños, sin heurística disponible</p>
+                    </div>
+                </div>
+
+                <div class="concept-card" style="padding: 1.5rem; background: var(--fondo-morado); border-radius: 12px; border: 2px solid var(--morado);">
+                    <h3 style="color: var(--morado); margin-bottom: 1rem;">🟣 Búsqueda Informada</h3>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); line-height: 1.8;">
+                        <li>Usa heurísticas del dominio</li>
+                        <li>Explora inteligentemente</li>
+                        <li>Mucho más eficiente</li>
+                        <li>A*, Greedy, IDA*</li>
+                    </ul>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: white; border-radius: 8px;">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--gris-texto);"><strong>Cuándo usar:</strong> Espacios grandes, heurística disponible y confiable</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Prácticas -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🚀 Aplicaciones en el Mundo Real</h2>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🗺️</div>
+                    <h3>Navegación y GPS</h3>
+                    <ul>
+                        <li>Google Maps usa A* con heurística de distancia</li>
+                        <li>Waze integra tráfico en tiempo real</li>
+                        <li>Robots autónomos usan planificación de rutas</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🎮</div>
+                    <h3>Videojuegos</h3>
+                    <ul>
+                        <li>Pathfinding de NPCs con A*</li>
+                        <li>IA enemiga con árboles de búsqueda</li>
+                        <li>Generación procedural de niveles</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🧩</div>
+                    <h3>Resolución de Puzzles</h3>
+                    <ul>
+                        <li>Cubo de Rubik con IDA*</li>
+                        <li>Sudoku con backtracking (DFS)</li>
+                        <li>Ajedrez con minimax y poda alfa-beta</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🤖</div>
+                    <h3>Robótica</h3>
+                    <ul>
+                        <li>Planificación de movimientos</li>
+                        <li>Exploración de entornos desconocidos</li>
+                        <li>Navegación con obstáculos dinámicos</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">📦</div>
+                    <h3>Logística</h3>
+                    <ul>
+                        <li>Optimización de rutas de entrega</li>
+                        <li>Problema del viajante (TSP)</li>
+                        <li>Planificación de almacenes</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🧬</div>
+                    <h3>Bioinformática</h3>
+                    <ul>
+                        <li>Alineamiento de secuencias de ADN</li>
+                        <li>Predicción de plegamiento de proteínas</li>
+                        <li>Análisis de rutas metabólicas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recursos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📚 Recursos de Aprendizaje</h2>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📖</div>
+                    <h3>Bibliografía Recomendada</h3>
+                    <ul>
+                        <li>"Artificial Intelligence: A Modern Approach" - Russell & Norvig</li>
+                        <li>"Introduction to Algorithms" - CLRS</li>
+                        <li>"Algorithm Design" - Kleinberg & Tardos</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">💡</div>
+                    <h3>Consejos de Estudio</h3>
+                    <ul>
+                        <li>Implementa cada algoritmo desde cero</li>
+                        <li>Visualiza la exploración del espacio de estados</li>
+                        <li>Compara algoritmos en diferentes problemas</li>
+                        <li>Diseña tus propias heurísticas</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🔗</div>
+                    <h3>Páginas Relacionadas</h3>
+                    <ul>
+                        <li><a href="bfs-dfs-visualization.html">Visualización BFS & DFS</a></li>
+                        <li><a href="weighted-algorithms.html">Algoritmos con Pesos</a></li>
+                        <li><a href="heuristic-search.html">Búsqueda Heurística (A*)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+</body>
+</html>

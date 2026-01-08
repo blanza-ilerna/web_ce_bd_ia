@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aplicaciones del Procesamiento del Lenguaje Natural: de la teoría a la práctica con chatbots, traducción, análisis de sentimientos y modelos de lenguaje.">
+    <meta name="keywords"
+        content="NLP, Procesamiento del Lenguaje Natural, ChatGPT, Gemini, Chatbots, Traducción Automática, Análisis de Sentimientos, LLMs">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Aplicaciones del Procesamiento del Lenguaje Natural (NLP) | iLERNA">
+    <meta property="og:description"
+        content="Cómo el NLP transforma nuestra interacción con la tecnología: asistentes virtuales, traducción, análisis y más.">
+    <meta property="og:type" content="article">
+    <title>Aplicaciones del Procesamiento del Lenguaje Natural (NLP) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Aplicaciones del Procesamiento del Lenguaje Natural</span>
+                </div>
+            </div>
+            <h1 class="text-center">Aplicaciones del Procesamiento del Lenguaje Natural</h1>
+            <p class="subtitle text-center">De la Teoría a la Práctica: Cómo el NLP Transforma Nuestra Interacción con
+                la Tecnología</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">El NLP: De lo Experimental a lo Cotidiano</h2>
+                <p>
+                    El Procesamiento del Lenguaje Natural ha evolucionado desde un campo experimental de la
+                    inteligencia artificial hasta convertirse en uno de sus pilares más visibles y útiles. Cada día,
+                    millones de personas interactúan con sistemas de NLP sin siquiera darse cuenta: al conversar con
+                    asistentes virtuales, traducir textos, buscar información en Internet o dejar reseñas que son
+                    analizadas automáticamente.
+                </p>
+                <p>
+                    Esta lección explora los principales ámbitos de aplicación del NLP, ejemplos reales actuales, su
+                    integración en entornos empresariales y educativos, así como los desafíos técnicos y éticos que
+                    surgen al desplegar estas tecnologías a gran escala.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>💬 Ejemplo Real:</strong></p>
+                    <p style="margin-bottom: 0;">Cuando preguntas a Alexa "¿Qué tiempo hará mañana?", hay todo un
+                        sistema de NLP trabajando: reconoce tu voz, interpreta la intención (consulta meteorológica),
+                        identifica la referencia temporal ("mañana"), busca la información y genera una respuesta
+                        natural en lenguaje hablado.</p>
+                </div>
+
+                <h3 class="color-secondary" style="margin-top: 2rem;">El NLP en Cifras</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">📱 4.5 mil millones</h4>
+                        <p>Usuarios de asistentes virtuales en el mundo (2024), interactuando diariamente con sistemas
+                            NLP.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🌐 500+ idiomas</h4>
+                        <p>Soportados por Google Translate, permitiendo comunicación global instantánea entre culturas.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">💼 $27 mil millones</h4>
+                        <p>Mercado global de NLP en 2024, con proyección de $161 mil millones para 2032.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">⚡ 80% reducción</h4>
+                        <p>En tiempo de atención al cliente gracias a chatbots que resuelven consultas automáticamente.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: LOS TRES PILARES DEL NLP -->
+            <section class="section">
+                <h2 class="section-title">Los Tres Pilares del NLP</h2>
+                <p>
+                    El NLP se articula en torno a tres grandes áreas funcionales que conforman el ciclo completo de
+                    interacción lingüística entre humanos y máquinas. Cada una implica procesos diferentes y algoritmos
+                    especializados, pero juntas permiten una comunicación natural y efectiva.
+                </p>
+
+                <!-- VISUALIZACIÓN SVG: CICLO DEL NLP -->
+                <div style="margin: 2rem 0;">
+                    <h3 class="color-secondary">🔄 El Ciclo Completo de Procesamiento</h3>
+                    <svg width="900" height="380" viewBox="0 0 900 380"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Los Tres Ámbitos Principales del NLP</text>
+
+                        <!-- COMPRENSIÓN -->
+                        <rect x="80" y="70" width="200" height="140" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="180" y="100" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">COMPRENSIÓN</text>
+                        <text x="180" y="125" font-size="14" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Interpretar el significado</text>
+
+                        <text x="100" y="150" font-size="12" fill="#555555" font-family="Montserrat">• Segmentar frases
+                        </text>
+                        <text x="100" y="170" font-size="12" fill="#555555" font-family="Montserrat">• Identificar
+                            entidades</text>
+                        <text x="100" y="190" font-size="12" fill="#555555" font-family="Montserrat">• Reconocer
+                            intenciones</text>
+
+                        <!-- GENERACIÓN -->
+                        <rect x="350" y="70" width="200" height="140" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="10" />
+                        <text x="450" y="100" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">GENERACIÓN</text>
+                        <text x="450" y="125" font-size="14" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Producir texto coherente</text>
+
+                        <text x="370" y="150" font-size="12" fill="#555555" font-family="Montserrat">• Redactar
+                            respuestas</text>
+                        <text x="370" y="170" font-size="12" fill="#555555" font-family="Montserrat">• Crear contenido
+                            nuevo</text>
+                        <text x="370" y="190" font-size="12" fill="#555555" font-family="Montserrat">• Traducir entre
+                            idiomas</text>
+
+                        <!-- ANÁLISIS -->
+                        <rect x="620" y="70" width="200" height="140" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="720" y="100" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">ANÁLISIS</text>
+                        <text x="720" y="125" font-size="14" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Extraer conocimiento</text>
+
+                        <text x="640" y="150" font-size="12" fill="#555555" font-family="Montserrat">• Detectar
+                            emociones</text>
+                        <text x="640" y="170" font-size="12" fill="#555555" font-family="Montserrat">• Clasificar
+                            documentos</text>
+                        <text x="640" y="190" font-size="12" fill="#555555" font-family="Montserrat">• Encontrar
+                            patrones</text>
+
+                        <!-- Flechas del ciclo -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <!-- Flecha: Comprensión -> Generación -->
+                        <path d="M 280 140 L 350 140" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="315" y="130" font-size="11" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Procesa</text>
+
+                        <!-- Flecha: Generación -> Análisis -->
+                        <path d="M 550 140 L 620 140" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <text x="585" y="130" font-size="11" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Evalúa</text>
+
+                        <!-- Flecha: Análisis -> Comprensión (curva inferior) -->
+                        <path d="M 720 210 Q 450 280 180 210" stroke="#49B9CE" stroke-width="3"
+                            marker-end="url(#arrowblue)" fill="none" />
+                        <text x="450" y="300" font-size="11" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Retroalimenta</text>
+
+                        <!-- Ejemplos prácticos -->
+                        <text x="450" y="340" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Ejemplo de flujo completo:</text>
+                        <text x="450" y="360" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Usuario pregunta → Sistema comprende → Genera respuesta → Analiza
+                            satisfacción → Mejora futuras respuestas</text>
+                    </svg>
+                </div>
+
+                <!-- DETALLES DE CADA ÁMBITO -->
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-primary">🧠 Comprensión del Lenguaje</h4>
+                        <p>
+                            <strong>Objetivo:</strong> Que la máquina interprete el significado de un texto o
+                            conversación.
+                        </p>
+                        <p style="font-size: 0.95rem; color: #555;">
+                            <strong>Ejemplo:</strong> Un sistema de atención al cliente que entiende "mi paquete no ha
+                            llegado" como "problema de envío" y lo clasifica automáticamente para el departamento de
+                            logística.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">✍️ Generación de Lenguaje</h4>
+                        <p>
+                            <strong>Objetivo:</strong> Producir texto coherente, natural y adaptado al contexto.
+                        </p>
+                        <p style="font-size: 0.95rem; color: #555;">
+                            <strong>Ejemplo:</strong> ChatGPT escribiendo un email profesional, GitHub Copilot
+                            autocompletando código, o DeepL traduciendo un artículo completo manteniendo el tono
+                            original.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="color-primary">📊 Análisis del Lenguaje</h4>
+                        <p>
+                            <strong>Objetivo:</strong> Extraer conocimiento y patrones de grandes volúmenes de texto.
+                        </p>
+                        <p style="font-size: 0.95rem; color: #555;">
+                            <strong>Ejemplo:</strong> Amazon analizando millones de reseñas para identificar qué
+                            aspectos de un producto (precio, calidad, diseño) son más mencionados positiva o
+                            negativamente.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: APLICACIONES COTIDIANAS -->
+            <section class="section">
+                <h2 class="section-title">Aplicaciones Cotidianas del NLP</h2>
+                <p>
+                    El NLP está presente en cientos de herramientas que usamos a diario, muchas veces sin ser
+                    conscientes de la complejidad tecnológica detrás. A continuación, exploramos las aplicaciones más
+                    comunes y su impacto en la vida real.
+                </p>
+
+                <!-- CHATBOTS Y ASISTENTES -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-primary">🤖 Chatbots y Asistentes Virtuales</h3>
+                    <p>
+                        Son interfaces conversacionales que mantienen diálogos naturales con usuarios. Desde asistentes
+                        domésticos hasta sistemas empresariales especializados.
+                    </p>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h4 class="color-primary">Asistentes Personales</h4>
+                            <p>Siri, Alexa, Google Assistant: ejecutan comandos de voz, responden preguntas y controlan
+                                dispositivos domóticos.</p>
+                        </div>
+
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">Atención al Cliente</h4>
+                            <p>Chatbots en webs corporativas gestionan reservas, pedidos y reclamaciones 24/7 sin
+                                intervención humana.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 class="color-primary">Consulta Interna</h4>
+                            <p>Empresas implementan chats que responden dudas sobre políticas, procedimientos o
+                                documentación técnica.</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <p><strong>⚠️ Factor Crítico de Calidad:</strong></p>
+                        <p style="margin-bottom: 0;">El rendimiento de estos sistemas depende enormemente de la calidad
+                            de los inputs: audio claro para reconocimiento de voz, preguntas bien formuladas (prompts),
+                            y documentación estructurada para consultas internas.</p>
+                    </div>
+                </div>
+
+                <!-- TRADUCCIÓN AUTOMÁTICA -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-secondary">🌍 Traducción Automática</h3>
+                    <p>
+                        Los sistemas de traducción han evolucionado desde reglas gramaticales rígidas a modelos
+                        neuronales que comprenden contexto y matices culturales. La arquitectura <strong>Transformer
+                            (2017)</strong> marcó un punto de inflexión, permitiendo traducciones fluidas y naturales.
+                    </p>
+
+                    <table class="styled-table" style="margin-bottom: 1rem;">
+                        <thead>
+                            <tr>
+                                <th>Herramienta</th>
+                                <th style="text-align: center;">Idiomas</th>
+                                <th>Característica Destacada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Google Translate</strong></td>
+                                <td style="text-align: center;">133+</td>
+                                <td>Traducción instantánea de imágenes y conversaciones en tiempo real</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DeepL</strong></td>
+                                <td style="text-align: center;">31</td>
+                                <td>Mayor precisión en matices y expresiones idiomáticas complejas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ChatGPT/Claude</strong></td>
+                                <td style="text-align: center;">50+</td>
+                                <td>Traducción con adaptación de tono, estilo y contexto cultural</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="font-style: italic; color: #555; font-size: 0.95rem;">
+                        Desde 2023, los modelos de lenguaje grandes (LLMs) han dominado el campo de la traducción,
+                        superando en muchos casos a sistemas especializados previos gracias a su comprensión profunda
+                        del contexto.
+                    </p>
+                </div>
+
+                <!-- ANÁLISIS DE SENTIMIENTOS -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-primary">😊😐😞 Análisis de Sentimientos</h3>
+                    <p>
+                        Detecta la emoción o polaridad de un texto (positiva, negativa o neutra). Se aplica en el
+                        seguimiento de marcas, productos, campañas políticas y reputación online.
+                    </p>
+
+                    <div class="highlight-box primary">
+                        <p style="font-size: 1.05rem; margin-bottom: 0.75rem;"><strong>📊 Caso Real: Análisis de Reseñas
+                                de Producto</strong></p>
+                        <p style="margin-bottom: 0.5rem;">
+                            <strong>Input:</strong> "El producto llegó rápido y funciona bien, pero la batería dura
+                            poco"
+                        </p>
+                        <p style="margin-bottom: 0.5rem;"><strong>Análisis NLP:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0;">
+                            <li><span style="color: #2E7D32;">✓ Positivo:</span> "llegó rápido", "funciona bien"</li>
+                            <li><span style="color: #C62828;">✗ Negativo:</span> "batería dura poco"</li>
+                            <li><strong>Sentimiento Global:</strong> Mixto (60% positivo, 40% negativo)</li>
+                            <li><strong>Aspectos Detectados:</strong> Envío (+), Funcionamiento (+), Autonomía (-)</li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 1rem;">
+                        Empresas como <strong>Brandwatch</strong> y <strong>Talkwalker</strong> usan NLP para medir
+                        reputación online, procesando millones de menciones diarias en redes sociales, foros y medios
+                        digitales.
+                    </p>
+                </div>
+
+                <!-- CLASIFICACIÓN Y RESUMEN -->
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">🗂️ Clasificación de Textos</h4>
+                        <p>Asigna categorías o etiquetas a documentos automáticamente.</p>
+                        <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Ejemplos:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
+                                <li>Filtrar emails (spam/no spam)</li>
+                                <li>Clasificar noticias por temática</li>
+                                <li>Etiquetar tickets de soporte</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem; font-style: italic; color: #555;">
+                            Algoritmos: Naive Bayes, BERT fine-tuned, GPT clasificadores
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">📝 Resumen Automático</h4>
+                        <p>Condensa grandes volúmenes de texto manteniendo la información esencial.</p>
+                        <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Dos enfoques:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
+                                <li><strong>Extractivo:</strong> Selecciona frases clave</li>
+                                <li><strong>Abstractivo:</strong> Genera texto nuevo</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem; font-style: italic; color: #555;">
+                            Los LLM actuales combinan ambos, creando resúmenes fluidos y personalizados
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">🏷️ Extracción de Entidades</h4>
+                        <p>Identifica elementos clave y relaciones entre ellos: personas, empresas, fechas, lugares.</p>
+                        <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Aplicaciones:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
+                                <li>Minería de conocimiento</li>
+                                <li>Compliance y auditoría</li>
+                                <li>Inteligencia empresarial</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem; font-style: italic; color: #555;">
+                            Herramientas: spaCy, Hugging Face Transformers, NER custom
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: MODELOS DE LENGUAJE EN LA ACTUALIDAD -->
+            <section class="section">
+                <h2 class="section-title">Modelos de Lenguaje en la Actualidad</h2>
+                <p>
+                    Los grandes modelos de lenguaje (LLMs) han revolucionado el campo del NLP desde 2022. Estos
+                    sistemas representan la convergencia de décadas de investigación en IA, disponibles ahora para
+                    millones de usuarios y empresas.
+                </p>
+
+                <!-- LLMs PRINCIPALES -->
+                <div class="grid-features" style="margin-bottom: 2rem;">
+                    <div class="feature-card">
+                        <h3 class="color-primary">💬 ChatGPT (OpenAI)</h3>
+                        <p>
+                            Popularizó los modelos masivos demostrando capacidad de conversación natural, generación
+                            coherente y adaptación a estilos diversos.
+                        </p>
+                        <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Clave del éxito:</p>
+                            <p style="margin: 0; font-size: 0.9rem;">
+                                Entrenamiento sobre billones de palabras + ajuste fino mediante <strong>RLHF</strong>
+                                (Reinforcement Learning from Human Feedback), alineando respuestas con preferencias
+                                humanas.
+                            </p>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem;">
+                            <strong>Usos:</strong> Redacción, tutorías, generación de código, análisis documental, apoyo
+                            educativo
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">🧬 Gemini (Google DeepMind)</h3>
+                        <p>
+                            Enfoque <strong>multimodal</strong> que combina texto, imagen y audio, permitiendo
+                            razonamiento avanzado y comprensión contextual más amplia.
+                        </p>
+                        <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Diferenciador:</p>
+                            <p style="margin: 0; font-size: 0.9rem;">
+                                Procesa y relaciona información de diferentes modalidades simultáneamente: "Explica esta
+                                gráfica en español" analizando imagen + texto.
+                            </p>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem;">
+                            <strong>Aplicaciones:</strong> Investigación científica, análisis de datos empresariales,
+                            asistencia multimodal
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3 class="color-primary">👨‍💻 Copilot (Microsoft + OpenAI)</h3>
+                        <p>
+                            Integrado en Visual Studio y GitHub, usa NLP para autocompletar código, explicar funciones y
+                            generar pruebas unitarias.
+                        </p>
+                        <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Impacto real:</p>
+                            <p style="margin: 0; font-size: 0.9rem;">
+                                Estudios de GitHub muestran que desarrolladores con Copilot completan tareas un
+                                <strong>55% más rápido</strong> manteniendo calidad del código.
+                            </p>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem;">
+                            <strong>Representa:</strong> Cómo el NLP aumenta productividad sin sustituir intervención
+                            humana
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CASO EMPRESARIAL: ANÁLISIS DE RESEÑAS -->
+                <div class="concept-card" style="border: 2px solid #333333; margin-top: 2rem;">
+                    <h3 class="color-primary" style="margin-top: 0;">🛒 Caso Real: Análisis de Reseñas en E-commerce
+                    </h3>
+                    <p style="font-size: 1.05rem; margin-bottom: 1rem;">
+                        <strong>Amazon</strong> y <strong>TripAdvisor</strong> aplican NLP avanzado para procesar
+                        millones de opiniones diarias, identificando no solo sentimiento general sino aspectos
+                        específicos mencionados.
+                    </p>
+
+                    <div class="grid-features">
+                        <div class="feature-card" style="background: white;">
+                            <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Detección de Aspectos
+                            </p>
+                            <p style="font-size: 0.9rem; margin: 0;">Identifica menciones a: limpieza, trato, precio,
+                                ubicación, etc.</p>
+                        </div>
+
+                        <div class="feature-card secondary" style="background: white;">
+                            <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">Priorización Automática
+                            </p>
+                            <p style="font-size: 0.9rem; margin: 0;">Incidencias críticas son escaladas antes que quejas
+                                menores</p>
+                        </div>
+
+                        <div class="feature-card" style="background: white;">
+                            <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Respuestas Automáticas
+                            </p>
+                            <p style="font-size: 0.9rem; margin: 0;">Genera replies personalizadas según el contexto de
+                                la queja</p>
+                        </div>
+
+                        <div class="feature-card secondary" style="background: white;">
+                            <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">Insights de Producto</p>
+                            <p style="font-size: 0.9rem; margin: 0;">Detecta patrones para mejorar diseño y experiencia
+                                del usuario</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: NLP EN CONTEXTOS PROFESIONALES -->
+            <section class="section">
+                <h2 class="section-title">NLP en Contextos Profesionales</h2>
+
+                <!-- ÁMBITO EMPRESARIAL -->
+                <div style="margin-bottom: 2.5rem;">
+                    <h3 class="color-primary">💼 En el Ámbito Empresarial</h3>
+                    <p>
+                        Las compañías utilizan NLP para automatizar procesos documentales, monitorizar reputación y
+                        extraer conocimiento de textos. La integración con herramientas de <strong>Business
+                            Intelligence</strong> permite conectar datos estructurados (bases de datos) con datos no
+                        estructurados (emails, chats, PDFs).
+                    </p>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h4 class="color-primary">⚖️ Análisis de Contratos</h4>
+                            <p style="font-size: 0.95rem;">
+                                Reconocimiento automático de cláusulas críticas, fechas de vencimiento y términos de
+                                riesgo en documentos legales.
+                            </p>
+                        </div>
+
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">🔍 Detección de Riesgos</h4>
+                            <p style="font-size: 0.95rem;">
+                                Auditorías financieras que identifican anomalías o patrones sospechosos en grandes
+                                volúmenes de transacciones textuales.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 class="color-primary">📊 Informes Ejecutivos</h4>
+                            <p style="font-size: 0.95rem;">
+                                Generación automática de resúmenes de reuniones, dashboards narrativos y reportes de
+                                desempeño personalizados.
+                            </p>
+                        </div>
+
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">📧 Gestión Documental</h4>
+                            <p style="font-size: 0.95rem;">
+                                Clasificación automática de correos, extracción de información clave y enrutamiento
+                                inteligente de solicitudes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ÁMBITO EDUCATIVO -->
+                <div>
+                    <h3 class="color-secondary">🎓 En el Ámbito Educativo</h3>
+                    <p>
+                        El NLP impulsa nuevas formas de aprendizaje asistido por IA, democratizando el acceso a
+                        educación personalizada y feedback inmediato.
+                    </p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 class="color-secondary">🤝 Tutores Virtuales</h4>
+                            <p>
+                                Responden preguntas de estudiantes 24/7, explican conceptos complejos con múltiples
+                                enfoques y se adaptan al ritmo individual de aprendizaje.
+                            </p>
+                            <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                                <p style="margin: 0; font-size: 0.9rem;">
+                                    <strong>Ejemplo:</strong> Khan Academy usa IA para tutorías personalizadas en
+                                    matemáticas
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 class="color-primary">✏️ Evaluación Automática</h4>
+                            <p>
+                                Revisan redacciones, ensayos y trabajos escritos, generando feedback específico sobre
+                                estructura, gramática, coherencia y argumentación.
+                            </p>
+                            <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                                <p style="margin: 0; font-size: 0.9rem;">
+                                    <strong>Ejemplo:</strong> Grammarly, Turnitin, y sistemas universitarios de
+                                    corrección automática
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4 class="color-secondary">🌍 Aprendizaje de Idiomas</h4>
+                            <p>
+                                Plataformas con conversación interactiva, corrección en tiempo real y práctica adaptativa
+                                basada en errores comunes del estudiante.
+                            </p>
+                            <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                                <p style="margin: 0; font-size: 0.9rem;">
+                                    <strong>Ejemplo:</strong> Duolingo, Babbel con asistentes conversacionales nativos
+                                    de IA
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 1.5rem; border-left: 4px solid #FFA726;">
+                        <p style="font-weight: 700; color: #E65100; margin-bottom: 0.5rem;">⚠️ Alfabetización Digital y
+                            Ética</p>
+                        <p style="margin-bottom: 0;">
+                            El uso educativo del NLP exige alfabetización digital: los estudiantes deben comprender cómo
+                            funcionan estas herramientas, qué limitaciones tienen (alucinaciones, sesgos) y cómo usarlas
+                            de forma ética sin comprometer el aprendizaje genuino.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: DESAFÍOS DEL NLP EN PRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">Desafíos del NLP en Producción</h2>
+                <p>
+                    Desplegar sistemas de NLP a gran escala implica enfrentar retos técnicos, éticos y organizativos. La
+                    calidad de los inputs determina directamente la precisión, coherencia y ausencia de errores del
+                    sistema.
+                </p>
+
+                <!-- VISUALIZACIÓN: FACTORES DE CALIDAD -->
+                <div style="margin: 2rem 0;">
+                    <h3 class="color-primary">🎯 Factores que Determinan la Calidad</h3>
+                    <svg width="850" height="300" viewBox="0 0 850 300"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                        <!-- Centro: Calidad del Sistema -->
+                        <circle cx="425" cy="150" r="70" fill="#49B9CE" stroke="#1e7e9c" stroke-width="3" />
+                        <text x="425" y="145" font-size="16" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">CALIDAD</text>
+                        <text x="425" y="162" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">DEL SISTEMA</text>
+
+                        <!-- Factor 1: Datasets -->
+                        <rect x="50" y="50" width="160" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="8" />
+                        <text x="130" y="75" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">📚 Calidad de</text>
+                        <text x="130" y="92" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Datasets</text>
+                        <text x="130" y="110" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Datos limpios,</text>
+                        <text x="130" y="123" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">diversos, actualizados</text>
+
+                        <!-- Factor 2: Privacidad -->
+                        <rect x="50" y="180" width="160" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="8" />
+                        <text x="130" y="205" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">🔒 Privacidad y</text>
+                        <text x="130" y="222" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Protección</text>
+                        <text x="130" y="240" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Anonimización,</text>
+                        <text x="130" y="253" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">cumplimiento RGPD</text>
+
+                        <!-- Factor 3: Sesgos -->
+                        <rect x="640" y="50" width="160" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="8" />
+                        <text x="720" y="75" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">⚖️ Mitigación</text>
+                        <text x="720" y="92" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">de Sesgos</text>
+                        <text x="720" y="110" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Rebalanceo,</text>
+                        <text x="720" y="123" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">auditorías éticas</text>
+
+                        <!-- Factor 4: Mantenimiento -->
+                        <rect x="640" y="180" width="160" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="8" />
+                        <text x="720" y="205" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">🔄 Actualización</text>
+                        <text x="720" y="222" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Continua</text>
+                        <text x="720" y="240" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Reentrenamiento,</text>
+                        <text x="720" y="253" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">monitoreo constante</text>
+
+                        <!-- Líneas conectoras -->
+                        <defs>
+                            <marker id="arrowcenter" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#49B9CE" />
+                            </marker>
+                        </defs>
+
+                        <path d="M 210 90 L 355 130" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowcenter)" />
+                        <path d="M 210 220 L 355 170" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowcenter)" />
+                        <path d="M 640 90 L 495 130" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowcenter)" />
+                        <path d="M 640 220 L 495 170" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowcenter)" />
+                    </svg>
+                </div>
+
+                <!-- DESAFÍOS DETALLADOS -->
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">📚 Calidad y Diversidad de Datasets</h4>
+                        <p>
+                            <strong>Problema:</strong> Los textos disponibles en Internet contienen errores, sesgos,
+                            duplicidades y contenido desactualizado.
+                        </p>
+                        <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Soluciones:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.95rem;">
+                                <li>Curación manual de datasets críticos</li>
+                                <li>Filtrado semántico automático</li>
+                                <li>Auditorías lingüísticas periódicas</li>
+                                <li>Documentación estructurada y actualizada</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem; font-style: italic; color: #555;">
+                            Un modelo solo es tan bueno como los datos con los que se entrena
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">🔒 Privacidad y Protección de Datos</h4>
+                        <p>
+                            <strong>Riesgo:</strong> Los sistemas NLP pueden procesar información sensible: mensajes
+                            privados, historiales médicos, contratos confidenciales.
+                        </p>
+                        <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Medidas obligatorias:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.95rem;">
+                                <li>Anonimización de datos personales</li>
+                                <li>Enmascaramiento de información sensible</li>
+                                <li>Cumplimiento RGPD (Europa)</li>
+                                <li>Evitar memorización de datos privados</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">⚖️ Sesgos Lingüísticos y Culturales</h4>
+                        <p>
+                            <strong>Realidad:</strong> El lenguaje refleja ideologías y desigualdades sociales. Si los
+                            modelos aprenden de textos sesgados, reproducen esos patrones.
+                        </p>
+                        <div class="highlight-box primary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Ejemplo clásico:</p>
+                            <p style="margin: 0; font-size: 0.95rem;">
+                                Asociar "enfermera" con mujeres o "director" con hombres. Perpetuar estereotipos de
+                                género, raza o profesión en generación de textos.
+                            </p>
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.75rem;">
+                            <strong>Mitigación:</strong> Rebalanceo de corpus, revisión humana constante, auditorías
+                            éticas independientes
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">🔄 Costes de Mantenimiento y Actualización</h4>
+                        <p>
+                            <strong>Desafío:</strong> Los modelos grandes son costosos en entrenamiento y despliegue. El
+                            lenguaje cambia constantemente: nuevas expresiones, memes, contextos.
+                        </p>
+                        <div class="highlight-box secondary" style="margin-top: 0.75rem;">
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Estrategias emergentes:</p>
+                            <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.95rem;">
+                                <li>Reentrenamientos periódicos programados</li>
+                                <li>Monitoreo continuo de desempeño</li>
+                                <li><strong>RAG</strong> (Retrieval-Augmented Generation): combinar modelos con bases de
+                                    conocimiento actualizadas dinámicamente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: REFLEXIÓN FINAL -->
+            <section class="section" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); text-align: center;">
+                <h2 class="section-title">El Lenguaje como Puente Humano-Digital</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">
+                    El NLP no solo permite que las máquinas "hablen", sino que acerca la tecnología a la forma más
+                    natural de comunicación humana. Representa un <strong>puente entre el conocimiento digital y la
+                        comprensión humana</strong>, entre el dato frío y la emoción, entre diferentes idiomas y
+                    culturas.
+                </p>
+                <p style="font-size: 1.15rem; margin-bottom: 1rem;">
+                    El verdadero valor del NLP no está en que una máquina escriba textos o traduzca frases, sino en que
+                    <strong>permita que más personas se entiendan mejor</strong>. La tecnología deja de ser un fin y se
+                    convierte en un medio: entre lenguas, profesiones, generaciones y formas de pensar.
+                </p>
+
+                <div class="concept-card" style="margin-top: 2rem; border: 2px solid #8A7AAF; text-align: left;">
+                    <h3 class="color-secondary" style="margin-top: 0; text-align: center;">💭 Reflexión para el Futuro
+                    </h3>
+                    <p style="font-size: 1.05rem; margin: 0;">
+                        A medida que el NLP se integra más profundamente en nuestra vida cotidiana, debemos
+                        preguntarnos: <strong>¿Estamos usando la tecnología para amplificar nuestra humanidad o para
+                            sustituirla?</strong> La respuesta determinará si el NLP será recordado como la herramienta
+                        que nos conectó mejor... o como la que nos alejó de lo esencial.
+                    </p>
+                </div>
+            </section>
+
+            <!-- DATO CURIOSO FINAL -->
+            <div class="warning-box" style="margin-top: 2rem; background: #FFF8DC; border-left: 4px solid #FFA726;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem;">💡 Curiosidad Tecnológica</h4>
+                <p style="margin-bottom: 1rem;">
+                    <strong>GPT-4</strong> fue entrenado con aproximadamente <strong>13 billones de tokens</strong>
+                    (palabras y fragmentos), equivalente a leer toda Wikipedia en 100 idiomas más de 500 veces. Su coste
+                    de entrenamiento se estima en <strong>más de $100 millones de dólares</strong> en infraestructura de
+                    supercomputación.
+                </p>
+                <p style="margin-bottom: 0;">
+                    Sin embargo, a pesar de esta escala masiva, GPT-4 no "entiende" el lenguaje como los humanos: no
+                    tiene experiencias, emociones ni conciencia del mundo real. Su "comprensión" es puramente
+                    estadística: patrones aprendidos de correlaciones en texto. Esto nos recuerda que, por poderosa que
+                    sea la IA, sigue siendo fundamentalmente diferente de la inteligencia humana.
+                </p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

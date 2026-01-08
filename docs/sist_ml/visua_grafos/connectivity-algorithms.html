@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Conectividad y Componentes | Tarjan & Kosaraju</title>
+    <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+        <header>
+            <h1>🔗 Algoritmos de Conectividad y Componentes</h1>
+            <p class="subtitle">Visualización interactiva de Tarjan, Kosaraju y detección de estructuras</p>
+        </header>
+
+        <!-- Visualización del Grafo - Ocupa todo el ancho -->
+        <div class="graph-section">
+            <div class="section-title">
+                <span class="icon">📊</span>
+                Grafo dirigido de ejemplo
+            </div>
+            <div id="graph-container"></div>
+            <div class="graph-footer">
+                <div class="footer-left">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot default"></div>
+                            <span>Sin visitar</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot queued" id="legendQueued"></div>
+                            <span id="legendQueuedText">En proceso</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot current-bfs" id="legendCurrent"></div>
+                            <span>Nodo actual</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot visited"></div>
+                            <span>Visitado</span>
+                        </div>
+                    </div>
+
+                    <div class="visit-order-inline">
+                        <div class="visit-order-label">✅ Componentes encontrados:</div>
+                        <div class="visit-order" id="visitOrder"></div>
+                    </div>
+
+                    <div class="data-structure-inline">
+                        <div class="structure-header-inline">
+                            <span class="structure-label">🗃️ Estructura:</span>
+                            <span class="structure-type bfs-type" id="structureType">Pila (DFS)</span>
+                            <span class="structure-indicator" id="structureIndicator">← Tope</span>
+                        </div>
+                        <div class="structure-items" id="structureItems"></div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="inline-controls">
+                        <div class="controls">
+                            <button class="control-btn primary" id="startBtn" onclick="startSearch()">
+                                ▶ Iniciar
+                            </button>
+                            <button class="control-btn" id="stepBtn" onclick="stepSearch()">
+                                ⏭<br>Paso
+                            </button>
+                            <button class="control-btn" id="resetBtn" onclick="resetGraph()">
+                                ↺ Reset
+                            </button>
+                        </div>
+                        <div class="speed-control" id="speedControl">
+                            <label>Velocidad</label>
+                            <input type="range" id="speedSlider" min="100" max="2000" value="800" onchange="updateSpeed()">
+                        </div>
+                    </div>
+
+                    <div class="inline-progress">
+                        <div class="step-counter">
+                            <div class="label">Paso</div>
+                            <span class="current" id="stepNumber">0</span>
+                            <span class="total">/ <span id="totalSteps">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algoritmo y Variantes - Layout horizontal -->
+        <div class="algorithm-section">
+            <div class="algorithm-row">
+                <div class="algorithm-selector-horizontal">
+                    <div class="section-label">⚙️ Algoritmo:</div>
+                    <button class="algo-btn bfs active" onclick="selectAlgorithm('tarjan')">
+                        Tarjan SCC
+                        <span class="algo-label">Componentes</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('kosaraju')">
+                        Kosaraju SCC
+                        <span class="algo-label">Dos DFS</span>
+                    </button>
+                    <button class="algo-btn" onclick="selectAlgorithm('bridges')">
+                        Bridges & AP
+                        <span class="algo-label">Estructuras</span>
+                    </button>
+                </div>
+
+                <div class="variants-selector-horizontal" id="tarjanVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h active" onclick="selectTarjanVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h" onclick="selectTarjanVariant('timestamps')">Con Timestamps</button>
+                    <button class="variant-btn-h" onclick="selectTarjanVariant('applications')">Aplicaciones</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="kosarajuVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectKosarajuVariant('standard')">Estándar (dos DFS)</button>
+                    <button class="variant-btn-h-dfs" onclick="selectKosarajuVariant('step-by-step')">Paso a Paso</button>
+                    <button class="variant-btn-h-dfs" onclick="selectKosarajuVariant('transpose')">Grafo Transpuesto</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="bridgesVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h active" onclick="selectBridgesVariant('bridges')">Puentes (Bridges)</button>
+                    <button class="variant-btn-h" onclick="selectBridgesVariant('articulation')">Puntos de Articulación</button>
+                    <button class="variant-btn-h" onclick="selectBridgesVariant('biconnected')">Componentes Biconexas</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pseudocódigo y Explicación -->
+        <div class="code-explanation-layout">
+            <div class="panel pseudocode-panel">
+                <div class="panel-title">💻 Pseudocódigo</div>
+                <div class="pseudocode" id="pseudocode">
+                    <div class="line" data-line="1"><span class="keyword">Tarjan_SCC</span>(grafo):</div>
+                    <div class="line" data-line="2">  índice ← 0</div>
+                    <div class="line" data-line="3">  pila ← []</div>
+                    <div class="line" data-line="4">  SCCs ← []</div>
+                    <div class="line" data-line="5">  <span class="keyword">para cada</span> nodo en grafo:</div>
+                    <div class="line" data-line="6">    <span class="keyword">si</span> nodo no visitado:</div>
+                    <div class="line" data-line="7">      <span class="keyword">DFS_Tarjan</span>(nodo)</div>
+                    <div class="line" data-line="8"></div>
+                    <div class="line" data-line="9"><span class="keyword">DFS_Tarjan</span>(v):</div>
+                    <div class="line" data-line="10">  v.índice ← v.lowlink ← índice++</div>
+                    <div class="line" data-line="11">  pila.push(v)</div>
+                    <div class="line" data-line="12">  v.enPila ← verdadero</div>
+                    <div class="line" data-line="13">  <span class="keyword">para cada</span> vecino w de v:</div>
+                    <div class="line" data-line="14">    <span class="keyword">si</span> w no visitado:</div>
+                    <div class="line" data-line="15">      <span class="keyword">DFS_Tarjan</span>(w)</div>
+                    <div class="line" data-line="16">      v.lowlink ← min(v.lowlink, w.lowlink)</div>
+                    <div class="line" data-line="17">    <span class="keyword">sino si</span> w.enPila:</div>
+                    <div class="line" data-line="18">      v.lowlink ← min(v.lowlink, w.índice)</div>
+                    <div class="line" data-line="19">  <span class="keyword">si</span> v.lowlink == v.índice:</div>
+                    <div class="line" data-line="20">    SCC ← extraer_componente(pila, v)</div>
+                    <div class="line" data-line="21">    SCCs.añadir(SCC)</div>
+                </div>
+            </div>
+
+            <div class="panel explanation-panel">
+                <div class="panel-title">📖 Explicación</div>
+                <div class="algorithm-explanation" id="algorithmExplanation">
+                    <h4>Tarjan SCC - Estándar</h4>
+                    <p>Encuentra componentes fuertemente conexas usando DFS en una sola pasada con índices y lowlinks.</p>
+                    <ul>
+                        <li><strong>Estructura:</strong> Pila para rastrear nodos en SCC actual</li>
+                        <li><strong>Aplicación:</strong> Encontrar componentes fuertemente conexas en una pasada</li>
+                        <li><strong>Complejidad:</strong> O(V + E) tiempo y espacio</li>
+                        <li><strong>Ventaja:</strong> Una sola pasada DFS vs. dos en Kosaraju</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparativa de algoritmos - Al final -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                Comparativa de algoritmos de conectividad
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>🎯 Tarjan SCC</h3>
+                    <p><strong>Componentes Fuertemente Conexas:</strong> Encuentra SCCs usando DFS con índices y lowlinks en una sola pasada.</p>
+                    <span class="structure-badge">📚 Pila + DFS</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Características Principales:</h4>
+                    <ul>
+                        <li>Algoritmo <strong>más eficiente</strong> que Kosaraju (una sola pasada)</li>
+                        <li>Usa índices de descubrimiento y lowlink values</li>
+                        <li>Identifica raíz de cada SCC cuando lowlink == índice</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> Implementación clásica con pila</li>
+                        <li><strong>Con Timestamps:</strong> Muestra índices y lowlinks en cada paso</li>
+                        <li><strong>Aplicaciones:</strong> Condensación de grafos y DAG resultante</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V + E) tiempo | O(V) espacio
+                    </div>
+                </div>
+
+                <div class="algo-card dfs-card">
+                    <h3>🔄 Kosaraju SCC</h3>
+                    <p><strong>Dos Pasadas DFS:</strong> Primera DFS para ordenar, segunda DFS en grafo transpuesto para encontrar SCCs.</p>
+                    <span class="structure-badge">📚 Pila + 2×DFS</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Características Principales:</h4>
+                    <ul>
+                        <li>Algoritmo <strong>conceptualmente más simple</strong> que Tarjan</li>
+                        <li>Primera DFS: obtener orden de finalización</li>
+                        <li>Segunda DFS: en grafo transpuesto con orden inverso</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar (dos DFS):</strong> Implementación clásica completa</li>
+                        <li><strong>Paso a Paso:</strong> Muestra ambas fases separadamente</li>
+                        <li><strong>Grafo Transpuesto:</strong> Visualiza la inversión de aristas</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V + E) tiempo | O(V) espacio
+                    </div>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3>🌉 Bridges & Articulation Points</h3>
+                    <p><strong>Detección de Estructuras Críticas:</strong> Identifica puentes (aristas críticas) y puntos de articulación (nodos críticos).</p>
+                    <span class="structure-badge">📚 DFS + Lowlinks</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #e0d4ff;">Características Principales:</h4>
+                    <ul>
+                        <li>Similar a Tarjan pero para grafos <strong>no dirigidos</strong></li>
+                        <li>Puente: arista cuya eliminación desconecta el grafo</li>
+                        <li>Punto de articulación: nodo cuya eliminación aumenta componentes</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #e0d4ff;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Puentes (Bridges):</strong> Detecta aristas críticas</li>
+                        <li><strong>Puntos de Articulación:</strong> Detecta nodos críticos</li>
+                        <li><strong>Componentes Biconexas:</strong> Bloques del grafo</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V + E) tiempo | O(V) espacio
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aplicaciones del mundo real -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">🌍</span>
+                Aplicaciones en el mundo real
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>💼 Componentes Fuertemente Conexas (SCC)</h3>
+                    <ul>
+                        <li><strong>Redes sociales:</strong> Detectar comunidades fuertemente interconectadas</li>
+                        <li><strong>Compiladores:</strong> Análisis de dependencias circulares entre módulos</li>
+                        <li><strong>Web crawling:</strong> Identificar grupos de páginas mutuamente enlazadas</li>
+                        <li><strong>Sistemas de recomendación:</strong> Encontrar grupos de usuarios con intereses similares</li>
+                        <li><strong>Análisis financiero:</strong> Detectar grupos de empresas con dependencias mutuas</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card dfs-card">
+                    <h3>🔌 Puentes y Puntos de Articulación</h3>
+                    <ul>
+                        <li><strong>Redes de comunicación:</strong> Identificar conexiones críticas que no deben fallar</li>
+                        <li><strong>Infraestructura:</strong> Detectar puntos únicos de fallo en redes eléctricas</li>
+                        <li><strong>Redes de transporte:</strong> Encontrar rutas o estaciones críticas</li>
+                        <li><strong>Seguridad informática:</strong> Identificar servidores o enlaces cruciales</li>
+                        <li><strong>Logística:</strong> Detectar centros de distribución críticos</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3>🛠 Condensación de Grafos</h3>
+                    <ul>
+                        <li><strong>Optimización de consultas:</strong> Simplificar grafos grandes para análisis más rápidos</li>
+                        <li><strong>Análisis de flujo:</strong> Reducir complejidad en problemas de flujo de redes</li>
+                        <li><strong>Model checking:</strong> Verificación de sistemas con estados fuertemente conexos</li>
+                        <li><strong>Procesamiento de imágenes:</strong> Segmentación y análisis de regiones</li>
+                        <li><strong>Bioinformática:</strong> Análisis de redes de regulación genética</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <script src="js/connectivity-algorithms.js"></script>
+</body>
+</html>

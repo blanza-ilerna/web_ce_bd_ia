@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoría de Grafos | Fundamentos</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .visualization-area {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .svg-container {
+            border: 2px solid #e5e5e5;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background-color: #fafafa;
+        }
+
+        .svg-description {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .svg-description h4 {
+            color: #49B9CE;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .svg-description p {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .btn-demo {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid #49B9CE;
+            background: #49B9CE;
+            color: white;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-demo:hover {
+            background: #3a9fb5;
+            transform: translateY(-2px);
+        }
+
+        .btn-demo:disabled {
+            background: #cccccc;
+            border-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid #e5e5e5;
+            border-radius: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+
+        <header class="hero">
+            <h1>📊 Teoría de Grafos</h1>
+            <p class="subtitle">Fundamentos matemáticos y estructuras de datos</p>
+            <p class="hero-description">Comprende las bases teóricas de los grafos y sus aplicaciones en ciencias de la computación</p>
+        </header>
+
+        <!-- Introducción a la Teoría de Grafos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🌐 ¿Qué es un Grafo?</h2>
+            </div>
+            <div class="theory-content">
+                <div class="theory-text">
+                    <p>Un <strong>grafo</strong> es una estructura matemática que modela relaciones entre objetos. Formalmente, un grafo G = (V, E) consiste en:</p>
+                    <ul>
+                        <li><strong>V (Vértices o Nodos):</strong> Conjunto de elementos u objetos</li>
+                        <li><strong>E (Aristas o Enlaces):</strong> Conjunto de pares que conectan los vértices</li>
+                    </ul>
+                    <div class="code-box" style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-top: 1.5rem;">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin: 0;">G = (V, E)</p>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1rem; color: #555555;">
+                            Donde <strong>V</strong> es el conjunto de vértices y <strong>E</strong> es el conjunto de aristas
+                        </p>
+                    </div>
+                    <p style="margin-top: 1.5rem;">Los grafos son fundamentales en ciencias de la computación y tienen aplicaciones en:</p>
+                    <div class="applications-grid">
+                        <div class="app-item">🗺️ Navegación y mapas</div>
+                        <div class="app-item">🌐 Redes sociales</div>
+                        <div class="app-item">🔌 Diseño de circuitos</div>
+                        <div class="app-item">🧬 Bioinformática</div>
+                        <div class="app-item">🤖 Inteligencia artificial</div>
+                        <div class="app-item">📱 Redes de comunicación</div>
+                    </div>
+                </div>
+                <div class="theory-visual">
+                    <div class="graph-example">
+                        <svg viewBox="0 0 300 200" width="300" height="200">
+                            <!-- Aristas -->
+                            <line x1="50" y1="50" x2="150" y2="50" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="150" y1="50" x2="250" y2="50" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="50" y1="50" x2="100" y2="150" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="150" y1="50" x2="100" y2="150" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="150" y1="50" x2="200" y2="150" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="250" y1="50" x2="200" y2="150" stroke="#49B9CE" stroke-width="3"/>
+                            <line x1="100" y1="150" x2="200" y2="150" stroke="#49B9CE" stroke-width="3"/>
+
+                            <!-- Nodos -->
+                            <circle cx="50" cy="50" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"/>
+                            <text x="50" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">A</text>
+
+                            <circle cx="150" cy="50" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"/>
+                            <text x="150" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">B</text>
+
+                            <circle cx="250" cy="50" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"/>
+                            <text x="250" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">C</text>
+
+                            <circle cx="100" cy="150" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"/>
+                            <text x="100" y="155" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">D</text>
+
+                            <circle cx="200" cy="150" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"/>
+                            <text x="200" y="155" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">E</text>
+                        </svg>
+                        <p class="example-caption">Ejemplo de grafo no dirigido con 5 vértices y 7 aristas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualizador Interactivo -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎮 Visualizador Interactivo de Grafos</h2>
+                <p class="section-subtitle">Experimenta con diferentes tipos de grafos</p>
+            </div>
+
+            <div class="flex-container">
+                <button class="variant-btn-h active" onclick="cambiarTipo('dirigido')">Dirigido</button>
+                <button class="variant-btn-h" onclick="cambiarTipo('no-dirigido')">No Dirigido</button>
+                <button class="variant-btn-h" onclick="cambiarTipo('ponderado')">Ponderado</button>
+            </div>
+
+            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem;">
+                <h4 style="color: #333333; margin-bottom: 1rem;">Personalizar Grafo</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: #555555;">Número de Vértices:</label>
+                        <input type="number" id="numVertices" min="3" max="8" value="5" class="control-input">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: #555555;">Densidad de Conexiones:</label>
+                        <select id="densidad" class="control-input">
+                            <option value="baja">Baja</option>
+                            <option value="media" selected>Media</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-demo" onclick="actualizarVisualizador()" style="margin-top: 1rem;">Generar Nuevo Grafo</button>
+            </div>
+
+            <svg id="visualizadorSvg" width="100%" height="350" class="svg-container"></svg>
+
+            <div id="infoGrafo" style="margin-top: 1.5rem; padding: 1rem; background: #E8F7FA; border-radius: 0.75rem; border: 2px solid #49B9CE;">
+                <p style="margin: 0; font-size: 1rem; color: #333333;"><strong>Vértices:</strong> <span id="numV">5</span></p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 1rem; color: #333333;"><strong>Aristas:</strong> <span id="numE">0</span></p>
+            </div>
+        </section>
+
+        <!-- Tipos de Grafos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📚 Tipos de Grafos</h2>
+            </div>
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3>🔀 Grafos No Dirigidos</h3>
+                    <p>Las aristas no tienen dirección. La relación entre nodos es simétrica.</p>
+                    <span class="type-badge">A ↔ B</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Red de amistades en Facebook</p>
+                </div>
+                <div class="type-card">
+                    <h3>➡️ Grafos Dirigidos (Digrafos)</h3>
+                    <p>Las aristas tienen dirección. La relación puede ser asimétrica.</p>
+                    <span class="type-badge">A → B</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Seguimiento en Twitter/X</p>
+                </div>
+                <div class="type-card">
+                    <h3>⚖️ Grafos Ponderados</h3>
+                    <p>Las aristas tienen un peso o costo asociado que representa distancia, tiempo o costo.</p>
+                    <span class="type-badge">A —5— B</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Distancias entre ciudades en GPS</p>
+                </div>
+                <div class="type-card">
+                    <h3>📊 Grafos Completos</h3>
+                    <p>Todos los nodos están conectados entre sí. Un grafo completo con n nodos tiene n(n-1)/2 aristas.</p>
+                    <span class="type-badge">K<sub>n</sub></span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Red de comunicación totalmente conectada</p>
+                </div>
+                <div class="type-card">
+                    <h3>🔄 Grafos Cíclicos</h3>
+                    <p>Contienen al menos un ciclo: un camino que comienza y termina en el mismo vértice.</p>
+                    <span class="type-badge">Contiene ciclos</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Circuito de retroalimentación en sistemas</p>
+                </div>
+                <div class="type-card">
+                    <h3>🎯 Grafos Bipartitos</h3>
+                    <p>Los vértices se dividen en dos conjuntos disjuntos. Las aristas solo conectan vértices de diferentes conjuntos.</p>
+                    <span class="type-badge">U ∪ V</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Matching de trabajos y candidatos</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Algoritmos con Visualizaciones -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎯 Algoritmos Fundamentales con Visualizaciones</h2>
+            </div>
+
+            <!-- BFS -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #49B9CE; margin-bottom: 1rem;">Búsqueda en Anchura (BFS)</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    Explora el grafo nivel por nivel, visitando todos los vecinos de un nodo antes de pasar al siguiente nivel.
+                    Usa una <strong>cola (FIFO)</strong> para mantener el orden de visita.
+                </p>
+
+                <div class="visualization-area">
+                    <svg id="bfsSvg" width="400" height="300" class="svg-container"></svg>
+                    <div class="svg-description">
+                        <h4>Características:</h4>
+                        <p>✓ Encuentra el camino más corto (en grafos no ponderados)</p>
+                        <p>✓ Complejidad temporal: O(V + E)</p>
+                        <p>✓ Complejidad espacial: O(V)</p>
+                        <p style="margin-top: 1rem;"><strong>Aplicaciones:</strong> Redes sociales (grados de separación), sistemas de navegación, análisis de redes.</p>
+
+                        <button class="btn-demo" onclick="ejecutarBFS()">Ejecutar BFS</button>
+                        <button class="btn-demo" onclick="resetBFS()">Reset</button>
+
+                        <div id="bfsResult" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 0.75rem; min-height: 60px;">
+                            <p style="margin: 0; font-size: 0.95rem; color: #555555;">Presiona "Ejecutar BFS" para comenzar la búsqueda desde el nodo A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DFS -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #8A7AAF; margin-bottom: 1rem;">Búsqueda en Profundidad (DFS)</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    Explora tan profundo como sea posible a lo largo de cada rama antes de retroceder.
+                    Usa una <strong>pila (LIFO)</strong> o recursión para el recorrido.
+                </p>
+
+                <div class="visualization-area">
+                    <svg id="dfsSvg" width="400" height="300" class="svg-container"></svg>
+                    <div class="svg-description">
+                        <h4>Características:</h4>
+                        <p>✓ Útil para detectar ciclos</p>
+                        <p>✓ Complejidad temporal: O(V + E)</p>
+                        <p>✓ Complejidad espacial: O(V)</p>
+                        <p style="margin-top: 1rem;"><strong>Aplicaciones:</strong> Detección de ciclos, ordenamiento topológico, resolución de laberintos, análisis de componentes conectados.</p>
+
+                        <button class="btn-demo" onclick="ejecutarDFS()">Ejecutar DFS</button>
+                        <button class="btn-demo" onclick="resetDFS()">Reset</button>
+
+                        <div id="dfsResult" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 0.75rem; min-height: 60px;">
+                            <p style="margin: 0; font-size: 0.95rem; color: #555555;">Presiona "Ejecutar DFS" para comenzar la búsqueda desde el nodo A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dijkstra -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #49B9CE; margin-bottom: 1rem;">Algoritmo de Dijkstra</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    Encuentra el camino más corto desde un nodo origen a todos los demás nodos en un grafo ponderado con pesos no negativos.
+                    Utiliza una estrategia greedy con cola de prioridad.
+                </p>
+
+                <div class="visualization-area">
+                    <svg id="dijkstraSvg" width="400" height="300" class="svg-container"></svg>
+                    <div class="svg-description">
+                        <h4>Características:</h4>
+                        <p>✓ Garantiza el camino más corto</p>
+                        <p>✓ Complejidad: O((V + E) log V) con heap</p>
+                        <p>✓ No funciona con pesos negativos</p>
+                        <p style="margin-top: 1rem;"><strong>Aplicaciones:</strong> GPS y navegación, enrutamiento de redes, planificación de rutas logísticas.</p>
+
+                        <button class="btn-demo" onclick="ejecutarDijkstra()">Ejecutar Dijkstra</button>
+                        <button class="btn-demo" onclick="resetDijkstra()">Reset</button>
+
+                        <div id="dijkstraResult" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 0.75rem; min-height: 60px;">
+                            <p style="margin: 0; font-size: 0.95rem; color: #555555;">Presiona "Ejecutar Dijkstra" para calcular distancias mínimas desde A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kruskal -->
+            <div style="margin-bottom: 0;">
+                <h3 style="color: #8A7AAF; margin-bottom: 1rem;">Algoritmo de Kruskal (MST)</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    Encuentra el <strong>Árbol de Expansión Mínimo (MST)</strong> de un grafo conectado ponderado.
+                    Ordena las aristas por peso y las añade al MST si no forman ciclo, usando Union-Find.
+                </p>
+
+                <div class="visualization-area">
+                    <svg id="kruskalSvg" width="400" height="300" class="svg-container"></svg>
+                    <div class="svg-description">
+                        <h4>Características:</h4>
+                        <p>✓ Algoritmo greedy óptimo</p>
+                        <p>✓ Complejidad: O(E log E)</p>
+                        <p>✓ Conecta todos los vértices con costo mínimo</p>
+                        <p style="margin-top: 1rem;"><strong>Aplicaciones:</strong> Diseño de redes eléctricas, redes de comunicación, clustering en machine learning.</p>
+
+                        <button class="btn-demo" onclick="ejecutarKruskal()">Ejecutar Kruskal</button>
+                        <button class="btn-demo" onclick="resetKruskal()">Reset</button>
+
+                        <div id="kruskalSteps" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 0.75rem; min-height: 60px;">
+                            <p style="margin: 0; font-size: 0.95rem; color: #555555;">Presiona "Ejecutar Kruskal" para comenzar</p>
+                        </div>
+                        <div id="kruskalCosto" style="margin-top: 0.5rem; font-weight: 700; color: #8A7AAF; font-size: 1.125rem;">
+                            Costo Total MST: 0
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caso Práctico -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📖 Caso de Estudio: El Problema del Ladrón</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem;">
+                Un ladrón roba un banco y necesita escapar al escondite. Debe elegir la ruta más rápida considerando
+                los tiempos de cada calle (en minutos). ¿Cuál es el camino óptimo?
+            </p>
+
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border: 2px solid #333333; margin-bottom: 2rem;">
+                <h4 style="color: #333333; margin-bottom: 1rem;">📍 Escenario:</h4>
+                <ul style="margin-left: 2rem; color: #555555; font-size: 1.05rem; line-height: 1.8;">
+                    <li><strong style="color: #ff6b6b;">Banco (A):</strong> Punto de partida</li>
+                    <li><strong style="color: #8A7AAF;">Norte (B):</strong> Intersección norte</li>
+                    <li><strong style="color: #8A7AAF;">Sur (C):</strong> Intersección sur</li>
+                    <li><strong style="color: #51cf66;">Escondite (D):</strong> Destino final</li>
+                </ul>
+                <p style="margin: 1rem 0 0 0; color: #666; font-size: 0.95rem;">Los números en las conexiones representan el tiempo en minutos para recorrer cada calle.</p>
+            </div>
+
+            <div class="visualization-area">
+                <svg id="ladronSvg" width="380" height="280" class="svg-container"></svg>
+                <div class="svg-description">
+                    <h4>Solución con Dijkstra:</h4>
+                    <p>El algoritmo de Dijkstra calcula la ruta más rápida considerando todos los caminos posibles y seleccionando la secuencia óptima.</p>
+
+                    <button class="btn-demo" onclick="resolverLadron()">Calcular Escape</button>
+                    <button class="btn-demo" onclick="resetLadron()">Reset</button>
+
+                    <div id="ladronSolucion" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 0.75rem; min-height: 80px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: #555555;">Presiona "Calcular Escape" para encontrar la mejor ruta</p>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #fff3cd; border-radius: 0.75rem; border: 2px solid #ffc107;">
+                        <p style="margin: 0; font-size: 0.9rem; color: #856404;"><strong>💡 Análisis:</strong> Este problema demuestra cómo los algoritmos de grafos resuelven problemas reales de optimización en logística, navegación y planificación de rutas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conceptos Clave -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🔑 Conceptos Fundamentales</h2>
+            </div>
+            <div class="concepts-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🔗</div>
+                    <h3>Conectividad</h3>
+                    <p>Un grafo es <strong>conexo</strong> si existe un camino entre cualquier par de vértices. Las <strong>componentes conexas</strong> son subgrafos conexos maximales.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🔄</div>
+                    <h3>Ciclos</h3>
+                    <p>Un <strong>ciclo</strong> es un camino que comienza y termina en el mismo vértice sin repetir aristas. Los <strong>grafos acíclicos</strong> no contienen ciclos.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">📏</div>
+                    <h3>Caminos</h3>
+                    <p>Un <strong>camino</strong> es una secuencia de vértices conectados por aristas. El <strong>camino más corto</strong> minimiza el número de aristas o la suma de pesos.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3>Grado de un Vértice</h3>
+                    <p>El <strong>grado</strong> es el número de aristas incidentes a un vértice. En grafos dirigidos: <strong>grado de entrada</strong> y <strong>grado de salida</strong>.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">⚡</div>
+                    <h3>Complejidad</h3>
+                    <p><strong>Temporal:</strong> Tiempo de ejecución de algoritmos. <strong>Espacial:</strong> Memoria utilizada. Notaciones comunes: O(V), O(E), O(V+E), O(V²).</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🌉</div>
+                    <h3>Puentes y Articulaciones</h3>
+                    <p>Un <strong>puente</strong> es una arista cuya eliminación desconecta el grafo. Un <strong>punto de articulación</strong> es un vértice que desconecta el grafo al eliminarse.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Representaciones de Grafos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>💾 Representaciones en Memoria</h2>
+            </div>
+            <div class="representations-grid">
+                <div class="representation-card">
+                    <h3>📋 Matriz de Adyacencia</h3>
+                    <div class="rep-code">
+                        <pre>
+  A B C D
+A [0 1 1 0]
+B [1 0 1 1]
+C [1 1 0 1]
+D [0 1 1 0]</pre>
+                    </div>
+                    <div class="rep-info">
+                        <p><strong>Espacio:</strong> O(V²)</p>
+                        <p><strong>Ventaja:</strong> Verificación rápida de aristas O(1)</p>
+                        <p><strong>Desventaja:</strong> Ineficiente para grafos dispersos (pocas aristas)</p>
+                        <p><strong>Uso:</strong> Grafos densos, algoritmos que requieren acceso rápido a aristas</p>
+                    </div>
+                </div>
+                <div class="representation-card">
+                    <h3>📝 Lista de Adyacencia</h3>
+                    <div class="rep-code">
+                        <pre>
+A → [B, C]
+B → [A, C, D]
+C → [A, B, D]
+D → [B, C]</pre>
+                    </div>
+                    <div class="rep-info">
+                        <p><strong>Espacio:</strong> O(V + E)</p>
+                        <p><strong>Ventaja:</strong> Eficiente en memoria para grafos dispersos</p>
+                        <p><strong>Desventaja:</strong> Verificación de arista O(V) en el peor caso</p>
+                        <p><strong>Uso:</strong> La representación más común, especialmente en grafos dispersos</p>
+                    </div>
+                </div>
+                <div class="representation-card">
+                    <h3>🔗 Lista de Aristas</h3>
+                    <div class="rep-code">
+                        <pre>
+[(A, B), (A, C),
+ (B, C), (B, D),
+ (C, D)]</pre>
+                    </div>
+                    <div class="rep-info">
+                        <p><strong>Espacio:</strong> O(E)</p>
+                        <p><strong>Ventaja:</strong> Muy simple, mínimo espacio requerido</p>
+                        <p><strong>Desventaja:</strong> Operaciones lentas O(E) para búsquedas</p>
+                        <p><strong>Uso:</strong> Algoritmos de conjuntos disjuntos, Kruskal MST</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa de Algoritmos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>⚡ Comparativa de Complejidades</h2>
+            </div>
+            <div class="table-container">
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Complejidad Temporal</th>
+                            <th>Complejidad Espacial</th>
+                            <th>Características</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>BFS</strong></td>
+                            <td>O(V + E)</td>
+                            <td>O(V)</td>
+                            <td>Camino más corto (no ponderado), exploración por niveles</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DFS</strong></td>
+                            <td>O(V + E)</td>
+                            <td>O(V)</td>
+                            <td>Detección de ciclos, orden topológico, componentes conexas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dijkstra</strong></td>
+                            <td>O((V + E) log V)</td>
+                            <td>O(V)</td>
+                            <td>Camino más corto (pesos no negativos)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bellman-Ford</strong></td>
+                            <td>O(V × E)</td>
+                            <td>O(V)</td>
+                            <td>Soporta pesos negativos, detecta ciclos negativos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Floyd-Warshall</strong></td>
+                            <td>O(V³)</td>
+                            <td>O(V²)</td>
+                            <td>Todos los pares de caminos más cortos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>A*</strong></td>
+                            <td>O(b^d)</td>
+                            <td>O(b^d)</td>
+                            <td>Óptimo con heurística admisible, navegación eficiente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kruskal MST</strong></td>
+                            <td>O(E log E)</td>
+                            <td>O(V)</td>
+                            <td>Árbol de expansión mínima, basado en aristas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prim MST</strong></td>
+                            <td>O((V + E) log V)</td>
+                            <td>O(V)</td>
+                            <td>Árbol de expansión mínima, basado en vértices</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="table-note"><strong>Notación:</strong> V = vértices, E = aristas, b = factor de ramificación, d = profundidad de la solución</p>
+            </div>
+        </section>
+
+        <!-- Propiedades Matemáticas -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📐 Propiedades Matemáticas Importantes</h2>
+            </div>
+
+            <div class="concepts-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">∑</div>
+                    <h3>Suma de Grados</h3>
+                    <p><strong>Teorema:</strong> La suma de los grados de todos los vértices es igual al doble del número de aristas.<br>
+                    <code style="font-size: 1.1rem; color: #49B9CE;">Σ deg(v) = 2|E|</code></p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">📊</div>
+                    <h3>Grafo Conexo</h3>
+                    <p>Un grafo con <strong>n vértices</strong> necesita al menos <strong>n-1 aristas</strong> para ser conexo. Si tiene exactamente n-1 aristas y es conexo, es un árbol.</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">🔄</div>
+                    <h3>Ciclo Euleriano</h3>
+                    <p>Un grafo tiene un <strong>ciclo euleriano</strong> (recorre todas las aristas exactamente una vez) si y solo si todos los vértices tienen <strong>grado par</strong>.</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3>Camino Hamiltoniano</h3>
+                    <p>Un <strong>camino hamiltoniano</strong> visita cada vértice exactamente una vez. Determinar si existe es un problema <strong>NP-completo</strong>.</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">🎨</div>
+                    <h3>Coloración de Grafos</h3>
+                    <p><strong>Número cromático χ(G):</strong> Mínimo número de colores para colorear vértices tal que adyacentes tengan colores diferentes. Aplicación: asignación de frecuencias.</p>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">↔️</div>
+                    <h3>Grafo Planar</h3>
+                    <p>Un grafo es <strong>planar</strong> si se puede dibujar en el plano sin que las aristas se crucen. <strong>Fórmula de Euler:</strong> V - E + F = 2 (F = caras)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problemas Clásicos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🎓 Problemas Clásicos de Grafos</h2>
+            </div>
+
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3>🌉 Puentes de Königsberg</h3>
+                    <p>El problema histórico que dio origen a la teoría de grafos (Euler, 1736). ¿Existe un camino que cruce cada puente exactamente una vez?</p>
+                    <span class="type-badge">Ciclo Euleriano</span>
+                    <p class="type-example"><strong>Solución:</strong> No existe, porque hay vértices de grado impar</p>
+                </div>
+
+                <div class="type-card">
+                    <h3>🧳 Problema del Viajante (TSP)</h3>
+                    <p>Encontrar el circuito hamiltoniano de menor costo que visita todas las ciudades exactamente una vez.</p>
+                    <span class="type-badge">NP-difícil</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Logística, diseño de chips, secuenciación de ADN</p>
+                </div>
+
+                <div class="type-card">
+                    <h3>🌲 Árbol de Expansión Mínima</h3>
+                    <p>Encontrar el subgrafo conexo con todos los vértices y el mínimo peso total de aristas.</p>
+                    <span class="type-badge">Kruskal, Prim</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Diseño de redes, cableado eléctrico</p>
+                </div>
+
+                <div class="type-card">
+                    <h3>🚰 Flujo Máximo</h3>
+                    <p>Determinar el flujo máximo que puede pasar de un origen a un destino en una red con capacidades.</p>
+                    <span class="type-badge">Ford-Fulkerson</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Redes de distribución, tráfico de red</p>
+                </div>
+
+                <div class="type-card">
+                    <h3>👥 Matching Máximo</h3>
+                    <p>En grafos bipartitos, encontrar el máximo conjunto de aristas sin vértices comunes.</p>
+                    <span class="type-badge">Algoritmo Húngaro</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Asignación de tareas, emparejamiento</p>
+                </div>
+
+                <div class="type-card">
+                    <h3>✂️ Corte Mínimo</h3>
+                    <p>Encontrar el conjunto mínimo de aristas cuya eliminación desconecta el grafo en dos componentes.</p>
+                    <span class="type-badge">Stoer-Wagner</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Segmentación de imágenes, clustering</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grafos Conexos y Componentes -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🔗 Grafos Conexos y Componentes</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">Un concepto fundamental en teoría de grafos es la conectividad, que determina si es posible viajar entre cualquier par de vértices.</p>
+
+            <div class="graph-types-grid">
+                <!-- Grafo Conexo -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Grafo Conexo</h3>
+                    <p>Un grafo es <strong>conexo</strong> si existe un camino entre cada par de vértices. No tiene vértices aislados ni subgrafos separados.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">∀ u,v ∈ V: ∃ camino(u,v)</span>
+                    <p class="type-example"><strong>Propiedad:</strong> Un grafo conexo con n vértices tiene al menos n-1 aristas</p>
+                </div>
+
+                <!-- Grafo Disconexo -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Grafo Disconexo</h3>
+                    <p>Un grafo es <strong>disconexo</strong> si existen al menos dos vértices sin ningún camino entre ellos. Contiene múltiples componentes separadas.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">Componentes ≥ 2</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Red con interrupciones, grupos separados</p>
+                </div>
+
+                <!-- Componente Conexa -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Componente Conexa</h3>
+                    <p>Un subgrafo conexo maximal de un grafo. En un grafo disconexo, cada grupo de vértices conectados forma una componente.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">BFS/DFS</span>
+                    <p class="type-example"><strong>Algoritmo:</strong> Se detectan usando recorridos BFS o DFS</p>
+                </div>
+
+                <!-- Conectividad -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Conectividad de Vértices</h3>
+                    <p>Número mínimo de vértices que deben eliminarse para desconectar el grafo. Mide la robustez de la red.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">κ(G)</span>
+                    <p class="type-example"><strong>Aplicación:</strong> Análisis de vulnerabilidad en redes</p>
+                </div>
+
+                <!-- Fuertemente Conexo -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Fuertemente Conexo</h3>
+                    <p>En grafos dirigidos, es fuertemente conexo si existe un camino dirigido entre cada par de vértices en ambas direcciones.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">Grafos dirigidos</span>
+                    <p class="type-example"><strong>Ejemplo:</strong> Red donde todos pueden comunicarse con todos</p>
+                </div>
+
+                <!-- Débilmente Conexo -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Débilmente Conexo</h3>
+                    <p>En grafos dirigidos, es débilmente conexo si al ignorar las direcciones de las aristas, el grafo resultante es conexo.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">Conexión parcial</span>
+                    <p class="type-example"><strong>Nota:</strong> Más débil que fuertemente conexo</p>
+                </div>
+            </div>
+
+            <div class="concept-card" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--fondo-azul) 0%, var(--fondo-morado) 100%); border-radius: 12px; border-left: 4px solid var(--azul-ilerna);">
+                <h4 style="color: var(--azul-ilerna); margin-bottom: 1rem;">📐 Propiedades Importantes:</h4>
+                <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); line-height: 1.8;">
+                    <li>Un grafo conexo con <strong>n vértices</strong> tiene al menos <strong>n-1 aristas</strong></li>
+                    <li>Un árbol es un grafo conexo con exactamente <strong>n-1 aristas</strong></li>
+                    <li>Para determinar conectividad se puede usar <strong>BFS o DFS</strong></li>
+                    <li>Un grafo completo K<sub>n</sub> tiene conectividad <strong>κ(K<sub>n</sub>) = n-1</strong></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Propiedades Fundamentales y Leyes -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>📊 Propiedades Fundamentales y Leyes</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">Los grafos siguen una serie de propiedades matemáticas y leyes fundamentales para su análisis.</p>
+
+            <!-- Lema del Apretón de Manos -->
+            <div class="concept-card" style="margin-bottom: 2rem; padding: 2rem; background: var(--fondo-azul); border-radius: 12px; border: 2px solid var(--azul-ilerna);">
+                <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">🤝 Lema del Apretón de Manos (Handshaking Lemma)</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--gris-texto);">La suma de los grados de todos los vértices de un grafo es igual al doble del número de aristas.</p>
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid var(--azul-ilerna);">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.25rem; font-weight: bold; color: var(--azul-ilerna); margin: 0; text-align: center;">∑ deg(v) = 2|E|</p>
+                    <p style="font-size: 0.95rem; color: var(--gris-texto); margin: 0.5rem 0 0 0; text-align: center;">Donde deg(v) es el grado del vértice v y |E| es el número de aristas</p>
+                </div>
+                <div style="background: linear-gradient(to right, #E8F7FA, #ffffff); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--azul-ilerna);">
+                    <p style="margin: 0; color: var(--gris-texto); font-size: 1rem;"><strong>Consecuencia:</strong> En cualquier grafo, el número de vértices de grado impar es siempre par.</p>
+                </div>
+            </div>
+
+            <div class="graph-types-grid">
+                <!-- Teorema de Euler -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Teorema de Euler</h3>
+                    <p>Para grafos planos (que se pueden dibujar sin cruces de aristas):</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">V - E + F = 2</span>
+                    <p class="type-example">V = vértices, E = aristas, F = caras (regiones)</p>
+                </div>
+
+                <!-- Número Cromático -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Número Cromático χ(G)</h3>
+                    <p>Número mínimo de colores necesarios para colorear los vértices sin que dos vértices adyacentes tengan el mismo color.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">χ(K<sub>n</sub>) = n</span>
+                    <p class="type-example">Para un grafo completo K<sub>n</sub></p>
+                </div>
+
+                <!-- Teorema de los Cuatro Colores -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Teorema de los 4 Colores</h3>
+                    <p>Todo mapa plano puede ser coloreado usando como máximo 4 colores, de forma que regiones adyacentes tengan colores diferentes.</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">χ(G) ≤ 4</span>
+                    <p class="type-example">Para grafos planos</p>
+                </div>
+
+                <!-- Fórmula de Cayley -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Fórmula de Cayley</h3>
+                    <p>Número de árboles etiquetados diferentes que se pueden formar con n vértices:</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">n<sup>n-2</sup></span>
+                    <p class="type-example">Ejemplo: Con 4 vértices → 4² = 16 árboles</p>
+                </div>
+
+                <!-- Desigualdad de las Aristas -->
+                <div class="type-card" style="border-color: #8A7AAF;">
+                    <h3 style="color: #8A7AAF;">Desigualdad de Aristas</h3>
+                    <p>Para un grafo simple con n vértices:</p>
+                    <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">|E| ≤ n(n-1)/2</span>
+                    <p class="type-example">Igualdad solo en grafos completos</p>
+                </div>
+
+                <!-- Teorema de Ramsey -->
+                <div class="type-card" style="border-color: #49B9CE;">
+                    <h3 style="color: #49B9CE;">Teorema de Ramsey</h3>
+                    <p>En un grupo suficientemente grande, siempre habrá un subconjunto con una propiedad específica.</p>
+                    <span class="type-badge" style="background: var(--fondo-azul); color: var(--azul-ilerna);">R(3,3) = 6</span>
+                    <p class="type-example">En 6 personas, siempre hay 3 que se conocen mutuamente o 3 que no</p>
+                </div>
+            </div>
+
+            <!-- Propiedades de Grados -->
+            <div class="concept-card" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(to right, var(--fondo-morado), #ffffff); border-radius: 12px; border-left: 4px solid var(--morado);">
+                <h4 style="color: var(--morado); margin-bottom: 0.75rem;">Propiedades de los Grados</h4>
+                <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 1rem; line-height: 1.8;">
+                    <li>El <strong>grado mínimo</strong> δ(G) ≤ 2|E|/n ≤ <strong>grado máximo</strong> Δ(G)</li>
+                    <li>Si todos los vértices tienen el mismo grado k, el grafo es <strong>k-regular</strong></li>
+                    <li>Un grafo k-regular con n vértices tiene <strong>nk/2 aristas</strong></li>
+                    <li>En grafos dirigidos: grado de entrada + grado de salida = grado total</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Teoremas de Caminos: Eulerianos y Hamiltonianos -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🛤️ Teoremas de Caminos: Eulerianos y Hamiltonianos</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">Los teoremas de caminos son fundamentales en teoría de grafos y tienen aplicaciones prácticas en problemas de ruteo, logística y optimización.</p>
+
+            <!-- Caminos Eulerianos -->
+            <div class="concept-card" style="margin-bottom: 2rem; padding: 2rem; background: var(--fondo-azul); border-radius: 12px; border: 2px solid var(--azul-ilerna);">
+                <h3 style="color: var(--azul-ilerna); margin-bottom: 1rem;">🌉 Caminos y Ciclos Eulerianos</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--gris-texto); margin-bottom: 1.5rem;">Un <strong>camino euleriano</strong> es un camino que atraviesa cada arista del grafo exactamente una vez. Un <strong>ciclo euleriano</strong> es un camino euleriano que comienza y termina en el mismo vértice.</p>
+
+                <div style="background: linear-gradient(to right, #E8F7FA, #ffffff); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid var(--azul-ilerna); margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--azul-ilerna); margin-bottom: 0.75rem;">Problema de los Puentes de Königsberg (1736)</h4>
+                    <p style="margin: 0; color: var(--gris-texto); font-size: 1rem;">Leonhard Euler resolvió este famoso problema demostrando que no existía un camino que cruzara cada uno de los 7 puentes exactamente una vez. Esto marcó el nacimiento de la teoría de grafos.</p>
+                </div>
+
+                <div class="graph-types-grid">
+                    <div class="type-card" style="border-color: #49B9CE;">
+                        <h3 style="color: #49B9CE;">Teorema del Camino Euleriano</h3>
+                        <p><strong>Existe un camino euleriano si y solo si:</strong></p>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto);">
+                            <li>El grafo es conexo</li>
+                            <li>Tiene exactamente <strong>0 o 2 vértices</strong> de grado impar</li>
+                        </ul>
+                        <p class="type-example">Si hay 2 vértices de grado impar, el camino debe empezar en uno y terminar en el otro.</p>
+                    </div>
+
+                    <div class="type-card" style="border-color: #49B9CE;">
+                        <h3 style="color: #49B9CE;">Teorema del Ciclo Euleriano</h3>
+                        <p><strong>Existe un ciclo euleriano si y solo si:</strong></p>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto);">
+                            <li>El grafo es conexo</li>
+                            <li><strong>Todos los vértices</strong> tienen grado par</li>
+                        </ul>
+                        <p class="type-example">El ciclo puede empezar y terminar en cualquier vértice.</p>
+                    </div>
+
+                    <div class="type-card" style="border-color: #49B9CE;">
+                        <h3 style="color: #49B9CE;">Aplicaciones Eulerianas</h3>
+                        <p>Problemas del mundo real que usan caminos eulerianos:</p>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 0.95rem;">
+                            <li>📮 Rutas de carteros</li>
+                            <li>🧹 Máquinas de limpieza</li>
+                            <li>🚛 Recolección de basura</li>
+                            <li>🖨️ Diseño de circuitos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caminos Hamiltonianos -->
+            <div class="concept-card" style="margin-bottom: 2rem; padding: 2rem; background: var(--fondo-morado); border-radius: 12px; border: 2px solid var(--morado);">
+                <h3 style="color: var(--morado); margin-bottom: 1rem;">♟️ Caminos y Ciclos Hamiltonianos</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--gris-texto); margin-bottom: 1.5rem;">Un <strong>camino hamiltoniano</strong> es un camino que visita cada vértice del grafo exactamente una vez. Un <strong>ciclo hamiltoniano</strong> es un camino hamiltoniano que vuelve al vértice inicial.</p>
+
+                <div style="background: linear-gradient(to right, #F0EDF5, #ffffff); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid var(--morado); margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--morado); margin-bottom: 0.75rem;">⚠️ Problema NP-Completo</h4>
+                    <p style="margin: 0; color: var(--gris-texto); font-size: 1rem;">A diferencia de los caminos eulerianos, <strong>no existe una condición simple</strong> para determinar si un grafo tiene un camino hamiltoniano. Este es un problema NP-completo.</p>
+                </div>
+
+                <div class="graph-types-grid">
+                    <div class="type-card" style="border-color: #8A7AAF;">
+                        <h3 style="color: #8A7AAF;">Teorema de Dirac (1952)</h3>
+                        <p><strong>Condición suficiente para ciclo hamiltoniano:</strong></p>
+                        <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">deg(v) ≥ n/2 para todo v</span>
+                        <p class="type-example">Si un grafo con n ≥ 3 vértices cumple esto, entonces tiene ciclo hamiltoniano.</p>
+                    </div>
+
+                    <div class="type-card" style="border-color: #8A7AAF;">
+                        <h3 style="color: #8A7AAF;">Teorema de Ore (1960)</h3>
+                        <p><strong>Condición más débil:</strong></p>
+                        <span class="type-badge" style="background: var(--fondo-morado); color: var(--morado);">deg(u) + deg(v) ≥ n</span>
+                        <p class="type-example">Para cada par de vértices no adyacentes, si la suma de grados ≥ n, entonces existe ciclo hamiltoniano.</p>
+                    </div>
+
+                    <div class="type-card" style="border-color: #8A7AAF;">
+                        <h3 style="color: #8A7AAF;">Aplicaciones Hamiltonianas</h3>
+                        <p>Problemas del mundo real que usan caminos hamiltonianos:</p>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 0.95rem;">
+                            <li>🚚 Problema del Viajante (TSP)</li>
+                            <li>🔬 Secuenciación de ADN</li>
+                            <li>♟️ Problemas del caballo</li>
+                            <li>🏭 Planificación de producción</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparación -->
+            <div class="concept-card" style="padding: 2rem; background: linear-gradient(135deg, var(--fondo-azul) 0%, var(--fondo-morado) 100%); border-radius: 12px;">
+                <h3 style="color: var(--negro-texto); margin-bottom: 1.5rem;">⚖️ Comparación: Euleriano vs Hamiltoniano</h3>
+                <div class="graph-types-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div>
+                        <h4 style="color: var(--azul-ilerna); margin-bottom: 0.75rem;">🔷 Caminos Eulerianos</h4>
+                        <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 0.95rem; line-height: 1.8;">
+                            <li><strong>Se enfocan en:</strong> Aristas</li>
+                            <li><strong>Objetivo:</strong> Recorrer cada arista una vez</li>
+                            <li><strong>Condición:</strong> Simple y verificable</li>
+                            <li><strong>Complejidad:</strong> Polinomial O(E)</li>
+                            <li><strong>Problema:</strong> Fácil de resolver</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--morado); margin-bottom: 0.75rem;">🔶 Caminos Hamiltonianos</h4>
+                        <ul style="margin: 0; padding-left: 1.5rem; color: var(--gris-texto); font-size: 0.95rem; line-height: 1.8;">
+                            <li><strong>Se enfocan en:</strong> Vértices</li>
+                            <li><strong>Objetivo:</strong> Visitar cada vértice una vez</li>
+                            <li><strong>Condición:</strong> No hay condición simple</li>
+                            <li><strong>Complejidad:</strong> NP-Completo</li>
+                            <li><strong>Problema:</strong> Difícil de resolver</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Prácticas -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🚀 Aplicaciones en el Mundo Real</h2>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🗺️</div>
+                    <h3>Navegación y Rutas</h3>
+                    <ul>
+                        <li>Google Maps: Dijkstra y A* para rutas óptimas</li>
+                        <li>Waze: Grafos dinámicos con tráfico en tiempo real</li>
+                        <li>GPS: Optimización de rutas multimodal</li>
+                        <li>Logística: Optimización de rutas de entrega (TSP)</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🌐</div>
+                    <h3>Redes Sociales</h3>
+                    <ul>
+                        <li>Facebook: Grafo social de 3+ mil millones de usuarios</li>
+                        <li>LinkedIn: Recomendaciones basadas en conexiones</li>
+                        <li>Twitter: Análisis de influencia y propagación</li>
+                        <li>Instagram: Detección de comunidades y trending</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">💻</div>
+                    <h3>Compiladores y Sistemas</h3>
+                    <ul>
+                        <li>Grafos de dependencias en compilación</li>
+                        <li>Control de flujo en programas (CFG)</li>
+                        <li>Detección de deadlocks en sistemas concurrentes</li>
+                        <li>Optimización de código y análisis de alcance</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🧬</div>
+                    <h3>Bioinformática</h3>
+                    <ul>
+                        <li>Ensamblaje de genomas (grafos de De Bruijn)</li>
+                        <li>Redes de interacción de proteínas</li>
+                        <li>Árboles filogenéticos evolutivos</li>
+                        <li>Análisis de rutas metabólicas</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🔌</div>
+                    <h3>Redes y Telecomunicaciones</h3>
+                    <ul>
+                        <li>Routing en Internet (BGP usa grafos)</li>
+                        <li>Topología de redes y diseño resiliente</li>
+                        <li>Análisis de tráfico y congestión</li>
+                        <li>Planificación de frecuencias (coloración)</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🎮</div>
+                    <h3>Videojuegos e IA</h3>
+                    <ul>
+                        <li>Pathfinding: A* para movimiento de NPCs</li>
+                        <li>Navegación en mapas y terrenos</li>
+                        <li>Árboles de decisión para IA enemiga</li>
+                        <li>Generación procedural de mundos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones en IA y Big Data -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>🤖 Aplicaciones en IA y Big Data</h2>
+            </div>
+            <p style="margin-bottom: 2rem;">
+                Los grafos son estructuras fundamentales en múltiples áreas de la inteligencia artificial y el análisis de datos a gran escala:
+            </p>
+
+            <div class="graph-types-grid">
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">🧠 Redes Neuronales</h3>
+                    <p>Los grafos representan la arquitectura de redes neuronales, donde los nodos son neuronas y las aristas son conexiones ponderadas. Graph Neural Networks (GNN) aprenden directamente sobre estructuras de grafos.</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">🌐 Análisis de Redes Sociales</h3>
+                    <p>Los grafos modelan relaciones sociales. Algoritmos como PageRank, detección de comunidades y análisis de influencia se basan en teoría de grafos para extraer insights de Big Data social.</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">🔍 Sistemas de Recomendación</h3>
+                    <p>Grafos bipartitos conectan usuarios y productos. Algoritmos de grafos como collaborative filtering y random walks mejoran las recomendaciones personalizadas a escala.</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">🗺️ Knowledge Graphs</h3>
+                    <p>Google, Facebook y otros gigantes tecnológicos usan grafos de conocimiento para estructurar información. Permiten búsquedas semánticas y razonamiento sobre entidades y relaciones.</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #49B9CE;">🚗 Vehículos Autónomos</h3>
+                    <p>Los mapas de carreteras son grafos donde los algoritmos de ruta más corta (Dijkstra, A*) calculan trayectorias óptimas en tiempo real considerando tráfico y condiciones dinámicas.</p>
+                </div>
+
+                <div class="type-card">
+                    <h3 style="color: #8A7AAF;">💊 Bioinformática</h3>
+                    <p>Redes de interacción proteína-proteína, rutas metabólicas y árboles filogenéticos se modelan como grafos. Algoritmos de grafos ayudan en el descubrimiento de fármacos y análisis genómico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complejidad Computacional -->
+        <section class="theory-section">
+            <div class="section-header">
+                <h2>⏱️ Complejidad Computacional</h2>
+            </div>
+
+            <div class="table-container">
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Problema</th>
+                            <th>Clase</th>
+                            <th>Mejor Algoritmo Conocido</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Camino más corto (sin pesos)</strong></td>
+                            <td>P</td>
+                            <td>O(V + E) - BFS</td>
+                            <td>Eficiente y exacto</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Camino más corto (pesos positivos)</strong></td>
+                            <td>P</td>
+                            <td>O((V + E) log V) - Dijkstra</td>
+                            <td>Con heap de Fibonacci</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Árbol de expansión mínima</strong></td>
+                            <td>P</td>
+                            <td>O(E log V) - Kruskal/Prim</td>
+                            <td>Solución óptima eficiente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ciclo Euleriano</strong></td>
+                            <td>P</td>
+                            <td>O(E) - Hierholzer</td>
+                            <td>Verificación lineal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Camino Hamiltoniano</strong></td>
+                            <td>NP-completo</td>
+                            <td>O(2ⁿ × n²) - Held-Karp</td>
+                            <td>No se conoce solución polinómica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TSP (Viajante)</strong></td>
+                            <td>NP-difícil</td>
+                            <td>O(2ⁿ × n²) - DP</td>
+                            <td>Heurísticas para aproximación</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Coloración mínima</strong></td>
+                            <td>NP-difícil</td>
+                            <td>Aproximaciones greedy</td>
+                            <td>3-coloración es NP-completo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clique máximo</strong></td>
+                            <td>NP-completo</td>
+                            <td>Backtracking exponencial</td>
+                            <td>Problema fundamental en complejidad</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Recursos de Aprendizaje -->
+        <section class="resources-section">
+            <div class="section-header">
+                <h2>📚 Recursos de Aprendizaje</h2>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📖</div>
+                    <h3>Bibliografía Recomendada</h3>
+                    <ul>
+                        <li><a href="https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/" target="_blank" rel="noopener">"Introduction to Algorithms"</a> - Cormen, Leiserson, Rivest, Stein (CLRS)</li>
+                        <li><a href="https://algs4.cs.princeton.edu/home/" target="_blank" rel="noopener">"Algorithms"</a> - Robert Sedgewick, Kevin Wayne</li>
+                        <li><a href="https://www.pearson.com/en-us/subject-catalog/p/algorithm-design/P200000003424" target="_blank" rel="noopener">"Algorithm Design"</a> - Jon Kleinberg, Éva Tardos</li>
+                        <li><a href="https://www.cambridge.org/core/books/graph-algorithms/0D8C5CCAB24DA797C9279FD4A9833D10" target="_blank" rel="noopener">"Graph Algorithms"</a> - Shimon Even</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">💡</div>
+                    <h3>Consejos de Estudio</h3>
+                    <ul>
+                        <li>Implementa cada algoritmo desde cero en tu lenguaje favorito</li>
+                        <li>Dibuja grafos pequeños y ejecuta algoritmos a mano</li>
+                        <li>Compara diferentes algoritmos para el mismo problema</li>
+                        <li>Practica con LeetCode, HackerRank y Codeforces</li>
+                        <li>Estudia las demostraciones matemáticas de correctitud</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🔬</div>
+                    <h3>Temas Avanzados</h3>
+                    <ul>
+                        <li>Grafos dinámicos y algoritmos online</li>
+                        <li>Grafos probabilísticos y aleatorios</li>
+                        <li>Teoría espectral de grafos</li>
+                        <li>Graph Neural Networks (GNN) para ML</li>
+                        <li>Grafos distribuidos y paralelización</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <script src="js/teoria-grafos-interactive.js"></script>
+</body>
+</html>

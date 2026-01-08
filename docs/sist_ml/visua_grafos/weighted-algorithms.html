@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos con Pesos | Dijkstra & Bellman-Ford</title>
+    <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="img/ilerna-logo.svg" alt="iLERNA Logo" class="ilerna-logo">
+        </div>
+        <header>
+            <h1>⚖️ Algoritmos con Pesos en Grafos</h1>
+            <p class="subtitle">Visualización interactiva de Dijkstra, Bellman-Ford y Floyd-Warshall</p>
+        </header>
+
+        <!-- Visualización del Grafo - Ocupa todo el ancho -->
+        <div class="graph-section">
+            <div class="section-title">
+                <span class="icon">📊</span>
+                Grafo ponderado de ejemplo
+            </div>
+            <div id="graph-container"></div>
+            <div class="graph-footer">
+                <div class="footer-left">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot default"></div>
+                            <span>Sin visitar</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot queued" id="legendQueued"></div>
+                            <span id="legendQueuedText">En cola</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot current-bfs" id="legendCurrent"></div>
+                            <span>Nodo actual</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot visited"></div>
+                            <span>Visitado</span>
+                        </div>
+                    </div>
+
+                    <div class="visit-order-inline">
+                        <div class="visit-order-label">✅ Orden de visita:</div>
+                        <div class="visit-order" id="visitOrder"></div>
+                    </div>
+
+                    <div class="data-structure-inline">
+                        <div class="structure-header-inline">
+                            <span class="structure-label">🗃️ Estructura:</span>
+                            <span class="structure-type bfs-type" id="structureType">Cola de Prioridad</span>
+                            <span class="structure-indicator" id="structureIndicator">Min-Heap</span>
+                        </div>
+                        <div class="structure-items" id="structureItems"></div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="inline-controls">
+                        <div class="controls">
+                            <button class="control-btn primary" id="startBtn" onclick="startSearch()">
+                                ▶ Iniciar
+                            </button>
+                            <button class="control-btn" id="stepBtn" onclick="stepSearch()">
+                                ⏭<br>Paso
+                            </button>
+                            <button class="control-btn" id="resetBtn" onclick="resetGraph()">
+                                ↺ Reset
+                            </button>
+                        </div>
+                        <div class="speed-control" id="speedControl">
+                            <label>Velocidad</label>
+                            <input type="range" id="speedSlider" min="100" max="2000" value="800" onchange="updateSpeed()">
+                        </div>
+                    </div>
+
+                    <div class="inline-progress">
+                        <div class="step-counter">
+                            <div class="label">Paso</div>
+                            <span class="current" id="stepNumber">0</span>
+                            <span class="total">/ <span id="totalSteps">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algoritmo y Variantes - Layout horizontal -->
+        <div class="algorithm-section">
+            <div class="algorithm-row">
+                <div class="algorithm-selector-horizontal">
+                    <div class="section-label">⚙️ Algoritmo:</div>
+                    <button class="algo-btn bfs active" onclick="selectAlgorithm('dijkstra')">
+                        Dijkstra
+                        <span class="algo-label">Camino más corto</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('bellman-ford')">
+                        Bellman-Ford
+                        <span class="algo-label">Con pesos negativos</span>
+                    </button>
+                    <button class="algo-btn dfs" onclick="selectAlgorithm('floyd-warshall')">
+                        Floyd-Warshall
+                        <span class="algo-label">Todos los pares</span>
+                    </button>
+                </div>
+
+                <div class="variants-selector-horizontal" id="dijkstraVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h active" onclick="selectDijkstraVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h" onclick="selectDijkstraVariant('path-reconstruction')">Con Reconstrucción</button>
+                    <button class="variant-btn-h" onclick="selectDijkstraVariant('all-paths')">Todos los Caminos</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="bellmanFordVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectBellmanFordVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h-dfs" onclick="selectBellmanFordVariant('cycle-detection')">Detección Ciclos Neg.</button>
+                    <button class="variant-btn-h-dfs" onclick="selectBellmanFordVariant('spfa')">SPFA Optimizado</button>
+                </div>
+
+                <div class="variants-selector-horizontal hidden" id="floydWarshallVariantPanel">
+                    <div class="section-label">🔀 Variante:</div>
+                    <button class="variant-btn-h-dfs active" onclick="selectFloydWarshallVariant('standard')">Estándar</button>
+                    <button class="variant-btn-h-dfs" onclick="selectFloydWarshallVariant('path-reconstruction')">Con Reconstrucción</button>
+                    <button class="variant-btn-h-dfs" onclick="selectFloydWarshallVariant('transitive-closure')">Clausura Transitiva</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pseudocódigo y Explicación -->
+        <div class="code-explanation-layout">
+            <div class="panel pseudocode-panel">
+                <div class="panel-title">💻 Pseudocódigo</div>
+                <div class="pseudocode" id="pseudocode">
+                    <div class="line" data-line="1"><span class="keyword">Dijkstra</span>(grafo, inicio):</div>
+                    <div class="line" data-line="2">  distancias ← {∞ para todos}</div>
+                    <div class="line" data-line="3">  distancias[inicio] ← 0</div>
+                    <div class="line" data-line="4">  cola_prioridad ← [(0, inicio)]</div>
+                    <div class="line" data-line="5">  <span class="keyword">mientras</span> cola no vacía:</div>
+                    <div class="line" data-line="6">    dist_actual, nodo ← cola.<span class="keyword">extraer_min()</span></div>
+                    <div class="line" data-line="7">    <span class="keyword">si</span> dist_actual > distancias[nodo]: <span class="keyword">continuar</span></div>
+                    <div class="line" data-line="8">    <span class="keyword">para cada</span> vecino, peso de nodo:</div>
+                    <div class="line" data-line="9">      nueva_dist ← distancias[nodo] + peso</div>
+                    <div class="line" data-line="10">      <span class="keyword">si</span> nueva_dist < distancias[vecino]:</div>
+                    <div class="line" data-line="11">        distancias[vecino] ← nueva_dist</div>
+                    <div class="line" data-line="12">        cola.<span class="keyword">insertar</span>(nueva_dist, vecino)</div>
+                </div>
+            </div>
+
+            <div class="panel explanation-panel">
+                <div class="panel-title">📖 Explicación</div>
+                <div class="algorithm-explanation" id="algorithmExplanation">
+                    <h4>Dijkstra Estándar</h4>
+                    <p>Encuentra el camino más corto desde un nodo origen a todos los demás nodos en un grafo con pesos no negativos.</p>
+                    <ul>
+                        <li><strong>Estructura:</strong> Cola de prioridad (Min-Heap)</li>
+                        <li><strong>Aplicación:</strong> GPS, routing de redes, planificación de rutas</li>
+                        <li><strong>Complejidad:</strong> O((V + E) log V) con heap binario</li>
+                        <li><strong>Restricción:</strong> No funciona con pesos negativos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparativa de algoritmos - Al final -->
+        <div class="explanation-section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                Comparativa de algoritmos
+            </div>
+            <div class="algo-explanations">
+                <div class="algo-card bfs-card">
+                    <h3>🎯 Dijkstra</h3>
+                    <p><strong>Camino más corto desde un origen:</strong> Encuentra las distancias mínimas desde un nodo fuente a todos los demás.</p>
+                    <span class="structure-badge">📥 Cola de Prioridad (Min-Heap)</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Características Principales:</h4>
+                    <ul>
+                        <li>Algoritmo <strong>greedy</strong> (voraz)</li>
+                        <li>Solo funciona con <strong>pesos no negativos</strong></li>
+                        <li>Más eficiente que Bellman-Ford para grafos sin pesos negativos</li>
+                        <li>Utiliza una cola de prioridad para seleccionar el siguiente nodo</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #49B9CE;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> Calcula distancias mínimas desde el origen</li>
+                        <li><strong>Con Reconstrucción:</strong> Permite reconstruir el camino completo</li>
+                        <li><strong>Todos los Caminos:</strong> Encuentra todos los caminos mínimos</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O((V + E) log V) | O(V) espacio
+                    </div>
+                </div>
+                <div class="algo-card dfs-card">
+                    <h3>⚡ Bellman-Ford</h3>
+                    <p><strong>Camino más corto con pesos negativos:</strong> Funciona con pesos negativos y detecta ciclos negativos.</p>
+                    <span class="structure-badge">📚 Relajación de Aristas</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Características Principales:</h4>
+                    <ul>
+                        <li>Soporta <strong>pesos negativos</strong></li>
+                        <li>Detecta <strong>ciclos negativos</strong></li>
+                        <li>Más lento que Dijkstra pero más versátil</li>
+                        <li>Relaja todas las aristas V-1 veces</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #8A7AAF;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> Algoritmo clásico de Bellman-Ford</li>
+                        <li><strong>Detección Ciclos Neg.:</strong> Identifica ciclos con suma negativa</li>
+                        <li><strong>SPFA:</strong> Shortest Path Faster Algorithm (optimización)</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V × E) tiempo | O(V) espacio
+                    </div>
+                </div>
+                <div class="algo-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0ea5e9;">
+                    <h3>🌐 Floyd-Warshall</h3>
+                    <p><strong>Todos los pares de caminos:</strong> Encuentra las distancias mínimas entre todos los pares de nodos.</p>
+                    <span class="structure-badge" style="background: #e0f2fe; color: #0369a1;">📊 Programación Dinámica</span>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Características Principales:</h4>
+                    <ul>
+                        <li>Calcula distancias entre <strong>todos los pares</strong></li>
+                        <li>Usa <strong>programación dinámica</strong></li>
+                        <li>Funciona con pesos negativos (pero sin ciclos negativos)</li>
+                        <li>Muy simple de implementar</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #0ea5e9;">Variantes Implementadas:</h4>
+                    <ul style="font-size: 0.8rem;">
+                        <li><strong>Estándar:</strong> Matriz de distancias mínimas</li>
+                        <li><strong>Con Reconstrucción:</strong> Permite reconstruir todos los caminos</li>
+                        <li><strong>Clausura Transitiva:</strong> Determina alcanzabilidad entre nodos</li>
+                    </ul>
+
+                    <div class="complexity">
+                        <strong>Complejidad:</strong> O(V³) tiempo | O(V²) espacio
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="penguin">🐧</div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="course-title">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+
+            <p class="info-text">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="info-text">¡Titulaciones 100% oficiales. Sin pruebas libres!</p>
+        </footer>
+    </div>
+
+    <script src="js/weighted-algorithms.js"></script>
+</body>
+</html>

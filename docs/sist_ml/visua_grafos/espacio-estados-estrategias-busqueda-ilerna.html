@@ -1,0 +1,760 @@
+<!-- LECCIÓN ADAPTADA PARA BLACKBOARD LMS: ESPACIO DE ESTADOS Y ESTRATEGIAS DE BÚSQUEDA -->
+<div style="font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%); min-height: 100vh; padding: 2rem; margin: 0;">
+    
+    <!-- Importar fuente Montserrat -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    
+    <!-- Importar Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <div style="max-width: 72rem; margin: 0 auto;">
+        <!-- HEADER -->
+        <header style="text-align: center; margin-bottom: 3rem;">
+            <div style="margin-bottom: 2rem;">
+                <svg width="113" height="23" viewBox="0 0 113 23" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 50px; width: auto;">
+                    <path d="M7.45569 0H11.5032V19.0851H21.1728V22.7469H7.45569V0Z" fill="#010202"/>
+                    <path d="M23.7545 0H38.8238V3.66183H27.802V9.25214H38.243V12.914H27.802V19.0851H39.4001V22.7469H23.7545V0Z" fill="#010202"/>
+                    <path d="M42.0952 0H49.9996C51.0932 0 52.1459 0.0998269 53.1623 0.304018C54.1787 0.50821 55.0863 0.857604 55.8758 1.34766C56.6699 1.84226 57.3006 2.50475 57.7725 3.33966C58.2444 4.17458 58.4804 5.23637 58.4804 6.52051C58.4804 8.17219 58.0266 9.55162 57.1146 10.6633C56.2025 11.775 54.9048 12.4511 53.2122 12.6871L59.2518 22.7424H54.3693L49.1012 13.1045H46.1472V22.7424H42.0997V0H42.0952ZM49.2918 9.63783C49.868 9.63783 50.4489 9.61061 51.0251 9.55616C51.6014 9.50171 52.1323 9.37465 52.6178 9.17046C53.0988 8.96627 53.489 8.65771 53.7885 8.24026C54.088 7.8228 54.2377 7.23745 54.2377 6.48875C54.2377 5.82626 54.0971 5.29083 53.8203 4.88244C53.5435 4.47406 53.1759 4.17004 52.7267 3.96585C52.2775 3.76166 51.7784 3.63007 51.2339 3.56201C50.6893 3.49848 50.1584 3.46672 49.6412 3.46672H46.1381V9.63783H49.2872H49.2918Z" fill="#010202"/>
+                    <path d="M61.8655 0H67.2289L78.2507 16.9025H78.3142V0H82.3618V22.7469H77.2207L65.9765 5.2999H65.913V22.7469H61.8655V0Z" fill="#010202"/>
+                    <path d="M94.2457 0H97.7487L107.55 22.7469H102.922L100.802 17.5423H90.9378L88.8823 22.7469H84.3537L94.2457 0ZM99.3868 14.0711L95.8838 4.81892L92.3172 14.0711H99.3868Z" fill="#010202"/>
+                    <path d="M4.04753 5.44971H0V22.747H4.04753V5.44971Z" fill="#010202"/>
+                    <path d="M4.04753 0H0V4.04299H4.04753V0Z" fill="#47B4C9"/>
+                    <path d="M113 18.7041H108.957V22.7471H113V18.7041Z" fill="#47B4C9"/>
+                </svg>
+            </div>
+            <h1 style="font-size: 3.75rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Espacio de Estados y Estrategias de Búsqueda</h1>
+            <p style="font-size: 1.25rem; color: #333333; font-weight: 400; font-family: 'Montserrat', sans-serif;">Fundamentos de la Resolución de Problemas en Inteligencia Artificial</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Introducción: Resolviendo Problemas con IA</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                La <strong>resolución de problemas mediante búsqueda</strong> es uno de los pilares fundamentales de la Inteligencia Artificial. Desde encontrar la ruta más corta en un GPS hasta resolver un cubo de Rubik o jugar al ajedrez, todos estos desafíos comparten una característica común: pueden modelarse como la <strong>exploración de un espacio de estados</strong> en busca de una solución óptima.
+            </p>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                Un <strong>espacio de estados</strong> representa todas las configuraciones posibles de un problema, mientras que las <strong>estrategias de búsqueda</strong> son los algoritmos que exploran este espacio de manera eficiente para encontrar la solución. La diferencia entre una búsqueda eficiente y una ineficiente puede significar la diferencia entre segundos y años de cómputo.
+            </p>
+            
+            <!-- CAJA DE EJEMPLO REAL -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">🗺️ Ejemplo Real: Google Maps</p>
+                <p style="color: #555555; font-size: 1rem; font-family: 'Montserrat', sans-serif;">Cuando calculas una ruta en Google Maps, el sistema explora millones de estados posibles (intersecciones, calles) usando el algoritmo <strong>A*</strong>, que combina la distancia recorrida con una estimación heurística de la distancia restante. Esto permite encontrar la ruta óptima en milisegundos, evaluando solo una fracción del espacio total de estados.</p>
+            </div>
+
+            <!-- CONCEPTOS FUNDAMENTALES EN GRID -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Conceptos Fundamentales</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Estado</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Configuración específica del problema en un momento dado. Ejemplo: posición actual en un mapa.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Acción</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Operación que transforma un estado en otro. Ejemplo: moverse de una intersección a otra.</p>
+                </div>
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Estado Inicial</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Punto de partida del problema. Ejemplo: tu ubicación actual al abrir el GPS.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">Estado Meta</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Configuración que satisface el objetivo. Ejemplo: destino final en tu ruta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ESPACIO DE ESTADOS -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">El Espacio de Estados</h2>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-family: 'Montserrat', sans-serif;">🌐 Definición y Representación</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    El <strong>espacio de estados</strong> es el conjunto de todas las configuraciones posibles del problema, junto con las transiciones que las conectan. Se puede visualizar como un <strong>grafo</strong> en el que:
+                </p>
+                
+                <ul style="color: #555555; margin-left: 1.5rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif; margin-bottom: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;"><strong>Los nodos</strong> representan estados (configuraciones del problema)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Las aristas</strong> representan acciones (transiciones entre estados)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Los pesos</strong> en las aristas representan el coste de cada acción</li>
+                </ul>
+
+                <!-- VISUALIZACIÓN SVG DEL GRAFO -->
+                <svg width="800" height="500" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="400" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Espacio de Estados como Grafo</text>
+                    <text x="400" y="50" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">Ejemplo: Navegación entre ciudades</text>
+                    
+                    <!-- Estado Inicial (verde) -->
+                    <circle cx="100" cy="150" r="40" fill="#A8E6A1" stroke="#4CAF50" stroke-width="3"/>
+                    <text x="100" y="145" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Madrid</text>
+                    <text x="100" y="160" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">(Inicio)</text>
+                    
+                    <!-- Estados intermedios (azul) -->
+                    <circle cx="280" cy="100" r="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="280" y="100" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Zaragoza</text>
+                    
+                    <circle cx="280" cy="200" r="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="280" y="200" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Valencia</text>
+                    
+                    <circle cx="480" cy="80" r="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="480" y="80" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Lleida</text>
+                    
+                    <circle cx="480" cy="180" r="35" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="480" y="180" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Tarragona</text>
+                    
+                    <!-- Estado Meta (rojo) -->
+                    <circle cx="680" cy="130" r="40" fill="#FFB3BA" stroke="#F44336" stroke-width="3"/>
+                    <text x="680" y="125" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Barcelona</text>
+                    <text x="680" y="140" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">(Meta)</text>
+                    
+                    <!-- Aristas con costes -->
+                    <!-- Madrid -> Zaragoza -->
+                    <line x1="135" y1="135" x2="245" y2="110" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="190" y="115" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">325 km</text>
+                    
+                    <!-- Madrid -> Valencia -->
+                    <line x1="135" y1="165" x2="245" y2="195" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="190" y="195" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">355 km</text>
+                    
+                    <!-- Zaragoza -> Lleida -->
+                    <line x1="315" y1="95" x2="445" y2="85" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="380" y="85" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">150 km</text>
+                    
+                    <!-- Zaragoza -> Tarragona -->
+                    <line x1="305" y1="125" x2="455" y2="165" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="380" y="150" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">260 km</text>
+                    
+                    <!-- Valencia -> Tarragona -->
+                    <line x1="315" y1="195" x2="445" y2="185" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="380" y="205" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">185 km</text>
+                    
+                    <!-- Lleida -> Barcelona -->
+                    <line x1="515" y1="90" x2="645" y2="120" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="580" y="100" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">165 km</text>
+                    
+                    <!-- Tarragona -> Barcelona -->
+                    <line x1="515" y1="170" x2="645" y2="140" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="580" y="170" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">100 km</text>
+                    
+                    <!-- Flechas direccionales -->
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        </marker>
+                    </defs>
+                    
+                    <!-- Leyenda -->
+                    <rect x="20" y="320" width="760" height="150" fill="white" stroke="#e5e5e5" stroke-width="2" rx="10"/>
+                    <text x="400" y="345" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Componentes del Espacio de Estados</text>
+                    
+                    <!-- Símbolos de leyenda -->
+                    <circle cx="60" cy="375" r="20" fill="#A8E6A1" stroke="#4CAF50" stroke-width="2"/>
+                    <text x="100" y="380" font-size="12" fill="#333333" font-family="Montserrat">Estado Inicial: Configuración de partida del problema</text>
+                    
+                    <circle cx="60" cy="415" r="18" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="100" y="420" font-size="12" fill="#333333" font-family="Montserrat">Estados Intermedios: Configuraciones explorables en el camino</text>
+                    
+                    <circle cx="60" cy="450" r="20" fill="#FFB3BA" stroke="#F44336" stroke-width="2"/>
+                    <text x="100" y="455" font-size="12" fill="#333333" font-family="Montserrat">Estado Meta: Configuración que satisface el objetivo</text>
+                    
+                    <line x1="480" y1="375" x2="540" y2="375" stroke="#49B9CE" stroke-width="2"/>
+                    <text x="560" y="380" font-size="12" fill="#333333" font-family="Montserrat">Acciones: Transiciones con coste asociado</text>
+                </svg>
+
+                <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 1rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    📊 Tamaño del espacio: 6 estados, 7 transiciones posibles
+                </p>
+            </div>
+
+            <!-- EXPLOSIÓN COMBINATORIA -->
+            <div style="background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726; margin-top: 2rem;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">⚠️ Explosión Combinatoria</h4>
+                <p style="color: #555555; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    El tamaño del espacio de estados crece <strong>exponencialmente</strong> con el número de variables o acciones posibles. Por ejemplo:
+                </p>
+                <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif; margin-top: 0.5rem;">
+                    <li><strong>Ajedrez:</strong> ~10⁴³ posiciones legales posibles</li>
+                    <li><strong>Cubo de Rubik:</strong> 43,252,003,274,489,856,000 configuraciones</li>
+                    <li><strong>Go:</strong> ~10¹⁷⁰ estados posibles (más que átomos en el universo)</li>
+                </ul>
+                <p style="color: #555555; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif; margin-top: 0.75rem;">
+                    Por ello, <strong>elegir una estrategia de búsqueda eficiente es esencial</strong> para resolver problemas complejos en tiempo razonable.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: BÚSQUEDA CIEGA -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Estrategias de Búsqueda Ciega (No Informada)</h2>
+            
+            <p style="color: #555555; margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                La <strong>búsqueda ciega</strong> no utiliza conocimiento adicional sobre el problema más allá de su definición. El sistema explora el espacio de manera sistemática hasta encontrar la solución, sin información sobre qué estados están "más cerca" del objetivo.
+            </p>
+
+            <!-- ALGORITMO 1: BFS -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">1. Búsqueda en Anchura (BFS - Breadth-First Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Explora todos los nodos de un nivel antes de pasar al siguiente. Utiliza una <strong>cola FIFO</strong> para gestionar los nodos pendientes.
+                </p>
+                
+                <!-- Características -->
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">✅ Ventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li>Garantiza encontrar la <strong>solución óptima</strong> si los costes son uniformes</li>
+                        <li>Completo: siempre encuentra solución si existe</li>
+                        <li>Útil para encontrar el camino más corto en grafos no ponderados</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #F44336; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚠️ Desventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li>Consume <strong>mucha memoria</strong> (almacena todos los nodos de cada nivel)</li>
+                        <li>Complejidad espacial: O(b^d) donde b = factor de ramificación, d = profundidad</li>
+                    </ul>
+                </div>
+
+                <!-- Código Python con Prism.js -->
+                <div style="background: #2d2d2d; padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem; overflow-x: auto;">
+                    <pre><code class="language-python">from collections import deque
+
+def busqueda_anchura(grafo, inicio, meta):
+    """
+    Búsqueda en Anchura (BFS)
+    Explora nivel por nivel usando una cola FIFO
+    """
+    cola = deque([(inicio, [inicio])])  # (nodo_actual, camino)
+    visitados = set([inicio])
+    
+    while cola:
+        nodo_actual, camino = cola.popleft()
+        
+        # ¿Hemos llegado a la meta?
+        if nodo_actual == meta:
+            return camino
+        
+        # Explorar vecinos
+        for vecino in grafo[nodo_actual]:
+            if vecino not in visitados:
+                visitados.add(vecino)
+                cola.append((vecino, camino + [vecino]))
+    
+    return None  # No hay solución
+
+# Ejemplo de uso
+grafo = {
+    'Madrid': ['Zaragoza', 'Valencia'],
+    'Zaragoza': ['Lleida', 'Tarragona'],
+    'Valencia': ['Tarragona'],
+    'Lleida': ['Barcelona'],
+    'Tarragona': ['Barcelona'],
+    'Barcelona': []
+}
+
+resultado = busqueda_anchura(grafo, 'Madrid', 'Barcelona')
+print(f"Camino encontrado: {' -> '.join(resultado)}")
+# Salida: Camino encontrado: Madrid -> Zaragoza -> Lleida -> Barcelona</code></pre>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicación: Redes sociales (encontrar conexión más corta entre usuarios)
+                </p>
+            </div>
+
+            <!-- ALGORITMO 2: DFS -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">2. Búsqueda en Profundidad (DFS - Depth-First Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Explora una rama completa antes de retroceder. Utiliza una <strong>pila LIFO</strong> o recursión para gestionar los nodos.
+                </p>
+                
+                <!-- Características -->
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">✅ Ventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li>Requiere <strong>menos memoria</strong> que BFS</li>
+                        <li>Complejidad espacial: O(d) - solo almacena el camino actual</li>
+                        <li>Eficiente para explorar árboles profundos</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #F44336; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚠️ Desventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li>Puede quedar <strong>atrapada en ramas infinitas</strong></li>
+                        <li>No garantiza encontrar la solución óptima</li>
+                        <li>Puede explorar ramas muy profundas innecesariamente</li>
+                    </ul>
+                </div>
+
+                <!-- Código Python -->
+                <div style="background: #2d2d2d; padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem; overflow-x: auto;">
+                    <pre><code class="language-python">def busqueda_profundidad(grafo, inicio, meta, visitados=None, camino=None):
+    """
+    Búsqueda en Profundidad (DFS) - Implementación recursiva
+    Explora una rama completa antes de retroceder
+    """
+    if visitados is None:
+        visitados = set()
+    if camino is None:
+        camino = []
+    
+    visitados.add(inicio)
+    camino = camino + [inicio]
+    
+    # ¿Hemos llegado a la meta?
+    if inicio == meta:
+        return camino
+    
+    # Explorar vecinos recursivamente
+    for vecino in grafo[inicio]:
+        if vecino not in visitados:
+            nuevo_camino = busqueda_profundidad(grafo, vecino, meta, visitados, camino)
+            if nuevo_camino:
+                return nuevo_camino
+    
+    return None  # No hay solución en esta rama
+
+# Uso
+resultado = busqueda_profundidad(grafo, 'Madrid', 'Barcelona')
+print(f"Camino encontrado: {' -> '.join(resultado)}")
+# Puede devolver: Madrid -> Valencia -> Tarragona -> Barcelona</code></pre>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicación: Resolución de laberintos, análisis de árboles de decisión
+                </p>
+            </div>
+
+            <!-- ALGORITMO 3: UCS -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">3. Búsqueda de Coste Uniforme (UCS - Uniform Cost Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Prioriza el camino con <strong>menor coste acumulado</strong>. Utiliza una <strong>cola de prioridad</strong> ordenada por coste.
+                </p>
+                
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">✅ Ventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li>Garantiza la <strong>solución óptima</strong> en grafos con costes no uniformes</li>
+                        <li>Expande primero los nodos con menor coste acumulado</li>
+                        <li>Ideal para problemas de rutas con distancias variables</li>
+                    </ul>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicación: Algoritmo de Dijkstra para rutas de navegación GPS
+                </p>
+            </div>
+
+            <!-- TABLA COMPARATIVA -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Comparación de Algoritmos Ciegos</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <thead>
+                        <tr style="background: linear-gradient(to right, #49B9CE, #8A7AAF);">
+                            <th style="padding: 1rem; text-align: left; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Algoritmo</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Estructura</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Completo</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Óptimo</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Tiempo</th>
+                            <th style="padding: 1rem; text-align: center; color: white; font-weight: 700; border: 2px solid white; font-family: 'Montserrat', sans-serif;">Memoria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #E8F7FA;">
+                            <td style="padding: 1rem; font-weight: 700; color: #49B9CE; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">BFS</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Cola FIFO</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">✅ Sí</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">✅ Sí*</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(b^d)</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(b^d)</td>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 1rem; font-weight: 700; color: #8A7AAF; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">DFS</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Pila LIFO</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">❌ No*</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">❌ No</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(b^m)</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(bm)</td>
+                        </tr>
+                        <tr style="background: #E8F7FA;">
+                            <td style="padding: 1rem; font-weight: 700; color: #49B9CE; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">UCS</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">Cola prioridad</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">✅ Sí</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">✅ Sí</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(b^(1+C*/ε))</td>
+                            <td style="padding: 1rem; text-align: center; border: 1px solid #e5e5e5; font-family: 'Montserrat', sans-serif;">O(b^(1+C*/ε))</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">
+                * BFS es óptimo solo si los costes son uniformes. DFS no es completo en espacios infinitos.
+                <br>b = factor de ramificación, d = profundidad de la solución, m = profundidad máxima
+            </p>
+        </section>
+
+        <!-- SECCIÓN 4: BÚSQUEDA INFORMADA -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Estrategias de Búsqueda Informada (Heurística)</h2>
+            
+            <p style="color: #555555; margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                La <strong>búsqueda informada</strong> utiliza conocimiento adicional o <strong>funciones heurísticas</strong> que estiman la cercanía al objetivo. Esto permite <strong>reducir drásticamente</strong> el número de estados explorados, convirtiendo problemas intratables en solucionables.
+            </p>
+
+            <!-- Definición de Heurística -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #8A7AAF; margin-bottom: 2rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">📐 ¿Qué es una Heurística?</p>
+                <p style="color: #555555; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
+                    Una <strong>función heurística h(n)</strong> es una estimación del coste desde el nodo n hasta el objetivo. Debe ser <strong>admisible</strong> (nunca sobreestimar el coste real) para garantizar optimalidad. Ejemplo: distancia en línea recta en navegación GPS.
+                </p>
+            </div>
+
+            <!-- ALGORITMO A* -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">1. Algoritmo A* (A-Estrella)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    El <strong>algoritmo A*</strong> es el estándar de oro en búsqueda informada. Combina el coste recorrido con una estimación heurística del coste restante mediante la función de evaluación:
+                </p>
+                
+                <!-- Fórmula A* -->
+                <div style="background: #F0EDF5; padding: 1.25rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-bottom: 1rem;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.5rem; color: #8A7AAF; font-weight: 700; text-align: center; margin: 1rem 0;">
+                        f(n) = g(n) + h(n)
+                    </p>
+                    <div style="text-align: center; color: #555555; font-family: 'Montserrat', sans-serif;">
+                        <p style="margin: 0.25rem 0;"><strong>g(n)</strong> = coste real desde el inicio hasta n</p>
+                        <p style="margin: 0.25rem 0;"><strong>h(n)</strong> = estimación heurística desde n hasta la meta</p>
+                        <p style="margin: 0.25rem 0;"><strong>f(n)</strong> = coste total estimado del camino</p>
+                    </div>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">✅ Propiedades de A*:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Óptimo:</strong> Garantiza encontrar la solución de menor coste</li>
+                        <li><strong>Completo:</strong> Siempre encuentra solución si existe</li>
+                        <li><strong>Eficiente:</strong> Expande el mínimo número de nodos necesario</li>
+                        <li><strong>Admisible:</strong> Si h(n) nunca sobreestima, A* es óptimo</li>
+                    </ul>
+                </div>
+
+                <!-- Código A* -->
+                <div style="background: #2d2d2d; padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem; overflow-x: auto;">
+                    <pre><code class="language-python">import heapq
+
+def a_estrella(grafo, inicio, meta, heuristica):
+    """
+    Algoritmo A*: Búsqueda informada óptima
+    f(n) = g(n) + h(n)
+    """
+    # Cola de prioridad: (f_score, g_score, nodo, camino)
+    frontera = [(heuristica(inicio, meta), 0, inicio, [inicio])]
+    explorados = set()
+    
+    while frontera:
+        f_score, g_score, nodo_actual, camino = heapq.heappop(frontera)
+        
+        # ¿Hemos llegado a la meta?
+        if nodo_actual == meta:
+            return camino, g_score
+        
+        if nodo_actual in explorados:
+            continue
+        
+        explorados.add(nodo_actual)
+        
+        # Explorar vecinos
+        for vecino, coste in grafo[nodo_actual].items():
+            if vecino not in explorados:
+                nuevo_g = g_score + coste
+                nuevo_h = heuristica(vecino, meta)
+                nuevo_f = nuevo_g + nuevo_h
+                nuevo_camino = camino + [vecino]
+                heapq.heappush(frontera, (nuevo_f, nuevo_g, vecino, nuevo_camino))
+    
+    return None, float('inf')  # No hay solución
+
+# Heurística: distancia en línea recta (ejemplo simplificado)
+def distancia_linea_recta(ciudad1, ciudad2):
+    distancias = {
+        ('Madrid', 'Barcelona'): 505,
+        ('Zaragoza', 'Barcelona'): 296,
+        ('Valencia', 'Barcelona'): 349,
+        ('Lleida', 'Barcelona'): 165,
+        ('Tarragona', 'Barcelona'): 100
+    }
+    return distancias.get((ciudad1, ciudad2), 0)
+
+# Grafo con distancias reales
+grafo_ponderado = {
+    'Madrid': {'Zaragoza': 325, 'Valencia': 355},
+    'Zaragoza': {'Lleida': 150, 'Tarragona': 260},
+    'Valencia': {'Tarragona': 185},
+    'Lleida': {'Barcelona': 165},
+    'Tarragona': {'Barcelona': 100},
+    'Barcelona': {}
+}
+
+camino, coste = a_estrella(grafo_ponderado, 'Madrid', 'Barcelona', distancia_linea_recta)
+print(f"Camino óptimo: {' -> '.join(camino)}")
+print(f"Coste total: {coste} km")
+# Salida: Camino óptimo: Madrid -> Zaragoza -> Tarragona -> Barcelona
+#         Coste total: 685 km</code></pre>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicaciones: Google Maps, videojuegos (pathfinding), robótica autónoma
+                </p>
+            </div>
+
+            <!-- BÚSQUEDA GREEDY -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">2. Búsqueda Voraz (Greedy Best-First Search)</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Elige en cada paso el estado que <strong>parece más prometedor</strong> según la heurística h(n), sin considerar el coste acumulado g(n).
+                </p>
+                
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">✅ Ventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Muy rápida:</strong> Expande menos nodos que A*</li>
+                        <li>Eficiente en memoria</li>
+                        <li>Útil cuando la optimalidad no es crítica</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #F44336; margin-bottom: 1rem;">
+                    <p style="font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚠️ Desventajas:</p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>No garantiza optimalidad:</strong> Puede encontrar soluciones subóptimas</li>
+                        <li>Puede quedar atrapada en óptimos locales</li>
+                        <li>La calidad depende fuertemente de la heurística</li>
+                    </ul>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicación: Búsqueda rápida en juegos en tiempo real, asistentes virtuales
+                </p>
+            </div>
+
+            <!-- ALGORITMOS EVOLUTIVOS -->
+            <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">3. Algoritmos Evolutivos y Genéticos</h3>
+                <p style="color: #555555; margin-bottom: 1rem; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Aplican principios de <strong>selección natural</strong> para explorar el espacio de soluciones. Mantienen una <strong>población</strong> de soluciones candidatas que evolucionan mediante operadores genéticos.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                        <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🧬 Selección</h4>
+                        <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Elegir los individuos más aptos (mejores soluciones) para reproducirse.</p>
+                    </div>
+                    <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                        <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🔀 Cruce</h4>
+                        <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Combinar características de dos soluciones para crear descendencia.</p>
+                    </div>
+                    <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                        <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚡ Mutación</h4>
+                        <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Introducir cambios aleatorios para explorar nuevas áreas del espacio.</p>
+                    </div>
+                </div>
+
+                <p style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">
+                    🎯 Aplicaciones: Optimización de rutas complejas, diseño de circuitos, machine learning
+                </p>
+            </div>
+
+            <!-- COMPARACIÓN VISUAL -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Comparación: Búsqueda Ciega vs. Informada</h3>
+            <svg width="800" height="400" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                <text x="400" y="30" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Nodos Explorados: Ciega vs. Informada</text>
+                
+                <!-- Búsqueda Ciega (izquierda) -->
+                <text x="200" y="60" font-size="15" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Búsqueda Ciega (BFS)</text>
+                
+                <!-- Representación de árbol completo -->
+                <circle cx="200" cy="100" r="20" fill="#A8E6A1" stroke="#4CAF50" stroke-width="2"/>
+                <text x="200" y="105" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">Inicio</text>
+                
+                <!-- Nivel 1 -->
+                <circle cx="120" cy="160" r="15" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="200" cy="160" r="15" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="280" cy="160" r="15" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <line x1="200" y1="120" x2="120" y2="145" stroke="#49B9CE" stroke-width="2"/>
+                <line x1="200" y1="120" x2="200" y2="145" stroke="#49B9CE" stroke-width="2"/>
+                <line x1="200" y1="120" x2="280" y2="145" stroke="#49B9CE" stroke-width="2"/>
+                
+                <!-- Nivel 2 -->
+                <circle cx="80" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="120" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="160" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="200" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="240" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="280" cy="220" r="12" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"/>
+                <circle cx="320" cy="220" r="12" fill="#FFB3BA" stroke="#F44336" stroke-width="2"/>
+                <line x1="120" y1="175" x2="80" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="120" y1="175" x2="120" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="200" y1="175" x2="160" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="200" y1="175" x2="200" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="280" y1="175" x2="240" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="280" y1="175" x2="280" y2="208" stroke="#49B9CE" stroke-width="1.5"/>
+                <line x1="280" y1="175" x2="320" y2="208" stroke="#49B9CE" stroke-width="2"/>
+                
+                <text x="200" y="270" font-size="13" fill="#333333" text-anchor="middle" font-family="Montserrat">Explora 10 nodos</text>
+                <text x="200" y="290" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">para encontrar la meta</text>
+                
+                <!-- Búsqueda Informada (derecha) -->
+                <text x="600" y="60" font-size="15" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Búsqueda Informada (A*)</text>
+                
+                <circle cx="600" cy="100" r="20" fill="#A8E6A1" stroke="#4CAF50" stroke-width="2"/>
+                <text x="600" y="105" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat">Inicio</text>
+                
+                <!-- Solo explora camino óptimo -->
+                <circle cx="600" cy="160" r="15" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"/>
+                <line x1="600" y1="120" x2="600" y2="145" stroke="#8A7AAF" stroke-width="2"/>
+                
+                <circle cx="600" cy="220" r="12" fill="#FFB3BA" stroke="#F44336" stroke-width="2"/>
+                <line x1="600" y1="175" x2="600" y2="208" stroke="#8A7AAF" stroke-width="2"/>
+                
+                <!-- Nodos no explorados (gris) -->
+                <circle cx="520" cy="160" r="15" fill="#f5f5f5" stroke="#cccccc" stroke-width="1" stroke-dasharray="3,3"/>
+                <circle cx="680" cy="160" r="15" fill="#f5f5f5" stroke="#cccccc" stroke-width="1" stroke-dasharray="3,3"/>
+                
+                <text x="600" y="270" font-size="13" fill="#333333" text-anchor="middle" font-family="Montserrat">Explora 3 nodos</text>
+                <text x="600" y="290" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Guiado por heurística</text>
+                
+                <!-- Flecha de comparación -->
+                <text x="400" y="340" font-size="14" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">⚡ 70% menos nodos explorados</text>
+                <text x="400" y="365" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">La heurística guía la búsqueda hacia la meta de forma eficiente</text>
+            </svg>
+        </section>
+
+        <!-- SECCIÓN 5: CASO PRÁCTICO -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">Caso Práctico: Pac-Man y Pathfinding</h2>
+            
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border: 2px solid #333333; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif; text-align: center;">🎮 Inteligencia Artificial en Videojuegos</h3>
+                <p style="color: #555555; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    El juego <strong>Pac-Man</strong> es un ejemplo clásico de búsqueda de caminos en IA. Cada fantasma utiliza diferentes estrategias de búsqueda:
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #F44336; box-shadow: 0 2px 8px rgba(244, 67, 54, 0.1);">
+                    <h4 style="font-weight: 700; color: #F44336; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">👻 Blinky (Rojo)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;"><strong>Algoritmo A*</strong> - Persigue directamente a Pac-Man por el camino más corto usando distancia Manhattan como heurística.</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #FF69B4; box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1);">
+                    <h4 style="font-weight: 700; color: #FF69B4; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">👻 Pinky (Rosa)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;"><strong>Búsqueda Greedy</strong> - Intenta posicionarse 4 casillas delante de Pac-Man para emboscarlo.</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #00CED1; box-shadow: 0 2px 8px rgba(0, 206, 209, 0.1);">
+                    <h4 style="font-weight: 700; color: #00CED1; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">👻 Inky (Azul)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;"><strong>Búsqueda híbrida</strong> - Combina posición de Blinky y Pac-Man para ataques coordinados.</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #FFA500; box-shadow: 0 2px 8px rgba(255, 165, 0, 0.1);">
+                    <h4 style="font-weight: 700; color: #FFA500; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">👻 Clyde (Naranja)</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;"><strong>DFS con aleatoriedad</strong> - Patrulla esquinas, alterna entre perseguir y dispersarse.</p>
+                </div>
+            </div>
+
+            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE;">
+                <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">🔑 Lecciones del Pac-Man</h4>
+                <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    <li><strong>Diversidad de estrategias:</strong> Diferentes algoritmos crean comportamientos únicos y desafiantes</li>
+                    <li><strong>Eficiencia crítica:</strong> El juego debe responder en milisegundos (60 FPS)</li>
+                    <li><strong>Heurísticas simples:</strong> Distancia Manhattan es suficiente para navegación en cuadrícula</li>
+                    <li><strong>Equilibrio:</strong> Mezclar optimalidad con aleatoriedad hace el juego más divertido</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: CONCLUSIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #49B9CE; margin-bottom: 1.5rem; text-align: center; font-family: 'Montserrat', sans-serif;">Resumen y Recomendaciones</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: #E8F7FA; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">🔵 Búsqueda Ciega</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Usar cuando:</strong> No hay heurística disponible</li>
+                        <li><strong>BFS:</strong> Espacios pequeños, solución óptima requerida</li>
+                        <li><strong>DFS:</strong> Espacios profundos, memoria limitada</li>
+                        <li><strong>UCS:</strong> Grafos con costes variables</li>
+                    </ul>
+                </div>
+                <div style="background: #F0EDF5; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">🟣 Búsqueda Informada</h3>
+                    <ul style="color: #555555; font-size: 1.05rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Usar cuando:</strong> Existe heurística admisible</li>
+                        <li><strong>A*:</strong> Estándar para navegación y pathfinding</li>
+                        <li><strong>Greedy:</strong> Velocidad crítica, optimalidad secundaria</li>
+                        <li><strong>Evolutivos:</strong> Problemas complejos, múltiples objetivos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Dato Curioso Final -->
+            <div style="margin-top: 2rem; background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">💡 Dato Curioso: AlphaGo y Búsqueda Combinada</h4>
+                <p style="color: #555555; font-size: 1.125rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    <strong>AlphaGo</strong>, la IA de Google DeepMind que derrotó al campeón mundial de Go en 2016, combina búsqueda en árbol (variante de A*) con redes neuronales profundas. Evalúa <strong>280 millones de posiciones</strong> para decidir cada movimiento, reduciendo el espacio de búsqueda de 10¹⁷⁰ estados posibles a una fracción manejable. Esta combinación de búsqueda tradicional con machine learning representa el estado del arte en IA para juegos complejos.
+                </p>
+                <div style="background: white; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
+                    <p style="color: #333333; font-weight: 600; font-family: 'Montserrat', sans-serif; text-align: center;">
+                        🏆 <strong>Impacto:</strong> Demostró que problemas considerados "demasiado complejos" para IA podían resolverse con estrategias de búsqueda avanzadas.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Consejo Final -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 2rem; border-radius: 1rem; border: 2px solid #333333; text-align: center; margin-top: 2rem;">
+                <h4 style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">🎯 Regla de Oro</h4>
+                <p style="font-size: 1.125rem; color: #555555; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    "La mejor estrategia de búsqueda depende del problema. Analiza el espacio de estados, define una heurística admisible si es posible, y elige el algoritmo que equilibre <strong>optimalidad, eficiencia y recursos disponibles</strong>."
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER CON PINGÜINO ANIMADO -->
+        <footer style="text-align: center; color: #555555; margin-top: 3rem; padding: 2rem; border-top: 3px solid #49B9CE; background: white; border-radius: 1rem;">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 2rem; font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">iLERNA</h3>
+                <p style="font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" style="color: #49B9CE; text-decoration: none; font-weight: 700; font-size: 1rem; font-family: 'Montserrat', sans-serif;" target="_blank">www.ilerna.es</a>
+            </div>
+            <p style="font-size: 0.875rem; color: #777777; font-family: 'Montserrat', sans-serif;">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            
+            <!-- Pingüino animado -->
+            <div style="margin-top: 1.5rem; font-size: 3rem; animation: bounce 2s ease-in-out infinite;">
+                🐧
+            </div>
+        </footer>
+    </div>
+    
+    <!-- CSS para animación del pingüino -->
+    <style>
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</div>
