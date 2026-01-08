@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprendizaje por Refuerzo (Reinforcement Learning): aprende mediante prueba, error y recompensas. MDP, Q-Learning, DQN, Policy Gradient y aplicaciones reales.">
+    <meta name="keywords"
+        content="Reinforcement Learning, Aprendizaje por Refuerzo, Q-Learning, DQN, MDP, Policy Gradient, Actor-Critic, RL">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Aprendizaje por Refuerzo | iLERNA">
+    <meta property="og:description"
+        content="Paradigma de Machine Learning donde un agente aprende a tomar decisiones mediante interacción con el ambiente, recibiendo recompensas.">
+    <meta property="og:type" content="article">
+    <title>Aprendizaje por Refuerzo | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Aprendizaje por Refuerzo</span>
+                </div>
+            </div>
+            <h1 class="text-center">Aprendizaje por Refuerzo</h1>
+            <p class="subtitle text-center">Aprendiendo a tomar decisiones mediante prueba, error y recompensas</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es el Aprendizaje por Refuerzo?</h2>
+
+                <p>
+                    El <strong>aprendizaje por refuerzo</strong> (Reinforcement Learning) es un paradigma de Machine
+                    Learning donde un <strong>agente</strong> aprende a tomar decisiones interactuando con un
+                    <strong>ambiente</strong>, recibiendo <strong>recompensas</strong> o
+                    <strong>penalizaciones</strong> según sus acciones. Es el enfoque más cercano a cómo los humanos y
+                    animales aprenden en la vida real.
+                </p>
+
+                <!-- Diagrama conceptual del ciclo agente-ambiente -->
+                <div class="flex-wrap-center">
+                    <svg width="400" height="280" viewBox="0 0 400 280"
+                        style="max-width: 100%; height: auto; flex-shrink: 0; border: 2px solid var(--border-light); border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: var(--bg-table);">
+                        <!-- Agente -->
+                        <rect x="50" y="100" width="100" height="80" rx="10" fill="#49B9CE" opacity="0.3" />
+                        <text x="100" y="135" font-size="16" font-weight="700" fill="#49B9CE"
+                            text-anchor="middle">AGENTE</text>
+                        <text x="100" y="155" font-size="12" fill="#333333" text-anchor="middle">(Cerebro/IA)</text>
+
+                        <!-- Ambiente -->
+                        <rect x="250" y="100" width="100" height="80" rx="10" fill="#8A7AAF" opacity="0.3" />
+                        <text x="300" y="135" font-size="16" font-weight="700" fill="#8A7AAF"
+                            text-anchor="middle">AMBIENTE</text>
+                        <text x="300" y="155" font-size="12" fill="#333333" text-anchor="middle">(Mundo)</text>
+
+                        <!-- Flechas y etiquetas -->
+                        <defs>
+                            <marker id="arrowblue3" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple3" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <!-- Acción: Agente -> Ambiente -->
+                        <path d="M 150 120 Q 200 80 250 120" stroke="#49B9CE" stroke-width="3" fill="none"
+                            marker-end="url(#arrowblue3)" />
+                        <text x="200" y="95" font-size="13" font-weight="700" fill="#49B9CE"
+                            text-anchor="middle">Acción</text>
+
+                        <!-- Estado + Recompensa: Ambiente -> Agente -->
+                        <path d="M 250 160 Q 200 200 150 160" stroke="#8A7AAF" stroke-width="3" fill="none"
+                            marker-end="url(#arrowpurple3)" />
+                        <text x="200" y="210" font-size="13" font-weight="700" fill="#8A7AAF"
+                            text-anchor="middle">Estado</text>
+                        <text x="200" y="225" font-size="13" font-weight="700" fill="#28a745"
+                            text-anchor="middle">+ Recompensa</text>
+
+                        <!-- Objetivo -->
+                        <rect x="100" y="230" width="200" height="40" rx="8" fill="#f0f0f0" stroke="#333333"
+                            stroke-width="2" />
+                        <text x="200" y="255" font-size="13" font-weight="700" fill="#333333"
+                            text-anchor="middle">Objetivo: Maximizar Recompensa Total</text>
+                    </svg>
+
+                    <div class="flex-item">
+                        <h3 class="color-primary">Ciclo de Interacción</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div class="highlight-box primary">
+                                <p class="title">1. Observar Estado</p>
+                                <p class="content">El agente percibe el estado actual del ambiente</p>
+                            </div>
+                            <div class="highlight-box secondary">
+                                <p class="title">2. Tomar Acción</p>
+                                <p class="content">El agente ejecuta una acción basada en su política</p>
+                            </div>
+                            <div class="highlight-box" style="border-left: 4px solid var(--color-success);">
+                                <p class="title">3. Recibir Feedback</p>
+                                <p class="content">Obtiene nuevo estado y recompensa (positiva o negativa)</p>
+                            </div>
+                            <div class="highlight-box primary">
+                                <p class="title">4. Aprender</p>
+                                <p class="content">Actualizar política para mejorar decisiones futuras</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <p class="title">🎯 Objetivo Principal</p>
+                    <p class="content">
+                        Aprender una <strong>política</strong> (estrategia de decisión) que <strong>maximice la
+                            recompensa acumulada</strong> a largo plazo, no solo la recompensa inmediata.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: CONCEPTOS CLAVE -->
+            <section class="section">
+                <h2 class="section-title">Conceptos Fundamentales</h2>
+
+                <div class="grid-features">
+                    <!-- Agente -->
+                    <div class="feature-card primary">
+                        <div class="bg-primary-light" style="padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">🤖</span>
+                        </div>
+                        <h4 class="color-primary">Agente</h4>
+                        <p>
+                            El aprendiz o tomador de decisiones. Ejecuta acciones y aprende de las consecuencias.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">Ejemplo: Robot, jugador de ajedrez, coche autónomo</p>
+                    </div>
+
+                    <!-- Ambiente -->
+                    <div class="feature-card secondary">
+                        <div class="bg-secondary-light" style="padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">🌍</span>
+                        </div>
+                        <h4 class="color-secondary">Ambiente</h4>
+                        <p>
+                            El mundo en el que opera el agente. Responde a las acciones y proporciona feedback.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">Ejemplo: Tablero de juego, carretera, simulación</p>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="feature-card primary">
+                        <div class="bg-primary-light" style="padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">📍</span>
+                        </div>
+                        <h4 class="color-primary">Estado (s)</h4>
+                        <p>
+                            Representación de la situación actual del ambiente que el agente percibe.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">Ejemplo: Posición del robot, configuración del tablero</p>
+                    </div>
+
+                    <!-- Acción -->
+                    <div class="feature-card secondary">
+                        <div class="bg-secondary-light" style="padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">⚡</span>
+                        </div>
+                        <h4 class="color-secondary">Acción (a)</h4>
+                        <p>
+                            Movimiento o decisión que el agente puede ejecutar en un estado dado.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">Ejemplo: Mover arriba/abajo, acelerar/frenar</p>
+                    </div>
+
+                    <!-- Recompensa -->
+                    <div class="feature-card" style="border: 2px solid var(--color-success);">
+                        <div style="background: #d4edda; padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">🎁</span>
+                        </div>
+                        <h4 class="color-success">Recompensa (r)</h4>
+                        <p>
+                            Señal numérica que indica qué tan buena fue una acción. Puede ser positiva o negativa.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">Ejemplo: +10 por ganar, -1 por chocar</p>
+                    </div>
+
+                    <!-- Política -->
+                    <div class="feature-card primary">
+                        <div class="bg-primary-light" style="padding: 1rem; border-radius: 0.75rem; text-align: center; margin-bottom: 1rem;">
+                            <span style="font-size: 3rem;">🗺️</span>
+                        </div>
+                        <h4 class="color-primary">Política (π)</h4>
+                        <p>
+                            Estrategia del agente que mapea estados a acciones. Define cómo actuar.
+                        </p>
+                        <p class="text-light" style="font-size: 0.85rem; font-style: italic;">π(s) → a: "En estado s, toma acción a"</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <p class="title">💡 Analogía</p>
+                    <p class="content">
+                        Imagina aprender a andar en bicicleta: tú eres el <strong>agente</strong>, la bicicleta y el
+                        camino son el <strong>ambiente</strong>, mantener el equilibrio es el <strong>estado</strong>,
+                        girar el manubrio es una <strong>acción</strong>, y no caerte es la
+                        <strong>recompensa</strong>. Tu estrategia para mantener el equilibrio es tu
+                        <strong>política</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: MDP -->
+            <section class="section">
+                <h2 class="section-title">Proceso de Decisión de Markov (MDP)</h2>
+
+                <p>
+                    Los problemas de aprendizaje por refuerzo se formalizan como <strong>Procesos de Decisión de
+                        Markov</strong> (Markov Decision Process - MDP), que asumen que el futuro depende solo del
+                    estado presente, no del pasado.
+                </p>
+
+                <div class="flex-wrap-center mt-2">
+                    <svg width="350" height="200" viewBox="0 0 350 200"
+                        style="max-width: 100%; height: auto; flex-shrink: 0; border: 2px solid var(--border-light); border-radius: 1rem; background: var(--bg-table);">
+                        <!-- Estados -->
+                        <circle cx="80" cy="100" r="30" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" />
+                        <text x="80" y="105" font-size="16" font-weight="700" fill="#333333"
+                            text-anchor="middle">s₁</text>
+
+                        <circle cx="270" cy="100" r="30" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" />
+                        <text x="270" y="105" font-size="16" font-weight="700" fill="#333333"
+                            text-anchor="middle">s₂</text>
+
+                        <!-- Transiciones -->
+                        <defs>
+                            <marker id="arrowmdp" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                        </defs>
+
+                        <!-- Acción de s1 a s2 -->
+                        <path d="M 110 90 L 240 90" stroke="#49B9CE" stroke-width="2" fill="none"
+                            marker-end="url(#arrowmdp)" />
+                        <text x="175" y="80" font-size="12" fill="#49B9CE" font-weight="700"
+                            text-anchor="middle">a₁</text>
+                        <text x="175" y="105" font-size="11" fill="#28a745" font-weight="700"
+                            text-anchor="middle">r = +5</text>
+
+                        <!-- Acción de s2 a s1 -->
+                        <path d="M 240 110 L 110 110" stroke="#8A7AAF" stroke-width="2" fill="none"
+                            marker-end="url(#arrowmdp)" />
+                        <text x="175" y="135" font-size="12" fill="#8A7AAF" font-weight="700"
+                            text-anchor="middle">a₂</text>
+                        <text x="175" y="150" font-size="11" fill="#dc3545" font-weight="700"
+                            text-anchor="middle">r = -2</text>
+
+                        <!-- Etiquetas -->
+                        <text x="175" y="25" font-size="13" fill="#555555" text-anchor="middle">Propiedad de
+                            Markov:</text>
+                        <text x="175" y="40" font-size="12" fill="#555555" text-anchor="middle">P(s_{t+1} | s_t,
+                            a_t)</text>
+                    </svg>
+
+                    <div class="flex-item">
+                        <div class="highlight-box primary mb-1">
+                            <p class="formula-block">
+                                MDP = (S, A, P, R, γ)
+                            </p>
+                            <ul>
+                                <li><strong>S:</strong> Conjunto de estados</li>
+                                <li><strong>A:</strong> Conjunto de acciones</li>
+                                <li><strong>P:</strong> Probabilidades de transición</li>
+                                <li><strong>R:</strong> Función de recompensa</li>
+                                <li><strong>γ:</strong> Factor de descuento (0 ≤ γ ≤ 1)</li>
+                            </ul>
+                        </div>
+
+                        <div class="highlight-box">
+                            <p class="title">🎯 Factor de Descuento (γ)</p>
+                            <p class="content">
+                                Determina la importancia de recompensas futuras vs inmediatas.<br>
+                                <strong>γ ≈ 0:</strong> Cortoplacista<br>
+                                <strong>γ ≈ 1:</strong> Largoplacista
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary mt-2">
+                    <p class="title color-secondary">📐 Ecuación de Bellman</p>
+                    <p class="formula-block">
+                        V(s) = max[R(s,a) + γ Σ P(s'|s,a) V(s')]
+                    </p>
+                    <p class="content">
+                        El valor de un estado es la recompensa inmediata más el valor descontado de estados futuros
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EXPLORACIÓN VS EXPLOTACIÓN -->
+            <section class="section">
+                <h2 class="section-title">Dilema: Exploración vs Explotación</h2>
+
+                <p>
+                    Uno de los desafíos fundamentales en aprendizaje por refuerzo: ¿debemos
+                    <strong>explorar</strong> nuevas acciones o <strong>explotar</strong> lo que ya sabemos que
+                    funciona?
+                </p>
+
+                <div class="comparison-grid mt-2">
+                    <!-- Explotación -->
+                    <div class="highlight-box primary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 4rem;">🎯</span>
+                        </div>
+                        <h3 class="color-primary text-center">EXPLOTACIÓN</h3>
+                        <p class="text-center">
+                            Usar el <strong>conocimiento actual</strong> para maximizar recompensa
+                        </p>
+                        <div class="bg-white" style="padding: 0.75rem; border-radius: 0.5rem;">
+                            <p class="text-dark" style="font-weight: 700; margin-bottom: 0.5rem;">✅ Ventaja:</p>
+                            <p class="text-medium mb-0">Maximiza ganancia a corto plazo</p>
+                        </div>
+                    </div>
+
+                    <!-- Exploración -->
+                    <div class="highlight-box secondary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 4rem;">🔍</span>
+                        </div>
+                        <h3 class="color-secondary text-center">EXPLORACIÓN</h3>
+                        <p class="text-center">
+                            Probar <strong>acciones nuevas</strong> para descubrir mejores estrategias
+                        </p>
+                        <div class="bg-white" style="padding: 0.75rem; border-radius: 0.5rem;">
+                            <p class="text-dark" style="font-weight: 700; margin-bottom: 0.5rem;">✅ Ventaja:</p>
+                            <p class="text-medium mb-0">Puede encontrar soluciones óptimas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estrategias -->
+                <div class="concept-card mt-2">
+                    <h3 class="color-primary">Estrategias de Balance</h3>
+
+                    <div class="grid-features">
+                        <div class="feature-card primary">
+                            <h4 class="color-primary">ε-Greedy</h4>
+                            <p class="mb-small">
+                                Con probabilidad ε explora, con (1-ε) explota
+                            </p>
+                            <p class="code-badge mb-0">Ejemplo: ε = 0.1 (10% exploración)</p>
+                        </div>
+
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">Decaimiento de ε</h4>
+                            <p class="mb-small">
+                                Reducir ε con el tiempo (más exploración al inicio)
+                            </p>
+                            <p class="code-badge mb-0">ε = ε_inicial × decay^t</p>
+                        </div>
+
+                        <div class="feature-card primary">
+                            <h4 class="color-primary">Upper Confidence Bound</h4>
+                            <p class="mb-small">
+                                Explora acciones con alta incertidumbre
+                            </p>
+                            <p class="code-badge mb-0">UCB = Q(a) + c√(ln(t)/N(a))</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: ALGORITMOS PRINCIPALES -->
+            <section class="section">
+                <h2 class="section-title color-primary">Algoritmos Principales</h2>
+
+                <!-- Q-Learning -->
+                <div class="concept-card" style="border-color: var(--color-primary);">
+                    <h3 class="color-primary">1. Q-Learning</h3>
+                    <p>
+                        Algoritmo <strong>off-policy</strong> que aprende la función Q(s,a): el valor esperado de tomar
+                        la acción 'a' en el estado 's'. No requiere modelo del ambiente.
+                    </p>
+
+                    <div class="flex-wrap-center mb-1">
+                        <svg width="300" height="220" viewBox="0 0 300 220"
+                            style="max-width: 100%; height: auto; flex-shrink: 0; border: 2px solid var(--border-light); border-radius: 1rem; background: var(--bg-table);">
+                            <!-- Q-Table -->
+                            <text x="150" y="20" font-size="14" font-weight="700" fill="#49B9CE"
+                                text-anchor="middle">Q-Table</text>
+
+                            <!-- Headers -->
+                            <text x="30" y="50" font-size="11" font-weight="700" fill="#333333">Estado/Acción</text>
+                            <text x="140" y="50" font-size="11" font-weight="700" fill="#49B9CE"
+                                text-anchor="middle">↑</text>
+                            <text x="190" y="50" font-size="11" font-weight="700" fill="#49B9CE"
+                                text-anchor="middle">↓</text>
+                            <text x="240" y="50" font-size="11" font-weight="700" fill="#49B9CE"
+                                text-anchor="middle">←</text>
+
+                            <!-- Tabla -->
+                            <rect x="20" y="60" width="260" height="140" fill="none" stroke="#e5e5e5"
+                                stroke-width="2" />
+
+                            <!-- Filas -->
+                            <line x1="80" y1="60" x2="80" y2="200" stroke="#e5e5e5" stroke-width="1" />
+                            <line x1="20" y1="95" x2="280" y2="95" stroke="#e5e5e5" stroke-width="1" />
+                            <line x1="20" y1="130" x2="280" y2="130" stroke="#e5e5e5" stroke-width="1" />
+                            <line x1="20" y1="165" x2="280" y2="165" stroke="#e5e5e5" stroke-width="1" />
+
+                            <!-- Columnas -->
+                            <line x1="163" y1="60" x2="163" y2="200" stroke="#e5e5e5" stroke-width="1" />
+                            <line x1="213" y1="60" x2="213" y2="200" stroke="#e5e5e5" stroke-width="1" />
+
+                            <!-- Estados -->
+                            <text x="50" y="82" font-size="11" fill="#333333" text-anchor="middle">s₁</text>
+                            <text x="50" y="117" font-size="11" fill="#333333" text-anchor="middle">s₂</text>
+                            <text x="50" y="152" font-size="11" fill="#333333" text-anchor="middle">s₃</text>
+                            <text x="50" y="187" font-size="11" fill="#333333" text-anchor="middle">s₄</text>
+
+                            <!-- Valores Q -->
+                            <text x="120" y="82" font-size="11" fill="#555555" text-anchor="middle">0.8</text>
+                            <text x="188" y="82" font-size="11" fill="#555555" text-anchor="middle">0.3</text>
+                            <text x="247" y="82" font-size="11" fill="#555555" text-anchor="middle">0.5</text>
+
+                            <text x="120" y="117" font-size="11" fill="#28a745" font-weight="700"
+                                text-anchor="middle">0.9</text>
+                            <text x="188" y="117" font-size="11" fill="#555555" text-anchor="middle">0.4</text>
+                            <text x="247" y="117" font-size="11" fill="#555555" text-anchor="middle">0.2</text>
+
+                            <text x="120" y="152" font-size="11" fill="#555555" text-anchor="middle">0.6</text>
+                            <text x="188" y="152" font-size="11" fill="#555555" text-anchor="middle">0.7</text>
+                            <text x="247" y="152" font-size="11" fill="#555555" text-anchor="middle">0.1</text>
+
+                            <text x="120" y="187" font-size="11" fill="#555555" text-anchor="middle">0.4</text>
+                            <text x="188" y="187" font-size="11" fill="#555555" text-anchor="middle">0.5</text>
+                            <text x="247" y="187" font-size="11" fill="#28a745" font-weight="700"
+                                text-anchor="middle">0.95</text>
+                        </svg>
+
+                        <div class="flex-item">
+                            <div class="highlight-box primary mb-1">
+                                <p class="formula-block">
+                                    Q(s,a) ← Q(s,a) + α[r + γ max Q(s',a') - Q(s,a)]
+                                </p>
+                                <ul>
+                                    <li><strong>α:</strong> Tasa de aprendizaje</li>
+                                    <li><strong>γ:</strong> Factor de descuento</li>
+                                    <li><strong>r:</strong> Recompensa recibida</li>
+                                </ul>
+                            </div>
+
+                            <div class="highlight-box">
+                                <p class="title">✅ Características:</p>
+                                <ul class="mb-0">
+                                    <li>Model-free (sin modelo)</li>
+                                    <li>Off-policy</li>
+                                    <li>Converge a política óptima</li>
+                                    <li>Requiere tabla Q finita</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary">
+                        <p class="title">📊 Casos de Uso</p>
+                        <ul class="mb-0">
+                            <li>Juegos simples (Grid World, Tic-Tac-Toe)</li>
+                            <li>Navegación de robots en espacios discretos</li>
+                            <li>Optimización de rutas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Deep Q-Network (DQN) -->
+                <div class="concept-card mt-2" style="border-color: var(--color-secondary);">
+                    <h3 class="color-secondary">2. Deep Q-Network (DQN)</h3>
+                    <p>
+                        Combina Q-Learning con <strong>Deep Learning</strong>. Usa una red neuronal para aproximar la
+                        función Q, permitiendo trabajar con espacios de estados enormes o continuos.
+                    </p>
+
+                    <div class="layout-grid-responsive mb-1">
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">Innovaciones Clave</h4>
+                            <ul class="mb-0">
+                                <li><strong>Experience Replay:</strong> Almacena y reutiliza experiencias pasadas</li>
+                                <li><strong>Target Network:</strong> Red objetivo separada para estabilidad</li>
+                                <li><strong>Red Neuronal:</strong> Aproxima Q(s,a) para estados complejos</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 class="text-dark">🏆 Logros Destacados</h4>
+                            <ul class="mb-0">
+                                <li>Juegos de Atari a nivel humano</li>
+                                <li>AlphaGo (con variaciones)</li>
+                                <li>Control de robots complejos</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary">
+                        <p class="title">📊 Casos de Uso</p>
+                        <ul class="mb-0">
+                            <li><strong>Videojuegos:</strong> Aprender a jugar desde píxeles</li>
+                            <li><strong>Robótica:</strong> Control con percepción visual</li>
+                            <li><strong>Trading:</strong> Decisiones financieras automáticas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Policy Gradient -->
+                <div class="concept-card mt-2" style="border-color: var(--color-primary);">
+                    <h3 class="color-primary">3. Policy Gradient Methods</h3>
+                    <p>
+                        En lugar de aprender valores de estado-acción, aprende directamente la <strong>política
+                            óptima</strong>. Optimiza la política mediante gradiente ascendente.
+                    </p>
+
+                    <div class="layout-grid-responsive mb-1">
+                        <div class="feature-card primary">
+                            <h4 class="color-primary">✅ Ventajas</h4>
+                            <ul class="mb-0">
+                                <li>Funciona con acciones continuas</li>
+                                <li>Puede aprender políticas estocásticas</li>
+                                <li>Mejor convergencia en algunos casos</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4 class="text-dark">Algoritmos Populares</h4>
+                            <ul class="mb-0">
+                                <li><strong>REINFORCE:</strong> Algoritmo básico</li>
+                                <li><strong>A2C/A3C:</strong> Advantage Actor-Critic</li>
+                                <li><strong>PPO:</strong> Proximal Policy Optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary">
+                        <p class="title">📊 Casos de Uso</p>
+                        <ul class="mb-0">
+                            <li><strong>Control continuo:</strong> Brazos robóticos, drones</li>
+                            <li><strong>Juegos complejos:</strong> Dota 2, StarCraft II</li>
+                            <li><strong>Diálogo:</strong> Chatbots conversacionales</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Actor-Critic -->
+                <div class="concept-card mt-2" style="border-color: var(--color-secondary);">
+                    <h3 class="color-secondary">4. Actor-Critic</h3>
+                    <p>
+                        Arquitectura híbrida que combina Policy Gradient (Actor) con Value Function (Critic). El actor
+                        decide qué hacer, el crítico evalúa qué tan buena fue la decisión.
+                    </p>
+
+                    <div class="comparison-grid">
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">🎭 Actor (Política)</h4>
+                            <p class="mb-0">Selecciona acciones basado en el estado actual</p>
+                        </div>
+
+                        <div class="feature-card primary">
+                            <h4 class="color-primary">👨‍⚖️ Critic (Valor)</h4>
+                            <p class="mb-0">Evalúa qué tan buena fue la acción tomada</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: APLICACIONES REALES -->
+            <section class="section">
+                <h2 class="section-title">Aplicaciones en el Mundo Real</h2>
+
+                <div class="grid-3">
+                    <!-- Robótica -->
+                    <div class="feature-card primary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">🤖</span>
+                        </div>
+                        <h3 class="color-primary text-center">Robótica</h3>
+                        <ul class="mb-0">
+                            <li>Manipulación de objetos</li>
+                            <li>Locomoción bípeda</li>
+                            <li>Navegación autónoma</li>
+                            <li>Ensamblaje industrial</li>
+                        </ul>
+                    </div>
+
+                    <!-- Juegos -->
+                    <div class="feature-card secondary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">🎮</span>
+                        </div>
+                        <h3 class="color-secondary text-center">Juegos</h3>
+                        <ul class="mb-0">
+                            <li>AlphaGo (Go)</li>
+                            <li>OpenAI Five (Dota 2)</li>
+                            <li>AlphaStar (StarCraft II)</li>
+                            <li>NPCs inteligentes</li>
+                        </ul>
+                    </div>
+
+                    <!-- Vehículos Autónomos -->
+                    <div class="feature-card primary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">🚗</span>
+                        </div>
+                        <h3 class="color-primary text-center">Vehículos Autónomos</h3>
+                        <ul class="mb-0">
+                            <li>Control de dirección</li>
+                            <li>Planificación de rutas</li>
+                            <li>Decisiones en tráfico</li>
+                            <li>Estacionamiento</li>
+                        </ul>
+                    </div>
+
+                    <!-- Finanzas -->
+                    <div class="feature-card secondary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">💰</span>
+                        </div>
+                        <h3 class="color-secondary text-center">Finanzas</h3>
+                        <ul class="mb-0">
+                            <li>Trading algorítmico</li>
+                            <li>Gestión de portafolio</li>
+                            <li>Optimización de precios</li>
+                            <li>Detección de fraude</li>
+                        </ul>
+                    </div>
+
+                    <!-- Healthcare -->
+                    <div class="feature-card primary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">🏥</span>
+                        </div>
+                        <h3 class="color-primary text-center">Salud</h3>
+                        <ul class="mb-0">
+                            <li>Tratamientos personalizados</li>
+                            <li>Dosificación de medicamentos</li>
+                            <li>Planificación de terapias</li>
+                            <li>Diagnóstico asistido</li>
+                        </ul>
+                    </div>
+
+                    <!-- Sistemas de Recomendación -->
+                    <div class="feature-card secondary">
+                        <div class="text-center mb-1">
+                            <span style="font-size: 2.5rem;">📱</span>
+                        </div>
+                        <h3 class="color-secondary text-center">Recomendaciones</h3>
+                        <ul class="mb-0">
+                            <li>YouTube, Netflix</li>
+                            <li>Publicidad personalizada</li>
+                            <li>E-commerce</li>
+                            <li>Feeds de redes sociales</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <p class="title">🚀 Futuro del RL</p>
+                    <p class="content mb-0">
+                        El aprendizaje por refuerzo está en constante evolución. Se espera que revolucione áreas como el
+                        control de energía inteligente, optimización de centros de datos, robótica doméstica y
+                        asistentes virtuales verdaderamente conversacionales.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: DESAFÍOS -->
+            <section class="section">
+                <h2 class="section-title">Desafíos y Limitaciones</h2>
+
+                <div class="grid-features mb-2">
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-error);">⏱️ Alto Costo Computacional</p>
+                        <p class="content mb-0">Requiere millones de interacciones y mucho tiempo de entrenamiento</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-warning);">🎲 Inestabilidad</p>
+                        <p class="content mb-0">El entrenamiento puede ser inestable y difícil de reproducir</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-error);">🔧 Diseño de Recompensas</p>
+                        <p class="content mb-0">Definir la función de recompensa correcta es un arte difícil</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-warning);">🌍 Sim-to-Real Gap</p>
+                        <p class="content mb-0">Lo que funciona en simulación puede fallar en el mundo real</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-error);">📊 Muestra Ineficiente</p>
+                        <p class="content mb-0">Necesita muchos más datos que el aprendizaje supervisado</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <p class="title" style="color: var(--color-warning);">⚖️ Exploración-Explotación</p>
+                        <p class="content mb-0">Balance difícil de optimizar en problemas complejos</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">💡 Mitigación</p>
+                    <p class="content mb-0">
+                        Muchos de estos desafíos se están abordando con técnicas como <strong>transfer learning</strong>,
+                        <strong>curriculum learning</strong>, <strong>reward shaping</strong>, y <strong>simuladores más
+                            realistas</strong>. La investigación activa continúa mejorando la eficiencia y estabilidad
+                        del RL.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: MAPA MENTAL -->
+            <section class="section">
+                <h2 class="section-title">🧠 Mapa Mental: Aprendizaje por Refuerzo</h2>
+                <p class="text-center text-medium mb-2">
+                    Visualización completa de los conceptos clave del Reinforcement Learning
+                </p>
+                <div class="mindmap-container">
+                    <pre class="mermaid">
+mindmap
+  root((RL))
+    Conceptos Base
+      Agente
+        Observa
+        Actua
+        Aprende
+      Ambiente
+        Estados
+        Recompensas
+      Politica π
+        Mapea Estados a Acciones
+    MDP
+      Componentes
+        S: Estados
+        A: Acciones
+        P: Transiciones
+        R: Recompensa
+        γ: Descuento
+      Bellman
+        Valor Estado
+    Exploracion vs Explotacion
+      Estrategias
+        ε-Greedy
+        UCB
+        Decaimiento
+    Algoritmos
+      Q-Learning
+        Off-policy
+        Q-Table
+      DQN
+        Deep Learning
+        Experience Replay
+        Target Network
+      Policy Gradient
+        REINFORCE
+        PPO
+        A2C
+      Actor-Critic
+        Actor: Politica
+        Critic: Valor
+    Aplicaciones
+      Robotica
+      Juegos
+      Vehiculos Autonomos
+      Finanzas
+      Salud
+    Desafios
+      Alto Costo
+      Inestabilidad
+      Diseño Recompensas
+      Sim-to-Real Gap
+                    </pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 9: RESUMEN -->
+            <section class="section">
+                <h2 class="section-title color-primary">Resumen</h2>
+
+                <div class="highlight-box primary mb-2">
+                    <p>
+                        El <strong>aprendizaje por refuerzo</strong> es el paradigma de ML más cercano a cómo
+                        aprendemos naturalmente: mediante <strong>prueba, error y recompensas</strong>.
+                    </p>
+
+                    <ul>
+                        <li><strong class="color-primary">Agente-Ambiente:</strong> Interacción continua para aprender
+                        </li>
+                        <li><strong class="color-secondary">MDP:</strong> Formalización matemática del problema</li>
+                        <li><strong class="color-primary">Exploración vs Explotación:</strong> Dilema fundamental</li>
+                        <li><strong class="color-secondary">Algoritmos:</strong> Q-Learning, DQN, Policy Gradient,
+                            Actor-Critic</li>
+                        <li><strong class="color-primary">Aplicaciones:</strong> Robótica, juegos, vehículos autónomos,
+                            finanzas</li>
+                        <li><strong class="color-secondary">Desafíos:</strong> Costoso computacionalmente, inestable,
+                            diseño de recompensas</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title color-secondary">🚀 Próximos Pasos</p>
+                    <p class="content mb-0">
+                        En las siguientes unidades exploraremos implementaciones prácticas de estos algoritmos,
+                        trabajaremos con entornos de simulación como <strong>OpenAI Gym</strong>, y aplicaremos RL a
+                        problemas reales. También estudiaremos técnicas avanzadas como <strong>Multi-Agent RL</strong> y
+                        <strong>Hierarchical RL</strong>.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p class="description">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

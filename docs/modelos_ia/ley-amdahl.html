@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ley de Amdahl: el límite del paralelismo en sistemas distribuidos y Big Data, con análisis de speedup y aplicaciones en MapReduce y Spark">
-    <meta name="keywords" content="Ley de Amdahl, paralelismo, Big Data, speedup, Gustafson, MapReduce, Spark, sistemas distribuidos">
+    <meta name="description"
+        content="Ley de Amdahl: el límite del paralelismo en sistemas distribuidos y Big Data, con análisis de speedup y aplicaciones en MapReduce y Spark">
+    <meta name="keywords"
+        content="Ley de Amdahl, paralelismo, Big Data, speedup, Gustafson, MapReduce, Spark, sistemas distribuidos">
     <meta name="author" content="Bjlanza">
     <meta name="organization" content="ILERNA">
     <meta property="og:title" content="Ley de Amdahl y el Límite del Paralelismo | iLERNA">
@@ -18,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -36,23 +40,32 @@
                 <span>Ley de Amdahl</span>
             </div>
         </div>
-        <h1>Ley de Amdahl y el Límite del Paralelismo</h1>
-        <p>El Techo de Aceleración en Sistemas Distribuidos y Big Data</p>
+        <h1 class="text-center">Ley de Amdahl y el Límite del Paralelismo</h1>
+        <p class="subtitle text-center">El Techo de Aceleración en Sistemas Distribuidos y Big Data</p>
     </header>
 
     <!-- SECCIÓN 1: PRINCIPIO DE AMDAHL -->
     <section class="section">
         <h2 class="section-title">El Principio de Amdahl (1967)</h2>
         <p>
-            La <strong>Ley de Amdahl</strong>, formulada por Gene Amdahl en 1967, es un principio fundamental en la arquitectura de computadoras y en el procesamiento distribuido (Big Data). Establece que la <strong>aceleración (speedup)</strong> de un programa al paralelizarlo está limitada por la fracción del programa que debe ejecutarse de forma <strong>secuencial</strong> (no paralela).
+            La <strong>Ley de Amdahl</strong>, formulada por Gene Amdahl en 1967, es un principio fundamental en la
+            arquitectura de computadoras y en el procesamiento distribuido (Big Data). Establece que la
+            <strong>aceleración (speedup)</strong> de un programa al paralelizarlo está limitada por la fracción del
+            programa que debe ejecutarse de forma <strong>secuencial</strong> (no paralela).
         </p>
         <p>
-            En sistemas de Big Data como <strong>Apache Spark</strong> o <strong>MapReduce</strong>, comprender esta ley es crucial para el diseño de algoritmos. Si un 5% de la carga de trabajo requiere una fase secuencial (como la fase de <strong>Shuffle</strong> en MapReduce, o la escritura final de un resultado), esa porción limitará el rendimiento total, sin importar cuántos nodos añadamos al cluster.
+            En sistemas de Big Data como <strong>Apache Spark</strong> o <strong>MapReduce</strong>, comprender esta ley
+            es crucial para el diseño de algoritmos. Si un 5% de la carga de trabajo requiere una fase secuencial (como
+            la fase de <strong>Shuffle</strong> en MapReduce, o la escritura final de un resultado), esa porción
+            limitará el rendimiento total, sin importar cuántos nodos añadamos al cluster.
         </p>
 
         <div class="highlight-box">
             <p class="tech-title">🚗 Ejemplo Real - Tesla Autopilot:</p>
-            <p>La toma de decisión final (frenar o acelerar) después de procesar en paralelo los datos de 8 cámaras, radar y sensores es un paso secuencial ultrarrápido, pero crítico. Cualquier retraso en ese paso final limitaría la velocidad de respuesta general del sistema de conducción autónoma, por muy rápido que se procese la visión en paralelo.</p>
+            <p>La toma de decisión final (frenar o acelerar) después de procesar en paralelo los datos de 8 cámaras,
+                radar y sensores es un paso secuencial ultrarrápido, pero crítico. Cualquier retraso en ese paso final
+                limitaría la velocidad de respuesta general del sistema de conducción autónoma, por muy rápido que se
+                procese la visión en paralelo.</p>
         </div>
 
         <h3 class="color-primary">Conceptos Fundamentales de Amdahl</h3>
@@ -81,7 +94,8 @@
         <h2 class="section-title">Formulación Matemática y Cálculo del Speedup</h2>
 
         <p>
-            La Ley de Amdahl formaliza la relación entre el tiempo total de ejecución original (T₁) y el tiempo de ejecución paralelo (Tₙ), considerando la fracción secuencial (S) y el número de procesadores (N).
+            La Ley de Amdahl formaliza la relación entre el tiempo total de ejecución original (T₁) y el tiempo de
+            ejecución paralelo (Tₙ), considerando la fracción secuencial (S) y el número de procesadores (N).
         </p>
 
         <div class="highlight-box secondary formula-container">
@@ -94,7 +108,8 @@
 
         <h3 class="color-secondary mt-2">Cálculo del Límite Máximo</h3>
         <p>
-            Si el número de procesadores (N) tiende a infinito, el término P/N tiende a cero. El límite de aceleración se convierte en:
+            Si el número de procesadores (N) tiende a infinito, el término P/N tiende a cero. El límite de aceleración
+            se convierte en:
         </p>
         <div class="highlight-box formula-container">
             <p class="formula-text color-primary">
@@ -102,7 +117,8 @@
             </p>
         </div>
         <p>
-            Esto demuestra que la aceleración máxima es inversamente proporcional a la fracción secuencial del código. Incluso una pequeña parte secuencial puede imponer un límite estricto al rendimiento.
+            Esto demuestra que la aceleración máxima es inversamente proporcional a la fracción secuencial del código.
+            Incluso una pequeña parte secuencial puede imponer un límite estricto al rendimiento.
         </p>
     </section>
 
@@ -111,7 +127,8 @@
         <h2 class="section-title">Aplicación Práctica con Python</h2>
 
         <p>
-            Vamos a simular el cálculo de la aceleración para un algoritmo de Big Data. Asumimos un proceso con una fase de inicialización y una fase de agregación de resultados que son <strong>secuenciales</strong>.
+            Vamos a simular el cálculo de la aceleración para un algoritmo de Big Data. Asumimos un proceso con una fase
+            de inicialización y una fase de agregación de resultados que son <strong>secuenciales</strong>.
         </p>
 
         <h3>Cálculo de Aceleración (Speedup) de Amdahl</h3>
@@ -152,7 +169,10 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
 
         <h3 class="color-primary mt-2">Análisis del Caso (S=0.05)</h3>
         <p>
-            Como se observa, incluso añadiendo 1000 procesadores a un sistema con solo un <strong>5% de trabajo secuencial</strong>, la ganancia de velocidad no supera el <strong>20x</strong>. La Ley de Amdahl nos advierte que para lograr una aceleración significativa, debemos enfocarnos en <strong>reducir al máximo la porción secuencial</strong> del algoritmo, ya que esta es la única barrera real a la escalabilidad.
+            Como se observa, incluso añadiendo 1000 procesadores a un sistema con solo un <strong>5% de trabajo
+                secuencial</strong>, la ganancia de velocidad no supera el <strong>20x</strong>. La Ley de Amdahl nos
+            advierte que para lograr una aceleración significativa, debemos enfocarnos en <strong>reducir al máximo la
+                porción secuencial</strong> del algoritmo, ya que esta es la única barrera real a la escalabilidad.
         </p>
     </section>
 
@@ -161,10 +181,15 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
         <h2 class="section-title">El Contrapunto: Ley de Gustafson-Barsis</h2>
 
         <p>
-            La Ley de Amdahl asume un <strong>tamaño de problema fijo</strong>, lo cual es un enfoque limitado en Big Data. En 1988, John L. Gustafson y Edwin H. Barsis propusieron una perspectiva diferente, conocida como la <strong>Ley de Gustafson-Barsis</strong>, o modelo de escalamiento a gran escala.
+            La Ley de Amdahl asume un <strong>tamaño de problema fijo</strong>, lo cual es un enfoque limitado en Big
+            Data. En 1988, John L. Gustafson y Edwin H. Barsis propusieron una perspectiva diferente, conocida como la
+            <strong>Ley de Gustafson-Barsis</strong>, o modelo de escalamiento a gran escala.
         </p>
         <p>
-            Gustafson argumentó que, al aumentar el número de procesadores (N), los científicos de datos y las empresas de Big Data <strong>aumentan el tamaño del problema (dataset)</strong> para utilizar toda la potencia de cálculo. Es decir, la fracción secuencial (S') se mantiene fija, pero la fracción paralela (P') se escala con el número de procesadores.
+            Gustafson argumentó que, al aumentar el número de procesadores (N), los científicos de datos y las empresas
+            de Big Data <strong>aumentan el tamaño del problema (dataset)</strong> para utilizar toda la potencia de
+            cálculo. Es decir, la fracción secuencial (S') se mantiene fija, pero la fracción paralela (P') se escala
+            con el número de procesadores.
         </p>
 
         <div class="highlight-box secondary formula-container">
@@ -216,21 +241,26 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
 
         <h3 class="color-primary">Limitaciones Operacionales</h3>
         <p>
-            En frameworks distribuidos, las fases secuenciales no son el código original, sino las <strong>operaciones de coordinación</strong> y la <strong>Comunicación de Red (Network I/O)</strong> entre nodos:
+            En frameworks distribuidos, las fases secuenciales no son el código original, sino las <strong>operaciones
+                de coordinación</strong> y la <strong>Comunicación de Red (Network I/O)</strong> entre nodos:
         </p>
 
         <div class="feature-grid">
             <div class="feature-card">
                 <h4>🔀 La fase Shuffle</h4>
                 <p>
-                    El <strong>Shuffle</strong> de MapReduce (agrupar resultados por clave) es la principal barrera de Amdahl. Requiere que todos los nodos esperen para recibir los datos antes de iniciar la fase Reduce. La aceleración se limita por el tiempo de la red.
+                    El <strong>Shuffle</strong> de MapReduce (agrupar resultados por clave) es la principal barrera de
+                    Amdahl. Requiere que todos los nodos esperen para recibir los datos antes de iniciar la fase Reduce.
+                    La aceleración se limita por el tiempo de la red.
                 </p>
             </div>
 
             <div class="feature-card secondary">
                 <h4>🔗 Inicialización de SparkContext</h4>
                 <p>
-                    El tiempo que tarda el driver de Spark en conectarse a los executors y enviar la lógica (DAG) es secuencial. En trabajos muy cortos y frecuentes, este overhead reduce drásticamente el Speedup total (Ley de Amdahl).
+                    El tiempo que tarda el driver de Spark en conectarse a los executors y enviar la lógica (DAG) es
+                    secuencial. En trabajos muy cortos y frecuentes, este overhead reduce drásticamente el Speedup total
+                    (Ley de Amdahl).
                 </p>
             </div>
         </div>
@@ -244,8 +274,10 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
             <div class="feature-card primary">
                 <h3 class="color-primary text-center">💡 Implicación de Amdahl</h3>
                 <ul>
-                    <li><strong>Foco en el cuello de botella</strong>: La máxima optimización siempre debe ir a la porción secuencial (S).</li>
-                    <li><strong>Límite práctico</strong>: En Big Data, la Ley de Amdahl limita el rendimiento cuando el tamaño del problema es fijo (ej. un join en una tabla pequeña).</li>
+                    <li><strong>Foco en el cuello de botella</strong>: La máxima optimización siempre debe ir a la
+                        porción secuencial (S).</li>
+                    <li><strong>Límite práctico</strong>: En Big Data, la Ley de Amdahl limita el rendimiento cuando el
+                        tamaño del problema es fijo (ej. un join en una tabla pequeña).</li>
                     <li><strong>No es pesimista</strong>: Es una advertencia sobre los límites del paralelismo.</li>
                 </ul>
             </div>
@@ -253,9 +285,12 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
             <div class="feature-card secondary">
                 <h3 class="color-secondary text-center">🚀 El Paradigma de Gustafson</h3>
                 <ul>
-                    <li><strong>Escalar datos</strong>: Si duplicamos los nodos, también duplicamos la porción de datos procesada por nodo.</li>
-                    <li><strong>Fácil escalabilidad</strong>: El aumento de rendimiento es prácticamente lineal al añadir más nodos, siempre que aumentemos la carga de trabajo.</li>
-                    <li><strong>Relevancia en Cloud</strong>: Es la base del escalamiento horizontal en infraestructuras cloud (AWS, Google Cloud).</li>
+                    <li><strong>Escalar datos</strong>: Si duplicamos los nodos, también duplicamos la porción de datos
+                        procesada por nodo.</li>
+                    <li><strong>Fácil escalabilidad</strong>: El aumento de rendimiento es prácticamente lineal al
+                        añadir más nodos, siempre que aumentemos la carga de trabajo.</li>
+                    <li><strong>Relevancia en Cloud</strong>: Es la base del escalamiento horizontal en infraestructuras
+                        cloud (AWS, Google Cloud).</li>
                 </ul>
             </div>
         </div>
@@ -263,7 +298,10 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
         <div class="curiosity-box">
             <h4 class="color-warning">💡 Dato Curioso</h4>
             <p>
-                El procesador <strong>Intel i7</strong> tiene la implementación de la Ley de Amdahl en su arquitectura. Los núcleos de procesamiento son paralelos, pero la memoria caché L3 (compartida) es un recurso secuencial que limita la aceleración cuando múltiples núcleos acceden a ella, demostrando la vigencia del principio de Amdahl en el diseño de chips modernos.
+                El procesador <strong>Intel i7</strong> tiene la implementación de la Ley de Amdahl en su arquitectura.
+                Los núcleos de procesamiento son paralelos, pero la memoria caché L3 (compartida) es un recurso
+                secuencial que limita la aceleración cuando múltiples núcleos acceden a ella, demostrando la vigencia
+                del principio de Amdahl en el diseño de chips modernos.
             </p>
         </div>
     </section>
@@ -272,7 +310,8 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
         <h3>iLERNA</h3>
         <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
         <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
-        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
         <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
 
         <div class="penguin">
@@ -282,58 +321,7 @@ print(f"Límite máximo teórico de speedup: {speedup_max:.2f}x")</code></pre>
 
     <!-- Scripts -->
     <script src="../js/lecciones.js"></script>
-    <script>
-        // Funcionalidad para copiar bloques de código
-        document.addEventListener('DOMContentLoaded', function() {
-            const codeBlocks = document.querySelectorAll('pre code');
-
-            codeBlocks.forEach((block, index) => {
-                const pre = block.parentElement;
-                const wrapper = document.createElement('div');
-                wrapper.style.position = 'relative';
-
-                pre.parentNode.insertBefore(wrapper, pre);
-                wrapper.appendChild(pre);
-
-                const button = document.createElement('button');
-                button.className = 'copy-code-btn';
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    <span>Copiar código</span>
-                `;
-
-                button.addEventListener('click', async () => {
-                    const code = block.textContent;
-
-                    try {
-                        await navigator.clipboard.writeText(code);
-                        button.innerHTML = `
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>¡Copiado!</span>
-                        `;
-                        button.style.background = '#43A047';
-
-                        setTimeout(() => {
-                            button.innerHTML = `
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                                <span>Copiar código</span>
-                            `;
-                            button.style.background = '#49B9CE';
-                        }, 2000);
-                    } catch (err) {
-                        console.error('Error al copiar:', err);
-                    }
-                });
-
-                wrapper.appendChild(button);
-            });
-        });
-    </script>
+    <script src="../js/copy-code.js"></script>
 </body>
+
 </html>

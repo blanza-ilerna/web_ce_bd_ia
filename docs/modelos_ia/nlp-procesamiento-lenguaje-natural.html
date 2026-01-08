@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesamiento del Lenguaje Natural (NLP) | iLERNA</title>
+    <meta name="description"
+        content="Introducción al Procesamiento del Lenguaje Natural (NLP). Definición, pipeline de procesamiento, diferencias entre lenguaje formal y natural, y aplicaciones.">
+    <meta name="keywords"
+        content="NLP, Procesamiento del Lenguaje Natural, Tokenización, Lemmatización, NER, Análisis de Sentimiento, Machine Learning, IA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Procesamiento del Lenguaje Natural</span>
+                </div>
+            </div>
+            <h1 class="text-center">Procesamiento del Lenguaje Natural</h1>
+            <p class="subtitle text-center">De ELIZA a ChatGPT: Enseñando a las Máquinas a Hablar</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es el Procesamiento del Lenguaje Natural?</h2>
+                <p>
+                    La comunicación humana es una capacidad extraordinaria que nos define como especie. Hablamos,
+                    escribimos, leemos y escuchamos con una naturalidad que nos hace olvidar la complejidad subyacente:
+                    captar matices, interpretar contextos, detectar ironías, inferir intenciones. El
+                    <strong>Procesamiento del Lenguaje Natural (NLP, Natural Language Processing)</strong> es la
+                    disciplina de la Inteligencia Artificial que busca dotar a los sistemas computacionales de esta
+                    misma capacidad: <strong>entender, interpretar, generar y manipular lenguaje humano</strong>.
+                </p>
+                <p>
+                    Desde los primeros experimentos en la década de 1960 hasta los modelos generativos actuales como
+                    <strong>ChatGPT</strong>, <strong>Gemini</strong> o <strong>Claude</strong>, el NLP ha evolucionado
+                    desde interpretar comandos rudimentarios hasta mantener conversaciones coherentes, resumir
+                    documentos extensos, traducir entre idiomas con precisión casi humana, e incluso generar código
+                    funcional.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>💬 Ejemplo Real: Asistentes
+                            Virtuales</strong></p>
+                    <p style="margin-bottom: 0;">Cuando le pides a <strong>Siri</strong> "¿Qué tiempo hará mañana en
+                        Madrid?" o a <strong>Alexa</strong> "Pon música relajante", estos sistemas usan NLP para: (1)
+                        <strong>entender</strong> tu intención (consultar clima vs. reproducir música), (2)
+                        <strong>extraer entidades</strong> clave (ubicación: Madrid, tipo: relajante), (3)
+                        <strong>generar</strong> una respuesta natural ("Mañana en Madrid habrá 22°C y soleado"), todo
+                        en milisegundos.
+                    </p>
+                </div>
+
+                <h3 class="color-primary" style="margin-top: 2rem;">Áreas de Aplicación del NLP</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4 class="color-primary">🌐 Traducción Automática</h4>
+                        <p>Google Translate, DeepL - Traducen entre más de 100 idiomas preservando significado y estilo.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">📝 Generación de Texto</h4>
+                        <p>ChatGPT, Claude - Crean contenido original: artículos, código, poesía, ensayos académicos.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-primary">🎭 Análisis de Sentimientos</h4>
+                        <p>Detectar emociones en redes sociales, reseñas de productos, encuestas de satisfacción.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4 class="color-secondary">🔍 Búsqueda Semántica</h4>
+                        <p>Google Search - Entiende la intención de búsqueda más allá de palabras clave exactas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: LENGUAJE FORMAL VS NATURAL -->
+            <section class="section">
+                <h2 class="section-title">El Desafío Fundamental: Lenguaje Formal vs. Natural</h2>
+                <p>
+                    Las computadoras fueron diseñadas para procesar <strong>lenguajes formales</strong>: sistemas de
+                    símbolos con reglas precisas e invariables. El lenguaje de programación Python, por ejemplo, es
+                    perfectamente predecible: <code>if x > 5:</code> siempre significa lo mismo. El <strong>lenguaje
+                        natural</strong>, en cambio, es inherentemente ambiguo, contextual y evolutivo. Esta diferencia
+                    fundamental es lo que hace al NLP tan desafiante.
+                </p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Lenguaje Formal</th>
+                                <th>Lenguaje Natural</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Origen</td>
+                                <td>Artificial, diseñado</td>
+                                <td>Natural, evolutivo</td>
+                            </tr>
+                            <tr>
+                                <td>Ambigüedad</td>
+                                <td>Nula (sin ambigüedades)</td>
+                                <td>Alta (múltiples interpretaciones)</td>
+                            </tr>
+                            <tr>
+                                <td>Dependencia del Contexto</td>
+                                <td>Irrelevante</td>
+                                <td>Fundamental</td>
+                            </tr>
+                            <tr>
+                                <td>Evolución</td>
+                                <td>Estática (versiones controladas)</td>
+                                <td>Dinámica (cambia constantemente)</td>
+                            </tr>
+                            <tr>
+                                <td>Ejemplo</td>
+                                <td><code>if (x > 5) { return true; }</code></td>
+                                <td>"Si hace calor, abrimos la ventana"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-secondary">Ejemplos de Ambigüedad Lingüística</h3>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">🏦 Polisemia</h4>
+                        <p><strong>"Voy al banco"</strong></p>
+                        <p style="font-size: 0.9rem;">¿Institución financiera o asiento para sentarse? El contexto
+                            determina el significado.</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">📐 Ambigüedad Sintáctica</h4>
+                        <p><strong>"Vi al hombre con el telescopio"</strong></p>
+                        <p style="font-size: 0.9rem;">¿Usé un telescopio para verlo? ¿O él tenía un telescopio?</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="color-primary">🎭 Ambigüedad Pragmática</h4>
+                        <p><strong>"¡Qué bien!"</strong></p>
+                        <p style="font-size: 0.9rem;">¿Genuina alegría o sarcasmo? El tono y la situación importan.</p>
+                    </div>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <h4 style="font-weight: 700; margin-bottom: 0.75rem;">⚡ El Desafío Central del NLP</h4>
+                    <p style="margin: 0;">
+                        Las máquinas fueron concebidas para manejar <strong>certezas matemáticas</strong>, pero el
+                        lenguaje humano pertenece al dominio del <strong>significado flexible, dependiente del contexto
+                            cultural, temporal y situacional</strong>. Enseñar a una computadora a "entender" requiere
+                        no solo procesar palabras, sino captar intenciones, inferir conocimientos previos y modelar el
+                        mundo.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EVOLUCIÓN HISTÓRICA -->
+            <section class="section">
+                <h2 class="section-title">Evolución Histórica del NLP: De ELIZA a ChatGPT</h2>
+
+                <!-- LÍNEA DE TIEMPO SVG (Adapted) -->
+                <div style="margin-bottom: 3rem; overflow-x: auto;">
+                    <svg width="900" height="550" viewBox="0 0 900 550"
+                        style="background-color: #fafafa; border-radius: 12px; display: block; margin: 0 auto;">
+                        <!-- Línea principal -->
+                        <line x1="80" y1="100" x2="820" y2="100" stroke="#49B9CE" stroke-width="4" />
+
+                        <!-- 1966: ELIZA -->
+                        <circle cx="100" cy="100" r="12" fill="#8A7AAF" stroke="#333333" stroke-width="2" />
+                        <line x1="100" y1="112" x2="100" y2="150" stroke="#8A7AAF" stroke-width="2" />
+                        <rect x="40" y="155" width="120" height="85" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="10" />
+                        <text x="100" y="175" font-size="13" font-weight="bold" fill="#8A7AAF"
+                            text-anchor="middle">1966: ELIZA</text>
+                        <text x="100" y="193" font-size="10" fill="#555555" text-anchor="middle">MIT</text>
+                        <text x="100" y="208" font-size="9" fill="#555555" text-anchor="middle">Primer chatbot</text>
+                        <text x="100" y="233" font-size="9" fill="#555555" text-anchor="middle">Patrones regex</text>
+
+                        <!-- 1990s: Estadístico -->
+                        <circle cx="220" cy="100" r="12" fill="#49B9CE" stroke="#333333" stroke-width="2" />
+                        <line x1="220" y1="88" x2="220" y2="25" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="140" y="5" width="160" height="15" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="10" />
+                        <text x="220" y="16" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">1990s: Modelos Estadísticos</text>
+
+                        <!-- 2013: Word2Vec -->
+                        <circle cx="340" cy="100" r="12" fill="#8A7AAF" stroke="#333333" stroke-width="2" />
+                        <line x1="340" y1="112" x2="340" y2="150" stroke="#8A7AAF" stroke-width="2" />
+                        <rect x="275" y="155" width="130" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="10" />
+                        <text x="340" y="175" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">2013: Word2Vec</text>
+                        <text x="340" y="193" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Mikolov (Google)</text>
+                        <text x="340" y="208" font-size="9" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Embeddings</text>
+                        <text x="340" y="220" font-size="9" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">vectoriales</text>
+
+                        <!-- 2014: Seq2Seq -->
+                        <circle cx="450" cy="100" r="12" fill="#49B9CE" stroke="#333333" stroke-width="2" />
+                        <line x1="450" y1="88" x2="450" y2="25" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="370" y="5" width="160" height="15" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="10" />
+                        <text x="450" y="16" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">2014: Seq2Seq (Google)</text>
+
+                        <!-- 2017: Transformers -->
+                        <circle cx="560" cy="100" r="12" fill="#4CAF50" stroke="#333333" stroke-width="2" />
+                        <line x1="560" y1="112" x2="560" y2="150" stroke="#4CAF50" stroke-width="2" />
+                        <rect x="490" y="155" width="140" height="70" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2"
+                            rx="10" />
+                        <text x="560" y="175" font-size="13" font-weight="bold" fill="#2E7D32" text-anchor="middle"
+                            font-family="Montserrat">2017: Transformers</text>
+                        <text x="560" y="193" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Vaswani et al.</text>
+                        <text x="560" y="208" font-size="9" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Attention is</text>
+                        <text x="560" y="220" font-size="9" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">All You Need</text>
+
+                        <!-- 2018: BERT -->
+                        <circle cx="670" cy="100" r="12" fill="#8A7AAF" stroke="#333333" stroke-width="2" />
+                        <line x1="670" y1="88" x2="670" y2="25" stroke="#8A7AAF" stroke-width="2" />
+                        <rect x="595" y="5" width="150" height="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="10" />
+                        <text x="670" y="16" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">2018: BERT (Google AI)</text>
+
+                        <!-- 2020: GPT-3 -->
+                        <circle cx="780" cy="100" r="12" fill="#49B9CE" stroke="#333333" stroke-width="2" />
+                        <line x1="780" y1="112" x2="780" y2="150" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="720" y="155" width="120" height="70" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="10" />
+                        <text x="780" y="175" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">2020: GPT-3</text>
+                        <text x="780" y="193" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">OpenAI</text>
+                        <text x="780" y="208" font-size="9" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">175B params</text>
+
+                        <!-- Detalles inferiores -->
+                        <rect x="50" y="260" width="800" height="270" fill="white" stroke="#e5e5e5" stroke-width="2"
+                            rx="10" />
+                        <text x="450" y="285" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Hitos Clave del Procesamiento del Lenguaje Natural</text>
+
+                        <!-- ELIZA -->
+                        <text x="70" y="315" font-size="12" font-weight="bold" fill="#8A7AAF"
+                            font-family="Montserrat">📝 1966 - ELIZA</text>
+                        <text x="90" y="333" font-size="10" fill="#555555" font-family="Montserrat">• Primer programa
+                            conversacional (MIT)</text>
+                        <text x="90" y="348" font-size="10" fill="#555555" font-family="Montserrat">• Simulaba terapeuta
+                            con patrones regex</text>
+
+                        <!-- Word2Vec -->
+                        <text x="70" y="393" font-size="12" font-weight="bold" fill="#49B9CE"
+                            font-family="Montserrat">🔤 2013 - Word2Vec</text>
+                        <text x="90" y="411" font-size="10" fill="#555555" font-family="Montserrat">• Embeddings:
+                            palabras como vectores</text>
+                        <text x="90" y="426" font-size="10" fill="#555555" font-family="Montserrat">• Rey - Hombre +
+                            Mujer ≈ Reina</text>
+
+                        <!-- Seq2Seq -->
+                        <text x="70" y="471" font-size="12" font-weight="bold" fill="#4CAF50"
+                            font-family="Montserrat">🔄 2014 - Seq2Seq</text>
+                        <text x="90" y="489" font-size="10" fill="#555555" font-family="Montserrat">• Sequence to
+                            Sequence (Google)</text>
+                        <text x="90" y="504" font-size="10" fill="#555555" font-family="Montserrat">• Base para
+                            traducción automática neural</text>
+
+                        <!-- Transformers -->
+                        <text x="470" y="315" font-size="12" font-weight="bold" fill="#2E7D32"
+                            font-family="Montserrat">⚡ 2017 - Transformers</text>
+                        <text x="490" y="333" font-size="10" fill="#555555" font-family="Montserrat">• "Attention is All
+                            You Need"</text>
+                        <text x="490" y="348" font-size="10" fill="#555555" font-family="Montserrat">• Arquitectura
+                            revolucionaria (Google)</text>
+
+                        <!-- BERT -->
+                        <text x="470" y="393" font-size="12" font-weight="bold" fill="#8A7AAF"
+                            font-family="Montserrat">🧠 2018 - BERT</text>
+                        <text x="490" y="411" font-size="10" fill="#555555" font-family="Montserrat">• Bidirectional
+                            Encoder (Google AI)</text>
+                        <text x="490" y="426" font-size="10" fill="#555555" font-family="Montserrat">• Preentrenamiento
+                            masivo + fine-tuning</text>
+
+                        <!-- GPT-3 y ChatGPT -->
+                        <text x="470" y="471" font-size="12" font-weight="bold" fill="#49B9CE"
+                            font-family="Montserrat">🚀 2020-2022 - GPT-3 / ChatGPT</text>
+                        <text x="490" y="489" font-size="10" fill="#555555" font-family="Montserrat">• 175 mil millones
+                            de parámetros (OpenAI)</text>
+                        <text x="490" y="504" font-size="10" fill="#555555" font-family="Montserrat">• ChatGPT (Nov
+                            2022): 100M usuarios en 2 meses</text>
+                    </svg>
+                </div>
+
+                <!-- REFERENCIAS BIBLIOGRÁFICAS (Muted for visual flow, or we can move this to end) -->
+                <!-- We will add the detailed paradigm section later, keeping Timeline here is fine -->
+            </section>
+
+            <!-- SECCIÓN 4: PIPELINE DEL NLP -->
+            <section class="section">
+                <h2 class="section-title">Pipeline del NLP: Etapas de Procesamiento</h2>
+                <p>Un sistema de NLP típico procesa el lenguaje en múltiples etapas secuenciales, desde el texto crudo
+                    hasta la extracción de significado.</p>
+
+                <!-- ETAPA 1 -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 class="color-primary">1. Preprocesamiento: Limpieza del Texto</h4>
+                    <p>Normalizar y limpiar el texto crudo: minúsculas, eliminación de ruido, stopwords, lematización.
+                    </p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">Python</span>
+                        </div>
+                        <pre><code class="language-python">import spacy
+import re
+
+nlp = spacy.load("es_core_news_sm")
+
+def preprocesar_texto(texto):
+    # Convertir a minúsculas y limpiar
+    texto = texto.lower()
+    texto = re.sub(r'http\S+|www\S+', '', texto)
+    texto = re.sub(r'[^a-záéíóúñü\s]', '', texto)
+    
+    doc = nlp(texto)
+    
+    # Lematización y stopwords
+    tokens_limpios = [
+        token.lemma_ 
+        for token in doc 
+        if not token.is_stop and not token.is_punct and len(token.text) > 2
+    ]
+    return ' '.join(tokens_limpios)
+
+print(preprocesar_texto("¡Hola! Estoy aprendiendo NLP en @iLERNA 🚀"))
+# Salida: hola aprender nlp ilerna</code></pre>
+                    </div>
+                    <div class="highlight-box" style="border-left: 4px solid #49B9CE; background-color: #E8F7FA;">
+                        <p style="font-weight: 700; color: #333; margin-top: 0;">🎯 Objetivo</p>
+                        <p style="margin-bottom: 0;">Reducir ruido y quedarnos con palabras que realmente aportan
+                            contexto
+                            semántico.</p>
+                    </div>
+                </div>
+
+                <!-- ETAPA 2 -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 class="color-secondary">2. Tokenización</h4>
+                    <p>División del texto en unidades mínimas (tokens). Fundamental para que el modelo procese la
+                        secuencia.</p>
+
+                    <div class="grid-features"
+                        style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 1rem;">
+                        <div class="feature-card">
+                            <p style="font-weight: bold; color: #8A7AAF;">📄 Por Palabras</p>
+                            <p style="font-size: 0.9rem;">"Hola mundo" → ['Hola', 'mundo']</p>
+                        </div>
+                        <div class="feature-card secondary">
+                            <p style="font-weight: bold; color: #49B9CE;">🔤 Por Subpalabras</p>
+                            <p style="font-size: 0.9rem;">"computadora" → ['compu', 'tadora']</p>
+                        </div>
+                        <div class="feature-card">
+                            <p style="font-weight: bold; color: #8A7AAF;">🅰️ Por Caracteres</p>
+                            <p style="font-size: 0.9rem;">"NLP" → ['N', 'L', 'P']</p>
+                        </div>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">Python</span>
+                        </div>
+                        <pre><code class="language-python">import spacy
+nlp = spacy.load("es_core_news_sm")
+
+doc = nlp("El procesamiento natural.")
+print([token.text for token in doc])
+# Salida: ['El', 'procesamiento', 'natural', '.']</code></pre>
+                    </div>
+
+                    <div class="highlight-box secondary">
+                        <p style="font-weight: 700; color: #333; margin-top: 0;">⚡ Tokenización en Modelos Modernos
+                            (BERT, GPT)</p>
+                        <p style="margin-bottom: 0;">En <strong>Transformers</strong>, se usa tokenización por
+                            <strong>subpalabras</strong> (BPE, WordPiece) para manejar vocabularios amplios con menos
+                            memoria.
+                        </p>
+                        <p class="text-sm mt-1" style="color: #555;">
+                            <code>"antidemocrático" → ['anti', '##demo', '##crático']</code></p>
+                    </div>
+                </div>
+
+                <!-- ETAPA 3 -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 class="color-primary">3. Análisis Sintáctico (Parsing)</h4>
+                    <p>Identifica la estructura gramatical y las dependencias entre palabras (sujeto, verbo, objeto).
+                    </p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">Python</span>
+                        </div>
+                        <pre><code class="language-python">doc = nlp("Los estudiantes aprenden IA")
+for token in doc:
+    print(f"{token.text} -> {token.dep_} (Padre: {token.head.text})")
+# Salida:
+# Los -> det (Padre: estudiantes)
+# estudiantes -> nsubj (Padre: aprenden)
+# aprenden -> ROOT (Padre: aprenden)
+# IA -> obj (Padre: aprenden)</code></pre>
+                    </div>
+
+                    <!-- VISUALIZACIÓN DEL ÁRBOL (SVG) -->
+                    <div style="background: #E8F7FA; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
+                        <p style="font-weight: 700; color: #333333; margin-bottom: 1rem; text-align: center;">
+                            Representación del Árbol de Dependencias</p>
+                        <svg width="800" height="200" viewBox="0 0 800 200"
+                            style="display: block; margin: 0 auto; max-width: 100%;">
+                            <!-- Palabras -->
+                            <text x="50" y="180" font-size="14" fill="#333333">Los</text>
+                            <text x="150" y="180" font-size="14" fill="#333333" font-weight="bold">estudiantes</text>
+                            <text x="280" y="180" font-size="14" fill="#333333">de</text>
+                            <text x="350" y="180" font-size="14" fill="#333333">iLERNA</text>
+                            <text x="470" y="180" font-size="14" fill="#49B9CE" font-weight="bold">aprenden</text>
+                            <text x="590" y="180" font-size="14" fill="#333333" font-weight="bold">inteligencia</text>
+                            <text x="720" y="180" font-size="14" fill="#333333">artificial</text>
+
+                            <!-- Flechas de dependencia -->
+                            <path d="M 70 170 Q 110 140, 160 170" fill="none" stroke="#49B9CE" stroke-width="2"
+                                marker-end="url(#arrow)" />
+                            <text x="110" y="130" font-size="10" fill="#49B9CE" font-family="Montserrat">det</text>
+
+                            <path d="M 180 165 Q 330 80, 480 165" fill="none" stroke="#8A7AAF" stroke-width="2"
+                                marker-end="url(#arrow2)" />
+                            <text x="330" y="70" font-size="10" fill="#8A7AAF" font-family="Montserrat">nsubj</text>
+
+                            <path d="M 310 170 Q 330 150, 360 170" fill="none" stroke="#49B9CE" stroke-width="2"
+                                marker-end="url(#arrow)" />
+                            <text x="330" y="145" font-size="10" fill="#49B9CE" font-family="Montserrat">case</text>
+
+                            <path d="M 370 165 Q 270 120, 190 165" fill="none" stroke="#49B9CE" stroke-width="2"
+                                marker-end="url(#arrow)" />
+                            <text x="270" y="110" font-size="10" fill="#49B9CE" font-family="Montserrat">nmod</text>
+
+                            <path d="M 500 165 Q 550 100, 610 165" fill="none" stroke="#8A7AAF" stroke-width="2"
+                                marker-end="url(#arrow2)" />
+                            <text x="550" y="90" font-size="10" fill="#8A7AAF" font-family="Montserrat">obj</text>
+
+                            <path d="M 730 170 Q 680 150, 640 170" fill="none" stroke="#49B9CE" stroke-width="2"
+                                marker-end="url(#arrow)" />
+                            <text x="680" y="145" font-size="10" fill="#49B9CE" font-family="Montserrat">amod</text>
+
+                            <!-- ROOT -->
+                            <circle cx="485" cy="30" r="25" fill="#4CAF50" opacity="0.3" />
+                            <text x="485" y="35" font-size="12" fill="#2E7D32" font-weight="bold" text-anchor="middle"
+                                font-family="Montserrat">ROOT</text>
+                            <line x1="485" y1="55" x2="485" y2="165" stroke="#4CAF50" stroke-width="3"
+                                stroke-dasharray="5,5" />
+
+                            <defs>
+                                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                    markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                                </marker>
+                                <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                    markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- ETAPA 4 -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 class="color-secondary">4. Análisis Semántico (NER)</h4>
+                    <p>Extracción de significado y entidades nombradas (Personas, Organizaciones, Lugares).</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">Python</span>
+                        </div>
+                        <pre><code class="language-python">doc = nlp("Google lanzó Gemini en Europa en 2024")
+for ent in doc.ents:
+    print(f"{ent.text} ({ent.label_})")
+# Salida:
+# Google (ORG)
+# Gemini (MISC)
+# Europa (LOC)</code></pre>
+                    </div>
+                    <div class="highlight-box" style="border-left: 4px solid #8A7AAF; background-color: #F0EDF5;">
+                        <p style="margin-bottom: 0;">🎯 <strong>spaCy</strong> identifica automáticamente: personas
+                            (PER),
+                            organizaciones (ORG), lugares (LOC), fechas (DATE), etc.</p>
+                    </div>
+                </div>
+
+                <!-- ETAPA 5 -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 class="color-primary">5. Análisis Pragmático: Intención y Contexto</h4>
+                    <p>El nivel más profundo: considera la <strong>intención comunicativa</strong>, el contexto
+                        situacional y el
+                        tono. No basta con saber qué dice, sino <strong>qué quiere decir</strong>.</p>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h4 class="color-primary">🎭 Detección de Sarcasmo</h4>
+                            <p>"¡Qué bien!" puede ser genuino o sarcástico según tono y contexto.</p>
+                        </div>
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">💬 Análisis de Intención</h4>
+                            <p>"¿Podrías cerrar la ventana?" es una petición, no una pregunta literal.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="color-primary">😊 Análisis de Sentimiento</h4>
+                            <p>Determinar si el texto expresa emoción positiva, negativa o neutral.</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <p style="margin: 0;">⚠️ <strong>Desafío actual:</strong> Captar intención y sarcasmo sigue
+                            siendo uno de
+                            los problemas más difíciles del NLP. Incluso modelos avanzados como GPT-4 pueden fallar en
+                            contextos muy
+                            sutiles.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: EVOLUCIÓN DE ENFOQUES -->
+            <section class="section">
+                <h2 class="section-title">Evolución de los Enfoques en NLP</h2>
+
+                <p>
+                    La historia del NLP puede dividirse en <strong>tres grandes paradigmas</strong> que reflejan la
+                    evolución tecnológica y conceptual del campo.
+                </p>
+
+                <!-- ENFOQUE 1: BASADO EN REGLAS -->
+                <div class="highlight-box primary">
+                    <h3 class="color-primary" style="margin-top: 0;">1. Enfoques Basados en Reglas (1960s-1990s)</h3>
+                    <p>
+                        Utilizan <strong>gramáticas formales</strong> y <strong>diccionarios elaborados
+                            manualmente</strong> por lingüistas expertos. Cada regla especifica cómo interpretar
+                        estructuras sintácticas o semánticas específicas.
+                    </p>
+
+                    <div
+                        style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">✅ Ventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Precisión alta en dominios específicos</li>
+                            <li>Interpretable y explicable</li>
+                            <li>Control total sobre el comportamiento</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 8px;">
+                        <p style="font-weight: 700; color: #d32f2f; margin-bottom: 0.5rem;">❌ Limitaciones:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Difícil de escalar a lenguaje general</li>
+                            <li>Requiere mucho trabajo manual de expertos</li>
+                            <li>No maneja bien la ambigüedad ni excepciones</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ENFOQUE 2: ESTADÍSTICO -->
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary" style="margin-top: 0;">2. Enfoques Estadísticos (1990s-2010s)</h3>
+                    <p>
+                        Introducen el <strong>aprendizaje automático</strong> para estimar la probabilidad de secuencias
+                        de palabras basándose en grandes corpus de texto. Los <strong>modelos n-gram</strong> predicen
+                        la siguiente palabra según las n-1 palabras previas.
+                    </p>
+
+                    <div class="code-block" style="background: white; border: none; margin: 1rem 0;">
+                        <pre><code class="language-none" style="text-align: center; color: #8A7AAF; font-weight: bold;">P(palabra_n | palabra_1, ..., palabra_n-1)</code></pre>
+                    </div>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h4 class="color-primary">✅ Mejoras</h4>
+                            <p>Aprenden automáticamente de datos, mejor cobertura, manejo de variabilidad.</p>
+                        </div>
+                        <div class="feature-card secondary">
+                            <h4 class="color-secondary">❌ Limitaciones</h4>
+                            <p>No captan semántica profunda, dependencia de contexto limitada, problema de escasez de
+                                datos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ENFOQUE 3: NEURONAL -->
+                <div class="highlight-box" style="border-left: 4px solid #4CAF50; background-color: #f1f8e9;">
+                    <h3 style="color: #2E7D32; margin-top: 0;">3. Enfoques Neuronales (2010s-Presente)</h3>
+                    <p>
+                        El <strong>deep learning</strong> revolucionó el NLP al permitir que los modelos aprendan
+                        <strong>representaciones vectoriales densas</strong> del lenguaje que capturan relaciones
+                        semánticas complejas.
+                    </p>
+
+                    <!-- WORD2VEC -->
+                    <div
+                        style="background: white; padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1rem; border: 1px solid #c8e6c9;">
+                        <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">🔤 Word2Vec (2013)</h4>
+                        <p>Mikolov et al. introdujeron una forma de representar palabras como <strong>vectores
+                                densos</strong>. La famosa ecuación:</p>
+                        <p style="text-align: center; font-weight: bold; color: #49B9CE; margin: 1rem 0;">
+                            <code>vector("rey") - vector("hombre") + vector("mujer") ≈ vector("reina")</code>
+                        </p>
+                    </div>
+
+                    <!-- TRANSFORMERS -->
+                    <div
+                        style="background: white; padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1rem; border: 1px solid #c8e6c9;">
+                        <h4 style="font-weight: 700; color: #2E7D32; margin-bottom: 0.5rem;">⚡ Transformers (2017)</h4>
+                        <p>Vaswani et al. introdujeron el mecanismo de <strong>atención</strong> que permite al modelo
+                            <strong>ponderar la importancia</strong> de cada palabra en función del contexto completo.
+                        </p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 class="color-secondary">🧠 BERT (2018)</h4>
+                            <p><strong>Bidireccional:</strong> Lee contexto izquierda y derecha simultáneamente.</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 class="color-primary">🚀 GPT (2018-2023)</h4>
+                            <p><strong>Autoregresivo:</strong> Genera texto palabra por palabra, predice la siguiente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REFERENCIAS BIBLIOGRÁFICAS -->
+            <section class="section">
+                <h2 class="section-title">📚 Referencias Clave</h2>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <p class="color-primary" style="font-weight: bold;">🔗 Vaswani et al. (2017)</p>
+                        <p>"Attention is All You Need"</p>
+                        <a href="https://arxiv.org/abs/1706.03762" target="_blank">arxiv.org/abs/1706.03762</a>
+                    </div>
+                    <div class="feature-card secondary">
+                        <p class="color-secondary" style="font-weight: bold;">🔗 Devlin et al. (2018)</p>
+                        <p>"BERT: Pre-training of Deep Bidirectional Transformers"</p>
+                        <a href="https://arxiv.org/abs/1810.04805" target="_blank">arxiv.org/abs/1810.04805</a>
+                    </div>
+                    <div class="feature-card">
+                        <p class="color-primary" style="font-weight: bold;">🔗 Mikolov et al. (2013)</p>
+                        <p>"Efficient Estimation of Word Representations"</p>
+                        <a href="https://arxiv.org/abs/1301.3781" target="_blank">arxiv.org/abs/1301.3781</a>
+                    </div>
+                    <div class="feature-card secondary">
+                        <p class="color-secondary" style="font-weight: bold;">📖 Russell & Norvig (2021)</p>
+                        <p>"Artificial Intelligence: A Modern Approach"</p>
+                        <a href="http://aima.cs.berkeley.edu/" target="_blank">aima.cs.berkeley.edu</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CONCLUSIÓN -->
+            <section class="section">
+                <h2 class="section-title">Conclusión: El Futuro del NLP</h2>
+                <div class="highlight-box secondary">
+                    <p>
+                        El NLP está transformando cómo interactuamos con la tecnología. <strong>Entender sus
+                            fundamentos</strong> —desde la tokenización hasta los Transformers— es esencial para
+                        cualquier profesional de la IA que quiera construir sistemas inteligentes que realmente
+                        <strong>comprendan y generen lenguaje humano</strong>.
+                    </p>
+                </div>
+
+                <div class="grid-features" style="margin-top: 2rem;">
+                    <div class="feature-card">
+                        <h4 class="color-primary">⚠️ Limitaciones</h4>
+                        <ul style="margin-left: 1.2rem;">
+                            <li>Alucinaciones y datos falsos</li>
+                            <li>Sesgos heredados</li>
+                            <li>Coste energético</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🔮 Futuro</h4>
+                        <ul style="margin-left: 1.2rem;">
+                            <li>Modelos Multimodales</li>
+                            <li>Razonamiento lógico mejorado</li>
+                            <li>Eficiencia y sostenibilidad</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </div>
+                <div class="footer-info">
+                    <h3>iLERNA</h3>
+                    <p>Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                    <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p>Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>

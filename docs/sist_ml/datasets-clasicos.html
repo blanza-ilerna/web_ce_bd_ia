@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Datasets clásicos en Machine Learning: Iris, Titanic, MNIST y Boston Housing. Historia, estructura y ejemplos de uso en Python.">
+    <meta name="keywords"
+        content="Datasets Machine Learning, Iris Dataset, Titanic Dataset, MNIST, Boston Housing, Scikit-learn, Pandas">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Datasets Clásicos en Machine Learning | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Datasets Clásicos</span>
+            </div>
+        </div>
+        <h1 class="text-center">Datasets Clásicos en Machine Learning</h1>
+        <p class="subtitle text-center">Conjuntos de datos fundamentales para benchmarking y aprendizaje</p>
+    </header>
+
+    <!-- SECCIÓN INTRODUCCIÓN -->
+    <section class="section">
+        <h2 class="section-title">La Importancia de los Datasets Estándar</h2>
+        <p>
+            En el mundo de la Inteligencia Artificial, disponer de conjuntos de datos estandarizados es crucial.
+            Permiten a estudiantes e investigadores <strong>comparar el rendimiento de diferentes algoritmos</strong> en
+            igualdad de condiciones. Estos datasets, a menudo llamados "datasets de juguete" (toy datasets), son
+            pequeños, limpios y bien entendidos, lo que los hace ideales para aprender y prototipar.
+        </p>
+
+        <div class="highlight-box">
+            <p class="tech-title">🚀 ¿Por qué usarlos?</p>
+            <p>
+                No necesitas limpiar datos ni preocuparte por la recolección. Vienen preprocesados y listos para ser
+                consumidos por bibliotecas como <strong>Scikit-learn</strong> o <strong>TensorFlow</strong>,
+                permitiéndote enfocarte puramente en el modelado.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 1: IRIS DATASET -->
+    <section class="section">
+        <h2 class="section-title">🌸 Iris Dataset: El "Hola Mundo" de la Clasificación</h2>
+
+        <div class="content-grid-2">
+            <div>
+                <p>
+                    Creado por el estadístico británico <strong>Ronald Fisher</strong> en 1936, este dataset es
+                    probablemente el más famoso en la historia del reconocimiento de patrones. Contiene datos de 150
+                    flores de iris de tres especies diferentes.
+                </p>
+                <div class="highlight-box" style="margin-bottom: 1rem; border-left-color: var(--color-primary);">
+                    <p style="margin-bottom: 0.5rem;"><strong>💡 Dato Clave:</strong></p>
+                    <p style="font-size: 0.95rem;">
+                        La clase <strong>Setosa</strong> es linealmente separable de las otras dos, mientras que
+                        <strong>Versicolor</strong> y <strong>Virginica</strong> se superponen, lo que lo convierte en
+                        un excelente banco de pruebas para comparar clasificadores lineales (como SVM lineal) vs no
+                        lineales.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>Características:</h4>
+                    <ul>
+                        <li><strong>Instancias:</strong> 150 (50 por clase)</li>
+                        <li><strong>Atributos (4):</strong> Largo y ancho de sépalo y pétalo.</li>
+                        <li><strong>Clases (3):</strong> Setosa, Versicolor, Virginica.</li>
+                        <li><strong>Uso Común:</strong> Pruebas de clasificación y visualización (Pairplots).</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="svg-container">
+                <!-- Placeholder visual simple o imagen -->
+                <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 4rem;">🌺 🌸 🌼</div>
+                    <p>Tres especies distinguibles por sus pétalos</p>
+                </div>
+            </div>
+        </div>
+
+        <h3>Cómo cargarlo con Python</h3>
+        <pre><code class="language-python">from sklearn.datasets import load_iris
+import pandas as pd
+
+# Cargar el dataset
+data = load_iris()
+df = pd.DataFrame(data.data, columns=data.feature_names)
+df['target'] = data.target
+
+# Mostrar las primeras filas
+print(df.head())
+
+# Output esperado:
+#    sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)  target
+# 0                5.1               3.5                1.4               0.2       0
+# 1                4.9               3.0                1.4               0.2       0</code></pre>
+    </section>
+
+    <!-- SECCIÓN 2: TITANIC DATASET -->
+    <section class="section">
+        <h2 class="section-title">🚢 Titanic: Predicción de Supervivencia</h2>
+        <p>
+            Un desafío clásico de Kaggle. El objetivo es predecir qué pasajeros sobrevivieron al hundimiento del Titanic
+            basándose en características como edad, sexo, clase del billete y tarifa.
+        </p>
+
+        <div class="highlight-box secondary">
+            <p class="title">💡 Desafío de Limpieza de Datos</p>
+            <p>
+                A diferencia de Iris, el dataset del Titanic es "sucio". Contiene <strong>valores nulos</strong>
+                (especialmente en 'Age' y 'Cabin'), variables categóricas que necesitan codificación ('Sex', 'Embarked')
+                y nombres que requieren procesamiento de texto. Es perfecto para practicar <strong>Feature
+                    Engineering</strong>.
+            </p>
+        </div>
+
+        <div class="grid-features">
+            <div class="feature-card secondary">
+                <h4>Variables Clave</h4>
+                <ul>
+                    <li><strong>Pclass:</strong> Clase (1ª, 2ª, 3ª) - Proxy de estatus socioeconómico.</li>
+                    <li><strong>Sex:</strong> Género (fuerte predictor).</li>
+                    <li><strong>Age:</strong> Edad (niños tenían prioridad).</li>
+                    <li><strong>Fare:</strong> Tarifa pagada.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h4>Aprendizaje Esperado</h4>
+                <ul>
+                    <li>Manejo de <strong>Missing Values</strong>.</li>
+                    <li>Codificación <strong>One-Hot</strong> y <strong>Label Encoding</strong>.</li>
+                    <li>Regresión Logística y Árboles de Decisión.</li>
+                </ul>
+            </div>
+        </div>
+
+        <pre><code class="language-python">import seaborn as sns
+
+# Seaborn tiene el dataset 'titanic' integrado
+df_titanic = sns.load_dataset('titanic')
+
+# Ver valores nulos
+print(df_titanic.isnull().sum())
+
+# Filtrar por clase y supervivencia
+sobrevivientes_clase_1 = df_titanic[(df_titanic['pclass'] == 1) & (df_titanic['survived'] == 1)]
+print(f"Sobrevivientes 1ra clase: {len(sobrevivientes_clase_1)}")</code></pre>
+    </section>
+
+    <!-- SECCIÓN 3: MNIST DATASET -->
+    <section class="section">
+        <h2 class="section-title">✍️ MNIST: Visión por Computadora Básica</h2>
+        <p>
+            El dataset <strong>Mixed National Institute of Standards and Technology (MNIST)</strong> consiste en 70,000
+            imágenes de pequeños dígitos escritos a mano (0-9). Es el dataset por excelencia para iniciarse en
+            <strong>Redes Neuronales</strong> y <strong>Deep Learning</strong>.
+        </p>
+
+        <div class="content-grid-2">
+            <div>
+                <div class="feature-card primary">
+                    <h4>Especificaciones:</h4>
+                    <ul>
+                        <li><strong>Imágenes:</strong> Escala de grises, 28x28 píxeles.</li>
+                        <li><strong>Train Set:</strong> 60,000 imágenes.</li>
+                        <li><strong>Test Set:</strong> 10,000 imágenes.</li>
+                        <li><strong>Objetivo:</strong> Clasificar la imagen en uno de los 10 dígitos.</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <p>
+                    Las imágenes se representan comúnmente como matrices planas (vectores de 784 valores) para
+                    algoritmos clásicos, o como matrices 2D para <strong>Redes Neuronales Convolucionales
+                        (CNN)</strong>.
+                </p>
+            </div>
+        </div>
+
+        <pre><code class="language-python">from sklearn.datasets import fetch_openml
+import matplotlib.pyplot as plt
+
+# Descargar MNIST (puede tardar un poco la primera vez)
+mnist = fetch_openml('mnist_784', version=1, as_frame=False)
+X, y = mnist.data, mnist.target
+
+# Visualizar un dígito
+digito = X[0]
+digito_imagen = digito.reshape(28, 28)
+
+plt.imshow(digito_imagen, cmap='binary')
+plt.axis('off')
+plt.title(f"Etiqueta: {y[0]}")
+plt.show()</code></pre>
+    </section>
+
+    <!-- SECCIÓN 4: WINE DATASET -->
+    <section class="section">
+        <h2 class="section-title">🍷 Wine Dataset: Química y Clasificación</h2>
+        <p>
+            Este dataset es el resultado de un análisis químico de vinos cultivados en la misma región de Italia pero
+            derivados de tres cultivares diferentes. El análisis determinó las cantidades de 13 constituyentes
+            encontrados en cada uno de los tres tipos de vinos.
+        </p>
+
+        <div class="content-grid-2">
+            <div class="feature-card secondary">
+                <h4>Detalles Técnicos</h4>
+                <ul>
+                    <li><strong>Instancias:</strong> 178 muestras.</li>
+                    <li><strong>Atributos (13):</strong> Alcohol, Ácido málico, Ceniza, Alcalinidad, Magnesio, Fenoles,
+                        etc.</li>
+                    <li><strong>Clases (3):</strong> Tres tipos de cultivares (Clase 0, 1, 2).</li>
+                    <li><strong>Reto:</strong> Clasificación con alta dimensionalidad relativa a las muestras.</li>
+                </ul>
+            </div>
+            <div>
+                <pre><code class="language-python">from sklearn.datasets import load_wine
+
+# Cargar dataset de vinos
+wine = load_wine()
+X, y = wine.data, wine.target
+
+# Nombres de las características
+print("Atributos:", wine.feature_names)
+# ['alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash', ...]</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: BREAST CANCER WISCONSIN -->
+    <section class="section">
+        <h2 class="section-title">⚕️ Breast Cancer Wisconsin: Diagnóstico Médico</h2>
+        <p>
+            Un dataset crítico para aplicaciones de IA en medicina. Las características se calculan a partir de una
+            imagen digitalizada de una aspiración con aguja fina (FNA) de una masa mamaria. Describen las
+            características de los núcleos celulares presentes en la imagen.
+        </p>
+
+        <div class="highlight-box warning">
+            <p class="title">⚠️ Importancia del Recall (Sensibilidad)</p>
+            <p>
+                En este tipo de problemas médicos, es crucial minimizar los <strong>Falsos Negativos</strong> (decir que
+                es benigno cuando es maligno). Por ello, solemos optimizar métricas como el <strong>Recall</strong>
+                sobre la Precisión pura.
+            </p>
+        </div>
+
+        <ul class="mb-2">
+            <li><strong>Clases:</strong> Maligno (Malignant) vs Benigno (Benign).</li>
+            <li><strong>Instancias:</strong> 569.</li>
+            <li><strong>Atributos (30):</strong> Radio, textura, perímetro, área, suavidad, etc. (media, error estándar
+                y peor caso).</li>
+        </ul>
+
+        <pre><code class="language-python">from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+
+# Cargar datos
+cancer = load_breast_cancer()
+
+# Separar en Train/Test
+X_train, X_test, y_train, y_test = train_test_split(
+    cancer.data, cancer.target, stratify=cancer.target, random_state=42
+)
+
+print(f"Dimensiones de entrenamiento: {X_train.shape}")
+# Salida: (426, 30)</code></pre>
+    </section>
+
+    <!-- SECCIÓN 6: BOSTON HOUSING -->
+    <section class="section">
+        <h2 class="section-title">🏠 Boston Housing: Regresión Clásica</h2>
+        <p>
+            Publicado en 1978, contiene información sobre viviendas en el área de Boston. El objetivo es predecir el
+            <strong>valor mediano de las viviendas (MEDV)</strong> basándose en 13 atributos como la tasa de crimen,
+            número de habitaciones y antigüedad.
+        </p>
+
+        <div class="expert-quote">
+            <p class="quote-text">
+                "Advertencia Ética: El dataset de Boston Housing contiene una variable ('B') que asume segregación
+                racial. Por esta razón, Scikit-learn ha deprecado su uso directo y recomienda alternativas como el
+                dataset de California Housing."
+            </p>
+            <span class="quote-author">Documentación de Scikit-learn</span>
+        </div>
+        <br>
+        <h3>Alternativa Moderna: California Housing</h3>
+        <p>
+            Debido a los problemas éticos del dataset de Boston, hoy en día se prefiere el dataset de <strong>California
+                Housing</strong> para enseñar regresión. Es más grande (20,000 muestras) y más moderno.
+        </p>
+
+        <pre><code class="language-python">from sklearn.datasets import fetch_california_housing
+
+# Cargar dataset de California
+housing = fetch_california_housing(as_frame=True)
+data = housing.frame
+
+# Ver correlación entre Ingreso Medio y Valor de la Casa
+print(data[['MedInc', 'MedHouseVal']].corr())</code></pre>
+    </section>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>
