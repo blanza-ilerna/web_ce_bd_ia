@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Divide y Vencerás: MapReduce. Aprende el paradigma de procesamiento paralelo para Big Data con Python.">
+    <meta name="keywords"
+        content="Big Data, MapReduce, Python, Divide y Vencerás, Procesamiento Paralelo, Hadoop, Spark">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Divide y Vencerás: MapReduce | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Big Data</a> ›
+                    <span>Divide y Vencerás: MapReduce</span>
+                </div>
+            </div>
+            <h1 class="text-center">Divide y Vencerás: MapReduce</h1>
+            <p class="subtitle text-center">Paradigma de Procesamiento Paralelo para Big Data con Python</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN AL DIVIDE Y VENCERÁS -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es Divide y Vencerás?</h2>
+                <p>
+                    <strong>Divide y Vencerás</strong> (Divide and Conquer) es un paradigma algorítmico fundamental que
+                    resuelve problemas complejos dividiéndolos en <strong>subproblemas más pequeños</strong>,
+                    resolviéndolos de forma independiente, y combinando sus soluciones para obtener el resultado final.
+                </p>
+                <p>
+                    En Big Data, este principio se aplica mediante el paradigma <strong>MapReduce</strong>, que permite
+                    procesar <strong>petabytes de datos</strong> distribuyendo el trabajo entre miles de nodos. Google
+                    lo creó en 2004 para indexar toda la web, procesando más de 20 petabytes diarios.
+                </p>
+
+                <!-- CAJA DE EJEMPLO REAL -->
+                <div class="highlight-box"
+                    style="background: #E8F7FA; border-left: 4px solid #49B9CE; margin-top: 1.5rem;">
+                    <h4 style="color: #49B9CE; margin-top: 0;">🌐 Ejemplo Real - Google Search</h4>
+                    <p>Cuando buscas "Big Data", Google divide la consulta entre millones de servidores, cada uno
+                        procesa su porción del índice web (Map), y luego combina los resultados ordenados por relevancia
+                        (Reduce) en milisegundos.</p>
+                </div>
+
+                <!-- CONCEPTOS FUNDAMENTALES -->
+                <h3>Los 3 Pasos Fundamentales</h3>
+                <div class="grid-characteristics">
+                    <!-- TARJETA AZUL -->
+                    <div class="card primary">
+                        <h4 class="color-primary">1️⃣ Divide</h4>
+                        <p>Descomponer el problema grande en subproblemas independientes y manejables de menor tamaño.
+                        </p>
+                    </div>
+                    <!-- TARJETA MORADA -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">2️⃣ Conquista</h4>
+                        <p>Resolver cada subproblema de forma independiente, usualmente en paralelo para mayor
+                            eficiencia.</p>
+                    </div>
+                    <!-- TARJETA AZUL -->
+                    <div class="card primary">
+                        <h4 class="color-primary">3️⃣ Combina</h4>
+                        <p>Integrar las soluciones parciales en una solución completa al problema original.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: MAPREDUCE - EL PARADIGMA -->
+            <section class="section">
+                <h2 class="section-title">MapReduce: Divide y Vencerás en Big Data</h2>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-secondary">🔄 Flujo de MapReduce</h3>
+                    <p>
+                        MapReduce es un modelo de programación que automatiza el paralelismo. Consta de dos funciones
+                        principales: <strong style="color: var(--color-primary);">Map</strong> (transformación) y
+                        <strong style="color: var(--color-secondary);">Reduce</strong> (agregación).
+                    </p>
+
+                    <!-- VISUALIZACIÓN SVG DEL FLUJO MAPREDUCE -->
+                    <svg width="900" height="650" viewBox="0 0 900 650" class="diagram-svg"
+                        style="width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="500" y="30" font-size="20" font-weight="bold" fill="#8A7AAF"
+                            text-anchor="middle">Arquitectura MapReduce: Flujo Completo</text>
+
+                        <!-- INPUT DATA -->
+                        <rect x="430" y="60" width="200" height="65" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="530" y="90" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle">📊
+                            INPUT DATA</text>
+                        <text x="530" y="110" font-size="12" fill="#555555" text-anchor="middle">Dataset completo</text>
+
+                        <!-- Flecha hacia SPLIT -->
+                        <path d="M 530 125 L 530 165" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+
+                        <!-- SPLIT -->
+                        <rect x="455" y="165" width="150" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="530" y="190" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle">⚡
+                            SPLIT (Divide)</text>
+
+                        <!-- Flechas hacia múltiples MAP -->
+                        <path d="M 465 205 L 227 248" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <path d="M 500 205 L 387 248" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <path d="M 560 205 L 547 248" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <path d="M 595 205 L 707 248" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+
+                        <!-- Texto procesamiento paralelo -->
+                        <text x="770" y="220" font-size="11" font-weight="bold" fill="#49B9CE">Procesamiento</text>
+                        <text x="770" y="235" font-size="11" font-weight="bold" fill="#49B9CE">Paralelo</text>
+
+                        <!-- ETIQUETA LATERAL: MAP PHASE -->
+                        <rect x="65" y="250" width="50" height="75" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="3" />
+                        <text x="80" y="287" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            transform="rotate(-90 80 287)">MAP</text>
+                        <text x="100" y="287" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            transform="rotate(-90 100 287)">PHASE</text>
+
+                        <!-- MAP FUNCTIONS (Parallel) -->
+                        <rect x="162" y="250" width="130" height="65" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="227" y="278" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🗺️
+                            MAP 1</text>
+                        <text x="227" y="298" font-size="11" fill="white" text-anchor="middle">worker node 1</text>
+
+                        <rect x="322" y="250" width="130" height="65" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="387" y="278" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🗺️
+                            MAP 2</text>
+                        <text x="387" y="298" font-size="11" fill="white" text-anchor="middle">worker node 2</text>
+
+                        <rect x="482" y="250" width="130" height="65" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="547" y="278" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🗺️
+                            MAP 3</text>
+                        <text x="547" y="298" font-size="11" fill="white" text-anchor="middle">worker node 3</text>
+
+                        <rect x="642" y="250" width="130" height="65" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="707" y="278" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🗺️
+                            MAP N</text>
+                        <text x="707" y="298" font-size="11" fill="white" text-anchor="middle">worker node N</text>
+
+                        <!-- Flechas hacia SHUFFLE/SORT -->
+                        <path d="M 227 315 L 385 365" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 387 315 L 430 365" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 547 315 L 547 365" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 707 315 L 620 365" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <!-- ETIQUETA LATERAL: SHUFFLE -->
+                        <rect x="65" y="365" width="50" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="3" />
+                        <text x="90" y="400" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            transform="rotate(-90 90 400)">SHUFFLE</text>
+
+                        <!-- SHUFFLE & SORT -->
+                        <rect x="385" y="365" width="290" height="70" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="530" y="393" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle">🔀
+                            SHUFFLE & SORT</text>
+                        <text x="530" y="413" font-size="11" fill="#555555" text-anchor="middle">Agrupa pares (clave,
+                            valor) por clave</text>
+
+                        <!-- Flechas hacia REDUCE -->
+                        <path d="M 445 435 L 277 470" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 530 435 L 530 470" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 615 435 L 733 470" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <!-- ETIQUETA LATERAL: REDUCE PHASE -->
+                        <rect x="65" y="470" width="50" height="75" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="3" />
+                        <text x="80" y="507" font-size="10" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            transform="rotate(-90 80 507)">REDUCE</text>
+                        <text x="100" y="507" font-size="10" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            transform="rotate(-90 100 507)">PHASE</text>
+
+                        <!-- REDUCE FUNCTIONS -->
+                        <rect x="212" y="470" width="130" height="60" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="277" y="505" font-size="14" font-weight="bold" fill="white" text-anchor="middle">📉
+                            REDUCE 1</text>
+
+                        <rect x="465" y="470" width="130" height="60" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="530" y="505" font-size="14" font-weight="bold" fill="white" text-anchor="middle">📉
+                            REDUCE 2</text>
+
+                        <rect x="668" y="470" width="130" height="60" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="733" y="505" font-size="14" font-weight="bold" fill="white" text-anchor="middle">📉
+                            REDUCE N</text>
+
+                        <!-- Flechas hacia OUTPUT -->
+                        <path d="M 277 530 L 445 570" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 530 530 L 530 570" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <path d="M 733 530 L 615 570" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <!-- OUTPUT FINAL -->
+                        <rect x="435" y="570" width="190" height="60" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="530" y="598" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle">📤
+                            OUTPUT</text>
+                        <text x="530" y="618" font-size="11" fill="#555555" text-anchor="middle">Resultados
+                            finales</text>
+
+                        <!-- Marcadores de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- FASES DE MAPREDUCE -->
+                <h3 class="color-primary">Las 4 Fases de MapReduce</h3>
+                <div class="grid-characteristics">
+                    <!-- FASE 1: MAP -->
+                    <div class="card primary">
+                        <h4 class="color-primary">1️⃣ Map (Transformación)</h4>
+                        <p>Procesa cada elemento del dataset y emite pares <strong>(clave, valor)</strong>. Ejecutado en
+                            paralelo por múltiples workers.</p>
+                    </div>
+
+                    <!-- FASE 2: SHUFFLE -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">2️⃣ Shuffle (Redistribución)</h4>
+                        <p>Agrupa todos los valores con la misma clave y los envía al mismo nodo Reduce. Fase automática
+                            del framework.</p>
+                    </div>
+
+                    <!-- FASE 3: SORT -->
+                    <div class="card primary">
+                        <h4 class="color-primary">3️⃣ Sort (Ordenamiento)</h4>
+                        <p>Ordena los valores asociados a cada clave antes de pasarlos a Reduce. Optimiza la agregación
+                            posterior.</p>
+                    </div>
+
+                    <!-- FASE 4: REDUCE -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">4️⃣ Reduce (Agregación)</h4>
+                        <p>Combina todos los valores de una misma clave en un resultado final. Produce el output
+                            agregado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CÓDIGO PYTHON - WORD COUNT BÁSICO -->
+            <section class="section">
+                <h2 class="section-title">MapReduce en Python: Word Count</h2>
+
+                <p>
+                    El ejemplo clásico de MapReduce es <strong>contar palabras</strong> en un texto grande.
+                    Implementaremos una versión funcional en Python puro.
+                </p>
+
+                <!-- CÓDIGO MAP -->
+                <div class="code-block">
+                    <div class="code-header">Python - Función Map</div>
+                    <pre><code class="language-python">def map_function(document):
+    """
+    Entrada: una línea de texto
+    Salida: lista de pares (palabra, 1)
+    """
+    results = []
+    for word in document.lower().split():
+        # Limpiar puntuación
+        word = word.strip('.,!?;:"')
+        if word:  # Ignorar palabras vacías
+            results.append((word, 1))
+    return results
+
+
+# Ejemplo de uso
+texto = "Big Data es el futuro. Big Data transforma todo."
+print(map_function(texto))
+
+# Salida:
+# [('big', 1), ('data', 1), ('es', 1), ('el', 1), ('futuro', 1),
+#  ('big', 1), ('data', 1), ('transforma', 1), ('todo', 1)]</code></pre>
+                </div>
+
+                <!-- CÓDIGO SHUFFLE -->
+                <div class="code-block" style="margin-top: 2rem;">
+                    <div class="code-header">Python - Función Shuffle</div>
+                    <pre><code class="language-python">from collections import defaultdict
+
+def shuffle_function(mapped_data):
+    """
+    Entrada: lista de pares (clave, valor)
+    Salida: diccionario {clave: [valores]}
+    """
+    shuffled = defaultdict(list)
+    for key, value in mapped_data:
+        shuffled[key].append(value)
+    return dict(shuffled)
+
+
+# Ejemplo de uso
+mapped = [('big', 1), ('data', 1), ('big', 1), ('data', 1)]
+print(shuffle_function(mapped))
+
+# Salida:
+# {'big': [1, 1], 'data': [1, 1]}</code></pre>
+                </div>
+
+                <!-- CÓDIGO REDUCE -->
+                <div class="code-block" style="margin-top: 2rem;">
+                    <div class="code-header">Python - Función Reduce</div>
+                    <pre><code class="language-python">def reduce_function(key, values):
+    """
+    Entrada: clave y lista de valores asociados
+    Salida: (clave, suma de valores)
+    """
+    return (key, sum(values))
+
+
+# Ejemplo de uso
+shuffled = {'big': [1, 1], 'data': [1, 1]}
+results = []
+for key, values in shuffled.items():
+    results.append(reduce_function(key, values))
+
+print(results)
+
+# Salida:
+# [('big', 2), ('data', 2)]</code></pre>
+                </div>
+
+                <!-- CÓDIGO COMPLETO -->
+                <div class="code-block" style="margin-top: 2rem;">
+                    <div class="code-header">Python - MapReduce Completo</div>
+                    <pre><code class="language-python">def mapreduce_word_count(documents):
+    """
+    Implementación completa de MapReduce para contar palabras
+
+    Args:
+        documents: Lista de strings (documentos de texto)
+
+    Returns:
+        Diccionario con el conteo de cada palabra
+    """
+    # FASE 1: MAP (Procesamiento paralelo simulado)
+    mapped_results = []
+    for doc in documents:
+        mapped_results.extend(map_function(doc))
+
+    # FASE 2: SHUFFLE & SORT
+    shuffled = shuffle_function(mapped_results)
+
+    # FASE 3: REDUCE (Agregación final)
+    final_results = {}
+    for key, values in shuffled.items():
+        word, count = reduce_function(key, values)
+        final_results[word] = count
+
+    return final_results
+
+
+# === EJEMPLO DE USO =======================
+
+corpus = [
+    "Big Data es el futuro de la tecnología.",
+    "Big Data permite analizar grandes volúmenes.",
+    "El futuro está en los datos."
+]
+
+resultado = mapreduce_word_count(corpus)
+
+# Ordenar por frecuencia
+sorted_words = sorted(resultado.items(), key=lambda x: x[1], reverse=True)
+
+print("Palabras más frecuentes:")
+for word, count in sorted_words[:5]:
+    print(f"  {word}: {count}")</code></pre>
+                </div>
+
+                <!-- RESULTADO -->
+                <div class="code-output primary">
+                    <strong>Salida:</strong><br>
+                    big: 2<br>
+                    data: 2<br>
+                    el: 2<br>
+                    futuro: 2
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EJEMPLO AVANZADO - ANÁLISIS DE LOGS -->
+            <section class="section">
+                <h2 class="section-title">Caso Práctico: Análisis de Logs Web</h2>
+
+                <p>
+                    Implementaremos un analizador de logs que cuenta <strong>peticiones HTTP por código de
+                        estado</strong> (200, 404, 500, etc.). Este patrón se usa en empresas como <strong>Netflix y
+                        AWS</strong> para monitorizar millones de peticiones por segundo.
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">Python - Análisis de Logs</div>
+                    <pre><code class="language-python">import re
+from collections import defaultdict
+
+# === DATOS DE EJEMPLO: Logs HTTP ===
+logs = [
+    "192.168.1.1 - GET /index.html 200",
+    "192.168.1.2 - GET /about.html 200",
+    "192.168.1.3 - GET /missing.html 404",
+    "192.168.1.1 - POST /api/data 500",
+    "192.168.1.4 - GET /index.html 200",
+    "192.168.1.5 - GET /contact.html 404",
+]
+
+
+# === FUNCIÓN MAP: Extrae código de estado ===
+def map_log_status(log_line):
+    """Extrae el código HTTP de la línea de log"""
+    match = re.search(r'\s(\d{3})$', log_line)
+    if match:
+        status_code = match.group(1)
+        return (status_code, 1)
+    return None
+
+
+# === FUNCIÓN REDUCE: Suma conteos ===
+def reduce_status_count(status_code, counts):
+    """Suma todas las ocurrencias del mismo código"""
+    return (status_code, sum(counts))
+
+
+# === EJECUTAR MAPREDUCE ===
+def analyze_logs(log_entries):
+    # MAP
+    mapped = []
+    for log in log_entries:
+        result = map_log_status(log)
+        if result:
+            mapped.append(result)
+
+    # SHUFFLE
+    shuffled = defaultdict(list)
+    for key, value in mapped:
+        shuffled[key].append(value)
+
+    # REDUCE
+    results = {}
+    for status, counts in shuffled.items():
+        code, total = reduce_status_count(status, counts)
+        results[code] = total
+
+    return results
+
+
+# === ANÁLISIS ===
+status_counts = analyze_logs(logs)
+
+print("📊 Análisis de Códigos HTTP:")
+for code in sorted(status_counts.keys()):
+    print(f"  {code}: {status_counts[code]} peticiones")</code></pre>
+                </div>
+
+                <!-- RESULTADO DEL ANÁLISIS -->
+                <div class="code-output secondary">
+                    <strong>📊 Resultado del Análisis:</strong><br>
+                    200 (OK): 3 peticiones<br>
+                    404 (Not Found): 2 peticiones<br>
+                    500 (Server Error): 1 petición
+                </div>
+
+                <!-- EXPLICACIÓN DEL USO REAL -->
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 1.5rem;">
+                    <h4 style="color: #E65100; margin-top: 0;">🏢 Aplicación en el Mundo Real</h4>
+                    <p>
+                        <strong>Netflix</strong> procesa <strong>500 billones de eventos</strong> diarios usando
+                        MapReduce en su pipeline de datos. Analizan patrones de visualización, errores de streaming, y
+                        recomendaciones personalizadas para 230 millones de usuarios globalmente.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: HADOOP Y APACHE SPARK -->
+            <section class="section">
+                <h2 class="section-title">Frameworks de MapReduce en Producción</h2>
+
+                <p>
+                    En entornos reales, no implementamos MapReduce desde cero. Usamos frameworks especializados que
+                    automatizan la distribución, tolerancia a fallos y optimización.
+                </p>
+
+                <!-- COMPARACIÓN HADOOP VS SPARK -->
+                <h3 class="color-secondary">⚔️ Hadoop vs Apache Spark</h3>
+
+                <div style="overflow-x: auto; margin-bottom: 2rem;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th style="text-align: center;">Hadoop MapReduce</th>
+                                <th style="text-align: center;">Apache Spark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Velocidad</td>
+                                <td style="text-align: center;">Batch (lento)</td>
+                                <td style="text-align: center;"><strong>100x más rápido</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Almacenamiento</td>
+                                <td style="text-align: center;">Disco (HDFS)</td>
+                                <td style="text-align: center;"><strong>Memoria RAM</strong></td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Lenguajes</td>
+                                <td style="text-align: center;">Java</td>
+                                <td style="text-align: center;">Python, Scala, Java, R</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Curva de aprendizaje</td>
+                                <td style="text-align: center;">Alta</td>
+                                <td style="text-align: center;"><strong>Baja</strong></td>
+                            </tr>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Streaming</td>
+                                <td style="text-align: center;">No nativo</td>
+                                <td style="text-align: center;"><strong>Spark Streaming</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Machine Learning</td>
+                                <td style="text-align: center;">Mahout (limitado)</td>
+                                <td style="text-align: center;"><strong>MLlib completo</strong></td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Tolerancia a fallos</td>
+                                <td style="text-align: center;">Sí (replicación)</td>
+                                <td style="text-align: center;">Sí (RDD lineage)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Usado por</td>
+                                <td style="text-align: center; font-size: 0.95rem;">Yahoo, Facebook (legacy)</td>
+                                <td style="text-align: center; font-size: 0.95rem;">Netflix, Uber, Airbnb</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- EJEMPLO SPARK -->
+                <h3 class="color-primary">⚡ Word Count en Apache Spark (PySpark)</h3>
+                <div class="code-block">
+                    <div class="code-header">Python - Word Count en PySpark</div>
+                    <pre><code class="language-python">from pyspark import SparkContext
+
+# Inicializar Spark
+sc = SparkContext("local", "WordCount")
+
+# Leer archivo de texto
+text_file = sc.textFile("hdfs://path/to/bigdata.txt")
+
+# MapReduce en una sola línea
+counts = (text_file
+    .flatMap(lambda line: line.split(" "))  # Map
+    .map(lambda word: (word, 1))            # Map
+    .reduceByKey(lambda a, b: a + b))    # Reduce
+
+# Guardar resultado
+counts.saveAsTextFile("hdfs://path/to/output")
+
+# Mostrar top 10
+top10 = counts.takeOrdered(10, key=lambda x: -x[1])
+print(top10)</code></pre>
+                </div>
+
+                <p style="font-style: italic; margin-top: 1rem;">
+                    ⚠️ Nota: Spark procesa el mismo dataset <strong>100 veces más rápido</strong> que Hadoop MapReduce
+                    tradicional gracias al procesamiento en memoria.
+                </p>
+            </section>
+
+            <!-- SECCIÓN 6: VENTAJAS Y DESVENTAJAS -->
+            <section class="section">
+                <h2 class="section-title">Ventajas y Limitaciones del Paradigma</h2>
+
+                <div class="grid-comparison">
+                    <!-- VENTAJAS -->
+                    <div class="card primary-bg">
+                        <h3 class="color-primary" style="text-align: center;">✅ Ventajas</h3>
+                        <ul>
+                            <li><strong>Escalabilidad horizontal:</strong> Añade más nodos para procesar más datos</li>
+                            <li><strong>Tolerancia a fallos:</strong> Si un nodo falla, redistribuye el trabajo</li>
+                            <li><strong>Simplicidad conceptual:</strong> Solo defines Map y Reduce</li>
+                            <li><strong>Paralelismo automático:</strong> El framework gestiona la distribución</li>
+                            <li><strong>Independencia de datos:</strong> Funciona con cualquier tipo de dataset</li>
+                        </ul>
+                    </div>
+
+                    <!-- DESVENTAJAS -->
+                    <div class="card secondary-bg">
+                        <h3 class="color-secondary" style="text-align: center;">⚠️ Limitaciones</h3>
+                        <ul>
+                            <li><strong>Latencia alta:</strong> No apto para tiempo real (usa Spark Streaming)</li>
+                            <li><strong>Overhead de I/O:</strong> Escribir a disco entre fases es lento</li>
+                            <li><strong>No apto para algoritmos iterativos:</strong> Machine learning requiere múltiples
+                                pasadas</li>
+                            <li><strong>Complejidad en joins:</strong> Operaciones entre datasets son costosas</li>
+                            <li><strong>Debugging difícil:</strong> Errores distribuidos son complejos</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: CASOS DE USO REALES -->
+            <section class="section">
+                <h2 class="section-title">Casos de Uso en la Industria</h2>
+
+                <div class="grid-characteristics">
+                    <!-- CASO 1: GOOGLE -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🌐 Google</h4>
+                        <p><strong>PageRank y crawling:</strong> Procesa 100 petabytes diarios para indexar toda la web.
+                            MapReduce calcula relevancia de páginas.</p>
+                    </div>
+
+                    <!-- CASO 2: FACEBOOK -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">👥 Facebook</h4>
+                        <p><strong>Análisis de grafos sociales:</strong> 300 PB de datos de usuarios. Recomienda amigos
+                            y contenido usando MapReduce.</p>
+                    </div>
+
+                    <!-- CASO 3: AMAZON -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🛒 Amazon</h4>
+                        <p><strong>Sistema de recomendaciones:</strong> Analiza 200M+ transacciones diarias para sugerir
+                            productos relacionados.</p>
+                    </div>
+
+                    <!-- CASO 4: SPOTIFY -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🎵 Spotify</h4>
+                        <p><strong>Discover Weekly:</strong> Procesa billones de streams para generar playlists
+                            personalizadas para 500M usuarios.</p>
+                    </div>
+
+                    <!-- CASO 5: UBER -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🚗 Uber</h4>
+                        <p><strong>Optimización de rutas:</strong> Analiza 100TB de datos GPS diarios para calcular
+                            precios dinámicos y ETAs.</p>
+                    </div>
+
+                    <!-- CASO 6: TWITTER -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🐦 Twitter</h4>
+                        <p><strong>Trending topics:</strong> Procesa 500M tweets diarios en tiempo real para detectar
+                            tendencias globales.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: CONCLUSIÓN -->
+            <section class="section">
+                <h2 class="section-title" style="text-align: center;">🎯 Resumen y Conclusiones</h2>
+
+                <div class="highlight-box" style="text-align: center; border-left: 4px solid var(--color-primary);">
+                    <p style="font-size: 1.3rem; font-weight: 700;">
+                        MapReduce revolucionó el procesamiento de Big Data
+                    </p>
+                    <p>
+                        El paradigma <strong>Divide y Vencerás</strong> implementado en MapReduce permite procesar
+                        <strong>petabytes de datos</strong> de forma distribuida y tolerante a fallos. Aunque Hadoop fue
+                        pionero, <strong>Apache Spark</strong> es ahora el estándar de facto por su velocidad y
+                        flexibilidad. Las empresas tecnológicas líderes (Google, Netflix, Amazon) procesan billones de
+                        registros diarios usando este paradigma para ofrecer servicios escalables y personalizados.
+                    </p>
+                </div>
+
+                <!-- PUNTOS CLAVE -->
+                <div style="margin-top: 2rem;">
+                    <h3 class="color-primary">🔑 Puntos Clave a Recordar:</h3>
+                    <ul>
+                        <li><strong>Map transforma</strong> datos en pares (clave, valor)</li>
+                        <li><strong>Shuffle agrupa</strong> valores por clave automáticamente</li>
+                        <li><strong>Reduce combina</strong> valores para generar resultados finales</li>
+                        <li><strong>Spark es 100x más rápido</strong> que Hadoop MapReduce tradicional</li>
+                        <li><strong>Escalabilidad horizontal:</strong> añade nodos para procesar más datos</li>
+                        <li><strong>Tolerancia a fallos:</strong> el sistema recupera automáticamente de errores</li>
+                    </ul>
+                </div>
+
+                <!-- DATO CURIOSO FINAL -->
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 1.5rem;">
+                    <h4 style="color: #E65100; margin-top: 0;">💡 Dato Histórico</h4>
+                    <p>
+                        El paper original de MapReduce fue publicado por <strong>Jeffrey Dean y Sanjay Ghemawat</strong>
+                        de Google en 2004. Este artículo científico transformó la industria tecnológica y es uno de los
+                        más citados en ciencias de la computación con más de <strong>30,000 citas</strong>. Google
+                        procesaba más de 20 petabytes al día con MapReduce cuando la mayoría de empresas manejaban
+                        terabytes.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.style.background = '#43A047';
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.style.background = '#49B9CE';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                        button.innerHTML = '<span>Error</span>';
+                        button.style.background = '#F44336';
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+</body>
+
+</html>

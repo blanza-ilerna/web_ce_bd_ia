@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mass Storage Systems - Sistemas de Almacenamiento Masivo para Big Data">
+    <meta name="keywords" content="Mass Storage, DAS, NAS, SAN, Object Storage, HDFS, S3, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Mass Storage Systems | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a>
+                <span>›</span>
+                <a href="index.html">Big Data Aplicado</a>
+                <span>›</span>
+                <span>Mass Storage Systems</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Mass Storage Systems</h1>
+            <p class="subtitle">Sistemas de Almacenamiento Masivo para Big Data</p>
+        </div>
+
+<!-- SECCIÓN 1: INTRODUCCIÓN -->
+    <section class="section">
+        <h2>Introducción</h2>
+        <p>
+            Los <strong>Mass Storage Systems</strong> son infraestructuras diseñadas para almacenar, gestionar y procesar grandes volúmenes de datos de manera eficiente, escalable y confiable. En el contexto de Big Data, donde los datos pueden alcanzar petabytes o exabytes, estos sistemas son fundamentales para el procesamiento analítico y operacional.
+        </p>
+        
+        <!-- CAJA DE EJEMPLO -->
+        <div class="highlight-box primary">
+            <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333;">Ejemplo: Un data center moderno puede gestionar más de 100 PB de datos distribuidos</p>
+        </div>
+
+        <!-- CONCEPTOS EN GRID -->
+        <h3>Conceptos Clave</h3>
+        <div class="grid-2-cols">
+            <!-- TARJETA AZUL -->
+            <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                <h4 class="color-primary">Escalabilidad</h4>
+                <p>Capacidad de crecer horizontalmente añadiendo más nodos de almacenamiento sin interrumpir el servicio.</p>
+            </div>
+            <!-- TARJETA MORADA -->
+            <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                <h4 class="color-secondary">Redundancia</h4>
+                <p>Replicación de datos en múltiples ubicaciones para garantizar disponibilidad y tolerancia a fallos.</p>
+            </div>
+            <!-- TARJETA AZUL -->
+            <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                <h4 class="color-primary">Throughput</h4>
+                <p>Velocidad de lectura/escritura medida en MB/s o GB/s, crítica para procesamiento paralelo masivo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: TIPOS DE ALMACENAMIENTO -->
+    <section class="section">
+        <h2>Tipos de Almacenamiento</h2>
+        
+        <!-- SUBSECCIÓN CON VISUAL -->
+        <div class="mb-2">
+            <h3 class="color-secondary">1. Direct Attached Storage (DAS)</h3>
+            <p>Almacenamiento conectado directamente al servidor sin pasar por una red. Ideal para aplicaciones que requieren baja latencia.</p>
+            
+            <!-- LAYOUT FLEX CON SVG Y CONTENIDO -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <svg width="300" height="200" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <rect x="20" y="60" width="80" height="80" fill="#8A7AAF" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                    <text x="60" y="105" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Servidor</text>
+                    
+                    <line x1="100" y1="100" x2="180" y2="100" stroke="#333333" stroke-width="3"/>
+                    <text x="140" y="90" font-size="12" fill="#333333" text-anchor="middle">SATA/SAS</text>
+                    
+                    <rect x="180" y="60" width="100" height="80" fill="#8A7AAF" fill-opacity="0.6" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                    <text x="230" y="105" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle">DAS</text>
+                </svg>
+                <div style="flex: 1; min-width: 200px;">
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333;">Latencia: &lt; 1ms</p>
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; margin-top: 0.5rem; font-weight: 700; font-size: 1.125rem; color: #333333;">Throughput: 500 MB/s - 2 GB/s</p>
+                    <p style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">Uso: Bases de datos locales</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <h3 class="color-primary">2. Network Attached Storage (NAS)</h3>
+            <p>Sistema de almacenamiento conectado a la red mediante protocolos como NFS o SMB. Permite compartir archivos entre múltiples clientes.</p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <svg width="300" height="200" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <rect x="30" y="20" width="60" height="50" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="60" y="50" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle">Cliente 1</text>
+                    
+                    <rect x="120" y="20" width="60" height="50" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="150" y="50" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle">Cliente 2</text>
+                    
+                    <rect x="210" y="20" width="60" height="50" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="240" y="50" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle">Cliente 3</text>
+                    
+                    <line x1="60" y1="70" x2="150" y2="100" stroke="#333333" stroke-width="2"/>
+                    <line x1="150" y1="70" x2="150" y2="100" stroke="#333333" stroke-width="2"/>
+                    <line x1="240" y1="70" x2="150" y2="100" stroke="#333333" stroke-width="2"/>
+                    
+                    <text x="150" y="95" font-size="10" fill="#333333" text-anchor="middle">Ethernet</text>
+                    
+                    <rect x="100" y="120" width="100" height="60" fill="#49B9CE" fill-opacity="0.6" stroke="#49B9CE" stroke-width="3" rx="5"/>
+                    <text x="150" y="155" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle">NAS Server</text>
+                </svg>
+                <div style="flex: 1; min-width: 200px;">
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333;">Latencia: 2-10ms</p>
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; margin-top: 0.5rem; font-weight: 700; font-size: 1.125rem; color: #333333;">Protocolos: NFS, SMB, AFP</p>
+                    <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">Uso: File sharing, backups</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <h3 class="color-secondary">3. Storage Area Network (SAN)</h3>
+            <p>Red de alta velocidad dedicada exclusivamente al almacenamiento. Utiliza protocolos como Fibre Channel o iSCSI para transferencias de bloques.</p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <svg width="300" height="220" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <rect x="20" y="20" width="70" height="50" fill="#8A7AAF" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                    <text x="55" y="50" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Server 1</text>
+                    
+                    <rect x="115" y="20" width="70" height="50" fill="#8A7AAF" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                    <text x="150" y="50" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Server 2</text>
+                    
+                    <rect x="210" y="20" width="70" height="50" fill="#8A7AAF" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                    <text x="245" y="50" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Server 3</text>
+                    
+                    <rect x="80" y="100" width="140" height="40" fill="#333333" fill-opacity="0.2" stroke="#333333" stroke-width="2" rx="5"/>
+                    <text x="150" y="125" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">Fibre Channel Switch</text>
+                    
+                    <line x1="55" y1="70" x2="100" y2="100" stroke="#8A7AAF" stroke-width="2"/>
+                    <line x1="150" y1="70" x2="150" y2="100" stroke="#8A7AAF" stroke-width="2"/>
+                    <line x1="245" y1="70" x2="200" y2="100" stroke="#8A7AAF" stroke-width="2"/>
+                    
+                    <line x1="150" y1="140" x2="150" y2="170" stroke="#8A7AAF" stroke-width="3"/>
+                    
+                    <rect x="80" y="170" width="140" height="40" fill="#8A7AAF" fill-opacity="0.6" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                    <text x="150" y="195" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">Storage Array (SAN)</text>
+                </svg>
+                <div style="flex: 1; min-width: 200px;">
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333;">Latencia: &lt; 2ms</p>
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; margin-top: 0.5rem; font-weight: 700; font-size: 1.125rem; color: #333333;">Velocidad: 8-32 Gbps FC</p>
+                    <p style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">Uso: Virtualización, BBDD críticas</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 0;">
+            <h3 class="color-primary">4. Object Storage</h3>
+            <p>Almacenamiento optimizado para datos no estructurados. Cada objeto incluye datos, metadatos y un identificador único. Ideal para Big Data y cloud.</p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <svg width="300" height="180" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <rect x="20" y="20" width="80" height="60" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="60" y="45" font-size="10" font-weight="bold" fill="#49B9CE" text-anchor="middle">Object 1</text>
+                    <text x="60" y="60" font-size="8" fill="#555555" text-anchor="middle">ID: abc123</text>
+                    <text x="60" y="72" font-size="8" fill="#555555" text-anchor="middle">Size: 50MB</text>
+                    
+                    <rect x="110" y="20" width="80" height="60" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="150" y="45" font-size="10" font-weight="bold" fill="#49B9CE" text-anchor="middle">Object 2</text>
+                    <text x="150" y="60" font-size="8" fill="#555555" text-anchor="middle">ID: def456</text>
+                    <text x="150" y="72" font-size="8" fill="#555555" text-anchor="middle">Size: 120MB</text>
+                    
+                    <rect x="200" y="20" width="80" height="60" fill="#49B9CE" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="240" y="45" font-size="10" font-weight="bold" fill="#49B9CE" text-anchor="middle">Object N</text>
+                    <text x="240" y="60" font-size="8" fill="#555555" text-anchor="middle">ID: xyz789</text>
+                    <text x="240" y="72" font-size="8" fill="#555555" text-anchor="middle">Size: 2GB</text>
+                    
+                    <rect x="50" y="110" width="200" height="50" fill="#49B9CE" fill-opacity="0.6" stroke="#49B9CE" stroke-width="3" rx="5"/>
+                    <text x="150" y="130" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">Object Storage Pool</text>
+                    <text x="150" y="148" font-size="10" fill="#333333" text-anchor="middle">(S3, Azure Blob, Ceph)</text>
+                </svg>
+                <div style="flex: 1; min-width: 200px;">
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333;">Escalabilidad: Ilimitada</p>
+                    <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; margin-top: 0.5rem; font-weight: 700; font-size: 1.125rem; color: #333333;">API: REST/HTTP</p>
+                    <p style="font-family: 'Courier New', monospace; background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; margin-top: 0.5rem; font-weight: 700; color: #333333; font-size: 1.125rem;">Uso: Data lakes, multimedia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: TECNOLOGÍAS DE DISCO -->
+    <section class="section">
+        <h2>Tecnologías de Disco</h2>
+        
+        <!-- TABLA COMPARATIVA HDD vs SSD -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>HDD (Magnético)</th>
+                        <th>SSD (Estado Sólido)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Velocidad Lectura</td>
+                        <td>80-160 MB/s</td>
+                        <td>500-7000 MB/s</td>
+                    </tr>
+                    <tr>
+                        <td>Latencia</td>
+                        <td>10-15 ms</td>
+                        <td>0.05-0.15 ms</td>
+                    </tr>
+                    <tr>
+                        <td>IOPS</td>
+                        <td>50-200</td>
+                        <td>10,000-100,000+</td>
+                    </tr>
+                    <tr>
+                        <td>Capacidad Máxima</td>
+                        <td>18-20 TB</td>
+                        <td>4-8 TB (consumer)</td>
+                    </tr>
+                    <tr>
+                        <td>Precio/TB</td>
+                        <td>$15-25</td>
+                        <td>$80-150</td>
+                    </tr>
+                    <tr>
+                        <td>Consumo Energético</td>
+                        <td>6-10 W</td>
+                        <td>2-5 W</td>
+                    </tr>
+                    <tr>
+                        <td>Uso en Big Data</td>
+                        <td>Almacenamiento masivo</td>
+                        <td>Hot data, caché</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PROPIEDAD RAID -->
+        <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 0; border: 2px solid #8A7AAF;">
+            <h3 class="color-secondary">Tecnología RAID</h3>
+            <p>RAID (Redundant Array of Independent Disks) combina múltiples discos físicos para mejorar rendimiento y/o redundancia.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.875rem; margin-top: 1rem;">
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #8A7AAF; font-weight: 700;">RAID 0 (Striping)</p>
+                    <p>Máximo rendimiento, sin redundancia</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #8A7AAF; font-weight: 700;">RAID 1 (Mirroring)</p>
+                    <p>Duplicación total, máxima seguridad</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #8A7AAF; font-weight: 700;">RAID 5 (Parity)</p>
+                    <p>Balance rendimiento/redundancia</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #8A7AAF; font-weight: 700;">RAID 6 (Double Parity)</p>
+                    <p>Tolera 2 fallos simultáneos</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #8A7AAF; font-weight: 700;">RAID 10 (1+0)</p>
+                    <p>Mirror de stripes, alto rendimiento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: SISTEMAS DISTRIBUIDOS -->
+    <section class="section">
+        <h2>Sistemas de Archivos Distribuidos</h2>
+        
+        <!-- HDFS -->
+        <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+            <h3 class="color-primary">HDFS (Hadoop Distributed File System)</h3>
+            <p>Sistema de archivos distribuido diseñado para ejecutarse en hardware commodity. Optimizado para grandes datasets y procesamiento batch.</p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">Arquitectura: NameNode + DataNodes</p>
+                    <p>El NameNode mantiene metadatos mientras DataNodes almacenan bloques de datos (128MB por defecto).</p>
+                    <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Courier New', monospace;">Replicación: Factor 3 (configurable)</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">Write-once, Read-many</p>
+                    <p>Optimizado para streaming de datos. No soporta modificaciones aleatorias de archivos.</p>
+                    <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Courier New', monospace;">Throughput: ~300 MB/s por DataNode</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CEPH -->
+        <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+            <h3 class="color-secondary">Ceph</h3>
+            <p>Sistema de almacenamiento distribuido unificado que proporciona almacenamiento de objetos, bloques y archivos simultáneamente.</p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">CRUSH Algorithm</p>
+                    <p>Algoritmo de distribución de datos pseudo-aleatorio que elimina necesidad de tabla de metadatos central.</p>
+                    <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Courier New', monospace;">Auto-balanceo y auto-recuperación</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #8A7AAF;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #333333; font-weight: 700;">Componentes: MON, OSD, MDS</p>
+                    <p>MON (monitor), OSD (object storage daemon), MDS (metadata server) trabajan coordinadamente.</p>
+                    <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Courier New', monospace;">Interfaces: S3, Swift, RBD, CephFS</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GLUSTERFS -->
+        <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 0; border: 2px solid #49B9CE;">
+            <h3 class="color-primary">GlusterFS</h3>
+            <p>Sistema de archivos distribuido scale-out sin metadatos centralizados. Usa espacio de nombres global (namespace unificado).</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.875rem; margin-top: 1rem;">
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #49B9CE; font-weight: 700;">Replicated Volume</p>
+                    <p>Replica datos en múltiples bricks</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #49B9CE; font-weight: 700;">Distributed Volume</p>
+                    <p>Distribuye archivos entre bricks</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #49B9CE; font-weight: 700;">Striped Volume</p>
+                    <p>Divide archivos en chunks</p>
+                </div>
+                <div style="background: #f9f9f9; padding: 0.75rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE;">
+                    <p style="font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 0.4rem; color: #49B9CE; font-weight: 700;">Hybrid Volumes</p>
+                    <p>Combina múltiples estrategias</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: CARACTERÍSTICAS CRÍTICAS -->
+    <section class="section">
+        <h2>Características Críticas para Big Data</h2>
+        
+        <div class="grid-characteristics">
+            <!-- CARACTERÍSTICA 1 -->
+            <div class="card secondary">
+                <h3>Escalabilidad Horizontal</h3>
+                <p>Capacidad de añadir más nodos al clúster sin tiempo de inactividad. Esencial para crecimiento orgánico de datos.</p>
+                <ul>
+                    <li><strong>Petabytes</strong> distribuidos en cientos de nodos</li>
+                    <li><strong>Linear scaling</strong> de rendimiento</li>
+                    <li><strong>Zero downtime</strong> en expansión</li>
+                </ul>
+            </div>
+
+            <!-- CARACTERÍSTICA 2 -->
+            <div class="card primary">
+                <h3>Tolerancia a Fallos</h3>
+                <p>Sistema debe continuar operando ante fallos de hardware, red o software sin pérdida de datos ni servicio.</p>
+                <ul>
+                    <li><strong>Replicación</strong> automática de datos</li>
+                    <li><strong>Detección</strong> de nodos caídos</li>
+                    <li><strong>Re-balanceo</strong> automático</li>
+                </ul>
+            </div>
+
+            <!-- CARACTERÍSTICA 3 -->
+            <div class="card secondary">
+                <h3>Alto Rendimiento</h3>
+                <p>Throughput agregado del clúster debe escalar linealmente con el número de nodos y discos.</p>
+                <ul>
+                    <li><strong>Paralelismo</strong> masivo de I/O</li>
+                    <li><strong>Caching</strong> inteligente</li>
+                    <li><strong>Data locality</strong> optimization</li>
+                </ul>
+            </div>
+
+            <!-- CARACTERÍSTICA 4 -->
+            <div class="card primary">
+                <h3>Consistencia de Datos</h3>
+                <p>Garantías sobre el estado de los datos en sistemas distribuidos. Trade-off entre consistencia y disponibilidad (Teorema CAP).</p>
+                <ul>
+                    <li><strong>Strong consistency</strong> para transacciones</li>
+                    <li><strong>Eventual consistency</strong> para analytics</li>
+                    <li><strong>ACID vs BASE</strong> models</li>
+                </ul>
+            </div>
+
+            <!-- CARACTERÍSTICA 5 -->
+            <div class="card secondary">
+                <h3>Cost-Efficiency</h3>
+                <p>Optimización de costes usando hardware commodity, deduplicación y compresión de datos.</p>
+                <ul>
+                    <li><strong>Commodity hardware</strong> vs enterprise</li>
+                    <li><strong>Tiering</strong> automático (hot/cold data)</li>
+                    <li><strong>Compresión</strong> nativa (Snappy, LZ4)</li>
+                </ul>
+            </div>
+
+            <!-- CARACTERÍSTICA 6 -->
+            <div class="card primary">
+                <h3>Data Locality</h3>
+                <p>Procesamiento de datos donde residen físicamente. Reduce transferencias de red y mejora rendimiento dramáticamente.</p>
+                <ul>
+                    <li><strong>Move computation</strong> not data</li>
+                    <li><strong>Rack awareness</strong> en HDFS</li>
+                    <li><strong>Minimize</strong> network I/O</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: CASOS DE USO -->
+    <section class="section">
+        <h2>Casos de Uso en Big Data</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.875rem; margin-top: 1rem;">
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem;">📊 Data Lakes</p>
+                <p>Almacenamiento centralizado de datos estructurados y no estructurados en formato raw.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">🎬 Media Streaming</p>
+                <p>Object storage para vídeo, audio e imágenes de alta resolución a escala.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem;">📈 Analytics Batch</p>
+                <p>Procesamiento MapReduce sobre datasets masivos almacenados en HDFS.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">🔬 Machine Learning</p>
+                <p>Almacenamiento de datasets de entrenamiento y modelos entrenados.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem;">📝 Log Aggregation</p>
+                <p>Recopilación centralizada de logs de aplicaciones y sistemas distribuidos.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">💾 Backup y Archive</p>
+                <p>Almacenamiento a largo plazo con políticas de retención y compresión.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem;">🌐 CDN Origin</p>
+                <p>Origen de contenido estático para redes de distribución globales.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 0.875rem; border-radius: 0.75rem;">
+                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">🔍 Search Indexing</p>
+                <p>Almacenamiento de índices invertidos para motores de búsqueda distribuidos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 7: COMPARATIVA SISTEMAS -->
+    <section class="section">
+        <h2 class="color-primary">Comparativa de Sistemas Distribuidos</h2>
+        
+        <div class="grid-comparison">
+            <div class="card primary-bg">
+                <h3>HDFS</h3>
+                <ul>
+                    <li><strong>Ventajas:</strong> Madurez, integración Hadoop, data locality</li>
+                    <li><strong>Desventajas:</strong> Write-once, NameNode SPOF</li>
+                    <li><strong>Ideal para:</strong> Batch processing, MapReduce</li>
+                    <li><strong>Throughput:</strong> 100-300 MB/s/node</li>
+                </ul>
+            </div>
+            <div class="card secondary-bg">
+                <h3>Ceph</h3>
+                <ul>
+                    <li><strong>Ventajas:</strong> Unificado (block/file/object), CRUSH</li>
+                    <li><strong>Desventajas:</strong> Complejidad, overhead de red</li>
+                    <li><strong>Ideal para:</strong> Cloud storage, VMs, containers</li>
+                    <li><strong>Throughput:</strong> 200-500 MB/s/node</li>
+                </ul>
+            </div>
+            <div class="card primary-bg">
+                <h3>GlusterFS</h3>
+                <ul>
+                    <li><strong>Ventajas:</strong> Simplicidad, sin metadatos centrales</li>
+                    <li><strong>Desventajas:</strong> Performance en small files</li>
+                    <li><strong>Ideal para:</strong> File sharing, NAS replacement</li>
+                    <li><strong>Throughput:</strong> 150-400 MB/s/node</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CONCLUSIÓN -->
+        <div class="highlight-box">
+            <p style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Selección del Sistema</p>
+            <p>La elección del sistema de almacenamiento depende de: <strong>workload</strong> (read-heavy vs write-heavy), <strong>consistencia</strong> requerida, <strong>presupuesto</strong>, y <strong>expertise</strong> del equipo técnico. No existe una solución única para todos los casos.</p>
+        </div>
+    </section>
+
+    
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+
+</html>

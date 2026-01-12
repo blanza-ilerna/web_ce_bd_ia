@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Basados en Reglas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Modelos de IA</a> ›
+                <span>Sistemas Basados en Reglas</span>
+            </div>
+        </div>
+        <h1 class="text-center">Sistemas Basados en Reglas</h1>
+        <p class="subtitle text-center">Razonamiento Simbólico e Inteligencia Artificial Clásica</p>
+    </header>
+
+    <div class="container">
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="section-title">¿Qué son los Sistemas Basados en Reglas?</h2>
+            <p>
+                Los <strong>sistemas basados en reglas</strong> (rule-based systems) representan una de las primeras
+                manifestaciones exitosas de la inteligencia artificial aplicada. Su objetivo es <strong>emular el
+                    razonamiento humano experto</strong> mediante la aplicación sistemática de reglas lógicas explícitas
+                que encapsulan el conocimiento de un dominio específico.
+            </p>
+            <p>
+                A diferencia de los enfoques modernos de aprendizaje automático —que aprenden patrones de manera
+                inductiva desde datos— estos sistemas funcionan mediante <strong>razonamiento deductivo</strong>:
+                aplican reglas del tipo <em>"Si se cumple [condición], entonces ejecuta [acción]"</em> para analizar
+                situaciones, inferir conclusiones y tomar decisiones fundamentadas.
+            </p>
+
+            <!-- CAJA DE EJEMPLO REAL -->
+            <div class="highlight-box">
+                <p class="tech-title">💼 Ejemplo Real: Sistema Experto MYCIN</p>
+                <p>
+                    Desarrollado en Stanford en 1972, MYCIN diagnosticaba infecciones bacterianas en sangre utilizando
+                    más de <strong>400 reglas médicas</strong>. Su precisión alcanzaba el 69% frente al 80% de
+                    especialistas humanos, demostrando que el conocimiento experto podía codificarse exitosamente en
+                    sistemas automatizados.
+                </p>
+            </div>
+
+            <!-- CONCEPTOS FUNDAMENTALES EN GRID -->
+            <h3>Características Fundamentales</h3>
+            <div class="grid-features">
+                <!-- TARJETA AZUL -->
+                <div class="feature-card">
+                    <h4 class="color-primary">🧠 Razonamiento Explícito</h4>
+                    <p>El conocimiento se representa mediante reglas legibles y comprensibles por humanos, facilitando
+                        la auditoría y modificación del sistema.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📚 Conocimiento Codificado</h4>
+                    <p>Los expertos humanos transfieren su experiencia al sistema en forma de reglas estructuradas que
+                        el motor de inferencia puede ejecutar.</p>
+                </div>
+                <!-- TARJETA AZUL -->
+                <div class="feature-card">
+                    <h4 class="color-primary">⚙️ Determinismo</h4>
+                    <p>Dado un conjunto de hechos inicial, el sistema producirá siempre las mismas conclusiones
+                        siguiendo el mismo proceso de razonamiento.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔍 Transparencia</h4>
+                    <p>El proceso de decisión es trazable paso a paso, permitiendo explicar exactamente por qué el
+                        sistema llegó a una conclusión específica.</p>
+                </div>
+            </div>
+        </section>
+        <!-- SECCIÓN 2: ARQUITECTURA DEL SISTEMA -->
+        <section class="section">
+            <h2>Arquitectura de un Sistema Basado en Reglas</h2>
+
+            <p>
+                La estructura de estos sistemas se compone de <strong>tres componentes principales</strong> que trabajan
+                en conjunto para simular el razonamiento experto:
+            </p>
+
+            <!-- VISUALIZACIÓN SVG DE ARQUITECTURA -->
+            <div class="bg-gray-light p-2 border-radius-1 border-light mt-2 mb-2 text-center" style="overflow-x: auto;">
+                <svg width="800" height="450" viewBox="0 0 800 450"
+                    style="display: block; margin: 0 auto; max-width: 100%; height: auto;">
+                    <!-- Título -->
+                    <text x="400" y="35" font-size="20" font-weight="bold" fill="#49B9CE"
+                        text-anchor="middle">Arquitectura de un Sistema Basado en Reglas</text>
+
+                    <!-- BASE DE CONOCIMIENTOS (IZQUIERDA - Centrada en su zona) -->
+                    <!-- x:40 width:220 -> center:150 -->
+                    <rect x="40" y="80" width="220" height="130" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="150" y="115" font-size="17" font-weight="bold" fill="#49B9CE" text-anchor="middle">Base
+                        de</text>
+                    <text x="150" y="137" font-size="17" font-weight="bold" fill="#49B9CE"
+                        text-anchor="middle">Conocimientos</text>
+                    <text x="150" y="167" font-size="15" fill="#555555" text-anchor="middle">Reglas del dominio</text>
+                    <text x="150" y="188" font-size="14" fill="#777777" text-anchor="middle">"Si... entonces..."</text>
+
+                    <!-- BASE DE HECHOS (DERECHA - Centrada en su zona) -->
+                    <!-- x:540 width:220 -> center:650 -->
+                    <rect x="540" y="80" width="220" height="130" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="650" y="115" font-size="17" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Base
+                        de</text>
+                    <text x="650" y="137" font-size="17" font-weight="bold" fill="#8A7AAF"
+                        text-anchor="middle">Hechos</text>
+                    <text x="650" y="167" font-size="15" fill="#555555" text-anchor="middle">Datos actuales</text>
+                    <text x="650" y="188" font-size="14" fill="#777777" text-anchor="middle">Info dinámica</text>
+
+                    <!-- MOTOR DE INFERENCIA (CENTRO ABAJO - Reducido para evitar solapamiento) -->
+                    <!-- x:270 width:260 -> center:400 -->
+                    <rect x="270" y="280" width="260" height="110" fill="url(#gradientMotor)" stroke="#333333"
+                        stroke-width="3" rx="10" />
+                    <text x="400" y="320" font-size="19" font-weight="bold" fill="white" text-anchor="middle">Motor de
+                        Inferencia</text>
+                    <text x="400" y="345" font-size="15" fill="white" text-anchor="middle">Aplica reglas sobre</text>
+                    <text x="400" y="365" font-size="15" fill="white" text-anchor="middle">hechos y deduce</text>
+
+                    <!-- Flecha IZQUIERDA: Base Conocimientos (150, 210) → Motor (300, 280) -->
+                    <path d="M 150 210 L 150 250 L 300 280" stroke="#49B9CE" stroke-width="4" fill="none"
+                        marker-end="url(#arrowBlue)" />
+                    <text x="160" y="240" font-size="13" fill="#49B9CE" font-weight="bold">Lee reglas</text>
+
+                    <!-- Flecha DERECHA: Base Hechos (650, 210) → Motor (500, 280) -->
+                    <path d="M 650 210 L 650 250 L 500 280" stroke="#8A7AAF" stroke-width="4" fill="none"
+                        marker-end="url(#arrowPurple)" />
+                    <text x="580" y="240" font-size="13" fill="#8A7AAF" font-weight="bold">Consulta</text>
+
+                    <!-- Flecha retorno Motor → Base Hechos (MORADO PUNTEADO) - EN L ANCHA -->
+                    <!-- Salida lateral motor (530, 335) -> (720, 335) -> (720, 215) -->
+                    <!-- Conecta a la derecha del origen de la flecha de consulta (650) -->
+                    <path d="M 530 335 L 720 335 L 720 215" stroke="#8A7AAF" stroke-width="3" fill="none"
+                        stroke-dasharray="8,4" marker-end="url(#arrowPurple)" />
+                    <text x="715" y="300" font-size="13" fill="#8A7AAF" font-weight="bold" font-style="italic"
+                        text-anchor="end">Actualiza</text>
+
+                    <!-- Etiquetas de proceso -->
+                    <text x="400" y="420" font-size="14" fill="#333333" text-anchor="middle" font-style="italic">
+                        El motor evalúa condiciones, aplica acciones y actualiza la base de hechos
+                    </text>
+
+                    <!-- Gradiente y marcadores -->
+                    <defs>
+                        <linearGradient id="gradientMotor" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" />
+                            <stop offset="100%" />
+                        </linearGradient>
+
+                        <!-- Marcadores reducidos (antes 10x10) -->
+                        <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+
+                        <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- GRID CON LOS TRES COMPONENTES -->
+            <div class="grid-features">
+                <!-- COMPONENTE 1: BASE DE CONOCIMIENTOS -->
+                <div class="feature-card">
+                    <h3 class="color-primary">📚 Base de Conocimientos</h3>
+                    <p>
+                        Contiene el conjunto de <strong>reglas lógicas</strong> que representan el conocimiento experto
+                        del dominio. Estas reglas definen relaciones causa-efecto y condiciones para inferir nueva
+                        información.
+                    </p>
+                    <div class="highlight-box">
+                        <p>Ejemplo de regla:</p>
+                        <p>
+                            <em>Si (temperatura > 38°C) Y (tos persistente) → Entonces: posible infección
+                                respiratoria</em>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COMPONENTE 2: BASE DE HECHOS -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">💾 Base de Hechos</h3>
+                    <p>
+                        Almacena la <strong>información actual</strong> sobre el problema que se está resolviendo. Es
+                        una estructura dinámica que se actualiza constantemente durante el proceso de inferencia.
+                    </p>
+                    <div class="highlight-box secondary">
+                        <p>Hechos iniciales:</p>
+                        <p>
+                            • temperatura_paciente = 39°C<br>
+                            • tos_presente = Verdadero<br>
+                            • duración_síntomas = 3 días
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COMPONENTE 3: MOTOR DE INFERENCIA -->
+                <div class="feature-card">
+                    <h3 class="color-primary">⚙️ Motor de Inferencia</h3>
+                    <p>
+                        Es el componente operativo que <strong>ejecuta el razonamiento</strong>. Decide qué reglas
+                        aplicar, en qué orden, y cómo actualizar los hechos conocidos para generar conclusiones.
+                    </p>
+                    <div class="highlight-box">
+                        <p>Proceso:</p>
+                        <p>
+                            1. Identifica reglas aplicables<br>
+                            2. Evalúa condiciones<br>
+                            3. Ejecuta acciones<br>
+                            4. Actualiza hechos
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: REPRESENTACIÓN DEL CONOCIMIENTO CON CÓDIGO -->
+        <section class="section">
+            <h2>Representación del Conocimiento</h2>
+
+            <p>
+                El conocimiento en sistemas basados en reglas se expresa mediante <strong>reglas de producción</strong>
+                con la estructura: <em>"SI [condición] ENTONCES [acción]"</em>. Esta representación declarativa es
+                legible, modificable y auditable.
+            </p>
+
+            <!-- EJEMPLO DE CÓDIGO PYTHON -->
+            <h3>💻 Implementación en Python</h3>
+
+            <p>
+                A continuación, un ejemplo básico de cómo implementar un sistema de reglas para diagnóstico médico
+                simplificado:
+            </p>
+
+            <div class="code-container">
+                <pre><code class="language-python"># Sistema Basado en Reglas para Diagnóstico Médico Simplificado
+
+class SistemaDiagnostico:
+    def __init__(self):
+        # Base de conocimientos: reglas médicas
+        self.reglas = [
+            {
+                'condiciones': lambda hechos: hechos['fiebre'] > 38.5 and hechos['tos'],
+                'accion': 'posible_infeccion_respiratoria',
+                'descripcion': 'Fiebre alta con tos sugiere infección respiratoria'
+            },
+            {
+                'condiciones': lambda hechos: hechos['dolor_cabeza'] and hechos['rigidez_cuello'],
+                'accion': 'consulta_urgente_meningitis',
+                'descripcion': 'Dolor de cabeza con rigidez de cuello requiere atención urgente'
+            },
+            {
+                'condiciones': lambda hechos: hechos['fiebre'] > 39 and hechos['erupcion_cutanea'],
+                'accion': 'posible_infeccion_viral',
+                'descripcion': 'Fiebre muy alta con erupción sugiere infección viral'
+            }
+        ]
+        
+        # Base de hechos: se actualiza dinámicamente
+        self.hechos = {}
+        self.conclusiones = []
+    
+    def agregar_hecho(self, clave, valor):
+        """Agrega un nuevo hecho a la base de hechos"""
+        self.hechos[clave] = valor
+    
+    def inferir_forward_chaining(self):
+        """Encadenamiento hacia adelante: de datos a conclusiones"""
+        print("🔍 Iniciando inferencia hacia adelante...")
+        
+        for regla in self.reglas:
+            try:
+                if regla['condiciones'](self.hechos):
+                    conclusion = {
+                        'diagnostico': regla['accion'],
+                        'razon': regla['descripcion']
+                    }
+                    self.conclusiones.append(conclusion)
+                    print(f"✅ Regla activada: {regla['descripcion']}")
+            except KeyError:
+                # Si falta algún hecho, la regla no se puede evaluar
+                continue
+        
+        return self.conclusiones
+    
+    def explicar_razonamiento(self):
+        """Proporciona trazabilidad del proceso de inferencia"""
+        print("\n📋 Hechos conocidos:")
+        for clave, valor in self.hechos.items():
+            print(f"   • {clave}: {valor}")
+        
+        print(f"\n🎯 Conclusiones alcanzadas ({len(self.conclusiones)}):")
+        for i, conclusion in enumerate(self.conclusiones, 1):
+            print(f"   {i}. {conclusion['diagnostico']}")
+            print(f"      Razón: {conclusion['razon']}")
+
+
+# === EJEMPLO DE USO ===
+if __name__ == "__main__":
+    # Crear el sistema
+    sistema = SistemaDiagnostico()
+    
+    # Agregar hechos del paciente (Base de Hechos)
+    sistema.agregar_hecho('fiebre', 39.2)
+    sistema.agregar_hecho('tos', True)
+    sistema.agregar_hecho('dolor_cabeza', False)
+    sistema.agregar_hecho('rigidez_cuello', False)
+    sistema.agregar_hecho('erupcion_cutanea', False)
+    
+    # Ejecutar inferencia
+    resultados = sistema.inferir_forward_chaining()
+    
+    # Mostrar razonamiento completo
+    sistema.explicar_razonamiento()
+</code></pre>
+            </div>
+
+            <!-- RESULTADO DE LA EJECUCIÓN -->
+            <div class="code-container mt-3">
+                <h4 class="mb-2">🖥️ Salida del Sistema:</h4>
+                <pre><code class="language-bash">🔍 Iniciando inferencia hacia adelante...
+✅ Regla activada: Fiebre alta con tos sugiere infección respiratoria
+✅ Regla activada: Fiebre muy alta con erupción sugiere infección viral
+
+📋 Hechos conocidos:
+   • fiebre: 39.2
+   • tos: True
+   • dolor_cabeza: False
+   • rigidez_cuello: False
+   • erupcion_cutanea: False
+
+🎯 Conclusiones alcanzadas (1):
+   1. posible_infeccion_respiratoria
+      Razón: Fiebre alta con tos sugiere infección respiratoria</code></pre>
+            </div>
+
+            <!-- EJEMPLO DE REGLAS EN FORMATO CLIPS -->
+            <h3>🔧 Reglas en Formato CLIPS (Estándar Industrial)</h3>
+
+            <p>
+                <strong>CLIPS</strong> (C Language Integrated Production System) es uno de los lenguajes más utilizados
+                para sistemas expertos en entornos industriales:
+            </p>
+
+            <div>
+                <div class="code-container">
+                    <pre><code class="language-lisp">; Reglas en CLIPS para sistema de control de procesos industriales
+
+(defrule sobrecalentamiento-critico
+    "Regla para detectar sobrecalentamiento peligroso"
+    (temperatura ?temp&:(> ?temp 85))
+    (presion ?pres&:(> ?pres 120))
+    =>
+    (assert (alerta CRITICA))
+    (printout t "⚠️ ALERTA CRÍTICA: Sobrecalentamiento detectado" crlf)
+    (printout t "Temperatura: " ?temp "°C | Presión: " ?pres " bar" crlf)
+    (assert (accion activar-sistema-enfriamiento))
+    (assert (accion detener-produccion))
+)
+
+(defrule mantenimiento-preventivo
+    "Detectar necesidad de mantenimiento preventivo"
+    (horas-funcionamiento ?horas&:(> ?horas 5000))
+    (ultima-revision ?dias&:(> ?dias 180))
+    =>
+    (assert (notificacion mantenimiento-programado))
+    (printout t "🔧 Programar mantenimiento preventivo" crlf)
+    (printout t "Horas de operación: " ?horas crlf)
+)
+
+(defrule calidad-optima
+    "Verificar condiciones óptimas de producción"
+    (temperatura ?temp&:(and (>= ?temp 20) (<= ?temp 25)))
+    (humedad ?hum&:(and (>= ?hum 40) (<= ?hum 60)))
+    (presion ?pres&:(and (>= ?pres 95) (<= ?pres 105)))
+    =>
+    (assert (estado OPTIMO))
+    (printout t "✅ Condiciones de producción óptimas" crlf)
+)
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MOTOR DE INFERENCIA Y ESTRATEGIAS -->
+        <section class="section">
+            <h2 class="section-title">Estrategias de Inferencia</h2>
+
+            <p>
+                El motor de inferencia puede operar mediante dos estrategias fundamentales que definen la
+                <strong>dirección del razonamiento</strong>:
+            </p>
+
+            <!-- TABLA COMPARATIVA -->
+            <div class="styled-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Encadenamiento Hacia Adelante</th>
+                            <th>Encadenamiento Hacia Atrás</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dirección</td>
+                            <td>Datos → Conclusiones</td>
+                            <td>Hipótesis → Verificación</td>
+                        </tr>
+                        <tr>
+                            <td>Proceso</td>
+                            <td>Parte de hechos iniciales y aplica reglas hasta alcanzar una conclusión</td>
+                            <td>Parte de una hipótesis y busca hechos que la confirmen o refuten</td>
+                        </tr>
+                        <tr>
+                            <td>Uso Típico</td>
+                            <td>Sistemas de control, monitorización, análisis de eventos</td>
+                            <td>Diagnóstico médico, resolución de problemas, consultas</td>
+                        </tr>
+                        <tr>
+                            <td>Eficiencia</td>
+                            <td>Eficiente cuando hay muchos datos iniciales</td>
+                            <td>Eficiente cuando el objetivo es específico</td>
+                        </tr>
+                        <tr>
+                            <td>Ejemplo</td>
+                            <td>"Detectar fallo en máquina según sensores"</td>
+                            <td>"¿Tiene el paciente neumonía?"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- VISUALIZACIÓN COMPARATIVA SVG -->
+            <div class="bg-gray-light p-2 border-radius-1 border-light mt-2 mb-2 text-center" style="overflow-x: auto;">
+                <svg width="900" height="520" viewBox="0 0 900 520"
+                    style="display: block; margin: 0 auto; max-width: 100%; height: auto;">
+                    <!-- Título principal -->
+                    <text x="450" y="35" font-size="22" font-weight="bold" fill="#333333"
+                        text-anchor="middle">Comparación Visual de Estrategias de Inferencia</text>
+
+                    <!-- ========== FORWARD CHAINING (PARTE SUPERIOR) ========== -->
+                    <text x="450" y="75" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">⏩
+                        Encadenamiento Hacia Adelante (Forward Chaining)</text>
+
+                    <!-- Caja 1: HECHOS -->
+                    <rect x="120" y="100" width="180" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="210" y="135" font-size="16" font-weight="bold" fill="#49B9CE"
+                        text-anchor="middle">HECHOS</text>
+                    <text x="210" y="160" font-size="15" fill="#555555" text-anchor="middle">Datos iniciales</text>
+
+                    <!-- Flecha 1 -->
+                    <path d="M 300 140 L 360 140" stroke="#49B9CE" stroke-width="5" marker-end="url(#arrowBlue2)"
+                        fill="none" />
+
+                    <!-- Caja 2: REGLAS -->
+                    <rect x="360" y="100" width="180" height="80" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="450" y="135" font-size="16" font-weight="bold" fill="#49B9CE"
+                        text-anchor="middle">REGLAS</text>
+                    <text x="450" y="160" font-size="15" fill="#555555" text-anchor="middle">Aplicables</text>
+
+                    <!-- Flecha 2 -->
+                    <path d="M 540 140 L 600 140" stroke="#49B9CE" stroke-width="5" marker-end="url(#arrowBlue2)"
+                        fill="none" />
+
+                    <!-- Caja 3: CONCLUSIÓN -->
+                    <rect x="600" y="100" width="180" height="80" fill="#49B9CE" stroke="#1e7e9c" stroke-width="3"
+                        rx="10" />
+                    <text x="690" y="135" font-size="16" font-weight="bold" fill="white"
+                        text-anchor="middle">CONCLUSIÓN</text>
+                    <text x="690" y="160" font-size="15" fill="white" text-anchor="middle">Deducida</text>
+
+                    <!-- Descripción Forward -->
+                    <text x="450" y="210" font-size="15" fill="#555555" text-anchor="middle"
+                        font-weight="bold">Dirección: DATOS → CONCLUSIONES</text>
+                    <text x="450" y="230" font-size="14" fill="#555555" text-anchor="middle">Proceso: Parte de hechos
+                        iniciales y aplica reglas hasta alcanzar conclusiones</text>
+                    <text x="450" y="250" font-size="13" font-style="italic" fill="#777777" text-anchor="middle">💡
+                        Ejemplo: "Sensor detecta temperatura > 85°C → Activar sistema de enfriamiento"</text>
+
+                    <!-- Línea separadora -->
+                    <line x1="50" y1="275" x2="850" y2="275" stroke="#e5e5e5" stroke-width="2" />
+
+                    <!-- ========== BACKWARD CHAINING (PARTE INFERIOR) ========== -->
+                    <text x="450" y="310" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle">⏪
+                        Encadenamiento Hacia Atrás (Backward Chaining)</text>
+
+                    <!-- Caja 1: HIPÓTESIS -->
+                    <rect x="120" y="335" width="180" height="80" fill="#8A7AAF" stroke="#6b5b95" stroke-width="3"
+                        rx="10" />
+                    <text x="210" y="370" font-size="16" font-weight="bold" fill="white"
+                        text-anchor="middle">HIPÓTESIS</text>
+                    <text x="210" y="395" font-size="15" fill="white" text-anchor="middle">A verificar</text>
+
+                    <!-- Flecha 1 -->
+                    <path d="M 300 375 L 360 375" stroke="#8A7AAF" stroke-width="5" marker-end="url(#arrowPurple2)"
+                        fill="none" />
+
+                    <!-- Caja 2: REGLAS -->
+                    <rect x="360" y="335" width="180" height="80" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="450" y="370" font-size="16" font-weight="bold" fill="#8A7AAF"
+                        text-anchor="middle">REGLAS</text>
+                    <text x="450" y="395" font-size="15" fill="#555555" text-anchor="middle">Que justifican</text>
+
+                    <!-- Flecha 2 -->
+                    <path d="M 540 375 L 600 375" stroke="#8A7AAF" stroke-width="5" marker-end="url(#arrowPurple2)"
+                        fill="none" />
+
+                    <!-- Caja 3: HECHOS -->
+                    <rect x="600" y="335" width="180" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="690" y="370" font-size="16" font-weight="bold" fill="#8A7AAF"
+                        text-anchor="middle">HECHOS</text>
+                    <text x="690" y="395" font-size="15" fill="#555555" text-anchor="middle">Verificados</text>
+
+                    <!-- Descripción Backward -->
+                    <text x="450" y="445" font-size="15" fill="#555555" text-anchor="middle"
+                        font-weight="bold">Dirección: HIPÓTESIS → VERIFICACIÓN</text>
+                    <text x="450" y="465" font-size="14" fill="#555555" text-anchor="middle">Proceso: Parte de una
+                        hipótesis y busca hechos que la confirmen o refuten</text>
+                    <text x="450" y="485" font-size="13" font-style="italic" fill="#777777" text-anchor="middle">💡
+                        Ejemplo: "¿Tiene neumonía? → Verificar fiebre alta, radiografía anormal, auscultación"</text>
+
+                    <!-- Definiciones de marcadores (Reducidos) -->
+                    <defs>
+                        <!-- Antes 14x14 -->
+                        <marker id="arrowBlue2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <!-- Antes path M0,0 L0,8 L12,4 z -->
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrowPurple2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: SISTEMAS EXPERTOS HISTÓRICOS -->
+        <section class="section">
+            <h2>Sistemas Expertos Históricos Pioneros</h2>
+
+            <p>
+                Durante las décadas de 1970 y 1980, los <strong>sistemas expertos</strong> representaron el apogeo de la
+                IA simbólica. Estos sistemas demostraron que el conocimiento humano experto podía ser codificado y
+                automatizado con resultados comparables a especialistas humanos.
+            </p>
+
+            <!-- GRID DE SISTEMAS EXPERTOS -->
+            <div class="grid-features three-col">
+                <!-- MYCIN -->
+                <div class="feature-card">
+                    <h3 class="color-primary">🏥 MYCIN</h3>
+                    <div class="highlight-box">
+                        <p class="tech-title">Universidad de Stanford, 1972</p>
+                    </div>
+                    <p>
+                        <strong>Dominio:</strong> Diagnóstico de infecciones bacterianas en sangre y recomendación de
+                        tratamientos antibióticos.
+                    </p>
+                    <p>
+                        <strong>Características:</strong>
+                    </p>
+                    <ul>
+                        <li>Más de <strong>400 reglas</strong> médicas</li>
+                        <li>Precisión del <strong>69%</strong> vs 80% de especialistas</li>
+                        <li>Razonamiento bajo incertidumbre</li>
+                        <li>Explicación detallada de diagnósticos</li>
+                    </ul>
+                    <div class="info-note mt-1">
+                        <p>
+                            Aunque nunca se usó clínicamente por motivos legales y éticos, demostró la viabilidad del
+                            razonamiento médico automatizado.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- DENDRAL -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">🧪 DENDRAL</h3>
+                    <div class="highlight-box secondary">
+                        <p class="tech-title">Universidad de Stanford, 1965</p>
+                    </div>
+                    <p>
+                        <strong>Dominio:</strong> Análisis químico y determinación de estructuras moleculares mediante
+                        espectrometría de masas.
+                    </p>
+                    <p>
+                        <strong>Características:</strong>
+                    </p>
+                    <ul>
+                        <li>Pionero en química computacional</li>
+                        <li>Inferencia de fórmulas moleculares complejas</li>
+                        <li>Colaboración científica significativa</li>
+                        <li>Base para sistemas posteriores</li>
+                    </ul>
+                    <div class="info-note mt-1">
+                        <p>
+                            Considerado el primer sistema experto exitoso de la historia de la IA, revolucionó el
+                            análisis químico automatizado.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- XCON -->
+                <div class="feature-card">
+                    <h3 class="color-primary">💻 XCON (R1)</h3>
+                    <div class="highlight-box">
+                        <p class="tech-title">Digital Equipment Corp., 1980</p>
+                    </div>
+                    <p>
+                        <strong>Dominio:</strong> Configuración automática de ordenadores VAX según requisitos del
+                        cliente.
+                    </p>
+                    <p>
+                        <strong>Características:</strong>
+                    </p>
+                    <ul>
+                        <li>Más de <strong>10,000 reglas</strong> técnicas</li>
+                        <li>Ahorro de <strong>25 millones USD/año</strong></li>
+                        <li>Configuraciones complejas en minutos</li>
+                        <li>Primer éxito comercial masivo</li>
+                    </ul>
+                    <div class="info-note mt-1">
+                        <p>
+                            Demostró que los sistemas expertos podían generar valor económico real y escalable en
+                            entornos industriales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMPACTO Y LEGADO -->
+            <div class="highlight-box secondary mt-2">
+                <h3>🌟 Legado e Impacto Actual</h3>
+                <p>
+                    Aunque los sistemas expertos clásicos han sido en gran medida reemplazados por técnicas de
+                    <strong>aprendizaje automático</strong> y <strong>redes neuronales</strong>, sus principios
+                    fundamentales siguen presentes en múltiples aplicaciones industriales:
+                </p>
+                <ul>
+                    <li><strong>Control de procesos industriales:</strong> Automatización de fábricas y plantas químicas
+                    </li>
+                    <li><strong>Sistemas de diagnóstico técnico:</strong> Detección de fallos en maquinaria y equipos
+                    </li>
+                    <li><strong>Validación de políticas:</strong> Compliance y auditoría en finanzas y seguros</li>
+                    <li><strong>Configuración de productos:</strong> Personalización masiva de productos complejos</li>
+                    <li><strong>Sistemas híbridos:</strong> Combinación de reglas con ML para explicabilidad</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: APLICACIONES MODERNAS -->
+        <section class="section">
+            <h2>Aplicaciones Contemporáneas</h2>
+
+            <p>
+                Aunque han sido superados por el machine learning en muchos ámbitos, los sistemas basados en reglas
+                siguen siendo <strong>insustituibles en contextos donde la explicabilidad, la seguridad y la
+                    trazabilidad son críticas</strong>.
+            </p>
+
+            <!-- GRID DE APLICACIONES -->
+            <div class="grid-features three-col"
+                style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                <div class="feature-card">
+                    <h4>🏭 Control Industrial</h4>
+                    <p>
+                        Sistemas SCADA (Supervisory Control and Data Acquisition) utilizan reglas para:
+                    </p>
+                    <ul>
+                        <li>Detectar anomalías en tiempo real</li>
+                        <li>Activar protocolos de seguridad</li>
+                        <li>Optimizar procesos de manufactura</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> Siemens SIMATIC → 10,000+ reglas para plantas químicas
+                    </p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4>💳 Detección de Fraude</h4>
+                    <p>
+                        Bancos combinan ML con reglas explícitas para cumplimiento regulatorio:
+                    </p>
+                    <ul>
+                        <li>Bloqueo automático de transacciones sospechosas</li>
+                        <li>Validación de políticas KYC/AML</li>
+                        <li>Auditoría transparente de decisiones</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> Visa Advanced Authorization → 500+ reglas + ML híbrido
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>⚕️ Soporte Clínico</h4>
+                    <p>
+                        Sistemas de decisión clínica (CDSS) alertan sobre:
+                    </p>
+                    <ul>
+                        <li>Interacciones medicamentosas peligrosas</li>
+                        <li>Dosis incorrectas según peso/edad</li>
+                        <li>Protocolos de tratamiento basados en guías clínicas</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> Epic Systems → Integrado en 305 hospitales de EE.UU.
+                    </p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4>🔒 Ciberseguridad</h4>
+                    <p>
+                        Firewalls y sistemas IDS/IPS aplican reglas para:
+                    </p>
+                    <ul>
+                        <li>Bloquear patrones de ataque conocidos</li>
+                        <li>Filtrar tráfico malicioso</li>
+                        <li>Prevenir exfiltración de datos sensibles</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> Snort IDS → 38,000+ reglas de detección de intrusiones
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>📄 Validación de Documentos</h4>
+                    <p>
+                        Procesamiento de formularios, contratos y declaraciones fiscales:
+                    </p>
+                    <ul>
+                        <li>Verificación de campos obligatorios</li>
+                        <li>Validación de formatos y rangos</li>
+                        <li>Detección de inconsistencias lógicas</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> IRS (Hacienda EE.UU.) → 1,200+ reglas para declaraciones
+                    </p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4>🤖 Chatbots Empresariales</h4>
+                    <p>
+                        Combinan NLP con reglas para flujos conversacionales:
+                    </p>
+                    <ul>
+                        <li>Enrutamiento de consultas por departamento</li>
+                        <li>Resolución de FAQs estructuradas</li>
+                        <li>Escalamiento automático a humanos</li>
+                    </ul>
+                    <p>
+                        <strong>Ej:</strong> IBM Watson Assistant → 800+ reglas + NLU híbrida
+                    </p>
+                </div>
+            </div>
+
+            <!-- CÓDIGO EJEMPLO: SISTEMA DE VALIDACIÓN -->
+            <h3>Ejemplo Práctico: Sistema de Validación de Préstamos</h3>
+
+            <div class="code-container">
+                <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                <pre><code class="language-python">class SistemaValidacionPrestamos:
+    """Sistema basado en reglas para aprobar/rechazar solicitudes de préstamo"""
+    
+    def __init__(self):
+        self.reglas_rechazo = []
+        self.reglas_aprobacion = []
+        self.log_decisiones = []
+    
+    def definir_reglas(self):
+        """Conjunto de reglas de negocio del banco"""
+        self.reglas_rechazo = [
+            {
+                'nombre': 'R1_EDAD_MINIMA',
+                'condicion': lambda s: s['edad'] < 18,
+                'razon': 'Menor de edad - No apto por regulación'
+            },
+            {
+                'nombre': 'R2_MOROSIDAD',
+                'condicion': lambda s: s['historial_crediticio'] < 300,
+                'razon': 'Score crediticio insuficiente (< 300 FICO)'
+            },
+            {
+                'nombre': 'R3_RATIO_DEUDA',
+                'condicion': lambda s: (s['deuda_total'] / s['ingresos_anuales']) > 0.5,
+                'razon': 'Ratio deuda/ingresos > 50% - Alto riesgo'
+            },
+            {
+                'nombre': 'R4_DESEMPLEADO',
+                'condicion': lambda s: s['empleado'] == False and s['ahorros'] < 10000,
+                'razon': 'Sin empleo y sin colchón de ahorros mínimo'
+            }
+        ]
+        
+        self.reglas_aprobacion = [
+            {
+                'nombre': 'A1_CLIENTE_VIP',
+                'condicion': lambda s: s['historial_crediticio'] > 800 and s['cliente_antiguo'],
+                'accion': lambda s: {'monto_max': s['ingresos_anuales'] * 5, 'interes': 3.5}
+            },
+            {
+                'nombre': 'A2_CLIENTE_ESTANDAR',
+                'condicion': lambda s: 600 <= s['historial_crediticio'] <= 800,
+                'accion': lambda s: {'monto_max': s['ingresos_anuales'] * 3, 'interes': 5.5}
+            },
+            {
+                'nombre': 'A3_CLIENTE_RIESGO',
+                'condicion': lambda s: 300 <= s['historial_crediticio'] < 600,
+                'accion': lambda s: {'monto_max': s['ingresos_anuales'] * 1.5, 'interes': 8.5}
+            }
+        ]
+    
+    def evaluar_solicitud(self, solicitud):
+        """Motor de inferencia: aplica reglas secuencialmente"""
+        print(f"\n{'='*60}")
+        print(f"EVALUANDO SOLICITUD DE: {solicitud['nombre']}")
+        print(f"{'='*60}\n")
+        
+        # FASE 1: Verificar condiciones de rechazo (forward chaining)
+        for regla in self.reglas_rechazo:
+            if regla['condicion'](solicitud):
+                decision = {
+                    'resultado': 'RECHAZADO',
+                    'regla_aplicada': regla['nombre'],
+                    'razon': regla['razon'],
+                    'solicitud': solicitud['nombre']
+                }
+                self.log_decisiones.append(decision)
+                print(f"❌ {regla['nombre']}: {regla['razon']}\n")
+                return decision
+        
+        # FASE 2: Determinar condiciones de aprobación
+        for regla in self.reglas_aprobacion:
+            if regla['condicion'](solicitud):
+                terminos = regla['accion'](solicitud)
+                decision = {
+                    'resultado': 'APROBADO',
+                    'regla_aplicada': regla['nombre'],
+                    'monto_maximo': terminos['monto_max'],
+                    'tasa_interes': terminos['interes'],
+                    'solicitud': solicitud['nombre']
+                }
+                self.log_decisiones.append(decision)
+                print(f"✅ {regla['nombre']}: APROBADO")
+                print(f"   💰 Monto máximo: ${terminos['monto_max']:,.2f}")
+                print(f"   📊 Tasa de interés: {terminos['interes']}%\n")
+                return decision
+        
+        # FASE 3: Si no aplica ninguna regla (caso edge)
+        print("⚠️ Solicitud requiere evaluación manual\n")
+        return {'resultado': 'REVISION_MANUAL', 'solicitud': solicitud['nombre']}
+    
+    def generar_reporte(self):
+        """Genera reporte auditable de decisiones tomadas"""
+        print(f"\n{'='*60}")
+        print("REPORTE DE DECISIONES")
+        print(f"{'='*60}\n")
+        
+        aprobados = [d for d in self.log_decisiones if d['resultado'] == 'APROBADO']
+        rechazados = [d for d in self.log_decisiones if d['resultado'] == 'RECHAZADO']
+        
+        print(f"✅ Aprobados: {len(aprobados)}")
+        print(f"❌ Rechazados: {len(rechazados)}")
+        print(f"📋 Total procesado: {len(self.log_decisiones)}\n")
+        
+        if rechazados:
+            print("Motivos de rechazo más frecuentes:")
+            razones = {}
+            for d in rechazados:
+                razon = d['razon']
+                razones[razon] = razones.get(razon, 0) + 1
+            
+            for razon, count in sorted(razones.items(), key=lambda x: x[1], reverse=True):
+                print(f"  • {razon}: {count} casos")
+
+# ==== EJECUCIÓN ====
+sistema = SistemaValidacionPrestamos()
+sistema.definir_reglas()
+
+# Casos de prueba
+solicitudes = [
+    {
+        'nombre': 'Juan Pérez',
+        'edad': 35,
+        'empleado': True,
+        'ingresos_anuales': 45000,
+        'deuda_total': 8000,
+        'historial_crediticio': 750,
+        'cliente_antiguo': True,
+        'ahorros': 15000
+    },
+    {
+        'nombre': 'María López',
+        'edad': 17,
+        'empleado': False,
+        'ingresos_anuales': 0,
+        'deuda_total': 0,
+        'historial_crediticio': 0,
+        'cliente_antiguo': False,
+        'ahorros': 2000
+    },
+    {
+        'nombre': 'Carlos Ruiz',
+        'edad': 28,
+        'empleado': True,
+        'ingresos_anuales': 32000,
+        'deuda_total': 25000,
+        'historial_crediticio': 580,
+        'cliente_antiguo': False,
+        'ahorros': 5000
+    }
+]
+
+# Procesar solicitudes
+for solicitud in solicitudes:
+    sistema.evaluar_solicitud(solicitud)
+
+# Generar informe final
+sistema.generar_reporte()</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: VENTAJAS Y LIMITACIONES -->
+        <section class="section">
+            <h2 class="section-title">Análisis Comparativo</h2>
+
+            <div class="grid-features two-col">
+                <!-- VENTAJAS -->
+                <div class="feature-card">
+                    <h3>✅ Ventajas</h3>
+                    <ul class="check-list">
+                        <li><strong>Explicabilidad Total:</strong> Cada decisión es trazable a reglas específicas</li>
+                        <li><strong>Determinismo:</strong> Resultados predecibles y reproducibles</li>
+                        <li><strong>Conocimiento Explícito:</strong> El expertise queda documentado formalmente</li>
+                        <li><strong>Modificación Sencilla:</strong> Agregar/editar reglas sin reentrenar</li>
+                        <li><strong>Sin Datos de Entrenamiento:</strong> Funciona con conocimiento experto puro</li>
+                        <li><strong>Validación Humana:</strong> Expertos pueden revisar y aprobar cada regla</li>
+                        <li><strong>Cumplimiento Regulatorio:</strong> Auditables para sectores como banca o salud</li>
+                    </ul>
+                </div>
+
+                <!-- LIMITACIONES -->
+                <div class="feature-card secondary">
+                    <h3>⚠️ Limitaciones</h3>
+                    <ul class="cross-list">
+                        <li><strong>Cuello de Botella:</strong> Extraer conocimiento de expertos es lento y costoso</li>
+                        <li><strong>Fragilidad:</strong> Rendimiento catastrófico ante casos no previstos</li>
+                        <li><strong>Escalabilidad Limitada:</strong> Miles de reglas se vuelven inmanejables</li>
+                        <li><strong>Sin Aprendizaje:</strong> No mejoran automáticamente con la experiencia</li>
+                        <li><strong>Mantenimiento Complejo:</strong> Interacciones entre reglas difíciles de prever</li>
+                        <li><strong>Rigidez:</strong> Mal manejo de incertidumbre y ambigüedad</li>
+                        <li><strong>Sesgo Experto:</strong> Heredan prejuicios y limitaciones de los diseñadores</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TABLA COMPARATIVA: REGLAS vs ML -->
+            <h3 class="mt-3">Sistemas Basados en Reglas vs. Machine Learning</h3>
+
+            <div class="styled-table-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Sistemas Basados en Reglas</th>
+                            <th>Machine Learning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fuente de Conocimiento</td>
+                            <td>Expertos humanos</td>
+                            <td>Datos históricos</td>
+                        </tr>
+                        <tr>
+                            <td>Explicabilidad</td>
+                            <td>✅ Muy alta</td>
+                            <td>❌ Baja (caja negra)</td>
+                        </tr>
+                        <tr>
+                            <td>Adaptabilidad</td>
+                            <td>❌ Rígido</td>
+                            <td>✅ Aprende continuamente</td>
+                        </tr>
+                        <tr>
+                            <td>Necesidad de Datos</td>
+                            <td>✅ Ninguna</td>
+                            <td>❌ Miles/millones de ejemplos</td>
+                        </tr>
+                        <tr>
+                            <td>Desarrollo</td>
+                            <td>❌ Lento (extracción conocimiento)</td>
+                            <td>✅ Rápido (si hay datos)</td>
+                        </tr>
+                        <tr>
+                            <td>Manejo de Incertidumbre</td>
+                            <td>❌ Limitado</td>
+                            <td>✅ Probabilístico</td>
+                        </tr>
+                        <tr>
+                            <td>Cumplimiento Legal</td>
+                            <td>✅ Auditable</td>
+                            <td>❌ Opaco</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CONCLUSIÓN: ENFOQUE HÍBRIDO -->
+            <div class="highlight-box mt-3">
+                <h4>🔀 El Futuro: Sistemas Híbridos</h4>
+                <p>
+                    La tendencia actual es <strong>combinar lo mejor de ambos mundos</strong>: usar Machine Learning
+                    para patrones complejos y aprendizaje continuo, complementado con reglas explícitas para validación,
+                    cumplimiento regulatorio y situaciones críticas. Por ejemplo:
+                </p>
+                <div class="grid-features three-col mt-2">
+                    <div class="feature-card secondary p-2">
+                        <strong>Vehículos autónomos:</strong> Redes neuronales para percepción + reglas de seguridad
+                        rígidas
+                    </div>
+                    <div class="feature-card secondary p-2">
+                        <strong>Diagnóstico médico:</strong> ML para detección temprana + reglas para verificación de
+                        protocolos
+                    </div>
+                    <div class="feature-card secondary p-2">
+                        <strong>Finanzas:</strong> Modelos predictivos + reglas de cumplimiento normativo
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- SECCIÓN 7: CONCLUSIONES -->
+        <section class="section">
+            <h2 class="section-title">Puntos Clave</h2>
+
+            <div class="grid-features two-col">
+                <div class="feature-card">
+                    <h3 class="color-primary">📚 Fundamento Teórico</h3>
+                    <ul>
+                        <li>Los sistemas basados en reglas codifican <strong>conocimiento experto</strong> en formato
+                            SI-ENTONCES</li>
+                        <li>Operan mediante <strong>lógica deductiva</strong>, no aprendizaje estadístico</li>
+                        <li>Constan de tres componentes: base de conocimientos, base de hechos y motor de inferencia
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">⚙️ Implementación</h3>
+                    <ul>
+                        <li><strong>Forward chaining:</strong> De datos a conclusiones (control industrial,
+                            monitorización)</li>
+                        <li><strong>Backward chaining:</strong> De hipótesis a validación (diagnóstico, consultoría)
+                        </li>
+                        <li>El motor de inferencia decide qué reglas activar y en qué orden</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3 class="color-primary">🏆 Casos de Éxito</h3>
+                    <ul>
+                        <li><strong>MYCIN:</strong> 69% de precisión en diagnósticos (1972)</li>
+                        <li><strong>XCON:</strong> Ahorro de $40M/año en configuración de sistemas (1980)</li>
+                        <li><strong>PROSPECTOR:</strong> Descubrió yacimiento minero de $100M+ (1978)</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="feature-card secondary">
+                <h3 class="color-secondary">🔮 Relevancia Actual</h3>
+                <ul>
+                    <li>Insustituibles en contextos donde se requiere <strong>explicabilidad total</strong></li>
+                    <li>Críticos en sectores regulados: banca, salud, ciberseguridad</li>
+                    <li>El futuro es <strong>híbrido</strong>: combinar con Machine Learning</li>
+                </ul>
+            </div>
+    </div>
+
+    <!-- MENSAJE FINAL -->
+    <div class="highlight-box primary mt-3">
+        <h3 class="title">💡 Reflexión Final</h3>
+        <p class="content">
+            Aunque los sistemas basados en reglas parezcan "antiguos" frente al glamour del deep learning,
+            representan un <strong>pilar fundamental</strong> de la IA práctica y responsable. En un mundo donde
+            los algoritmos toman decisiones que afectan vidas humanas (diagnósticos médicos, préstamos
+            bancarios, sentencias judiciales), la <strong>transparencia y la explicabilidad</strong> no son
+            opcionales: son requisitos éticos y legales ineludibles.
+        </p>
+    </div>
+    </section>
+
+    <!-- DATO CURIOSO FINAL -->
+    <section class="section mt-4 mb-5">
+        <div class="curiosity-box">
+            <h4>💡 Curiosidad Histórica: El "Invierno de la IA"</h4>
+            <p>
+                A pesar del éxito inicial de los sistemas expertos en los años 80, las <strong>limitaciones de
+                    escalabilidad</strong> y el alto coste de mantenimiento llevaron a lo que se conoce como el
+                <strong>"Invierno de la IA"</strong> (1987-1993). La financiación en IA se redujo drásticamente.
+            </p>
+            <p class="mt-2">
+                <strong>🔍 ¿Por qué ocurrió?</strong> Los sistemas basados en reglas requerían que expertos
+                humanos codificaran manualmente todo el conocimiento. Para dominios complejos, esto resultaba:
+            </p>
+            <ul>
+                <li><strong>Extremadamente costoso</strong> en tiempo y recursos</li>
+                <li><strong>Difícil de mantener</strong> cuando el conocimiento cambiaba</li>
+                <li><strong>Limitado</strong> a dominios muy específicos y bien definidos</li>
+            </ul>
+            <div class="mt-2">
+                <p>
+                    🚀 <strong>Renacimiento:</strong> El aprendizaje automático moderno resuelve este problema
+                    aprendiendo patrones directamente de los datos, sin necesidad de codificación manual exhaustiva.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 8: MAPA MENTAL -->
+    <section class="section mt-4 mb-5">
+        <h2 class="section-title">🧠 Mapa Mental del Módulo</h2>
+        <div class="mindmap-container">
+            <pre class="mermaid">
+mindmap
+  root((Sistemas Basados en Reglas))
+    Componentes
+      Base de Conocimientos
+        Reglas SI-ENTONCES
+        Expertos Humanos
+      Base de Hechos
+        Datos Iniciales
+        Estado Actual
+      Motor de Inferencia
+        Cerebro del Sistema
+        Seleccion Reglas
+    Estrategias
+      Encadenamiento Hacia Adelante
+        Datos -> Conclusiones
+        Monitorizacion
+      Encadenamiento Hacia Atras
+        Hipotesis -> Hechos
+        Diagnostico
+    Ventajas
+      Explicabilidad
+      Transparencia
+      Auditoria
+    Limitaciones
+      Escalabilidad
+      Mantenimiento
+      Adquisicion Conocimiento
+    Futuro
+      Sistemas Hibridos
+      Reglas + Machine Learning
+            </pre>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: PREGUNTAS DE EVALUACIÓN (MOVIDA AL FINAL) -->
+    <section class="section mb-5">
+        <h2 class="section-title">📝 Evalúa tus Conocimientos</h2>
+
+        <p>
+            Pon a prueba tu comprensión sobre sistemas basados en reglas con estas preguntas:
+        </p>
+
+        <!-- PREGUNTA 1 -->
+        <div class="feature-card mt-3">
+            <h3>Pregunta 1: Componentes del Sistema</h3>
+            <p>
+                ¿Cuál es la función principal del <strong>motor de inferencia</strong> en un sistema basado en
+                reglas?
+            </p>
+            <div class="ml-2">
+                <p>
+                    <strong>A)</strong> Almacenar todas las reglas del dominio de conocimiento
+                </p>
+                <p>
+                    <strong>B)</strong> Guardar los datos actuales sobre el problema a resolver
+                </p>
+                <p>
+                    <strong>C)</strong> Decidir qué reglas aplicar y en qué orden para generar conclusiones
+                </p>
+                <p>
+                    <strong>D)</strong> Interactuar directamente con el usuario final del sistema
+                </p>
+            </div>
+            <div class="highlight-box secondary mt-2">
+                <p>✅ Respuesta correcta: C</p>
+                <p>
+                    El motor de inferencia es el componente operativo que ejecuta el razonamiento: selecciona reglas
+                    aplicables, evalúa condiciones y actualiza los hechos conocidos.
+                </p>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 2 -->
+        <div class="feature-card mt-3">
+            <h3>Pregunta 2: Estrategias de Inferencia</h3>
+            <p>
+                ¿Cuándo es más apropiado utilizar <strong>encadenamiento hacia atrás</strong> (backward chaining)?
+            </p>
+            <div class="ml-2">
+                <p>
+                    <strong>A)</strong> Cuando se tienen muchos datos iniciales y se buscan todas las conclusiones
+                    posibles
+                </p>
+                <p>
+                    <strong>B)</strong> Cuando se parte de una hipótesis específica y se busca verificar si es
+                    correcta
+                </p>
+                <p>
+                    <strong>C)</strong> Cuando el sistema debe operar en tiempo real sin demoras
+                </p>
+                <p>
+                    <strong>D)</strong> Cuando la base de conocimientos contiene menos de 100 reglas
+                </p>
+            </div>
+            <div class="highlight-box secondary mt-2">
+                <p>✅ Respuesta correcta: B</p>
+                <p>
+                    El encadenamiento hacia atrás es ideal para diagnóstico y consulta: parte de una conclusión
+                    deseada (hipótesis) y busca hechos que la justifiquen, retrocediendo paso a paso.
+                </p>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 3 -->
+        <div class="feature-card mt-3">
+            <h3>Pregunta 3: Sistemas Expertos Históricos</h3>
+            <p>
+                ¿Qué sistema experto logró ahorrar <strong>25 millones USD/año</strong> a Digital Equipment
+                Corporation mediante configuración automatizada de ordenadores?
+            </p>
+            <div class="ml-2">
+                <p>
+                    <strong>A)</strong> MYCIN
+                </p>
+                <p>
+                    <strong>B)</strong> DENDRAL
+                </p>
+                <p>
+                    <strong>C)</strong> XCON (R1)
+                </p>
+                <p>
+                    <strong>D)</strong> PROSPECTOR
+                </p>
+            </div>
+            <div class="highlight-box secondary mt-2">
+                <p>✅ Respuesta correcta: C</p>
+                <p>
+                    XCON (también conocido como R1) fue el primer gran éxito comercial de sistemas expertos,
+                    automatizando la configuración compleja de ordenadores VAX con más de 10,000 reglas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    </main>
+    <footer>
+        <div style="text-align: center; padding: 2rem;">
+            <img src="../img/logo-ilerna.svg" alt="iLERNA" style="height: 40px; margin-bottom: 1rem;">
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y
+                Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin"><span>🐧</span></div>
+        </div>
+    </footer>
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <!-- Agregamos soporte para Lisp/CLIPS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-lisp.min.js"></script>
+
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.5/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#49B9CE',
+                primaryTextColor: '#FFFFFF',
+                primaryBorderColor: '#49B9CE',
+                secondaryColor: '#8A7AAF',
+                secondaryTextColor: '#FFFFFF',
+                secondaryBorderColor: '#8A7AAF',
+                tertiaryColor: '#E8F7FA',
+                tertiaryTextColor: '#333333',
+                tertiaryBorderColor: '#49B9CE',
+                lineColor: '#8A7AAF',
+                textColor: '#333333',
+                mainBkg: '#FFFFFF',
+                nodeBorder: '#49B9CE',
+                clusterBkg: '#F0EDF5',
+                fontSize: '14px',
+                fontFamily: 'Montserrat, sans-serif'
+            },
+            mindmap: {
+                padding: 25,
+                maxNodeWidth: 180
+            }
+        });
+
+        // Estilo personalizado para el nodo central del mindmap
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                const svg = document.querySelector('.mermaid svg');
+                if (svg) {
+                    const rootNode = svg.querySelector('[id*="mindmap-root"]');
+                    if (rootNode) {
+                        const circle = rootNode.querySelector('circle');
+                        if (circle) {
+                            circle.style.fill = 'url(#ilerna-gradient)';
+                            circle.style.stroke = '#49B9CE';
+                            circle.style.strokeWidth = '3px';
+                        }
+
+                        const defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg', 'defs'), svg.firstChild);
+                        const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                        gradient.setAttribute('id', 'ilerna-gradient');
+                        gradient.setAttribute('x1', '0%');
+                        gradient.setAttribute('y1', '0%');
+                        gradient.setAttribute('x2', '100%');
+                        gradient.setAttribute('y2', '100%');
+
+                        const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                        stop1.setAttribute('offset', '0%');
+                        stop1.style.stopColor = '#49B9CE';
+
+                        const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                        stop2.setAttribute('offset', '100%');
+                        stop2.style.stopColor = '#8A7AAF';
+
+                        gradient.appendChild(stop1);
+                        gradient.appendChild(stop2);
+                        defs.appendChild(gradient);
+                    }
+                }
+            }, 1000); // Increased timeout to ensure Mermaid renders
+        });
+    </script>
+</body>
+
+</html>

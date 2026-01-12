@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Técnicas de Modelado en Big Data: Desnormalización Estratégica y Series Temporales. Patrones avanzados para optimizar rendimiento.">
+    <meta name="keywords"
+        content="Big Data, Modelado de Datos, Desnormalización, Series Temporales, NoSQL, MongoDB, Bucket Pattern">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Técnicas de Modelado en Big Data | iLERNA">
+    <meta property="og:description" content="Estrategias avanzadas de modelado de datos masivos">
+    <meta property="og:type" content="article">
+    <title>Técnicas de Modelado en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Big Data</a> ›
+                <span>Técnicas de Modelado</span>
+            </div>
+        </div>
+        <h1 class="text-center">Técnicas de Modelado en Big Data</h1>
+        <p class="subtitle text-center">Estrategias Avanzadas: Desnormalización y Series Temporales</p>
+    </header>
+
+    <!-- SECCIÓN 1: INTRODUCCIÓN -->
+    <section class="section">
+        <h2 class="section-title">Introducción al Modelado de Datos Masivos</h2>
+        <p>
+            El <strong>modelado de datos en Big Data</strong> representa un cambio paradigmático respecto a las
+            técnicas tradicionales de bases de datos relacionales. Mientras que en sistemas convencionales priorizamos
+            la normalización para eliminar redundancias y garantizar la integridad referencial, en entornos de datos
+            masivos debemos replantearnos estos principios fundamentales.
+        </p>
+        <p>
+            Las técnicas de modelado modernas se adaptan a las características únicas de Big Data: <strong>volumen
+                extremo</strong> (petabytes de información), <strong>velocidad de procesamiento</strong> (millones de
+            operaciones por segundo) y <strong>variedad de formatos</strong> (datos estructurados, semi-estructurados y
+            no estructurados). Esta adaptación nos lleva a dos estrategias fundamentales que exploraremos en
+            profundidad.
+        </p>
+
+        <div class="highlight-box primary">
+            <p class="tech-title">🌐 Caso Real: Netflix</p>
+            <p>
+                Netflix procesa más de <strong>500 mil millones de eventos diarios</strong> de visualización. Su
+                arquitectura de datos utiliza técnicas de desnormalización masiva en sus sistemas NoSQL (Cassandra) para
+                servir recomendaciones personalizadas a 230+ millones de usuarios en menos de 100ms, imposible de lograr
+                con modelos normalizados tradicionales.
+            </p>
+        </div>
+
+        <h3 class="color-primary">Pilares del Modelado en Big Data</h3>
+        <div class="feature-grid">
+            <div class="feature-card primary">
+                <h4>📊 Optimización de Lectura</h4>
+                <p>Priorizar velocidad de consulta sobre complejidad de escritura. En Big Data, las lecturas superan
+                    escrituras en ratio 100:1 o superior.</p>
+            </div>
+            <div class="feature-card secondary">
+                <h4>⚡ Distribución Eficiente</h4>
+                <p>Diseñar esquemas que minimicen transferencia de datos entre nodos. Cada JOIN distribuido puede
+                    multiplicar latencia por 10x.</p>
+            </div>
+            <div class="feature-card primary">
+                <h4>🔄 Consistencia Eventual</h4>
+                <p>Aceptar inconsistencias temporales a cambio de disponibilidad y tolerancia a particiones (Teorema CAP
+                    en acción).</p>
+            </div>
+            <div class="feature-card secondary">
+                <h4>📈 Escalabilidad Horizontal</h4>
+                <p>Modelos que permiten añadir nodos linealmente sin reestructurar. Sharding inteligente basado en
+                    patrones de acceso.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: DESNORMALIZACIÓN ESTRATÉGICA -->
+    <section class="section">
+        <h2 class="section-title">🔷 Desnormalización Estratégica</h2>
+
+        <h3 class="color-primary">1. Fundamentos y Filosofía</h3>
+        <p>
+            La <strong>desnormalización estratégica</strong> invierte conscientemente los principios de las formas
+            normales (1NF, 2NF, 3NF, BCNF) establecidos por Edgar F. Codd en 1970. En lugar de dividir información en
+            múltiples tablas relacionadas, consolidamos datos frecuentemente accedidos juntos en estructuras únicas,
+            aunque esto implique duplicación controlada.
+        </p>
+        <p>
+            Esta técnica no es una <em>violación</em> de buenas prácticas, sino una <strong>adaptación
+                inteligente</strong> al contexto de sistemas distribuidos donde las operaciones JOIN representan uno de
+            los mayores cuellos de botella. Un JOIN entre dos tablas de 100 millones de registros distribuidas en 50
+            nodos puede requerir comunicación masiva entre servidores, transformando una consulta de milisegundos en una
+            operación de minutos.
+        </p>
+
+        <!-- SVG: NORMALIZACIÓN VS DESNORMALIZACIÓN -->
+        <div style="margin: 2rem 0;">
+            <svg width="900" height="400" viewBox="0 0 900 400" class="diagram-svg">
+                <text x="450" y="25" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle"
+                    font-family="Montserrat">Comparación: Modelo Normalizado vs Desnormalizado</text>
+
+                <!-- LADO IZQUIERDO: NORMALIZADO -->
+                <text x="225" y="55" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">MODELO NORMALIZADO (3NF)</text>
+
+                <!-- Tabla Pedidos -->
+                <rect x="50" y="70" width="350" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+                <text x="225" y="95" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">Tabla: PEDIDOS</text>
+                <line x1="50" y1="105" x2="400" y2="105" stroke="#8A7AAF" stroke-width="1" />
+                <text x="60" y="125" font-size="12" fill="#333333" font-family="Courier New">pedido_id: 98765</text>
+                <text x="60" y="145" font-size="12" fill="#333333" font-family="Courier New">usuario_id: 4521 ← FK
+                </text>
+                <text x="60" y="165" font-size="12" fill="#333333" font-family="Courier New">total: 156.80</text>
+
+                <!-- Tabla Usuarios -->
+                <rect x="50" y="190" width="350" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+                <text x="225" y="215" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">Tabla: USUARIOS</text>
+                <line x1="50" y1="225" x2="400" y2="225" stroke="#8A7AAF" stroke-width="1" />
+                <text x="60" y="245" font-size="12" fill="#333333" font-family="Courier New">usuario_id: 4521</text>
+                <text x="60" y="265" font-size="12" fill="#333333" font-family="Courier New">nombre: "María González"
+                </text>
+
+                <!-- Tabla Items -->
+                <rect x="50" y="290" width="350" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+                <text x="225" y="315" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">Tabla: ITEMS_PEDIDO</text>
+                <line x1="50" y1="325" x2="400" y2="325" stroke="#8A7AAF" stroke-width="1" />
+                <text x="60" y="345" font-size="12" fill="#333333" font-family="Courier New">pedido_id: 98765 ← FK
+                </text>
+                <text x="60" y="365" font-size="12" fill="#333333" font-family="Courier New">producto_id: 777 ← FK
+                </text>
+
+                <!-- JOIN Icons -->
+                <circle cx="225" cy="175" r="15" fill="#FF6B6B" opacity="0.9" />
+                <text x="225" y="181" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">JOIN</text>
+                <circle cx="225" cy="280" r="15" fill="#FF6B6B" opacity="0.9" />
+                <text x="225" y="286" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">JOIN</text>
+
+                <!-- LADO DERECHO: DESNORMALIZADO -->
+                <text x="675" y="55" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">MODELO DESNORMALIZADO</text>
+
+                <!-- Documento único -->
+                <rect x="500" y="70" width="350" height="300" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8" />
+                <text x="675" y="95" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">Documento Único (JSON/NoSQL)</text>
+                <line x1="500" y1="105" x2="850" y2="105" stroke="#49B9CE" stroke-width="1" />
+
+                <text x="510" y="125" font-size="11" fill="#333333" font-family="Courier New">{ "pedido_id": 98765,
+                </text>
+                <text x="510" y="145" font-size="11" fill="#333333" font-family="Courier New"> "fecha": "2024-10-05",
+                </text>
+                <text x="510" y="165" font-size="11" fill="#333333" font-family="Courier New"> "total": 156.80,</text>
+                <text x="510" y="185" font-size="11" fill="#49B9CE" font-weight="bold" font-family="Courier New">
+                    "usuario": {</text>
+                <text x="510" y="205" font-size="11" fill="#333333" font-family="Courier New"> "nombre": "María
+                    González",</text>
+                <text x="510" y="225" font-size="11" fill="#333333" font-family="Courier New"> "email":
+                    "maria@ejemplo.com"</text>
+                <text x="510" y="245" font-size="11" fill="#333333" font-family="Courier New"> },</text>
+                <text x="510" y="265" font-size="11" fill="#49B9CE" font-weight="bold" font-family="Courier New">
+                    "items": [</text>
+                <text x="510" y="285" font-size="11" fill="#333333" font-family="Courier New"> { "producto":
+                    "Zapatillas",</text>
+                <text x="510" y="305" font-size="11" fill="#333333" font-family="Courier New"> "cantidad": 2,</text>
+                <text x="510" y="325" font-size="11" fill="#333333" font-family="Courier New"> "precio_unitario": 45.50
+                    }</text>
+                <text x="510" y="345" font-size="11" fill="#333333" font-family="Courier New"> ]</text>
+                <text x="510" y="365" font-size="11" fill="#333333" font-family="Courier New">}</text>
+
+                <!-- Checkmark -->
+                <circle cx="675" cy="385" r="15" fill="#4CAF50" opacity="0.9" />
+                <path d="M 670 385 L 673 388 L 680 381" stroke="white" stroke-width="2" fill="none" />
+                <text x="700" y="390" font-size="11" fill="#4CAF50" font-weight="bold" font-family="Montserrat">1
+                    OPERACIÓN</text>
+
+                <!-- Comparison -->
+                <text x="450" y="390" font-size="13" fill="#FF6B6B" font-weight="bold" text-anchor="middle"
+                    font-family="Montserrat">3 JOINs ⚠️ Lento</text>
+            </svg>
+        </div>
+
+        <h3 class="color-secondary mt-2">2. Análisis de Ventajas y Compromisos</h3>
+
+        <div class="grid-characteristics">
+            <div class="card primary">
+                <h4>✅ Ventajas Clave</h4>
+                <ul>
+                    <li><strong>Rendimiento extremo:</strong> Eliminación de JOINs reduce latencia 10-100x</li>
+                    <li><strong>Simplicidad de consulta:</strong> Una sola operación obtiene toda la información</li>
+                    <li><strong>Escalabilidad horizontal:</strong> Sin dependencias entre nodos</li>
+                    <li><strong>Cacheo eficiente:</strong> Toda la información en un solo registro</li>
+                    <li><strong>Reducción de tráfico:</strong> Menos comunicación inter-servidor</li>
+                </ul>
+            </div>
+
+            <div class="card secondary">
+                <h4>⚠️ Compromisos</h4>
+                <ul>
+                    <li><strong>Redundancia de datos:</strong> Mayor espacio de almacenamiento requerido</li>
+                    <li><strong>Consistencia compleja:</strong> Actualizar datos duplicados es costoso</li>
+                    <li><strong>Anomalías de actualización:</strong> Riesgo de inconsistencias temporales</li>
+                    <li><strong>Escrituras más lentas:</strong> Múltiples ubicaciones a actualizar</li>
+                    <li><strong>Dificultad en cambios de esquema:</strong> Migrar estructuras es complejo</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box secondary">
+            <h4 class="color-secondary">🎯 Criterios de Decisión: ¿Cuándo Desnormalizar?</h4>
+            <div class="grid-characteristics">
+                <div class="card">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Ratio Lectura/Escritura</p>
+                    <p style="font-size: 0.9rem;">Si lecturas > 20x escrituras, desnormalizar es rentable</p>
+                </div>
+                <div class="card">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Datos Estables</p>
+                    <p style="font-size: 0.9rem;">Información que cambia raramente (categorías, países)</p>
+                </div>
+                <div class="card">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Consultas Frecuentes</p>
+                    <p style="font-size: 0.9rem;">Queries repetitivas con mismo patrón de JOIN</p>
+                </div>
+                <div class="card">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Baja Volatilidad</p>
+                    <p style="font-size: 0.9rem;">Datos históricos que no se modifican</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="color-primary mt-2">3. Implementación Práctica en MongoDB</h3>
+        <p>
+            Veamos un ejemplo concreto de cómo implementar desnormalización en un sistema de e-commerce usando
+            <strong>MongoDB</strong>, base de datos NoSQL orientada a documentos. Compararemos el enfoque normalizado
+            tradicional con su versión desnormalizada optimizada.
+        </p>
+
+        <h4 class="color-secondary">❌ Enfoque Tradicional (Normalizado - SQL)</h4>
+        <p style="margin-bottom: 1rem;">Requiere múltiples consultas o JOINs costosos:</p>
+
+        <pre><code class="language-json">{
+  "TABLA_PEDIDOS": {
+    "pedido_id": 98765,
+    "usuario_id": 4521,
+    "fecha": "2024-10-05",
+    "total": 156.80,
+    "estado": "enviado"
+  },
+
+  "TABLA_USUARIOS": {
+    "usuario_id": 4521,
+    "nombre": "María González",
+    "email": "maria@ejemplo.com",
+    "direccion_id": 8844
+  },
+
+  "TABLA_ITEMS": [
+    {
+      "item_id": 1,
+      "pedido_id": 98765,
+      "producto_id": 777,
+      "cantidad": 2,
+      "precio_unitario": 45.50
+    }
+  ],
+
+  "TABLA_PRODUCTOS": {
+    "producto_id": 777,
+    "nombre": "Zapatillas Running Pro",
+    "categoria": "Calzado Deportivo",
+    "marca": "Nike"
+  }
+}</code></pre>
+
+        <div class="prediction-box">
+            <p style="color: #856404;">⚠️ PROBLEMA: Obtener el pedido completo requiere 4 consultas o 3 JOINs (pedidos
+                ⋈ usuarios ⋈ items ⋈ productos)</p>
+        </div>
+
+        <h4 class="color-primary mt-2">✅ Enfoque Optimizado (Desnormalizado - MongoDB)</h4>
+        <p style="margin-bottom: 1rem;">Una sola consulta obtiene toda la información necesaria:</p>
+
+        <pre><code class="language-json">{
+  "_id": ObjectId("6720f4e5a1b2c3d4e5f67890"),
+  "pedido_id": 98765,
+  "fecha": "2024-10-05T14:30:00Z",
+  "total": 156.80,
+  "estado": "enviado",
+  "moneda": "EUR",
+
+  // INFORMACIÓN DEL USUARIO EMBEBIDA (desnormalizada)
+  "usuario": {
+    "usuario_id": 4521,
+    "nombre": "María González",
+    "email": "maria@ejemplo.com",
+    "telefono": "+34 600 123 456",
+    "direccion_envio": {
+      "calle": "Av. Diagonal 123",
+      "ciudad": "Barcelona",
+      "codigo_postal": "08018",
+      "pais": "España"
+    },
+    "nivel_fidelidad": "Gold",
+    "puntos_acumulados": 1250
+  },
+
+  // ITEMS CON DETALLES DE PRODUCTO EMBEBIDOS
+  "items": [
+    {
+      "item_id": 1,
+      "producto_id": 777,
+      "nombre_producto": "Zapatillas Running Pro",
+      "descripcion": "Zapatillas profesionales con tecnología Air",
+      "categoria": "Calzado Deportivo",
+      "marca": "Nike",
+      "talla": "42",
+      "color": "Negro/Rojo",
+      "cantidad": 2,
+      "precio_unitario": 45.50,
+      "descuento_aplicado": 0.10,
+      "subtotal": 81.90
+    }
+  ],
+
+  // INFORMACIÓN DE ENVÍO
+  "envio": {
+    "transportista": "DHL Express",
+    "codigo_seguimiento": "DHL987654321ES",
+    "fecha_estimada": "2024-10-08",
+    "costo_envio": 5.99
+  }
+}</code></pre>
+
+        <div class="prediction-box">
+            <p class="tech-output" style="color: #155724;">✅ VENTAJA: Una sola consulta
+                db.pedidos.findOne({pedido_id: 98765}) obtiene TODA la información instantáneamente (< 5ms)</p>
+        </div>
+
+        <div class="highlight-box">
+            <h5 class="color-primary">🔍 Consulta en MongoDB (JavaScript)</h5>
+            <pre><code class="language-json">// Obtener pedido completo con UNA operación
+const pedido = await db.pedidos.findOne({ pedido_id: 98765 });
+
+// Toda la información disponible inmediatamente
+console.log(pedido.usuario.nombre);              // "María González"
+console.log(pedido.items[0].nombre_producto);    // "Zapatillas Running Pro"
+console.log(pedido.envio.codigo_seguimiento);    // "DHL987654321ES"
+console.log(pedido.total);                       // 156.80
+
+// Rendimiento: ~5ms vs ~500ms con JOINs en SQL</code></pre>
+        </div>
+
+        <div class="curiosity-box">
+            <h4 class="color-warning">🏪 Caso de Estudio: Amazon</h4>
+            <p>
+                Amazon utiliza <strong>desnormalización masiva</strong> en su sistema de catálogo de productos. Cada
+                producto almacena información completa de categorías, fabricantes, y reviews directamente en el
+                documento, permitiendo servir páginas de producto en <strong>menos de 100ms</strong> a 300 millones de
+                clientes.
+            </p>
+            <p><strong>Resultado:</strong> Sistema capaz de procesar 600+ transacciones por segundo en temporada alta
+                (Black Friday) sin degradación de rendimiento.</p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: SERIES TEMPORALES -->
+    <section class="section">
+        <h2 class="section-title">🔶 Modelado de Series Temporales</h2>
+
+        <h3 class="color-secondary">1. Definición y Características</h3>
+        <p>
+            Las <strong>series temporales</strong> (time series) son secuencias ordenadas de puntos de datos indexados,
+            medidos o registrados en intervalos de tiempo sucesivos. Representan uno de los tipos de datos más comunes
+            en Big Data: desde métricas de monitorización de servidores hasta cotizaciones bursátiles, datos de sensores
+            IoT, registros de transacciones financieras o patrones de tráfico web.
+        </p>
+        <p>
+            A diferencia de datos transaccionales tradicionales, las series temporales tienen <strong>propiedades
+                únicas</strong> que requieren técnicas de modelado especializadas: inmutabilidad (los datos históricos
+            no cambian), ordenamiento cronológico estricto, volumen extremadamente alto (millones de puntos por segundo),
+            y patrones de acceso predecibles (consultas por rangos de tiempo).
+        </p>
+
+        <!-- SVG: CARACTERÍSTICAS -->
+        <svg width="900" height="300" viewBox="0 0 900 300" class="diagram-svg">
+            <text x="450" y="25" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                font-family="Montserrat">Características de Series Temporales</text>
+
+            <!-- Característica 1 -->
+            <rect x="50" y="50" width="380" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+            <text x="240" y="75" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                font-family="Montserrat">📊 INMUTABILIDAD</text>
+            <text x="240" y="100" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Datos
+                históricos nunca cambian</text>
+            <text x="240" y="120" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Solo
+                operaciones INSERT, raros UPDATE/DELETE</text>
+            <text x="240" y="140" font-size="11" fill="#333333" font-weight="bold" text-anchor="middle"
+                font-family="Courier New">Optimización: Append-only storage</text>
+
+            <!-- Característica 2 -->
+            <rect x="470" y="50" width="380" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+            <text x="660" y="75" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                font-family="Montserrat">⏰ ORDEN CRONOLÓGICO</text>
+            <text x="660" y="100" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">
+                Timestamp como índice principal</text>
+            <text x="660" y="120" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Acceso
+                secuencial por rangos de tiempo</text>
+            <text x="660" y="140" font-size="11" fill="#333333" font-weight="bold" text-anchor="middle"
+                font-family="Courier New">Optimización: Particionado temporal</text>
+
+            <!-- Característica 3 -->
+            <rect x="50" y="170" width="380" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+            <text x="240" y="195" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                font-family="Montserrat">🚀 ALTO VOLUMEN</text>
+            <text x="240" y="220" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Millones
+                de puntos por segundo</text>
+            <text x="240" y="240" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">
+                Crecimiento lineal continuo</text>
+            <text x="240" y="260" font-size="11" fill="#333333" font-weight="bold" text-anchor="middle"
+                font-family="Courier New">Optimización: Compresión especializada</text>
+
+            <!-- Característica 4 -->
+            <rect x="470" y="170" width="380" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8" />
+            <text x="660" y="195" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                font-family="Montserrat">🔍 PATRONES PREDECIBLES</text>
+            <text x="660" y="220" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Queries
+                frecuentes: últimas 24h, última semana</text>
+            <text x="660" y="240" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">
+                Agregaciones: avg, max, min por períodos</text>
+            <text x="660" y="260" font-size="11" fill="#333333" font-weight="bold" text-anchor="middle"
+                font-family="Courier New">Optimización: Pre-agregación</text>
+        </svg>
+
+        <h3 class="color-secondary mt-2">2. Particionado Temporal Inteligente</h3>
+        <p>
+            El <strong>particionado por tiempo</strong> es la técnica fundamental para gestionar eficientemente series
+            temporales. Consiste en dividir los datos en segmentos basados en intervalos temporales (hora, día, semana,
+            mes), permitiendo que las consultas accedan solo a las particiones relevantes sin escanear todo el
+            histórico.
+        </p>
+
+        <div class="grid-characteristics">
+            <div class="card secondary">
+                <h4>⏱️ Particionado por Hora</h4>
+                <p style="margin-bottom: 0.75rem;">Para datos de altísima frecuencia</p>
+                <pre style="background: #F0EDF5; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;"><code>metrics_2024_10_05_14h
+metrics_2024_10_05_15h</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Uso:</strong> Logs de servidores, métricas
+                    IoT</p>
+            </div>
+
+            <div class="card primary">
+                <h4>📅 Particionado por Día</h4>
+                <p style="margin-bottom: 0.75rem;">Balance óptimo para la mayoría</p>
+                <pre style="background: #E8F7FA; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;"><code>transactions_2024_10_05
+transactions_2024_10_06</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Uso:</strong> Transacciones, eventos web
+                </p>
+            </div>
+
+            <div class="card secondary">
+                <h4>📆 Particionado por Mes</h4>
+                <p style="margin-bottom: 0.75rem;">Para volúmenes moderados</p>
+                <pre style="background: #F0EDF5; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;"><code>sales_2024_10
+sales_2024_11</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Uso:</strong> Reportes mensuales, ventas
+                </p>
+            </div>
+        </div>
+
+        <h3 class="color-secondary mt-2">3. Estrategias de Retención y Agregación</h3>
+        <p>
+            Mantener datos históricos con resolución completa indefinidamente es <strong>inviable y costoso</strong>. La
+            estrategia moderna implementa políticas de retención escalonada: datos recientes con máximo detalle, datos
+            antiguos con resoluciones progresivamente menores, y datos históricos como resúmenes agregados.
+        </p>
+
+        <div class="highlight-box secondary">
+            <h4 class="color-secondary">🗄️ Política de Retención Típica (Sistema de Métricas)</h4>
+            <div class="grid-characteristics">
+                <div class="card primary">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">Último Mes</p>
+                    <p style="font-family: 'Courier New', monospace; margin-bottom: 0.3rem;">Resolución: 1 segundo</p>
+                    <p style="font-size: 0.85rem;">Detalle completo para análisis inmediato</p>
+                </div>
+
+                <div class="card secondary">
+                    <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">1-12 Meses</p>
+                    <p style="font-family: 'Courier New', monospace; margin-bottom: 0.3rem;">Resolución: 1 minuto</p>
+                    <p style="font-size: 0.85rem;">Agregación: avg, max, min por minuto</p>
+                </div>
+
+                <div class="card primary">
+                    <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">1-3 Años</p>
+                    <p style="font-family: 'Courier New', monospace; margin-bottom: 0.3rem;">Resolución: 1 hora</p>
+                    <p style="font-size: 0.85rem;">Agregación horaria para tendencias</p>
+                </div>
+
+                <div class="card secondary">
+                    <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">+3 Años</p>
+                    <p style="font-family: 'Courier New', monospace; margin-bottom: 0.3rem;">Resolución: 1 día</p>
+                    <p style="font-size: 0.85rem;">Solo resúmenes diarios/mensuales</p>
+                </div>
+            </div>
+
+            <div class="prediction-box">
+                <p style="text-align: center; font-weight: 600;">
+                    📉 <strong>Reducción de almacenamiento:</strong> De 10 TB (datos crudos) a 500 GB (con política de
+                    retención) = <strong>95% ahorro</strong>
+                </p>
+            </div>
+        </div>
+
+        <h3 class="color-secondary mt-2">4. Bucket Pattern para IoT (MongoDB)</h3>
+        <p>
+            El <strong>patrón Bucket</strong> (cubo) es una técnica avanzada para almacenar series temporales de alta
+            frecuencia. En lugar de crear un documento por cada lectura de sensor, agrupamos múltiples lecturas en
+            "cubos" temporales (por ejemplo, todas las lecturas de una hora). Esto reduce drásticamente el número de
+            documentos y mejora el rendimiento.
+        </p>
+
+        <h4 style="color: #FF6B6B; margin-bottom: 0.75rem;">❌ Enfoque Ineficiente (Sin Bucket)</h4>
+        <p style="margin-bottom: 0.75rem;">Un documento por cada lectura → 3,600 documentos/hora → Ineficiente</p>
+
+        <pre><code class="language-json">// PROBLEMA: 1 documento por segundo
+{
+  "sensor_id": "temp_sensor_001",
+  "timestamp": "2024-10-07T10:00:00Z",
+  "temperatura": 22.5,
+  "humedad": 65
+}
+{
+  "sensor_id": "temp_sensor_001",
+  "timestamp": "2024-10-07T10:00:01Z",
+  "temperatura": 22.6,
+  "humedad": 65
+}
+// ... 3,598 documentos más solo para 1 hora
+// Total: 86,400 documentos/día por sensor ❌</code></pre>
+
+        <div class="prediction-box">
+            <p style="color: #856404;">⚠️ PROBLEMA: Millones de documentos pequeños → Overhead de índices, consultas
+                lentas, desperdicio de espacio</p>
+        </div>
+
+        <h4 style="color: #4CAF50; margin-bottom: 0.75rem; margin-top: 2rem;">✅ Bucket Pattern Optimizado</h4>
+        <p style="margin-bottom: 0.75rem;">Agrupa 3,600 lecturas en un documento → Solo 24 documentos/día →
+            <strong>3,600x más eficiente</strong></p>
+
+        <pre><code class="language-json">{
+  "sensor_id": "temp_sensor_001",
+  "fecha": "2024-10-07",
+  "hora_inicio": "10:00:00",
+  "hora_fin": "10:59:59",
+  "num_lecturas": 3600,
+
+  // Array con TODAS las lecturas de la hora
+  "lecturas": [
+    {
+      "offset_segundos": 0,
+      "temp": 22.5,
+      "humedad": 65
+    },
+    {
+      "offset_segundos": 1,
+      "temp": 22.6,
+      "humedad": 65
+    }
+    // ... 3,598 lecturas más
+  ],
+
+  // Pre-calculamos estadísticas
+  "estadisticas": {
+    "temp_min": 21.8,
+    "temp_max": 23.4,
+    "temp_promedio": 22.6,
+    "humedad_promedio": 65.3
+  }
+}
+
+// RESULTADO: Solo 24 documentos/día en lugar de 86,400
+// Reducción: 3,600× menos documentos ✅</code></pre>
+
+        <div class="prediction-box">
+            <p class="tech-output" style="color: #155724;">✅ VENTAJAS: Menos índices, consultas instantáneas,
+                estadísticas pre-calculadas, 95% menos espacio en disco</p>
+        </div>
+
+        <div class="highlight-box">
+            <h5 class="color-secondary">🔍 Consulta Optimizada con Bucket Pattern</h5>
+            <pre><code class="language-json">// Obtener temperatura promedio de las últimas 24 horas
+const stats = await db.sensor_data.aggregate([
+  {
+    $match: {
+      sensor_id: "temp_sensor_001",
+      fecha: {
+        $gte: new Date("2024-10-07"),
+        $lte: new Date("2024-10-08")
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      temp_media_24h: { $avg: "$estadisticas.temp_promedio" },
+      temp_max_24h: { $max: "$estadisticas.temp_max" }
+    }
+  }
+]);
+
+// Solo escanea 24 documentos vs 86,400 → 3,600x más rápido
+// Tiempo de ejecución: ~15ms vs ~5,000ms sin buckets</code></pre>
+        </div>
+
+        <div class="curiosity-box">
+            <h4 class="color-warning">🚗 Caso de Estudio: Tesla Telemetría</h4>
+            <p>
+                Tesla recopila datos de telemetría de su flota global (1.5+ millones de vehículos) generando
+                <strong>más de 1 petabyte de datos diarios</strong>. Utilizan bucket pattern con agregación temporal:
+                cada vehículo envía cubos de 1 minuto con cientos de métricas (velocidad, batería, temperatura, sensores
+                Autopilot).
+            </p>
+            <p><strong>Arquitectura:</strong></p>
+            <ul>
+                <li>Datos crudos (1s): Retenidos 7 días para debugging</li>
+                <li>Buckets (1min): Retenidos 3 meses para análisis detallado</li>
+                <li>Agregaciones (1h): Retenidos 2 años para tendencias</li>
+                <li>Resúmenes diarios: Histórico completo indefinido</li>
+            </ul>
+            <p><strong>Resultado:</strong> Sistema capaz de entrenar modelos de Autopilot con datos de miles de millones
+                de kilómetros conducidos.</p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: COMPARACIÓN Y MEJORES PRÁCTICAS -->
+    <section class="section">
+        <h2 class="section-title" style="text-align: center;">📊 Comparación y Mejores Prácticas</h2>
+
+        <div style="overflow-x: auto; margin-bottom: 2rem;">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th style="text-align: center;">Desnormalización</th>
+                        <th style="text-align: center;">Series Temporales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: 700;">Objetivo Principal</td>
+                        <td style="text-align: center;">Eliminar JOINs costosos</td>
+                        <td style="text-align: center;">Optimizar consultas temporales</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Tipo de Datos</td>
+                        <td style="text-align: center;">Transaccionales, relacionales</td>
+                        <td style="text-align: center;">Métricas, eventos, logs</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Patrón de Escritura</td>
+                        <td style="text-align: center;">Actualizaciones frecuentes</td>
+                        <td style="text-align: center;">Solo append (inmutable)</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Patrón de Lectura</td>
+                        <td style="text-align: center;">Acceso aleatorio por ID</td>
+                        <td style="text-align: center;">Rangos temporales secuenciales</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Estrategia Clave</td>
+                        <td style="text-align: center;">Duplicación controlada</td>
+                        <td style="text-align: center;">Particionado + agregación</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Tecnologías</td>
+                        <td style="text-align: center;">MongoDB, Cassandra, DynamoDB</td>
+                        <td style="text-align: center;">InfluxDB, TimescaleDB, Prometheus</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Compresión</td>
+                        <td style="text-align: center;">Estándar (gzip, snappy)</td>
+                        <td style="text-align: center;">Especializada temporal (10-20:1)</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">Casos de Uso</td>
+                        <td style="text-align: center;">E-commerce, redes sociales</td>
+                        <td style="text-align: center;">Monitorización, IoT, finanzas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="color-primary" style="text-align: center; margin-bottom: 1.5rem;">🎓 Mejores Prácticas Unificadas
+        </h3>
+
+        <div class="feature-grid">
+            <div class="feature-card primary">
+                <h4>🎯 Modelar según Patrones de Acceso</h4>
+                <p style="margin-bottom: 1rem;">Diseña el esquema basándote en <strong>cómo</strong> se consultan los
+                    datos, no en cómo se relacionan lógicamente.</p>
+                <ul>
+                    <li>Analiza queries más frecuentes (80/20)</li>
+                    <li>Optimiza para el caso común, no el excepcional</li>
+                    <li>Mide y ajusta iterativamente</li>
+                </ul>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4>⚖️ Balance Consistencia vs Rendimiento</h4>
+                <p style="margin-bottom: 1rem;">Acepta <strong>consistencia eventual</strong> cuando la inmediatez no es
+                    crítica para el negocio.</p>
+                <ul>
+                    <li>Lecturas 100x más rápidas</li>
+                    <li>Inconsistencias < 1 segundo típicamente</li>
+                    <li>Usa consistencia fuerte solo donde sea esencial</li>
+                </ul>
+            </div>
+
+            <div class="feature-card primary">
+                <h4>📦 Compresión y Almacenamiento Eficiente</h4>
+                <p style="margin-bottom: 1rem;">Utiliza compresión especializada y tiered storage para gestionar
+                    volúmenes masivos.</p>
+                <ul>
+                    <li>Datos calientes: SSD/NVMe (acceso < 1ms)</li>
+                    <li>Datos tibios: HDD (acceso < 10ms)</li>
+                    <li>Datos fríos: Object storage S3 (acceso segundos)</li>
+                </ul>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4>🔄 Automatización de Retención</h4>
+                <p style="margin-bottom: 1rem;">Implementa políticas automáticas de agregación y eliminación de datos
+                    antiguos.</p>
+                <ul>
+                    <li>TTL (Time To Live) automático por colección</li>
+                    <li>Jobs de agregación programados (cron)</li>
+                    <li>Archivado a cold storage configurable</li>
+                </ul>
+            </div>
+
+            <div class="feature-card primary">
+                <h4>📊 Monitorización y Métricas</h4>
+                <p style="margin-bottom: 1rem;">Instrumenta tu sistema para tomar decisiones basadas en datos reales.
+                </p>
+                <ul>
+                    <li>Latencias p50, p95, p99 de queries</li>
+                    <li>Tasa de escritura/lectura por partición</li>
+                    <li>Crecimiento de almacenamiento diario</li>
+                </ul>
+            </div>
+
+            <div class="feature-card secondary">
+                <h4>🛡️ Planificación de Escalabilidad</h4>
+                <p style="margin-bottom: 1rem;">Diseña desde el inicio para crecer horizontalmente sin reestructurar.
+                </p>
+                <ul>
+                    <li>Sharding key que distribuye uniformemente</li>
+                    <li>Evita hot spots (particiones sobrecargadas)</li>
+                    <li>Capacidad de añadir nodos sin downtime</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="text-align: center; margin-top: 2rem;">
+            <h4 class="color-primary">🎯 Principio Fundamental</h4>
+            <p style="font-size: 1.125rem; line-height: 1.7;">
+                En Big Data, <strong>no existe un "modelo perfecto"</strong>. La excelencia está en <strong>adaptar
+                    inteligentemente</strong> las técnicas (desnormalización, particionado temporal, compresión,
+                agregación) según las características específicas de tus datos, patrones de acceso y requisitos de
+                negocio. La clave es <em>medir, iterar y optimizar continuamente</em>.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>

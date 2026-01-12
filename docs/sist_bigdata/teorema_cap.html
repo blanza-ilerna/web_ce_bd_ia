@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Teorema CAP: Consistency, Availability, Partition Tolerance. El trilema fundamental de los sistemas distribuidos y bases de datos NoSQL">
+    <meta name="keywords"
+        content="Teorema CAP, CAP Theorem, sistemas distribuidos, NoSQL, consistencia, disponibilidad, particiones, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Teorema CAP: El Trilema de los Sistemas Distribuidos | iLERNA">
+    <meta property="og:description"
+        content="Consistency, Availability, Partition Tolerance: solo puedes elegir dos de tres">
+    <meta property="og:type" content="article">
+    <title>Teorema CAP: El Trilema de los Sistemas Distribuidos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Big Data</a> ›
+                <span>Teorema CAP</span>
+            </div>
+        </div>
+        <h1 class="text-center">Teorema CAP</h1>
+        <p class="subtitle text-center">Consistency, Availability, Partition Tolerance: El Trilema de los Sistemas
+            Distribuidos</p>
+    </header>
+
+    <!-- SECCIÓN 1: INTRODUCCIÓN -->
+    <section class="section">
+        <h2 class="section-title">¿Qué es el Teorema CAP?</h2>
+        <p>
+            El <strong>Teorema CAP</strong> (también conocido como <strong>Teorema de Brewer</strong>) es uno de los
+            principios fundamentales en el diseño de sistemas distribuidos. Fue propuesto por <strong>Eric
+                Brewer</strong> en el año 2000 y formalmente demostrado por <strong>Seth Gilbert y Nancy
+                Lynch</strong> en 2002.
+        </p>
+        <p>
+            Este teorema establece que <strong>en un sistema distribuido es imposible garantizar simultáneamente las
+                tres propiedades siguientes</strong>:
+        </p>
+
+        <!-- Conceptos CAP en Grid -->
+        <div class="grid-features">
+            <!-- CONSISTENCY (Azul) -->
+            <div class="feature-card">
+                <h4>🔄 Consistency (Consistencia)</h4>
+                <p>Todos los nodos ven los mismos datos al mismo tiempo. Una lectura devuelve siempre la escritura más
+                    reciente.</p>
+            </div>
+
+            <!-- AVAILABILITY (Morado) -->
+            <div class="feature-card secondary">
+                <h4>✅ Availability (Disponibilidad)</h4>
+                <p>El sistema siempre responde a las peticiones, aunque los datos puedan estar desactualizados.</p>
+            </div>
+
+            <!-- PARTITION TOLERANCE (Azul) -->
+            <div class="feature-card">
+                <h4>🔌 Partition Tolerance (Tolerancia a Particiones)</h4>
+                <p>El sistema continúa funcionando a pesar de fallos en la red que dividan el sistema en particiones
+                    aisladas.</p>
+            </div>
+        </div>
+
+        <!-- Caja de la ley fundamental -->
+        <div class="highlight-box secondary formula-container">
+            <p class="formula-title color-secondary">⚖️ La Ley del Teorema CAP</p>
+            <p style="text-align: center; line-height: 1.75;">
+                "En un sistema distribuido, solo puedes garantizar <strong>DOS</strong> de las tres propiedades CAP
+                simultáneamente. Debes elegir entre <strong>CP</strong>, <strong>AP</strong> o <strong>CA</strong>
+                (aunque CA es prácticamente imposible en sistemas realmente distribuidos)."
+            </p>
+        </div>
+
+        <!-- Ejemplo del mundo real -->
+        <div class="curiosity-box">
+            <h4 class="color-warning">🌍 Ejemplo Real: Instagram</h4>
+            <p>
+                Instagram eligió <strong>Availability + Partition Tolerance (AP)</strong>. Si publicas una foto,
+                puede que tus seguidores en diferentes regiones no la vean inmediatamente (sacrificando
+                Consistency), pero la app <strong>siempre está disponible</strong> y funciona incluso con problemas
+                de red entre data centers. Eventualmente, todos verán tu foto (consistencia eventual).
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: EL TRIÁNGULO CAP -->
+    <section class="section">
+        <h2 class="section-title">📐 El Triángulo CAP: Visualización del Teorema</h2>
+        <p>
+            El teorema CAP se representa comúnmente como un <strong>triángulo</strong> donde cada vértice representa
+            una de las tres propiedades. Un sistema distribuido puede elegir <strong>solo dos aristas</strong> del
+            triángulo:
+        </p>
+
+        <!-- Visualización SVG del Triángulo CAP -->
+        <div class="svg-container">
+            <svg width="800" height="750" viewBox="0 0 800 750" class="diagram-svg">
+                <!-- Título -->
+                <text x="400" y="40" font-size="24" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">Teorema CAP: El Trilema de los Sistemas Distribuidos</text>
+                <text x="400" y="65" font-size="16" fill="#555555" text-anchor="middle" font-family="Montserrat">Solo
+                    puedes elegir 2 de 3 propiedades</text>
+
+                <!-- Triángulo principal -->
+                <!-- Vertices: Top(400, 180), Left(180, 520), Right(620, 520) - Expanded triangle -->
+                <line x1="400" y1="180" x2="180" y2="520" stroke="#333333" stroke-width="4" />
+                <line x1="400" y1="180" x2="620" y2="520" stroke="#333333" stroke-width="4" />
+                <line x1="180" y1="520" x2="620" y2="520" stroke="#333333" stroke-width="4" />
+
+                <!-- Vértice superior: CONSISTENCY (+10px radio) -->
+                <circle cx="400" cy="180" r="80" fill="#49B9CE" opacity="0.9" />
+                <text x="400" y="175" font-size="20" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">CONSISTENCY</text>
+                <text x="400" y="195" font-size="14" fill="white" text-anchor="middle"
+                    font-family="Montserrat">(Consistencia)</text>
+
+                <!-- Vértice inferior izquierdo: AVAILABILITY (+10px radio) -->
+                <circle cx="180" cy="520" r="80" fill="#8A7AAF" opacity="0.9" />
+                <text x="180" y="515" font-size="20" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">AVAILABILITY</text>
+                <text x="180" y="535" font-size="14" fill="white" text-anchor="middle"
+                    font-family="Montserrat">(Disponibilidad)</text>
+
+                <!-- Vértice inferior derecho: PARTITION TOLERANCE (+10px radio) -->
+                <circle cx="620" cy="520" r="80" fill="#49B9CE" opacity="0.9" />
+                <text x="620" y="508" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">PARTITION</text>
+                <text x="620" y="526" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                    font-family="Montserrat">TOLERANCE</text>
+                <text x="620" y="543" font-size="13" fill="white" text-anchor="middle"
+                    font-family="Montserrat">(Tolerancia a particiones)</text>
+
+                <!-- Etiquetas de las combinaciones (Desplazadas fuera) -->
+
+                <!-- CP (Derecha) -->
+                <rect x="540" y="320" width="120" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8" />
+                <text x="600" y="345" font-size="22" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                    font-family="Montserrat">CP</text>
+                <text x="600" y="365" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Consistency +</text>
+                <text x="600" y="380" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Partition Tol.</text>
+
+                <!-- Linea CP -->
+                <line x1="500" y1="360" x2="540" y2="360" stroke="#49B9CE" stroke-width="2" stroke-dasharray="5,5" />
+
+                <!-- CA (Izquierda) -->
+                <rect x="140" y="320" width="120" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8" />
+                <text x="200" y="345" font-size="22" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">CA</text>
+                <text x="200" y="365" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Consistency +</text>
+                <text x="200" y="380" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Availability</text>
+
+                <!-- Linea CA -->
+                <line x1="260" y1="360" x2="300" y2="360" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="5,5" />
+
+                <!-- AP (Abajo) -->
+                <rect x="340" y="620" width="120" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8" />
+                <text x="400" y="645" font-size="22" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                    font-family="Montserrat">AP</text>
+                <text x="400" y="665" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Availability +</text>
+                <text x="400" y="680" font-size="12" fill="#555555" text-anchor="middle"
+                    font-family="Montserrat">Partition Tol.</text>
+
+                <!-- Linea AP -->
+                <line x1="400" y1="620" x2="400" y2="580" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="5,5" />
+
+                <!-- Nota inferior -->
+                <rect x="50" y="20" width="160" height="60" fill="none" />
+                <!-- Spacer for layout -->
+            </svg>
+
+            <div class="curiosity-box mt-2">
+                <h4 class="color-warning">⚠️ En la práctica</h4>
+                <p style="font-size: 1.1rem;">
+                    <strong>CA es casi imposible</strong> en sistemas verdaderamente distribuidos. Las particiones de
+                    red son inevitables, por lo que debes elegir entre <strong>CP</strong> o <strong>AP</strong>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: DUALIDADES -->
+    <section class="section">
+        <h2 class="section-title">Las Tres Dualidades del Teorema CAP</h2>
+
+        <!-- DUALIDAD CA -->
+        <div class="highlight-box secondary mb-2">
+            <h3 class="color-secondary">1️⃣ Dualidad CA: Consistency + Availability</h3>
+            <p>
+                <strong>Garantiza:</strong> Datos consistentes Y sistema disponible<br>
+                <strong>Sacrifica:</strong> Tolerancia a particiones
+            </p>
+
+            <!-- SVG Dualidad CA REDUCIDO y Texto extraído -->
+            <div style="margin: 1.5rem 0;">
+                <svg width="600" height="300" viewBox="0 0 400 300" class="diagram-svg">
+                    <text x="200" y="25" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Dualidad CA</text>
+
+                    <!-- Estado Normal -->
+                    <rect x="50" y="40" width="300" height="100" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="200" y="60" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Red Perfecta</text>
+
+                    <circle cx="120" cy="100" r="25" fill="#8A7AAF" />
+                    <text x="120" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">N1</text>
+
+                    <circle cx="200" cy="100" r="25" fill="#8A7AAF" />
+                    <text x="200" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">N2</text>
+
+                    <circle cx="280" cy="100" r="25" fill="#8A7AAF" />
+                    <text x="280" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">N3</text>
+
+                    <line x1="145" y1="100" x2="175" y2="100" stroke="white" stroke-width="2" />
+                    <line x1="225" y1="100" x2="255" y2="100" stroke="white" stroke-width="2" />
+
+                    <!-- Estado Particion -->
+                    <rect x="50" y="160" width="300" height="120" fill="#FFF8DC" stroke="#FFA726" stroke-width="3"
+                        rx="10" />
+                    <text x="200" y="180" font-size="12" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Falla con Partición</text>
+
+                    <circle cx="120" cy="230" r="25" fill="#8A7AAF" />
+                    <text x="120" y="235" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">N1</text>
+
+                    <circle cx="200" cy="230" r="25" fill="#999" />
+                    <text x="200" y="235" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">N2</text>
+
+                    <line x1="160" y1="200" x2="160" y2="260" stroke="red" stroke-width="4" stroke-dasharray="10,5" />
+                    <text x="170" y="235" font-size="20" fill="red" font-weight="bold">❌</text>
+
+                    <text x="200" y="270" font-size="14" fill="#E65100" text-anchor="middle" font-family="Montserrat"
+                        font-weight="bold">SISTEMA CAÍDO</text>
+                </svg>
+            </div>
+
+            <!-- Texto Extraído -->
+            <div class="card secondary">
+                <h4 class="title text-center mb-2">Características CA</h4>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h5>🏗️ Arquitectura</h5>
+                        <p>Single-node o red local perfecta</p>
+                    </div>
+                    <div class="advantage-box">
+                        <h5 class="color-primary">✅ Ventajas</h5>
+                        <p>ACID completo, transacciones perfectas</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h5 class="color-error">❌ Desventajas</h5>
+                        <p>Punto único de fallo, no escala horizontalmente</p>
+                    </div>
+                    <div class="example-box example-blue">
+                        <h5>🗄️ Ejemplos</h5>
+                        <p>PostgreSQL, MySQL, SQL Server (en config standard)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="curiosity-box mt-2">
+                <h4 class="color-warning">⚠️ Realidad Práctica</h4>
+                <p>
+                    En sistemas verdaderamente distribuidos (multi-datacenter, cloud), <strong>CA es prácticamente
+                        imposible</strong> porque las particiones de red son inevitables. CA solo es viable en
+                    sistemas no distribuidos o en redes perfectas (que no existen en la realidad).
+                </p>
+            </div>
+        </div>
+
+        <!-- DUALIDAD CP -->
+        <div class="highlight-box mb-2">
+            <h3 class="color-primary">2️⃣ Dualidad CP: Consistency + Partition Tolerance</h3>
+            <p>
+                <strong>Garantiza:</strong> Datos siempre consistentes Y funciona con particiones de red<br>
+                <strong>Sacrifica:</strong> Disponibilidad durante particiones
+            </p>
+
+            <!-- SVG Dualidad CP REDUCIDO y Texto extraído -->
+            <div style="margin: 1.5rem 0;">
+                <svg width="600" height="350" viewBox="0 0 350 380" class="diagram-svg">
+                    <text x="175" y="25" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Dualidad CP</text>
+
+                    <!-- Estado Normal -->
+                    <rect x="25" y="40" width="300" height="130" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="175" y="65" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Sin Partición</text>
+
+                    <circle cx="100" cy="110" r="30" fill="#49B9CE" />
+                    <text x="100" y="115" font-size="10" fill="white" text-anchor="middle" font-weight="bold">M</text>
+                    <text x="100" y="150" font-size="10" fill="#49B9CE" text-anchor="middle"
+                        font-weight="bold">Master</text>
+
+                    <circle cx="190" cy="90" r="25" fill="#A3E0EA" />
+                    <text x="190" y="95" font-size="10" fill="#333" text-anchor="middle">R1</text>
+
+                    <circle cx="190" cy="135" r="25" fill="#A3E0EA" />
+                    <text x="190" y="140" font-size="10" fill="#333" text-anchor="middle">R2</text>
+
+                    <line x1="130" y1="105" x2="165" y2="95" stroke="#49B9CE" stroke-width="2" />
+                    <line x1="130" y1="115" x2="165" y2="130" stroke="#49B9CE" stroke-width="2" />
+
+                    <!-- Estado Particion -->
+                    <rect x="25" y="190" width="300" height="180" fill="#FFF8DC" stroke="#FFA726" stroke-width="3"
+                        rx="10" />
+                    <text x="175" y="215" font-size="12" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Con Partición de Red</text>
+
+                    <circle cx="100" cy="270" r="30" fill="#49B9CE" />
+                    <text x="100" y="275" font-size="10" fill="white" text-anchor="middle" font-weight="bold">M</text>
+                    <text x="100" y="320" font-size="12" fill="#49B9CE" font-weight="bold" text-anchor="middle">✅
+                        OK</text>
+
+                    <circle cx="210" cy="250" r="25" fill="#999" />
+                    <text x="210" y="255" font-size="10" fill="white" text-anchor="middle">R1</text>
+
+                    <circle cx="210" cy="300" r="25" fill="#999" />
+                    <text x="210" y="305" font-size="10" fill="white" text-anchor="middle">R2</text>
+
+                    <line x1="155" y1="220" x2="155" y2="340" stroke="red" stroke-width="4" stroke-dasharray="10,5" />
+
+                    <text x="210" y="340" font-size="12" fill="#E65100" font-weight="bold" text-anchor="middle">❌ READ
+                        ONLY</text>
+                    <text x="210" y="355" font-size="10" fill="#E65100" text-anchor="middle">(Sin Quorum)</text>
+                </svg>
+            </div>
+
+            <div class="highlight-box primary">
+                <h4 class="title">Durante una Partición (Sistema CP)</h4>
+                <div class="grid-features" style="margin-bottom: 0;">
+                    <div class="feature-card">
+                        <h5 class="color-primary">✅ Nodos con Quorum (Mayoría)</h5>
+                        <p>Continúan aceptando escrituras y lecturas consistentes.</p>
+                    </div>
+                    <div class="feature-card warning">
+                        <h5 class="color-warning">❌ Nodos Aislados (Minoría)</h5>
+                        <p>Rechazan operaciones o entran en modo solo lectura para evitar inconsistencias.</p>
+                        <p><em>"Mejor no responder que dar datos viejos"</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="color-primary mt-2">💡 Casos de Uso CP</h4>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <p><strong>Sistemas bancarios:</strong> Saldos de cuentas, transacciones financieras</p>
+                </div>
+                <div class="feature-card">
+                    <p><strong>Inventarios:</strong> Stock de productos, reservas de vuelos/hoteles</p>
+                </div>
+                <div class="feature-card">
+                    <p><strong>Sistemas de votación:</strong> Elecciones, encuestas críticas</p>
+                </div>
+                <div class="feature-card">
+                    <p><strong>Bases de datos:</strong> MongoDB (WriteConcern: majority), HBase, Redis Cluster</p>
+                </div>
+                <div class="feature-card">
+                    <p><strong>Coordinación distribuida:</strong> ZooKeeper, etcd, Consul</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DUALIDAD AP -->
+        <div class="highlight-box secondary">
+            <h3 class="color-secondary">3️⃣ Dualidad AP: Availability + Partition Tolerance</h3>
+            <p>
+                <strong>Garantiza:</strong> Sistema siempre disponible Y funciona con particiones de red<br>
+                <strong>Sacrifica:</strong> Consistencia estricta (usa consistencia eventual)
+            </p>
+
+            <!-- SVG Dualidad AP REDUCIDO y Texto extraído -->
+            <div style="margin: 1.5rem 0;">
+                <svg width="600" height="300" viewBox="0 0 500 250" class="diagram-svg">
+                    <text x="250" y="25" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Dualidad AP: Consistencia Eventual</text>
+
+                    <line x1="50" y1="50" x2="450" y2="50" stroke="#333" stroke-width="2" />
+                    <text x="50" y="40" font-size="10" fill="#333">t=0</text>
+                    <text x="225" y="40" font-size="10" fill="#E65100" font-weight="bold">t=1 (Partición)</text>
+                    <text x="400" y="40" font-size="10" fill="#49B9CE" font-weight="bold">t=2 (Reconexión)</text>
+
+                    <!-- T1 -->
+                    <rect x="175" y="60" width="150" height="140" fill="#FFF8DC" stroke="#E65100" stroke-width="2"
+                        rx="5" />
+                    <line x1="250" y1="60" x2="250" y2="200" stroke="red" stroke-width="2" stroke-dasharray="5,5" />
+
+                    <circle cx="210" cy="100" r="20" fill="#8A7AAF" />
+                    <text x="210" y="105" font-size="10" fill="white" text-anchor="middle" font-weight="bold">A</text>
+                    <text x="210" y="140" font-size="10" text-anchor="middle">v=101</text>
+
+                    <circle cx="290" cy="100" r="20" fill="#8A7AAF" />
+                    <text x="290" y="105" font-size="10" fill="white" text-anchor="middle" font-weight="bold">B</text>
+                    <text x="290" y="140" font-size="10" text-anchor="middle">v=102</text>
+
+                    <text x="250" y="180" font-size="12" fill="#E65100" font-weight="bold"
+                        text-anchor="middle">DESINCRONIZADOS</text>
+
+                    <!-- T2 Sync -->
+                    <rect x="350" y="60" width="120" height="140" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <circle cx="390" cy="100" r="20" fill="#49B9CE" />
+                    <text x="390" y="105" font-size="10" fill="white" text-anchor="middle" font-weight="bold">A</text>
+
+                    <circle cx="430" cy="100" r="20" fill="#49B9CE" />
+                    <text x="430" y="105" font-size="10" fill="white" text-anchor="middle" font-weight="bold">B</text>
+
+                    <text x="410" y="140" font-size="10" fill="#333" text-anchor="middle">Syncing...</text>
+                    <text x="410" y="180" font-size="12" fill="#49B9CE" font-weight="bold"
+                        text-anchor="middle">Igualados</text>
+                </svg>
+            </div>
+
+            <div class="card secondary">
+                <h4 class="title text-center mb-2">Principio de los Sistemas AP</h4>
+                <p class="text-center mb-2">"Preferimos que el sistema <strong>SIEMPRE funcione</strong>, aunque los
+                    datos puedan estar
+                    temporalmente desactualizados."</p>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h5>✅ Alta Disponibilidad</h5>
+                        <p>Todos los nodos responden siempre.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h5>🔄 Consistencia Eventual</h5>
+                        <p>Cuando la red se recupera, los datos se sincronizan y convergen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="color-secondary mt-2">💡 Casos de Uso AP</h4>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <p><strong>Redes sociales:</strong> Instagram, Facebook, Twitter (posts, likes, comentarios)</p>
+                </div>
+                <div class="feature-card secondary">
+                    <p><strong>Carritos de compra:</strong> Amazon (mejor perder 1 venta que caer el sitio)</p>
+                </div>
+                <div class="feature-card secondary">
+                    <p><strong>DNS:</strong> Sistema de nombres de dominio global</p>
+                </div>
+                <div class="feature-card secondary">
+                    <p><strong>Cachés distribuidas:</strong> CDN de Cloudflare, Akamai</p>
+                </div>
+                <div class="feature-card secondary">
+                    <p><strong>Bases de datos:</strong> Cassandra, DynamoDB, Riak, CouchDB</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: CÓDIGO PYTHON -->
+    <section class="section">
+        <h2 class="section-title">Implementación Práctica en Python</h2>
+        <p>
+            Vamos a implementar simulaciones simples de sistemas CP y AP para entender cómo se comportan durante
+            particiones de red.
+        </p>
+
+        <h3 class="color-primary">Simulación de Sistema CP (MongoDB estilo)</h3>
+        <pre><code class="language-python">class SistemaCP:
+    """Sistema que prioriza Consistencia y Tolerancia a Particiones"""
+
+    def __init__(self, num_replicas=3):
+        self.replicas = [{'id': i, 'data': {}, 'conectado': True}
+                        for i in range(num_replicas)]
+        self.quorum = (num_replicas // 2) + 1
+
+    def escribir(self, clave, valor):
+        """Escritura con quorum - requiere mayoría de nodos"""
+        nodos_conectados = [r for r in self.replicas if r['conectado']]
+
+        if len(nodos_conectados) < self.quorum:
+            raise Exception(f"❌ ERROR: No hay quorum. "
+                          f"Necesito {self.quorum} nodos, "
+                          f"solo tengo {len(nodos_conectados)}")
+
+        # Escribir en nodos con quorum
+        for replica in nodos_conectados[:self.quorum]:
+            replica['data'][clave] = valor
+
+        return f"✅ Escritura exitosa en {self.quorum} nodos (quorum alcanzado)"
+
+    def leer(self, clave):
+        """Lectura con quorum"""
+        nodos_conectados = [r for r in self.replicas if r['conectado']]
+
+        if len(nodos_conectados) < self.quorum:
+            raise Exception(f"❌ ERROR: No hay quorum para lectura")
+
+        # Leer del primero con quorum
+        return nodos_conectados[0]['data'].get(clave, None)
+
+    def simular_particion(self, nodos_caidos):
+        """Simula caída de nodos"""
+        for nodo_id in nodos_caidos:
+            self.replicas[nodo_id]['conectado'] = False
+        print(f"🔌 Partición: Nodos {nodos_caidos} desconectados")
+
+
+# === EJEMPLO DE USO ===
+print("=== SISTEMA CP (Consistency + Partition Tolerance) ===\n")
+
+sistema_cp = SistemaCP(num_replicas=5)
+
+# Escenario 1: Red normal
+print("📍 Escenario 1: Red funcionando correctamente")
+try:
+    resultado = sistema_cp.escribir('saldo', 1000)
+    print(resultado)
+    print(f"Lectura: saldo = {sistema_cp.leer('saldo')}")
+except Exception as e:
+    print(e)
+
+# Escenario 2: Partición de red (caen 2 nodos)
+print("\n📍 Escenario 2: Partición de red (2 nodos caen)")
+sistema_cp.simular_particion([3, 4])
+try:
+    resultado = sistema_cp.escribir('saldo', 500)
+    print(resultado)  # Funciona: 3 de 5 nodos conectados (quorum = 3)
+except Exception as e:
+    print(e)
+
+# Escenario 3: Partición mayor (caen 3 nodos - pierde quorum)
+print("\n📍 Escenario 3: Partición severa (3 nodos caen)")
+sistema_cp.simular_particion([2])
+try:
+    resultado = sistema_cp.escribir('saldo', 200)
+    print(resultado)
+except Exception as e:
+    print(e)  # FALLA: Solo 2 de 5 nodos, necesita 3</code></pre>
+
+        <!-- Salida CP -->
+        <div class="code-block" style="background: #1e1e1e; border: 1px solid #333; margin-top: 1rem;">
+            <div class="code-header" style="background: #333; color: #fff; font-family: monospace;">🖥️ Salida de
+                Consola (Sistema CP)</div>
+            <pre style="color: #ccc; font-family: 'Consolas', 'Monaco', monospace; line-height: 1.5; padding: 1rem;">
+=== SISTEMA CP (Consistency + Partition Tolerance) ===
+
+📍 Escenario 1: Red funcionando correctamente
+<span style="color: #4CAF50">✅ Escritura exitosa en 3 nodos (quorum alcanzado)</span>
+Lectura: saldo = 1000
+
+📍 Escenario 2: Partición de red (2 nodos caen)
+🔌 Partición: Nodos [3, 4] desconectados
+<span style="color: #4CAF50">✅ Escritura exitosa en 3 nodos (quorum alcanzado)</span>
+
+📍 Escenario 3: Partición severa (3 nodos caen)
+🔌 Partición: Nodos [2] desconectados
+<span style="color: #f44336">❌ ERROR: No hay quorum. Necesito 3 nodos, solo tengo 2</span></pre>
+        </div>
+
+        <h3 class="color-secondary mt-2">Simulación de Sistema AP (Cassandra estilo)</h3>
+        <pre><code class="language-python">import time
+
+class SistemaAP:
+    """Sistema que prioriza Disponibilidad y Tolerancia a Particiones"""
+
+    def __init__(self, num_replicas=3):
+        self.replicas = [{'id': i, 'data': {}, 'conectado': True,
+                         'timestamp': {}} for i in range(num_replicas)]
+
+    def escribir(self, clave, valor):
+        """Escritura siempre exitosa - escribe en nodos disponibles"""
+        nodos_conectados = [r for r in self.replicas if r['conectado']]
+
+        if not nodos_conectados:
+            return "⚠️ ADVERTENCIA: No hay nodos disponibles"
+
+        timestamp = time.time()
+        escritos = 0
+        for replica in nodos_conectados:
+            replica['data'][clave] = valor
+            replica['timestamp'][clave] = timestamp
+            escritos += 1
+
+        return f"✅ Escritura exitosa en {escritos}/{len(self.replicas)} nodos"
+
+    def leer(self, clave):
+        """Lectura siempre responde - puede devolver dato desactualizado"""
+        nodos_conectados = [r for r in self.replicas if r['conectado']]
+
+        if not nodos_conectados:
+            return None
+
+        # Responder del primer nodo disponible
+        valor = nodos_conectados[0]['data'].get(clave, None)
+        return valor
+
+    def sincronizar(self):
+        """Proceso de reconciliación - consistencia eventual"""
+        print("🔄 Iniciando sincronización entre réplicas...")
+
+        # Recolectar todos los valores y timestamps
+        datos_consolidados = {}
+        for replica in self.replicas:
+            if replica['conectado']:
+                for clave, valor in replica['data'].items():
+                    timestamp = replica['timestamp'].get(clave, 0)
+                    if (clave not in datos_consolidados or
+                        timestamp > datos_consolidados[clave]['timestamp']):
+                        datos_consolidados[clave] = {
+                            'valor': valor,
+                            'timestamp': timestamp
+                        }
+
+        # Propagar valores más recientes
+        for replica in self.replicas:
+            if replica['conectado']:
+                for clave, info in datos_consolidados.items():
+                    replica['data'][clave] = info['valor']
+                    replica['timestamp'][clave] = info['timestamp']
+
+        print("✅ Sincronización completada - Consistencia eventual alcanzada")
+
+    def simular_particion(self, nodos_caidos):
+        """Simula caída de nodos"""
+        for nodo_id in nodos_caidos:
+            self.replicas[nodo_id]['conectado'] = False
+        print(f"🔌 Partición: Nodos {nodos_caidos} desconectados")
+
+    def restaurar_conexion(self, nodos):
+        """Restaura conexión de nodos"""
+        for nodo_id in nodos:
+            self.replicas[nodo_id]['conectado'] = True
+        print(f"🔗 Reconexión: Nodos {nodos} conectados")
+
+
+# === EJEMPLO DE USO ===
+print("=== SISTEMA AP (Availability + Partition Tolerance) ===\n")
+
+sistema_ap = SistemaAP(num_replicas=3)
+
+# Escenario 1: Escribir con todos los nodos
+print("📍 Escenario 1: Escritura inicial (red normal)")
+print(sistema_ap.escribir('likes', 100))
+print(f"Lectura: likes = {sistema_ap.leer('likes')}\n")
+
+# Escenario 2: Partición - escribir en ambos lados
+print("📍 Escenario 2: Partición de red")
+sistema_ap.simular_particion([1, 2])
+print(sistema_ap.escribir('likes', 101))  # Solo escribe en nodo 0
+print(f"Lectura desde nodo 0: likes = {sistema_ap.leer('likes')}\n")
+
+# Nodo aislado también acepta escrituras
+sistema_ap.restaurar_conexion([1])
+sistema_ap.simular_particion([0, 2])
+print(sistema_ap.escribir('likes', 105))  # Solo escribe en nodo 1
+print(f"Lectura desde nodo 1: likes = {sistema_ap.leer('likes')}\n")
+
+# Escenario 3: Reconexión y sincronización
+print("📍 Escenario 3: Reconexión y consistencia eventual")
+sistema_ap.restaurar_conexion([0, 2])
+sistema_ap.sincronizar()
+print(f"Lectura final: likes = {sistema_ap.leer('likes')}")</code></pre>
+
+        <!-- Salida AP -->
+        <div class="code-block" style="background: #1e1e1e; border: 1px solid #333; margin-top: 1rem;">
+            <div class="code-header" style="background: #333; color: #fff; font-family: monospace;">🖥️ Salida de
+                Consola (Sistema AP)</div>
+            <pre style="color: #ccc; font-family: 'Consolas', 'Monaco', monospace; line-height: 1.5; padding: 1rem;">
+=== SISTEMA AP (Availability + Partition Tolerance) ===
+
+📍 Escenario 1: Escritura inicial (red normal)
+<span style="color: #4CAF50">✅ Escritura exitosa en 3/3 nodos</span>
+Lectura: likes = 100
+
+📍 Escenario 2: Partición de red
+🔌 Partición: Nodos [1, 2] desconectados
+<span style="color: #4CAF50">✅ Escritura exitosa en 1/3 nodos</span>
+Lectura desde nodo 0: likes = 101
+
+🔌 Partición: Nodos [0, 2] desconectados
+<span style="color: #4CAF50">✅ Escritura exitosa en 1/3 nodos</span>
+Lectura desde nodo 1: likes = 105
+
+📍 Escenario 3: Reconexión y consistencia eventual
+🔗 Reconexión: Nodos [0, 2] conectados
+🔄 Iniciando sincronización entre réplicas...
+<span style="color: #4CAF50">✅ Sincronización completada - Consistencia eventual alcanzada</span>
+Lectura final: likes = 105</pre>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: COMPARACIÓN Y DECISIÓN -->
+    <section class="section">
+        <h2 class="section-title">¿Cómo Elegir entre CP y AP?</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Sistema CP</th>
+                    <th>Sistema AP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Prioridad</strong></td>
+                    <td>Datos siempre correctos</td>
+                    <td>Sistema siempre funcionando</td>
+                </tr>
+                <tr>
+                    <td><strong>Durante partición</strong></td>
+                    <td>Rechaza operaciones sin quorum</td>
+                    <td>Acepta operaciones en todos los nodos</td>
+                </tr>
+                <tr>
+                    <td><strong>Consistencia</strong></td>
+                    <td>Fuerte (Strong Consistency)</td>
+                    <td>Eventual (Eventual Consistency)</td>
+                </tr>
+                <tr>
+                    <td><strong>Latencia</strong></td>
+                    <td>Mayor (espera sincronización)</td>
+                    <td>Menor (responde inmediatamente)</td>
+                </tr>
+                <tr>
+                    <td><strong>Complejidad</strong></td>
+                    <td>Mayor (gestión de quorum)</td>
+                    <td>Menor (acepta todo)</td>
+                </tr>
+                <tr>
+                    <td><strong>Riesgo principal</strong></td>
+                    <td>Sistema no disponible</td>
+                    <td>Datos temporalmente inconsistentes</td>
+                </tr>
+                <tr>
+                    <td><strong>Ideal para</strong></td>
+                    <td>Finanzas, inventarios, votaciones</td>
+                    <td>Redes sociales, carritos, cachés</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-features mt-2 mb-2">
+            <div class="feature-card primary">
+                <h3 class="color-primary text-center">Elige CP si...</h3>
+                <ul>
+                    <li>Los datos incorrectos causan problemas graves (dinero, stock)</li>
+                    <li>Prefieres rechazar operaciones que dar datos erróneos</li>
+                    <li>Puedes tolerar indisponibilidad temporal</li>
+                    <li>Transacciones ACID son críticas</li>
+                </ul>
+            </div>
+
+            <div class="feature-card secondary">
+                <h3 class="color-secondary text-center">Elige AP si...</h3>
+                <ul>
+                    <li>La disponibilidad es más importante que la exactitud inmediata</li>
+                    <li>Puedes tolerar datos temporalmente desactualizados</li>
+                    <li>La experiencia de usuario no puede fallar (redes sociales)</li>
+                    <li>Necesitas máxima escalabilidad y rendimiento</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: CONCLUSIONES -->
+    <section class="section">
+        <h2 class="section-title">Conclusiones y Consideraciones Prácticas</h2>
+
+        <div class="highlight-box formula-container">
+            <p class="formula-title">💡 Lecciones del Teorema CAP</p>
+            <ul>
+                <li><strong>No hay solución perfecta:</strong> Todo sistema distribuido debe sacrificar una propiedad
+                </li>
+                <li><strong>CA es teórico:</strong> En sistemas reales con redes imperfectas, la elección es CP vs AP
+                </li>
+                <li><strong>El contexto importa:</strong> La decisión depende del caso de uso y requisitos de negocio
+                </li>
+                <li><strong>Consistencia eventual es común:</strong> Muchos sistemas AP funcionan perfectamente con
+                    ella</li>
+                <li><strong>Puedes mezclar:</strong> Diferentes datos pueden tener diferentes garantías en el mismo
+                    sistema</li>
+            </ul>
+        </div>
+
+        <div class="curiosity-box">
+            <h4 class="color-warning">💡 Dato Histórico</h4>
+            <p>
+                Eric Brewer presentó el Teorema CAP en el año <strong>2000</strong> en el symposium ACM PODC. En
+                <strong>2012</strong>, el propio Brewer publicó un artículo titulado <em>"CAP Twelve Years Later: How
+                    the 'Rules' Have Changed"</em>, donde matizó que la elección entre C y A no es binaria, sino un
+                espectro continuo. Además, reconoció que las particiones son raras en la práctica, por lo que los
+                sistemas suelen funcionar en modo CA la mayor parte del tiempo, y solo activan CP o AP durante las
+                particiones.
+            </p>
+        </div>
+
+        <div class="curiosity-box mt-2">
+            <h4 class="color-warning">🎯 Reflexión Final</h4>
+            <p>
+                El Teorema CAP no es una limitación, sino una <strong>herramienta de diseño</strong>. Entender estas
+                restricciones te permite tomar decisiones arquitectónicas informadas, eligiendo conscientemente qué
+                garantías ofrecer según las necesidades de tu aplicación. En Big Data, donde los sistemas distribuidos
+                son la norma, el CAP es fundamental para diseñar arquitecturas escalables y resilientes.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/copy-code.js"></script>
+</body>
+
+</html>

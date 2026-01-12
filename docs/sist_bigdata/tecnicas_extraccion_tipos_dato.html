@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Técnicas de Extracción por Tipo de Dato - Sistemas Big Data">
+    <meta name="keywords" content="CDC, JSON, XML, NLP, ETL, Big Data, Extracción de Datos">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Técnicas de Extracción por Tipo de Dato | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Sistemas Big Data</a> →
+                <span>Técnicas de Extracción por Tipo de Dato</span>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Técnicas de Extracción por Tipo de Dato</h1>
+            <p class="subtitle">Estrategias Especializadas para Datos Estructurados, Semi-estructurados y No Estructurados</p>
+        </div>
+
+<!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2>El Espectro de Tipos de Datos</h2>
+            <p>
+                En el mundo del Big Data, no todos los datos se crean igual. La información que procesamos puede variar desde <strong>tablas perfectamente estructuradas</strong> en bases de datos SQL hasta <strong>tweets, imágenes y videos</strong> completamente no estructurados. Cada tipo de dato requiere técnicas de extracción específicas que respeten su naturaleza y aprovechen sus características particulares.
+            </p>
+            <p>
+                Entender la <strong>taxonomía de datos</strong> y las estrategias apropiadas para cada categoría es fundamental para diseñar pipelines de extracción eficientes. Una técnica que funciona brillantemente con datos estructurados puede ser completamente inadecuada para datos no estructurados, y viceversa.
+            </p>
+            
+            <!-- CAJA DE EJEMPLO REAL -->
+            <div class="highlight-box primary">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">💼 Caso Real: Airbnb Data Platform</p>
+                <p>Airbnb procesa más de 2 petabytes de datos diarios de fuentes extremadamente heterogéneas: reservas en MySQL (estructurado), perfiles de usuario en JSON desde MongoDB (semi-estructurado), reseñas de texto libre en 62 idiomas (no estructurado), y fotos de propiedades (binario no estructurado). Cada tipo requiere pipelines de extracción completamente diferentes, desde CDC para capturar cambios en reservas hasta NLP multilingüe para analizar sentimiento en reseñas.</p>
+            </div>
+
+            <!-- TAXONOMÍA EN GRID -->
+            <h3>Taxonomía de Datos</h3>
+            <div class="grid-2-cols">
+                <!-- TARJETA AZUL -->
+                <div class="card primary">
+                    <h4 class="color-primary">📊 Estructurados</h4>
+                    <p>Esquema fijo, formato tabular. Bases de datos relacionales (SQL).</p>
+                    <p><strong>~20% del total</strong> de datos empresariales.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div class="card secondary">
+                    <h4 class="color-secondary">🗂️ Semi-estructurados</h4>
+                    <p>Esquema flexible con etiquetas y jerarquías. JSON, XML, YAML.</p>
+                    <p><strong>~10% del total</strong>, creciendo rápidamente.</p>
+                </div>
+                <!-- TARJETA AZUL -->
+                <div class="card primary">
+                    <h4 class="color-primary">📝 No Estructurados</h4>
+                    <p>Sin esquema predefinido. Texto, imágenes, audio, video, emails.</p>
+                    <p><strong>~70% del total</strong> y creciendo exponencialmente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: DATOS ESTRUCTURADOS - CDC -->
+        <section class="section">
+            <h2>📊 Datos Estructurados: Change Data Capture (CDC)</h2>
+            
+            <p>
+                <strong>Change Data Capture (CDC)</strong> es una técnica avanzada que captura únicamente los cambios realizados en una base de datos, evitando extraer millones de registros repetidamente cuando solo una pequeña fracción cambia entre ejecuciones. Si una tabla tiene 10 millones de registros pero solo 5,000 cambiaron desde ayer, CDC transfiere únicamente esos 5,000 registros, logrando un <strong>ahorro del 99.95%</strong> en volumen de datos movidos.
+            </p>
+
+            <!-- DIAGRAMA CDC -->
+            <div class="mb-2">
+                <svg width="900" height="300" viewBox="0 0 900 300" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Change Data Capture: Extraer Solo lo que Cambió</text>
+                    
+                    <!-- EXTRACCIÓN COMPLETA -->
+                    <text x="225" y="65" font-size="16" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">❌ Extracción Completa</text>
+                    
+                    <rect x="80" y="85" width="290" height="80" fill="#FFF8DC" stroke="#FFA726" stroke-width="3" rx="8"/>
+                    <text x="225" y="110" font-size="14" fill="#333333" text-anchor="middle" font-family="Montserrat">Base de Datos: 10,000,000 registros</text>
+                    <text x="225" y="135" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">Solo 5,000 cambiaron desde ayer</text>
+                    <text x="225" y="155" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">📤 Extrae: 10,000,000 registros</text>
+                    
+                    <text x="225" y="185" font-size="12" fill="#E65100" font-weight="bold" text-anchor="middle" font-family="Montserrat">⏱️ Tiempo: 2 horas</text>
+                    <text x="225" y="200" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Sobrecarga base de datos: Alta</text>
+                    
+                    <!-- VS -->
+                    <text x="450" y="140" font-size="24" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">VS</text>
+                    
+                    <!-- CDC -->
+                    <text x="675" y="65" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">✅ CDC (Change Data Capture)</text>
+                    
+                    <rect x="530" y="85" width="290" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                    <text x="675" y="110" font-size="14" fill="#333333" text-anchor="middle" font-family="Montserrat">Base de Datos: 10,000,000 registros</text>
+                    <text x="675" y="135" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">CDC identifica solo cambios</text>
+                    <text x="675" y="155" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">📤 Extrae: 5,000 registros</text>
+                    
+                    <text x="675" y="185" font-size="12" fill="#49B9CE" font-weight="bold" text-anchor="middle" font-family="Montserrat">⚡ Tiempo: 3.6 segundos</text>
+                    <text x="675" y="200" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Sobrecarga base de datos: Mínima</text>
+                    
+                    <!-- Resultado -->
+                    <rect x="200" y="230" width="500" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                    <text x="450" y="250" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">🚀 CDC: 99.95% menos datos transferidos</text>
+                    <text x="450" y="270" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">2,000x más rápido | Reduce carga en producción | Datos frescos en tiempo real</text>
+                </svg>
+            </div>
+
+            <!-- ENFOQUES CDC -->
+            <div class="mb-2">
+                <h3 class="color-primary">Tres Enfoques de CDC</h3>
+                
+                <!-- TIMESTAMP-BASED -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                    <h4 class="color-primary">1️⃣ Timestamp-Based CDC</h4>
+                    <p>
+                        Utiliza columnas de fecha/hora como <code>fecha_modificacion</code> o <code>ultima_actualizacion</code> para identificar registros modificados.
+                    </p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="info-box primary">
+                            <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">✅ Ventajas</p>
+                            <ul>
+                                <li>Fácil de implementar</li>
+                                <li>No requiere permisos especiales</li>
+                                <li>Compatible con cualquier RDBMS</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box warning">
+                            <p style="font-weight: 700; color: #E65100; margin-bottom: 0.5rem;">❌ Desventajas</p>
+                            <ul>
+                                <li>No detecta DELETE</li>
+                                <li>Requiere columnas timestamp</li>
+                                <li>Depende de actualización correcta</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- EJEMPLO DE CÓDIGO -->
+                    <div class="highlight-box primary">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: Timestamp-Based CDC</p>
+                        <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">import</span> pandas <span style="color: #8A7AAF; font-weight: 700;">as</span> pd
+<span style="color: #8A7AAF; font-weight: 700;">from</span> datetime <span style="color: #8A7AAF; font-weight: 700;">import</span> datetime
+<span style="color: #8A7AAF; font-weight: 700;">import</span> psycopg2
+
+<span style="color: #777777; font-style: italic;"># Conectar a PostgreSQL</span>
+conn = psycopg2.connect(<span style="color: #49B9CE;">"dbname=ventas user=etl"</span>)
+
+<span style="color: #777777; font-style: italic;"># Leer timestamp de última extracción</span>
+ultima_extraccion = pd.read_csv(<span style="color: #49B9CE;">'checkpoint.csv'</span>)[<span style="color: #49B9CE;">'timestamp'</span>][0]
+
+<span style="color: #777777; font-style: italic;"># Extraer solo registros modificados desde última vez</span>
+query = <span style="color: #49B9CE;">f"""
+    SELECT * FROM clientes 
+    WHERE fecha_modificacion > '{ultima_extraccion}'
+    ORDER BY fecha_modificacion
+"""</span>
+
+nuevos_datos = pd.read_sql(query, conn)
+<span style="color: #8A7AAF; font-weight: 700;">print</span>(<span style="color: #49B9CE;">f"Registros extraídos: {len(nuevos_datos)}"</span>)
+
+<span style="color: #777777; font-style: italic;"># Guardar nuevo checkpoint para próxima ejecución</span>
+<span style="color: #8A7AAF; font-weight: 700;">if</span> len(nuevos_datos) > 0:
+    nueva_marca = nuevos_datos[<span style="color: #49B9CE;">'fecha_modificacion'</span>].max()
+    pd.DataFrame({<span style="color: #49B9CE;">'timestamp'</span>: [nueva_marca]}).to_csv(<span style="color: #49B9CE;">'checkpoint.csv'</span>)</code></pre>
+                    </div>
+                </div>
+
+                <!-- LOG-BASED -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                    <h4 class="color-secondary">2️⃣ Log-Based CDC</h4>
+                    <p>
+                        Lee directamente los <strong>logs de transacciones</strong> de la base de datos (binlog de MySQL, WAL de PostgreSQL, redo logs de Oracle). Estos logs registran cada operación de escritura a nivel interno de forma automática.
+                    </p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="info-box secondary">
+                            <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">✅ Ventajas</p>
+                            <ul>
+                                <li>Captura todos los cambios (INSERT/UPDATE/DELETE)</li>
+                                <li>No modifica tablas origen</li>
+                                <li>Latencia ultra-baja (tiempo real)</li>
+                                <li>Precisión perfecta</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box warning">
+                            <p style="font-weight: 700; color: #E65100; margin-bottom: 0.5rem;">❌ Desventajas</p>
+                            <ul>
+                                <li>Configuración compleja</li>
+                                <li>Requiere permisos de replicación</li>
+                                <li>Específico de cada RDBMS</li>
+                                <li>Overhead si alto volumen transaccional</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box warning">
+                        <p style="font-weight: 700; color: #E65100; margin-bottom: 0.5rem;">🛠️ Herramientas Populares</p>
+                        <p>
+                            <strong>Debezium</strong> (open source), <strong>Oracle GoldenGate</strong>, <strong>AWS DMS</strong>, <strong>Qlik Replicate</strong>, <strong>Striim</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- TRIGGER-BASED -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1rem; border: 2px solid #49B9CE;">
+                    <h4 class="color-primary">3️⃣ Trigger-Based CDC</h4>
+                    <p>
+                        Utiliza <strong>triggers de base de datos</strong> que se ejecutan automáticamente cuando ocurren INSERT, UPDATE o DELETE. Los triggers registran los cambios en tablas auxiliares diseñadas para CDC.
+                    </p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="info-box primary">
+                            <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">✅ Ventajas</p>
+                            <ul>
+                                <li>Control total sobre qué capturar</li>
+                                <li>Puede añadir metadata personalizada</li>
+                                <li>Compatible con cualquier RDBMS</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box warning">
+                            <p style="font-weight: 700; color: #E65100; margin-bottom: 0.5rem;">❌ Desventajas</p>
+                            <ul>
+                                <li>Overhead en cada escritura</li>
+                                <li>Requiere permisos administrativos</li>
+                                <li>Complejidad de mantenimiento</li>
+                                <li>Impacta rendimiento transaccional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASO REAL -->
+            <div class="highlight-box primary">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">🏢 Caso Real: Uber Real-Time Analytics</p>
+                <p>
+                    Uber implementó CDC log-based usando <strong>Debezium</strong> para capturar cambios en su base de datos de viajes en tiempo real. Con más de <strong>10 millones de viajes diarios</strong>, extraer la tabla completa era imposible. CDC les permite detectar cada nuevo viaje, cambio de estado o actualización de ubicación en menos de 100ms, alimentando dashboards de monitoreo en vivo, sistemas de pricing dinámico y detección de fraude. Redujeron la latencia de datos de 15 minutos (batch) a <strong>sub-segundo</strong>, procesando únicamente 0.01% del volumen total de la base de datos.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: DATOS SEMI-ESTRUCTURADOS -->
+        <section class="section">
+            <h2>🗂️ Datos Semi-estructurados: JSON, XML, YAML</h2>
+            
+            <p>
+                Los datos <strong>semi-estructurados</strong> ocupan un espacio intermedio entre la rigidez de las tablas SQL y la libertad total del texto libre. Aunque no siguen un esquema tabular estricto, contienen <strong>etiquetas, marcadores o jerarquías</strong> que organizan la información de forma interpretable. Son el formato dominante en APIs modernas, sistemas NoSQL y archivos de configuración.
+            </p>
+
+            <!-- COMPARACIÓN FORMATOS -->
+            <div class="mb-2">
+                <h3 class="color-secondary">Formatos Principales</h3>
+                
+                <div class="grid-2-cols">
+                    <!-- JSON -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">📄 JSON</h4>
+                        <p><strong>JavaScript Object Notation</strong></p>
+                        <p>✅ Ligero, legible, ampliamente adoptado</p>
+                        <p><strong>Uso:</strong> APIs REST, MongoDB, configuraciones modernas</p>
+                    </div>
+                    
+                    <!-- XML -->
+                    <div class="card primary">
+                        <h4 class="color-primary">📋 XML</h4>
+                        <p><strong>eXtensible Markup Language</strong></p>
+                        <p>✅ Robusto, validable con schemas (XSD)</p>
+                        <p><strong>Uso:</strong> SOAP, sistemas legacy, documentos empresariales</p>
+                    </div>
+                    
+                    <!-- YAML -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">⚙️ YAML</h4>
+                        <p><strong>YAML Ain't Markup Language</strong></p>
+                        <p>✅ Muy legible, sintaxis limpia</p>
+                        <p><strong>Uso:</strong> Kubernetes, Docker Compose, Ansible</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÉCNICAS JSON -->
+            <div class="mb-2">
+                <h3 class="color-secondary">Extracción de JSON</h3>
+                <p>
+                    JSON es el formato semi-estructurado más común en aplicaciones modernas. Su simplicidad y eficiencia lo hacen ideal para APIs y almacenamiento NoSQL.
+                </p>
+
+                <!-- EJEMPLO JSON -->
+                <div class="highlight-box secondary">
+                    <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: Extraer y Aplanar JSON Anidado</p>
+                    <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">import</span> pandas <span style="color: #8A7AAF; font-weight: 700;">as</span> pd
+<span style="color: #8A7AAF; font-weight: 700;">import</span> json
+
+<span style="color: #777777; font-style: italic;"># JSON anidado típico de API</span>
+json_data = {
+    <span style="color: #49B9CE;">"usuario"</span>: {
+        <span style="color: #49B9CE;">"id"</span>: 12345,
+        <span style="color: #49B9CE;">"nombre"</span>: <span style="color: #49B9CE;">"Ana García"</span>,
+        <span style="color: #49B9CE;">"direccion"</span>: {
+            <span style="color: #49B9CE;">"calle"</span>: <span style="color: #49B9CE;">"Gran Vía 28"</span>,
+            <span style="color: #49B9CE;">"ciudad"</span>: <span style="color: #49B9CE;">"Madrid"</span>,
+            <span style="color: #49B9CE;">"pais"</span>: <span style="color: #49B9CE;">"España"</span>
+        },
+        <span style="color: #49B9CE;">"compras"</span>: [
+            {<span style="color: #49B9CE;">"producto"</span>: <span style="color: #49B9CE;">"Laptop"</span>, <span style="color: #49B9CE;">"precio"</span>: 899},
+            {<span style="color: #49B9CE;">"producto"</span>: <span style="color: #49B9CE;">"Mouse"</span>, <span style="color: #49B9CE;">"precio"</span>: 25}
+        ]
+    }
+}
+
+<span style="color: #777777; font-style: italic;"># Aplanar JSON anidado a tabla</span>
+df = pd.json_normalize(
+    json_data,
+    record_path=[<span style="color: #49B9CE;">'usuario'</span>, <span style="color: #49B9CE;">'compras'</span>],
+    meta=[
+        [<span style="color: #49B9CE;">'usuario'</span>, <span style="color: #49B9CE;">'id'</span>],
+        [<span style="color: #49B9CE;">'usuario'</span>, <span style="color: #49B9CE;">'nombre'</span>],
+        [<span style="color: #49B9CE;">'usuario'</span>, <span style="color: #49B9CE;">'direccion'</span>, <span style="color: #49B9CE;">'ciudad'</span>]
+    ],
+    sep=<span style="color: #49B9CE;">'_'</span>
+)
+
+<span style="color: #777777; font-style: italic;"># Resultado: DataFrame tabular listo para análisis</span>
+<span style="color: #8A7AAF; font-weight: 700;">print</span>(df)
+<span style="color: #777777; font-style: italic;"># producto  precio  usuario_id  usuario_nombre  usuario_direccion_ciudad</span>
+<span style="color: #777777; font-style: italic;">#   Laptop     899       12345     Ana García              Madrid</span>
+<span style="color: #777777; font-style: italic;">#    Mouse      25       12345     Ana García              Madrid</span></code></pre>
+                </div>
+
+                <div class="grid-examples">
+                    <div class="info-box">
+                        <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">📦 Carga Completa</p>
+                        <p>Para JSON pequeños (<10MB), cargar en memoria y procesar.</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.4rem; font-size: 1rem;">🔄 Streaming</p>
+                        <p>Para JSON gigantes (>1GB), procesar línea por línea (ijson, simdjson).</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.4rem; font-size: 1rem;">🗂️ MongoDB</p>
+                        <p>Filtrar y proyectar directamente en la DB antes de extraer.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÉCNICAS XML -->
+            <div style="margin-bottom: 1rem;">
+                <h3 class="color-primary">Extracción de XML</h3>
+                <p>
+                    XML es más complejo que JSON debido a su naturaleza jerárquica profunda, atributos en etiquetas y uso de <strong>namespaces</strong>. Existen varias estrategias según el tamaño del archivo.
+                </p>
+
+                <div class="grid-2-cols">
+                    <!-- DOM -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🌳 DOM (Document Object Model)</h4>
+                        <p>Carga todo el documento en memoria como árbol navegable.</p>
+                        <p><strong>Ideal para:</strong> Archivos pequeños (<100MB) donde necesitas acceder a múltiples partes.</p>
+                    </div>
+                    
+                    <!-- SAX -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">⚡ SAX (Simple API for XML)</h4>
+                        <p>Procesa secuencialmente mediante eventos. Memoria constante.</p>
+                        <p><strong>Ideal para:</strong> Archivos gigantes (>1GB) donde solo necesitas algunos elementos.</p>
+                    </div>
+                    
+                    <!-- ElementTree -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🔧 ElementTree (Python)</h4>
+                        <p>Balance entre facilidad de uso y eficiencia. API pythónica.</p>
+                        <p><strong>Ideal para:</strong> Caso general, archivos medianos (100MB-500MB).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: DATOS NO ESTRUCTURADOS -->
+        <section class="section">
+            <h2>📝 Datos No Estructurados: Procesamiento de Lenguaje Natural</h2>
+            
+            <p>
+                Los datos <strong>no estructurados</strong> —texto libre, imágenes, audio, video— representan el <strong>70% de toda la información empresarial</strong>. Para texto, el objetivo es transformar contenido libre en datos estructurados que podamos analizar cuantitativamente mediante técnicas de <strong>Procesamiento de Lenguaje Natural (NLP)</strong>.
+            </p>
+
+            <!-- PIPELINE NLP -->
+            <div class="mb-2">
+                <svg width="900" height="320" viewBox="0 0 900 320" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Pipeline de Procesamiento de Texto</text>
+                    
+                    <!-- TEXTO CRUDO -->
+                    <text x="100" y="70" font-size="14" font-weight="bold" fill="#333333" text-anchor="start" font-family="Montserrat">Texto Original:</text>
+                    <rect x="50" y="80" width="800" height="35" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="5"/>
+                    <text x="450" y="103" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">"María compró 3 libros de Machine Learning en Amazon el 15 de enero."</text>
+                    
+                    <!-- PASO 1: TOKENIZACIÓN -->
+                    <path d="M 450 125 L 450 145" stroke="#49B9CE" stroke-width="3" fill="none"/>
+                    <polygon points="450,145 445,135 455,135" fill="#49B9CE"/>
+                    
+                    <rect x="50" y="150" width="800" height="30" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="80" y="170" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="start" font-family="Montserrat">1. TOKENIZACIÓN:</text>
+                    <text x="240" y="170" font-size="10" fill="#333333" text-anchor="start" font-family="Montserrat">["María", "compró", "3", "libros", "de", "Machine", "Learning", "en", "Amazon", "el", "15", "de", "enero"]</text>
+                    
+                    <!-- PASO 2: STOPWORDS -->
+                    <path d="M 450 185 L 450 200" stroke="#8A7AAF" stroke-width="3" fill="none"/>
+                    <polygon points="450,200 445,190 455,190" fill="#8A7AAF"/>
+                    
+                    <rect x="50" y="205" width="800" height="30" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                    <text x="80" y="225" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="start" font-family="Montserrat">2. ELIMINAR STOPWORDS:</text>
+                    <text x="300" y="225" font-size="10" fill="#333333" text-anchor="start" font-family="Montserrat">["María", "compró", "3", "libros", "Machine", "Learning", "Amazon", "15", "enero"]</text>
+                    
+                    <!-- PASO 3: LEMATIZACIÓN -->
+                    <path d="M 450 240 L 450 255" stroke="#49B9CE" stroke-width="3" fill="none"/>
+                    <polygon points="450,255 445,245 455,245" fill="#49B9CE"/>
+                    
+                    <rect x="50" y="260" width="800" height="30" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <text x="80" y="280" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="start" font-family="Montserrat">3. LEMATIZACIÓN:</text>
+                    <text x="250" y="280" font-size="10" fill="#333333" text-anchor="start" font-family="Montserrat">["María", "comprar", "3", "libro", "Machine", "Learning", "Amazon", "15", "enero"]</text>
+                    
+                    <!-- RESULTADO FINAL -->
+                    <rect x="150" y="300" width="600" height="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="3"/>
+                    <text x="450" y="311" font-size="10" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">✅ Texto listo para análisis: vectorización, clasificación, sentiment analysis, etc.</text>
+                </svg>
+            </div>
+
+            <!-- TÉCNICAS NLP -->
+            <div class="mb-2">
+                <h3 class="color-primary">Técnicas Fundamentales de NLP</h3>
+                
+                <!-- TOKENIZACIÓN -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                    <h4 class="color-primary">1️⃣ Tokenización</h4>
+                    <p>
+                        Divide el texto en unidades básicas llamadas <strong>tokens</strong> (generalmente palabras). No es trivial: debemos decidir cómo manejar contracciones, puntuación, números y caracteres especiales.
+                    </p>
+                    
+                    <div class="highlight-box primary">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: Tokenización</p>
+                        <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">import</span> nltk
+<span style="color: #8A7AAF; font-weight: 700;">from</span> nltk.tokenize <span style="color: #8A7AAF; font-weight: 700;">import</span> word_tokenize
+
+texto = <span style="color: #49B9CE;">"María compró 3 kg. de café en la tienda."</span>
+
+<span style="color: #777777; font-style: italic;"># Tokenización básica</span>
+tokens = word_tokenize(texto, language=<span style="color: #49B9CE;">'spanish'</span>)
+<span style="color: #8A7AAF; font-weight: 700;">print</span>(tokens)
+<span style="color: #777777; font-style: italic;"># ['María', 'compró', '3', 'kg', '.', 'de', 'café', 'en', 'la', 'tienda', '.']</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- STOPWORDS -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #8A7AAF;">
+                    <h4 class="color-secondary">2️⃣ Eliminación de Stopwords</h4>
+                    <p>
+                        Quita palabras muy frecuentes que aportan poco valor analítico: artículos, preposiciones, conjunciones ("el", "de", "y", "que"). En español, las listas incluyen entre <strong>100-300 palabras comunes</strong>.
+                    </p>
+                    
+                    <div class="highlight-box secondary">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: Filtrar Stopwords</p>
+                        <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">from</span> nltk.corpus <span style="color: #8A7AAF; font-weight: 700;">import</span> stopwords
+
+stop_words = set(stopwords.words(<span style="color: #49B9CE;">'spanish'</span>))
+
+tokens = [<span style="color: #49B9CE;">'María'</span>, <span style="color: #49B9CE;">'compró'</span>, <span style="color: #49B9CE;">'libros'</span>, <span style="color: #49B9CE;">'en'</span>, <span style="color: #49B9CE;">'la'</span>, <span style="color: #49B9CE;">'tienda'</span>]
+tokens_filtrados = [t <span style="color: #8A7AAF; font-weight: 700;">for</span> t <span style="color: #8A7AAF; font-weight: 700;">in</span> tokens <span style="color: #8A7AAF; font-weight: 700;">if</span> t.lower() <span style="color: #8A7AAF; font-weight: 700;">not</span> <span style="color: #8A7AAF; font-weight: 700;">in</span> stop_words]
+
+<span style="color: #8A7AAF; font-weight: 700;">print</span>(tokens_filtrados)
+<span style="color: #777777; font-style: italic;"># ['María', 'compró', 'libros', 'tienda']  ✅ 'en' y 'la' eliminados</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- STEMMING Y LEMATIZACIÓN -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 2px solid #49B9CE;">
+                    <h4 class="color-primary">3️⃣ Stemming y Lematización</h4>
+                    <p>
+                        Reducen palabras a su forma base o raíz. <strong>Stemming</strong> aplica reglas heurísticas para cortar sufijos. <strong>Lematización</strong> usa diccionarios lingüísticos para obtener el lema correcto.
+                    </p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="info-box primary">
+                            <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">⚡ Stemming</p>
+                            <p>"corriendo", "corrió", "correr" → <strong>"corr"</strong></p>
+                            <p>Rápido pero menos preciso.</p>
+                        </div>
+                        
+                        <div class="info-box secondary">
+                            <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">🎯 Lematización</p>
+                            <p>"corriendo", "corrió", "correr" → <strong>"correr"</strong></p>
+                            <p>Más lento pero preciso.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: Lematización con spaCy</p>
+                        <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">import</span> spacy
+
+<span style="color: #777777; font-style: italic;"># Cargar modelo español</span>
+nlp = spacy.load(<span style="color: #49B9CE;">"es_core_news_sm"</span>)
+
+texto = <span style="color: #49B9CE;">"Los estudiantes están estudiando para sus exámenes"</span>
+doc = nlp(texto)
+
+lemmas = [token.lemma_ <span style="color: #8A7AAF; font-weight: 700;">for</span> token <span style="color: #8A7AAF; font-weight: 700;">in</span> doc]
+<span style="color: #8A7AAF; font-weight: 700;">print</span>(lemmas)
+<span style="color: #777777; font-style: italic;"># ['el', 'estudiante', 'estar', 'estudiar', 'para', 'su', 'examen']</span>
+<span style="color: #777777; font-style: italic;"># ✅ "estudiantes" → "estudiante", "están" → "estar", "exámenes" → "examen"</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- NER -->
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1rem; border: 2px solid #8A7AAF;">
+                    <h4 class="color-secondary">4️⃣ Reconocimiento de Entidades Nombradas (NER)</h4>
+                    <p>
+                        Identifica y clasifica nombres propios en el texto: <strong>personas, organizaciones, lugares, fechas, cantidades monetarias</strong>. Fundamental para extraer información estructurada desde noticias, informes o documentos legales.
+                    </p>
+                    
+                    <div class="highlight-box secondary">
+                        <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">💻 Ejemplo Python: NER con spaCy</p>
+                        <pre class="language-python"><code class="language-python">
+<span style="color: #8A7AAF; font-weight: 700;">import</span> spacy
+
+nlp = spacy.load(<span style="color: #49B9CE;">"es_core_news_sm"</span>)
+
+texto = <span style="color: #49B9CE;">"Apple presentó el iPhone 15 en California por $999"</span>
+doc = nlp(texto)
+
+<span style="color: #8A7AAF; font-weight: 700;">for</span> entidad <span style="color: #8A7AAF; font-weight: 700;">in</span> doc.ents:
+    <span style="color: #8A7AAF; font-weight: 700;">print</span>(<span style="color: #49B9CE;">f"{entidad.text:15} → {entidad.label_}"</span>)
+
+<span style="color: #777777; font-style: italic;"># Salida:</span>
+<span style="color: #777777; font-style: italic;"># Apple           → ORG (Organización)</span>
+<span style="color: #777777; font-style: italic;"># iPhone 15       → MISC (Producto)</span>
+<span style="color: #777777; font-style: italic;"># California      → LOC (Lugar)</span>
+<span style="color: #777777; font-style: italic;"># $999            → MONEY (Cantidad monetaria)</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASO REAL -->
+            <div class="highlight-box secondary">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.75rem;">🏢 Caso Real: Twitter Sentiment Analysis</p>
+                <p>
+                    Twitter analiza más de <strong>500 millones de tweets diarios</strong> en 40+ idiomas para detectar tendencias, sentimiento público y eventos virales. Su pipeline NLP procesa texto no estructurado en tiempo real: tokenización multilingüe, eliminación de stopwords específicas de redes sociales (RT, @menciones, #hashtags), lematización para normalizar variantes ortográficas, y NER para identificar personas, marcas y lugares trending. El sistema clasifica sentimiento (positivo/negativo/neutral) y extrae entidades para alimentar dashboards de análisis de marca y detección de crisis de reputación, procesando todo en menos de 2 segundos por tweet.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: COMPARACIÓN Y MEJORES PRÁCTICAS -->
+        <section class="section">
+            <h2>🎯 Comparación y Selección de Estrategias</h2>
+            
+            <!-- TABLA COMPARATIVA -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Dato</th>
+                            <th>Técnicas Principales</th>
+                            <th>Complejidad</th>
+                            <th>Volumen Típico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Estructurado</td>
+                            <td>CDC (timestamp/log/trigger), SQL queries, incremental loads</td>
+                            <td>Baja-Media</td>
+                            <td>GB - TB</td>
+                        </tr>
+                        <tr>
+                            <td>Semi-estructurado</td>
+                            <td>JSON parsing, XML parsers (DOM/SAX), NoSQL queries</td>
+                            <td>Media</td>
+                            <td>MB - TB</td>
+                        </tr>
+                        <tr>
+                            <td>No Estructurado</td>
+                            <td>NLP (tokenización, stemming, NER), OCR, deep learning</td>
+                            <td>Alta</td>
+                            <td>TB - PB</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MEJORES PRÁCTICAS -->
+            <h3 class="color-primary">Principios de Diseño</h3>
+            
+            <div class="grid-2-cols">
+                <!-- Principio 1 -->
+                <div class="card primary">
+                    <h4 class="color-primary">🎯 Técnica Específica</h4>
+                    <p>Usa la técnica apropiada para cada tipo de dato. CDC para estructurado, parsers para semi-estructurado, NLP para no estructurado.</p>
+                </div>
+                
+                <!-- Principio 2 -->
+                <div class="card secondary">
+                    <h4 class="color-secondary">⚡ Incremental Siempre</h4>
+                    <p>Para datos estructurados, prefiere siempre extracción incremental sobre completa. Ahorro masivo en tiempo y recursos.</p>
+                </div>
+                
+                <!-- Principio 3 -->
+                <div class="card primary">
+                    <h4 class="color-primary">🔄 Streaming para Grandes Volúmenes</h4>
+                    <p>Para JSON/XML >1GB o texto masivo, usa procesamiento streaming para evitar llenar la memoria.</p>
+                </div>
+                
+                <!-- Principio 4 -->
+                <div class="card secondary">
+                    <h4 class="color-secondary">🎨 Preprocesar Cerca de la Fuente</h4>
+                    <p>Para NLP, tokeniza y filtra lo antes posible para reducir volumen de datos movidos entre etapas.</p>
+                </div>
+            </div>
+
+            <!-- CONCLUSIÓN -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 2rem; border-radius: 1rem; border: 2px solid #333333; text-align: center;">
+                <h3 style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">🎯 Conclusión</h3>
+                <p>
+                    No existe una técnica universal para extraer todos los tipos de datos. El éxito de un pipeline de integración depende críticamente de <strong>seleccionar la estrategia correcta</strong> según la naturaleza de cada fuente: CDC para capturar cambios incrementales en bases de datos estructuradas, parsers eficientes para navegar jerarquías JSON/XML, y NLP para transformar texto libre en información estructurada.
+                </p>
+                <p>
+                    Comprender las <strong>características, ventajas y limitaciones</strong> de cada enfoque te permite diseñar sistemas que extraen exactamente los datos necesarios, en el formato adecuado, con la menor sobrecarga posible.
+                </p>
+            </div>
+        </section>
+
+        
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+
+</html>

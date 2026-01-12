@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Escalabilidad Horizontal y Vertical en Big Data: Scale-Up vs Scale-Out, CAP theorem, arquitecturas distribuidas">
+    <meta name="author" content="iLERNA">
+    <title>Escalabilidad Horizontal y Vertical en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Escalabilidad Big Data</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Escalabilidad en Big Data</h1>
+                <p class="subtitle">Estrategias Horizontal y Vertical para Sistemas Distribuidos</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es la Escalabilidad?</h2>
+                <p>La <strong>escalabilidad</strong> es la capacidad de un sistema para manejar cantidades crecientes de
+                    trabajo añadiendo recursos al sistema. En entornos de Big Data, donde manejamos volúmenes masivos de
+                    información (petabytes, exabytes), la escalabilidad es crítica para mantener el rendimiento y la
+                    disponibilidad.</p>
+                <p>Existen dos enfoques fundamentales para escalar sistemas: <strong>vertical</strong> (scale-up) y
+                    <strong>horizontal</strong> (scale-out). Cada uno presenta ventajas y limitaciones que debemos
+                    considerar al diseñar arquitecturas de Big Data.</p>
+
+                <!-- CAJA DE EJEMPLO -->
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo Real:</p>
+                    <p class="content">Netflix procesa más de 15 petabytes de datos diarios usando escalabilidad
+                        horizontal con miles de nodos en AWS, permitiendo streaming a 230+ millones de usuarios
+                        simultáneamente.</p>
+                </div>
+
+                <!-- CONCEPTOS EN GRID -->
+                <h3>Conceptos Fundamentales</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Throughput</h4>
+                        <p>Cantidad de datos procesados por unidad de tiempo. Medido en operaciones/segundo o
+                            GB/segundo.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Latencia</h4>
+                        <p>Tiempo de respuesta del sistema ante una petición. Crítico en aplicaciones en tiempo real.
+                        </p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Disponibilidad</h4>
+                        <p>Porcentaje de tiempo que el sistema está operativo y accesible (SLA del 99.99% = 52 min
+                            downtime/año).</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Elasticidad</h4>
+                        <p>Capacidad de crecer o reducir recursos automáticamente según la demanda en tiempo real.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: UNIDADES DE MEDIDA -->
+            <section class="section">
+                <h2 class="section-title">Unidades de Medida en Big Data</h2>
+                <p>Para comprender Big Data, es fundamental entender las <strong>magnitudes de almacenamiento</strong>.
+                    Trabajamos con volúmenes que van desde gigabytes hasta exabytes y más allá. Cada unidad representa
+                    un salto de <strong>1,024 veces</strong> (sistema binario) respecto a la anterior.</p>
+
+                <!-- ESCALA VISUAL -->
+                <h3 class="color-secondary">📏 La Escala Exponencial del Almacenamiento</h3>
+                <div class="diagram-svg">
+                    <svg width="750" height="400"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa;">
+                        <!-- Título -->
+                        <text x="375" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Crecimiento Exponencial: Cada nivel = 1,024x el anterior</text>
+
+                        <!-- Byte - nivel más pequeño -->
+                        <rect x="50" y="60" width="60" height="30" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                            stroke-width="2" />
+                        <text x="80" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Byte</text>
+
+                        <!-- KB -->
+                        <line x1="110" y1="75" x2="135" y2="75" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="123" y="68" font-size="9" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="135" y="60" width="70" height="30" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                            stroke-width="2" />
+                        <text x="170" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">KB</text>
+
+                        <!-- MB -->
+                        <line x1="205" y1="75" x2="230" y2="75" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="218" y="68" font-size="9" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="230" y="60" width="75" height="30" rx="5" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="2" />
+                        <text x="268" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">MB</text>
+
+                        <!-- GB -->
+                        <line x1="305" y1="75" x2="330" y2="75" stroke="#49B9CE" stroke-width="2" />
+                        <text x="318" y="68" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="330" y="60" width="80" height="30" rx="5" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="2" />
+                        <text x="370" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">GB</text>
+
+                        <!-- TB -->
+                        <line x1="410" y1="75" x2="435" y2="75" stroke="#49B9CE" stroke-width="2" />
+                        <text x="423" y="68" font-size="9" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="435" y="60" width="85" height="30" rx="5" fill="#FFE8E8" stroke="#CC5555"
+                            stroke-width="2" />
+                        <text x="478" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">TB</text>
+
+                        <!-- PB -->
+                        <line x1="520" y1="75" x2="545" y2="75" stroke="#CC5555" stroke-width="2" />
+                        <text x="533" y="68" font-size="9" fill="#CC5555" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="545" y="60" width="90" height="30" rx="5" fill="#FFE8E8" stroke="#CC5555"
+                            stroke-width="2" />
+                        <text x="590" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">PB</text>
+
+                        <!-- EB -->
+                        <line x1="635" y1="75" x2="660" y2="75" stroke="#CC5555" stroke-width="2" />
+                        <text x="648" y="68" font-size="9" fill="#CC5555" text-anchor="middle"
+                            font-family="Montserrat">×1024</text>
+                        <rect x="660" y="60" width="80" height="30" rx="5" fill="#FFF3CD" stroke="#FFA726"
+                            stroke-width="2" />
+                        <text x="700" y="82" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">EB</text>
+
+                        <!-- Ejemplos reales -->
+                        <text x="50" y="130" font-size="14" font-weight="bold" fill="#333333"
+                            font-family="Montserrat">Ejemplos del mundo real:</text>
+
+                        <rect x="50" y="145" width="300" height="100" rx="8" fill="#F0EDF5" stroke="#8A7AAF"
+                            stroke-width="2" />
+                        <text x="200" y="167" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1 GB = 1 película HD comprimida</text>
+                        <text x="200" y="188" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1 TB = 1,000 películas HD</text>
+                        <text x="200" y="209" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1 PB = Datos del CERN en 1 día</text>
+                        <text x="200" y="230" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1 EB = Todo el tráfico de Internet en 2000</text>
+
+                        <!-- Netflix -->
+                        <rect x="400" y="145" width="300" height="100" rx="8" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="3" />
+                        <text x="550" y="167" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">📺 Caso Real: Netflix</text>
+                        <text x="550" y="188" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">15 PB de datos procesados diarios</text>
+                        <text x="550" y="209" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">= 15,360 TB = 15,360,000 GB</text>
+                        <text x="550" y="230" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">15 millones de películas HD al día</text>
+                    </svg>
+                </div>
+
+                <!-- TABLA COMPLETA -->
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Unidad</th>
+                                <th>Equivalencia</th>
+                                <th>Bytes</th>
+                                <th>Uso típico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Byte (B)</strong></td>
+                                <td>1 carácter</td>
+                                <td>1</td>
+                                <td>Unidad básica</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kilobyte (KB)</strong></td>
+                                <td>1,024 B</td>
+                                <td>1,024</td>
+                                <td>Documento de texto</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Megabyte (MB)</strong></td>
+                                <td>1,024 KB</td>
+                                <td>1,048,576</td>
+                                <td>Imagen alta resolución</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gigabyte (GB)</strong></td>
+                                <td>1,024 MB</td>
+                                <td>1,073,741,824</td>
+                                <td>Película HD</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Terabyte (TB)</strong></td>
+                                <td>1,024 GB</td>
+                                <td>1,099,511,627,776</td>
+                                <td>Disco duro servidor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Petabyte (PB)</strong></td>
+                                <td>1,024 TB</td>
+                                <td>1,125,899,906,842,624</td>
+                                <td>Data center mediano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Exabyte (EB)</strong></td>
+                                <td>1,024 PB</td>
+                                <td>1,152,921,504,606,846,976</td>
+                                <td>Google, Facebook</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Zettabyte (ZB)</strong></td>
+                                <td>1,024 EB</td>
+                                <td>1,180,591,620,717,411,303,424</td>
+                                <td>Datos globales año</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Yottabyte (YB)</strong></td>
+                                <td>1,024 ZB</td>
+                                <td>1,208,925,819,614,629,174,706,176</td>
+                                <td>Toda humanidad (teórico)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CONVERSIONES RÁPIDAS -->
+                <h3 class="color-primary" style="margin-top: 2rem;">💡 Conversiones Rápidas</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>GB ↔ TB</h4>
+                        <p style="font-family: 'Courier New', monospace;">1 TB = 1,024 GB<br>500 GB = 0.488 TB<br>2 TB =
+                            2,048 GB</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>TB ↔ PB</h4>
+                        <p style="font-family: 'Courier New', monospace;">1 PB = 1,024 TB<br>5 TB = 0.0049 PB<br>100 TB
+                            = 0.098 PB</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>PB ↔ EB</h4>
+                        <p style="font-family: 'Courier New', monospace;">1 EB = 1,024 PB<br>10 PB = 0.0098 EB<br>500 PB
+                            = 0.488 EB</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: ESCALABILIDAD VERTICAL -->
+            <section class="section">
+                <h2 class="section-title">Escalabilidad Vertical (Scale-Up)</h2>
+
+                <h3 class="color-primary">Concepto y Funcionamiento</h3>
+                <p>La escalabilidad vertical consiste en <strong>aumentar los recursos de un único servidor</strong>:
+                    más RAM, más CPUs, discos más rápidos. Es como mejorar un coche antiguo con un motor más potente.
+                </p>
+
+                <div class="diagram-svg" style="margin-bottom: 2rem;">
+                    <svg width="350" height="280"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa;">
+                        <!-- Servidor inicial -->
+                        <text x="75" y="25" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">ANTES</text>
+                        <rect x="25" y="35" width="100" height="120" rx="8" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="3" />
+                        <text x="75" y="60" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">SERVIDOR</text>
+                        <text x="75" y="85" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">4 cores</text>
+                        <text x="75" y="105" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">16 GB RAM</text>
+                        <text x="75" y="125" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">500 GB SSD</text>
+                        <text x="75" y="145" font-size="11" fill="#CC5555" text-anchor="middle" font-family="Montserrat"
+                            font-weight="bold">100% carga</text>
+
+                        <!-- Flecha -->
+                        <path d="M 135 95 L 195 95" stroke="#49B9CE" stroke-width="3" fill="none" />
+                        <polygon points="195,95 185,90 185,100" fill="#49B9CE" />
+                        <text x="165" y="85" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Scale-Up</text>
+
+                        <!-- Servidor mejorado -->
+                        <text x="275" y="25" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">DESPUÉS</text>
+                        <rect x="225" y="35" width="100" height="120" rx="8" fill="#C5B9D8" stroke="#8A7AAF"
+                            stroke-width="3" />
+                        <text x="275" y="60" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">SERVIDOR</text>
+                        <text x="275" y="85" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat"
+                            font-weight="bold">32 cores</text>
+                        <text x="275" y="105" font-size="11" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat" font-weight="bold">256 GB RAM</text>
+                        <text x="275" y="125" font-size="11" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat" font-weight="bold">4 TB NVMe</text>
+                        <text x="275" y="145" font-size="11" fill="#28A745" text-anchor="middle"
+                            font-family="Montserrat" font-weight="bold">25% carga</text>
+
+                        <!-- Resultados -->
+                        <rect x="125" y="180" width="100" height="80" rx="8" fill="#D4EDDA" stroke="#28A745"
+                            stroke-width="3" />
+                        <text x="175" y="200" font-size="12" font-weight="bold" fill="#155724" text-anchor="middle"
+                            font-family="Montserrat">RESULTADO</text>
+                        <text x="175" y="220" font-size="11" fill="#155724" text-anchor="middle"
+                            font-family="Montserrat">8x más potencia</text>
+                        <text x="175" y="240" font-size="11" fill="#155724" text-anchor="middle"
+                            font-family="Montserrat">Mismo software</text>
+                        <text x="175" y="255" font-size="11" fill="#155724" text-anchor="middle"
+                            font-family="Montserrat">Sin rediseño</text>
+                    </svg>
+                </div>
+
+                <div
+                    style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                    <p style="font-family: 'Courier New', monospace; margin: 0; color: #333333;"><strong>Coste:</strong>
+                        Exponencial (~3-4x por duplicar recursos)</p>
+                    <p style="font-family: 'Courier New', monospace; margin: 0.5rem 0 0 0; color: #333333;">
+                        <strong>Límite:</strong> Físico (max ~256 cores, 4 TB RAM actual)</p>
+                </div>
+
+                <h3 class="color-primary">Ventajas y Limitaciones</h3>
+                <div class="grid-features">
+                    <div class="advantage-box">
+                        <h4>✓ Ventajas</h4>
+                        <ul>
+                            <li><strong>Simplicidad de gestión:</strong> Un solo nodo, una sola máquina</li>
+                            <li><strong>Menor latencia:</strong> No hay comunicación entre nodos</li>
+                            <li><strong>Consistencia de datos:</strong> No hay sincronización distribuida</li>
+                            <li><strong>Rápida implementación:</strong> Swap de hardware sin cambios de código</li>
+                            <li><strong>Ideal para bases de datos relacionales</strong> (PostgreSQL, MySQL)</li>
+                        </ul>
+                    </div>
+                    <div class="limitation-box">
+                        <h4>✗ Limitaciones</h4>
+                        <ul>
+                            <li><strong>Límite físico:</strong> Máximo 2-4 TB RAM, 256 cores en hardware actual</li>
+                            <li><strong>Coste exponencial:</strong> Duplicar recursos cuesta 3-4x más</li>
+                            <li><strong>Punto único de fallo (SPOF):</strong> Si cae, todo se detiene</li>
+                            <li><strong>Downtime en upgrades:</strong> Requiere parar el servicio</li>
+                            <li><strong>No hay elasticidad:</strong> No se adapta automáticamente</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; background: #f9f9f9; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE;">
+                    <h4 style="font-weight: 700; color: #333333; margin-bottom: 0.75rem;">📌 Casos de Uso Ideales</h4>
+                    <p style="color: #555555; line-height: 1.75; margin-bottom: 0.5rem;">
+                        <strong>Bases de datos OLTP:</strong> Sistemas transaccionales que requieren consistencia ACID
+                        (bancos, sistemas ERP)<br>
+                        <strong>Procesamiento en memoria:</strong> Redis, Memcached con datasets que caben en RAM de un
+                        servidor grande<br>
+                        <strong>Legacy systems:</strong> Aplicaciones monolíticas que no pueden distribuirse fácilmente
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: ESCALABILIDAD HORIZONTAL -->
+            <section class="section">
+                <h2 class="section-title">Escalabilidad Horizontal (Scale-Out)</h2>
+
+                <h3 class="color-secondary">Concepto y Funcionamiento</h3>
+                <p>La escalabilidad horizontal consiste en <strong>añadir más servidores al sistema</strong> y
+                    distribuir la carga entre ellos. Es como tener un equipo de 100 personas trabajando en paralelo en
+                    lugar de una sola persona súper-experta.</p>
+
+                <div class="diagram-svg" style="margin-bottom: 2rem;">
+                    <svg width="380" height="320"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa;">
+                        <!-- Configuración inicial: 1 servidor -->
+                        <text x="100" y="25" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">ANTES</text>
+                        <rect x="50" y="35" width="100" height="80" rx="8" fill="#F0EDF5" stroke="#8A7AAF"
+                            stroke-width="3" />
+                        <text x="100" y="60" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">SERVIDOR 1</text>
+                        <text x="100" y="80" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">100% carga</text>
+                        <text x="100" y="95" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1000 req/s</text>
+
+                        <!-- Flecha -->
+                        <path d="M 190 75 L 240 75" stroke="#8A7AAF" stroke-width="3" fill="none" />
+                        <polygon points="240,75 230,70 230,80" fill="#8A7AAF" />
+                        <text x="215" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Scale-Out</text>
+
+                        <!-- Configuración final: 4 servidores -->
+                        <text x="310" y="25" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">DESPUÉS</text>
+
+                        <!-- Balanceador de carga -->
+                        <rect x="275" y="40" width="70" height="30" rx="5" fill="#C5B9D8" stroke="#8A7AAF"
+                            stroke-width="2" />
+                        <text x="310" y="60" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Load Balancer</text>
+
+                        <!-- 4 servidores -->
+                        <g>
+                            <rect x="260" y="90" width="45" height="50" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="2" />
+                            <text x="282.5" y="110" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                                font-family="Montserrat">Node 1</text>
+                            <text x="282.5" y="125" font-size="8" fill="#555555" text-anchor="middle"
+                                font-family="Montserrat">25% carga</text>
+                        </g>
+                        <g>
+                            <rect x="315" y="90" width="45" height="50" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="2" />
+                            <text x="337.5" y="110" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                                font-family="Montserrat">Node 2</text>
+                            <text x="337.5" y="125" font-size="8" fill="#555555" text-anchor="middle"
+                                font-family="Montserrat">25% carga</text>
+                        </g>
+                        <g>
+                            <rect x="260" y="150" width="45" height="50" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="2" />
+                            <text x="282.5" y="170" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                                font-family="Montserrat">Node 3</text>
+                            <text x="282.5" y="185" font-size="8" fill="#555555" text-anchor="middle"
+                                font-family="Montserrat">25% carga</text>
+                        </g>
+                        <g>
+                            <rect x="315" y="150" width="45" height="50" rx="5" fill="#F0EDF5" stroke="#8A7AAF"
+                                stroke-width="2" />
+                            <text x="337.5" y="170" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                                font-family="Montserrat">Node 4</text>
+                            <text x="337.5" y="185" font-size="8" fill="#555555" text-anchor="middle"
+                                font-family="Montserrat">25% carga</text>
+                        </g>
+
+                        <!-- Líneas del balanceador a los nodos -->
+                        <line x1="310" y1="70" x2="282.5" y2="90" stroke="#8A7AAF" stroke-width="1.5" />
+                        <line x1="310" y1="70" x2="337.5" y2="90" stroke="#8A7AAF" stroke-width="1.5" />
+                        <line x1="310" y1="70" x2="282.5" y2="150" stroke="#8A7AAF" stroke-width="1.5" />
+                        <line x1="310" y1="70" x2="337.5" y2="150" stroke="#8A7AAF" stroke-width="1.5" />
+
+                        <!-- Resultados -->
+                        <rect x="250" y="220" width="120" height="80" rx="8" fill="#C5B9D8" stroke="#8A7AAF"
+                            stroke-width="3" />
+                        <text x="310" y="240" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">RESULTADO</text>
+                        <text x="310" y="260" font-size="11" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">4000 req/s total</text>
+                        <text x="310" y="275" font-size="11" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Alta disponibilidad</text>
+                        <text x="310" y="290" font-size="11" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Sin punto único fallo</text>
+                    </svg>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+                    <p
+                        style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333; flex: 1; min-width: 200px; margin: 0;">
+                        ✓ Escalabilidad ilimitada</p>
+                    <p
+                        style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333; flex: 1; min-width: 200px; margin: 0;">
+                        ✓ Alta disponibilidad (HA)</p>
+                    <p
+                        style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #e5e5e5; font-weight: 700; font-size: 1.125rem; color: #333333; flex: 1; min-width: 200px; margin: 0;">
+                        ✗ Mayor complejidad</p>
+                    <p
+                        style="font-family: 'Courier New', monospace; background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; font-weight: 700; color: #333333; font-size: 1.125rem; flex: 1; min-width: 200px; margin: 0;">
+                        Coste: Lineal y predecible</p>
+                </div>
+
+                <h3 class="color-secondary">Ventajas y Desafíos</h3>
+                <div class="grid-features">
+                    <div class="advantage-box">
+                        <h4>✓ Ventajas</h4>
+                        <ul>
+                            <li><strong>Escalabilidad ilimitada:</strong> Añadir tantos nodos como necesites</li>
+                            <li><strong>Alta disponibilidad:</strong> Si un nodo falla, los demás continúan</li>
+                            <li><strong>Coste lineal:</strong> Duplicar capacidad ≈ duplicar coste</li>
+                            <li><strong>Elasticidad cloud:</strong> Auto-scaling según demanda</li>
+                            <li><strong>Hardware commodity:</strong> Servidores estándar más baratos</li>
+                            <li><strong>Zero downtime:</strong> Upgrades sin parar el servicio</li>
+                        </ul>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>✗ Desafíos</h4>
+                        <ul>
+                            <li><strong>Complejidad arquitectónica:</strong> Distribución, sincronización, consenso</li>
+                            <li><strong>Latencia de red:</strong> Comunicación inter-nodos añade overhead</li>
+                            <li><strong>Consistencia eventual:</strong> CAP theorem, sincronización compleja</li>
+                            <li><strong>Particionado de datos (sharding):</strong> Decidir cómo distribuir</li>
+                            <li><strong>Más infraestructura:</strong> Balanceadores, coordinadores, monitorización</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; background: #f9f9f9; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #8A7AAF;">
+                    <h4 style="font-weight: 700; color: #333333; margin-bottom: 0.75rem;">🏗️ Arquitecturas Distribuidas
+                        Comunes</h4>
+                    <p style="color: #555555; line-height: 1.75;">
+                        <strong style="color: #8A7AAF;">Master-Slave (Replicación):</strong> Un nodo maestro escribe,
+                        múltiples esclavos leen (MySQL, PostgreSQL con réplicas)<br>
+                        <strong style="color: #8A7AAF;">Peer-to-Peer:</strong> Todos los nodos son iguales, sin punto
+                        central (Cassandra, Riak)<br>
+                        <strong style="color: #8A7AAF;">MapReduce:</strong> Procesamiento distribuido de grandes
+                        datasets (Hadoop, Spark)<br>
+                        <strong style="color: #8A7AAF;">Microservicios:</strong> Aplicación dividida en servicios
+                        independientes escalables
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: COMPARACIÓN -->
+            <section class="section">
+                <h2 class="section-title">Comparación: Vertical vs Horizontal</h2>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criterio</th>
+                                <th style="background: #E8F7FA; color: #49B9CE;">Vertical (Scale-Up)</th>
+                                <th style="background: #F0EDF5; color: #8A7AAF;">Horizontal (Scale-Out)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Coste</strong></td>
+                                <td class="error-cell">Exponencial 📈</td>
+                                <td class="success-cell">Lineal ➡️</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td class="success-cell">Baja ✓</td>
+                                <td class="error-cell">Alta ⚠️</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Límite de escala</strong></td>
+                                <td class="error-cell">Físico (~1 PB) ❌</td>
+                                <td class="success-cell">Ilimitado ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Disponibilidad</strong></td>
+                                <td class="error-cell">SPOF (punto único) ❌</td>
+                                <td class="success-cell">Alta (redundancia) ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia</strong></td>
+                                <td class="success-cell">Muy baja ✓</td>
+                                <td class="error-cell">Media (red) ⚠️</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Downtime upgrades</strong></td>
+                                <td class="error-cell">Sí (horas) ❌</td>
+                                <td class="success-cell">No (rolling) ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consistencia datos</strong></td>
+                                <td class="success-cell">ACID total ✓</td>
+                                <td class="error-cell">Eventual ⚠️</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Elasticidad</strong></td>
+                                <td class="error-cell">No ❌</td>
+                                <td class="success-cell">Sí (auto-scaling) ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary" style="margin-top: 2rem;">Comparación de Costes</h3>
+                <div class="diagram-svg">
+                    <svg width="700" height="300"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa;">
+                        <!-- Ejes -->
+                        <line x1="50" y1="250" x2="650" y2="250" stroke="#333333" stroke-width="2" />
+                        <line x1="50" y1="250" x2="50" y2="30" stroke="#333333" stroke-width="2" />
+
+                        <!-- Etiquetas ejes -->
+                        <text x="350" y="285" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Capacidad (GB procesados/hora)</text>
+                        <text x="20" y="140" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat" transform="rotate(-90 20 140)">Coste ($)</text>
+
+                        <!-- Curva Vertical (exponencial) -->
+                        <path d="M 50 240 Q 200 200, 300 120 T 500 40" stroke="#49B9CE" stroke-width="4" fill="none" />
+                        <text x="520" y="50" font-size="13" font-weight="bold" fill="#49B9CE"
+                            font-family="Montserrat">Vertical</text>
+                        <text x="520" y="68" font-size="11" fill="#49B9CE" font-family="Montserrat">(exponencial)</text>
+
+                        <!-- Línea Horizontal (lineal) -->
+                        <line x1="50" y1="240" x2="600" y2="60" stroke="#8A7AAF" stroke-width="4" />
+                        <text x="520" y="140" font-size="13" font-weight="bold" fill="#8A7AAF"
+                            font-family="Montserrat">Horizontal</text>
+                        <text x="520" y="158" font-size="11" fill="#8A7AAF" font-family="Montserrat">(lineal)</text>
+
+                        <!-- Puntos de referencia -->
+                        <circle cx="150" cy="220" r="5" fill="#49B9CE" />
+                        <text x="150" y="270" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">10 GB/h</text>
+                        <text x="150" y="210" font-size="10" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">$100</text>
+
+                        <circle cx="300" cy="120" r="5" fill="#49B9CE" />
+                        <circle cx="300" cy="155" r="5" fill="#8A7AAF" />
+                        <text x="300" y="270" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">100 GB/h</text>
+                        <text x="300" y="110" font-size="10" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">$5,000</text>
+                        <text x="300" y="145" font-size="10" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">$1,000</text>
+
+                        <circle cx="500" cy="40" r="5" fill="#49B9CE" />
+                        <circle cx="500" cy="80" r="5" fill="#8A7AAF" />
+                        <text x="500" y="270" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">1000 GB/h</text>
+                        <text x="500" y="30" font-size="10" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">$100K+</text>
+                        <text x="500" y="70" font-size="10" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">$10,000</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: APLICACIONES EN BIG DATA -->
+            <section class="section">
+                <h2 class="section-title">Aplicaciones en Entornos Big Data</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h3 class="color-primary">Apache Hadoop</h3>
+                        <p><strong>Enfoque:</strong> Horizontal extremo<br>
+                            <strong>Arquitectura:</strong> HDFS distribuido + MapReduce<br>
+                            <strong>Escala típica:</strong> 100-10,000 nodos<br>
+                            <strong>Caso de uso:</strong> Análisis batch de petabytes
+                        </p>
+                        <div style="background: #E8F7FA; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.75rem;">
+                            <p
+                                style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #333333; margin: 0;">
+                                Yahoo procesa 100+ PB con clusters de 40,000+ nodos Hadoop
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Apache Spark</h3>
+                        <p><strong>Enfoque:</strong> Horizontal + in-memory<br>
+                            <strong>Arquitectura:</strong> Cluster manager (YARN, Mesos, K8s)<br>
+                            <strong>Velocidad:</strong> 100x más rápido que Hadoop<br>
+                            <strong>Caso de uso:</strong> ML, streaming, análisis interactivo
+                        </p>
+                        <div style="background: #F0EDF5; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.75rem;">
+                            <p
+                                style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #333333; margin: 0;">
+                                Alibaba procesa 4 PB/día con 10,000+ nodos Spark
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h3 class="color-primary">Apache Cassandra</h3>
+                        <p><strong>Enfoque:</strong> Horizontal peer-to-peer<br>
+                            <strong>Arquitectura:</strong> Sin master, fully distributed<br>
+                            <strong>Disponibilidad:</strong> 99.999% (5 nueves)<br>
+                            <strong>Caso de uso:</strong> IoT, time-series, logs
+                        </p>
+                        <div style="background: #E8F7FA; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.75rem;">
+                            <p
+                                style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #333333; margin: 0;">
+                                Instagram gestiona 400+ TB con 300 nodos Cassandra
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Elasticsearch</h3>
+                        <p><strong>Enfoque:</strong> Horizontal + sharding automático<br>
+                            <strong>Arquitectura:</strong> Cluster distribuido con réplicas<br>
+                            <strong>Especialidad:</strong> Búsqueda full-text en tiempo real<br>
+                            <strong>Caso de uso:</strong> Logs, analytics, search engines
+                        </p>
+                        <div style="background: #F0EDF5; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.75rem;">
+                            <p
+                                style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #333333; margin: 0;">
+                                Uber indexa 20+ TB de logs diarios en Elasticsearch
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #E8F7FA 0%, #F0EDF5 100%); padding: 2rem; border-radius: 1rem; border: 3px solid #49B9CE; margin-top: 2rem;">
+                    <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">⚡ Enfoque
+                        Híbrido: Lo Mejor de Ambos Mundos</h3>
+                    <p style="color: #555555; margin-bottom: 1rem; line-height: 1.75; font-size: 1.125rem;">
+                        En la práctica, <strong>muchas arquitecturas Big Data combinan ambas estrategias</strong>. La
+                        escalabilidad vertical se usa para componentes críticos (coordinadores, nodos maestros) mientras
+                        que la horizontal se aplica a workers y procesamiento distribuido.
+                    </p>
+                    <div style="background: white; padding: 1.25rem; border-radius: 0.75rem; margin-top: 1rem;">
+                        <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.125rem;">
+                            Ejemplo: Cluster Spark Híbrido</h4>
+                        <ul style="color: #555555; margin-left: 1.25rem; line-height: 1.75;">
+                            <li><strong>Master Node:</strong> Vertical (64 cores, 512 GB RAM) para coordinación rápida
+                            </li>
+                            <li><strong>Worker Nodes:</strong> Horizontal (50-200 nodos estándar de 16 cores, 64 GB)
+                                para procesamiento paralelo</li>
+                            <li><strong>Beneficio:</strong> Latencia baja + capacidad masiva + alta disponibilidad</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: DECISIÓN Y BEST PRACTICES -->
+            <section class="section">
+                <h2 class="section-title">¿Cuándo Usar Cada Estrategia?</h2>
+
+                <div style="background: #f9f9f9; padding: 2rem; border-radius: 1rem; margin-bottom: 2rem;">
+                    <h3
+                        style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1.5rem; text-align: center;">
+                        🌳 Árbol de Decisión</h3>
+
+                    <div style="max-width: 600px; margin: 0 auto;">
+                        <!-- Pregunta 1 -->
+                        <div
+                            style="background: white; padding: 1.25rem; border-radius: 1rem; border: 3px solid #49B9CE; margin-bottom: 1rem; text-align: center;">
+                            <p style="font-weight: 700; color: #333333; font-size: 1.125rem; margin: 0;">¿Tu dataset
+                                cabe en un servidor grande (&lt;2 TB RAM)?</p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div
+                                style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; text-align: center;">
+                                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">SÍ ✓</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">Considera Vertical</p>
+                            </div>
+                            <div
+                                style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; text-align: center;">
+                                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">NO ✗</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">→ Horizontal obligatorio</p>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 2 -->
+                        <div
+                            style="background: white; padding: 1.25rem; border-radius: 1rem; border: 3px solid #8A7AAF; margin-bottom: 1rem; text-align: center;">
+                            <p style="font-weight: 700; color: #333333; font-size: 1.125rem; margin: 0;">¿Necesitas
+                                disponibilidad 24/7 sin downtime?</p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div
+                                style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; text-align: center;">
+                                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">SÍ ✓</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">→ Horizontal (HA)</p>
+                            </div>
+                            <div
+                                style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; text-align: center;">
+                                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">NO ✗</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">Vertical viable</p>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 3 -->
+                        <div
+                            style="background: white; padding: 1.25rem; border-radius: 1rem; border: 3px solid #49B9CE; margin-bottom: 1rem; text-align: center;">
+                            <p style="font-weight: 700; color: #333333; font-size: 1.125rem; margin: 0;">¿Tu carga de
+                                trabajo varía mucho (picos 10x)?</p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div
+                                style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; border: 2px solid #8A7AAF; text-align: center;">
+                                <p style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem;">SÍ ✓</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">→ Horizontal (elasticidad)</p>
+                            </div>
+                            <div
+                                style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; border: 2px solid #49B9CE; text-align: center;">
+                                <p style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem;">NO ✗</p>
+                                <p style="color: #555555; font-size: 0.95rem; margin: 0;">Cualquiera funciona</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="color-secondary">📚 Mejores Prácticas</h3>
+                <div class="grid-features">
+                    <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                        <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.125rem;">✓ Usa
+                            Vertical cuando...</h4>
+                        <ul style="color: #555555; margin-left: 1.25rem; line-height: 1.75; font-size: 0.95rem;">
+                            <li>Aplicación legacy sin soporte distribuido</li>
+                            <li>Necesitas transacciones ACID estrictas</li>
+                            <li>Latencia ultra-baja es crítica (&lt;10ms)</li>
+                            <li>Equipo pequeño sin experiencia en sistemas distribuidos</li>
+                            <li>Prototipado rápido o MVP</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                        <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.75rem; font-size: 1.125rem;">✓ Usa
+                            Horizontal cuando...</h4>
+                        <ul style="color: #555555; margin-left: 1.25rem; line-height: 1.75; font-size: 0.95rem;">
+                            <li>Datos superan capacidad de un servidor</li>
+                            <li>Crecimiento futuro incierto (escala on-demand)</li>
+                            <li>Alta disponibilidad es requisito (SLA 99.9%+)</li>
+                            <li>Procesamiento paralelo masivo (MapReduce, ML)</li>
+                            <li>Arquitectura cloud-native desde el inicio</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; background: #FFF3CD; padding: 1.5rem; border-radius: 1rem; border: 2px solid #FFC107;">
+                    <h4 style="font-weight: 700; color: #333333; margin-bottom: 0.75rem; font-size: 1.25rem;">⚠️ Señales
+                        de que Necesitas Escalar</h4>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>CPU/RAM al 80%+</strong>
+                                constantemente</p>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>Latencia creciente</strong> en
+                                respuestas</p>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>Timeouts frecuentes</strong> en
+                                operaciones</p>
+                        </div>
+                        <div>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>Cola de peticiones</strong>
+                                acumulándose</p>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>Disco casi lleno</strong> (&gt;85%
+                                usado)</p>
+                            <p style="color: #555555; margin-bottom: 0.5rem;"><strong>Degradación nocturna</strong> en
+                                batch jobs</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: EJERCICIO PRÁCTICO -->
+            <section class="section">
+                <h2 class="section-title">💡 Caso Práctico: Diseña tu Arquitectura</h2>
+
+                <div
+                    style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Escenario:
+                        Plataforma de Streaming de Vídeo</h3>
+                    <p style="color: #555555; line-height: 1.75; margin-bottom: 0.75rem;">
+                        <strong>Requisitos:</strong>
+                    </p>
+                    <ul style="color: #555555; margin-left: 1.5rem; line-height: 1.75;">
+                        <li>500,000 usuarios concurrentes en hora pico</li>
+                        <li>5 PB de contenido de vídeo almacenado</li>
+                        <li>Análisis en tiempo real de viewing patterns</li>
+                        <li>Disponibilidad 99.99% (SLA estricto)</li>
+                        <li>Recomendaciones personalizadas con ML</li>
+                        <li>Presupuesto: $200K/mes en infraestructura</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem;">✅ Solución
+                        Propuesta: Arquitectura Híbrida</h3>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem;">Componentes Horizontales
+                            (Scale-Out):</h4>
+                        <div
+                            style="background: #E8F7FA; padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                            <p style="color: #555555; line-height: 1.6; margin: 0;">
+                                <strong>• CDN distribuido:</strong> 200+ edge locations para streaming con baja
+                                latencia<br>
+                                <strong>• Cluster Cassandra:</strong> 50 nodos para metadata y user profiles (eventual
+                                consistency OK)<br>
+                                <strong>• Apache Kafka:</strong> 20 brokers para event streaming en tiempo real<br>
+                                <strong>• Spark cluster:</strong> 100 workers para procesamiento batch de analytics<br>
+                                <strong>• Microservicios:</strong> API Gateway + 30 servicios independientes en
+                                Kubernetes
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.75rem;">Componentes Verticales
+                            (Scale-Up):</h4>
+                        <div
+                            style="background: #F0EDF5; padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                            <p style="color: #555555; line-height: 1.6; margin: 0;">
+                                <strong>• PostgreSQL master:</strong> 1 servidor potente (96 cores, 768 GB RAM) para
+                                transacciones críticas<br>
+                                <strong>• Redis cluster master:</strong> Servidor de alta memoria (512 GB RAM) para
+                                caché de sesiones<br>
+                                <strong>• ML inference servers:</strong> 5 GPUs NVIDIA A100 para recomendaciones en
+                                tiempo real
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: #D4EDDA; padding: 1.25rem; border-radius: 0.75rem; border: 2px solid #28A745;">
+                        <h4 style="font-weight: 700; color: #155724; margin-bottom: 0.75rem; font-size: 1.125rem;">📊
+                            Resultado</h4>
+                        <p style="color: #155724; line-height: 1.75; margin: 0;">
+                            <strong>Capacidad:</strong> 500K usuarios → 2M usuarios sin rediseño<br>
+                            <strong>Disponibilidad:</strong> 99.99% con failover automático<br>
+                            <strong>Latencia:</strong> &lt;50ms en streaming, &lt;200ms en recomendaciones<br>
+                            <strong>Coste:</strong> $180K/mes (dentro de presupuesto + margen 10%)
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

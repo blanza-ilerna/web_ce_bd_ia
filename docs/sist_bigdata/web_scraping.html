@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraping | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas Big Data</a> ›
+                <span>Web Scraping</span>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <div class="hero">
+            <h1 class="color-primary">Web Scraping</h1>
+            <p class="subtitle">Extracción Automatizada de Información de Sitios Web</p>
+        </div>
+        <!-- SECCIÓN 1: INTRODUCCIÓN (AZUL) -->
+        <section class="section">
+            <h2 class="section-title color-primary">
+                ¿Qué es el Web Scraping?
+            </h2>
+            <p>
+                El <strong>web scraping</strong> es la técnica que permite <strong>extraer información de sitios web
+                    de forma automatizada</strong>.
+                En lugar de copiar y pegar datos manualmente, un programa navega por la página, descarga su
+                contenido
+                (HTML, JSON, etc.) y extrae solo la información relevante (títulos, precios, valoraciones…).
+            </p>
+            <p>
+                Empresas como <strong>Amazon</strong>, <strong>Booking</strong> o <strong>Google</strong> utilizan
+                técnicas similares internamente para
+                monitorizar precios, indexar contenido o detectar cambios en páginas web. En proyectos de <strong>IA
+                    y Big Data</strong>,
+                el web scraping es una fuente clave de datos para entrenar modelos, analizar tendencias o hacer
+                dashboards.
+            </p>
+
+            <!-- CAJA EJEMPLO REAL -->
+            <!-- CAJA EJEMPLO REAL -->
+            <!-- CAJA EJEMPLO REAL -->
+            <div class="highlight-box primary">
+                <p class="tech-title">
+                    💼 Ejemplo real – Comparador de precios
+                </p>
+                <p>
+                    Un comparador de precios de vuelos puede hacer scraping de varias webs (aerolíneas, agencias de
+                    viajes,
+                    metabuscadores) para extraer rutas, fechas, precios y condiciones. Después, centraliza estos
+                    datos
+                    en una base de datos para mostrar al usuario la opción más barata en tiempo casi real.
+                </p>
+            </div>
+
+            <!-- TARJETAS: CASOS DE USO -->
+            <!-- TARJETAS: CASOS DE USO -->
+            <h3 class="mt-4 mb-3">
+                Casos de uso típicos
+            </h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">
+                        Monitorización de precios
+                    </h4>
+                    <p>
+                        Extraer precios de productos en Amazon, PcComponentes o supermercados online para ajustar
+                        automáticamente las tarifas propias.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">
+                        Análisis de opiniones
+                    </h4>
+                    <p>
+                        Descargar reseñas de usuarios (texto, estrellas) para entrenar modelos de análisis de
+                        sentimiento
+                        y detectar problemas recurrentes en productos o servicios.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">
+                        Inteligencia competitiva
+                    </h4>
+                    <p>
+                        Extraer información de la competencia (nuevos productos, cambios de diseño, campañas) para
+                        apoyar la toma de decisiones estratégicas.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">
+                        Datos para IA y Big Data
+                    </h4>
+                    <p>
+                        Alimentar modelos de recomendación, detección de tendencias o sistemas de forecasting
+                        con grandes volúmenes de datos web.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ARQUITECTURA BÁSICA (MORADO) -->
+        <section class="section">
+            <h2 class="section-title color-primary">
+                Arquitectura de un Sistema de Web Scraping
+            </h2>
+
+            <p>
+                Un sistema de web scraping suele estar formado por varios <strong>componentes que trabajan en
+                    cadena</strong>
+                para pasar de una URL a datos limpios y almacenados. A alto nivel, los componentes principales
+                son:
+            </p>
+
+            <!-- DIAGRAMA (SVG SIMPLE) -->
+            <svg width="100%" height="150" viewBox="0 0 900 150">
+                <!-- Cliente HTTP -->
+                <rect x="20" y="40" width="160" height="70" rx="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                <text x="100" y="70" text-anchor="middle" font-size="14" fill="#49B9CE" font-weight="700">
+                    Cliente HTTP
+                </text>
+                <text x="100" y="90" text-anchor="middle" font-size="11" fill="#333333">
+                    (petición a la web)
+                </text>
+
+                <!-- Flecha -->
+                <line x1="180" y1="75" x2="220" y2="75" stroke="#555555" stroke-width="2" marker-end="url(#arrow)" />
+
+                <!-- Parser HTML -->
+                <rect x="220" y="40" width="180" height="70" rx="12" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                <text x="310" y="70" text-anchor="middle" font-size="14" fill="#8A7AAF" font-weight="700">
+                    Parser HTML
+                </text>
+                <text x="310" y="90" text-anchor="middle" font-size="11" fill="#333333">
+                    (estructura del DOM)
+                </text>
+
+                <!-- Flecha -->
+                <line x1="400" y1="75" x2="440" y2="75" stroke="#555555" stroke-width="2" marker-end="url(#arrow)" />
+
+                <!-- Selectores -->
+                <rect x="440" y="40" width="170" height="70" rx="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                <text x="525" y="70" text-anchor="middle" font-size="14" fill="#49B9CE" font-weight="700">
+                    Selectores
+                </text>
+                <text x="525" y="90" text-anchor="middle" font-size="11" fill="#333333">
+                    (CSS, XPath, etc.)
+                </text>
+
+                <!-- Flecha -->
+                <line x1="610" y1="75" x2="650" y2="75" stroke="#555555" stroke-width="2" marker-end="url(#arrow)" />
+
+                <!-- Gestor de datos -->
+                <rect x="650" y="40" width="210" height="70" rx="12" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                <text x="755" y="68" text-anchor="middle" font-size="14" fill="#8A7AAF" font-weight="700">
+                    Gestor de datos
+                </text>
+                <text x="755" y="88" text-anchor="middle" font-size="11" fill="#333333">
+                    (CSV, BBDD, Data Lake…)
+                </text>
+
+                <!-- Definición del marcador de flecha -->
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+                        markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
+                    </marker>
+                </defs>
+            </svg>
+
+            <!-- GRID COMPONENTES -->
+            <div class="grid-features mt-4">
+                <!-- Cliente HTTP -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">
+                        Cliente HTTP
+                    </h3>
+                    <p>
+                        Es el componente que <strong>realiza las peticiones</strong> a las páginas web
+                        (normalmente mediante
+                        el método <code>GET</code>). Gestiona:
+                    </p>
+                    <ul>
+                        <li>URLs y parámetros de la petición</li>
+                        <li>Cabeceras (user-agent, cookies…)</li>
+                        <li>Gestión de errores (códigos 4xx, 5xx)</li>
+                        <li>Control del ritmo de peticiones (rate limiting)</li>
+                    </ul>
+                </div>
+
+                <!-- Parser HTML -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">
+                        Parser HTML
+                    </h3>
+                    <p>
+                        Se encarga de <strong>analizar la estructura HTML</strong> y construir un árbol DOM con
+                        las etiquetas,
+                        atributos y texto. Facilita:
+                    </p>
+                    <ul>
+                        <li>Encontrar elementos por etiqueta (p, h1, a…)</li>
+                        <li>Localizar elementos por atributos (id, class, data-*)</li>
+                        <li>Navegar por padres, hijos y hermanos en el DOM</li>
+                    </ul>
+                </div>
+
+                <!-- Selectores -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">
+                        Selectores
+                    </h3>
+                    <p>
+                        Son las <strong>reglas que indican qué elementos queremos extraer</strong>. Los más
+                        comunes son:
+                    </p>
+                    <ul>
+                        <li><strong>CSS Selectors:</strong> <code>.precio</code>, <code>#titulo</code></li>
+                        <li><strong>XPath:</strong> rutas como <code>//div[@class='card']/h2</code></li>
+                        <li><strong>Filtros personalizados:</strong> por contenido de texto, atributos, etc.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Gestor de datos -->
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">
+                        Gestor de datos
+                    </h3>
+                    <p>
+                        Una vez extraídos, los datos se <strong>almacenan y limpian</strong> para su posterior
+                        uso:
+                    </p>
+                    <ul>
+                        <li>Ficheros CSV/JSON para análisis rápido</li>
+                        <li>Bases de datos SQL/NoSQL</li>
+                        <li>Data lakes o sistemas de Big Data (HDFS, S3…)</li>
+                        <li>Conectores a herramientas de BI (Power BI, Tableau…)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ASPECTOS LEGALES Y ÉTICOS (AZUL) -->
+        <section class="section">
+            <h2 class="section-title color-primary">
+                Aspectos Legales y Éticos del Web Scraping
+            </h2>
+
+            <p>
+                Antes de hacer scraping sobre cualquier sitio web, es <strong>imprescindible comprobar qué
+                    está permitido</strong>.
+                Aunque técnicamente sea posible extraer datos, eso no significa que sea legal o ético
+                hacerlo.
+            </p>
+
+            <!-- GRID CHECKLIST -->
+            <div class="grid-features mt-4">
+                <!-- robots.txt -->
+                <div class="feature-card warning">
+                    <h3>
+                        1. robots.txt
+                    </h3>
+                    <p>
+                        Es un fichero de texto que indica <strong>qué partes del sitio pueden ser rastreadas
+                            por bots</strong>
+                        y cuáles no. Suele estar en:
+                    </p>
+                    <p class="code-badge">
+                        https://www.ejemplo.com/robots.txt
+                    </p>
+                    <p>
+                        Aunque no es una ley, <strong>se considera una buena práctica</strong> respetar lo
+                        que indica,
+                        especialmente en entornos profesionales.
+                    </p>
+                </div>
+
+                <!-- Términos de servicio -->
+                <div class="feature-card warning">
+                    <h3>
+                        2. Términos de servicio
+                    </h3>
+                    <p>
+                        La mayoría de webs incluyen condiciones de uso donde suelen especificar si
+                        <strong>permiten o prohíben
+                            el scraping</strong>, la reutilización de datos, o el acceso automatizado.
+                    </p>
+                    <p class="mt-2 text-danger">
+                        <strong>⚠️ Importante:</strong> Incumplir estos términos podría tener consecuencias
+                        legales.
+                    </p>
+                </div>
+
+                <!-- RGPD -->
+                <div class="feature-card warning">
+                    <h3>
+                        3. RGPD y protección de datos
+                    </h3>
+                    <p>
+                        En la Unión Europea, el <strong>RGPD</strong> regula el tratamiento de <strong>datos
+                            personales</strong>
+                        (emails, nombres, teléfonos, IPs, etc.). Aunque un dato esté publicado, <strong>no
+                            significa que puedas
+                            recopilarlo y reutilizarlo libremente</strong>.
+                    </p>
+                    <p>
+                        Para proyectos reales se deben aplicar principios como: minimización de datos,
+                        finalidad legítima,
+                        anonimización y seguridad.
+                    </p>
+                </div>
+
+                <!-- Rate limiting -->
+                <div class="feature-card warning">
+                    <h3>
+                        4. Rate limiting y carga del servidor
+                    </h3>
+                    <p>
+                        Hacer miles de peticiones por segundo puede <strong>saturar o derribar</strong> un
+                        sitio web.
+                        Además de ser poco ético, muchos servidores bloquean o banean IPs que generan exceso
+                        de tráfico.
+                    </p>
+                    <p>
+                        Lo correcto es aplicar <strong>pausas entre peticiones</strong>, limitar la
+                        concurrencia y evitar
+                        horas de máxima carga.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CAJA RESUMEN ÉTICO -->
+            <div class="highlight-box warning mt-4">
+                <h3 class="color-warning">
+                    ⚠️ Buenas prácticas éticas
+                </h3>
+                <ul class="mb-0">
+                    <li>Revisar siempre <strong>robots.txt</strong> y los <strong>términos de
+                            servicio</strong>.</li>
+                    <li>Evitar scraping de <strong>datos personales</strong> salvo que exista base legal
+                        clara.</li>
+                    <li>No sobrecargar los servidores: aplicar <strong>delays</strong> y limitar hilos.</li>
+                    <li>Cuando exista API oficial, <strong>preferir la API</strong> frente al scraping.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EJEMPLO PRÁCTICO EN PYTHON (MORADO) -->
+        <section class="section">
+            <h2 class="section-title color-primary">
+                Ejemplo Práctico de Web Scraping con Python
+            </h2>
+
+            <p>
+                A continuación se muestra un ejemplo sencillo usando <strong>requests</strong> como
+                cliente HTTP y
+                <strong>BeautifulSoup</strong> como parser HTML. Supongamos que queremos extraer los
+                títulos de las noticias
+                de la portada de un medio digital.
+
+            <p>
+                A continuación se muestra un ejemplo sencillo usando <strong>requests</strong> como
+                cliente HTTP y
+                <strong>BeautifulSoup</strong> como parser HTML. Supongamos que queremos extraer los
+            </p>
+
+            <!-- CAJA CÓDIGO 1 -->
+            <div class="code-block">
+                <div class="code-header">1️⃣ Instalación de librerías</div>
+                <pre><code class="language-bash">pip install requests beautifulsoup4</code></pre>
+            </div>
+
+            <!-- CAJA CÓDIGO 2 -->
+            <div class="code-block">
+                <div class="code-header">2️⃣ Cliente HTTP + Parser HTML + Selectores</div>
+                <pre><code class="language-python">import time
+import requests
+from bs4 import BeautifulSoup
+
+# 1. Cliente HTTP: hacemos una petición GET
+url = "https://www.ejemplo-noticias.com/"
+headers = {
+    "User-Agent": "Mozilla/5.0 (compatible; IlernaScraper/1.0)"
+}
+
+response = requests.get(url, headers=headers, timeout=10)
+
+# Comprobamos que la respuesta es correcta (código 200)
+if response.status_code != 200:
+    raise RuntimeError(f"Error: {response.status_code}")
+
+# 2. Parser HTML: creamos el árbol DOM
+soup = BeautifulSoup(response.text, "html.parser")
+
+# 3. Selectores: buscamos los elementos que nos interesan
+titulares = soup.select("h2.headline")
+
+print(f"Se han encontrado {len(titulares)} titulares:\n")
+for i, h in enumerate(titulares, start=1):
+    titulo = h.get_text(strip=True)
+    print(f"{i:02d}. {titulo}")
+
+# 4. Pausa para no sobrecargar el servidor
+time.sleep(2)</code></pre>
+            </div>
+
+            <!-- CAJA CÓDIGO 3: ALMACENAR DATOS -->
+            <div class="code-block">
+                <div class="code-header">3️⃣ Gestor de datos: guardar en CSV con Pandas</div>
+                <pre><code class="language-python">import pandas as pd
+
+# Convertimos la lista de titulares a un DataFrame
+data = [{"id": i + 1, "titulo": h.get_text(strip=True)} 
+        for i, h in enumerate(titulares)]
+
+df = pd.DataFrame(data)
+
+# Guardamos en CSV
+df.to_csv("titulares_noticias.csv", index=False, 
+          encoding="utf-8")
+
+print("✅ Archivo 'titulares_noticias.csv' generado.")</code></pre>
+            </div>
+
+            <!-- CAJA CONSEJOS -->
+            <div class="curiosity-box mt-4">
+                <h4>
+                    💡 Consejos prácticos para scrapers robustos
+                </h4>
+                <ul>
+                    <li>Gestionar errores de red con <code>try/except</code> y reintentos automáticos.</li>
+                    <li>Detectar cambios en la estructura HTML (clases, etiquetas) y adaptar los selectores.</li>
+                    <li>Registrar logs de ejecución (URLs visitadas, errores, tiempo de respuesta).</li>
+                    <li>Escalar el scraping usando colas de tareas (Celery, Airflow) cuando el volumen es grande.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: RESUMEN FINAL (AZUL) -->
+        <section class="section">
+            <h2 class="section-title color-primary">
+                Resumen y Puntos Clave sobre Web Scraping
+            </h2>
+
+            <div class="grid-features">
+                <!-- Qué es -->
+                <div class="feature-card primary">
+                    <h3 class="color-primary">
+                        ✅ Qué ES el web scraping
+                    </h3>
+                    <ul>
+                        <li>Una técnica para <strong>extraer información de sitios web
+                                automáticamente</strong>.</li>
+                        <li>Se basa en <strong>cliente HTTP + parser HTML + selectores + gestor de
+                                datos</strong>.</li>
+                        <li>Muy utilizada en <strong>Big Data, IA, análisis de mercado y monitorización
+                                de precios</strong>.</li>
+                    </ul>
+                </div>
+
+                <!-- Qué no es -->
+                <div class="feature-card warning">
+                    <h3 class="color-warning-medium">
+                        ⚠️ Qué NO ES el web scraping
+                    </h3>
+                    <ul>
+                        <li>No es una licencia para <strong>copiar cualquier contenido sin
+                                permiso</strong>.</li>
+                        <li>No sustituye a las <strong>APIs oficiales</strong> cuando estas existen.
+                        </li>
+                        <li>No debe usarse para <strong>recopilar datos personales</strong> sin base
+                            legal.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mensaje final -->
+            <div class="prediction-box mt-5">
+                <p>
+                    💡 <strong>Reflexión Final:</strong> El web scraping es una herramienta <strong>muy
+                        potente</strong> para generar datasets a partir de la web.
+                    Dominar sus componentes técnicos (cliente HTTP, parser HTML, selectores y
+                    almacenamiento) y
+                    comprender sus <strong>limitaciones legales y éticas</strong> es esencial para
+                    utilizarlo de forma
+                    profesional en proyectos de <strong>Inteligencia Artificial y Big Data</strong>.
+                </p>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin"><span>🐧</span></div>
+    </footer>
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+
+</html>

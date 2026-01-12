@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Análisis de complejidad en sistemas distribuidos de Big Data: Latencia, Paralelización, Balanceo de Carga y Trade-offs.">
+    <meta name="keywords"
+        content="Big Data, Sistemas Distribuidos, Latencia, Paralelización, Balanceo de Carga, MapReduce, Spark, Complejidad">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Complejidad en Sistemas Distribuidos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Big Data</a> ›
+                    <span>Complejidad en Sistemas Distribuidos</span>
+                </div>
+            </div>
+            <h1 class="text-center color-primary">Complejidad en Sistemas Distribuidos</h1>
+            <p class="subtitle text-center">Análisis de Rendimiento en Arquitecturas de Big Data</p>
+        </header>
+
+        <main>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">Más Allá del Análisis Computacional Tradicional</h2>
+                <p>
+                    En computación clásica, medimos la complejidad de un algoritmo contando operaciones: cuántas sumas,
+                    comparaciones o multiplicaciones ejecutamos. La notación Big O nos permite expresar cómo crece el
+                    tiempo de ejecución conforme aumentan los datos de entrada. Sin embargo, cuando trabajamos con
+                    <strong>sistemas distribuidos de Big Data</strong>, este análisis se vuelve insuficiente.
+                </p>
+                <p>
+                    En un entorno donde cientos o miles de máquinas procesan información simultáneamente, emergen
+                    <strong>nuevos factores críticos</strong> que pueden dominar completamente el rendimiento del
+                    sistema. El tiempo que tardan los datos en viajar entre servidores, la capacidad de dividir el
+                    trabajo en tareas paralelas, y la habilidad para distribuir la carga equitativamente entre todos los
+                    nodos se convierten en los verdaderos determinantes del rendimiento.
+                </p>
+
+                <!-- CAJA DE EJEMPLO REAL -->
+                <div class="highlight-box primary">
+                    <p style="font-weight: 700;">💼 Caso Real: Google MapReduce</p>
+                    <p>Cuando Google diseñó MapReduce para procesar petabytes de datos web, descubrieron que el tiempo
+                        de comunicación entre nodos representaba el 60-70% del tiempo total de ejecución en ciertos
+                        trabajos. Optimizar la localidad de datos (procesar información cerca de donde está almacenada)
+                        redujo los tiempos de ejecución en 10x, sin cambiar ni una línea del algoritmo de procesamiento.
+                    </p>
+                </div>
+
+                <!-- CONCEPTOS EN GRID -->
+                <h3>Factores Clave en Sistemas Distribuidos</h3>
+                <div class="grid-characteristics">
+                    <!-- TARJETA AZUL -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🌐 Latencia de Red</h4>
+                        <p>Tiempo que tardan los datos en viajar entre diferentes máquinas del clúster. Puede superar el
+                            tiempo de cómputo real.</p>
+                    </div>
+                    <!-- TARJETA MORADA -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">⚡ Paralelización</h4>
+                        <p>Capacidad de dividir una tarea en subtareas independientes que se ejecutan simultáneamente en
+                            múltiples nodos.</p>
+                    </div>
+                    <!-- TARJETA AZUL -->
+                    <div class="card primary">
+                        <h4 class="color-primary">⚖️ Balanceo de Carga</h4>
+                        <p>Distribución equitativa del trabajo entre todos los nodos para evitar que unos queden
+                            sobrecargados y otros inactivos.</p>
+                    </div>
+                    <!-- TARJETA MORADA -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🔄 Tolerancia a Fallos</h4>
+                        <p>Capacidad del sistema para continuar funcionando cuando nodos individuales fallan, sin perder
+                            datos ni detener el procesamiento.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: LATENCIA DE RED -->
+            <section class="section">
+                <h2 class="section-title">🌐 Latencia de Red: El Costo Oculto de la Comunicación</h2>
+
+                <p>
+                    La <strong>latencia de red</strong> es el tiempo necesario para que un mensaje viaje desde un nodo
+                    del clúster hasta otro. Este tiempo incluye no solo la transmisión física de bits por el cable o
+                    fibra óptica, sino también el procesamiento en routers, switches, y la serialización/deserialización
+                    de datos. En sistemas distribuidos, cada intercambio de información añade este retraso, y cuando
+                    multiplicamos por miles de comunicaciones, el impacto se vuelve masivo.
+                </p>
+
+                <!-- DIAGRAMA DE LATENCIA -->
+                <div style="margin-bottom: 2rem;">
+                    <svg width="900" height="320" viewBox="0 0 900 320" class="diagram-svg">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">Impacto de la Latencia de Red en el Rendimiento</text>
+
+                        <!-- Escenario 1: Sin comunicación de red -->
+                        <text x="150" y="70" font-size="16" font-weight="bold" fill="#333333"
+                            text-anchor="middle">Procesamiento Local</text>
+                        <rect x="50" y="85" width="200" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="150" y="110" font-size="14" fill="#333333" text-anchor="middle">Nodo A</text>
+                        <text x="150" y="130" font-size="13" fill="#555555" text-anchor="middle">Procesa 1GB</text>
+
+                        <!-- Tiempo de procesamiento local -->
+                        <rect x="50" y="160" width="200" height="30" fill="#49B9CE" rx="5" />
+                        <text x="150" y="180" font-size="12" font-weight="bold" fill="white" text-anchor="middle">⏱️
+                            Tiempo: 2 segundos</text>
+
+                        <!-- VS -->
+                        <text x="450" y="135" font-size="24" font-weight="bold" fill="#8A7AAF"
+                            text-anchor="middle">VS</text>
+
+                        <!-- Escenario 2: Con comunicación de red -->
+                        <text x="750" y="70" font-size="16" font-weight="bold" fill="#333333"
+                            text-anchor="middle">Procesamiento Distribuido</text>
+
+                        <!-- Nodo A -->
+                        <rect x="650" y="85" width="80" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="690" y="110" font-size="11" fill="#333333" text-anchor="middle">Nodo A</text>
+
+                        <!-- Flecha con latencia -->
+                        <path d="M 730 105 L 765 105" stroke="#8A7AAF" stroke-width="3" fill="none" />
+                        <polygon points="765,105 755,100 755,110" fill="#8A7AAF" />
+                        <text x="747" y="95" font-size="9" fill="#8A7AAF" text-anchor="middle">100ms latencia</text>
+
+                        <!-- Nodo B -->
+                        <rect x="770" y="85" width="80" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="810" y="110" font-size="11" fill="#333333" text-anchor="middle">Nodo B</text>
+
+                        <!-- Tiempos detallados -->
+                        <rect x="650" y="140" width="200" height="25" fill="#49B9CE" rx="5" />
+                        <text x="750" y="158" font-size="11" fill="white" text-anchor="middle">Procesamiento: 2
+                            seg</text>
+
+                        <rect x="650" y="170" width="200" height="25" fill="#8A7AAF" rx="5" />
+                        <text x="750" y="188" font-size="11" fill="white" text-anchor="middle">Latencia red (x100): 10
+                            seg</text>
+
+                        <rect x="650" y="200" width="200" height="30" fill="#E65100" rx="5" />
+                        <text x="750" y="220" font-size="12" font-weight="bold" fill="white" text-anchor="middle">⏱️
+                            Total: 12 segundos</text>
+
+                        <!-- Explicación de escala -->
+                        <text x="450" y="260" font-size="13" fill="#555555" text-anchor="middle">En este ejemplo, el
+                            clúster necesita 100 comunicaciones entre nodos para agregar resultados</text>
+                        <text x="450" y="280" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle">La
+                            latencia de red representa el 83% del tiempo total (10 de 12 segundos)</text>
+
+                        <!-- Conclusión -->
+                        <rect x="150" y="295" width="600" height="20" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="450" y="309" font-size="11" font-weight="bold" fill="#E65100" text-anchor="middle">💡
+                            Minimizar comunicaciones entre nodos es crítico para el rendimiento</text>
+                    </svg>
+                </div>
+
+                <!-- MÉTRICAS DE LATENCIA -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-primary">📊 Órdenes de Magnitud de Latencia</h3>
+                    <p>
+                        Comprender las diferencias de velocidad entre tipos de acceso es fundamental para diseñar
+                        sistemas eficientes:
+                    </p>
+
+                    <!-- TABLA DE LATENCIAS -->
+                    <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Acceso</th>
+                                    <th style="text-align: center;">Latencia Típica</th>
+                                    <th style="text-align: center;">Comparación Relativa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-primary">
+                                    <td style="font-weight: 700;">Caché L1 CPU</td>
+                                    <td style="text-align: center;">0.5 nanosegundos</td>
+                                    <td style="text-align: center;">1x (referencia)</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 700;">Memoria RAM</td>
+                                    <td style="text-align: center;">100 nanosegundos</td>
+                                    <td style="text-align: center;">200x más lento</td>
+                                </tr>
+                                <tr class="row-primary">
+                                    <td style="font-weight: 700;">Disco SSD</td>
+                                    <td style="text-align: center;">16 microsegundos</td>
+                                    <td style="text-align: center;">32,000x más lento</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 700;">Red mismo datacenter</td>
+                                    <td style="text-align: center;">0.5 milisegundos</td>
+                                    <td style="text-align: center;">1,000,000x más lento</td>
+                                </tr>
+                                <tr class="row-secondary">
+                                    <td style="font-weight: 700;">Red entre datacenters</td>
+                                    <td style="text-align: center;">50-150 milisegundos</td>
+                                    <td style="text-align: center;">100,000,000x más lento</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ESTRATEGIAS PARA MINIMIZAR LATENCIA -->
+                    <h4>Estrategias para Minimizar la Latencia</h4>
+                    <div class="grid-characteristics">
+                        <!-- Localidad de datos -->
+                        <div class="card primary">
+                            <h5 class="color-primary">📍 Localidad de Datos</h5>
+                            <p>Procesar datos en el nodo donde están almacenados ("mover código, no datos").</p>
+                        </div>
+
+                        <!-- Batch processing -->
+                        <div class="card secondary">
+                            <h5 class="color-secondary">📦 Procesamiento en Lotes</h5>
+                            <p>Enviar grandes bloques de datos en lugar de mensajes pequeños frecuentes.</p>
+                        </div>
+
+                        <!-- Compresión -->
+                        <div class="card primary">
+                            <h5 class="color-primary">🗜️ Compresión</h5>
+                            <p>Comprimir datos antes de transmitir para reducir bytes en la red.</p>
+                        </div>
+
+                        <!-- Cachés -->
+                        <div class="card secondary">
+                            <h5 class="color-secondary">💾 Cachés Distribuidas</h5>
+                            <p>Mantener copias locales de datos frecuentemente accedidos.</p>
+                        </div>
+
+                        <!-- Agregación local -->
+                        <div class="card primary">
+                            <h5 class="color-primary">🔢 Agregación Local</h5>
+                            <p>Calcular subtotales localmente antes de combinar resultados.</p>
+                        </div>
+
+                        <!-- Reduce shuffle -->
+                        <div class="card secondary">
+                            <h5 class="color-secondary">🔀 Minimizar Shuffles</h5>
+                            <p>Diseñar algoritmos que requieran menos redistribución de datos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CASO REAL -->
+                <div class="highlight-box primary">
+                    <p style="font-weight: 700;">🏢 Caso Real: Facebook Graph Search</p>
+                    <p>
+                        Facebook descubrió que en su sistema de búsqueda social, <strong>cada salto adicional entre
+                            servidores</strong> añadía 50-100ms de latencia. Para una consulta compleja que requería
+                        información de amigos, fotos, lugares y eventos, esto podía significar 500-800ms solo en
+                        comunicaciones de red. Implementaron una arquitectura de <strong>caché multinivel</strong> y
+                        replicación estratégica que redujo los saltos de red promedio de 6 a 2, mejorando la latencia
+                        percibida por el usuario en un 65%.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: PARALELIZACIÓN -->
+            <section class="section">
+                <h2 class="section-title">⚡ Paralelización: Dividir para Conquistar</h2>
+
+                <p>
+                    La <strong>paralelización</strong> consiste en descomponer una tarea grande en múltiples subtareas
+                    independientes que pueden ejecutarse simultáneamente en diferentes nodos del clúster. El beneficio
+                    potencial es enorme: si dividimos una tarea que tarda 100 horas en 1,000 nodos, teóricamente
+                    podríamos completarla en 6 minutos. Sin embargo, no todos los problemas se paralelizan con la misma
+                    facilidad, y existen límites fundamentales establecidos por la <strong>Ley de Amdahl</strong>.
+                </p>
+
+                <!-- DIAGRAMA DE PARALELIZACIÓN -->
+                <div style="margin-bottom: 2rem;">
+                    <svg width="900" height="380" viewBox="0 0 900 380" class="diagram-svg">
+                        <!-- [SVG content - mantener como está por brevedad] -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF"
+                            text-anchor="middle">Diferencias en Paralelización según el Tipo de Problema</text>
+
+                        <!-- PROBLEMA PARALELIZABLE -->
+                        <text x="225" y="65" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle">✅
+                            Fácilmente Paralelizable</text>
+                        <text x="225" y="85" font-size="13" fill="#555555" text-anchor="middle">Ejemplo: Contar palabras
+                            en documentos</text>
+
+                        <rect x="80" y="105" width="290" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="225" y="130" font-size="12" fill="#333333" text-anchor="middle">⏱️ Secuencial: 100
+                            minutos (1 nodo)</text>
+
+                        <text x="80" y="170" font-size="12" font-weight="bold" fill="#333333" text-anchor="start">Con 10
+                            nodos en paralelo:</text>
+
+                        <rect x="80" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="110" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="140" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="170" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="200" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="230" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="260" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="290" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="320" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+                        <rect x="350" y="180" width="29" height="30" fill="#49B9CE" rx="3" />
+
+                        <text x="215" y="230" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">⚡
+                            Paralelo: 10 minutos (speedup 10x)</text>
+                        <text x="215" y="250" font-size="11" fill="#555555" text-anchor="middle">Cada nodo procesa 1/10
+                            de los documentos independientemente</text>
+
+                        <!-- PROBLEMA DIFÍCILMENTE PARALELIZABLE -->
+                        <text x="675" y="65" font-size="16" font-weight="bold" fill="#E65100" text-anchor="middle">❌
+                            Difícilmente Paralelizable</text>
+                        <text x="675" y="85" font-size="13" fill="#555555" text-anchor="middle">Ejemplo: Calcular
+                            secuencia Fibonacci</text>
+
+                        <rect x="530" y="105" width="290" height="40" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="675" y="130" font-size="12" fill="#333333" text-anchor="middle">⏱️ Secuencial: 100
+                            minutos (1 nodo)</text>
+
+                        <text x="530" y="170" font-size="12" font-weight="bold" fill="#333333" text-anchor="start">Con
+                            10 nodos (pero con dependencias):</text>
+
+                        <rect x="555" y="180" width="240" height="30" fill="#E65100" rx="3" />
+                        <text x="675" y="200" font-size="11" fill="white" text-anchor="middle">Cada paso necesita
+                            resultado anterior</text>
+
+                        <!-- Flechas de dependencia -->
+                        <path d="M 580 215 L 595 230 L 610 215" stroke="#E65100" stroke-width="2" fill="none" />
+                        <path d="M 630 215 L 645 230 L 660 215" stroke="#E65100" stroke-width="2" fill="none" />
+                        <path d="M 680 215 L 695 230 L 710 215" stroke="#E65100" stroke-width="2" fill="none" />
+                        <path d="M 730 215 L 745 230 L 760 215" stroke="#E65100" stroke-width="2" fill="none" />
+
+                        <text x="665" y="255" font-size="12" font-weight="bold" fill="#E65100" text-anchor="middle">⚠️
+                            Paralelo: 95 minutos (speedup 1.05x)</text>
+                        <text x="665" y="275" font-size="11" fill="#555555" text-anchor="middle">La mayoría del trabajo
+                            debe hacerse secuencialmente</text>
+
+                        <!-- Ley de Amdahl -->
+                        <rect x="150" y="300" width="600" height="65" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="325" font-size="15" font-weight="bold" fill="#8A7AAF" text-anchor="middle">📐
+                            Ley de Amdahl</text>
+                        <text x="450" y="345" font-size="12" fill="#555555" text-anchor="middle">El speedup máximo está
+                            limitado por la porción secuencial del algoritmo.</text>
+                        <text x="450" y="362" font-size="11" fill="#555555" text-anchor="middle">Si el 10% del trabajo
+                            es secuencial, el speedup máximo es 10x, sin importar cuántos nodos añadas.</text>
+                    </svg>
+                </div>
+
+                <!-- TIPOS DE PROBLEMAS -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-secondary">Clasificación de Problemas por Paralelizabilidad</h3>
+
+                    <div class="grid-characteristics">
+                        <!-- Embarazosamente paralelos -->
+                        <div class="card primary">
+                            <h4 class="color-primary">✨ Embarazosamente Paralelos</h4>
+                            <p style="margin-bottom: 0.75rem;">Subtareas completamente independientes. Speedup lineal
+                                con nodos.</p>
+                            <p style="font-size: 0.875rem;"><strong>Ejemplos:</strong> Renderizado de imágenes, análisis
+                                de logs, procesamiento de imágenes pixel por pixel.</p>
+                        </div>
+
+                        <!-- Map-Reduce -->
+                        <div class="card secondary">
+                            <h4 class="color-secondary">🗺️ Map-Reduce</h4>
+                            <p style="margin-bottom: 0.75rem;">Fase Map paralela + fase Reduce con agregación. Muy
+                                escalable.</p>
+                            <p style="font-size: 0.875rem;"><strong>Ejemplos:</strong> Contar palabras, calcular
+                                promedios, filtrado y agregación de datos.</p>
+                        </div>
+
+                        <!-- Parcialmente paralelos -->
+                        <div class="card primary">
+                            <h4 class="color-primary">⚠️ Parcialmente Paralelos</h4>
+                            <p style="margin-bottom: 0.75rem;">Algunas dependencias entre subtareas. Speedup limitado.
+                            </p>
+                            <p style="font-size: 0.875rem;"><strong>Ejemplos:</strong> Algoritmos de grafos (PageRank),
+                                ordenamiento distribuido, joins de tablas.</p>
+                        </div>
+
+                        <!-- Secuenciales -->
+                        <div class="card" style="border: 2px solid #E65100;">
+                            <h4 style="color: #E65100;">🔗 Inherentemente Secuenciales</h4>
+                            <p style="margin-bottom: 0.75rem;">Cada paso depende del anterior. No paralelizable.</p>
+                            <p style="font-size: 0.875rem;"><strong>Ejemplos:</strong> Cálculo de Fibonacci,
+                                simulaciones con estado compartido, algunos algoritmos de optimización.</p>
+                        </div>
+                    </div>
+
+                    <!-- EJEMPLO DE CÓDIGO -->
+                    <div class="code-block">
+                        <div class="code-header">Python - Spark WordCount</div>
+                        <pre><code class="language-python"># Problema embarazosamente paralelo: contar palabras
+from pyspark import SparkContext
+
+sc = SparkContext("local[10]", "WordCount")  # 10 nodos
+
+# Cargar y distribuir datos automáticamente
+text_rdd = sc.textFile("hdfs://documentos/*.txt")
+
+# MAP: Cada nodo procesa su partición independientemente
+words = text_rdd.flatMap(lambda line: line.split())
+word_pairs = words.map(lambda word: (word, 1))
+
+# REDUCE: Agregar conteos (mínima comunicación)
+word_counts = word_pairs.reduceByKey(lambda a, b: a + b)
+
+# ⚡ Speedup casi lineal: 10 nodos = ~10x más rápido
+word_counts.saveAsTextFile("hdfs://output")</code></pre>
+                    </div>
+                </div>
+
+                <!-- CASO REAL -->
+                <div class="highlight-box secondary">
+                    <p style="font-weight: 700;">🏢 Caso Real: Amazon Product Recommendations</p>
+                    <p>
+                        Amazon procesa <strong>recomendaciones de productos para 300+ millones de usuarios</strong>
+                        utilizando algoritmos de filtrado colaborativo. El cálculo de similitud entre productos es un
+                        problema <strong>embarazosamente paralelo</strong>: cada par de productos puede compararse
+                        independientemente. Distribuyen este trabajo en miles de nodos EC2, logrando actualizar todas
+                        las recomendaciones cada 4 horas, un proceso que tomaría semanas en un servidor único. El
+                        speedup real alcanza 0.85x del teórico (15% de overhead por coordinación), procesando 50
+                        petabytes de interacciones de usuario.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: BALANCEO DE CARGA -->
+            <section class="section">
+                <h2 class="section-title">⚖️ Balanceo de Carga: Distribución Equitativa del Trabajo</h2>
+
+                <p>
+                    El <strong>balanceo de carga</strong> busca distribuir el trabajo de forma equitativa entre todos
+                    los nodos disponibles en el clúster. Un sistema mal balanceado desperdicia recursos valiosos:
+                    algunos nodos terminan sobrecargados procesando durante horas, mientras otros permanecen inactivos
+                    esperando. El resultado es que el tiempo total de ejecución queda determinado por el nodo más lento,
+                    anulando los beneficios de la paralelización.
+                </p>
+
+                <!-- DIAGRAMA DE BALANCEO (SVG simplificado) -->
+                <div style="margin-bottom: 2rem;">
+                    <svg width="900" height="360" viewBox="0 0 900 360" class="diagram-svg">
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">Impacto del Balanceo de Carga en el Rendimiento</text>
+
+                        <!-- MAL BALANCEADO -->
+                        <text x="225" y="65" font-size="16" font-weight="bold" fill="#E65100" text-anchor="middle">❌ Mal
+                            Balanceado</text>
+                        <text x="225" y="85" font-size="13" fill="#555555" text-anchor="middle">Distribución desigual
+                            del trabajo</text>
+
+                        <rect x="50" y="105" width="40" height="150" fill="#E65100" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="70" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 1</text>
+                        <text x="70" y="280" font-size="10" font-weight="bold" fill="#E65100"
+                            text-anchor="middle">100%</text>
+
+                        <rect x="110" y="185" width="40" height="70" fill="#FFA726" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="130" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 2</text>
+                        <text x="130" y="280" font-size="10" font-weight="bold" fill="#FFA726"
+                            text-anchor="middle">45%</text>
+
+                        <rect x="170" y="195" width="40" height="60" fill="#FFD54F" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="190" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 3</text>
+                        <text x="190" y="280" font-size="10" font-weight="bold" fill="#9E7400"
+                            text-anchor="middle">40%</text>
+
+                        <rect x="230" y="205" width="40" height="50" fill="#FFE082" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="250" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 4</text>
+                        <text x="250" y="280" font-size="10" font-weight="bold" fill="#9E7400"
+                            text-anchor="middle">35%</text>
+
+                        <rect x="290" y="220" width="40" height="35" fill="#FFF8DC" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="310" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 5</text>
+                        <text x="310" y="280" font-size="10" font-weight="bold" fill="#9E7400"
+                            text-anchor="middle">25%</text>
+
+                        <text x="180" y="305" font-size="11" fill="#E65100" font-weight="bold" text-anchor="middle">⏱️
+                            Tiempo total: 100 unidades</text>
+                        <text x="180" y="320" font-size="10" fill="#555555" text-anchor="middle">(determinado por el
+                            nodo más lento)</text>
+
+                        <!-- BIEN BALANCEADO -->
+                        <text x="675" y="65" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle">✅
+                            Bien Balanceado</text>
+                        <text x="675" y="85" font-size="13" fill="#555555" text-anchor="middle">Distribución equitativa
+                            del trabajo</text>
+
+                        <rect x="550" y="160" width="40" height="95" fill="#49B9CE" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="570" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 1</text>
+                        <text x="570" y="280" font-size="10" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">60%</text>
+
+                        <rect x="610" y="160" width="40" height="95" fill="#49B9CE" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="630" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 2</text>
+                        <text x="630" y="280" font-size="10" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">60%</text>
+
+                        <rect x="670" y="160" width="40" height="95" fill="#49B9CE" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="690" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 3</text>
+                        <text x="690" y="280" font-size="10" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">60%</text>
+
+                        <rect x="730" y="160" width="40" height="95" fill="#49B9CE" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="750" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 4</text>
+                        <text x="750" y="280" font-size="10" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">60%</text>
+
+                        <rect x="790" y="160" width="40" height="95" fill="#49B9CE" stroke="#333333" stroke-width="2"
+                            rx="5" />
+                        <text x="810" y="265" font-size="10" fill="#333333" text-anchor="middle">Nodo 5</text>
+                        <text x="810" y="280" font-size="10" font-weight="bold" fill="#49B9CE"
+                            text-anchor="middle">60%</text>
+
+                        <text x="680" y="305" font-size="11" fill="#49B9CE" font-weight="bold" text-anchor="middle">⚡
+                            Tiempo total: 60 unidades</text>
+                        <text x="680" y="320" font-size="10" fill="#555555" text-anchor="middle">(todos los nodos
+                            terminan simultáneamente)</text>
+
+                        <!-- Comparación -->
+                        <rect x="250" y="335" width="400" height="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="450" y="349" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle">🚀
+                            Mejora del 40% solo balanceando correctamente la carga</text>
+                    </svg>
+                </div>
+
+                <!-- ESTRATEGIAS DE PARTICIONADO -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="color-primary">Estrategias de Particionado</h3>
+
+                    <div class="grid-characteristics">
+                        <!-- Hash Partitioning -->
+                        <div class="card primary">
+                            <h4 class="color-primary">#️⃣ Hash Partitioning</h4>
+                            <p style="margin-bottom: 0.75rem;"><strong>Cómo:</strong> hash(clave) % num_nodos</p>
+                            <p style="margin-bottom: 0.75rem;"><strong>Ventaja:</strong> Distribución muy uniforme
+                                automática.</p>
+                            <p style="font-size: 0.875rem;"><strong>Cuándo:</strong> Claves con distribución desconocida
+                                o irregular.</p>
+                        </div>
+
+                        <!-- Range Partitioning -->
+                        <div class="card secondary">
+                            <h4 class="color-secondary">📊 Range Partitioning</h4>
+                            <p style="margin-bottom: 0.75rem;"><strong>Cómo:</strong> Dividir por rangos de valores
+                                (A-D, E-H...).</p>
+                            <p style="margin-bottom: 0.75rem;"><strong>Ventaja:</strong> Preserva orden, eficiente para
+                                consultas por rango.</p>
+                            <p style="font-size: 0.875rem;"><strong>Riesgo:</strong> Puede crear particiones
+                                desbalanceadas si los datos están sesgados.</p>
+                        </div>
+
+                        <!-- Round Robin -->
+                        <div class="card primary">
+                            <h4 class="color-primary">🔄 Round Robin</h4>
+                            <p style="margin-bottom: 0.75rem;"><strong>Cómo:</strong> Asignar registros a nodos
+                                secuencialmente (1→2→3→1...).</p>
+                            <p style="margin-bottom: 0.75rem;"><strong>Ventaja:</strong> Simplísimo y perfectamente
+                                balanceado.</p>
+                            <p style="font-size: 0.875rem;"><strong>Cuándo:</strong> Procesamiento sin necesidad de
+                                agrupar por clave.</p>
+                        </div>
+
+                        <!-- Consistent Hashing -->
+                        <div class="card secondary">
+                            <h4 class="color-secondary">🎯 Consistent Hashing</h4>
+                            <p style="margin-bottom: 0.75rem;"><strong>Cómo:</strong> Hash circular, minimiza
+                                redistribución al añadir/quitar nodos.</p>
+                            <p style="margin-bottom: 0.75rem;"><strong>Ventaja:</strong> Escalabilidad dinámica sin
+                                rebalanceo masivo.</p>
+                            <p style="font-size: 0.875rem;"><strong>Cuándo:</strong> Sistemas que crecen/decrecen
+                                frecuentemente (Cassandra, DynamoDB).</p>
+                        </div>
+                    </div>
+
+                    <!-- PROBLEMA COMÚN: SKEW DE DATOS -->
+                    <div class="highlight-box"
+                        style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-bottom: 1.5rem;">
+                        <h4 style="color: #E65100;">⚠️ Problema Común: Data Skew</h4>
+                        <p style="margin-bottom: 0.75rem;">
+                            <strong>Data skew</strong> ocurre cuando los datos no están distribuidos uniformemente. Por
+                            ejemplo, al procesar logs web agrupados por país de origen:
+                        </p>
+                        <ul>
+                            <li>🇺🇸 Estados Unidos genera 10 veces más tráfico que otros países</li>
+                            <li>El nodo procesando EE.UU. tardará 10x más que los demás</li>
+                            <li>Los otros 99 nodos esperan inactivos al nodo sobrecargado</li>
+                            <li><strong>Solución:</strong> Subdividir particiones grandes (EE.UU. → EE.UU.-Este,
+                                EE.UU.-Oeste, etc.)</li>
+                        </ul>
+                    </div>
+
+                    <!-- EJEMPLO DE CÓDIGO -->
+                    <div class="code-block">
+                        <div class="code-header">Python - Spark Reparticionado con Salting</div>
+                        <pre><code class="language-python"># Detectar y corregir data skew
+from pyspark.sql import functions as F
+
+# Datos iniciales desbalanceados (skewed)
+logs = spark.read.parquet("logs/")
+
+# ❌ MAL: Particionar por país crea desbalanceo
+# logs_by_country = logs.repartition("country")
+
+# ✅ MEJOR: Salting - Añadir suffix aleatorio para subdividir
+logs_salted = logs.withColumn(
+    "partition_key",
+    F.concat(
+        F.col("country"),
+        F.lit("_"),
+        (F.rand() * 10).cast("int")  # 10 sub-particiones
+    )
+)
+
+# Ahora EE.UU. se divide en US_0, US_1, ... US_9
+balanced = logs_salted.repartition("partition_key")
+
+# 🚀 Resultado: 10x mejor balanceo en particiones grandes</code></pre>
+                    </div>
+                </div>
+
+                <!-- CASO REAL -->
+                <div class="highlight-box primary">
+                    <p style="font-weight: 700;">🏢 Caso Real: LinkedIn Graph Processing</p>
+                    <p>
+                        LinkedIn procesa su grafo social de <strong>900+ millones de usuarios</strong> usando Apache
+                        Giraph. Inicialmente sufrían problemas severos de desbalanceo: usuarios influyentes como Jeff
+                        Weiner (CEO) o Bill Gates tenían millones de conexiones, mientras el usuario promedio tiene 400.
+                        Los nodos procesando "super-nodos" tardaban <strong>50x más</strong> que el resto. Implementaron
+                        una estrategia de particionado híbrido que detecta automáticamente vértices con grado alto y los
+                        subdivide en múltiples particiones virtuales, logrando reducir el tiempo de procesamiento de
+                        PageRank de 8 horas a 45 minutos.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: TRADE-OFFS Y CONCLUSIONES -->
+            <section class="section">
+                <h2 class="section-title">🎯 Trade-offs y Mejores Prácticas</h2>
+
+                <!-- TABLA DE TRADE-OFFS -->
+                <div style="overflow-x: auto; margin-bottom: 2rem;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Factor</th>
+                                <th style="text-align: center;">Beneficio</th>
+                                <th style="text-align: center;">Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Más Nodos</td>
+                                <td>Mayor capacidad de procesamiento paralelo</td>
+                                <td>Más comunicación de red, mayor overhead de coordinación</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Particiones Pequeñas</td>
+                                <td>Mejor balanceo de carga, mayor granularidad</td>
+                                <td>Overhead por tarea, más scheduling, menos eficiencia caché</td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Replicación de Datos</td>
+                                <td>Tolerancia a fallos, procesamiento local, menos latencia</td>
+                                <td>Más almacenamiento, complejidad en consistencia</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Procesamiento Batch</td>
+                                <td>Throughput máximo, uso eficiente de recursos</td>
+                                <td>Mayor latencia end-to-end, no apto para tiempo real</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MEJORES PRÁCTICAS -->
+                <h3 class="color-secondary">Principios de Diseño</h3>
+
+                <div class="grid-characteristics">
+                    <!-- Localidad -->
+                    <div class="card primary">
+                        <h4 class="color-primary">📍 Maximizar Localidad</h4>
+                        <p>Procesa datos donde están almacenados. Mover código es miles de veces más rápido que mover
+                            datos.</p>
+                    </div>
+
+                    <!-- Minimizar shuffles -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🔀 Minimizar Shuffles</h4>
+                        <p>Los shuffles (redistribuir datos entre todos los nodos) son extremadamente costosos. Diseña
+                            algoritmos que los eviten.</p>
+                    </div>
+
+                    <!-- Monitorizar skew -->
+                    <div class="card primary">
+                        <h4 class="color-primary">📊 Monitorizar Skew</h4>
+                        <p>Mide la distribución de tamaños de partición. Un nodo tardando 10x más indica desbalanceo
+                            crítico.</p>
+                    </div>
+
+                    <!-- Comprimir -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🗜️ Comprimir Agresivamente</h4>
+                        <p>El tiempo de CPU para comprimir/descomprimir es insignificante comparado con latencia de red.
+                            Comprime todo.</p>
+                    </div>
+                </div>
+
+                <!-- CONCLUSIÓN FINAL -->
+                <div class="highlight-box" style="text-align: center;">
+                    <h3>🎯 Conclusión Clave</h3>
+                    <p style="margin-bottom: 1rem;">
+                        En sistemas distribuidos de Big Data, la <strong>complejidad algorítmica tradicional (Big
+                            O)</strong> es solo una pieza del rompecabezas. El rendimiento real está determinado por la
+                        interacción entre <strong>latencia de red, paralelización efectiva y balanceo de carga</strong>.
+                    </p>
+                    <p>
+                        Un algoritmo O(n²) bien distribuido con comunicación mínima puede superar fácilmente a un O(n
+                        log n) con shuffles masivos. <strong>Minimizar movimiento de datos</strong> y <strong>maximizar
+                            procesamiento local</strong> son los principios fundamentales del diseño de sistemas
+                        distribuidos eficientes.
+                    </p>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <img src="../img/logo-ilerna.svg" alt="ILERNA" style="height: 40px; margin-bottom: 1rem;">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p><a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+                <p style="font-size: 0.9rem; color: #777; margin-top: 1rem;">Centro oficial de FP online y presencial.
+                    Ciclos formativos de Grado Medio y Grado Superior.</p>
+                <p style="font-size: 0.9rem; color: #777;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            </div>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeBlocks = document.querySelectorAll('pre code');
+
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar código</span>
+                `;
+
+                button.addEventListener('click', async () => {
+                    const code = block.textContent;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>¡Copiado!</span>
+                        `;
+                        button.classList.add('copied');
+
+                        setTimeout(() => {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Copiar código</span>
+                            `;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Error al copiar:', err);
+                    }
+                });
+
+                wrapper.appendChild(button);
+            });
+        });
+    </script>
+
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arquitecturas Lambda y Kappa - Procesamiento Híbrido y Streaming para Big Data">
+    <meta name="keywords" content="Lambda, Kappa, Big Data, Streaming, Batch, Kafka, Flink, Spark">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Arquitecturas Lambda y Kappa | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas Big Data</a> ›
+                <span>Arquitecturas Lambda y Kappa</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Arquitecturas Lambda y Kappa</h1>
+            <p class="subtitle">Procesamiento Híbrido y Streaming para Big Data</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="section-title">¿Qué son las Arquitecturas Lambda y Kappa?</h2>
+            <p>
+                En el procesamiento de Big Data, necesitamos arquitecturas que puedan manejar tanto <strong>datos
+                    históricos masivos</strong> como <strong>streams en tiempo real</strong>. Las arquitecturas <strong
+                    class="color-primary">Lambda</strong> y <strong class="color-secondary">Kappa</strong> representan
+                dos enfoques fundamentales para resolver este desafío, cada una con sus propias ventajas y compromisos.
+            </p>
+            <p>
+                <strong>Lambda</strong> combina procesamiento batch y streaming para lograr precisión y velocidad.
+                <strong>Kappa</strong> simplifica el diseño tratando todo como streaming, eliminando la duplicación de
+                código pero requiriendo capacidad de reproducir todo el histórico.
+            </p>
+
+            <!-- CAJA DE EJEMPLO -->
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo Real:</p>
+                <p class="content">Netflix utiliza una arquitectura Lambda para procesar datos de visualización: el
+                    batch calcula
+                    estadísticas precisas cada noche, mientras el streaming actualiza métricas en tiempo real para el
+                    dashboard de contenido trending.</p>
+            </div>
+
+            <!-- CONCEPTOS EN GRID -->
+            <h3>Conceptos Fundamentales</h3>
+            <div class="grid-two-columns" style="margin-bottom: 2rem;">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Batch Layer</h4>
+                    <p>Procesa datos históricos completos periódicamente. Garantiza precisión absoluta pero con latencia
+                        de horas.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Speed Layer</h4>
+                    <p>Procesa únicamente datos recientes en tiempo real. Resultados inmediatos con posibles
+                        aproximaciones.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Serving Layer</h4>
+                    <p>Combina resultados de batch y speed para proporcionar vistas completas y actualizadas.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Event Log</h4>
+                    <p>Registro inmutable y reproducible de todos los eventos del sistema (Kafka, Pulsar).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ARQUITECTURA LAMBDA -->
+        <section class="section">
+            <h2 class="section-title">Arquitectura Lambda: Precisión + Velocidad</h2>
+
+            <!-- VISUALIZACIÓN SVG DE LAMBDA -->
+            <div class="svg-container mb-2">
+                <h3 class="color-primary">📊 Estructura de Lambda</h3>
+                <svg width="900" height="500" viewBox="0 0 900 500">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Arquitectura Lambda - Flujo de Datos</text>
+
+                    <!-- Fuente de datos -->
+                    <rect x="380" y="60" width="140" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="8" />
+                    <text x="450" y="90" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Datos Entrantes</text>
+
+                    <!-- Flecha bifurcación -->
+                    <path d="M 450 110 L 450 140" stroke="#333333" stroke-width="3" marker-end="url(#arrowgray)"
+                        fill="none" />
+                    <circle cx="450" cy="140" r="8" fill="#333333" />
+
+                    <!-- BATCH LAYER -->
+                    <g>
+                        <!-- Flecha hacia batch -->
+                        <path d="M 450 140 L 200 200" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+
+                        <!-- Caja Batch Layer -->
+                        <rect x="50" y="200" width="300" height="120" fill="white" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <rect x="60" y="210" width="280" height="35" fill="#49B9CE" rx="5" />
+                        <text x="200" y="233" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">BATCH LAYER</text>
+
+                        <text x="70" y="265" font-size="13" fill="#333333" font-family="Montserrat">• Procesa TODOS los
+                            datos históricos</text>
+                        <text x="70" y="285" font-size="13" fill="#333333" font-family="Montserrat">• Ejecución
+                            periódica (horas/días)</text>
+                        <text x="70" y="305" font-size="13" fill="#333333" font-family="Montserrat">• Precisión 100%
+                            garantizada</text>
+
+                        <!-- Resultado Batch -->
+                        <rect x="80" y="340" width="260" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="210" y="365" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Vista Batch (precisa, desactualizada)</text>
+                    </g>
+
+                    <!-- SPEED LAYER -->
+                    <g>
+                        <!-- Flecha hacia speed -->
+                        <path d="M 450 140 L 700 200" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <!-- Caja Speed Layer -->
+                        <rect x="550" y="200" width="300" height="120" fill="white" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <rect x="560" y="210" width="280" height="35" fill="#8A7AAF" rx="5" />
+                        <text x="700" y="233" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">SPEED LAYER</text>
+
+                        <text x="560" y="265" font-size="13" fill="#333333" font-family="Montserrat">• Procesa datos
+                            recientes (últimas horas)</text>
+                        <text x="560" y="285" font-size="13" fill="#333333" font-family="Montserrat">• Latencia:
+                            milisegundos</text>
+                        <text x="560" y="305" font-size="13" fill="#333333" font-family="Montserrat">• Aproximaciones
+                            rápidas</text>
+
+                        <!-- Resultado Speed -->
+                        <rect x="560" y="340" width="280" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="700" y="365" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Vista Speed (actual, aproximada)</text>
+                    </g>
+
+                    <!-- SERVING LAYER -->
+                    <g>
+                        <!-- Flechas desde batch y speed -->
+                        <path d="M 210 380 L 400 430" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue2)"
+                            fill="none" />
+                        <path d="M 700 380 L 500 430" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+
+                        <!-- Caja Serving Layer -->
+                        <rect x="300" y="430" width="300" height="50" fill="white" stroke="#AAAAAA" stroke-width="3"
+                            rx="8" />
+                        <rect x="310" y="438" width="280" height="34" fill="#E8F7FA" rx="5" />
+                        <text x="450" y="460" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">SERVING LAYER (Combina ambas)</text>
+                    </g>
+
+                    <!-- Marcadores de flecha -->
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                        <marker id="arrowgray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#333333" />
+                        </marker>
+                        <marker id="arrowblue2" markerWidth="8" markerHeight="8" refX="7" refY="2.5" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,5 L7,2.5 z" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrowpurple2" markerWidth="8" markerHeight="8" refX="7" refY="2.5" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,5 L7,2.5 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- COMPONENTES LAMBDA -->
+            <h3 class="color-primary">Componentes de Lambda</h3>
+
+            <!-- Batch Layer -->
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <h4 class="color-primary">1. Batch Layer (Capa de Procesamiento por Lotes)</h4>
+                <p>
+                    Procesa <strong>todos los datos históricos</strong> de forma periódica utilizando algoritmos que
+                    garantizan precisión completa. Tiene acceso al dataset completo y puede realizar cálculos complejos
+                    sin restricciones de tiempo.
+                </p>
+
+                <div class="info-box">
+                    <p class="title">📌 Características:</p>
+                    <ul>
+                        <li>Calcula estadísticas exactas sobre todo el histórico</li>
+                        <li>Entrena modelos de ML con el dataset completo</li>
+                        <li>Genera informes consolidados y agregaciones complejas</li>
+                        <li>Ejecución típica: cada pocas horas o diariamente</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <p class="title">Ejemplo
+                        - Procesamiento Batch con Spark:</p>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+
+# Inicializar Spark
+spark = SparkSession.builder.appName("BatchLayer").getOrCreate()
+
+# Leer TODOS los datos históricos
+historical_data = spark.read.parquet("s3://bucket/historical_data/")
+
+# Cálculos precisos sobre TODO el histórico
+user_stats = historical_data.groupBy("user_id").agg(
+    count("event_id").alias("total_events"),
+    sum("revenue").alias("total_revenue"),
+    avg("session_duration").alias("avg_duration")
+)
+
+# Guardar vista batch (resultado preciso)
+user_stats.write.mode("overwrite").parquet("s3://bucket/batch_view/")</code></pre>
+                    <p style="margin-top: 0.75rem; font-size: 0.95rem;">
+                        ✅ <strong>Resultado:</strong> Precisión 100%, pero con datos de hace horas.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Speed Layer -->
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <h4 class="color-secondary">2. Speed Layer (Capa de Velocidad)</h4>
+                <p>
+                    Procesa <strong>únicamente los datos recientes</strong> que llegaron desde la última ejecución
+                    batch, proporcionando resultados inmediatos. Utiliza aproximaciones y algoritmos incrementales que
+                    priorizan velocidad sobre precisión absoluta.
+                </p>
+
+                <div class="info-box">
+                    <p class="title">⚡ Características:</p>
+                    <ul>
+                        <li>Actualiza contadores en tiempo real</li>
+                        <li>Detecta anomalías conforme ocurren</li>
+                        <li>Alimenta dashboards con métricas actualizadas</li>
+                        <li>Latencia: milisegundos o segundos</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <p class="title">Ejemplo
+                        - Streaming con Kafka + Spark Streaming:</p>
+                    <pre><code class="language-python">from pyspark.streaming import StreamingContext
+from pyspark.streaming.kafka import KafkaUtils
+
+# Streaming cada 5 segundos
+ssc = StreamingContext(spark.sparkContext, 5)
+
+# Consumir solo datos recientes de Kafka
+stream = KafkaUtils.createDirectStream(
+    ssc, ["events"],
+    {"bootstrap.servers": "kafka:9092"}
+)
+
+# Procesamiento incremental (solo datos nuevos)
+recent_stats = stream.map(lambda x: parse_event(x)) \
+    .reduceByKey(lambda a, b: a + b)
+
+# Actualizar vista speed (resultado rápido, aproximado)
+recent_stats.foreachRDD(lambda rdd:
+    rdd.write.mode("append").parquet("s3://bucket/speed_view/")
+)
+
+ssc.start()
+ssc.awaitTermination()</code></pre>
+                    <p style="margin-top: 0.75rem; font-size: 0.95rem;">
+                        ⚡ <strong>Resultado:</strong> Latencia < 5 segundos, posibles pequeñas imprecisiones. </p>
+                </div>
+            </div>
+
+            <!-- Serving Layer -->
+            <div class="feature-card" style="margin-bottom: 2rem;">
+                <h4>3. Serving Layer (Capa de Servicio)</h4>
+                <p>
+                    Combina inteligentemente los resultados de ambas capas. Cuando un usuario consulta una métrica, la
+                    capa de servicio <strong>suma</strong> el resultado batch (preciso pero desactualizado) con el
+                    resultado streaming (aproximado pero actual).
+                </p>
+
+                <div class="code-block">
+                    <p class="title">Ejemplo
+                        - Consulta Combinada:</p>
+                    <pre><code class="language-python">def get_user_total_revenue(user_id):
+    # Leer vista batch (datos hasta anoche)
+    batch_revenue = read_batch_view(user_id)
+
+    # Leer vista speed (datos desde anoche hasta ahora)
+    speed_revenue = read_speed_view(user_id)
+
+    # COMBINAR ambas vistas
+    total_revenue = batch_revenue + speed_revenue
+
+    return {
+        "user_id": user_id,
+        "total_revenue": total_revenue,
+        "batch_contribution": batch_revenue,
+        "speed_contribution": speed_revenue
+    }
+
+# Ejemplo: Usuario 12345
+result = get_user_total_revenue(12345)
+# {
+#   "user_id": 12345,
+#   "total_revenue": 15420.50,  ← Vista completa
+#   "batch_contribution": 15000.00,  ← Preciso (hasta ayer)
+#   "speed_contribution": 420.50     ← Rápido (hoy)
+# }</code></pre>
+                </div>
+            </div>
+
+            <!-- CASO PRÁCTICO -->
+            <div class="highlight-box warning">
+                <h4 class="color-warning">🛒 Caso Práctico: E-commerce con Lambda</h4>
+
+                <div class="info-box">
+                    <p class="title">Escenario: Sistema de ventas online</p>
+                    <ul>
+                        <li><strong class="color-primary">Batch:</strong> Procesa todos los pedidos históricos cada
+                            noche (00:00 - 04:00 AM)</li>
+                        <li><strong class="color-secondary">Speed:</strong> Procesa pedidos en tiempo real conforme
+                            llegan durante el día</li>
+                        <li><strong>Serving:</strong> Dashboard muestra:
+                            <code>ventas_hasta_ayer (batch) + ventas_hoy (speed) = total</code>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary-bg">
+                    <p class="title">Consulta
+                        a las 16:00h:</p>
+                    <p style="margin-bottom: 0.3rem;">• Batch (datos hasta 04:00 AM): <strong>€1,250,000</strong></p>
+                    <p style="margin-bottom: 0.3rem;">• Speed (de 04:00 AM a 16:00): <strong>€180,500</strong></p>
+                    <p class="color-primary" style="font-weight: 700; font-size: 1.125rem;">→ Total ventas hoy:
+                        <strong>€1,430,500</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ARQUITECTURA KAPPA -->
+        <section class="section">
+            <h2 class="section-title">Arquitectura Kappa: Simplicidad Total</h2>
+
+            <!-- VISUALIZACIÓN SVG DE KAPPA -->
+            <div class="svg-container mb-2">
+                <h3 class="color-secondary">📊 Estructura de Kappa</h3>
+                <svg width="900" height="400" viewBox="0 0 900 400"
+                    style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Arquitectura Kappa - Todo es Streaming</text>
+
+                    <!-- Event Log (Kafka) -->
+                    <rect x="50" y="80" width="800" height="100" fill="white" stroke="#8A7AAF" stroke-width="3"
+                        rx="8" />
+                    <rect x="60" y="90" width="780" height="35" fill="#8A7AAF" rx="5" />
+                    <text x="450" y="113" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                        font-family="Montserrat">EVENT LOG (Kafka / Pulsar) - Reproducible e Inmutable</text>
+
+                    <!-- Eventos en el log -->
+                    <rect x="80" y="140" width="80" height="25" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="120" y="157" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Evento 1</text>
+
+                    <rect x="180" y="140" width="80" height="25" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="220" y="157" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Evento 2</text>
+
+                    <rect x="280" y="140" width="80" height="25" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="320" y="157" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Evento 3</text>
+
+                    <text x="400" y="157" font-size="16" fill="#8A7AAF" font-weight="bold"
+                        font-family="Montserrat">...</text>
+
+                    <rect x="470" y="140" width="80" height="25" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="510" y="157" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Evento N-1</text>
+
+                    <rect x="570" y="140" width="80" height="25" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="610" y="157" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Evento N</text>
+
+                    <rect x="670" y="140" width="140" height="25" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="2"
+                        rx="4" />
+                    <text x="740" y="157" font-size="11" fill="#8A7AAF" font-weight="bold" text-anchor="middle"
+                        font-family="Montserrat">Nuevos eventos →</text>
+
+                    <!-- Flecha hacia procesadores -->
+                    <path d="M 450 180 L 450 210" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple3)"
+                        fill="none" />
+
+                    <!-- STREAMING PROCESSORS -->
+                    <rect x="100" y="220" width="700" height="120" fill="white" stroke="#8A7AAF" stroke-width="3"
+                        rx="8" />
+                    <rect x="110" y="230" width="680" height="35" fill="#C5B9D8" rx="5" />
+                    <text x="450" y="253" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">STREAMING PROCESSORS (Un solo código)</text>
+
+                    <!-- Procesadores paralelos -->
+                    <rect x="130" y="280" width="180" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="220" y="307" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Procesador A</text>
+
+                    <rect x="360" y="280" width="180" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="450" y="307" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Procesador B</text>
+
+                    <rect x="590" y="280" width="180" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="680" y="307" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Procesador C</text>
+
+                    <!-- Flecha hacia vistas -->
+                    <path d="M 450 340 L 450 370" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple3)"
+                        fill="none" />
+
+                    <!-- Vistas materializadas -->
+                    <rect x="200" y="365" width="500" height="25" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="450" y="382" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Vistas Materializadas (Resultados en tiempo real)</text>
+
+                    <!-- Marcador de flecha -->
+                    <defs>
+                        <marker id="arrowpurple3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>
+                La arquitectura Kappa <strong>simplifica Lambda eliminando la capa batch</strong>: todo es streaming. En
+                lugar de procesar datos de forma diferente según su antigüedad, tratamos todo el histórico como un
+                stream que podemos <strong>reproducir cuando sea necesario</strong>.
+            </p>
+
+            <h3 class="color-secondary">Principio Fundamental: Replay del Event Log</h3>
+
+            <div class="feature-card secondary">
+                <p>
+                    El sistema mantiene <strong>todos los eventos</strong> en un log persistente (como Kafka) que puede
+                    reproducirse desde cualquier punto en el tiempo. Si necesitamos recalcular resultados, simplemente
+                    <strong>reproducimos el stream desde el principio</strong> con la lógica actualizada.
+                </p>
+
+                <div class="code-block">
+                    <p class="title">Ejemplo
+                        - Kappa con Kafka + Flink:</p>
+                    <pre><code class="language-java">// Un ÚNICO código para procesar TODOS los datos
+StreamExecutionEnvironment env =
+    StreamExecutionEnvironment.getExecutionEnvironment();
+
+// Leer del event log (puede empezar desde el inicio)
+DataStream&lt;Event&gt; eventStream = env
+    .addSource(new FlinkKafkaConsumer&lt;&gt;(
+        "events",
+        new EventDeserializer(),
+        properties
+    ))
+    .setStartFromEarliest(); // ← Reproducir desde el inicio si es necesario
+
+// UNA SOLA lógica de negocio (no duplicada)
+DataStream&lt;UserStats&gt; userStats = eventStream
+    .keyBy(event -> event.getUserId())
+    .window(TumblingEventTimeWindows.of(Time.hours(1)))
+    .aggregate(new UserAggregator());
+
+// Guardar resultados en vista materializada
+userStats.addSink(new CassandraSink&lt;&gt;(...));
+
+env.execute("KappaProcessor");
+
+// Si necesitamos recalcular con nueva lógica:
+// 1. Desplegamos nuevo procesador con código actualizado
+// 2. Lo configuramos para leer desde el INICIO del log
+// 3. Genera nueva vista con cálculos correctos
+// 4. Cambiamos tráfico a la nueva vista
+// 5. Eliminamos procesador antiguo</code></pre>
+                </div>
+            </div>
+
+            <!-- VENTAJAS DE KAPPA -->
+            <h3 class="color-secondary">✅ Ventajas de Kappa</h3>
+
+            <div class="grid-two-columns">
+                <div class="feature-card secondary-bg">
+                    <h4 class="color-secondary">🎯 Código único</h4>
+                    <p>Una sola implementación de lógica de negocio. No hay duplicación ni inconsistencias batch vs.
+                        streaming.</p>
+                </div>
+
+                <div class="feature-card secondary-bg">
+                    <h4 class="color-secondary">💰 Menor complejidad</h4>
+                    <p>Menos componentes = menor coste operacional. Un solo framework, un solo equipo, una sola
+                        infraestructura.</p>
+                </div>
+
+                <div class="feature-card secondary-bg">
+                    <h4 class="color-secondary">🔄 Reprocesamiento simple</h4>
+                    <p>Recalcular histórico es tan simple como reproducir el log completo. Ideal para corregir bugs o
+                        añadir nuevas métricas.</p>
+                </div>
+
+                <div class="feature-card secondary-bg">
+                    <h4 class="color-secondary">⚡ Latencia consistente</h4>
+                    <p>Todos los datos se procesan de la misma manera con la misma latencia baja, sin esperar ciclos
+                        batch.</p>
+                </div>
+            </div>
+
+            <!-- LIMITACIÓN PRINCIPAL -->
+            <div class="highlight-box warning">
+                <h4 class="color-warning">⚠️ Limitación Principal de Kappa</h4>
+                <p>
+                    Requiere <strong>mantener todo el histórico en el event log</strong>, lo cual puede ser costoso para
+                    datasets enormes. Sin embargo, con logs distribuidos eficientes como Kafka y compresión adecuada,
+                    muchas organizaciones encuentran este coste aceptable comparado con los beneficios de simplicidad.
+                </p>
+
+                <div class="info-box">
+                    <p class="title">💡 Soluciones modernas:</p>
+                    <ul>
+                        <li><strong>Kafka:</strong> Retención infinita con tiered storage (S3/Azure Blob)</li>
+                        <li><strong>Compresión:</strong> ZSTD/LZ4 reducen almacenamiento 70-80%</li>
+                        <li><strong>Particionado temporal:</strong> Archivar eventos antiguos en cold storage</li>
+                        <li><strong>Delta Lake/Iceberg:</strong> Gestión eficiente de históricos masivos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: COMPARACIÓN LAMBDA VS KAPPA -->
+        <section class="section">
+            <h2 class="section-title" style="text-align: center;">Lambda vs. Kappa: Comparación Exhaustiva</h2>
+
+            <!-- TABLA COMPARATIVA -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th style="text-align: center;">🔵 Lambda</th>
+                            <th style="text-align: center;">🟣 Kappa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Arquitectura</strong></td>
+                            <td>3 capas: Batch + Speed + Serving</td>
+                            <td>1 capa: Solo streaming</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Código</strong></td>
+                            <td>❌ Duplicado (batch y streaming)</td>
+                            <td>✅ Único (una sola implementación)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precisión</strong></td>
+                            <td>✅ 100% garantizada en batch</td>
+                            <td>Alta, depende del procesamiento streaming</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Latencia</strong></td>
+                            <td>Batch: horas | Speed: segundos</td>
+                            <td>✅ Consistente: segundos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complejidad</strong></td>
+                            <td>❌ Alta (3 sistemas distintos)</td>
+                            <td>✅ Baja (1 sistema unificado)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Frameworks típicos</strong></td>
+                            <td>Hadoop/Spark (batch) + Storm/Flink (stream)</td>
+                            <td>Kafka + Flink / Spark Streaming</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reprocesamiento</strong></td>
+                            <td>Complejo (reejecutar batch completo)</td>
+                            <td>✅ Simple (replay del log)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Coste almacenamiento</strong></td>
+                            <td>✅ Bajo (procesa y descarta)</td>
+                            <td>⚠️ Medio-Alto (retener todo el log)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Coste operacional</strong></td>
+                            <td>❌ Alto (mantener 2 sistemas)</td>
+                            <td>✅ Bajo (1 solo sistema)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ideal para</strong></td>
+                            <td>Datasets enormes, precisión crítica</td>
+                            <td>Simplicidad, flexibilidad, iteración rápida</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Casos de uso</strong></td>
+                            <td>Analítica financiera, fraud detection</td>
+                            <td>IoT, monitorización, dashboards en vivo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CUÁNDO USAR CADA UNA -->
+            <h3 style="text-align: center; margin-top: 2rem;">🎯 ¿Cuándo usar cada arquitectura?</h3>
+
+            <div class="grid-two-columns">
+                <!-- Lambda -->
+                <div class="feature-card primary-bg">
+                    <h4 class="color-primary" style="text-align: center;">Usa Lambda si...</h4>
+                    <ul>
+                        <li><strong>Precisión absoluta</strong> es crítica (finanzas, regulación)</li>
+                        <li>Trabajas con <strong>petabytes de históricos</strong></li>
+                        <li>Necesitas <strong>auditoría completa</strong> de cálculos</li>
+                        <li>Tienes equipo con expertise en <strong>batch y streaming</strong></li>
+                        <li>El coste operacional extra es <strong>justificable</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Kappa -->
+                <div class="feature-card secondary-bg">
+                    <h4 class="color-secondary" style="text-align: center;">Usa Kappa si...</h4>
+                    <ul>
+                        <li>Priorizas <strong>simplicidad</strong> y velocidad de desarrollo</li>
+                        <li>Los datos caben en un <strong>event log distribuido</strong></li>
+                        <li>Necesitas <strong>iterar rápido</strong> y experimentar</li>
+                        <li>Quieres <strong>un solo equipo</strong> para toda la infraestructura</li>
+                        <li>La latencia baja es más importante que precisión al 100%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CASOS DE USO REALES -->
+        <section class="section">
+            <h2 class="section-title">🌍 Casos de Uso del Mundo Real</h2>
+
+            <div class="grid-3">
+                <!-- NETFLIX - Lambda -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📺 Netflix (Lambda)</h4>
+                    <p>Procesa eventos de visualización con batch para recomendaciones precisas y streaming para
+                        trending en tiempo real.</p>
+                </div>
+
+                <!-- UBER - Kappa -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🚗 Uber (Kappa)</h4>
+                    <p>Usa Kafka + Flink para calcular precios dinámicos, matching conductor-pasajero y ETAs en tiempo
+                        real.</p>
+                </div>
+
+                <!-- LINKEDIN - Lambda -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">💼 LinkedIn (Lambda)</h4>
+                    <p>Analítica de perfiles con Hadoop batch + Samza streaming para notificaciones y feed
+                        personalizados.</p>
+                </div>
+
+                <!-- SPOTIFY - Kappa -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎵 Spotify (Kappa)</h4>
+                    <p>Procesa eventos de reproducción con arquitectura streaming pura para playlists personalizadas en
+                        vivo.</p>
+                </div>
+
+                <!-- TWITTER - Lambda -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🐦 Twitter (Lambda)</h4>
+                    <p>Batch para análisis de sentimiento y gráficos sociales + Storm para trending topics instantáneos.
+                    </p>
+                </div>
+
+                <!-- AIRBNB - Kappa -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🏠 Airbnb (Kappa)</h4>
+                    <p>Arquitectura streaming unificada con Kafka para búsquedas, reservas y actualizaciones de
+                        disponibilidad.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: DATO CURIOSO -->
+        <section class="section">
+            <div class="curiosity-box warning">
+                <h3 class="color-warning">💡 Dato Curioso: El Nombre "Lambda" y "Kappa"</h3>
+
+                <div class="info-box">
+                    <p class="title">🔵 Lambda (λ)</p>
+                    <p>
+                        La letra griega <strong>λ (lambda)</strong> se utiliza en cálculo lambda y programación
+                        funcional para representar funciones. Nathan Marz, creador de Apache Storm, eligió este nombre
+                        en 2011 al diseñar la arquitectura porque representa la <strong>función que combina</strong> dos
+                        flujos de datos (batch + streaming).
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <p class="title">🟣 Kappa (κ)</p>
+                    <p>
+                        Jay Kreps de LinkedIn propuso <strong>κ (kappa)</strong> en 2014 como una simplificación de
+                        Lambda. El nombre sigue la tradición de usar letras griegas, pero <strong>"Kappa" viene después
+                            de "Lambda"</strong> en el alfabeto griego, simbolizando que es una <strong>evolución
+                            mejorada</strong> de la arquitectura original.
+                    </p>
+                </div>
+
+                <div class="feature-card secondary-bg">
+                    <p style="font-weight: 600; text-align: center;">
+                        🎯 Hoy en día, muchas empresas usan <strong>arquitecturas híbridas</strong>, combinando lo mejor
+                        de Lambda y Kappa según las necesidades específicas de cada pipeline de datos.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-scala.min.js"></script>
+</body>
+
+</html>

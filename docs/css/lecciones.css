@@ -75,7 +75,20 @@ body {
 }
 
 /* Asegurar que todo el texto sea seleccionable */
-p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, pre, code {
+p,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+td,
+th,
+pre,
+code {
     user-select: text !important;
     -webkit-user-select: text !important;
     -moz-user-select: text !important;
@@ -177,6 +190,28 @@ header h1 {
 header p {
     font-size: 1.25rem;
     color: var(--text-dark);
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.2;
+}
+
+.hero .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-medium);
     font-weight: 400;
     font-family: 'Montserrat', sans-serif;
 }
@@ -414,6 +449,107 @@ section p {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 0.875rem;
+}
+
+/* ===============================================
+   GRIDS ESPECIALES PARA MASS STORAGE
+   =============================================== */
+/* Grid para características críticas (6 columnas, minmax 280px) */
+.grid-characteristics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Grid para comparativas (3 columnas, minmax 300px) */
+.grid-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Tarjetas genéricas con estilos base */
+.card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+}
+
+/* Tarjetas con fondo blanco y bordes de color */
+.card.primary {
+    background: var(--bg-white);
+    border: 2px solid var(--color-primary);
+}
+
+.card.secondary {
+    background: var(--bg-white);
+    border: 2px solid var(--color-secondary);
+}
+
+/* Tarjetas con fondos de color */
+.card.primary-bg {
+    background: var(--bg-primary-light);
+    border: 2px solid var(--color-primary);
+}
+
+.card.secondary-bg {
+    background: var(--bg-secondary-light);
+    border: 2px solid var(--color-secondary);
+}
+
+/* h3 dentro de tarjetas */
+.card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card.primary h3 {
+    color: var(--color-primary);
+}
+
+.card.secondary h3 {
+    color: var(--color-secondary);
+}
+
+/* h3 centrado en tarjetas de comparación */
+.grid-comparison .card h3 {
+    text-align: center;
+}
+
+/* Párrafos dentro de tarjetas */
+.card p {
+    color: var(--text-medium);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Listas dentro de tarjetas */
+.card ul {
+    color: var(--text-medium);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-left: 1.5rem;
+}
+
+.card ul li {
+    margin-bottom: 0.5rem;
+}
+
+.card.primary ul li strong,
+.card.primary-bg ul li strong {
+    color: var(--color-primary);
+}
+
+.card.secondary ul li strong,
+.card.secondary-bg ul li strong {
+    color: var(--color-secondary);
+}
+
+/* Listas más grandes en comparativas */
+.grid-comparison .card ul {
+    font-size: 1.05rem;
 }
 
 .example-item {
@@ -1855,6 +1991,86 @@ ul.no-style {
 
 .comparison-grid .highlight-box ul li:last-child {
     margin-bottom: 0;
+}
+
+/* ============================================
+   ADVANTAGE/DISADVANTAGE BOXES
+   ============================================ */
+.advantage-box {
+    background: #E8F7FA;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #49B9CE;
+    margin-bottom: 1.5rem;
+}
+
+.advantage-box h4 {
+    font-weight: 700;
+    color: #49B9CE;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.advantage-box ul {
+    color: #555555;
+    margin-left: 1.25rem;
+    line-height: 1.75;
+    font-size: 1.125rem;
+}
+
+.advantage-box ul li {
+    margin-bottom: 0.5rem;
+}
+
+.disadvantage-box,
+.limitation-box {
+    background: #FFE8E8;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #CC5555;
+    margin-bottom: 1.5rem;
+}
+
+.disadvantage-box h4,
+.limitation-box h4 {
+    font-weight: 700;
+    color: #CC5555;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.disadvantage-box ul,
+.limitation-box ul {
+    color: #555555;
+    margin-left: 1.25rem;
+    line-height: 1.75;
+    font-size: 1.125rem;
+}
+
+.disadvantage-box ul li,
+.limitation-box ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   TABLE CELL STATES (Success/Error/Warning)
+   ============================================ */
+.success-cell {
+    background: #F0FFF0 !important;
+}
+
+.error-cell {
+    background: #FFF5F5 !important;
+}
+
+.warning-cell {
+    background: #FFF3CD !important;
+}
+
+.neutral-cell {
+    background: #FAFAFA !important;
 }
 
 /* ============================================

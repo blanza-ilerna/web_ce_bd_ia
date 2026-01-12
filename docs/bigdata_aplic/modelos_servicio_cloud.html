@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Guía completa sobre modelos de servicio Cloud (IaaS, PaaS, SaaS) con enfoque en Big Data e Inteligencia Artificial.">
+    <meta name="keywords"
+        content="Cloud Computing, IaaS, PaaS, SaaS, Big Data, Inteligencia Artificial, AWS, Azure, Google Cloud">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Modelos de Servicio Cloud | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Modelos de Servicio Cloud</span>
+                </div>
+            </div>
+            <h1 class="text-center color-primary">Modelos de Servicio Cloud</h1>
+            <p class="subtitle text-center">IaaS, PaaS y SaaS aplicados a Big Data e Inteligencia Artificial</p>
+        </header>
+
+        <main>
+
+            <section class="section">
+                <h2 class="section-title">Introducción</h2>
+                <p>El <strong>Cloud Computing</strong> (computación en la nube) ha transformado radicalmente la manera
+                    en que las organizaciones gestionan sus infraestructuras tecnológicas. En lugar de poseer y mantener
+                    servidores físicos, las empresas pueden acceder a recursos informáticos bajo demanda a través de
+                    Internet.</p>
+                <p>Los tres modelos principales de servicio en la nube son:</p>
+                <ul>
+                    <li><strong>IaaS</strong> (Infrastructure as a Service): Infraestructura como Servicio</li>
+                    <li><strong>PaaS</strong> (Platform as a Service): Plataforma como Servicio</li>
+                    <li><strong>SaaS</strong> (Software as a Service): Software como Servicio</li>
+                </ul>
+                <p>Cada modelo ofrece diferentes niveles de control, flexibilidad y gestión, adaptándose a distintas
+                    necesidades empresariales.</p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">La Pirámide de Servicios Cloud</h2>
+                <p>Los modelos de servicio cloud se organizan jerárquicamente según el nivel de abstracción y
+                    responsabilidad del proveedor:</p>
+
+                <svg width="800" height="550" viewBox="0 0 800 550" class="diagram-svg">
+                    <defs>
+                        <linearGradient id="gradSaaS" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#9B8BC0;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradPaaS" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5AC9DE;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradIaaS" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#52B5FF;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+
+                    <polygon points="400,50 600,200 200,200" fill="url(#gradSaaS)" stroke="#333333" stroke-width="2" />
+                    <text x="400" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="24"
+                        font-weight="bold" fill="white">SaaS</text>
+                    <text x="400" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14"
+                        fill="white">Software como Servicio</text>
+
+                    <polygon points="200,200 600,200 650,320 150,320" fill="url(#gradPaaS)" stroke="#333333"
+                        stroke-width="2" />
+                    <text x="400" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="24"
+                        font-weight="bold" fill="white">PaaS</text>
+                    <text x="400" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="14"
+                        fill="white">Plataforma como Servicio</text>
+
+                    <polygon points="150,320 650,320 700,460 100,460" fill="url(#gradIaaS)" stroke="#333333"
+                        stroke-width="2" />
+                    <text x="400" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="24"
+                        font-weight="bold" fill="white">IaaS</text>
+                    <text x="400" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14"
+                        fill="white">Infraestructura como Servicio</text>
+
+                    <text x="50" y="500" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
+                        fill="#333333">Control del usuario</text>
+                    <polygon points="50,510 700,510 690,525 60,525" fill="#E65100" opacity="0.7" />
+
+                    <text x="50" y="540" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
+                        fill="#333333">Responsabilidad del proveedor</text>
+                    <polygon points="60,525 690,525 700,510 50,510" fill="#4CAF50" opacity="0.7" />
+                </svg>
+
+                <div class="highlight-box primary" style="margin-top: 1.5rem;">
+                    <p><strong>Nota clave:</strong> A medida que subimos en la pirámide (de IaaS a SaaS), el usuario
+                        cede más control al proveedor pero reduce significativamente la complejidad de gestión y
+                        mantenimiento.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title color-primary">IaaS: Infraestructura como Servicio</h2>
+
+                <h3>Definición</h3>
+                <p><strong>IaaS</strong> proporciona recursos de computación virtualizados a través de Internet. Los
+                    usuarios alquilan servidores virtuales, almacenamiento, redes y sistemas operativos bajo demanda.
+                </p>
+
+                <div class="highlight-box primary">
+                    <h4>Características principales de IaaS</h4>
+                    <ul>
+                        <li><strong>Escalabilidad instantánea:</strong> Aumenta o reduce recursos según la demanda</li>
+                        <li><strong>Pago por uso:</strong> Solo pagas por los recursos que consumes</li>
+                        <li><strong>Control total:</strong> Gestión completa del sistema operativo y aplicaciones</li>
+                        <li><strong>Sin inversión inicial:</strong> Elimina costes de hardware físico</li>
+                        <li><strong>Ubicación flexible:</strong> Recursos distribuidos geográficamente</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Aplicaciones en Big Data e IA</h3>
+
+                <div class="grid-characteristics">
+                    <div class="card primary">
+                        <h4>🗄️ Almacenamiento Masivo</h4>
+                        <p><strong>Data Lakes y Data Warehouses:</strong></p>
+                        <ul>
+                            <li><strong>Amazon S3:</strong> Almacenamiento de objetos para petabytes de datos sin
+                                procesar</li>
+                            <li><strong>Azure Blob Storage:</strong> Repositorios de datos estructurados y no
+                                estructurados</li>
+                            <li><strong>Google Cloud Storage:</strong> Almacenamiento distribuido para datasets masivos
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Almacenar grandes volúmenes de datos
+                            (logs, sensores IoT, imágenes médicas) sin preocuparse por la capacidad física.</p>
+                    </div>
+
+                    <div class="card primary">
+                        <h4>💻 Clusters de Procesamiento</h4>
+                        <p><strong>Procesamiento Distribuido:</strong></p>
+                        <ul>
+                            <li><strong>Amazon EC2:</strong> Instancias para ejecutar Hadoop, Spark o TensorFlow</li>
+                            <li><strong>Azure Virtual Machines:</strong> Configuración personalizada de nodos de cómputo
+                            </li>
+                            <li><strong>Google Compute Engine:</strong> VMs optimizadas para cargas de ML</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Crear clusters temporales para análisis
+                            complejos y desmontarlos después (reducción de costes).</p>
+                    </div>
+
+                    <div class="card primary">
+                        <h4>🚀 GPU/TPU para Deep Learning</h4>
+                        <p><strong>Aceleración de Entrenamiento:</strong></p>
+                        <ul>
+                            <li><strong>AWS P4 instances:</strong> GPUs NVIDIA A100 para entrenar modelos como GPT o
+                                BERT</li>
+                            <li><strong>Azure NC-series:</strong> GPU Tesla V100 para redes neuronales profundas</li>
+                            <li><strong>Google TPU:</strong> Chips especializados para acelerar TensorFlow</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Acceder a hardware especializado sin
+                            comprarlo (cientos de miles de euros).</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 2rem;">
+                    <h4 style="color: #E65100;">📌 Caso Real: Spotify</h4>
+                    <p><strong>Desafío:</strong> Spotify gestiona más de 100 petabytes de datos de usuarios (playlists,
+                        preferencias, patrones de escucha) para alimentar su sistema de recomendaciones basado en IA.
+                    </p>
+                    <p><strong>Solución IaaS:</strong> Migró su infraestructura completa a <strong>Google Cloud
+                            IaaS</strong>:</p>
+                    <ul>
+                        <li>Almacena datos en Google Cloud Storage</li>
+                        <li>Ejecuta Hadoop y Spark en clusters de Compute Engine</li>
+                        <li>Escala dinámicamente durante horas pico (lunes por la mañana, fines de semana)</li>
+                    </ul>
+                    <p><strong>Resultado:</strong> Reducción del 50% en costes operativos y mejora del 30% en velocidad
+                        de análisis.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title color-secondary">PaaS: Plataforma como Servicio</h2>
+
+                <h3>Definición</h3>
+                <p><strong>PaaS</strong> ofrece una plataforma completa para desarrollar, ejecutar y gestionar
+                    aplicaciones sin preocuparse por la infraestructura subyacente (servidores, almacenamiento, redes).
+                </p>
+
+                <div class="highlight-box secondary">
+                    <h4>Características principales de PaaS</h4>
+                    <ul>
+                        <li><strong>Entorno preconfigurado:</strong> Frameworks y herramientas listas para usar</li>
+                        <li><strong>Gestión automática:</strong> El proveedor se encarga de actualizaciones, parches y
+                            escalado</li>
+                        <li><strong>Integración nativa:</strong> Conexión simplificada con bases de datos y servicios
+                        </li>
+                        <li><strong>Desarrollo rápido:</strong> Reduce tiempo de despliegue de meses a días</li>
+                        <li><strong>Multi-tenancy:</strong> Múltiples usuarios comparten la misma infraestructura de
+                            forma aislada</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Aplicaciones en Big Data e IA</h3>
+
+                <div class="grid-characteristics">
+                    <div class="card secondary">
+                        <h4>🔧 Plataformas de ML Gestionadas</h4>
+                        <p><strong>Entrenamiento y Despliegue Simplificado:</strong></p>
+                        <ul>
+                            <li><strong>AWS SageMaker:</strong> Construye, entrena y despliega modelos de ML sin
+                                configurar infraestructura</li>
+                            <li><strong>Azure Machine Learning:</strong> Pipeline completo desde datos hasta producción
+                            </li>
+                            <li><strong>Google AI Platform:</strong> Notebooks Jupyter, entrenamiento distribuido y APIs
+                                de modelos</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Un científico de datos puede entrenar un
+                            modelo de clasificación en horas, sin depender de un equipo de DevOps.</p>
+                    </div>
+
+                    <div class="card secondary">
+                        <h4>📊 Procesamiento de Datos Serverless</h4>
+                        <p><strong>ETL y Analytics sin Servidores:</strong></p>
+                        <ul>
+                            <li><strong>AWS Glue:</strong> ETL gestionado para transformar datos de S3 a Redshift</li>
+                            <li><strong>Azure Data Factory:</strong> Orquestación de pipelines de datos</li>
+                            <li><strong>Google Dataflow:</strong> Apache Beam gestionado para procesamiento en streaming
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Procesar terabytes de logs en tiempo real
+                            sin gestionar clusters Spark manualmente.</p>
+                    </div>
+
+                    <div class="card secondary">
+                        <h4>🗃️ Bases de Datos Especializadas</h4>
+                        <p><strong>Almacenamiento Optimizado para Analytics:</strong></p>
+                        <ul>
+                            <li><strong>Amazon Redshift:</strong> Data warehouse columnar para consultas SQL sobre
+                                petabytes</li>
+                            <li><strong>Azure Synapse Analytics:</strong> Integración de SQL, Spark y Data Lake</li>
+                            <li><strong>Google BigQuery:</strong> Analytics serverless con consultas SQL a velocidad de
+                                gigabytes por segundo</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Ejecutar análisis complejos
+                            (agregaciones, joins) sin optimizar índices o particiones manualmente.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 2rem;">
+                    <h4 style="color: #E65100;">📌 Caso Real: Twitter</h4>
+                    <p><strong>Desafío:</strong> Twitter genera más de 500 millones de tweets diarios. Su sistema de
+                        recomendaciones y detección de tendencias requiere procesamiento en tiempo real.</p>
+                    <p><strong>Solución PaaS:</strong> Utiliza <strong>Google Cloud BigQuery</strong> y
+                        <strong>Dataflow</strong>:
+                    </p>
+                    <ul>
+                        <li>Ingesta de tweets en streaming con Dataflow</li>
+                        <li>Almacenamiento en BigQuery para análisis históricos</li>
+                        <li>Consultas SQL para detectar trending topics en segundos</li>
+                    </ul>
+                    <p><strong>Resultado:</strong> Reducción del 70% en tiempo de desarrollo de nuevas features de
+                        análisis y capacidad para analizar 5 años de tweets en minutos.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title" style="color: #8A7AAF;">SaaS: Software como Servicio</h2>
+
+                <h3>Definición</h3>
+                <p><strong>SaaS</strong> proporciona aplicaciones completas a través de Internet. Los usuarios acceden
+                    al software mediante un navegador web, sin instalación ni mantenimiento.</p>
+
+                <div class="highlight-box"
+                    style="background: linear-gradient(to right, #F0EDF5, #E8F7FA); border-left: 4px solid #8A7AAF;">
+                    <h4>Características principales de SaaS</h4>
+                    <ul>
+                        <li><strong>Acceso inmediato:</strong> Sin instalación, configuración ni actualizaciones
+                            manuales</li>
+                        <li><strong>Pago por suscripción:</strong> Modelo mensual o anual por usuario</li>
+                        <li><strong>Mantenimiento automático:</strong> El proveedor gestiona todo el backend</li>
+                        <li><strong>Acceso universal:</strong> Desde cualquier dispositivo con Internet</li>
+                        <li><strong>Escalabilidad automática:</strong> Soporta desde 1 hasta millones de usuarios</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Aplicaciones en Big Data e IA</h3>
+
+                <div class="grid-characteristics">
+                    <div class="card" style="border: 2px solid #8A7AAF;">
+                        <h4>📈 Plataformas de Analytics</h4>
+                        <p><strong>Visualización y Business Intelligence:</strong></p>
+                        <ul>
+                            <li><strong>Tableau Online:</strong> Dashboards interactivos conectados a múltiples fuentes
+                                de datos</li>
+                            <li><strong>Power BI Service:</strong> Analytics en tiempo real con IA integrada (detección
+                                de anomalías)</li>
+                            <li><strong>Looker:</strong> Modelado de datos y visualizaciones para equipos de análisis
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Un analista de negocio puede crear
+                            reportes complejos sin conocimientos de SQL o programación.</p>
+                    </div>
+
+                    <div class="card" style="border: 2px solid #8A7AAF;">
+                        <h4>🤖 APIs de IA Preentrenadas</h4>
+                        <p><strong>IA sin Entrenar Modelos:</strong></p>
+                        <ul>
+                            <li><strong>AWS Rekognition:</strong> Reconocimiento facial y de objetos en imágenes/vídeos
+                            </li>
+                            <li><strong>Azure Cognitive Services:</strong> Traducción, análisis de sentimientos, OCR
+                            </li>
+                            <li><strong>Google Vision AI:</strong> Clasificación de imágenes, detección de logos,
+                                moderación de contenido</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Integrar capacidades de IA en
+                            aplicaciones con unas pocas líneas de código, sin expertise en ML.</p>
+                    </div>
+
+                    <div class="card" style="border: 2px solid #8A7AAF;">
+                        <h4>🗂️ CRM y Marketing con IA</h4>
+                        <p><strong>Automatización Inteligente:</strong></p>
+                        <ul>
+                            <li><strong>Salesforce Einstein:</strong> Predicción de ventas y scoring de leads con ML
+                            </li>
+                            <li><strong>HubSpot:</strong> Segmentación automática de clientes y recomendaciones de
+                                contenido</li>
+                            <li><strong>Mailchimp:</strong> Optimización de campañas de email con análisis predictivo
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Ventaja:</strong> Equipos de marketing usan IA sin
+                            necesidad de científicos de datos en plantilla.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 2rem;">
+                    <h4 style="color: #E65100;">📌 Caso Real: Coca-Cola</h4>
+                    <p><strong>Desafío:</strong> Coca-Cola quería analizar millones de interacciones en redes sociales
+                        para optimizar campañas de marketing y detectar tendencias de consumo.</p>
+                    <p><strong>Solución SaaS:</strong> Implementó <strong>Salesforce Marketing Cloud</strong> con
+                        Einstein AI:</p>
+                    <ul>
+                        <li>Análisis de sentimientos en tiempo real de menciones en Twitter/Instagram</li>
+                        <li>Segmentación automática de audiencias por comportamiento</li>
+                        <li>Recomendaciones de contenido personalizadas por región</li>
+                    </ul>
+                    <p><strong>Resultado:</strong> Aumento del 20% en engagement de campañas y reducción del 40% en
+                        tiempo de análisis de datos de marketing.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Comparación Detallada de Modelos</h2>
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>IaaS</th>
+                                <th>PaaS</th>
+                                <th>SaaS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Control</td>
+                                <td>Muy alto (SO, middleware, apps)</td>
+                                <td>Medio (apps y configuración)</td>
+                                <td>Bajo (solo uso de la aplicación)</td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Flexibilidad</td>
+                                <td>Máxima (personalización total)</td>
+                                <td>Media (frameworks predefinidos)</td>
+                                <td>Baja (configuración limitada)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Complejidad de Gestión</td>
+                                <td>Alta (requiere administradores)</td>
+                                <td>Media (gestión de aplicaciones)</td>
+                                <td>Muy baja (proveedor gestiona todo)</td>
+                            </tr>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Tiempo de Despliegue</td>
+                                <td>Horas/días (configuración manual)</td>
+                                <td>Minutos/horas (entorno preconfigurado)</td>
+                                <td>Inmediato (acceso directo)</td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Coste Inicial</td>
+                                <td>Bajo (pago por uso)</td>
+                                <td>Bajo a medio (suscripción)</td>
+                                <td>Muy bajo (suscripción mensual)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Escalabilidad</td>
+                                <td>Manual (usuario escala recursos)</td>
+                                <td>Automática (plataforma escala)</td>
+                                <td>Transparente (proveedor escala)</td>
+                            </tr>
+                            <tr class="row-primary">
+                                <td style="font-weight: 700;">Mantenimiento</td>
+                                <td>Usuario (parches, actualizaciones)</td>
+                                <td>Compartido (proveedor gestiona infraestructura)</td>
+                                <td>Proveedor (100% gestionado)</td>
+                            </tr>
+                            <tr class="row-secondary">
+                                <td style="font-weight: 700;">Ejemplos Principales</td>
+                                <td>AWS EC2, Azure VMs, Google Compute Engine</td>
+                                <td>AWS SageMaker, Azure ML, Google AI Platform</td>
+                                <td>Salesforce, Tableau Online, Power BI Service</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700;">Ideal para</td>
+                                <td>Proyectos que requieren control total y personalización</td>
+                                <td>Desarrollo rápido de aplicaciones y modelos ML</td>
+                                <td>Usuarios finales que necesitan soluciones listas para usar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Criterios de Selección</h2>
+                <p>Elegir el modelo adecuado depende de múltiples factores. Aquí te presentamos una guía práctica:</p>
+
+                <div class="grid-characteristics">
+                    <div class="card primary">
+                        <h4>¿Cuándo elegir IaaS?</h4>
+                        <ul>
+                            <li><strong>Control total:</strong> Necesitas personalizar el sistema operativo o
+                                configuraciones de red</li>
+                            <li><strong>Aplicaciones legacy:</strong> Migrar sistemas antiguos que requieren
+                                configuraciones específicas</li>
+                            <li><strong>Desarrollo a medida:</strong> Construir arquitecturas complejas de Big Data
+                                (Hadoop, Spark)</li>
+                            <li><strong>Escalabilidad dinámica:</strong> Picos de demanda impredecibles (Black Friday,
+                                eventos especiales)</li>
+                            <li><strong>Multi-cloud:</strong> Evitar vendor lock-in distribuiendo cargas entre
+                                proveedores</li>
+                        </ul>
+                        <p style="margin-top: 1rem; font-weight: 700;">Ejemplo: Startup de análisis genómico que procesa
+                            secuencias de ADN con algoritmos propios en clusters Spark personalizados.</p>
+                    </div>
+
+                    <div class="card secondary">
+                        <h4>¿Cuándo elegir PaaS?</h4>
+                        <ul>
+                            <li><strong>Desarrollo rápido:</strong> Lanzar MVPs o prototipos en semanas, no meses</li>
+                            <li><strong>Foco en datos:</strong> Científicos de datos que necesitan entrenar modelos sin
+                                gestionar infraestructura</li>
+                            <li><strong>Mantenimiento reducido:</strong> Equipos pequeños sin capacidad de
+                                administración de sistemas</li>
+                            <li><strong>Integración nativa:</strong> Conectar múltiples servicios (DB, storage, APIs)
+                                sin configuración manual</li>
+                            <li><strong>Auto-escalado:</strong> Aplicaciones con demanda variable (streaming de eventos
+                                deportivos)</li>
+                        </ul>
+                        <p style="margin-top: 1rem; font-weight: 700;">Ejemplo: Empresa de e-commerce que usa AWS
+                            SageMaker para entrenar un sistema de recomendaciones y desplegarlo en producción en días.
+                        </p>
+                    </div>
+
+                    <div class="card" style="border: 2px solid #8A7AAF;">
+                        <h4>¿Cuándo elegir SaaS?</h4>
+                        <ul>
+                            <li><strong>Uso inmediato:</strong> Necesitas analytics o IA operativa hoy mismo</li>
+                            <li><strong>Sin expertise técnico:</strong> Usuarios de negocio sin conocimientos de
+                                programación o infraestructura</li>
+                            <li><strong>Coste predecible:</strong> Presupuesto mensual fijo por usuario</li>
+                            <li><strong>Colaboración:</strong> Equipos distribuidos que necesitan acceso compartido a
+                                herramientas</li>
+                            <li><strong>Funcionalidades estándar:</strong> Los casos de uso están cubiertos por
+                                herramientas comerciales</li>
+                        </ul>
+                        <p style="margin-top: 1rem; font-weight: 700;">Ejemplo: Departamento de marketing que usa
+                            Tableau Online para visualizar KPIs de campañas sin depender del equipo de TI.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Resumen Ejecutivo</h2>
+
+                <div class="highlight-box" style="text-align: center;">
+                    <p style="font-size: 1.3rem; font-weight: 700;">Los modelos de servicio cloud no son excluyentes</p>
+                    <p>La mayoría de organizaciones utiliza una <strong>estrategia híbrida</strong> combinando IaaS,
+                        PaaS y SaaS según necesidades específicas.</p>
+                </div>
+
+                <div class="grid-characteristics" style="margin-top: 2rem;">
+                    <div class="card primary-bg">
+                        <h4 class="color-primary">IaaS Resume</h4>
+                        <p><strong>Lema:</strong> "Máximo control, máxima responsabilidad"</p>
+                        <ul>
+                            <li>Control total de infraestructura</li>
+                            <li>Ideal para Big Data personalizado</li>
+                            <li>Requiere equipo técnico experto</li>
+                            <li>Escalabilidad manual pero flexible</li>
+                        </ul>
+                    </div>
+
+                    <div class="card secondary-bg">
+                        <h4 class="color-secondary">PaaS Resume</h4>
+                        <p><strong>Lema:</strong> "Desarrolla rápido, olvida la infraestructura"</p>
+                        <ul>
+                            <li>Balance entre control y gestión</li>
+                            <li>Ideal para desarrollo de modelos ML</li>
+                            <li>Reduce tiempo de despliegue</li>
+                            <li>Auto-escalado y mantenimiento compartido</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="background: #F0EDF5; border: 2px solid #8A7AAF;">
+                        <h4 style="color: #8A7AAF;">SaaS Resume</h4>
+                        <p><strong>Lema:</strong> "Usa y listo, sin complicaciones"</p>
+                        <ul>
+                            <li>Cero gestión de infraestructura</li>
+                            <li>Ideal para usuarios de negocio</li>
+                            <li>Acceso inmediato a IA preentrenada</li>
+                            <li>Coste predecible por suscripción</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Curiosidades sobre Cloud Computing</h2>
+
+                <div class="highlight-box primary">
+                    <h4>🌍 Impacto Ambiental</h4>
+                    <p>Los centros de datos consumen el <strong>3% de la electricidad mundial</strong>, pero la
+                        eficiencia del cloud computing reduce el consumo energético de las empresas hasta un
+                        <strong>77%</strong> comparado con servidores on-premise (Microsoft, 2020).
+                    </p>
+                </div>
+
+                <div class="highlight-box secondary" style="margin-top: 1rem;">
+                    <h4>💰 Economía de Escala</h4>
+                    <p>AWS, Azure y Google Cloud gestionan más de <strong>20 millones de servidores físicos</strong>
+                        combinados. Esta escala les permite ofrecer precios hasta <strong>10 veces más baratos</strong>
+                        que mantener infraestructura propia para empresas medianas.</p>
+                </div>
+
+                <div class="highlight-box"
+                    style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; margin-top: 1rem;">
+                    <h4>🚀 Netflix en la Nube</h4>
+                    <p>Netflix procesa más de <strong>1 petabyte de logs diarios</strong> en AWS S3 (IaaS) para
+                        alimentar sus algoritmos de recomendaciones. Su sistema utiliza más de <strong>100,000
+                            instancias EC2</strong> simultáneas durante horas pico, escalando automáticamente según la
+                        demanda.</p>
+                </div>
+
+                <div class="highlight-box"
+                    style="background: #FFF8DC; border-left: 4px solid #FFA726; margin-top: 1rem;">
+                    <h4>🔮 El Futuro es Híbrido</h4>
+                    <p>Según Gartner, para 2025 más del <strong>85% de las organizaciones</strong> adoptarán una
+                        estrategia cloud-first, pero <strong>solo el 15%</strong> usará un único modelo. La mayoría
+                        combinará IaaS, PaaS y SaaS según casos de uso específicos, incluyendo arquitecturas híbridas
+                        on-premise/cloud y multi-cloud.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
