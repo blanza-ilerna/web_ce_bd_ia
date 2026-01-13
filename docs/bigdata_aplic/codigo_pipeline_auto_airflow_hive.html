@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejemplo práctico de automatización de pipelines de datos utilizando Apache Airflow para orquestar tareas en Apache Hive.">
+    <meta name="author" content="iLERNA">
+    <title>Pipeline Automático: Airflow + Hive | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicación de Big Data</a> ›
+                    <span>Pipeline Automático: Airflow + Hive</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Pipeline Automático: Airflow + Hive</h1>
+                <p class="subtitle">Orquestación de procesos ETL y Análisis de Datos</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN Y CONTEXTO -->
+            <section class="section">
+                <h2 class="section-title">Automatización en Big Data</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>🌬️ Apache Airflow</h4>
+                        <p>Es una plataforma de código abierto para crear, programar y monitorear flujos de trabajo
+                            (pipelines) de manera programática. En Airflow, los flujos se definen como código Python, lo
+                            que permite un mantenimiento, versionado y pruebas más sencillos. Usa el concepto de
+                            <strong>DAG (Directed Acyclic Graph)</strong> para gestionar dependencias entre tareas.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🐝 Apache Hive</h4>
+                        <p>Como hemos visto, Hive es un sistema de data warehouse sobre Hadoop que facilita la lectura,
+                            escritura y administración de grandes conjuntos de datos almacenados en almacenamiento
+                            distribuido mediante SQL. Es ideal para tareas de análisis batch sobre grandes volúmenes de
+                            datos.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">🎯 ¿Por qué usarlos juntos?</p>
+                    <p class="content">
+                        La combinación es poderosa: <strong>Airflow actúa como el director de orquesta</strong>,
+                        decidiendo cuándo y en qué orden se ejecutan las tareas, mientras que <strong>Hive actúa como el
+                            motor de procesamiento</strong> pesado, ejecutando las consultas SQL complejas sobre el
+                        cluster. Esto permite automatizar reportes diarios, procesos ETL complejos y actualizaciones de
+                        Data Lakes sin intervención manual.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: EL CÓDIGO DEL PIPELINE -->
+            <section class="section">
+                <h2 class="section-title">💻 Código del Pipeline (DAG)</h2>
+                <p>
+                    A continuación se muestra un ejemplo completo de un DAG de Airflow que primero importa datos desde
+                    una base de datos MySQL usando <strong>Sqoop</strong> y luego realiza un análisis de ventas
+                    utilizando <strong>Hive</strong>.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.hive_operator import HiveOperator
+from datetime import datetime, timedelta
+
+# Definir argumentos del DAG
+default_args = {
+    'owner': 'data_team',
+    'depends_on_past': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+
+# Definir DAG
+with DAG(
+    'sales_pipeline',
+    default_args=default_args,
+    description='Pipeline para análisis de ventas',
+    schedule_interval=timedelta(days=1),
+    start_date=datetime(2025, 10, 13),
+    catchup=False,
+) as dag:
+
+    # Tarea 1: Importar datos con Sqoop
+    import_data = BashOperator(
+        task_id='import_sales',
+        bash_command='sqoop import --connect jdbc:mysql://localhost/sales_db --table ventas --target-dir /data/ventas_hdfs --split-by id_venta',
+    )
+
+    # Tarea 2: Analizar datos con Hive
+    analyze_data = HiveOperator(
+        task_id='analyze_sales',
+        hql="""
+        SELECT region, SUM(precio) AS total_ventas
+        FROM ventas
+        GROUP BY region
+        """,
+        hive_cli_conn_id='hive_conn',
+    )
+
+    # Definir dependencias
+    import_data >> analyze_data</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EXPLICACIÓN DEL CÓDIGO -->
+            <section class="section">
+                <h2 class="section-title">🔍 Explicación Paso a Paso</h2>
+                <p>Analicemos qué hace exactamente cada bloque del código anterior:</p>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>1. Importaciones y Configuración</h4>
+                        <p>Importamos las librerías necesarias, incluyendo los operadores específicos (`BashOperator`
+                            para comandos de terminal y `HiveOperator` para consultas Hive). Definimos `default_args`
+                            para establecer reglas globales como el propietario del proceso y la política de reintentos
+                            (1 reintento tras 5 minutos si falla).</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4>2. Definición del DAG</h4>
+                        <p>Instanciamos el objeto `DAG` con el nombre <code>'sales_pipeline'</code>.
+                        <ul>
+                            <li><strong>schedule_interval:</strong> Se ejecutará una vez al día (`days=1`).</li>
+                            <li><strong>start_date:</strong> Comienza a ejecutarse a partir del 13 de octubre de 2025.
+                            </li>
+                            <li><strong>catchup=False:</strong> Evita que Airflow ejecute tareas pasadas si el DAG se
+                                activa después de la fecha de inicio.</li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4>3. Tarea 1: Importación (ETL)</h4>
+                        <p>La tarea <code>import_data</code> usa <strong>BashOperator</strong> para ejecutar un comando
+                            de sistema. En este caso, llama a <strong>Apache Sqoop</strong> para traer datos de una
+                            tabla MySQL (`ventas`) y volcarlos en HDFS. Es el paso de "Extracción" y "Carga" inicial.
+                        </p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4>4. Tarea 2: Análisis (Hive)</h4>
+                        <p>La tarea <code>analyze_data</code> usa <strong>HiveOperator</strong>. Ejecuta una consulta
+                            HQL (Hive Query Language) que agrega las ventas por región. Este cálculo se realiza sobre
+                            los datos que acabamos de importar. Requiere una conexión configurada en Airflow
+                            (`hive_conn`).</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning">
+                    <p class="title">🔗 Definición de Dependencias</p>
+                    <p class="content">
+                        La línea final <code>import_data >> analyze_data</code> es crucial. Utiliza el operador de
+                        bitwise shift (`>>`) para establecer que la tarea de análisis <strong>NO debe comenzar</strong>
+                        hasta que la importación de datos haya finalizado con éxito.
+                    </p>
+                </div>
+            </section>
+
+            <!-- RESUMEN FINAL -->
+            <section class="section">
+                <h2 class="section-title">📚 Resumen</h2>
+                <div class="scenario-box neutral">
+                    <p>
+                        Este script representa un flujo de trabajo típico en ingeniería de datos:
+                        <strong>Ingesta → Procesamiento</strong>.
+                        Airflow garantiza que si la ingesta falla, el procesamiento no se ejecute (evitando cálculos
+                        erróneos o vacíos) y notifique al equipo, proporcionando robustez y confiabilidad al ecosistema
+                        de Big Data.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

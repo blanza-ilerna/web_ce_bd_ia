@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Calidad de Datos en Big Data: Dimensiones, métricas y gobernanza. Exactitud, completitud, consistencia y trazabilidad en entornos educativos">
+    <meta name="author" content="iLERNA">
+    <title>Calidad de Datos en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicaciones Big Data</a> ›
+                    <span>Calidad de Datos</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Calidad de Datos en Big Data</h1>
+                <p class="subtitle">Dimensiones, Métricas y Gobernanza para Entornos Educativos</p>
+            </div>
+
+            <!-- TABLE OF CONTENTS -->
+            <section class="section">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">📑 Índice de Contenidos</h3>
+                    <div class="grid-features">
+                        <div class="feature-card toc-card">
+                            <a href="#introduccion">
+                                <h4>1. Introducción</h4>
+                                <p>Por qué es crítica la calidad de datos</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#dimensiones">
+                                <h4>2. 7 Dimensiones</h4>
+                                <p>Exactitud, Completitud, Consistencia...</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#kpis">
+                                <h4>3. KPIs y Métricas</h4>
+                                <p>Indicadores cuantificables de calidad</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#caso-estudio">
+                                <h4>4. Caso de Estudio</h4>
+                                <p>Universidad Politécnica de Madrid</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#mapa-mental">
+                                <h4>5. Mapa Mental</h4>
+                                <p>Resumen visual de conceptos</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <h2 class="section-title">¿Por qué es Crítica la Calidad de Datos?</h2>
+                <p>La <strong>calidad de datos</strong> es un pilar fundamental en cualquier estrategia de gestión de
+                    información, especialmente en <strong>Big Data</strong>, donde la diversidad, velocidad y volumen
+                    de los datos complican enormemente su aseguramiento. Los datos no estructurados o
+                    semiestructurados (texto, imágenes, logs, datos de sensores, registros académicos) predominan en
+                    estos entornos, aumentando exponencialmente la probabilidad de inconsistencias, duplicaciones y
+                    errores.</p>
+
+                <p>Una gestión deficiente de la calidad puede derivar en <strong>análisis erróneos, pérdida de
+                        confianza en los sistemas y decisiones institucionales incorrectas</strong>. Por ello, las
+                    organizaciones educativas deben implementar políticas, métricas y procesos de gobernanza que
+                    garanticen la veracidad, coherencia y trazabilidad de los datos estudiantiles, académicos y
+                    administrativos.</p>
+
+                <div class="highlight-box primary">
+                    <p class="title">🎯 Caso Real - Universidad de Stanford</p>
+                    <p class="content">Stanford detectó que el 15% de sus registros de matriculación contenían
+                        inconsistencias entre sistemas (CRM académico vs sistema financiero), generando errores en
+                        becas y predicciones de abandono. Implementaron un pipeline Apache Spark que valida 8
+                        dimensiones de calidad en tiempo real, reduciendo errores del 15% al 0.8% y mejorando la
+                        precisión de modelos predictivos de retención estudiantil en un 32%.</p>
+                </div>
+
+                <h3>Impacto de la Mala Calidad de Datos</h3>
+                <div class="grid-features">
+                    <div class="disadvantage-box">
+                        <h4>❌ Análisis Erróneos</h4>
+                        <p>Métricas de rendimiento estudiantil incorrectas por datos duplicados o incompletos.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Decisiones Incorrectas</h4>
+                        <p>Asignación errónea de recursos educativos basada en datos desactualizados.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Pérdida de Confianza</h4>
+                        <p>Estudiantes y profesores pierden confianza en reportes y dashboards institucionales.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Incumplimiento Normativo</h4>
+                        <p>Violación de regulaciones educativas (FERPA, GDPR) por falta de trazabilidad.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: DEFINICIÓN Y DIMENSIONES -->
+            <section class="section" id="dimensiones">
+                <h2 class="section-title">📐 Definición y Dimensiones de la Calidad de Datos</h2>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">Definición Formal</h3>
+                    <p>La <strong>calidad de datos</strong> se define como el <em>grado en que los datos son aptos para
+                            su propósito en un contexto específico</em>, cumpliendo con requisitos de precisión,
+                        completitud y confiabilidad. En Big Data, la calidad se evalúa a través de múltiples
+                        <strong>dimensiones cuantificables</strong> que permiten medir y mejorar la fiabilidad de los
+                        datos.
+                    </p>
+                </div>
+
+                <h3 class="color-primary mt-2">7 Dimensiones Principales de la Calidad de Datos</h3>
+
+                <!-- EXACTITUD -->
+                <div class="highlight-box primary mb-2">
+                    <h4 class="color-primary">1️⃣ Exactitud (Accuracy)</h4>
+
+                    <p><strong>Definición:</strong> Mide la correspondencia entre los valores almacenados y la realidad
+                        que representan. Los datos exactos reflejan fielmente el mundo real sin distorsiones.</p>
+
+                    <div class="example-box example-blue">
+                        <h5>Ejemplo Académico</h5>
+                        <p>Una universidad almacena 50,000 registros de estudiantes. Si 2,500 tienen la dirección de
+                            residencia incorrecta (estudiantes que se mudaron pero no actualizaron datos), la
+                            <strong>exactitud es del 95%</strong> (47,500/50,000).
+                        </p>
+                        <p><strong>Impacto:</strong> Campañas de comunicación institucional (becas, eventos) no llegan
+                            al 5% de estudiantes, reduciendo la participación estudiantil.</p>
+                    </div>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Métrica</th>
+                                    <th>Fórmula</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tasa de Exactitud</strong></td>
+                                    <td>(Registros Correctos / Total) × 100</td>
+                                    <td>(47,500 / 50,000) × 100 = 95%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tasa de Error</strong></td>
+                                    <td>(Registros Erróneos / Total) × 100</td>
+                                    <td>(2,500 / 50,000) × 100 = 5%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5 class="color-primary mt-1">Implementación con PySpark</h5>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, when, sum as spark_sum
+
+# Inicializar Spark
+spark = SparkSession.builder.appName("AccuracyCheck").getOrCreate()
+
+# Cargar datos estudiantiles
+df_students = spark.read.parquet("/data/students/")
+
+# Validar exactitud: comparar con fuente oficial (API de correos)
+df_with_validation = df_students.withColumn(
+    "email_valid",
+    when(col("email").rlike(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"), 1)
+    .otherwise(0)
+)
+
+# Calcular métricas de exactitud
+accuracy_metrics = df_with_validation.agg(
+    spark_sum("email_valid").alias("valid_emails"),
+    (spark_sum("email_valid") / df_with_validation.count() * 100).alias("accuracy_rate")
+)
+
+accuracy_metrics.show()
+# +-------------+--------------+
+# |valid_emails |accuracy_rate |
+# +-------------+--------------+
+# |47500        |95.0          |
+# +-------------+--------------+
+
+# Identificar registros con errores para corrección
+invalid_students = df_with_validation.filter(col("email_valid") == 0)
+invalid_students.select("student_id", "name", "email").write.csv("/output/invalid_emails/")</code></pre>
+                </div>
+
+                <!-- COMPLETITUD -->
+                <div class="highlight-box secondary mb-2">
+                    <h4 class="color-secondary">2️⃣ Completitud (Completeness)</h4>
+
+                    <p><strong>Definición:</strong> Evalúa la ausencia de valores nulos o incompletos en los campos
+                        críticos. Los datos completos contienen toda la información necesaria para su análisis.</p>
+
+                    <div class="example-box example-purple">
+                        <h5>Ejemplo Académico</h5>
+                        <p>En una base de datos de 30,000 inscripciones a cursos:</p>
+                        <ul>
+                            <li><strong>6,000 registros</strong> (20%) carecen del campo <code>prerequisite_completed</code>
+                            </li>
+                            <li><strong>3,000 registros</strong> (10%) tienen <code>student_email</code> como NULL</li>
+                            <li><strong>Completitud global:</strong> (30,000 - 9,000) / 30,000 = <strong>70%</strong>
+                            </li>
+                        </ul>
+                        <p><strong>Impacto:</strong> El sistema de recomendación de cursos no puede sugerir
+                            asignaturas avanzadas al 20% de estudiantes, reduciendo la tasa de progresión académica.
+                        </p>
+                    </div>
+
+                    <div class="warning-box">
+                        <h5 class="color-warning">⚠️ Campos Críticos en Educación</h5>
+                        <p>No todos los campos vacíos son igual de problemáticos:</p>
+                        <ul>
+                            <li><strong>Críticos:</strong> student_id, email, enrollment_date, course_id</li>
+                            <li><strong>Importantes:</strong> phone_number, emergency_contact, prerequisites</li>
+                            <li><strong>Opcionales:</strong> middle_name, alternate_email, profile_picture</li>
+                        </ul>
+                    </div>
+
+                    <h5 class="color-secondary mt-1">Análisis de Completitud con Spark</h5>
+                    <pre><code class="language-python">from pyspark.sql.functions import col, isnan, when, count
+
+# Cargar dataset de inscripciones
+df_enrollments = spark.read.json("/data/enrollments/")
+
+# Calcular completitud por columna
+def calculate_completeness(df):
+    total_rows = df.count()
+    completeness = []
+
+    for column in df.columns:
+        null_count = df.filter(
+            col(column).isNull() |
+            isnan(col(column)) |
+            (col(column) == "")
+        ).count()
+
+        completeness_rate = ((total_rows - null_count) / total_rows) * 100
+        completeness.append((column, completeness_rate, null_count))
+
+    return completeness
+
+# Ejecutar análisis
+completeness_report = calculate_completeness(df_enrollments)
+
+# Crear DataFrame de reporte
+from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType
+
+schema = StructType([
+    StructField("field", StringType()),
+    StructField("completeness_pct", FloatType()),
+    StructField("null_count", IntegerType())
+])
+
+df_report = spark.createDataFrame(completeness_report, schema)
+df_report.orderBy("completeness_pct").show()
+
+# +---------------------+----------------+-----------+
+# |field                |completeness_pct|null_count |
+# +---------------------+----------------+-----------+
+# |prerequisite_completed|80.0            |6000       |
+# |student_email        |90.0            |3000       |
+# |enrollment_date      |100.0           |0          |
+# |student_id           |100.0           |0          |
+# +---------------------+----------------+-----------+</code></pre>
+                </div>
+
+                <!-- CONSISTENCIA -->
+                <div class="highlight-box primary mb-2">
+                    <h4 class="color-primary">3️⃣ Consistencia (Consistency)</h4>
+
+                    <p><strong>Definición:</strong> Garantiza que los datos no presenten contradicciones entre sistemas
+                        o fuentes. Los datos consistentes mantienen el mismo valor en todas las ubicaciones.</p>
+
+                    <div class="example-box example-blue">
+                        <h5>Ejemplo Académico</h5>
+                        <p>Una nota final de un estudiante aparece como:</p>
+                        <ul>
+                            <li><strong>Sistema Académico (LMS):</strong> 8.5</li>
+                            <li><strong>Sistema de Registros:</strong> 8.7</li>
+                            <li><strong>Portal Estudiantil:</strong> 8.5</li>
+                        </ul>
+                        <p><strong>Problema:</strong> Inconsistencia del 0.2 puntos puede afectar el promedio
+                            acumulado (GPA), elegibilidad para becas o matrícula de honor.</p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="highlight-box secondary">
+                            <h5 class="color-secondary text-center">Consistencia Sintáctica</h5>
+                            <p><strong>Problema:</strong> Mismo concepto, diferentes formatos</p>
+                            <ul>
+                                <li>"Computer Science" vs "CS" vs "Informática"</li>
+                                <li>"01/03/2025" (dd/mm) vs "03/01/2025" (mm/dd)</li>
+                                <li>"España" vs "Spain" vs "ES"</li>
+                            </ul>
+                        </div>
+                        <div class="warning-box">
+                            <h5 class="color-warning text-center">Consistencia Semántica</h5>
+                            <p><strong>Problema:</strong> Valores contradictorios</p>
+                            <ul>
+                                <li>Estado: "Activo" pero fecha_baja: "2024-01-15"</li>
+                                <li>Edad: 20 años pero año_nacimiento: 1990</li>
+                                <li>Créditos_cursados: 180 pero semestre: 2</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h5 class="color-primary mt-1">Validación de Consistencia Cross-System</h5>
+                    <pre><code class="language-python">from pyspark.sql.functions import abs as spark_abs
+
+# Cargar datos de múltiples fuentes
+df_lms = spark.read.parquet("/data/lms_grades/")
+df_registry = spark.read.parquet("/data/registry_grades/")
+
+# Join por student_id y course_id
+df_joined = df_lms.alias("lms").join(
+    df_registry.alias("reg"),
+    (col("lms.student_id") == col("reg.student_id")) &
+    (col("lms.course_id") == col("reg.course_id"))
+)
+
+# Detectar inconsistencias (diferencia > 0.1 puntos)
+df_inconsistent = df_joined.withColumn(
+    "grade_diff",
+    spark_abs(col("lms.final_grade") - col("reg.final_grade"))
+).filter(col("grade_diff") > 0.1)
+
+# Calcular tasa de consistencia
+total_records = df_joined.count()
+inconsistent_records = df_inconsistent.count()
+consistency_rate = ((total_records - inconsistent_records) / total_records) * 100
+
+print(f"Tasa de Consistencia: {consistency_rate:.2f}%")
+# Tasa de Consistencia: 97.80%
+
+# Generar reporte de inconsistencias
+df_inconsistent.select(
+    "lms.student_id",
+    "lms.course_id",
+    "lms.final_grade",
+    "reg.final_grade",
+    "grade_diff"
+).write.parquet("/output/grade_inconsistencies/")</code></pre>
+                </div>
+
+                <!-- VALIDEZ -->
+                <div class="highlight-box secondary mb-2">
+                    <h4 class="color-secondary">4️⃣ Validez (Validity)</h4>
+
+                    <p><strong>Definición:</strong> Mide la conformidad con reglas de formato, tipo de dato o rangos
+                        predefinidos. Los datos válidos cumplen con esquemas y restricciones del dominio.</p>
+
+                    <div class="example-box example-purple">
+                        <h5>Ejemplo Académico - Reglas de Validación</h5>
+                        <ul>
+                            <li><strong>Email:</strong> Debe seguir patrón <code>nombre@universidad.edu</code></li>
+                            <li><strong>Fecha de nacimiento:</strong> Estudiante debe tener entre 16 y 70 años</li>
+                            <li><strong>Nota:</strong> Valor entre 0.0 y 10.0</li>
+                            <li><strong>Créditos:</strong> Múltiplo de 3 o 6 (ECTS)</li>
+                            <li><strong>Semestre:</strong> Valores: {1, 2, 3, 4, 5, 6, 7, 8}</li>
+                        </ul>
+                    </div>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Valor Inválido</th>
+                                    <th>Problema</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>enrollment_date</code></td>
+                                    <td>"2025-13-45"</td>
+                                    <td>Mes y día fuera de rango</td>
+                                </tr>
+                                <tr>
+                                    <td><code>final_grade</code></td>
+                                    <td>12.5</td>
+                                    <td>Excede rango 0-10</td>
+                                </tr>
+                                <tr>
+                                    <td><code>credits</code></td>
+                                    <td>5.2</td>
+                                    <td>No es múltiplo de 3 o 6 ECTS</td>
+                                </tr>
+                                <tr>
+                                    <td><code>student_age</code></td>
+                                    <td>-5</td>
+                                    <td>Valor negativo imposible</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5 class="color-secondary mt-1">Engine de Validación con Great Expectations</h5>
+                    <pre><code class="language-python">import great_expectations as ge
+from datetime import datetime, timedelta
+
+# Cargar dataset con Great Expectations
+df_ge = ge.read_csv("/data/students.csv")
+
+# Definir expectativas (reglas de validación)
+df_ge.expect_column_values_to_be_between("final_grade", 0.0, 10.0)
+df_ge.expect_column_values_to_match_regex("email", r"^[a-zA-Z0-9._%+-]+@universidad\.edu$")
+df_ge.expect_column_values_to_be_in_set("semester", [1, 2, 3, 4, 5, 6, 7, 8])
+
+# Validar edad (16-70 años)
+current_year = datetime.now().year
+df_ge.expect_column_values_to_be_between(
+    "birth_year",
+    current_year - 70,
+    current_year - 16
+)
+
+# Ejecutar validación
+validation_results = df_ge.validate()
+
+# Generar reporte HTML
+validation_results.to_json_dict()
+print(f"Validaciones exitosas: {validation_results['statistics']['successful_expectations']}")
+print(f"Validaciones fallidas: {validation_results['statistics']['unsuccessful_expectations']}")
+print(f"Tasa de validez: {validation_results['statistics']['success_percent']:.2f}%")
+
+# Filtrar registros inválidos
+invalid_records = df_ge[df_ge["final_grade"] > 10.0]
+print(f"Registros con notas inválidas: {len(invalid_records)}")</code></pre>
+                </div>
+
+                <!-- UNICIDAD -->
+                <div class="highlight-box primary mb-2">
+                    <h4 class="color-primary">5️⃣ Unicidad (Uniqueness)</h4>
+
+                    <p><strong>Definición:</strong> Evalúa la ausencia de duplicados en los registros. Cada entidad del
+                        mundo real debe representarse exactamente una vez en la base de datos.</p>
+
+                    <div class="example-box example-blue">
+                        <h5>Ejemplo Académico</h5>
+                        <p>Una universidad detecta en su CRM académico:</p>
+                        <ul>
+                            <li><strong>50,000 estudiantes registrados</strong></li>
+                            <li><strong>1,000 duplicados</strong> (mismo DNI/NIE con diferentes IDs)</li>
+                            <li><strong>Tasa de duplicación:</strong> (1,000 / 50,000) × 100 = <strong>2%</strong></li>
+                        </ul>
+                        <p><strong>Impacto:</strong> Estudiantes duplicados reciben múltiples notificaciones, se
+                            inflan métricas de matrícula y se generan errores en reportes institucionales.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <h5 class="color-warning">⚠️ Tipos de Duplicados</h5>
+                        <ul>
+                            <li><strong>Duplicado Exacto:</strong> Todos los campos idénticos (fácil de detectar)</li>
+                            <li><strong>Duplicado Fuzzy:</strong> Variaciones menores: "María García" vs "Maria Garcia"
+                            </li>
+                            <li><strong>Duplicado Semántico:</strong> Mismo estudiante con emails diferentes
+                                (maria@gmail.com vs m.garcia@universidad.edu)</li>
+                        </ul>
+                    </div>
+
+                    <h5 class="color-primary mt-1">Detección de Duplicados con Spark</h5>
+                    <pre><code class="language-python">from pyspark.sql.functions import col, count, concat_ws, lower, trim
+from pyspark.sql import Window
+
+# Cargar datos de estudiantes
+df_students = spark.read.parquet("/data/students/")
+
+# Método 1: Duplicados exactos por DNI/NIE
+duplicates_exact = df_students.groupBy("dni").agg(
+    count("*").alias("count")
+).filter(col("count") > 1)
+
+print(f"Duplicados exactos: {duplicates_exact.count()}")
+
+# Método 2: Duplicados fuzzy por nombre normalizado + fecha nacimiento
+df_normalized = df_students.withColumn(
+    "name_normalized",
+    lower(trim(concat_ws("", col("first_name"), col("last_name"))))
+)
+
+duplicates_fuzzy = df_normalized.groupBy("name_normalized", "birth_date").agg(
+    count("*").alias("count")
+).filter(col("count") > 1)
+
+print(f"Duplicados fuzzy: {duplicates_fuzzy.count()}")
+
+# Método 3: Identificar todas las copias de un registro duplicado
+window_spec = Window.partitionBy("dni").orderBy("created_at")
+df_with_rank = df_students.withColumn("rank", row_number().over(window_spec))
+
+# Registros duplicados (rank > 1 son copias)
+df_duplicates = df_with_rank.filter(col("rank") > 1)
+
+# Calcular métricas de unicidad
+total_records = df_students.count()
+duplicate_records = df_duplicates.count()
+uniqueness_rate = ((total_records - duplicate_records) / total_records) * 100
+
+print(f"Tasa de Unicidad: {uniqueness_rate:.2f}%")
+# Tasa de Unicidad: 98.00%
+
+# Exportar duplicados para limpieza manual
+df_duplicates.write.csv("/output/duplicates_to_review/")</code></pre>
+                </div>
+
+                <!-- TRAZABILIDAD -->
+                <div class="highlight-box secondary mb-2">
+                    <h4 class="color-secondary">6️⃣ Trazabilidad (Traceability)</h4>
+
+                    <p><strong>Definición:</strong> Permite rastrear el origen, transformación y destino de los datos a
+                        lo largo del pipeline. La trazabilidad es crítica para auditorías, cumplimiento normativo
+                        (GDPR, FERPA) y debugging.</p>
+
+                    <div class="example-box example-purple">
+                        <h5>Ejemplo Académico - Linaje de Datos</h5>
+                        <p>Un dashboard de analítica institucional muestra "Tasa de retención: 78%". Con
+                            <strong>data lineage</strong>, podemos rastrear:
+                        </p>
+                        <ol>
+                            <li><strong>Origen:</strong> Tabla <code>enrollments</code> en MySQL + Logs de acceso LMS
+                            </li>
+                            <li><strong>Ingesta:</strong> Sqoop import a HDFS (2025-01-10 02:00 UTC)</li>
+                            <li><strong>Transformación:</strong> Script PySpark
+                                <code>calculate_retention.py</code> (v2.3)
+                            </li>
+                            <li><strong>Almacenamiento:</strong> Tabla Hive <code>analytics.retention_metrics</code>
+                            </li>
+                            <li><strong>Visualización:</strong> Power BI dashboard (actualizado 2025-01-10 06:00)</li>
+                        </ol>
+                    </div>
+
+                    <div class="diagram-svg">
+                        <svg width="800" height="300" viewBox="0 0 800 300"
+                            style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                            <text x="400" y="25" font-size="14" fill="#333" text-anchor="middle"
+                                font-weight="bold">Data Lineage: Trazabilidad de Métricas Académicas</text>
+
+                            <!-- Fuente -->
+                            <rect x="50" y="60" width="120" height="60" fill="#8A7AAF" rx="8" />
+                            <text x="110" y="85" font-size="12" fill="white" text-anchor="middle"
+                                font-weight="bold">FUENTE</text>
+                            <text x="110" y="102" font-size="10" fill="white" text-anchor="middle">MySQL</text>
+                            <text x="110" y="115" font-size="9" fill="white" text-anchor="middle">enrollments</text>
+
+                            <!-- Ingesta -->
+                            <rect x="220" y="60" width="120" height="60" fill="#49B9CE" rx="8" />
+                            <text x="280" y="85" font-size="12" fill="white" text-anchor="middle"
+                                font-weight="bold">INGESTA</text>
+                            <text x="280" y="102" font-size="10" fill="white" text-anchor="middle">Sqoop</text>
+                            <text x="280" y="115" font-size="9" fill="white" text-anchor="middle">02:00 UTC</text>
+
+                            <!-- Transformación -->
+                            <rect x="390" y="60" width="120" height="60" fill="#FFA726" rx="8" />
+                            <text x="450" y="85" font-size="12" fill="white" text-anchor="middle"
+                                font-weight="bold">ETL</text>
+                            <text x="450" y="102" font-size="10" fill="white" text-anchor="middle">PySpark</text>
+                            <text x="450" y="115" font-size="9" fill="white" text-anchor="middle">retention.py v2.3
+                            </text>
+
+                            <!-- Almacenamiento -->
+                            <rect x="560" y="60" width="120" height="60" fill="#4CAF50" rx="8" />
+                            <text x="620" y="85" font-size="12" fill="white" text-anchor="middle"
+                                font-weight="bold">STORAGE</text>
+                            <text x="620" y="102" font-size="10" fill="white" text-anchor="middle">Hive</text>
+                            <text x="620" y="115" font-size="9" fill="white" text-anchor="middle">retention_metrics
+                            </text>
+
+                            <!-- Dashboard -->
+                            <rect x="305" y="180" width="190" height="80" fill="#E8F7FA" stroke="#49B9CE"
+                                stroke-width="2" rx="8" />
+                            <text x="400" y="205" font-size="12" fill="#333" text-anchor="middle"
+                                font-weight="bold">DASHBOARD</text>
+                            <text x="400" y="225" font-size="11" fill="#555" text-anchor="middle">Power BI</text>
+                            <text x="400" y="243" font-size="10" fill="#777" text-anchor="middle">Tasa de Retención:
+                                78%</text>
+
+                            <!-- Flechas -->
+                            <path d="M 170 90 L 215 90" stroke="#333" stroke-width="2" fill="none"
+                                marker-end="url(#arrowblack2)" />
+                            <path d="M 340 90 L 385 90" stroke="#333" stroke-width="2" fill="none"
+                                marker-end="url(#arrowblack2)" />
+                            <path d="M 510 90 L 555 90" stroke="#333" stroke-width="2" fill="none"
+                                marker-end="url(#arrowblack2)" />
+                            <path d="M 620 120 L 450 175" stroke="#49B9CE" stroke-width="2" fill="none"
+                                marker-end="url(#arrowblue4)" />
+
+                            <!-- Metadatos -->
+                            <text x="190" y="75" font-size="8" fill="#555">2025-01-10</text>
+                            <text x="190" y="85" font-size="8" fill="#555">02:00</text>
+
+                            <text x="355" y="75" font-size="8" fill="#555">Modified:</text>
+                            <text x="355" y="85" font-size="8" fill="#555">user_etl</text>
+
+                            <defs>
+                                <marker id="arrowblack2" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                    orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                                </marker>
+                                <marker id="arrowblue4" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                    orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <h5 class="color-secondary mt-1">Implementación de Data Lineage con Apache Atlas</h5>
+                    <pre><code class="language-python">from apache_atlas.client.base_client import AtlasClient
+from apache_atlas.model.instance import AtlasEntity, AtlasEntityWithExtInfo
+
+# Conectar a Atlas
+client = AtlasClient('http://atlas-server:21000', ('admin', 'password'))
+
+# Definir entidad: Tabla origen
+source_table = AtlasEntity(
+    typeName="hive_table",
+    attributes={
+        "qualifiedName": "enrollments@cluster",
+        "name": "enrollments",
+        "description": "Tabla de matriculaciones estudiantiles",
+        "owner": "data-engineering-team"
+    }
+)
+
+# Definir entidad: Script de transformación
+transform_script = AtlasEntity(
+    typeName="spark_process",
+    attributes={
+        "qualifiedName": "calculate_retention.py@cluster",
+        "name": "Calculate Retention",
+        "description": "Calcula tasa de retención estudiantil",
+        "inputs": [source_table],
+        "version": "2.3",
+        "runBy": "user_etl",
+        "startTime": 1736478000000  # Unix timestamp
+    }
+)
+
+# Definir entidad: Tabla destino
+output_table = AtlasEntity(
+    typeName="hive_table",
+    attributes={
+        "qualifiedName": "retention_metrics@cluster",
+        "name": "retention_metrics",
+        "description": "Métricas calculadas de retención",
+        "owner": "analytics-team"
+    }
+)
+
+# Crear relación de linaje
+transform_script.attributes["outputs"] = [output_table]
+
+# Registrar en Atlas
+entity_with_info = AtlasEntityWithExtInfo(entity=transform_script)
+response = client.entity.create_entity(entity_with_info)
+
+print(f"Linaje registrado: {response.guidAssignments}")
+
+# Consultar linaje de una tabla
+lineage = client.lineage.get_lineage('retention_metrics@cluster', depth=3)
+print(f"Upstream sources: {lineage.upstreamEdges}")
+print(f"Downstream consumers: {lineage.downstreamEdges}")</code></pre>
+                </div>
+
+                <!-- ACTUALIDAD -->
+                <div class="highlight-box primary mb-2">
+                    <h4 class="color-primary">7️⃣ Actualidad (Timeliness)</h4>
+
+                    <p><strong>Definición:</strong> Indica si los datos están actualizados y disponibles en el momento
+                        necesario. Los datos actuales reflejan el estado más reciente del sistema.</p>
+
+                    <div class="example-box example-blue">
+                        <h5>Ejemplo Académico</h5>
+                        <p>Un sistema de recomendación de cursos sugiere asignaturas basándose en el historial
+                            académico:</p>
+                        <ul>
+                            <li><strong>Actualización en tiempo real:</strong> Recomendación tras aprobar
+                                prerequisito (inmediato)</li>
+                            <li><strong>Actualización batch:</strong> Recomendación tras sincronización nocturna (12
+                                horas de retraso)</li>
+                        </ul>
+                        <p><strong>Impacto:</strong> Un retraso de 12 horas puede hacer que estudiantes pierdan el
+                            plazo de matrícula en cursos demandados.</p>
+                    </div>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Proceso</th>
+                                    <th>Frecuencia</th>
+                                    <th>Latencia Aceptable</th>
+                                    <th>Caso de Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tiempo Real</strong></td>
+                                    <td>Streaming</td>
+                                    <td>&lt; 1 segundo</td>
+                                    <td>Dashboard de asistencia en vivo</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Near Real-Time</strong></td>
+                                    <td>Micro-batch</td>
+                                    <td>&lt; 1 minuto</td>
+                                    <td>Alertas de fraude académico</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Batch Horario</strong></td>
+                                    <td>Cada hora</td>
+                                    <td>&lt; 1 hora</td>
+                                    <td>Actualización de rankings</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Batch Diario</strong></td>
+                                    <td>Nocturno</td>
+                                    <td>&lt; 24 horas</td>
+                                    <td>Reportes administrativos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5 class="color-primary mt-1">Monitoreo de Freshness con Spark Streaming</h5>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, current_timestamp, unix_timestamp
+from pyspark.sql.types import StructType, StructField, StringType, TimestampType
+
+# Inicializar Spark Streaming
+spark = SparkSession.builder \
+    .appName("FreshnessMonitoring") \
+    .getOrCreate()
+
+# Leer stream de actualizaciones de notas
+schema = StructType([
+    StructField("student_id", StringType()),
+    StructField("course_id", StringType()),
+    StructField("grade", StringType()),
+    StructField("updated_at", TimestampType())
+])
+
+df_stream = spark.readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("subscribe", "grade-updates") \
+    .load() \
+    .selectExpr("CAST(value AS STRING)") \
+    .select(from_json(col("value"), schema).alias("data")) \
+    .select("data.*")
+
+# Calcular latencia (tiempo desde actualización hasta procesamiento)
+df_with_latency = df_stream.withColumn(
+    "latency_seconds",
+    unix_timestamp(current_timestamp()) - unix_timestamp(col("updated_at"))
+)
+
+# Alertar si latencia > 60 segundos
+df_stale = df_with_latency.filter(col("latency_seconds") > 60)
+
+# Escribir alertas
+query = df_stale.writeStream \
+    .outputMode("append") \
+    .format("console") \
+    .trigger(processingTime="10 seconds") \
+    .start()
+
+query.awaitTermination()
+
+# +----------+---------+-----+-------------------+---------------+
+# |student_id|course_id|grade|updated_at         |latency_seconds|
+# +----------+---------+-----+-------------------+---------------+
+# |STU12345  |CS101    |8.5  |2025-01-13 10:00:00|120            |
+# +----------+---------+-----+-------------------+---------------+
+# ALERTA: Dato desactualizado > 60 segundos</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: KPIs -->
+            <section class="section" id="kpis">
+                <h2 class="section-title">📊 Indicadores de Calidad (Data Quality KPIs)</h2>
+
+                <p>Las organizaciones educativas pueden definir <strong>KPIs cuantificables</strong> basados en las 7
+                    dimensiones para monitorear continuamente la salud de sus datos.</p>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dimensión</th>
+                                <th>KPI</th>
+                                <th>Umbral Objetivo</th>
+                                <th>Umbral Crítico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Exactitud</strong></td>
+                                <td>% Registros válidos</td>
+                                <td class="success-cell">&gt; 98%</td>
+                                <td class="error-cell">&lt; 90%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Completitud</strong></td>
+                                <td>% Campos completos</td>
+                                <td class="success-cell">&gt; 95%</td>
+                                <td class="error-cell">&lt; 85%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consistencia</strong></td>
+                                <td>% Registros consistentes</td>
+                                <td class="success-cell">&gt; 99%</td>
+                                <td class="error-cell">&lt; 95%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validez</strong></td>
+                                <td>% Registros válidos</td>
+                                <td class="success-cell">&gt; 97%</td>
+                                <td class="error-cell">&lt; 92%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Unicidad</strong></td>
+                                <td>% Tasa de duplicación</td>
+                                <td class="success-cell">&lt; 0.5%</td>
+                                <td class="error-cell">&gt; 2%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trazabilidad</strong></td>
+                                <td>% Registros con metadata</td>
+                                <td class="success-cell">&gt; 100%</td>
+                                <td class="error-cell">&lt; 95%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Actualidad</strong></td>
+                                <td>Latencia promedio</td>
+                                <td class="success-cell">&lt; 1 hora</td>
+                                <td class="error-cell">&gt; 24 horas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary mt-2">Dashboard de Monitoreo de Calidad</h3>
+                <div class="highlight-box primary">
+                    <h4 class="color-primary">Implementación con Tableau/Power BI</h4>
+                    <p>Conectar a tablas Hive con métricas pre-calculadas:</p>
+                    <ul>
+                        <li><strong>KPI Cards:</strong> Mostrar % de cada dimensión con semáforo (verde/amarillo/rojo)
+                        </li>
+                        <li><strong>Tendencias temporales:</strong> Gráficos de línea de calidad en últimos 30 días
+                        </li>
+                        <li><strong>Distribución de errores:</strong> Heatmap por tabla/campo</li>
+                        <li><strong>Top 10 problemas:</strong> Tabla de registros con más errores acumulados</li>
+                        <li><strong>Alertas automáticas:</strong> Email si KPI cae por debajo de umbral crítico</li>
+                    </ul>
+                </div>
+
+                <h3 class="color-secondary mt-2">Script de Cálculo de KPIs con Spark</h3>
+                <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count, sum as spark_sum, round as spark_round
+from datetime import datetime
+
+# Inicializar Spark
+spark = SparkSession.builder.appName("DataQualityKPIs").getOrCreate()
+
+# Cargar dataset de estudiantes
+df = spark.read.parquet("/data/students/")
+
+# Calcular KPIs
+total_records = df.count()
+
+kpis = df.agg(
+    # Exactitud (emails válidos)
+    (spark_sum(
+        col("email").rlike(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").cast("int")
+    ) / total_records * 100).alias("accuracy_pct"),
+
+    # Completitud (sin campos nulos críticos)
+    (spark_sum(
+        (col("student_id").isNotNull() & col("email").isNotNull() &
+         col("enrollment_date").isNotNull()).cast("int")
+    ) / total_records * 100).alias("completeness_pct"),
+
+    # Validez (notas en rango 0-10)
+    (spark_sum(
+        ((col("final_grade") >= 0) & (col("final_grade") <= 10)).cast("int")
+    ) / total_records * 100).alias("validity_pct")
+).withColumn("timestamp", current_timestamp())
+
+# Mostrar KPIs
+kpis.select(
+    spark_round("accuracy_pct", 2).alias("Exactitud %"),
+    spark_round("completeness_pct", 2).alias("Completitud %"),
+    spark_round("validity_pct", 2).alias("Validez %"),
+    "timestamp"
+).show()
+
+# +------------+--------------+----------+-------------------+
+# |Exactitud % |Completitud % |Validez % |timestamp          |
+# +------------+--------------+----------+-------------------+
+# |98.50       |96.20         |99.80     |2025-01-13 12:00:00|
+# +------------+--------------+----------+-------------------+
+
+# Guardar en tabla de métricas históricas
+kpis.write.mode("append").saveAsTable("quality_metrics.daily_kpis")</code></pre>
+            </section>
+
+            <!-- SECCIÓN 4: CASO DE ESTUDIO -->
+            <section class="section" id="caso-estudio">
+                <h2 class="section-title">🎓 Caso de Estudio: Universidad Politécnica de Madrid</h2>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">Contexto del Proyecto</h3>
+                    <p>La <strong>Universidad Politécnica de Madrid (UPM)</strong> gestiona 40,000 estudiantes, 3,000
+                        profesores y 200 programas académicos. Su infraestructura Big Data almacena 120 TB de datos en
+                        un Data Lake en HDFS, incluyendo:</p>
+                    <ul>
+                        <li>Registros académicos históricos (15 años)</li>
+                        <li>Logs de plataformas LMS (Moodle, Blackboard)</li>
+                        <li>Datos de investigación y publicaciones</li>
+                        <li>Encuestas de satisfacción estudiantil</li>
+                        <li>Datos financieros de becas y matrículas</li>
+                    </ul>
+                </div>
+
+                <h3 class="color-primary mt-2">Problemas Identificados</h3>
+                <div class="grid-features">
+                    <div class="disadvantage-box">
+                        <h4>📉 Baja Exactitud</h4>
+                        <p><strong>92% de exactitud</strong> en direcciones de contacto (8% desactualizadas tras
+                            mudanzas no reportadas)</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>📉 Completitud Deficiente</h4>
+                        <p><strong>82% de completitud</strong> en prerrequisitos cumplidos (18% de campos NULL)</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>📉 Inconsistencias Cross-System</h4>
+                        <p><strong>3% de inconsistencias</strong> en notas finales entre LMS y sistema de registros
+                        </p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>📉 Duplicados</h4>
+                        <p><strong>2.5% de duplicación</strong> en registros estudiantiles (1,000 estudiantes
+                            duplicados)</p>
+                    </div>
+                </div>
+
+                <h3 class="color-secondary mt-2">Solución Implementada</h3>
+
+                <div class="diagram-svg">
+                    <svg width="800" height="400" viewBox="0 0 800 400"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                        <text x="400" y="25" font-size="14" fill="#333" text-anchor="middle"
+                            font-weight="bold">Pipeline de Calidad de Datos - UPM</text>
+
+                        <!-- Ingesta -->
+                        <rect x="50" y="60" width="150" height="80" fill="#8A7AAF" rx="8" />
+                        <text x="125" y="85" font-size="12" fill="white" text-anchor="middle"
+                            font-weight="bold">1. INGESTA</text>
+                        <text x="125" y="105" font-size="10" fill="white" text-anchor="middle">Sqoop</text>
+                        <text x="125" y="120" font-size="9" fill="white" text-anchor="middle">MySQL → HDFS</text>
+                        <text x="125" y="132" font-size="9" fill="white" text-anchor="middle">Diario 02:00</text>
+
+                        <!-- Validación -->
+                        <rect x="250" y="60" width="150" height="80" fill="#49B9CE" rx="8" />
+                        <text x="325" y="85" font-size="12" fill="white" text-anchor="middle"
+                            font-weight="bold">2. VALIDACIÓN</text>
+                        <text x="325" y="105" font-size="10" fill="white" text-anchor="middle">Great Expectations
+                        </text>
+                        <text x="325" y="120" font-size="9" fill="white" text-anchor="middle">7 dimensiones</text>
+
+                        <!-- Limpieza -->
+                        <rect x="450" y="60" width="150" height="80" fill="#FFA726" rx="8" />
+                        <text x="525" y="85" font-size="12" fill="white" text-anchor="middle"
+                            font-weight="bold">3. LIMPIEZA</text>
+                        <text x="525" y="105" font-size="10" fill="white" text-anchor="middle">PySpark</text>
+                        <text x="525" y="120" font-size="9" fill="white" text-anchor="middle">Dedup + Fill</text>
+
+                        <!-- Análisis -->
+                        <rect x="650" y="60" width="130" height="80" fill="#4CAF50" rx="8" />
+                        <text x="715" y="85" font-size="12" fill="white" text-anchor="middle"
+                            font-weight="bold">4. ANÁLISIS</text>
+                        <text x="715" y="105" font-size="10" fill="white" text-anchor="middle">Apache Spark</text>
+                        <text x="715" y="120" font-size="9" fill="white" text-anchor="middle">KPIs</text>
+
+                        <!-- Dashboard -->
+                        <rect x="250" y="200" width="300" height="100" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="2" rx="8" />
+                        <text x="400" y="225" font-size="12" fill="#333" text-anchor="middle"
+                            font-weight="bold">5. DASHBOARD (Power BI)</text>
+                        <text x="400" y="245" font-size="10" fill="#555" text-anchor="middle">Exactitud: 98.5% ✓</text>
+                        <text x="400" y="262" font-size="10" fill="#555" text-anchor="middle">Completitud: 96.2% ✓
+                        </text>
+                        <text x="400" y="279" font-size="10" fill="#555" text-anchor="middle">Duplicados: 0.3% ✓</text>
+
+                        <!-- Alertas -->
+                        <rect x="100" y="320" width="180" height="50" fill="#FFE0E0" stroke="#D32F2F" stroke-width="2"
+                            rx="8" />
+                        <text x="190" y="340" font-size="11" fill="#D32F2F" text-anchor="middle"
+                            font-weight="bold">⚠️ ALERTAS</text>
+                        <text x="190" y="357" font-size="9" fill="#555" text-anchor="middle">Email si KPI &lt; umbral
+                        </text>
+
+                        <!-- Corrección -->
+                        <rect x="520" y="320" width="180" height="50" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"
+                            rx="8" />
+                        <text x="610" y="340" font-size="11" fill="#4CAF50" text-anchor="middle"
+                            font-weight="bold">✓ CORRECCIÓN</text>
+                        <text x="610" y="357" font-size="9" fill="#555" text-anchor="middle">Workflow Oozie &lt; 24h
+                        </text>
+
+                        <!-- Flechas -->
+                        <path d="M 200 100 L 245 100" stroke="#333" stroke-width="2" marker-end="url(#arrowblack3)" />
+                        <path d="M 400 100 L 445 100" stroke="#333" stroke-width="2" marker-end="url(#arrowblack3)" />
+                        <path d="M 600 100 L 645 100" stroke="#333" stroke-width="2" marker-end="url(#arrowblack3)" />
+                        <path d="M 715 140 L 500 195" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue5)" />
+                        <path d="M 250 250 L 200 315" stroke="#D32F2F" stroke-width="2" stroke-dasharray="5,5"
+                            marker-end="url(#arrowred)" />
+                        <path d="M 550 250 L 600 315" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrowgreen2)" />
+
+                        <defs>
+                            <marker id="arrowblack3" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                            </marker>
+                            <marker id="arrowblue5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#D32F2F" />
+                            </marker>
+                            <marker id="arrowgreen2" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3 class="color-primary mt-2">Resultados Obtenidos (6 meses después)</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Métrica</th>
+                                <th>Antes</th>
+                                <th>Después</th>
+                                <th>Mejora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Exactitud</strong></td>
+                                <td class="warning-cell">92%</td>
+                                <td class="success-cell">98.5%</td>
+                                <td>+6.5%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Completitud</strong></td>
+                                <td class="error-cell">82%</td>
+                                <td class="success-cell">96.2%</td>
+                                <td>+14.2%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consistencia</strong></td>
+                                <td class="warning-cell">97%</td>
+                                <td class="success-cell">99.7%</td>
+                                <td>+2.7%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duplicación</strong></td>
+                                <td class="error-cell">2.5%</td>
+                                <td class="success-cell">0.3%</td>
+                                <td>-2.2%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia Actualización</strong></td>
+                                <td class="warning-cell">12 horas</td>
+                                <td class="success-cell">45 min</td>
+                                <td>-93%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-secondary mt-2">Impacto en Modelos Predictivos</h3>
+                <div class="comparison-grid">
+                    <div class="highlight-box primary">
+                        <h4 class="color-primary text-center">Predicción de Abandono</h4>
+                        <ul>
+                            <li><strong>Antes:</strong> Precisión 78% (datos incompletos)</li>
+                            <li><strong>Después:</strong> Precisión 91% (+13%)</li>
+                            <li><strong>Resultado:</strong> Intervenciones tempranas salvaron 340 matrículas (€1.2M en
+                                ingresos)</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <h4 class="color-secondary text-center">Asignación de Becas</h4>
+                        <ul>
+                            <li><strong>Antes:</strong> 85 becas mal asignadas/año (€250K)</li>
+                            <li><strong>Después:</strong> 8 errores/año (-91%)</li>
+                            <li><strong>Resultado:</strong> Ahorro de €230K anuales + mejora equidad</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <p class="title">✅ Conclusión del Caso</p>
+                    <p class="content">La implementación del pipeline de calidad de datos permitió a la UPM
+                        <strong>mejorar la confianza en sus sistemas analíticos en un 35%</strong> (encuesta interna),
+                        reducir el tiempo de detección y corrección de errores de <strong>2 semanas a menos de 24
+                            horas</strong>, y mejorar la precisión de modelos predictivos de retención y rendimiento
+                        estudiantil en un <strong>promedio del 25%</strong>. El ROI del proyecto fue de
+                        <strong>450%</strong> en el primer año (costes de implementación vs ahorros + ingresos
+                        recuperados).
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: MAPA MENTAL -->
+            <section class="section" id="mapa-mental">
+                <h2 class="section-title">🗺️ Mapa Mental: Calidad de Datos en Big Data</h2>
+
+                <div class="mindmap-container">
+                    <div class="mermaid">
+mindmap
+  root((Calidad de Datos))
+    Dimensiones[7 Dimensiones]
+      Exactitud[1. Exactitud]
+        ExactDef(Correspondencia con realidad)
+        ExactMetric(% registros válidos)
+      Completitud[2. Completitud]
+        CompDef(Ausencia de valores nulos)
+        CompMetric(% campos completos)
+      Consistencia[3. Consistencia]
+        ConsDef(Sin contradicciones)
+        ConsType1(Sintáctica: Formatos)
+        ConsType2(Semántica: Valores)
+      Validez[4. Validez]
+        ValDef(Conformidad con reglas)
+        ValMetric(% datos válidos)
+      Unicidad[5. Unicidad]
+        UniDef(Ausencia de duplicados)
+        UniMetric(% duplicación)
+      Trazabilidad[6. Trazabilidad]
+        TrazDef(Linaje de datos)
+        TrazTool(Apache Atlas)
+      Actualidad[7. Actualidad]
+        ActDef(Datos actualizados)
+        ActMetric(Latencia promedio)
+    Herramientas[Herramientas]
+      Validacion[Validación]
+        GreatExpectations
+        DeeQu
+      Limpieza[Limpieza]
+        PySparkETL(PySpark ETL)
+        OpenRefine
+      Monitoreo[Monitoreo]
+        PowerBI
+        Tableau
+      Linaje[Linaje]
+        ApacheAtlas(Apache Atlas)
+        Amundsen
+    KPIs[KPIs]
+      Umbrales[Umbrales]
+        Objetivo(Objetivo: >95%)
+        Critico(Crítico: <85%)
+      Dashboard[Dashboard]
+        SemaforoKPI(Semáforo KPIs)
+        Tendencias(Tendencias 30 días)
+        Alertas(Alertas automáticas)
+    Impacto[Impacto]
+      Positivo[Con Alta Calidad]
+        MejorModelos(Modelos +25% precisión)
+        MejorDecisiones(Decisiones correctas)
+        Confianza(Confianza usuarios)
+      Negativo[Con Baja Calidad]
+        AnalisisError(Análisis erróneos)
+        PerdidasFinancieras(Pérdidas financieras)
+        Incumplimiento(Incumplimiento normativo)
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Apache Sqoop y Oozie: Integración de datos RDBMS-Hadoop y orquestación de workflows complejos en el ecosistema Big Data">
+    <meta name="author" content="iLERNA">
+    <title>Sqoop y Oozie | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicaciones Big Data</a> ›
+                    <span>Sqoop y Oozie</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Sqoop y Oozie</h1>
+                <p class="subtitle">Integración de Datos y Orquestación de Workflows en Hadoop</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">Completando el Ecosistema Hadoop</h2>
+                <p>Después de conocer <strong>Pig</strong>, <strong>Hive</strong> y <strong>Flume</strong>, nos faltan
+                    dos piezas fundamentales del ecosistema Hadoop: <strong>Apache Sqoop</strong> para la
+                    <strong>integración bidireccional con bases de datos relacionales</strong>, y <strong>Apache
+                        Oozie</strong> para la <strong>orquestación y coordinación de workflows complejos</strong>.
+                </p>
+                <p>Estas herramientas permiten crear <strong>pipelines de datos empresariales completos</strong>, desde
+                    la extracción de datos de sistemas legacy hasta la automatización de procesos batch complejos que
+                    involucran múltiples tecnologías.</p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">🎯 Caso Real - Walmart</p>
+                    <p class="content">Walmart usa Sqoop para transferir datos de más de 20,000 tiendas (5 TB diarios)
+                        desde Oracle/MySQL a Hadoop, y Oozie orquesta 100,000+ workflows diarios que procesan
+                        transacciones, inventario y análisis predictivo. Su infraestructura de Big Data maneja 2.5
+                        petabytes de datos cada hora.</p>
+                </div>
+
+                <h3>Las Dos Herramientas Complementarias</h3>
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4>🔄 Apache Sqoop</h4>
+                        <p>SQL-to-Hadoop: Importa/exporta masivamente datos entre RDBMS (MySQL, Oracle, PostgreSQL) y
+                            Hadoop HDFS/Hive.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>⚙️ Apache Oozie</h4>
+                        <p>Workflow scheduler: Coordina y automatiza trabajos MapReduce, Pig, Hive, Sqoop y Spark en
+                            secuencias complejas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: APACHE SQOOP -->
+            <section class="section">
+                <h2 class="section-title">🔄 Apache Sqoop: Puente entre RDBMS y Hadoop</h2>
+
+                <h3 class="color-secondary">1. ¿Qué es Apache Sqoop?</h3>
+                <p><strong>Apache Sqoop</strong> (SQL-to-Hadoop) es una herramienta de línea de comandos diseñada para
+                    transferir eficientemente <strong>grandes volúmenes de datos</strong> entre bases de datos
+                    relacionales tradicionales y el ecosistema Hadoop. El nombre proviene de la combinación de
+                    <strong>SQL + Hadoop</strong>.
+                </p>
+
+                <div class="grid-features">
+                    <div class="example-box example-purple">
+                        <h4>⬇️ Import</h4>
+                        <p>RDBMS → HDFS/Hive: Extrae tablas completas o consultas SQL hacia Hadoop</p>
+                    </div>
+                    <div class="example-box example-purple">
+                        <h4>⬆️ Export</h4>
+                        <p>HDFS/Hive → RDBMS: Carga resultados procesados de Hadoop a bases de datos</p>
+                    </div>
+                    <div class="example-box example-purple">
+                        <h4>⚡ Paralelización</h4>
+                        <p>Usa MapReduce para dividir transferencias en múltiples mappers paralelos</p>
+                    </div>
+                </div>
+
+                <h4 class="color-secondary mt-2">Arquitectura de Apache Sqoop</h4>
+                <div class="diagram-svg">
+                    <svg width="800" height="400" viewBox="0 0 800 400"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                        <!-- Bases de datos (izquierda) -->
+                        <rect x="20" y="50" width="180" height="60" fill="#8A7AAF" rx="8" />
+                        <text x="110" y="85" font-size="14" fill="white" text-anchor="middle"
+                            font-weight="bold">Bases de Datos RDBMS</text>
+
+                        <rect x="30" y="130" width="80" height="40" fill="#E8F7FA" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="70" y="155" font-size="12" fill="#333" text-anchor="middle">MySQL</text>
+
+                        <rect x="30" y="180" width="80" height="40" fill="#E8F7FA" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="70" y="205" font-size="12" fill="#333" text-anchor="middle">PostgreSQL</text>
+
+                        <rect x="120" y="130" width="80" height="40" fill="#E8F7FA" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="160" y="155" font-size="12" fill="#333" text-anchor="middle">Oracle</text>
+
+                        <rect x="120" y="180" width="80" height="40" fill="#E8F7FA" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="160" y="205" font-size="12" fill="#333" text-anchor="middle">SQL Server</text>
+
+                        <!-- Sqoop (centro) -->
+                        <rect x="280" y="120" width="240" height="160" fill="#49B9CE" rx="10" />
+                        <text x="400" y="145" font-size="16" fill="white" text-anchor="middle"
+                            font-weight="bold">Apache Sqoop</text>
+
+                        <rect x="295" y="160" width="100" height="35" fill="white" rx="5" />
+                        <text x="345" y="182" font-size="11" fill="#333" text-anchor="middle">Import Job</text>
+
+                        <rect x="295" y="205" width="100" height="35" fill="white" rx="5" />
+                        <text x="345" y="227" font-size="11" fill="#333" text-anchor="middle">Export Job</text>
+
+                        <rect x="410" y="160" width="100" height="80" fill="white" rx="5" />
+                        <text x="460" y="182" font-size="11" fill="#333" text-anchor="middle">MapReduce</text>
+                        <text x="460" y="200" font-size="10" fill="#777" text-anchor="middle">Mapper 1</text>
+                        <text x="460" y="215" font-size="10" fill="#777" text-anchor="middle">Mapper 2</text>
+                        <text x="460" y="230" font-size="10" fill="#777" text-anchor="middle">Mapper N</text>
+
+                        <!-- Hadoop (derecha) -->
+                        <rect x="600" y="50" width="180" height="60" fill="#FFA726" rx="8" />
+                        <text x="690" y="85" font-size="14" fill="white" text-anchor="middle"
+                            font-weight="bold">Ecosistema Hadoop</text>
+
+                        <rect x="610" y="130" width="80" height="40" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="155" font-size="12" fill="#333" text-anchor="middle">HDFS</text>
+
+                        <rect x="610" y="180" width="80" height="40" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="205" font-size="12" fill="#333" text-anchor="middle">Hive Tables</text>
+
+                        <rect x="700" y="130" width="80" height="40" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="740" y="155" font-size="12" fill="#333" text-anchor="middle">HBase</text>
+
+                        <!-- Flechas Import -->
+                        <path d="M 210 150 L 280 180" stroke="#49B9CE" stroke-width="3" fill="none"
+                            marker-end="url(#arrowblue)" />
+                        <text x="240" y="160" font-size="10" fill="#49B9CE" font-weight="bold">Import</text>
+
+                        <!-- Flechas Export -->
+                        <path d="M 280 220 L 210 190" stroke="#8A7AAF" stroke-width="3" fill="none"
+                            stroke-dasharray="5,5" marker-end="url(#arrowpurple)" />
+                        <text x="240" y="210" font-size="10" fill="#8A7AAF" font-weight="bold">Export</text>
+
+                        <!-- Flechas a Hadoop -->
+                        <path d="M 520 180 L 600 150" stroke="#FFA726" stroke-width="3" fill="none"
+                            marker-end="url(#arroworange)" />
+                        <path d="M 520 200 L 600 200" stroke="#FFA726" stroke-width="3" fill="none"
+                            marker-end="url(#arroworange)" />
+
+                        <!-- Leyenda -->
+                        <text x="400" y="320" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">
+                            Transferencias Paralelas con MapReduce</text>
+                        <text x="400" y="340" font-size="11" fill="#555" text-anchor="middle">4-12 mappers
+                            simultáneos típicos</text>
+
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                            <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#FFA726" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3 class="color-secondary mt-2">2. Ejemplos Prácticos de Sqoop</h3>
+
+                <h4 class="color-secondary">Ejemplo A: Import Tabla Completa MySQL → HDFS</h4>
+                <pre><code class="language-bash">sqoop import \
+  --connect jdbc:mysql://mysql-server:3306/ecommerce \
+  --username admin \
+  --password secret123 \
+  --table customers \
+  --target-dir /data/customers \
+  --num-mappers 8 \
+  --split-by customer_id</code></pre>
+
+                <div class="warning-box">
+                    <h4 class="color-warning">⚠️ Parámetros Clave</h4>
+                    <ul>
+                        <li><code>--split-by</code>: Columna numérica para dividir trabajo entre mappers</li>
+                        <li><code>--num-mappers</code>: Número de procesos paralelos (4-12 típico)</li>
+                        <li><code>--password-file</code>: Mejor práctica que <code>--password</code> en texto plano</li>
+                    </ul>
+                </div>
+
+                <h4 class="color-secondary mt-2">Ejemplo B: Import con Query SQL Personalizada → Hive</h4>
+                <pre><code class="language-bash">sqoop import \
+  --connect jdbc:postgresql://pg-server:5432/sales \
+  --username datauser \
+  --password-file /user/secure/pg.password \
+  --query "SELECT customer_id, name, email, country, total_purchases
+           FROM customers
+           WHERE status='active' AND created_at >= '2024-01-01'
+           AND \$CONDITIONS" \
+  --target-dir /tmp/sqoop-import \
+  --hive-import \
+  --hive-table sales.active_customers \
+  --create-hive-table \
+  --hive-partition-key import_date \
+  --hive-partition-value '2025-12-15' \
+  --num-mappers 6 \
+  --split-by customer_id</code></pre>
+
+                <div class="highlight-box primary">
+                    <p class="title">💡 Nota Importante</p>
+                    <p class="content">Cuando usas <code>--query</code>, debes incluir <code>AND $CONDITIONS</code> en
+                        el WHERE. Sqoop lo reemplaza automáticamente con condiciones de particionado para cada mapper.
+                    </p>
+                </div>
+
+                <h4 class="color-secondary mt-2">Ejemplo C: Export Resultados HDFS → MySQL</h4>
+                <pre><code class="language-bash">sqoop export \
+  --connect jdbc:mysql://mysql-server:3306/analytics \
+  --username admin \
+  --password secret123 \
+  --table customer_metrics \
+  --export-dir /output/customer_analytics \
+  --input-fields-terminated-by ',' \
+  --num-mappers 4 \
+  --update-mode allowinsert \
+  --update-key customer_id</code></pre>
+
+                <div class="example-box example-blue">
+                    <h4>Resultado</h4>
+                    <p>Los datos procesados en Hadoop se cargan en la tabla MySQL <code>customer_metrics</code>. Si el
+                        <code>customer_id</code> ya existe, se actualiza (UPDATE); si no, se inserta (INSERT).
+                    </p>
+                </div>
+
+                <h4 class="color-secondary mt-2">Ejemplo D: Import Incremental (Solo Nuevos Registros)</h4>
+                <pre><code class="language-bash"># Primera importación
+sqoop import \
+  --connect jdbc:mysql://mysql-server:3306/ecommerce \
+  --username admin \
+  --password secret123 \
+  --table orders \
+  --target-dir /data/orders \
+  --incremental append \
+  --check-column order_id \
+  --last-value 0
+
+# Importaciones subsecuentes (solo pedidos > 150000)
+sqoop import \
+  --connect jdbc:mysql://mysql-server:3306/ecommerce \
+  --username admin \
+  --password secret123 \
+  --table orders \
+  --target-dir /data/orders \
+  --incremental append \
+  --check-column order_id \
+  --last-value 150000</code></pre>
+
+                <h3 class="color-secondary mt-2">3. Casos de Uso Empresariales</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Sector</th>
+                                <th>Uso de Sqoop</th>
+                                <th>Volumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Walmart</strong></td>
+                                <td>Retail</td>
+                                <td>Oracle/MySQL → Hadoop (transacciones)</td>
+                                <td>5 TB/día desde 20,000 tiendas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>BBVA</strong></td>
+                                <td>Finanzas</td>
+                                <td>DB2 mainframe → Hadoop (detección fraude)</td>
+                                <td>100M+ transacciones/día</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telefónica</strong></td>
+                                <td>Telecom</td>
+                                <td>Hadoop → PostgreSQL (análisis churn)</td>
+                                <td>Resultados a CRM y marketing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: APACHE OOZIE -->
+            <section class="section">
+                <h2 class="section-title">⚙️ Apache Oozie: Orquestador de Workflows</h2>
+
+                <h3 class="color-primary">1. ¿Qué es Apache Oozie?</h3>
+                <p><strong>Apache Oozie</strong> es un sistema de <strong>orquestación de workflows</strong> y
+                    <strong>scheduler</strong> diseñado para gestionar trabajos complejos en el ecosistema Hadoop.
+                    Permite definir, ejecutar y monitorear <strong>pipelines de datos empresariales</strong> que
+                    involucran múltiples tecnologías.
+                </p>
+
+                <h4 class="color-primary">Componentes de Oozie</h4>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h5>📊 Workflows</h5>
+                        <p><strong>DAG</strong> (Directed Acyclic Graph) de acciones: Sqoop → Pig → Hive → Export.
+                            Ejecución secuencial o paralela.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h5>⏰ Coordinadores</h5>
+                        <p>Programación <strong>cron-like</strong>: Ejecuta workflows diariamente, semanalmente o según
+                            disponibilidad de datos.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h5>📦 Bundles</h5>
+                        <p><strong>Pipelines complejos</strong>: Agrupan múltiples coordinadores relacionados. Gestión
+                            unificada de ciclos de vida.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">🎯 Caso Real - LinkedIn</p>
+                    <p class="content">LinkedIn ejecuta 50,000+ workflows Oozie diarios que procesan 500 TB/día. Sus
+                        pipelines coordinan Kafka/Flume → Pig → Hive/Spark → Reportes con una tasa de éxito del 99.95%
+                        sin intervención manual.</p>
+                </div>
+
+                <h4 class="color-primary mt-2">Arquitectura de Apache Oozie</h4>
+                <div class="diagram-svg">
+                    <svg width="800" height="450" viewBox="0 0 800 450"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                        <!-- Cliente -->
+                        <rect x="50" y="50" width="150" height="80" fill="#49B9CE" rx="8" />
+                        <text x="125" y="80" font-size="14" fill="white" text-anchor="middle"
+                            font-weight="bold">Cliente</text>
+                        <text x="125" y="100" font-size="11" fill="white" text-anchor="middle">REST API</text>
+                        <text x="125" y="115" font-size="11" fill="white" text-anchor="middle">CLI</text>
+
+                        <!-- Oozie Server -->
+                        <rect x="300" y="20" width="400" height="180" fill="#8A7AAF" rx="10" />
+                        <text x="500" y="45" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Oozie
+                            Server</text>
+
+                        <rect x="315" y="60" width="110" height="50" fill="white" rx="5" />
+                        <text x="370" y="90" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">Workflow
+                            Engine</text>
+
+                        <rect x="435" y="60" width="110" height="50" fill="white" rx="5" />
+                        <text x="490" y="85" font-size="12" fill="#333" text-anchor="middle"
+                            font-weight="bold">Coordinator</text>
+                        <text x="490" y="100" font-size="12" fill="#333" text-anchor="middle"
+                            font-weight="bold">Engine</text>
+
+                        <rect x="555" y="60" width="110" height="50" fill="white" rx="5" />
+                        <text x="610" y="90" font-size="12" fill="#333" text-anchor="middle"
+                            font-weight="bold">Bundle Engine</text>
+
+                        <rect x="315" y="130" width="230" height="55" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="430" y="150" font-size="11" fill="#333" text-anchor="middle">Oozie DB</text>
+                        <text x="430" y="165" font-size="10" fill="#555" text-anchor="middle">(MySQL/PostgreSQL)</text>
+                        <text x="430" y="178" font-size="9" fill="#777" text-anchor="middle">Estado de workflows,
+                            coordinadores</text>
+
+                        <rect x="560" y="130" width="105" height="55" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="612" y="150" font-size="11" fill="#333" text-anchor="middle">HDFS</text>
+                        <text x="612" y="165" font-size="9" fill="#555" text-anchor="middle">workflow.xml</text>
+                        <text x="612" y="178" font-size="9" fill="#555" text-anchor="middle">coordinator.xml</text>
+
+                        <!-- Acciones -->
+                        <rect x="100" y="260" width="600" height="160" fill="#f9f9f9" stroke="#e5e5e5" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="285" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">
+                            Acciones del Workflow (DAG)</text>
+
+                        <rect x="120" y="300" width="90" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="165" y="330" font-size="11" fill="#333" text-anchor="middle">Sqoop</text>
+
+                        <rect x="225" y="300" width="90" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="270" y="330" font-size="11" fill="#333" text-anchor="middle">Pig</text>
+
+                        <rect x="330" y="300" width="90" height="50" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="375" y="330" font-size="11" fill="#333" text-anchor="middle">Hive</text>
+
+                        <rect x="435" y="300" width="90" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="480" y="330" font-size="11" fill="#333" text-anchor="middle">Spark</text>
+
+                        <rect x="540" y="300" width="80" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="580" y="330" font-size="11" fill="#333" text-anchor="middle">Email</text>
+
+                        <rect x="120" y="360" width="80" height="40" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="160" y="385" font-size="10" fill="#333" text-anchor="middle">SSH</text>
+
+                        <rect x="210" y="360" width="80" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="250" y="385" font-size="10" fill="#333" text-anchor="middle">Java</text>
+
+                        <rect x="300" y="360" width="80" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="340" y="385" font-size="10" fill="#333" text-anchor="middle">Shell</text>
+
+                        <!-- Flechas -->
+                        <path d="M 200 90 L 280 90" stroke="#49B9CE" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblue2)" />
+                        <path d="M 500 200 L 500 250" stroke="#8A7AAF" stroke-width="2" fill="none"
+                            marker-end="url(#arrowpurple2)" />
+
+                        <!-- Flechas secuenciales entre acciones -->
+                        <path d="M 210 325 L 220 325" stroke="#333" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblack)" />
+                        <path d="M 315 325 L 325 325" stroke="#333" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblack)" />
+                        <path d="M 420 325 L 430 325" stroke="#333" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblack)" />
+                        <path d="M 525 325 L 535 325" stroke="#333" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblack)" />
+
+                        <defs>
+                            <marker id="arrowblue2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                            <marker id="arrowblack" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#333" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3 class="color-primary mt-2">2. Ejemplo Workflow ETL Completo</h3>
+
+                <h4 class="color-primary">workflow.xml - Pipeline ETL</h4>
+                <pre><code class="language-xml">&lt;workflow-app name="etl-pipeline" xmlns="uri:oozie:workflow:1.0"&gt;
+    &lt;start to="sqoop-import"/&gt;
+
+    &lt;!-- Acción 1: Importar datos con Sqoop --&gt;
+    &lt;action name="sqoop-import"&gt;
+        &lt;sqoop xmlns="uri:oozie:sqoop-action:1.0"&gt;
+            &lt;job-tracker&gt;${jobTracker}&lt;/job-tracker&gt;
+            &lt;name-node&gt;${nameNode}&lt;/name-node&gt;
+            &lt;command&gt;
+                import
+                --connect ${dbConnection}
+                --username ${dbUser}
+                --password ${dbPassword}
+                --table customers
+                --target-dir /data/raw/customers/${currentDate}
+                --num-mappers 8
+            &lt;/command&gt;
+        &lt;/sqoop&gt;
+        &lt;ok to="pig-transform"/&gt;
+        &lt;error to="fail-notification"/&gt;
+    &lt;/action&gt;
+
+    &lt;!-- Acción 2: Transformar con Pig --&gt;
+    &lt;action name="pig-transform"&gt;
+        &lt;pig&gt;
+            &lt;job-tracker&gt;${jobTracker}&lt;/job-tracker&gt;
+            &lt;name-node&gt;${nameNode}&lt;/name-node&gt;
+            &lt;script&gt;transform-customers.pig&lt;/script&gt;
+            &lt;param&gt;INPUT=/data/raw/customers/${currentDate}&lt;/param&gt;
+            &lt;param&gt;OUTPUT=/data/processed/customers/${currentDate}&lt;/param&gt;
+        &lt;/pig&gt;
+        &lt;ok to="hive-analysis"/&gt;
+        &lt;error to="fail-notification"/&gt;
+    &lt;/action&gt;
+
+    &lt;!-- Acción 3: Análisis con Hive --&gt;
+    &lt;action name="hive-analysis"&gt;
+        &lt;hive xmlns="uri:oozie:hive-action:1.0"&gt;
+            &lt;job-tracker&gt;${jobTracker}&lt;/job-tracker&gt;
+            &lt;name-node&gt;${nameNode}&lt;/name-node&gt;
+            &lt;script&gt;customer-metrics.hql&lt;/script&gt;
+            &lt;param&gt;date=${currentDate}&lt;/param&gt;
+        &lt;/hive&gt;
+        &lt;ok to="success-notification"/&gt;
+        &lt;error to="fail-notification"/&gt;
+    &lt;/action&gt;
+
+    &lt;!-- Notificaciones --&gt;
+    &lt;action name="success-notification"&gt;
+        &lt;email xmlns="uri:oozie:email-action:0.2"&gt;
+            &lt;to&gt;data-team@company.com&lt;/to&gt;
+            &lt;subject&gt;ETL Pipeline Completado - ${currentDate}&lt;/subject&gt;
+            &lt;body&gt;El pipeline ETL se ejecutó exitosamente.&lt;/body&gt;
+        &lt;/email&gt;
+        &lt;ok to="end"/&gt;
+        &lt;error to="end"/&gt;
+    &lt;/action&gt;
+
+    &lt;action name="fail-notification"&gt;
+        &lt;email xmlns="uri:oozie:email-action:0.2"&gt;
+            &lt;to&gt;data-team@company.com&lt;/to&gt;
+            &lt;subject&gt;[ERROR] ETL Pipeline Falló - ${currentDate}&lt;/subject&gt;
+            &lt;body&gt;El pipeline ETL falló. Revisar logs urgentemente.&lt;/body&gt;
+        &lt;/email&gt;
+        &lt;ok to="kill"/&gt;
+        &lt;error to="kill"/&gt;
+    &lt;/action&gt;
+
+    &lt;kill name="kill"&gt;
+        &lt;message&gt;Workflow failed, error message[${wf:errorMessage(wf:lastErrorNode())}]&lt;/message&gt;
+    &lt;/kill&gt;
+
+    &lt;end name="end"/&gt;
+&lt;/workflow-app&gt;</code></pre>
+
+                <h4 class="color-primary mt-2">job.properties - Configuración de Variables</h4>
+                <pre><code class="language-bash"># HDFS
+nameNode=hdfs://namenode:8020
+jobTracker=yarn-resourcemanager:8032
+queueName=default
+
+# Base de datos
+dbConnection=jdbc:mysql://mysql-server:3306/ecommerce
+dbUser=datauser
+dbPassword=secret123
+
+# Rutas de aplicación
+oozie.wf.application.path=${nameNode}/user/${user.name}/workflows/etl-pipeline
+
+# Variables de fecha
+currentDate=2025-12-15
+
+# Notificaciones
+oozie.email.from=oozie@company.com
+oozie.email.smtp.host=smtp.company.com
+
+# Ejecutar workflow:
+# oozie job -config job.properties -run</code></pre>
+
+                <h4 class="color-primary mt-2">coordinator.xml - Ejecución Diaria Automática</h4>
+                <pre><code class="language-xml">&lt;coordinator-app name="etl-coordinator"
+                 frequency="${coord:days(1)}"
+                 start="2025-01-01T00:00Z"
+                 end="2025-12-31T23:59Z"
+                 timezone="Europe/Madrid"
+                 xmlns="uri:oozie:coordinator:0.5"&gt;
+
+    &lt;!-- Dataset de entrada --&gt;
+    &lt;datasets&gt;
+        &lt;dataset name="input-data"
+                 frequency="${coord:days(1)}"
+                 initial-instance="2025-01-01T00:00Z"
+                 timezone="Europe/Madrid"&gt;
+            &lt;uri-template&gt;${nameNode}/data/raw/customers/${YEAR}${MONTH}${DAY}&lt;/uri-template&gt;
+        &lt;/dataset&gt;
+    &lt;/datasets&gt;
+
+    &lt;!-- Esperar a que los datos estén disponibles --&gt;
+    &lt;input-events&gt;
+        &lt;data-in name="input" dataset="input-data"&gt;
+            &lt;instance&gt;${coord:current(0)}&lt;/instance&gt;
+        &lt;/data-in&gt;
+    &lt;/input-events&gt;
+
+    &lt;!-- Ejecutar workflow --&gt;
+    &lt;action&gt;
+        &lt;workflow&gt;
+            &lt;app-path&gt;${nameNode}/user/${user.name}/workflows/etl-pipeline&lt;/app-path&gt;
+            &lt;configuration&gt;
+                &lt;property&gt;
+                    &lt;name&gt;currentDate&lt;/name&gt;
+                    &lt;value&gt;${coord:formatTime(coord:nominalTime(), 'yyyy-MM-dd')}&lt;/value&gt;
+                &lt;/property&gt;
+            &lt;/configuration&gt;
+        &lt;/workflow&gt;
+    &lt;/action&gt;
+&lt;/coordinator-app&gt;</code></pre>
+
+                <h3 class="color-primary mt-2">3. Ventajas de Apache Oozie</h3>
+                <div class="grid-features">
+                    <div class="advantage-box">
+                        <h4>✓ Automatización 24/7</h4>
+                        <p>Programación cron-like con coordinación de datasets. Sin intervención manual.</p>
+                    </div>
+                    <div class="advantage-box">
+                        <h4>✓ Tolerancia a Fallos</h4>
+                        <p>Reintentos automáticos, notificaciones email/SMS, logs detallados.</p>
+                    </div>
+                    <div class="advantage-box">
+                        <h4>✓ Integración Total</h4>
+                        <p>Sqoop, Pig, Hive, Spark, MapReduce, Shell, Java, SSH en un solo DAG.</p>
+                    </div>
+                    <div class="advantage-box">
+                        <h4>✓ Monitoreo Web</h4>
+                        <p>Consola web + REST API. Visualización de estado, logs y métricas en tiempo real.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: PIPELINE COMPLETO -->
+            <section class="section">
+                <h2 class="section-title">🏗️ Pipeline Empresarial Completo E-commerce</h2>
+
+                <p>A continuación, un ejemplo de pipeline completo que integra todas las herramientas del ecosistema
+                    Hadoop: <strong>Sqoop, Flume, Pig, Hive y Oozie</strong>.</p>
+
+                <div class="diagram-svg">
+                    <svg width="800" height="500" viewBox="0 0 800 500"
+                        style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                        <!-- Título -->
+                        <text x="400" y="25" font-size="16" fill="#333" text-anchor="middle" font-weight="bold">Pipeline
+                            E-commerce: Flujo Completo de Datos</text>
+
+                        <!-- Capa 1: Fuentes -->
+                        <text x="50" y="60" font-size="12" fill="#333" font-weight="bold">1. FUENTES</text>
+                        <rect x="50" y="70" width="100" height="40" fill="#8A7AAF" rx="5" />
+                        <text x="100" y="95" font-size="10" fill="white" text-anchor="middle">MySQL Orders</text>
+
+                        <rect x="160" y="70" width="100" height="40" fill="#8A7AAF" rx="5" />
+                        <text x="210" y="85" font-size="10" fill="white" text-anchor="middle">PostgreSQL</text>
+                        <text x="210" y="100" font-size="10" fill="white" text-anchor="middle">Users</text>
+
+                        <rect x="270" y="70" width="90" height="40" fill="#49B9CE" rx="5" />
+                        <text x="315" y="95" font-size="10" fill="white" text-anchor="middle">Web Logs</text>
+
+                        <rect x="370" y="70" width="90" height="40" fill="#49B9CE" rx="5" />
+                        <text x="415" y="95" font-size="10" fill="white" text-anchor="middle">App Events</text>
+
+                        <rect x="470" y="70" width="90" height="40" fill="#FFA726" rx="5" />
+                        <text x="515" y="95" font-size="10" fill="white" text-anchor="middle">API Streams</text>
+
+                        <!-- Capa 2: Ingesta -->
+                        <text x="50" y="160" font-size="12" fill="#333" font-weight="bold">2. INGESTA</text>
+                        <rect x="50" y="170" width="160" height="50" fill="#E8F7FA" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="130" y="195" font-size="11" fill="#333" text-anchor="middle" font-weight="bold">Sqoop
+                            Import (02:00)</text>
+                        <text x="130" y="210" font-size="9" fill="#555" text-anchor="middle">RDBMS → HDFS</text>
+
+                        <rect x="220" y="170" width="160" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="300" y="195" font-size="11" fill="#333" text-anchor="middle" font-weight="bold">Flume
+                            Agents</text>
+                        <text x="300" y="210" font-size="9" fill="#555" text-anchor="middle">Real-time → HDFS</text>
+
+                        <rect x="390" y="170" width="160" height="50" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="470" y="195" font-size="11" fill="#333" text-anchor="middle" font-weight="bold">Kafka
+                        </text>
+                        <text x="470" y="210" font-size="9" fill="#555" text-anchor="middle">Streaming → HDFS</text>
+
+                        <!-- Capa 3: HDFS Raw -->
+                        <text x="50" y="270" font-size="12" fill="#333" font-weight="bold">3. HDFS RAW</text>
+                        <rect x="50" y="280" width="500" height="40" fill="#FFA726" rx="5" />
+                        <text x="300" y="305" font-size="12" fill="white" text-anchor="middle"
+                            font-weight="bold">/data/raw/</text>
+
+                        <!-- Capa 4: ETL -->
+                        <text x="50" y="360" font-size="12" fill="#333" font-weight="bold">4. ETL (03:00)</text>
+                        <rect x="50" y="370" width="500" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="300" y="390" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">🐷 Pig
+                            Scripts</text>
+                        <text x="300" y="408" font-size="10" fill="#555" text-anchor="middle">Limpieza, Join, Agregación
+                        </text>
+
+                        <!-- Capa 5: HDFS Processed -->
+                        <text x="600" y="270" font-size="12" fill="#333" font-weight="bold">5. PROCESSED</text>
+                        <rect x="600" y="280" width="150" height="40" fill="#4CAF50" rx="5" />
+                        <text x="675" y="305" font-size="11" fill="white" text-anchor="middle"
+                            font-weight="bold">/data/processed/</text>
+
+                        <!-- Capa 6: Análisis -->
+                        <text x="600" y="360" font-size="12" fill="#333" font-weight="bold">6. ANÁLISIS</text>
+                        <rect x="600" y="370" width="150" height="50" fill="#FFF3CD" stroke="#FFA726" stroke-width="2"
+                            rx="5" />
+                        <text x="675" y="390" font-size="11" fill="#333" text-anchor="middle" font-weight="bold">🐝 Hive
+                            (04:00)</text>
+                        <text x="675" y="408" font-size="9" fill="#555" text-anchor="middle">SQL Queries → KPIs</text>
+
+                        <!-- Capa 7: Export -->
+                        <text x="50" y="470" font-size="12" fill="#333" font-weight="bold">7. EXPORT (05:00)</text>
+                        <rect x="50" y="480" width="200" height="10" fill="#8A7AAF" rx="3" />
+                        <text x="150" y="472" font-size="10" fill="#333" text-anchor="middle">Sqoop Export → MySQL BI
+                        </text>
+
+                        <rect x="260" y="480" width="200" height="10" fill="#49B9CE" rx="3" />
+                        <text x="360" y="472" font-size="10" fill="#333" text-anchor="middle">Dashboards: Tableau/Power
+                            BI</text>
+
+                        <!-- Flechas -->
+                        <path d="M 130 110 L 130 165" stroke="#8A7AAF" stroke-width="2" fill="none"
+                            marker-end="url(#arrowpurple3)" />
+                        <path d="M 300 110 L 300 165" stroke="#49B9CE" stroke-width="2" fill="none"
+                            marker-end="url(#arrowblue3)" />
+                        <path d="M 470 110 L 470 165" stroke="#FFA726" stroke-width="2" fill="none"
+                            marker-end="url(#arroworange3)" />
+
+                        <path d="M 300 220 L 300 275" stroke="#FFA726" stroke-width="2" fill="none"
+                            marker-end="url(#arroworange3)" />
+                        <path d="M 300 320 L 300 365" stroke="#8A7AAF" stroke-width="2" fill="none"
+                            marker-end="url(#arrowpurple3)" />
+
+                        <path d="M 550 395 L 595 300" stroke="#4CAF50" stroke-width="2" fill="none"
+                            marker-end="url(#arrowgreen)" />
+                        <path d="M 675 320 L 675 365" stroke="#FFA726" stroke-width="2" fill="none"
+                            marker-end="url(#arroworange3)" />
+
+                        <!-- Oozie Orchestrator -->
+                        <rect x="620" y="50" width="150" height="60" fill="#49B9CE" rx="8" />
+                        <text x="695" y="75" font-size="13" fill="white" text-anchor="middle" font-weight="bold">⚙️
+                            Oozie</text>
+                        <text x="695" y="93" font-size="10" fill="white" text-anchor="middle">Orquesta todo el
+                            pipeline</text>
+
+                        <defs>
+                            <marker id="arrowpurple3" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                            <marker id="arrowblue3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arroworange3" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#FFA726" />
+                            </marker>
+                            <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3 class="color-primary mt-2">Flujo Detallado por Horario</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Fase</th>
+                                <th>Herramientas</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>02:00</strong></td>
+                                <td>Ingesta Diaria</td>
+                                <td>Sqoop + Flume</td>
+                                <td>Importar tablas RDBMS y capturar logs web/app</td>
+                            </tr>
+                            <tr>
+                                <td><strong>03:00</strong></td>
+                                <td>ETL</td>
+                                <td>Pig</td>
+                                <td>Limpieza, joins (orders+users+logs), cálculo métricas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>04:00</strong></td>
+                                <td>Análisis</td>
+                                <td>Hive</td>
+                                <td>Consultas SQL para KPIs: ventas, conversión, churn</td>
+                            </tr>
+                            <tr>
+                                <td><strong>05:00</strong></td>
+                                <td>Export</td>
+                                <td>Sqoop</td>
+                                <td>Cargar resultados a MySQL BI para dashboards</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: RESUMEN -->
+            <section class="section">
+                <h2 class="section-title">📊 Ecosistema Hadoop Completo: Resumen</h2>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Herramienta</th>
+                                <th>Propósito</th>
+                                <th>Tipo de Datos</th>
+                                <th>Cuándo Usar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🔄 Sqoop</strong></td>
+                                <td>Integración RDBMS ↔️ Hadoop</td>
+                                <td>Tablas estructuradas</td>
+                                <td>Migrar/sincronizar datos legacy con Big Data</td>
+                            </tr>
+                            <tr>
+                                <td><strong>💧 Flume</strong></td>
+                                <td>Ingesta streaming logs/eventos</td>
+                                <td>Logs no estructurados</td>
+                                <td>Capturar datos en tiempo real de servidores</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🐷 Pig</strong></td>
+                                <td>ETL y transformaciones</td>
+                                <td>Cualquier formato</td>
+                                <td>Limpiar, transformar y preparar datos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🐝 Hive</strong></td>
+                                <td>Data warehouse y consultas SQL</td>
+                                <td>Tablas estructuradas</td>
+                                <td>Análisis ad-hoc y reportes con SQL</td>
+                            </tr>
+                            <tr>
+                                <td><strong>⚙️ Oozie</strong></td>
+                                <td>Orquestación de workflows</td>
+                                <td>Todas (coordina)</td>
+                                <td>Automatizar pipelines complejos 24/7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary mt-2">Resumen de Sqoop y Oozie</h3>
+                <div class="comparison-grid">
+                    <div class="highlight-box secondary">
+                        <h4 class="color-secondary text-center">🔄 Apache Sqoop</h4>
+                        <ul>
+                            <li><strong>Función:</strong> Puente bidireccional RDBMS ↔️ Hadoop</li>
+                            <li><strong>Import:</strong> Tablas/queries SQL → HDFS/Hive</li>
+                            <li><strong>Export:</strong> Resultados Hadoop → RDBMS</li>
+                            <li><strong>Paralelización:</strong> 4-12 mappers típicos</li>
+                            <li><strong>Incremental:</strong> Solo nuevos/modificados</li>
+                            <li><strong>BBDD:</strong> MySQL, PostgreSQL, Oracle, SQL Server</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box primary">
+                        <h4 class="color-primary text-center">⚙️ Apache Oozie</h4>
+                        <ul>
+                            <li><strong>Función:</strong> Orquestador de workflows complejos</li>
+                            <li><strong>Workflows:</strong> DAG de acciones secuenciales</li>
+                            <li><strong>Coordinadores:</strong> Programación cron-like</li>
+                            <li><strong>Acciones:</strong> Sqoop, Pig, Hive, Spark, Email, SSH</li>
+                            <li><strong>Tolerancia:</strong> Reintentos automáticos</li>
+                            <li><strong>Monitoreo:</strong> Consola web + REST API</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

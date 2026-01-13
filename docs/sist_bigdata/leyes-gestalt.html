@@ -1,0 +1,986 @@
+<!-- LECCIÓN ADAPTADA PARA BLACKBOARD LMS: LEYES DE LA GESTALT EN VISUALIZACIÓN DE DATOS -->
+<div style="font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%); min-height: 100vh; padding: 2rem; margin: 0;">
+    
+    <!-- Importar fuente Montserrat -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    
+    <!-- Importar Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+
+    <div style="max-width: 72rem; margin: 0 auto;">
+        <!-- HEADER -->
+        <header style="text-align: center; margin-bottom: 3rem;">
+            <div style="margin-bottom: 2rem;">
+                <svg width="113" height="23" viewBox="0 0 113 23" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 50px; width: auto;">
+                    <path d="M7.45569 0H11.5032V19.0851H21.1728V22.7469H7.45569V0Z" fill="#010202"/>
+                    <path d="M23.7545 0H38.8238V3.66183H27.802V9.25214H38.243V12.914H27.802V19.0851H39.4001V22.7469H23.7545V0Z" fill="#010202"/>
+                    <path d="M42.0952 0H49.9996C51.0932 0 52.1459 0.0998269 53.1623 0.304018C54.1787 0.50821 55.0863 0.857604 55.8758 1.34766C56.6699 1.84226 57.3006 2.50475 57.7725 3.33966C58.2444 4.17458 58.4804 5.23637 58.4804 6.52051C58.4804 8.17219 58.0266 9.55162 57.1146 10.6633C56.2025 11.775 54.9048 12.4511 53.2122 12.6871L59.2518 22.7424H54.3693L49.1012 13.1045H46.1472V22.7424H42.0997V0H42.0952ZM49.2918 9.63783C49.868 9.63783 50.4489 9.61061 51.0251 9.55616C51.6014 9.50171 52.1323 9.37465 52.6178 9.17046C53.0988 8.96627 53.489 8.65771 53.7885 8.24026C54.088 7.8228 54.2377 7.23745 54.2377 6.48875C54.2377 5.82626 54.0971 5.29083 53.8203 4.88244C53.5435 4.47406 53.1759 4.17004 52.7267 3.96585C52.2775 3.76166 51.7784 3.63007 51.2339 3.56201C50.6893 3.49848 50.1584 3.46672 49.6412 3.46672H46.1381V9.63783H49.2872H49.2918Z" fill="#010202"/>
+                    <path d="M61.8655 0H67.2289L78.2507 16.9025H78.3142V0H82.3618V22.7469H77.2207L65.9765 5.2999H65.913V22.7469H61.8655V0Z" fill="#010202"/>
+                    <path d="M94.2457 0H97.7487L107.55 22.7469H102.922L100.802 17.5423H90.9378L88.8823 22.7469H84.3537L94.2457 0ZM99.3868 14.0711L95.8838 4.81892L92.3172 14.0711H99.3868Z" fill="#010202"/>
+                    <path d="M4.04753 5.44971H0V22.747H4.04753V5.44971Z" fill="#010202"/>
+                    <path d="M4.04753 0H0V4.04299H4.04753V0Z" fill="#47B4C9"/>
+                    <path d="M113 18.7041H108.957V22.7471H113V18.7041Z" fill="#47B4C9"/>
+                </svg>
+            </div>
+            <h1 style="font-size: 3.75rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Leyes de la Gestalt en Visualización de Datos</h1>
+            <p style="font-size: 1.25rem; color: #333333; font-weight: 400; font-family: 'Montserrat', sans-serif;">Psicología de la Percepción Visual Aplicada a Big Data</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">¿Qué es la Gestalt?</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                <strong>Gestalt</strong> (palabra alemana: "forma" o "configuración") es una escuela de psicología fundada en 1912 por <strong>Max Wertheimer, Wolfgang Köhler y Kurt Koffka</strong>. Su principio fundamental: <strong>"El todo es mayor que la suma de sus partes"</strong> - el cerebro humano percibe patrones globales antes que elementos individuales.
+            </p>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                En visualización de datos, estas leyes explican <strong>por qué ciertos diseños son instantáneamente comprensibles</strong> mientras otros generan confusión. El cerebro procesa visualizaciones en <strong>menos de 250 milisegundos</strong> - las leyes de Gestalt determinan qué ve el usuario primero.
+            </p>
+            
+            <!-- CAJA DE EJEMPLO -->
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.25rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1.5rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem;">Caso Google Analytics</p>
+                <p style="color: #555555; font-size: 1rem; font-family: 'Montserrat', sans-serif;">Google rediseñó Analytics en 2020 aplicando Gestalt: agrupó métricas relacionadas por <strong>proximidad</strong>, usó <strong>color consistente</strong> para tipos de datos similares, y aplicó <strong>continuidad</strong> en gráficos de series temporales. Resultado: <strong>+34% en comprensión</strong> de dashboards según estudios de UX internos.</p>
+            </div>
+
+            <!-- PRINCIPIOS FUNDAMENTALES -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Por Qué Importa en Big Data</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚡ Velocidad Cognitiva</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Dashboards diseñados con Gestalt se interpretan 3x más rápido - crítico para decisiones en tiempo real.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🧠 Carga Mental Reducida</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Agrupa información automáticamente - el usuario no "trabaja" para entender, simplemente "ve".</p>
+                </div>
+                <!-- TARJETA AZUL -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.1);">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🎯 Jerarquía Natural</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Establece qué información es primaria/secundaria sin instrucciones explícitas.</p>
+                </div>
+                <!-- TARJETA MORADA -->
+                <div style="background: white; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.1);">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.5rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🌍 Universal Cross-Cultural</h4>
+                    <p style="color: #555555; font-family: 'Montserrat', sans-serif;">Funcionan igual en todas culturas - base neurológica, no aprendizaje cultural.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: LEY DE PROXIMIDAD -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">1. Ley de Proximidad (Nähe)</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                <strong>Principio:</strong> Los elementos cercanos entre sí se perciben como un grupo relacionado. La <strong>distancia espacial</strong> comunica relación semántica sin necesidad de bordes o contenedores explícitos.
+            </p>
+
+            <!-- VISUALIZACIÓN SVG -->
+            <svg width="900" height="350" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 2rem auto; max-width: 100%;">
+                <!-- Título -->
+                <text x="450" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Ley de Proximidad: Agrupación por Distancia</text>
+                
+                <!-- MALA PRÁCTICA -->
+                <text x="200" y="70" font-size="14" font-weight="bold" fill="#e74c3c" text-anchor="middle" font-family="Montserrat">❌ MAL: Elementos equidistantes</text>
+                <text x="200" y="90" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">No hay agrupación clara</text>
+                
+                <!-- Círculos sin agrupación clara -->
+                <circle cx="120" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="160" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="200" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="240" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="280" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                
+                <text x="200" y="180" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">¿5 elementos independientes? ¿3 grupos?</text>
+                
+                <!-- BUENA PRÁCTICA -->
+                <text x="650" y="70" font-size="14" font-weight="bold" fill="#27ae60" text-anchor="middle" font-family="Montserrat">✅ BIEN: Agrupación por proximidad</text>
+                <text x="650" y="90" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Grupos instantáneamente reconocibles</text>
+                
+                <!-- Grupo 1 -->
+                <circle cx="540" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="565" cy="140" r="12" fill="#49B9CE" opacity="0.8"/>
+                
+                <!-- Grupo 2 (separación mayor) -->
+                <circle cx="630" cy="140" r="12" fill="#8A7AAF" opacity="0.8"/>
+                <circle cx="655" cy="140" r="12" fill="#8A7AAF" opacity="0.8"/>
+                
+                <!-- Grupo 3 (separación mayor) -->
+                <circle cx="720" cy="140" r="12" fill="#FFA726" opacity="0.8"/>
+                <circle cx="745" cy="140" r="12" fill="#FFA726" opacity="0.8"/>
+                
+                <text x="552" y="180" font-size="10" fill="#49B9CE" text-anchor="middle" font-family="Montserrat" font-weight="bold">Grupo A</text>
+                <text x="642" y="180" font-size="10" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat" font-weight="bold">Grupo B</text>
+                <text x="732" y="180" font-size="10" fill="#FFA726" text-anchor="middle" font-family="Montserrat" font-weight="bold">Grupo C</text>
+                
+                <!-- APLICACIÓN EN DASHBOARD -->
+                <text x="450" y="230" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Aplicación: Dashboard de Métricas</text>
+                
+                <!-- Dashboard simulado -->
+                <rect x="100" y="250" width="180" height="70" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                <text x="190" y="275" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Métricas Ventas</text>
+                <text x="190" y="295" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Ingresos: €125K</text>
+                <text x="190" y="310" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Conversión: 3.2%</text>
+                
+                <!-- Separación mayor -->
+                <rect x="320" y="250" width="180" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                <text x="410" y="275" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Métricas Tráfico</text>
+                <text x="410" y="295" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Visitantes: 15K</text>
+                <text x="410" y="310" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Rebote: 42%</text>
+                
+                <!-- Separación mayor -->
+                <rect x="540" y="250" width="180" height="70" fill="#FFF9E6" stroke="#FFA726" stroke-width="2" rx="8"/>
+                <text x="630" y="275" font-size="12" font-weight="bold" fill="#FFA726" text-anchor="middle" font-family="Montserrat">Métricas Usuario</text>
+                <text x="630" y="295" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Activos: 8.5K</text>
+                <text x="630" y="310" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Retención: 67%</text>
+            </svg>
+
+            <!-- CÓDIGO DE IMPLEMENTACIÓN -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Implementación en Matplotlib</h3>
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Aplicar Proximidad mediante Subplots y Whitespace</p>
+                
+                <div style="position: relative;">
+                    <pre style="margin: 0; border-radius: 0.5rem; background: #2d2d2d;"><code class="language-python">import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import numpy as np
+
+# Crear figura con espaciado estratégico (proximidad)
+fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+# GRUPO 1: Métricas de Ventas (proximidad alta)
+# wspace controla separación entre subplots
+fig.subplots_adjust(wspace=0.4)  # Separación moderada entre grupos
+
+# Subplot 1: Ventas
+ax1 = axes[0]
+categorias = ['Electrónica', 'Ropa', 'Hogar']
+valores = [45000, 32000, 28000]
+ax1.barh(categorias, valores, color='#49B9CE', edgecolor='#1e7e9c', linewidth=2)
+ax1.set_title('Ventas por Categoría\n(Grupo: Rendimiento Comercial)', 
+              fontweight='bold', fontsize=12, color='#49B9CE')
+ax1.set_xlabel('Ingresos (€)', fontweight='bold')
+# Añadir borde para enfatizar grupo
+for spine in ax1.spines.values():
+    spine.set_edgecolor('#49B9CE')
+    spine.set_linewidth(2)
+
+# Subplot 2: Tráfico
+ax2 = axes[1]
+meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May']
+visitantes = [12000, 15000, 18000, 16500, 19000]
+ax2.plot(meses, visitantes, marker='o', linewidth=3, markersize=8, 
+         color='#8A7AAF', markerfacecolor='#C5B9D8', markeredgewidth=2, markeredgecolor='#8A7AAF')
+ax2.set_title('Evolución Tráfico Web\n(Grupo: Métricas Digitales)', 
+              fontweight='bold', fontsize=12, color='#8A7AAF')
+ax2.set_ylabel('Visitantes', fontweight='bold')
+ax2.grid(True, alpha=0.3, linestyle='--')
+for spine in ax2.spines.values():
+    spine.set_edgecolor('#8A7AAF')
+    spine.set_linewidth(2)
+
+# Subplot 3: Usuarios
+ax3 = axes[2]
+etiquetas = ['Nuevos', 'Recurrentes', 'Inactivos']
+tamaños = [35, 45, 20]
+colores = ['#FFA726', '#FFB74D', '#FFCC80']
+ax3.pie(tamaños, labels=etiquetas, autopct='%1.1f%%', startangle=90, 
+        colors=colores, textprops={'fontweight': 'bold', 'fontsize': 10})
+ax3.set_title('Distribución Usuarios\n(Grupo: Base de Clientes)', 
+              fontweight='bold', fontsize=12, color='#FFA726')
+
+# Título general que unifica
+fig.suptitle('Dashboard Analítico: Agrupación por Proximidad (Ley de Gestalt)', 
+             fontsize=16, fontweight='bold', y=1.02)
+
+plt.tight_layout()
+plt.savefig('proximidad_dashboard.png', dpi=300, bbox_inches='tight')
+print("✅ Dashboard generado aplicando Ley de Proximidad")
+print("📊 Grupos claramente diferenciados por espacio y color")</code></pre>
+                </div>
+            </div>
+
+            <!-- CASO REAL -->
+            <div style="margin-top: 1.5rem; background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">💼 Caso Real: Tableau</h4>
+                <p style="color: #555555; font-size: 1.05rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Tableau aplica proximidad en sus dashboards: las métricas relacionadas (KPIs de un mismo proceso) se agrupan con <strong>márgenes de 8-12px</strong>, mientras los grupos diferentes tienen <strong>separación de 24-32px</strong>. Estudios internos mostraron que esto reduce el tiempo de búsqueda de información en <strong>40%</strong> comparado con layouts equidistantes.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: LEY DE SIMILITUD -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">2. Ley de Similitud (Ähnlichkeit)</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                <strong>Principio:</strong> Elementos con características visuales similares (color, forma, tamaño, orientación) se perciben como relacionados, incluso si están físicamente separados. <strong>Domina sobre proximidad</strong> en jerarquía perceptual.
+            </p>
+
+            <!-- VISUALIZACIÓN SVG -->
+            <svg width="900" height="400" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 2rem auto; max-width: 100%;">
+                <!-- Título -->
+                <text x="450" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Ley de Similitud: Agrupación por Atributos Visuales</text>
+                
+                <!-- EJEMPLO 1: Color -->
+                <text x="200" y="70" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Similitud por Color</text>
+                
+                <!-- Grid de círculos con patrón de color -->
+                <circle cx="120" cy="110" r="15" fill="#49B9CE"/>
+                <circle cx="160" cy="110" r="15" fill="#8A7AAF"/>
+                <circle cx="200" cy="110" r="15" fill="#49B9CE"/>
+                <circle cx="240" cy="110" r="15" fill="#8A7AAF"/>
+                <circle cx="280" cy="110" r="15" fill="#49B9CE"/>
+                
+                <circle cx="120" cy="155" r="15" fill="#8A7AAF"/>
+                <circle cx="160" cy="155" r="15" fill="#49B9CE"/>
+                <circle cx="200" cy="155" r="15" fill="#8A7AAF"/>
+                <circle cx="240" cy="155" r="15" fill="#49B9CE"/>
+                <circle cx="280" cy="155" r="15" fill="#8A7AAF"/>
+                
+                <text x="200" y="190" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Percibimos 2 grupos (azules vs morados)</text>
+                <text x="200" y="205" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">a pesar de estar intercalados</text>
+                
+                <!-- EJEMPLO 2: Forma -->
+                <text x="650" y="70" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Similitud por Forma</text>
+                
+                <!-- Mezcla de círculos y cuadrados -->
+                <circle cx="570" cy="110" r="15" fill="#49B9CE"/>
+                <rect x="595" y="95" width="30" height="30" fill="#49B9CE"/>
+                <circle cx="650" cy="110" r="15" fill="#49B9CE"/>
+                <rect x="675" y="95" width="30" height="30" fill="#49B9CE"/>
+                <circle cx="730" cy="110" r="15" fill="#49B9CE"/>
+                
+                <text x="650" y="155" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Agrupamos mentalmente:</text>
+                <text x="650" y="170" font-size="10" fill="#49B9CE" text-anchor="middle" font-family="Montserrat" font-weight="bold">● Círculos juntos | ■ Cuadrados juntos</text>
+                
+                <!-- APLICACIÓN: Gráfico de dispersión -->
+                <text x="450" y="240" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Aplicación: Gráfico de Dispersión con Categorías</text>
+                
+                <!-- Ejes -->
+                <line x1="100" y1="370" x2="800" y2="370" stroke="#333333" stroke-width="2"/>
+                <line x1="100" y1="270" x2="100" y2="370" stroke="#333333" stroke-width="2"/>
+                
+                <text x="450" y="395" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Ingresos Anuales (€)</text>
+                <text x="60" y="320" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90 60 320)">Satisfacción (%)</text>
+                
+                <!-- Datos Categoría A (círculos azules) -->
+                <circle cx="180" cy="310" r="8" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="220" cy="295" r="8" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="260" cy="320" r="8" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="300" cy="305" r="8" fill="#49B9CE" opacity="0.8"/>
+                <circle cx="340" cy="290" r="8" fill="#49B9CE" opacity="0.8"/>
+                
+                <!-- Datos Categoría B (cuadrados morados) -->
+                <rect x="388" y="332" width="14" height="14" fill="#8A7AAF" opacity="0.8"/>
+                <rect x="428" y="318" width="14" height="14" fill="#8A7AAF" opacity="0.8"/>
+                <rect x="468" y="342" width="14" height="14" fill="#8A7AAF" opacity="0.8"/>
+                <rect x="508" y="328" width="14" height="14" fill="#8A7AAF" opacity="0.8"/>
+                <rect x="548" y="315" width="14" height="14" fill="#8A7AAF" opacity="0.8"/>
+                
+                <!-- Datos Categoría C (triángulos naranjas) -->
+                <polygon points="640,360 632,345 648,345" fill="#FFA726" opacity="0.8"/>
+                <polygon points="680,355 672,340 688,340" fill="#FFA726" opacity="0.8"/>
+                <polygon points="720,350 712,335 728,335" fill="#FFA726" opacity="0.8"/>
+                <polygon points="760,345 752,330 768,330" fill="#FFA726" opacity="0.8"/>
+                
+                <!-- Leyenda -->
+                <circle cx="160" cy="260" r="6" fill="#49B9CE"/>
+                <text x="175" y="265" font-size="10" fill="#555555" font-family="Montserrat">● Categoría A (Premium)</text>
+                
+                <rect x="340" y="254" width="12" height="12" fill="#8A7AAF"/>
+                <text x="360" y="265" font-size="10" fill="#555555" font-family="Montserrat">■ Categoría B (Estándar)</text>
+                
+                <polygon points="560,260 554,252 566,252" fill="#FFA726"/>
+                <text x="575" y="265" font-size="10" fill="#555555" font-family="Montserrat">▲ Categoría C (Básico)</text>
+            </svg>
+
+            <!-- CÓDIGO DE IMPLEMENTACIÓN -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Implementación con Seaborn</h3>
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #8A7AAF; margin-bottom: 1rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Scatter Plot con Codificación Multi-dimensional</p>
+                
+                <div style="position: relative;">
+                    <pre style="margin: 0; border-radius: 0.5rem; background: #2d2d2d;"><code class="language-python">import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+# Generar dataset con 3 categorías claramente diferenciadas
+np.random.seed(42)
+n_puntos = 100
+
+# Categoría A: Alta satisfacción, ingresos medios-altos
+cat_a = pd.DataFrame({
+    'ingresos': np.random.normal(50000, 10000, n_puntos),
+    'satisfaccion': np.random.normal(85, 5, n_puntos),
+    'categoria': 'Premium',
+    'tamaño_empresa': np.random.choice(['Grande'], n_puntos)
+})
+
+# Categoría B: Satisfacción media, ingresos medios
+cat_b = pd.DataFrame({
+    'ingresos': np.random.normal(35000, 8000, n_puntos),
+    'satisfaccion': np.random.normal(70, 7, n_puntos),
+    'categoria': 'Estándar',
+    'tamaño_empresa': np.random.choice(['Mediana'], n_puntos)
+})
+
+# Categoría C: Satisfacción variable, ingresos bajos
+cat_c = pd.DataFrame({
+    'ingresos': np.random.normal(20000, 5000, n_puntos),
+    'satisfaccion': np.random.normal(60, 10, n_puntos),
+    'categoria': 'Básico',
+    'tamaño_empresa': np.random.choice(['Pequeña'], n_puntos)
+})
+
+df = pd.concat([cat_a, cat_b, cat_c], ignore_index=True)
+
+# APLICAR LEY DE SIMILITUD: Color + Forma (marker) + Tamaño
+fig, ax = plt.subplots(figsize=(14, 8))
+
+# Paleta científica con alto contraste
+paleta = {'Premium': '#49B9CE', 'Estándar': '#8A7AAF', 'Básico': '#FFA726'}
+marcadores = {'Premium': 'o', 'Estándar': 's', 'Básico': '^'}
+
+# Crear scatter con 3 dimensiones de similitud
+for categoria, grupo in df.groupby('categoria'):
+    ax.scatter(
+        grupo['ingresos'], 
+        grupo['satisfaccion'],
+        c=paleta[categoria],
+        marker=marcadores[categoria],
+        s=150,  # Tamaño consistente dentro del grupo
+        alpha=0.7,
+        edgecolors='black',
+        linewidth=1.5,
+        label=categoria
+    )
+
+# Personalización
+ax.set_xlabel('Ingresos Anuales (€)', fontsize=13, fontweight='bold')
+ax.set_ylabel('Satisfacción del Cliente (%)', fontsize=13, fontweight='bold')
+ax.set_title('Segmentación de Clientes aplicando Ley de Similitud\n' + 
+             '(Color + Forma + Agrupación revelan patrones instantáneamente)', 
+             fontsize=15, fontweight='bold', pad=20)
+
+# Leyenda con información adicional
+legend = ax.legend(title='Categoría de Cliente', 
+                   title_fontsize=12, 
+                   fontsize=11, 
+                   loc='lower right',
+                   framealpha=0.95,
+                   edgecolor='black',
+                   fancybox=True)
+legend.get_title().set_fontweight('bold')
+
+# Grid sutil
+ax.grid(True, alpha=0.3, linestyle='--', linewidth=0.7)
+
+plt.tight_layout()
+plt.savefig('similitud_scatter.png', dpi=300, bbox_inches='tight')
+
+print("✅ Gráfico generado aplicando Ley de Similitud")
+print("🎯 3 grupos instantáneamente reconocibles por:")
+print("   - Color (azul/morado/naranja)")
+print("   - Forma de marcador (círculo/cuadrado/triángulo)")
+print("   - Posición espacial (clustering natural)")</code></pre>
+                </div>
+            </div>
+
+            <!-- REGLAS DE ORO -->
+            <div style="margin-top: 1.5rem; background: #E8F7FA; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">📐 Reglas de Oro para Similitud</h4>
+                <ol style="color: #555555; margin-left: 1.5rem; line-height: 1.8; font-family: 'Montserrat', sans-serif;">
+                    <li><strong>Máximo 5-6 grupos</strong>: Más categorías generan confusión perceptual</li>
+                    <li><strong>Contraste alto entre grupos</strong>: Diferencia mínima de 30% en luminosidad</li>
+                    <li><strong>Consistencia absoluta</strong>: Mismo color SIEMPRE significa lo mismo en todo el dashboard</li>
+                    <li><strong>Redundancia estratégica</strong>: Usar 2 atributos (color + forma) para accesibilidad</li>
+                    <li><strong>No mezclar significados</strong>: Color no puede significar "categoría" en un gráfico y "valor" en otro</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: LEY DE CONTINUIDAD -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">3. Ley de Continuidad (Kontinuität)</h2>
+            <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                <strong>Principio:</strong> El ojo tiende a seguir líneas continuas, curvas o alineaciones preferentemente antes que cambiar dirección abruptamente. <strong>Esencial para gráficos de series temporales</strong> y visualización de flujos.
+            </p>
+
+            <!-- VISUALIZACIÓN SVG -->
+            <svg width="900" height="450" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 2rem auto; max-width: 100%;">
+                <!-- Título -->
+                <text x="450" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Ley de Continuidad: Seguimiento Visual Natural</text>
+                
+                <!-- EJEMPLO 1: Líneas que se cruzan -->
+                <text x="220" y="70" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Cruce de Líneas: Percepción Continua</text>
+                
+                <!-- Línea curva azul -->
+                <path d="M 80 120 Q 150 80, 220 120 T 360 120" stroke="#49B9CE" stroke-width="4" fill="none"/>
+                <circle cx="80" cy="120" r="6" fill="#49B9CE"/>
+                <circle cx="360" cy="120" r="6" fill="#49B9CE"/>
+                
+                <!-- Línea curva morada que cruza -->
+                <path d="M 360 150 Q 290 110, 220 150 T 80 150" stroke="#8A7AAF" stroke-width="4" fill="none"/>
+                <circle cx="360" cy="150" r="6" fill="#8A7AAF"/>
+                <circle cx="80" cy="150" r="6" fill="#8A7AAF"/>
+                
+                <text x="220" y="185" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Aunque se cruzan en el centro, percibimos</text>
+                <text x="220" y="200" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">2 líneas continuas (no 4 segmentos)</text>
+                
+                <!-- EJEMPLO 2: Diagrama de Sankey simplificado -->
+                <text x="650" y="70" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Flujo de Datos (Sankey)</text>
+                
+                <!-- Nodo origen -->
+                <rect x="520" y="100" width="30" height="80" fill="#49B9CE" rx="5"/>
+                <text x="535" y="145" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">100%</text>
+                
+                <!-- Flujos con continuidad -->
+                <path d="M 550 120 Q 600 120, 630 130" stroke="#49B9CE" stroke-width="25" fill="none" opacity="0.6"/>
+                <path d="M 550 140 Q 600 140, 630 150" stroke="#8A7AAF" stroke-width="20" fill="none" opacity="0.6"/>
+                <path d="M 550 160 Q 600 160, 630 170" stroke="#FFA726" stroke-width="15" fill="none" opacity="0.6"/>
+                
+                <!-- Nodos destino -->
+                <rect x="630" y="115" width="25" height="30" fill="#49B9CE" rx="5"/>
+                <text x="642" y="133" font-size="9" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">45%</text>
+                
+                <rect x="630" y="140" width="25" height="25" fill="#8A7AAF" rx="5"/>
+                <text x="642" y="155" font-size="9" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">35%</text>
+                
+                <rect x="630" y="165" width="25" height="20" fill="#FFA726" rx="5"/>
+                <text x="642" y="177" font-size="9" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">20%</text>
+                
+                <text x="650" y="210" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">El ojo sigue cada flujo de forma natural</text>
+                
+                <!-- APLICACIÓN: Serie temporal -->
+                <text x="450" y="260" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Aplicación: Serie Temporal Multi-métrica</text>
+                
+                <!-- Ejes -->
+                <line x1="100" y1="420" x2="800" y2="420" stroke="#333333" stroke-width="2"/>
+                <line x1="100" y1="300" x2="100" y2="420" stroke="#333333" stroke-width="2"/>
+                
+                <text x="450" y="440" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">Tiempo (meses)</text>
+                <text x="60" y="360" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90 60 360)">Valor</text>
+                
+                <!-- Serie 1: Ingresos (línea continua suave) -->
+                <polyline points="120,380 200,360 280,340 360,350 440,320 520,310 600,300 680,290 760,280" 
+                          stroke="#49B9CE" stroke-width="3" fill="none"/>
+                <circle cx="120" cy="380" r="5" fill="#49B9CE"/>
+                <circle cx="760" cy="280" r="5" fill="#49B9CE"/>
+                
+                <!-- Serie 2: Costes (línea continua más suave) -->
+                <polyline points="120,400 200,395 280,385 360,390 440,380 520,375 600,370 680,365 760,360" 
+                          stroke="#8A7AAF" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                <circle cx="120" cy="400" r="5" fill="#8A7AAF"/>
+                <circle cx="760" cy="360" r="5" fill="#8A7AAF"/>
+                
+                <!-- Etiquetas de meses -->
+                <text x="120" y="435" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Ene</text>
+                <text x="280" y="435" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Mar</text>
+                <text x="440" y="435" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">May</text>
+                <text x="600" y="435" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Jul</text>
+                <text x="760" y="435" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Sep</text>
+                
+                <!-- Leyenda -->
+                <line x1="150" y1="270" x2="180" y2="270" stroke="#49B9CE" stroke-width="3"/>
+                <text x="190" y="275" font-size="10" fill="#555555" font-family="Montserrat">— Ingresos (tendencia alcista continua)</text>
+                
+                <line x1="150" y1="285" x2="180" y2="285" stroke="#8A7AAF" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="190" y="290" font-size="10" fill="#555555" font-family="Montserrat">-- Costes (crecimiento moderado)</text>
+            </svg>
+
+            <!-- CÓDIGO DE IMPLEMENTACIÓN -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Implementación: Suavizado de Series Temporales</h3>
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Curvas Interpoladas para Continuidad Visual</p>
+                
+                <div style="position: relative;">
+                    <pre style="margin: 0; border-radius: 0.5rem; background: #2d2d2d;"><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+from scipy.interpolate import make_interp_spline
+
+# Datos mensuales (con variabilidad natural)
+meses = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+ingresos = np.array([45000, 47000, 46500, 49000, 51000, 52500, 54000, 55500, 57000, 58500, 60000, 62000])
+costes = np.array([38000, 38500, 39000, 39200, 40000, 40500, 41000, 41500, 42000, 42500, 43000, 43500])
+
+# APLICAR CONTINUIDAD: Interpolación cúbica suave
+# Crear puntos densos para suavizado
+meses_suaves = np.linspace(meses.min(), meses.max(), 300)
+
+# Spline cúbica (continuidad C2: derivadas continuas)
+spline_ingresos = make_interp_spline(meses, ingresos, k=3)
+ingresos_suaves = spline_ingresos(meses_suaves)
+
+spline_costes = make_interp_spline(meses, costes, k=3)
+costes_suaves = spline_costes(meses_suaves)
+
+# Crear visualización
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+
+# SIN CONTINUIDAD (puntos discretos + líneas rectas)
+ax1.plot(meses, ingresos, marker='o', markersize=8, linewidth=1, 
+         color='#49B9CE', label='Ingresos', linestyle='-', alpha=0.7)
+ax1.plot(meses, costes, marker='s', markersize=8, linewidth=1, 
+         color='#8A7AAF', label='Costes', linestyle='-', alpha=0.7)
+ax1.set_title('❌ Sin Ley de Continuidad\n(Líneas quebradas, seguimiento difícil)', 
+              fontsize=13, fontweight='bold', color='#e74c3c')
+ax1.set_xlabel('Mes', fontweight='bold')
+ax1.set_ylabel('Valor (€)', fontweight='bold')
+ax1.legend(fontsize=11)
+ax1.grid(True, alpha=0.3, linestyle='--')
+
+# CON CONTINUIDAD (curvas suavizadas)
+ax2.plot(meses_suaves, ingresos_suaves, linewidth=3, 
+         color='#49B9CE', label='Ingresos', alpha=0.9)
+ax2.plot(meses_suaves, costes_suaves, linewidth=3, 
+         color='#8A7AAF', label='Costes', alpha=0.9, linestyle='--')
+# Marcar puntos reales
+ax2.scatter(meses, ingresos, s=60, color='#49B9CE', edgecolors='black', linewidth=1.5, zorder=5)
+ax2.scatter(meses, costes, s=60, color='#8A7AAF', edgecolors='black', linewidth=1.5, zorder=5)
+ax2.set_title('✅ Con Ley de Continuidad\n(Curvas suaves, tendencias claras)', 
+              fontsize=13, fontweight='bold', color='#27ae60')
+ax2.set_xlabel('Mes', fontweight='bold')
+ax2.set_ylabel('Valor (€)', fontweight='bold')
+ax2.legend(fontsize=11)
+ax2.grid(True, alpha=0.3, linestyle='--')
+
+plt.tight_layout()
+plt.savefig('continuidad_series.png', dpi=300, bbox_inches='tight')
+
+print("✅ Comparación generada: Sin vs Con Continuidad")
+print("👁️ El gráfico suavizado se lee 2-3x más rápido")
+print("📈 Tendencias y patrones son instantáneamente obvios")</code></pre>
+                </div>
+            </div>
+
+            <!-- CASO REAL -->
+            <div style="margin-top: 1.5rem; background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">💼 Caso Real: Bloomberg Terminal</h4>
+                <p style="color: #555555; font-size: 1.05rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Bloomberg Terminal usa <strong>interpolación cúbica</strong> en todos sus gráficos financieros de alta frecuencia. Con datos que llegan cada milisegundo, las líneas quebradas serían ilegibles. El suavizado permite que traders <strong>identifiquen tendencias en &lt;1 segundo</strong>, crítico cuando cada segundo puede significar millones en pérdidas/ganancias.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: LEY DE CIERRE Y FIGURA-FONDO -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">4. Ley de Cierre (Closure) + 5. Figura-Fondo</h2>
+            
+            <!-- LEY DE CIERRE -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Ley de Cierre: Completar lo Incompleto</h3>
+                <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    <strong>Principio:</strong> El cerebro "cierra" automáticamente formas incompletas. Vemos el círculo completo aunque falten segmentos. Permite <strong>diseños minimalistas</strong> sin pérdida de comprensión.
+                </p>
+
+                <!-- VISUALIZACIÓN SVG CIERRE -->
+                <svg width="900" height="300" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Ley de Cierre: Percepción de Totalidad</text>
+                    
+                    <!-- Círculo incompleto pero percibido como completo -->
+                    <text x="200" y="70" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Círculo Parcial (80% dibujado)</text>
+                    <path d="M 200 100 m -60, 0 a 60,60 0 1,1 120,0" stroke="#49B9CE" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    <text x="200" y="180" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">El cerebro "completa" el 20% faltante</text>
+                    <text x="200" y="195" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">→ Percibimos círculo completo</text>
+                    
+                    <!-- Rectángulo con esquinas redondeadas parciales -->
+                    <text x="500" y="70" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Icono Minimalista</text>
+                    <path d="M 460 100 L 540 100 L 540 130 M 540 140 L 540 150 L 460 150 L 460 110 M 460 100" 
+                          stroke="#8A7AAF" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <text x="500" y="180" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Suficientes líneas para reconocer forma</text>
+                    <text x="500" y="195" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">→ Diseño limpio sin sacrificar claridad</text>
+                    
+                    <!-- Gráfico circular (pie) incompleto -->
+                    <text x="750" y="70" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Gráfico Circular Simplificado</text>
+                    <!-- Segmentos con gaps -->
+                    <path d="M 750 100 m 0, -50 a 50,50 0 0,1 43.3,25" stroke="#49B9CE" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    <path d="M 793.3 125 a 50,50 0 0,1 0,25" stroke="#8A7AAF" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    <path d="M 793.3 150 a 50,50 0 0,1 -43.3,25" stroke="#FFA726" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    <text x="750" y="210" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Gaps entre segmentos</text>
+                    <text x="750" y="225" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">→ Menos "chartjunk", mismo significado</text>
+                    
+                    <!-- Aplicación -->
+                    <text x="450" y="265" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Aplicación: Reduce ink-to-data ratio manteniendo comprensibilidad</text>
+                </svg>
+            </div>
+
+            <!-- LEY DE FIGURA-FONDO -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Ley de Figura-Fondo: Separación Perceptual</h3>
+                <p style="font-size: 1.125rem; color: #555555; margin-bottom: 1.5rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    <strong>Principio:</strong> El cerebro separa elementos en "figura" (foco de atención) y "fondo" (contexto). <strong>Contraste, tamaño y posición</strong> determinan qué es figura. Crítico para jerarquía visual en dashboards.
+                </p>
+
+                <!-- VISUALIZACIÓN SVG FIGURA-FONDO -->
+                <svg width="900" height="350" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 1.5rem auto; max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Ley de Figura-Fondo: Jerarquía Visual</text>
+                    
+                    <!-- MALA PRÁCTICA: Sin contraste -->
+                    <text x="220" y="70" font-size="14" font-weight="bold" fill="#e74c3c" text-anchor="middle" font-family="Montserrat">❌ MAL: Sin Jerarquía Clara</text>
+                    <rect x="100" y="90" width="240" height="150" fill="#f5f5f5" stroke="#e5e5e5" stroke-width="2" rx="8"/>
+                    
+                    <!-- Todos los elementos con mismo peso visual -->
+                    <text x="220" y="115" font-size="16" fill="#555555" text-anchor="middle" font-family="Montserrat">Métrica Principal: 45K</text>
+                    <text x="220" y="140" font-size="16" fill="#555555" text-anchor="middle" font-family="Montserrat">Métrica Secundaria: 12K</text>
+                    <text x="220" y="165" font-size="16" fill="#555555" text-anchor="middle" font-family="Montserrat">Contexto: Mes anterior</text>
+                    <text x="220" y="190" font-size="16" fill="#555555" text-anchor="middle" font-family="Montserrat">Nota: Estimación</text>
+                    
+                    <text x="220" y="255" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Todo tiene el mismo peso →</text>
+                    <text x="220" y="270" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Usuario no sabe qué mirar primero</text>
+                    
+                    <!-- BUENA PRÁCTICA: Jerarquía clara -->
+                    <text x="680" y="70" font-size="14" font-weight="bold" fill="#27ae60" text-anchor="middle" font-family="Montserrat">✅ BIEN: Jerarquía Figura-Fondo</text>
+                    <rect x="560" y="90" width="240" height="150" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                    
+                    <!-- FIGURA (foco): Métrica principal grande y destacada -->
+                    <text x="680" y="130" font-size="36" fill="#49B9CE" text-anchor="middle" font-family="Montserrat" font-weight="bold">45K</text>
+                    <text x="680" y="150" font-size="14" fill="#333333" text-anchor="middle" font-family="Montserrat" font-weight="bold">Usuarios Activos</text>
+                    
+                    <!-- FONDO (contexto): Información secundaria sutil -->
+                    <text x="680" y="175" font-size="11" fill="#999999" text-anchor="middle" font-family="Montserrat">+12% vs mes anterior</text>
+                    <text x="680" y="195" font-size="9" fill="#cccccc" text-anchor="middle" font-family="Montserrat" font-style="italic">Actualizado hace 5min</text>
+                    
+                    <text x="680" y="255" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Jerarquía clara por:</text>
+                    <text x="680" y="270" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Tamaño, Color, Peso (bold), Posición</text>
+                    
+                    <!-- APLICACIÓN DASHBOARD -->
+                    <text x="450" y="315" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Regla de oro: 1 figura dominante por panel, resto es contexto</text>
+                </svg>
+            </div>
+
+            <!-- CÓDIGO DE IMPLEMENTACIÓN -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Implementación: KPI Cards con Jerarquía</h3>
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #49B9CE; margin-bottom: 1rem;">
+                <p style="font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 700; color: #333333; margin-bottom: 1rem;">Dashboard con Contraste Figura-Fondo Estratégico</p>
+                
+                <div style="position: relative;">
+                    <pre style="margin: 0; border-radius: 0.5rem; background: #2d2d2d;"><code class="language-python">import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+# Crear dashboard con 4 KPI cards aplicando figura-fondo
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.patch.set_facecolor('#f5f5f5')  # Fondo general sutil
+
+# KPI 1: Ingresos (FIGURA dominante)
+ax1 = axes[0, 0]
+ax1.set_facecolor('white')
+ax1.text(0.5, 0.65, '€125,450', fontsize=48, fontweight='bold', 
+         ha='center', va='center', color='#49B9CE')
+ax1.text(0.5, 0.45, 'Ingresos Mensuales', fontsize=14, fontweight='bold',
+         ha='center', va='center', color='#333333')
+ax1.text(0.5, 0.32, '+18.3% vs mes anterior', fontsize=11, 
+         ha='center', va='center', color='#27ae60')
+ax1.text(0.5, 0.22, 'Objetivo: €120K (superado)', fontsize=9, 
+         ha='center', va='center', color='#999999', style='italic')
+ax1.axis('off')
+# Borde destacado para figura principal
+rect = mpatches.FancyBboxPatch((0.02, 0.02), 0.96, 0.96, 
+                               boxstyle="round,pad=0.02", 
+                               edgecolor='#49B9CE', facecolor='none', linewidth=4)
+ax1.add_patch(rect)
+
+# KPI 2: Usuarios (FONDO - contexto)
+ax2 = axes[0, 1]
+ax2.set_facecolor('#fafafa')  # Fondo más sutil
+ax2.text(0.5, 0.65, '8,542', fontsize=32, fontweight='bold', 
+         ha='center', va='center', color='#555555')
+ax2.text(0.5, 0.45, 'Usuarios Activos', fontsize=12,
+         ha='center', va='center', color='#666666')
+ax2.text(0.5, 0.32, '+5.2%', fontsize=10, 
+         ha='center', va='center', color='#999999')
+ax2.axis('off')
+# Borde sutil
+rect2 = mpatches.FancyBboxPatch((0.02, 0.02), 0.96, 0.96, 
+                                boxstyle="round,pad=0.02", 
+                                edgecolor='#e5e5e5', facecolor='none', linewidth=2)
+ax2.add_patch(rect2)
+
+# KPI 3: Conversión (FONDO - contexto)
+ax3 = axes[1, 0]
+ax3.set_facecolor('#fafafa')
+ax3.text(0.5, 0.65, '3.42%', fontsize=32, fontweight='bold', 
+         ha='center', va='center', color='#555555')
+ax3.text(0.5, 0.45, 'Tasa Conversión', fontsize=12,
+         ha='center', va='center', color='#666666')
+ax3.text(0.5, 0.32, '-0.1% vs anterior', fontsize=10, 
+         ha='center', va='center', color='#e74c3c')
+ax3.axis('off')
+rect3 = mpatches.FancyBboxPatch((0.02, 0.02), 0.96, 0.96, 
+                                boxstyle="round,pad=0.02", 
+                                edgecolor='#e5e5e5', facecolor='none', linewidth=2)
+ax3.add_patch(rect3)
+
+# KPI 4: Satisfacción (FONDO - contexto)
+ax4 = axes[1, 1]
+ax4.set_facecolor('#fafafa')
+ax4.text(0.5, 0.65, '4.7/5.0', fontsize=32, fontweight='bold', 
+         ha='center', va='center', color='#555555')
+ax4.text(0.5, 0.45, 'Satisfacción Cliente', fontsize=12,
+         ha='center', va='center', color='#666666')
+ax4.text(0.5, 0.32, 'Estable', fontsize=10, 
+         ha='center', va='center', color='#999999')
+ax4.axis('off')
+rect4 = mpatches.FancyBboxPatch((0.02, 0.02), 0.96, 0.96, 
+                                boxstyle="round,pad=0.02", 
+                                edgecolor='#e5e5e5', facecolor='none', linewidth=2)
+ax4.add_patch(rect4)
+
+# Título general
+fig.suptitle('Dashboard Ejecutivo aplicando Ley de Figura-Fondo\nIngresos = FIGURA (foco), resto = FONDO (contexto)', 
+             fontsize=16, fontweight='bold', y=0.98)
+
+plt.tight_layout()
+plt.savefig('figura_fondo_dashboard.png', dpi=300, bbox_inches='tight', facecolor='#f5f5f5')
+
+print("✅ Dashboard generado con jerarquía figura-fondo")
+print("👁️ Ingresos captura atención instantáneamente")
+print("📊 Resto proporciona contexto sin distraer")</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: LEY DE DESTINO COMÚN Y CONEXIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif;">6. Destino Común + 7. Ley de Conexión</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <!-- DESTINO COMÚN -->
+                <div>
+                    <h3 style="font-size: 1.875rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Destino Común</h3>
+                    <p style="font-size: 1.05rem; color: #555555; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <strong>Principio:</strong> Elementos que se mueven en la misma dirección/velocidad se perciben como grupo. Esencial para <strong>animaciones</strong> y visualizaciones de flujo de datos en tiempo real.
+                    </p>
+                </div>
+                
+                <!-- CONEXIÓN -->
+                <div>
+                    <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Conexión</h3>
+                    <p style="font-size: 1.05rem; color: #555555; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                        <strong>Principio:</strong> Elementos visualmente conectados por líneas se perciben como relacionados. <strong>Más fuerte que proximidad o similitud</strong> - la conexión explícita domina.
+                    </p>
+                </div>
+            </div>
+
+            <!-- VISUALIZACIÓN SVG -->
+            <svg width="900" height="400" style="border: 2px solid #e5e5e5; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); background-color: #fafafa; display: block; margin: 0 auto 2rem auto; max-width: 100%;">
+                <!-- Título -->
+                <text x="450" y="30" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Destino Común + Conexión en Visualización de Datos</text>
+                
+                <!-- DESTINO COMÚN: Flechas -->
+                <text x="220" y="70" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Destino Común (Dirección)</text>
+                
+                <!-- Grupo 1: Flechas hacia arriba (tendencia alcista) -->
+                <polygon points="120,140 115,150 125,150" fill="#27ae60"/>
+                <line x1="120" y1="145" x2="120" y2="170" stroke="#27ae60" stroke-width="3"/>
+                
+                <polygon points="160,135 155,145 165,145" fill="#27ae60"/>
+                <line x1="160" y1="140" x2="160" y2="170" stroke="#27ae60" stroke-width="3"/>
+                
+                <polygon points="200,130 195,140 205,140" fill="#27ae60"/>
+                <line x1="200" y1="135" x2="200" y2="170" stroke="#27ae60" stroke-width="3"/>
+                
+                <text x="160" y="195" font-size="10" fill="#27ae60" text-anchor="middle" font-family="Montserrat" font-weight="bold">Crecimiento</text>
+                
+                <!-- Grupo 2: Flechas hacia abajo (tendencia bajista) -->
+                <line x1="260" y1="140" x2="260" y2="165" stroke="#e74c3c" stroke-width="3"/>
+                <polygon points="260,170 255,160 265,160" fill="#e74c3c"/>
+                
+                <line x1="300" y1="145" x2="300" y2="165" stroke="#e74c3c" stroke-width="3"/>
+                <polygon points="300,170 295,160 305,160" fill="#e74c3c"/>
+                
+                <text x="280" y="195" font-size="10" fill="#e74c3c" text-anchor="middle" font-family="Montserrat" font-weight="bold">Descenso</text>
+                
+                <text x="220" y="220" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Las flechas se agrupan por dirección</text>
+                <text x="220" y="235" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">aunque estén intercaladas</text>
+                
+                <!-- CONEXIÓN: Network graph -->
+                <text x="650" y="70" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Ley de Conexión (Enlaces Explícitos)</text>
+                
+                <!-- Nodos -->
+                <circle cx="550" cy="130" r="15" fill="#49B9CE"/>
+                <text x="550" y="136" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">A</text>
+                
+                <circle cx="650" cy="110" r="15" fill="#8A7AAF"/>
+                <text x="650" y="116" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">B</text>
+                
+                <circle cx="750" cy="130" r="15" fill="#FFA726"/>
+                <text x="750" y="136" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">C</text>
+                
+                <circle cx="650" cy="170" r="15" fill="#27ae60"/>
+                <text x="650" y="176" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat" font-weight="bold">D</text>
+                
+                <!-- Conexiones (dominan sobre distancia) -->
+                <line x1="565" y1="130" x2="635" y2="115" stroke="#333333" stroke-width="3"/>
+                <line x1="665" y1="110" x2="735" y2="125" stroke="#333333" stroke-width="3"/>
+                <line x1="650" y1="125" x2="650" y2="155" stroke="#333333" stroke-width="3"/>
+                <line x1="565" y1="135" x2="635" y2="165" stroke="#333333" stroke-width="3"/>
+                
+                <text x="650" y="210" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Líneas conectoras establecen relación</text>
+                <text x="650" y="225" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">más fuerte que proximidad o color</text>
+                
+                <!-- APLICACIÓN: Flujo de usuarios -->
+                <text x="450" y="275" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Aplicación: Funnel de Conversión (Conexión Visual)</text>
+                
+                <!-- Funnel -->
+                <rect x="150" y="290" width="120" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                <text x="210" y="310" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat" font-weight="bold">Visitantes</text>
+                <text x="210" y="323" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">10,000</text>
+                
+                <!-- Flecha -->
+                <line x1="270" y1="310" x2="320" y2="310" stroke="#49B9CE" stroke-width="4"/>
+                <polygon points="330,310 320,305 320,315" fill="#49B9CE"/>
+                
+                <rect x="330" y="295" width="100" height="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                <text x="380" y="310" font-size="10" fill="#333333" text-anchor="middle" font-family="Montserrat" font-weight="bold">Registros</text>
+                <text x="380" y="320" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">3,200</text>
+                
+                <!-- Flecha -->
+                <line x1="430" y1="310" x2="460" y2="310" stroke="#8A7AAF" stroke-width="4"/>
+                <polygon points="470,310 460,305 460,315" fill="#8A7AAF"/>
+                
+                <rect x="470" y="300" width="80" height="20" fill="#FFE0B2" stroke="#FFA726" stroke-width="2" rx="5"/>
+                <text x="510" y="310" font-size="9" fill="#333333" text-anchor="middle" font-family="Montserrat" font-weight="bold">Compras</text>
+                <text x="510" y="318" font-size="7" fill="#555555" text-anchor="middle" font-family="Montserrat">456</text>
+                
+                <!-- Texto explicativo -->
+                <text x="350" y="360" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Las flechas conectoras comunican flujo y causalidad</text>
+                <text x="350" y="375" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">más efectivamente que posición espacial solamente</text>
+            </svg>
+
+            <!-- CASO REAL -->
+            <div style="margin-top: 1.5rem; background: #FFF8DC; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid #FFA726;">
+                <h4 style="font-weight: 700; color: #E65100; margin-bottom: 0.75rem; font-size: 1.25rem; font-family: 'Montserrat', sans-serif;">💼 Caso Real: Uber Dashboard</h4>
+                <p style="color: #555555; font-size: 1.05rem; line-height: 1.75; font-family: 'Montserrat', sans-serif;">
+                    Los dashboards de operaciones de Uber usan <strong>destino común</strong> para visualizar vehículos en movimiento: coches que van hacia el mismo destino se agrupan visualmente mediante <strong>vectores de dirección</strong>. Esto permite a coordinadores identificar <strong>áreas de alta demanda</strong> en <strong>&lt;5 segundos</strong>, optimizando distribución de flota en tiempo real.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: SÍNTESIS Y APLICACIÓN -->
+        <section style="background: white; border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); padding: 2rem; margin-bottom: 2rem; border: 2px solid #e5e5e5;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: #333333; margin-bottom: 1.5rem; text-align: center; font-family: 'Montserrat', sans-serif;">Síntesis: Gestalt en Big Data</h2>
+            
+            <div style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); padding: 2rem; border-radius: 1rem; border: 2px solid #333333; text-align: center; margin-bottom: 2rem;">
+                <p style="font-size: 1.3rem; font-weight: 700; color: #333333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+                    🧠 Las 7 Leyes de Gestalt: Checklist de Diseño
+                </p>
+                <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                    <p style="font-size: 1.05rem; color: #555555; line-height: 2; font-family: 'Montserrat', sans-serif;">
+                        ✅ <strong>Proximidad:</strong> Agrupar métricas relacionadas (8-12px vs 24-32px)<br>
+                        ✅ <strong>Similitud:</strong> Color/forma consistente para tipos de datos<br>
+                        ✅ <strong>Continuidad:</strong> Suavizar series temporales (splines)<br>
+                        ✅ <strong>Cierre:</strong> Diseños minimalistas que "completen" visualmente<br>
+                        ✅ <strong>Figura-Fondo:</strong> 1 KPI dominante por panel, resto contexto<br>
+                        ✅ <strong>Destino Común:</strong> Animaciones direccionales para flujos<br>
+                        ✅ <strong>Conexión:</strong> Enlaces explícitos para relaciones críticas
+                    </p>
+                </div>
+            </div>
+
+            <!-- IMPACTO MEDIBLE -->
+            <h3 style="font-size: 1.875rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">Impacto Medible en Organizaciones</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="background: #E8F7FA; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">⚡ Velocidad</h4>
+                    <p style="color: #555555; font-size: 0.95rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                        Dashboards con Gestalt: <strong>3x más rápidos</strong> de interpretar (estudios Nielsen Norman Group)
+                    </p>
+                </div>
+                
+                <div style="background: #F0EDF5; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.75rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">🎯 Precisión</h4>
+                    <p style="color: #555555; font-size: 0.95rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                        <strong>-65% errores</strong> de interpretación en análisis de datos complejos
+                    </p>
+                </div>
+                
+                <div style="background: #E8F7FA; padding: 1.25rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h4 style="font-weight: 700; color: #49B9CE; margin-bottom: 0.75rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">📈 Adopción</h4>
+                    <p style="color: #555555; font-size: 0.95rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                        <strong>+82% uso diario</strong> de herramientas BI cuando aplican principios Gestalt
+                    </p>
+                </div>
+                
+                <div style="background: #F0EDF5; padding: 1.25rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h4 style="font-weight: 700; color: #8A7AAF; margin-bottom: 0.75rem; font-size: 1.125rem; font-family: 'Montserrat', sans-serif;">💼 ROI</h4>
+                    <p style="color: #555555; font-size: 0.95rem; line-height: 1.6; font-family: 'Montserrat', sans-serif;">
+                        <strong>€250K-500K</strong> ahorro anual en tiempo de análisis (empresa 500+ empleados)
+                    </p>
+                </div>
+            </div>
+
+            <!-- RECURSOS -->
+            <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div style="background: #E8F7FA; padding: 1.5rem; border-radius: 1rem; border: 2px solid #49B9CE;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #49B9CE; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">📚 Bibliografía Esencial</h3>
+                    <ul style="color: #555555; font-size: 1rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li>"Principles of Gestalt Psychology" (Koffka, 1935)</li>
+                        <li>"Laws of Seeing" (Metzger, 1936)</li>
+                        <li>"Visual Perception" (Stephen Palmer, 1999)</li>
+                        <li>"Information Visualization" (Ware, 2012)</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #F0EDF5; padding: 1.5rem; border-radius: 1rem; border: 2px solid #8A7AAF;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: #8A7AAF; margin-bottom: 1rem; text-align: center; font-family: 'Montserrat', sans-serif;">🛠️ Herramientas</h3>
+                    <ul style="color: #555555; font-size: 1rem; line-height: 1.7; margin-left: 1.5rem; font-family: 'Montserrat', sans-serif;">
+                        <li><strong>Figma/Sketch:</strong> Prototipar dashboards</li>
+                        <li><strong>D3.js:</strong> Implementar leyes en web</li>
+                        <li><strong>Plotly:</strong> Interactividad nativa</li>
+                        <li><strong>Gestalt.js:</strong> Framework específico</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER CON PINGÜINO ANIMADO -->
+        <footer style="text-align: center; color: #555555; margin-top: 3rem; padding: 2rem; border-top: 3px solid #49B9CE; background: white; border-radius: 1rem; position: relative;">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 2rem; font-weight: 700; color: #49B9CE; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">iLERNA</h3>
+                <p style="font-size: 1.125rem; font-weight: 700; color: #333333; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif;">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" style="color: #49B9CE; text-decoration: none; font-weight: 700; font-size: 1rem; font-family: 'Montserrat', sans-serif;" target="_blank">www.ilerna.es</a>
+            </div>
+            <p style="font-size: 0.875rem; color: #777777; font-family: 'Montserrat', sans-serif;">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p style="font-size: 0.875rem; color: #777777; margin-top: 0.5rem; font-family: 'Montserrat', sans-serif;">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            
+            <!-- Pingüino animado -->
+            <div style="margin-top: 2rem; font-size: 3rem; animation: bounce 2s infinite;">
+                🐧
+            </div>
+            <p style="font-size: 0.875rem; color: #49B9CE; margin-top: 0.5rem; font-weight: 600; font-family: 'Montserrat', sans-serif;">¡Tu cerebro agradece el buen diseño!</p>
+        </footer>
+    </div>
+
+    <!-- CSS para animación del pingüino -->
+    <style>
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        /* Estilos adicionales para mejorar Prism.js */
+        pre[class*="language-"] {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        code[class*="language-"] {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</div>

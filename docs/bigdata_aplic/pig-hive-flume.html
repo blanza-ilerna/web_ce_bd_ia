@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Apache Pig, Hive y Flume: Herramientas fundamentales del ecosistema Hadoop para procesamiento de Big Data, ETL, Data Warehousing e ingesta de logs.">
+    <meta name="author" content="iLERNA">
+    <title>Pig, Hive y Flume | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicación de Big Data</a> ›
+                    <span>Pig, Hive y Flume</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Pig, Hive y Flume</h1>
+                <p class="subtitle">Herramientas Fundamentales del Ecosistema Hadoop para Big Data</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">Introducción al Ecosistema Hadoop</h2>
+                <p>
+                    El ecosistema <strong>Apache Hadoop</strong> incluye múltiples herramientas especializadas para
+                    diferentes tareas de procesamiento de Big Data. Tres de las más importantes son <strong
+                        class="color-primary">Apache Pig</strong>, <strong class="color-secondary">Apache Hive</strong>
+                    y <strong class="color-primary">Apache Flume</strong>, cada una diseñada para resolver problemas
+                    específicos en el flujo de datos masivos.
+                </p>
+                <p>
+                    Estas herramientas permiten a empresas como <strong>Yahoo</strong>, <strong>LinkedIn</strong> y
+                    <strong>Twitter</strong> procesar petabytes de datos diariamente sin necesidad de programar
+                    complejos trabajos MapReduce en Java.
+                </p>
+
+                <!-- CAJA DE EJEMPLO -->
+                <div class="highlight-box primary">
+                    <p class="title">🎯 Caso Real - LinkedIn</p>
+                    <p class="content">LinkedIn procesa más de 1 billón de eventos diarios usando Apache Kafka + Flume
+                        para capturar datos de usuarios, Pig para ETL y transformaciones, y Hive para análisis y
+                        reportes. Su infraestructura maneja 500+ TB de datos nuevos cada día.</p>
+                </div>
+
+                <!-- CONCEPTOS EN GRID -->
+                <h3>Las Tres Herramientas Clave</h3>
+                <div class="grid-features">
+                    <!-- TARJETA AZUL - PIG -->
+                    <div class="feature-card primary">
+                        <h4>🐷 Apache Pig</h4>
+                        <p>Plataforma de análisis de alto nivel con lenguaje Pig Latin. Simplifica ETL y transformación
+                            de datos masivos.</p>
+                    </div>
+                    <!-- TARJETA MORADA - HIVE -->
+                    <div class="feature-card secondary">
+                        <h4>🐝 Apache Hive</h4>
+                        <p>Data warehouse con SQL-like (HiveQL). Permite consultas y análisis masivos usando sintaxis
+                            familiar SQL.</p>
+                    </div>
+                    <!-- TARJETA AZUL - FLUME -->
+                    <div class="feature-card primary">
+                        <h4>💧 Apache Flume</h4>
+                        <p>Sistema distribuido para ingesta de datos. Recolecta, agrega y transporta grandes volúmenes
+                            de logs en tiempo real.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: APACHE PIG -->
+            <section class="section">
+                <h2 class="section-title">🐷 Apache Pig: Análisis de Alto Nivel</h2>
+
+                <!-- SUBSECCIÓN 1 -->
+                <h3>1. ¿Qué es Apache Pig?</h3>
+                <p>
+                    <strong>Apache Pig</strong> es una plataforma de análisis de datos de alto nivel desarrollada por
+                    Yahoo en 2006. Su objetivo principal es <strong>simplificar la programación MapReduce</strong>
+                    mediante un lenguaje de scripting llamado <strong>Pig Latin</strong>, que reduce código Java
+                    complejo a simples instrucciones.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>Reducción de Código</h4>
+                        <p>1 línea de Pig Latin ≈ 200 líneas de Java MapReduce</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>Desarrollo Rápido</h4>
+                        <p>Reduce tiempo de desarrollo en un 90% comparado con MapReduce directo</p>
+                    </div>
+                </div>
+
+                <h4>Arquitectura de Pig</h4>
+                <div class="svg-container">
+                    <svg width="800" height="350" viewBox="0 0 800 350">
+                        <!-- Título -->
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura de Apache Pig</text>
+
+                        <!-- Pig Latin Script -->
+                        <rect x="50" y="60" width="700" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="400" y="90" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Pig Latin Script (users.pig)</text>
+
+                        <!-- Flecha 1 -->
+                        <path d="M 400 110 L 400 135" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+
+                        <!-- Parser -->
+                        <rect x="150" y="140" width="180" height="45" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="240" y="167" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Parser + Optimizer</text>
+
+                        <!-- Execution Engine -->
+                        <rect x="470" y="140" width="180" height="45" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="560" y="167" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Execution Engine</text>
+
+                        <!-- Flecha 2 -->
+                        <path d="M 240 185 L 240 220" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <path d="M 560 185 L 560 220" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+
+                        <!-- Logical Plan -->
+                        <rect x="130" y="225" width="220" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="240" y="250" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Logical Plan (DAG)</text>
+
+                        <!-- Physical Plan -->
+                        <rect x="450" y="225" width="220" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="6" />
+                        <text x="560" y="250" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Physical Plan (MapReduce)</text>
+
+                        <!-- Flecha 3 -->
+                        <path d="M 350 245 L 450 245" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="400" y="235" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Compila</text>
+
+                        <!-- Flecha 4 -->
+                        <path d="M 400 265 L 400 290" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <!-- Hadoop/MapReduce -->
+                        <rect x="200" y="295" width="400" height="45" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="323" font-size="15" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Hadoop MapReduce / Tez / Spark</text>
+
+                        <!-- Marcadores de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- SUBSECCIÓN 2: EJEMPLO PIG LATIN -->
+                <h3>2. Ejemplo Práctico: Análisis de Logs Web</h3>
+                <p>
+                    Vamos a analizar logs de acceso web para encontrar las páginas más visitadas. Este ejemplo muestra
+                    la simplicidad de Pig Latin:
+                </p>
+
+                <pre><code class="language-sql">-- Cargar datos de logs web
+logs = LOAD '/data/web_logs.txt' USING PigStorage(',') 
+       AS (timestamp:chararray, user_id:chararray, page_url:chararray, 
+           status_code:int, response_time:int);
+
+-- Filtrar solo respuestas exitosas (200 OK)
+successful_requests = FILTER logs BY status_code == 200;
+
+-- Agrupar por página
+pages_grouped = GROUP successful_requests BY page_url;
+
+-- Contar visitas por página
+page_counts = FOREACH pages_grouped GENERATE 
+              group AS page_url,
+              COUNT(successful_requests) AS visit_count;
+
+-- Ordenar por visitas (descendente) y tomar top 10
+top_pages = ORDER page_counts BY visit_count DESC;
+top_10 = LIMIT top_pages 10;
+
+-- Guardar resultados
+STORE top_10 INTO '/output/top_pages' USING PigStorage(',');
+
+-- Mostrar resultados
+DUMP top_10;</code></pre>
+
+                <div class="warning-box">
+                    <p class="title">✅ Resultado</p>
+                    <p class="content">Top 10 páginas más visitadas en formato CSV.</p>
+                </div>
+
+                <!-- SUBSECCIÓN 3: CASOS DE USO -->
+                <h3 class="mt-2">3. Casos de Uso Empresariales</h3>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>📊 Yahoo</h4>
+                        <p>Procesa 100+ PB de datos con Pig para análisis de usuarios, anuncios y búsquedas</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>💼 LinkedIn</h4>
+                        <p>ETL de perfiles, conexiones y actividad de 900M+ usuarios</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🐦 Twitter</h4>
+                        <p>Transformación de tweets, análisis de tendencias y métricas de engagement</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: APACHE HIVE -->
+            <section class="section">
+                <h2 class="section-title">🐝 Apache Hive: SQL sobre Hadoop</h2>
+
+                <h3>1. ¿Qué es Apache Hive?</h3>
+                <p>
+                    <strong>Apache Hive</strong> es un sistema de data warehouse construido sobre Hadoop que permite
+                    realizar consultas y análisis de Big Data usando <strong>HiveQL</strong>, un lenguaje similar a SQL.
+                    Desarrollado por Facebook en 2007, Hive traduce consultas SQL a trabajos MapReduce automáticamente.
+                </p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">🎯 Facebook & Hive</p>
+                    <p class="content">Facebook procesa más de 300 PB de datos en Hive diariamente, con más de 100,000
+                        consultas ejecutándose simultáneamente. Analistas sin conocimientos de Java pueden explorar
+                        datos de 3 mil millones de usuarios usando SQL familiar.</p>
+                </div>
+
+                <h4>Arquitectura de Hive</h4>
+                <div class="svg-container">
+                    <svg width="800" height="400" viewBox="0 0 800 400">
+                        <!-- Título -->
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura de Apache Hive</text>
+
+                        <!-- Cliente SQL -->
+                        <rect x="300" y="60" width="200" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="400" y="87" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Cliente HiveQL / JDBC</text>
+
+                        <!-- Flecha -->
+                        <path d="M 400 105 L 400 130" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+
+                        <!-- Hive Server -->
+                        <rect x="280" y="135" width="240" height="50" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="165" font-size="15" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Hive Server 2</text>
+
+                        <!-- Flecha -->
+                        <path d="M 280 160 L 150 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+                        <path d="M 520 160 L 650 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+                        <path d="M 400 185 L 400 210" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+
+                        <!-- Metastore -->
+                        <rect x="50" y="205" width="200" height="45" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="6" />
+                        <text x="150" y="232" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Metastore (Derby/MySQL)</text>
+
+                        <!-- Driver -->
+                        <rect x="300" y="215" width="200" height="35" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="6" />
+                        <text x="400" y="237" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Hive Driver</text>
+
+                        <!-- Optimizer -->
+                        <rect x="550" y="205" width="200" height="45" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="6" />
+                        <text x="650" y="232" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Query Optimizer</text>
+
+                        <!-- Flecha -->
+                        <path d="M 400 250 L 400 275" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple2)"
+                            fill="none" />
+
+                        <!-- Execution Engine -->
+                        <rect x="250" y="280" width="300" height="45" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="307" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">Execution Engine (MapReduce/Tez/Spark)</text>
+
+                        <!-- Flecha -->
+                        <path d="M 400 325 L 400 350" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue2)"
+                            fill="none" />
+
+                        <!-- HDFS -->
+                        <rect x="200" y="355" width="400" height="40" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="380" font-size="15" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Montserrat">HDFS - Hadoop Distributed File System</text>
+
+                        <!-- Marcadores -->
+                        <defs>
+                            <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                            <marker id="arrowblue2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>2. Ejemplo: Análisis de Ventas E-commerce</h3>
+                <p>Análisis completo de ventas usando HiveQL estándar:</p>
+
+                <pre><code class="language-sql">-- Crear tabla de ventas
+CREATE EXTERNAL TABLE IF NOT EXISTS sales (
+    order_id STRING,
+    customer_id STRING,
+    product_id STRING,
+    category STRING,
+    price DECIMAL(10,2),
+    quantity INT,
+    order_date DATE,
+    country STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/data/sales/';
+
+-- Crear tabla particionada por año y mes
+CREATE TABLE sales_partitioned (
+    order_id STRING,
+    customer_id STRING,
+    product_id STRING,
+    category STRING,
+    price DECIMAL(10,2),
+    quantity INT,
+    country STRING
+)
+PARTITIONED BY (year INT, month INT)
+STORED AS ORC;
+
+-- Insertar datos con particionamiento
+INSERT INTO sales_partitioned PARTITION(year, month)
+SELECT 
+    order_id,
+    customer_id,
+    product_id,
+    category,
+    price,
+    quantity,
+    country,
+    YEAR(order_date) as year,
+    MONTH(order_date) as month
+FROM sales;
+
+-- Análisis: Top 5 productos por categoría
+SELECT 
+    category,
+    product_id,
+    SUM(price * quantity) as total_revenue,
+    COUNT(DISTINCT order_id) as num_orders,
+    AVG(price) as avg_price
+FROM sales_partitioned
+WHERE year = 2024 AND month = 12
+GROUP BY category, product_id
+ORDER BY category, total_revenue DESC
+LIMIT 5;
+
+-- Análisis: Ventas por país con ventana móvil
+SELECT 
+    country,
+    SUM(price * quantity) as revenue,
+    COUNT(DISTINCT customer_id) as unique_customers,
+    AVG(price * quantity) as avg_order_value,
+    RANK() OVER (ORDER BY SUM(price * quantity) DESC) as country_rank
+FROM sales_partitioned
+WHERE year = 2024
+GROUP BY country;</code></pre>
+
+                <div class="warning-box">
+                    <p class="title">✅ Resultado</p>
+                    <p class="content">Análisis de millones de transacciones en minutos.</p>
+                </div>
+
+                <h3>3. Ventajas de Apache Hive</h3>
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4>📊 SQL Familiar</h4>
+                        <p>Analistas pueden usar conocimientos SQL existentes sin aprender programación MapReduce</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>⚡ Optimización</h4>
+                        <p>Cost-based optimizer mejora rendimiento hasta 10x con particionamiento y formatos ORC</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🔌 Integración BI</h4>
+                        <p>Compatible con Tableau, Power BI y otras herramientas vía JDBC/ODBC</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: APACHE FLUME -->
+            <section class="section">
+                <h2 class="section-title">💧 Apache Flume: Ingesta de Datos en Tiempo Real</h2>
+
+                <h3>1. ¿Qué es Apache Flume?</h3>
+                <p>
+                    <strong>Apache Flume</strong> es un sistema distribuido, confiable y disponible para recolectar,
+                    agregar y mover eficientemente <strong>grandes volúmenes de datos de logs</strong> desde múltiples
+                    fuentes hacia un almacenamiento centralizado (HDFS, HBase, Kafka).
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">🎯 Twitter & Flume</p>
+                    <p class="content">Twitter ingiere más de 500 millones de tweets diarios (~12 TB) usando Flume. Los
+                        datos fluyen desde servidores web → Flume → HDFS en menos de 1 segundo, permitiendo análisis de
+                        tendencias en tiempo real.</p>
+                </div>
+
+                <h4>Arquitectura de Flume</h4>
+                <div class="svg-container">
+                    <svg width="800" height="420" viewBox="0 0 800 420">
+                        <!-- Título -->
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">Arquitectura de Apache Flume - Flujo de Datos</text>
+
+                        <!-- Sources (múltiples) -->
+                        <!-- Sources (múltiples) -->
+                        <text x="100" y="65" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat"
+                            text-anchor="middle">SOURCES</text>
+                        <rect x="50" y="85" width="100" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="100" y="110" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Web Logs</text>
+
+                        <rect x="50" y="135" width="100" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="100" y="160" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">App Logs</text>
+
+                        <rect x="50" y="185" width="100" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="100" y="210" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Syslog</text>
+
+                        <rect x="50" y="235" width="100" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="100" y="260" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Twitter API</text>
+
+                        <!-- Flechas a Agent 1 -->
+                        <path d="M 150 105 L 220 160" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue3)"
+                            fill="none" />
+                        <path d="M 150 155 L 220 160" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue3)"
+                            fill="none" />
+                        <path d="M 150 205 L 220 170" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue3)"
+                            fill="none" />
+                        <path d="M 150 255 L 220 170" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue3)"
+                            fill="none" />
+
+                        <!-- Agent 1 -->
+                        <!-- Agent 1 -->
+                        <text x="280" y="65" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat"
+                            text-anchor="middle">FLUME AGENT 1</text>
+                        <rect x="225" y="110" width="110" height="80" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="8" />
+
+                        <rect x="235" y="120" width="90" height="20" fill="#A3E0EA" rx="3" />
+                        <text x="280" y="134" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Source</text>
+
+                        <rect x="235" y="145" width="90" height="20" fill="#A3E0EA" rx="3" />
+                        <text x="280" y="159" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Channel</text>
+
+                        <rect x="235" y="170" width="90" height="15" fill="#A3E0EA" rx="3" />
+                        <text x="280" y="181" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Sink</text>
+
+                        <!-- Flechas a Agent 2 -->
+                        <path d="M 335 150 L 410 210" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue3)"
+                            fill="none" />
+
+                        <!-- Agent 2 (Aggregator) -->
+                        <!-- Agent 2 (Aggregator) -->
+                        <text x="465" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" font-family="Montserrat"
+                            text-anchor="middle">AGGREGATOR</text>
+                        <rect x="415" y="195" width="100" height="70" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="8" />
+
+                        <rect x="422" y="203" width="86" height="18" fill="#C5B9D8" rx="3" />
+                        <text x="465" y="215" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Source</text>
+
+                        <rect x="422" y="225" width="86" height="18" fill="#C5B9D8" rx="3" />
+                        <text x="465" y="237" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Channel</text>
+
+                        <rect x="422" y="247" width="86" height="14" fill="#C5B9D8" rx="3" />
+                        <text x="465" y="257" font-size="9" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Sink</text>
+
+                        <!-- Flechas a Destinos -->
+                        <path d="M 515 215 L 580 140" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple3)"
+                            fill="none" />
+                        <path d="M 515 230 L 580 190" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple3)"
+                            fill="none" />
+                        <path d="M 515 245 L 580 240" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple3)"
+                            fill="none" />
+                        <path d="M 515 260 L 580 290" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple3)"
+                            fill="none" />
+
+                        <!-- Destinos -->
+                        <!-- Destinos -->
+                        <text x="650" y="65" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat"
+                            text-anchor="middle">SINKS</text>
+
+                        <rect x="585" y="120" width="130" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="145" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">HDFS</text>
+
+                        <rect x="585" y="170" width="130" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="195" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">HBase</text>
+
+                        <rect x="585" y="220" width="130" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="245" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Kafka</text>
+
+                        <rect x="585" y="270" width="130" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="650" y="295" font-size="12" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">ElasticSearch</text>
+
+                        <!-- Leyenda inferior -->
+                        <rect x="50" y="340" width="700" height="60" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                            rx="8" />
+                        <text x="400" y="360" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle"
+                            font-family="Montserrat">💡 Garantías de Flume</text>
+                        <text x="400" y="380" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">✓ Transacciones: Entrega garantizada (at-least-once)</text>
+                        <text x="400" y="395" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">✓ Durabilidad: Channel en memoria o disco persistente</text>
+
+                        <!-- Marcadores -->
+                        <defs>
+                            <marker id="arrowblue3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>2. Configuración Práctica: Logs Web a HDFS</h3>
+                <p>Ejemplo de configuración de Flume para capturar logs de Apache y almacenarlos en HDFS:</p>
+
+                <pre><code class="language-bash"># weblog-agent.conf - Configuración de Flume Agent
+
+# Definir componentes del agente
+agent.sources = apache-source
+agent.channels = memory-channel
+agent.sinks = hdfs-sink
+
+# Configurar SOURCE (Tail de archivo de log)
+agent.sources.apache-source.type = exec
+agent.sources.apache-source.command = tail -F /var/log/apache2/access.log
+agent.sources.apache-source.channels = memory-channel
+agent.sources.apache-source.batchSize = 1000
+
+# Configurar CHANNEL (Buffer en memoria)
+agent.channels.memory-channel.type = memory
+agent.channels.memory-channel.capacity = 10000
+agent.channels.memory-channel.transactionCapacity = 1000
+
+# Configurar SINK (Escritura a HDFS)
+agent.sinks.hdfs-sink.type = hdfs
+agent.sinks.hdfs-sink.channel = memory-channel
+agent.sinks.hdfs-sink.hdfs.path = /flume/weblogs/%Y/%m/%d/%H
+agent.sinks.hdfs-sink.hdfs.filePrefix = apache-log-
+agent.sinks.hdfs-sink.hdfs.fileSuffix = .log
+agent.sinks.hdfs-sink.hdfs.rollInterval = 3600
+agent.sinks.hdfs-sink.hdfs.rollSize = 134217728
+agent.sinks.hdfs-sink.hdfs.rollCount = 0
+agent.sinks.hdfs-sink.hdfs.fileType = DataStream
+agent.sinks.hdfs-sink.hdfs.writeFormat = Text
+agent.sinks.hdfs-sink.hdfs.batchSize = 1000
+agent.sinks.hdfs-sink.hdfs.useLocalTimeStamp = true
+
+# Ejecutar Flume Agent:
+# flume-ng agent --conf-file weblog-agent.conf --name agent</code></pre>
+
+                <div class="warning-box">
+                    <p class="title">✅ Resultado</p>
+                    <p class="content">Logs organizados en HDFS por fecha/hora automáticamente.</p>
+                </div>
+
+                <h3>3. Casos de Uso Empresariales</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>🌐 Netflix</h4>
+                        <p>Captura 500 mil millones de eventos/día de streaming: reproducciones, pausas, búsquedas,
+                            clics</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🛒 eBay</h4>
+                        <p>Ingesta de logs de 100,000+ servidores web para análisis de tráfico y fraude</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🏦 JP Morgan</h4>
+                        <p>Recolección de transacciones financieras en tiempo real para detección de anomalías</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: COMPARACIÓN -->
+            <section class="section">
+                <h2 class="section-title">⚖️ Comparación: Pig vs Hive vs Flume</h2>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>🐷 Apache Pig</th>
+                                <th>🐝 Apache Hive</th>
+                                <th>💧 Apache Flume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Propósito Principal</strong></td>
+                                <td>ETL y transformación</td>
+                                <td>Data warehouse y SQL</td>
+                                <td>Ingesta en tiempo real</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lenguaje</strong></td>
+                                <td>Pig Latin (procedural)</td>
+                                <td>HiveQL (declarativo)</td>
+                                <td>Configuración</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tipo</strong></td>
+                                <td>Batch</td>
+                                <td>Batch (interactivo opcional)</td>
+                                <td>Streaming</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Curva de Aprendizaje</strong></td>
+                                <td>Media (sintaxis propia)</td>
+                                <td>Baja (SQL estándar)</td>
+                                <td>Media-Alta (configuración)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Usuarios</strong></td>
+                                <td>Data engineers</td>
+                                <td>Analistas, Data Scientists</td>
+                                <td>DevOps, Data Engineers</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia</strong></td>
+                                <td>Minutos a horas</td>
+                                <td>Segundos a minutos</td>
+                                <td>Subsegundos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: INTEGRACIÓN -->
+            <section class="section">
+                <h2 class="section-title">🔗 Pipeline Integrado: Flume → Pig → Hive</h2>
+                <p>
+                    En la práctica, estas tres herramientas se <strong>complementan perfectamente</strong> en un
+                    pipeline de Big Data:
+                </p>
+
+                <div class="svg-container">
+                    <svg width="100%" height="auto" viewBox="0 0 850 420">
+                        <!-- Título -->
+                        <text x="425" y="40" font-size="20" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Pipeline Completo de Big Data</text>
+
+                        <!-- Paso 1: Ingesta con Flume -->
+                        <rect x="50" y="80" width="180" height="110" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="140" y="110" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">PASO 1: INGESTA</text>
+                        <text x="140" y="135" font-size="24" text-anchor="middle">💧</text>
+                        <text x="140" y="160" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Apache Flume</text>
+                        <text x="140" y="180" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Captura logs</text>
+
+                        <!-- Flecha 1 -->
+                        <path d="M 230 135 L 320 135" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue4)"
+                            fill="none" />
+                        <text x="280" y="125" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Streaming</text>
+
+                        <!-- Paso 2: Transformación con Pig -->
+                        <rect x="330" y="80" width="180" height="110" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="10" />
+                        <text x="420" y="110" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Montserrat">PASO 2: ETL</text>
+                        <text x="420" y="135" font-size="24" text-anchor="middle">🐷</text>
+                        <text x="420" y="160" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Apache Pig</text>
+                        <text x="420" y="180" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Limpia y transforma</text>
+
+                        <!-- Flecha 2 -->
+                        <path d="M 510 135 L 600 135" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrowpurple4)"
+                            fill="none" />
+                        <text x="560" y="125" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Datos limpios</text>
+
+                        <!-- Paso 3: Análisis con Hive -->
+                        <rect x="610" y="80" width="180" height="110" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="700" y="110" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Montserrat">PASO 3: ANÁLISIS</text>
+                        <text x="700" y="135" font-size="24" text-anchor="middle">🐝</text>
+                        <text x="700" y="160" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Montserrat">Apache Hive</text>
+                        <text x="700" y="180" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Montserrat">Consultas SQL</text>
+
+                        <!-- Ejemplo de datos debajo -->
+                        <rect x="50" y="230" width="740" height="140" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                            rx="8" />
+                        <text x="420" y="260" font-size="15" font-weight="bold" fill="#E65100" text-anchor="middle"
+                            font-family="Montserrat">📊 Ejemplo: Análisis de E-commerce</text>
+
+                        <text x="70" y="295" font-size="13" fill="#333333" font-family="Montserrat">1. <tspan
+                                fill="#49B9CE" font-weight="bold">Flume:</tspan> Captura clics, compras y búsquedas en
+                            tiempo real → HDFS</text>
+                        <text x="70" y="325" font-size="13" fill="#333333" font-family="Montserrat">2. <tspan
+                                fill="#8A7AAF" font-weight="bold">Pig:</tspan> Limpia datos, filtra bots, enriquece con
+                            geolocalización</text>
+                        <text x="70" y="355" font-size="13" fill="#333333" font-family="Montserrat">3. <tspan
+                                fill="#49B9CE" font-weight="bold">Hive:</tspan> Genera reportes: productos más vendidos,
+                            conversión, AOV</text>
+
+                        <!-- Marcadores -->
+                        <defs>
+                            <marker id="arrowblue4" markerWidth="3" markerHeight="3" refX="9" refY="5" orient="auto"
+                                markerUnits="strokeWidth" viewBox="0 0 10 10">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple4" markerWidth="3" markerHeight="3" refX="9" refY="5" orient="auto"
+                                markerUnits="strokeWidth" viewBox="0 0 10 10">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>💡 Ventajas del Pipeline</h4>
+                        <ul>
+                            <li><strong>Especialización:</strong> Cada herramienta hace lo que mejor sabe</li>
+                            <li><strong>Flexibilidad:</strong> Intercambiables según necesidades</li>
+                            <li><strong>Escalabilidad:</strong> Cada componente escala independiente</li>
+                            <li><strong>Madurez:</strong> Tecnologías probadas en producción</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🎯 Consideraciones</h4>
+                        <ul>
+                            <li><strong>Latencia:</strong> Batch vs Streaming según caso</li>
+                            <li><strong>Complejidad:</strong> Más componentes = más mantenimiento</li>
+                            <li><strong>Alternativas:</strong> Spark puede reemplazar Pig + Hive</li>
+                            <li><strong>Cloud:</strong> Servicios gestionados simplifican operación</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: RESUMEN -->
+            <section class="section">
+                <h2 class="section-title">📚 Resumen Final</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>🐷 Apache Pig</h4>
+                        <ul>
+                            <li><strong>Lenguaje:</strong> Pig Latin (procedural)</li>
+                            <li><strong>Uso:</strong> ETL, transformaciones complejas</li>
+                            <li><strong>Ventaja:</strong> Reduce código 90% vs MapReduce</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4>🐝 Apache Hive</h4>
+                        <ul>
+                            <li><strong>Lenguaje:</strong> HiveQL (SQL declarativo)</li>
+                            <li><strong>Uso:</strong> Data warehouse, consultas ad-hoc</li>
+                            <li><strong>Ventaja:</strong> SQL familiar para analistas</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4>💧 Apache Flume</h4>
+                        <ul>
+                            <li><strong>Lenguaje:</strong> Configuración (properties)</li>
+                            <li><strong>Uso:</strong> Ingesta de logs y eventos</li>
+                            <li><strong>Ventaja:</strong> Streaming confiable y escalable</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title">🎯 Conclusión</p>
+                    <p class="content">
+                        Pig, Hive y Flume son herramientas complementarias que <strong>democratizan el acceso a Big
+                            Data</strong>. Flume captura datos en tiempo real, Pig los transforma y limpia, y Hive
+                        permite análisis SQL a escala. Juntas, forman la base de millones de pipelines de datos en
+                        empresas Fortune 500, procesando <strong>exabytes de información diariamente</strong>.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

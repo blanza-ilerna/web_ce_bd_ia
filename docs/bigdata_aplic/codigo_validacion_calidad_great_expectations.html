@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a validar la calidad de tus datos en pipelines de Big Data utilizando la librería de Python Great Expectations. Ejemplo práctico y comandos esenciales.">
+    <meta name="author" content="iLERNA">
+    <title>Calidad de Datos con Great Expectations | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicación de Big Data</a> ›
+                    <span>Validación con Great Expectations</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Validación de Calidad con Great Expectations</h1>
+                <p class="subtitle">Asegurando la fiabilidad de los datos en entornos productivos</p>
+            </div>
+
+            <!-- SECCIÓN 1: ¿QUÉ ES GREAT EXPECTATIONS? -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es Great Expectations (GX)?</h2>
+                <p>
+                    <strong>Great Expectations</strong> es la herramienta estándar de código abierto en Python para
+                    <strong>validar, documentar y perfilar</strong> datos. Su filosofía principal es tratar la calidad
+                    de los datos como código ("Data Quality as Code"), lo que permite automatizar pruebas y generar
+                    documentación que se mantiene siempre actualizada.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>🔍 Validación Automatizada</h4>
+                        <p>Evita que datos corruptos ("silent failures") rompan tus pipelines o contaminen tus reportes
+                            de BI. Si los datos no cumplen las reglas, el pipeline se detiene.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>📄 Data Docs</h4>
+                        <p>Genera documentación HTML legible para humanos directamente desde tus pruebas. Traduce código
+                            complejo en un reporte visual de "Qué datos tenemos" y "Qué esperamos de ellos".</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: CASOS DE USO Y FUNCIONALIDADES -->
+            <section class="section">
+                <h3 class="section-title">Casos de Uso Principales</h3>
+
+                <div class="grid-3">
+                    <div class="feature-card primary">
+                        <h4>🛡️ Protección de Pipelines ETL</h4>
+                        <p>Validar datos justo después de la ingesta (Bronze layer) antes de transformarlos. Si llegan
+                            nulos excesivos o formatos erróneos, se alerta al equipo.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🤖 Machine Learning</h4>
+                        <p>Asegurar que las "features" de entrenamiento mantengan su distribución estadística. Evita el
+                            "Training-Serving Skew" validando los datos de inferencia.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🔄 Migración de Datos</h4>
+                        <p>Doble validación: asegurar que el número de filas y valores agregados en el sistema destino
+                            coinciden exactamente con el sistema origen.</p>
+                    </div>
+                </div>
+
+                <h3>Expectativas Comunes (Functionalities)</h3>
+                <p>La librería ofrece más de 50 expectativas predefinidas ("Expectations"). Aquí tienes las más
+                    esenciales para empezar:</p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">
+                            expect_table_row_count_to_equal</p>
+                        <p class="description"><strong>📏 Volumen:</strong> Verifica que el número total de filas sea
+                            exactamente el esperado (e.g. validación post-migración).</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">
+                            expect_column_values_to_be_unique</p>
+                        <p class="description"><strong>🔑 Unicidad:</strong> Detecta duplicados no deseados. Fundamental
+                            para claves primarias (PKs) y IDs de transacciones.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">
+                            expect_column_values_to_not_be_null</p>
+                        <p class="description"><strong>🚫 Completitud:</strong> Asegura que no existan valores nulos en
+                            campos críticos. Permite configurar un umbral de tolerancia (mostly).</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">
+                            expect_column_values_to_match_regex</p>
+                        <p class="description"><strong>📝 Formato:</strong> Valida que los strings cumplan patrones
+                            complejos como emails, DNIs, teléfonos o códigos postales.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">
+                            expect_column_mean_to_be_between</p>
+                        <p class="description"><strong>📊 Distribución:</strong> Validación estadística avanzada. Alerta
+                            si la media (o desviación) de una columna numérica se desvía de lo esperado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: COMANDOS CLI IMPORTANES -->
+            <section class="section">
+                <h2 class="section-title">⌨️ Comandos CLI Importantes</h2>
+                <p>Aunque se puede usar como librería, su CLI (Command Line Interface) es muy potente para configurar
+                    proyectos:</p>
+
+                <div class="code-container">
+                    <pre><code class="language-bash"># Inicializar un proyecto de Data Quality
+great_expectations init
+
+# Conectar a una fuente de datos (CSV, SQL, Spark, Pandas)
+great_expectations datasource new
+
+# Crear una nueva Suite de Expectativas (Profiling automático)
+great_expectations suite new
+
+# Crear checkpoints para validar datos
+great_expectations checkpoint new
+
+# Construir y abrir la documentación HTML
+great_expectations docs build</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CÓDIGO DE EJEMPLO -->
+            <section class="section">
+                <h2 class="section-title">💻 Implementación Práctica en Python</h2>
+                <p>
+                    A continuación, implementaremos un script de validación que carga un dataset de ventas, define
+                    reglas de negocio críticas y genera un reporte de resultados.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">import great_expectations as ge
+import pandas as pd
+from great_expectations.dataset import PandasDataset
+
+# 1. Cargar dataset desde HDFS o archivo local
+# Simulamos carga de datos crudos
+data = pd.read_csv("hdfs://namenode:8021/data/ventas.csv")
+
+# Convertimos el DataFrame de Pandas a un Dataset de Great Expectations
+df = ge.from_pandas(data)
+
+# 2. Definir expectativas de calidad
+
+# Completitud: Permitimos un margen de error del 5% de nulos (mostly=0.95)
+df.expect_column_values_to_not_be_null(column="precio", mostly=0.95)
+
+# Validez: El precio debe ser un número positivo sensato
+df.expect_column_values_to_be_between(column="precio", min_value=0)
+
+# Unicidad: Cada venta debe tener un ID único (sin duplicados)
+df.expect_column_values_to_be_unique(column="id_venta")
+
+# Consistencia: La región debe pertenecer a nuestro mapa operativo
+df.expect_column_values_to_be_in_set(
+    column="region",
+    value_set=["US", "EU", "APAC"]
+)
+
+# 3. Ejecutar validación
+validation_result = df.validate()
+
+# 4. Generar informe y tomar decisiones
+if validation_result["success"]:
+    print("✅ Todas las validaciones pasaron con éxito")
+else:
+    print("❌ Errores de calidad detectados:")
+    print(validation_result)
+
+# 5. Guardar resultados en HDFS (Formato JSON)
+with open("hdfs://namenode:8021/quality_reports/ventas_report.json", "w") as f:
+    f.write(str(validation_result))</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: EXPLICACIÓN DEL CÓDIGO -->
+            <section class="section">
+                <h2 class="section-title">🔍 Análisis del Script</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card secondary">
+                        <h4>1. Carga y Conversión (`ge.from_pandas`)</h4>
+                        <p>Cargamos los datos normalmente con Pandas, pero el paso clave es envolverlos con
+                            `ge.from_pandas()`. Esto añade al DataFrame los "superpoderes" de validación, permitiéndole
+                            entender métodos como `expect_...`.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4>2. Reglas de Negocio (Expectativas)</h4>
+                        <ul>
+                            <li><strong>mostly=0.95:</strong> Es una característica "fuzzy". Acepta que los datos no
+                                sean perfectos; la prueba pasa si al menos el 95% de las filas tienen precio.</li>
+                            <li><strong>in_set:</strong> Valida integridad referencial básica (Domain Integrity),
+                                asegurando que no aparezcan regiones inventadas como "MARS".</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning">
+                    <p class="title">🛑 El Objeto validation_result</p>
+                    <p class="content">
+                        La variable `validation_result` es un diccionario JSON rico en información. No solo dice
+                        `success: false`, sino que detalla:
+                        <br>• Qué expectativa falló.
+                        <br>• Cuántas filas fallaron (element_count, unexpected_count).
+                        <br>• <strong>Muestra de los valores erróneos</strong> (partial_unexpected_list), lo cual
+                        facilita enormemente la depuración.
+                    </p>
+                </div>
+            </section>
+
+            <!-- RESUMEN -->
+            <section class="section">
+                <h2 class="section-title">📚 Resumen</h2>
+                <div class="scenario-box neutral">
+                    <p>
+                        Implementar <strong>Great Expectations</strong> transforma la calidad de datos de un proceso
+                        reactivo ("¡El reporte está roto!") a uno proactivo. Al integrar este script en tu orquestador
+                        (como Airflow), garantizas que solo los datos que cumplen tus estándares de calidad fluyan hacia
+                        tus sistemas de análisis.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

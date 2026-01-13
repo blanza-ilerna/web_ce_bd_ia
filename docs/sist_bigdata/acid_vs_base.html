@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ACID vs BASE: Paradigmas de consistencia en bases de datos. Comparativa entre sistemas relacionales y NoSQL para Big Data">
+    <meta name="author" content="iLERNA">
+    <title>ACID vs BASE en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>ACID vs BASE</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>ACID vs BASE</h1>
+                <p class="subtitle">Paradigmas de Consistencia en Bases de Datos para Big Data</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué son ACID y BASE?</h2>
+                <p>En el mundo de las bases de datos, existen dos filosofías fundamentales que definen cómo se manejan
+                    las transacciones y la consistencia de datos: <strong>ACID</strong> y <strong>BASE</strong>. Estas
+                    no son tecnologías específicas, sino <strong>paradigmas de diseño</strong> que determinan el
+                    comportamiento de un sistema de base de datos.</p>
+                <p><strong>ACID</strong> (Atomicity, Consistency, Isolation, Durability) es el modelo tradicional de
+                    bases de datos relacionales como <strong>MySQL, PostgreSQL y Oracle</strong>, donde la
+                    <strong>consistencia</strong> es la prioridad absoluta. Por otro lado, <strong>BASE</strong>
+                    (Basically Available, Soft state, Eventually consistent) es el enfoque de sistemas distribuidos y
+                    NoSQL como <strong>MongoDB, Cassandra y DynamoDB</strong>, donde la <strong>disponibilidad</strong>
+                    y <strong>escalabilidad</strong> son más importantes que la consistencia inmediata.
+                </p>
+
+                <!-- CAJA DE EJEMPLO -->
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo Real:</p>
+                    <p class="content"><strong>Amazon</strong> usa ACID en su sistema de pagos (consistencia crítica: no
+                        se puede cobrar dos veces) pero BASE en su catálogo de productos (si el stock aparece
+                        desactualizado 2 segundos, no es crítico).</p>
+                </div>
+
+                <!-- CONCEPTOS EN GRID -->
+                <h3>Contexto Histórico</h3>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>🏦 Era ACID (1970-2000)</h4>
+                        <p>Bancos, sistemas financieros. Servidores únicos potentes. Transacciones perfectas o nada.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🌐 Revolución Web (2000+)</h4>
+                        <p>Google, Facebook, Amazon. Millones de usuarios. Necesidad de escalar horizontalmente.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>📊 Teorema CAP</h4>
+                        <p>Solo puedes garantizar 2 de 3: Consistencia, Disponibilidad, Tolerancia a particiones.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>⚖️ Elección de Diseño</h4>
+                        <p>ACID sacrifica disponibilidad por consistencia. BASE sacrifica consistencia inmediata por
+                            disponibilidad.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: PROPIEDADES ACID -->
+            <section class="section">
+                <h2 class="section-title">🔒 Propiedades ACID en Profundidad</h2>
+
+                <!-- ATOMICITY -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">A - Atomicity (Atomicidad)</h3>
+                    <p>Una transacción es una unidad <strong>indivisible</strong> de trabajo: <strong>todo o
+                            nada</strong>. Si falla cualquier parte de la transacción, se deshacen TODOS los cambios
+                        (rollback).</p>
+
+                    <div class="example-box example-blue">
+                        <h4>Ejemplo: Transferencia Bancaria</h4>
+                        <p>María transfiere 100€ a Juan. La atomicidad garantiza que:</p>
+                        <ul>
+                            <li>Se restan 100€ de la cuenta de María <strong>Y</strong></li>
+                            <li>Se suman 100€ a la cuenta de Juan</li>
+                            <li>Si falla el segundo paso, se CANCELA el primero automáticamente</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="mt-1">Implementación en SQL:</h4>
+                    <pre><code class="language-sql">BEGIN TRANSACTION;
+
+-- Paso 1: Restar de María
+UPDATE cuentas SET saldo = saldo - 100 WHERE usuario = 'Maria';
+
+-- Paso 2: Sumar a Juan
+UPDATE cuentas SET saldo = saldo + 100 WHERE usuario = 'Juan';
+
+-- Si ambos pasos exitosos
+COMMIT;
+
+-- Si cualquiera falla
+ROLLBACK;</code></pre>
+                </div>
+
+                <!-- CONSISTENCY -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">C - Consistency (Consistencia)</h3>
+                    <p>La base de datos pasa de un <strong>estado válido a otro estado válido</strong>. Todas las
+                        reglas de integridad (constraints, foreign keys, checks) deben cumplirse SIEMPRE.</p>
+
+                    <div class="example-box example-purple">
+                        <h4>Reglas de Integridad</h4>
+                        <ul>
+                            <li><strong>NOT NULL:</strong> Campos obligatorios no pueden ser vacíos</li>
+                            <li><strong>UNIQUE:</strong> No se permiten valores duplicados</li>
+                            <li><strong>FOREIGN KEY:</strong> Referencias entre tablas deben ser válidas</li>
+                            <li><strong>CHECK:</strong> Condiciones personalizadas (ej: saldo >= 0)</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="mt-1">Ejemplo de Violación de Consistencia:</h4>
+                    <pre><code class="language-sql">CREATE TABLE cuentas (
+    id INT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL,
+    saldo DECIMAL(10,2) CHECK (saldo >= 0)  -- Constraint: no saldo negativo
+);
+
+-- Este UPDATE fallará si deja el saldo negativo
+UPDATE cuentas
+SET saldo = saldo - 500  -- Intento restar 500€
+WHERE usuario = 'Pedro' AND saldo = 100;  -- Pedro solo tiene 100€
+
+-- ❌ ERROR: Check constraint 'saldo >= 0' violated
+-- La transacción se rechaza, saldo se mantiene en 100€</code></pre>
+                </div>
+
+                <!-- ISOLATION -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">I - Isolation (Aislamiento)</h3>
+                    <p>Las transacciones concurrentes se ejecutan como si fueran <strong>secuenciales</strong>. Una
+                        transacción no ve los cambios parciales de otra transacción en curso.</p>
+
+                    <h4>Niveles de Aislamiento (de menor a mayor protección):</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nivel</th>
+                                    <th>Dirty Read</th>
+                                    <th>Non-Repeatable Read</th>
+                                    <th>Phantom Read</th>
+                                    <th>Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>READ UNCOMMITTED</strong></td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td>Casi nunca se usa</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>READ COMMITTED</strong></td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td>Default en PostgreSQL</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>REPEATABLE READ</strong></td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td class="error-cell">Sí ❌</td>
+                                    <td>Default en MySQL</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SERIALIZABLE</strong></td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td class="success-cell">No ✓</td>
+                                    <td>Máxima seguridad, lento</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4 class="color-warning">⚠️ Problema de Dirty Read</h4>
+                        <p>Una transacción lee datos modificados por otra transacción que aún no ha hecho COMMIT. Si la
+                            segunda transacción hace ROLLBACK, ¡la primera leyó datos que "nunca existieron"!</p>
+                    </div>
+                </div>
+
+                <!-- DURABILITY -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">D - Durability (Durabilidad)</h3>
+                    <p>Una vez que una transacción hace <strong>COMMIT</strong>, los cambios son
+                        <strong>permanentes</strong>, incluso si el sistema falla inmediatamente después (apagón,
+                        crash).
+                    </p>
+
+                    <h4>Mecanismos de Durabilidad:</h4>
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h5>📝 Write-Ahead Logging (WAL)</h5>
+                            <p>Se escriben los cambios en un log antes de modificar la BD. Si hay crash, se recuperan
+                                del log.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>💾 Checkpoints</h5>
+                            <p>Puntos de sincronización donde se fuerza la escritura de cambios en memoria al disco.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>🔄 Replicación</h5>
+                            <p>Los datos se copian en múltiples servidores para tolerancia a fallos de hardware.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-box example-purple">
+                        <h4>Ejemplo Real: PostgreSQL</h4>
+                        <p>Cuando haces <code>COMMIT</code>, PostgreSQL:</p>
+                        <ol>
+                            <li>Escribe los cambios en el WAL (Write-Ahead Log) en disco</li>
+                            <li>Solo después confirma el COMMIT al cliente</li>
+                            <li>Los cambios en las tablas se escriben en disco más tarde (lazy write)</li>
+                            <li>Si hay crash entre 2 y 3, al reiniciar se recupera desde el WAL</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: PROPIEDADES BASE -->
+            <section class="section">
+                <h2 class="section-title">🌐 Propiedades BASE en Profundidad</h2>
+
+                <!-- BASICALLY AVAILABLE -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">BA - Basically Available (Básicamente Disponible)</h3>
+                    <p>El sistema <strong>garantiza disponibilidad</strong> aunque no garantice que todos los nodos
+                        devuelvan la última versión de los datos. Prioriza <strong>responder SIEMPRE</strong>, aunque
+                        sea con datos levemente desactualizados.</p>
+
+                    <div class="comparison-grid">
+                        <div class="highlight-box primary">
+                            <h4 class="color-primary">ACID: "Si no puedo garantizar consistencia, NO respondo"</h4>
+                            <ul>
+                                <li>Usuario hace petición</li>
+                                <li>El nodo master está caído</li>
+                                <li><strong>Resultado:</strong> Error 503 (servicio no disponible)</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box secondary">
+                            <h4 class="color-secondary">BASE: "Siempre respondo, aunque los datos no sean perfectos"
+                            </h4>
+                            <ul>
+                                <li>Usuario hace petición</li>
+                                <li>El nodo master está caído</li>
+                                <li><strong>Resultado:</strong> Responde un nodo réplica (puede tener datos de hace 1-2
+                                    segundos)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="example-box example-purple">
+                        <h4>Ejemplo: Cassandra (BASE)</h4>
+                        <pre><code class="language-sql">-- Configuración de consistencia en Cassandra
+SELECT * FROM usuarios WHERE id = 12345
+WITH CONSISTENCY LEVEL ONE;
+-- Lee del primer nodo que responda (máxima disponibilidad)
+
+-- vs
+
+SELECT * FROM usuarios WHERE id = 12345
+WITH CONSISTENCY LEVEL QUORUM;
+-- Lee de la mayoría de nodos (más consistencia, menos disponibilidad)</code></pre>
+                    </div>
+                </div>
+
+                <!-- SOFT STATE -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">S - Soft State (Estado Suave/Flexible)</h3>
+                    <p>El estado del sistema <strong>puede cambiar en el tiempo</strong> sin intervención externa,
+                        debido
+                        a la sincronización entre nodos. No hay garantía de consistencia instantánea.</p>
+
+                    <h4 class="color-primary">¿Qué significa en la práctica?</h4>
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h5>🔄 Sin Estado "Definitivo"</h5>
+                            <p>Los datos pueden estar sincronizándose en segundo plano. El estado actual es
+                                "temporal".</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>⏱️ Convergencia Asíncrona</h5>
+                            <p>Los nodos convergen hacia la consistencia con el tiempo, pero no instantáneamente.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>📡 Propagación de Cambios</h5>
+                            <p>Una actualización en Nodo A tarda milisegundos/segundos en llegar a Nodo B.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-box example-blue">
+                        <h4>Ejemplo Visual: MongoDB Replica Set</h4>
+                        <div class="diagram-svg">
+                            <svg width="600" height="300" viewBox="0 0 600 300"
+                                style="border: 2px solid #e5e5e5; border-radius: 1rem; background-color: #fafafa;">
+                                <!-- Timeline -->
+                                <line x1="50" y1="50" x2="550" y2="50" stroke="#333" stroke-width="2" />
+
+                                <!-- t=0 -->
+                                <text x="100" y="40" font-size="12" fill="#333" text-anchor="middle">t=0s</text>
+                                <circle cx="100" cy="100" r="25" fill="#49B9CE" />
+                                <text x="100" y="105" font-size="10" fill="white" text-anchor="middle"
+                                    font-weight="bold">PRIMARY</text>
+                                <text x="100" y="140" font-size="11" fill="#333" text-anchor="middle">likes = 100</text>
+
+                                <!-- t=0.5 -->
+                                <text x="250" y="40" font-size="12" fill="#333" text-anchor="middle">t=0.5s</text>
+                                <circle cx="250" cy="100" r="25" fill="#49B9CE" />
+                                <text x="250" y="105" font-size="10" fill="white" text-anchor="middle"
+                                    font-weight="bold">PRIMARY</text>
+                                <text x="250" y="140" font-size="11" fill="#333" text-anchor="middle">likes = 101
+                                    ✓</text>
+
+                                <circle cx="250" cy="180" r="25" fill="#FFD700" />
+                                <text x="250" y="185" font-size="10" fill="white" text-anchor="middle">SECONDARY</text>
+                                <text x="250" y="220" font-size="11" fill="#E65100" text-anchor="middle">likes = 100
+                                    (viejo!)</text>
+
+                                <!-- t=1 -->
+                                <text x="450" y="40" font-size="12" fill="#333" text-anchor="middle">t=1s</text>
+                                <circle cx="450" cy="100" r="25" fill="#49B9CE" />
+                                <text x="450" y="105" font-size="10" fill="white" text-anchor="middle"
+                                    font-weight="bold">PRIMARY</text>
+                                <text x="450" y="140" font-size="11" fill="#333" text-anchor="middle">likes = 101</text>
+
+                                <circle cx="450" cy="180" r="25" fill="#49B9CE" />
+                                <text x="450" y="185" font-size="10" fill="white" text-anchor="middle">SECONDARY</text>
+                                <text x="450" y="220" font-size="11" fill="#4CAF50" text-anchor="middle">likes = 101 ✓
+                                    (sincronizado)</text>
+
+                                <!-- Arrows -->
+                                <path d="M 125 110 Q 180 115, 225 110" stroke="#49B9CE" stroke-width="2" fill="none"
+                                    marker-end="url(#arrowblue)" />
+                                <path d="M 275 180 Q 350 180, 425 180" stroke="#FFA726" stroke-width="2" fill="none"
+                                    marker-end="url(#arroworange)" />
+
+                                <defs>
+                                    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                        orient="auto" markerUnits="strokeWidth">
+                                        <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                                    </marker>
+                                    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                        orient="auto" markerUnits="strokeWidth">
+                                        <path d="M0,0 L0,6 L9,3 z" fill="#FFA726" />
+                                    </marker>
+                                </defs>
+                            </svg>
+                        </div>
+                        <p class="mt-1"><strong>Durante 0.5 segundos</strong>, el sistema tiene dos "verdades"
+                            simultáneas: PRIMARY dice likes=101, SECONDARY dice likes=100. Este es el "soft state".</p>
+                    </div>
+                </div>
+
+                <!-- EVENTUALLY CONSISTENT -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">E - Eventually Consistent (Consistencia Eventual)</h3>
+                    <p><strong>Eventualmente</strong> (después de un tiempo finito sin nuevas escrituras), todos los
+                        nodos tendrán el mismo valor. La consistencia se <strong>alcanza con el tiempo</strong>, no
+                        instantáneamente.</p>
+
+                    <h4 class="color-secondary">Ventana de Inconsistencia</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sistema</th>
+                                    <th>Ventana de Inconsistencia Típica</th>
+                                    <th>Aceptable para...</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Cassandra</strong></td>
+                                    <td>100-200 ms</td>
+                                    <td>Redes sociales, IoT, logs</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DynamoDB</strong></td>
+                                    <td>~1 segundo</td>
+                                    <td>Catálogos de productos, perfiles de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MongoDB (default)</strong></td>
+                                    <td>500 ms - 2 segundos</td>
+                                    <td>CMS, analytics no críticos</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DNS Global</strong></td>
+                                    <td>Horas o días (TTL)</td>
+                                    <td>Resolución de nombres de dominio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4 class="color-warning">⚠️ Conflictos de Escritura Concurrentes</h4>
+                        <p>Si dos usuarios actualizan el mismo registro simultáneamente en nodos diferentes, BASE
+                            necesita
+                            una estrategia de resolución de conflictos:</p>
+                        <ul>
+                            <li><strong>Last-Write-Wins (LWW):</strong> Gana el cambio más reciente (según timestamp)
+                            </li>
+                            <li><strong>Vector Clocks:</strong> Se detecta el conflicto y se guarda ambas versiones
+                                (cliente decide)</li>
+                            <li><strong>Merge Functions:</strong> Lógica custom para combinar cambios (ej: sumar likes)
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box example-purple">
+                        <h4>Ejemplo: Amazon DynamoDB</h4>
+                        <pre><code class="language-python"># Escritura con consistencia eventual (rápida pero no inmediata)
+dynamodb.put_item(
+    TableName='Products',
+    Item={'id': '12345', 'stock': 50},
+    ReturnConsumedCapacity='NONE'  # Default: eventual consistency
+)
+
+# Lectura con consistencia fuerte (lenta pero garantizada)
+response = dynamodb.get_item(
+    TableName='Products',
+    Key={'id': '12345'},
+    ConsistentRead=True  # Lee del nodo master, garantiza última versión
+)
+
+# Lectura con consistencia eventual (rápida)
+response = dynamodb.get_item(
+    TableName='Products',
+    Key={'id': '12345'},
+    ConsistentRead=False  # Lee de réplica, puede ser versión antigua
+)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: COMPARACIÓN -->
+            <section class="section">
+                <h2 class="section-title">⚖️ Comparación Directa: ACID vs BASE</h2>
+
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criterio</th>
+                                <th style="background: #E8F7FA; color: #49B9CE;">ACID</th>
+                                <th style="background: #F0EDF5; color: #8A7AAF;">BASE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Filosofía</strong></td>
+                                <td>Consistencia a toda costa</td>
+                                <td>Disponibilidad a toda costa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consistencia</strong></td>
+                                <td class="success-cell">Inmediata (Strong)</td>
+                                <td class="warning-cell">Eventual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Disponibilidad</strong></td>
+                                <td class="error-cell">Puede fallar en particiones</td>
+                                <td class="success-cell">Siempre disponible</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Escalabilidad</strong></td>
+                                <td class="error-cell">Vertical (limitada)</td>
+                                <td class="success-cell">Horizontal (ilimitada)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia</strong></td>
+                                <td class="warning-cell">Mayor (locks, validaciones)</td>
+                                <td class="success-cell">Menor (sin locks)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td class="success-cell">Menor (modelo simple)</td>
+                                <td class="error-cell">Mayor (manejo de conflictos)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Casos de Uso</strong></td>
+                                <td>Finanzas, inventarios, reservas</td>
+                                <td>Redes sociales, cachés, IoT, analytics</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary mt-2">Ejemplos de Tecnologías</h3>
+                <div class="comparison-grid">
+                    <div class="highlight-box primary">
+                        <h4 class="color-primary text-center">Sistemas ACID</h4>
+                        <ul>
+                            <li><strong>PostgreSQL</strong> - Base de datos relacional de código abierto</li>
+                            <li><strong>MySQL (InnoDB)</strong> - Motor ACID de MySQL</li>
+                            <li><strong>Oracle Database</strong> - BD corporativa enterprise</li>
+                            <li><strong>SQL Server</strong> - BD de Microsoft</li>
+                            <li><strong>SQLite</strong> - BD embebida ACID</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <h4 class="color-secondary text-center">Sistemas BASE</h4>
+                        <ul>
+                            <li><strong>Cassandra</strong> - BD distribuida columnar</li>
+                            <li><strong>MongoDB</strong> - BD documental (configurable)</li>
+                            <li><strong>DynamoDB</strong> - BD NoSQL de AWS</li>
+                            <li><strong>Redis</strong> - Caché en memoria distribuido</li>
+                            <li><strong>Riak</strong> - BD key-value distribuida</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: DECISIÓN -->
+            <section class="section">
+                <h2 class="section-title">🧭 ¿Cuándo usar ACID y cuándo BASE?</h2>
+
+                <div class="grid-features">
+                    <div class="advantage-box">
+                        <h4>✓ Usa ACID si...</h4>
+                        <ul>
+                            <li><strong>Datos críticos:</strong> Dinero, stock, reservas, votaciones</li>
+                            <li><strong>Transacciones complejas:</strong> Múltiples tablas relacionadas</li>
+                            <li><strong>Consistencia inmediata:</strong> No toleras datos desactualizados</li>
+                            <li><strong>Integridad referencial:</strong> Foreign keys, constraints estrictos</li>
+                            <li><strong>Cumplimiento normativo:</strong> Bancos, salud, finanzas</li>
+                            <li><strong>Volumen moderado:</strong> Millones de registros (no billones)</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantage-box">
+                        <h4>✓ Usa BASE si...</h4>
+                        <ul>
+                            <li><strong>Alta disponibilidad:</strong> Sistema 24/7 sin downtime</li>
+                            <li><strong>Escalabilidad masiva:</strong> Millones de usuarios concurrentes</li>
+                            <li><strong>Geo-distribución:</strong> Usuarios en múltiples continentes</li>
+                            <li><strong>Datos no críticos:</strong> Likes, views, logs, métricas</li>
+                            <li><strong>Tolerancia a inconsistencias:</strong> Datos pueden estar levemente
+                                desactualizados</li>
+                            <li><strong>Big Data:</strong> Petabytes de información</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="color-secondary mt-2">Casos Reales de Decisión</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Caso</th>
+                                <th>Elección</th>
+                                <th>Justificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Transferencia bancaria</strong></td>
+                                <td class="success-cell">ACID</td>
+                                <td>No puede haber dinero "perdido" o "duplicado"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reserva de vuelo</strong></td>
+                                <td class="success-cell">ACID</td>
+                                <td>No se puede vender el mismo asiento dos veces</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Contador de likes en Instagram</strong></td>
+                                <td class="warning-cell">BASE</td>
+                                <td>Si muestra 999 en lugar de 1000 por 1 segundo, no importa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Catálogo de productos Amazon</strong></td>
+                                <td class="warning-cell">BASE</td>
+                                <td>Disponibilidad > consistencia perfecta</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sistema de votación</strong></td>
+                                <td class="success-cell">ACID</td>
+                                <td>Cada voto cuenta una sola vez, sin duplicados</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Logs de servidores</strong></td>
+                                <td class="warning-cell">BASE</td>
+                                <td>Volumen masivo, no crítico si llega con retraso</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box">
+                    <h4 class="color-warning">⚠️ Enfoque Híbrido</h4>
+                    <p>Muchas aplicaciones modernas usan <strong>AMBOS</strong>:</p>
+                    <ul>
+                        <li><strong>Amazon:</strong> ACID para pagos (PostgreSQL) + BASE para catálogo (DynamoDB)</li>
+                        <li><strong>Netflix:</strong> ACID para facturación (MySQL) + BASE para visualizaciones
+                            (Cassandra)</li>
+                        <li><strong>Uber:</strong> ACID para pagos (PostgreSQL) + BASE para tracking GPS (Redis +
+                            Cassandra)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: EJERCICIO PRÁCTICO -->
+            <section class="section">
+                <h2 class="section-title">💡 Caso Práctico: Diseña tu Sistema</h2>
+
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">Escenario: Plataforma de E-Commerce</h3>
+                    <p><strong>Requisitos:</strong></p>
+                    <ul>
+                        <li>100,000 usuarios concurrentes</li>
+                        <li>Catálogo de 5 millones de productos</li>
+                        <li>Sistema de pagos</li>
+                        <li>Inventario de stock</li>
+                        <li>Reseñas y calificaciones de productos</li>
+                        <li>Sistema de recomendaciones</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">✅ Solución Propuesta: Arquitectura Híbrida</h3>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Componente</th>
+                                    <th>Tecnología</th>
+                                    <th>Paradigma</th>
+                                    <th>Justificación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Pagos</strong></td>
+                                    <td>PostgreSQL</td>
+                                    <td class="success-cell">ACID</td>
+                                    <td>Transacciones críticas, no puede haber errores</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Inventario</strong></td>
+                                    <td>PostgreSQL</td>
+                                    <td class="success-cell">ACID</td>
+                                    <td>No se puede vender stock que no existe</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Catálogo</strong></td>
+                                    <td>MongoDB</td>
+                                    <td class="warning-cell">BASE</td>
+                                    <td>Alto volumen de lecturas, datos no críticos</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reseñas</strong></td>
+                                    <td>Cassandra</td>
+                                    <td class="warning-cell">BASE</td>
+                                    <td>Millones de escrituras, eventual consistency OK</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sesiones</strong></td>
+                                    <td>Redis</td>
+                                    <td class="warning-cell">BASE</td>
+                                    <td>Caché rápido, pérdida tolerable</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Recomendaciones</strong></td>
+                                    <td>Elasticsearch</td>
+                                    <td class="warning-cell">BASE</td>
+                                    <td>Búsqueda rápida, datos pueden estar desactualizados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-box example-blue mt-2">
+                        <h4>Resultado</h4>
+                        <ul>
+                            <li><strong>Consistencia:</strong> Garantizada en operaciones críticas (pagos, stock)</li>
+                            <li><strong>Disponibilidad:</strong> 99.99% uptime en catálogo y reseñas</li>
+                            <li><strong>Escalabilidad:</strong> Catálogo y reseñas escalan horizontalmente</li>
+                            <li><strong>Rendimiento:</strong> Búsquedas y recomendaciones en <50ms< /li>
+                            <li><strong>Coste:</strong> Equilibrado - ACID solo donde es crítico</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <!-- SECCIÓN 7: MAPA MENTAL -->
+            <section class="section">
+                <h2 class="section-title">🗺️ Mapa Mental: Resumen de Conceptos</h2>
+
+                <div class="mindmap-container">
+                    <div class="mermaid">
+mindmap
+  root((ACID vs BASE))
+    ACID[ACID - Tradicional/SQL]
+      Atomicity[A: Atomicidad]
+        AtomicDetail(Todo o Nada)
+      Consistency[C: Consistencia]
+        ConsistDetail(Estado Válido)
+      Isolation[I: Aislamiento]
+        IsolDetail(Transacciones Secuenciales)
+      Durability[D: Durabilidad]
+        DurDetail(Cambios Permanentes)
+      ExamplesACID[Ejemplos]
+        PostgreSQL
+        MySQL
+        Oracle
+    BASE[BASE - NoSQL/Distribuido]
+      Available[BA: Basically Available]
+        AvailDetail(Siempre Responde)
+      SoftState[S: Soft State]
+        SoftDetail(Estado Flexible)
+      EventualC[E: Eventually Consistent]
+        EventDetail(Consistencia Eventual)
+      ExamplesBASE[Ejemplos]
+        Cassandra
+        MongoDB
+        DynamoDB
+    Decision[¿Cuándo usar cada uno?]
+      UseACID[Usar ACID]
+        Critical(Datos Críticos)
+        Money(Dinero/Pagos)
+        Stock(Inventarios)
+      UseBASE[Usar BASE]
+        Scale(Escala Masiva)
+        Social(Redes Sociales)
+        IoT(IoT/Logs)
+      Hybrid[Arquitectura Híbrida]
+        BothApproach(Usar ambos según componente)
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</body>
+
+</html>

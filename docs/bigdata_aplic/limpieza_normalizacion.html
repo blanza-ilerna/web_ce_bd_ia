@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Limpieza y Normalización de Datos en Big Data: profiling, estandarización, imputación, eliminación de duplicados y normalización numérica/categórica">
+    <meta name="author" content="iLERNA">
+    <title>Limpieza y Normalización de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        Curso de Especialización
+                        <span>Inteligencia Artificial y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> →
+                    <a href="index.html">Big Data Aplicado</a> →
+                    <span>Limpieza y Normalización</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Limpieza y Normalización de Datos en Big Data</h1>
+                <p class="subtitle">Técnicas de Data Cleansing, Profiling y Estandarización para Entornos Educativos y Científicos</p>
+            </div>
+
+            <!-- TABLE OF CONTENTS -->
+            <section class="section">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">📑 Índice de Contenidos</h3>
+                    <div class="grid-features">
+                        <div class="feature-card toc-card">
+                            <a href="#introduccion">
+                                <h4>1. Introducción</h4>
+                                <p>Importancia de la limpieza de datos</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#etapas">
+                                <h4>2. Etapas de Limpieza</h4>
+                                <p>6 pasos del proceso completo</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#normalizacion">
+                                <h4>3. Normalización</h4>
+                                <p>Numérica, categórica y nomenclaturas</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#herramientas">
+                                <h4>4. Herramientas</h4>
+                                <p>Talend, OpenRefine, PySpark</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#caso-estudio">
+                                <h4>5. Caso de Estudio</h4>
+                                <p>Hospital Clínico San Carlos</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#mapa-mental">
+                                <h4>6. Mapa Mental</h4>
+                                <p>Resumen visual de conceptos</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <h2 class="section-title">🧹 ¿Qué es la Limpieza y Normalización de Datos?</h2>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">Definiciones Fundamentales</h3>
+                    <p><strong>Limpieza de Datos (Data Cleansing):</strong> Proceso sistemático de identificar, corregir y eliminar errores, inconsistencias, duplicados y valores faltantes en los datasets. Es una etapa <strong>crítica del pipeline ETL</strong> que asegura que los datos sean aptos para análisis y modelado.</p>
+
+                    <p><strong>Normalización de Datos:</strong> Transformación de datos a formatos uniformes y escalas comparables. Incluye estandarización de formatos (fechas, códigos), escalado numérico (min-max, z-score) y codificación categórica (one-hot encoding).</p>
+                </div>
+
+                <div class="grid-features mt-2">
+                    <div class="advantage-box">
+                        <h4>✅ Beneficios de la Limpieza</h4>
+                        <ul>
+                            <li><strong>Precisión analítica:</strong> Modelos ML +35% precisión con datos limpios</li>
+                            <li><strong>Reducción de costes:</strong> Evita reprocesamiento y decisiones erróneas</li>
+                            <li><strong>Cumplimiento normativo:</strong> GDPR, HIPAA requieren datos válidos</li>
+                            <li><strong>Confianza organizacional:</strong> Dashboards fiables para toma de decisiones</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantage-box">
+                        <h4>❌ Riesgos de Datos Sucios</h4>
+                        <ul>
+                            <li><strong>Sesgo en modelos:</strong> Predicciones incorrectas por datos incompletos</li>
+                            <li><strong>Pérdida de tiempo:</strong> 50-80% del tiempo de Data Scientists en limpieza</li>
+                            <li><strong>Decisiones erróneas:</strong> Estrategias basadas en análisis con datos defectuosos</li>
+                            <li><strong>Sanciones legales:</strong> Violación de regulaciones por datos inexactos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example-box example-green mt-2">
+                    <h4>📚 Ejemplo Práctico: Universidad Complutense de Madrid</h4>
+                    <p><strong>Contexto:</strong> La UCM gestiona un Data Lake de 15 TB con registros académicos de 87,000 estudiantes desde 1990. Los datos provienen de 6 sistemas legacy diferentes (SAP, SIS académico, biblioteca, moodle, encuestas, portal alumni).</p>
+
+                    <p><strong>Problema detectado:</strong></p>
+                    <ul>
+                        <li>12% de registros con fechas inválidas ("31/02/2024", "2025-13-45")</li>
+                        <li>8,400 duplicados de estudiantes por variaciones de nombre ("María García", "Maria Garcia", "M. García")</li>
+                        <li>Calificaciones en 3 escalas diferentes (0-10, 0-100, A-F) sin normalizar</li>
+                        <li>18% de valores nulos en campo "email_institucional"</li>
+                    </ul>
+
+                    <p><strong>Solución implementada:</strong> Pipeline PySpark automatizado que ejecuta diariamente:</p>
+                    <ol>
+                        <li><strong>Profiling:</strong> Genera reporte de calidad con pandas-profiling</li>
+                        <li><strong>Estandarización:</strong> Convierte todas las fechas a ISO 8601 (YYYY-MM-DD)</li>
+                        <li><strong>Deduplicación:</strong> Algoritmo Jaro-Winkler (threshold 0.92) para fusionar registros similares</li>
+                        <li><strong>Normalización:</strong> Escala todas las calificaciones a 0-10</li>
+                        <li><strong>Imputación:</strong> Genera emails institucionales faltantes usando patrón <code>nombre.apellido@ucm.es</code></li>
+                        <li><strong>Cuarentena:</strong> Registros no corregibles movidos a HDFS zona <code>/quarantine/</code></li>
+                    </ol>
+
+                    <p><strong>Resultado:</strong> Reducción de errores del 38% al 1.2% en 6 meses. Los dashboards de analítica institucional ahora son fiables y se usan para decisiones estratégicas (predicción de abandono, asignación presupuestaria, diseño curricular).</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ETAPAS DEL PROCESO -->
+            <section class="section" id="etapas">
+                <h2 class="section-title">📊 Etapas del Proceso de Limpieza de Datos</h2>
+
+                <!-- ETAPA 1: PROFILING -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">1️⃣ Profiling de Datos (Data Profiling)</h3>
+                    <p>Análisis exploratorio exhaustivo para identificar patrones, anomalías, distribuciones estadísticas y valores atípicos. Es el <strong>paso diagnóstico</strong> antes de cualquier limpieza.</p>
+
+                    <h4 class="color-primary">Métricas Clave del Profiling</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Métrica</th>
+                                    <th>Descripción</th>
+                                    <th>Umbral Aceptable</th>
+                                    <th>Ejemplo Académico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Completitud</strong></td>
+                                    <td>% de valores no nulos</td>
+                                    <td>&gt; 95%</td>
+                                    <td>Campo "asistencia" con 12% nulos → Problema</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Unicidad</strong></td>
+                                    <td>% de valores únicos</td>
+                                    <td>100% para IDs</td>
+                                    <td>student_id con 98.5% unicidad → 1.5% duplicados</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Validez</strong></td>
+                                    <td>% que cumple reglas formato</td>
+                                    <td>&gt; 99%</td>
+                                    <td>emails con 5% inválidos ("@.com", "sin@arroba")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Consistencia</strong></td>
+                                    <td>% coherente cross-fields</td>
+                                    <td>&gt; 98%</td>
+                                    <td>edad=22 pero año_nacimiento=1985 (inconsistente)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cardinalidad</strong></td>
+                                    <td>Número de valores distintos</td>
+                                    <td>Depende del campo</td>
+                                    <td>Campo "país" con 450 valores → debería ser ~200</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="example-box example-blue mb-2">
+                    <h4>💻 Código: Profiling con Pandas y PySpark</h4>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count, isnan, when, countDistinct
+import pandas as pd
+
+# Inicializar Spark
+spark = SparkSession.builder \
+    .appName("DataProfiling_MIT") \
+    .getOrCreate()
+
+# Cargar dataset de estudiantes MIT (5M registros)
+df = spark.read.parquet("hdfs://namenode:9000/data/mit/student_records.parquet")
+
+# ========================================
+# PROFILING BÁSICO: Completitud
+# ========================================
+def calculate_completeness(df):
+    total_rows = df.count()
+    completeness = []
+
+    for column in df.columns:
+        null_count = df.filter(
+            col(column).isNull() |
+            isnan(col(column)) |
+            (col(column) == "")
+        ).count()
+
+        completeness.append({
+            'column': column,
+            'total_rows': total_rows,
+            'null_count': null_count,
+            'completeness_pct': ((total_rows - null_count) / total_rows) * 100
+        })
+
+    return pd.DataFrame(completeness).sort_values('completeness_pct')
+
+completeness_report = calculate_completeness(df)
+print(completeness_report)
+
+# Resultado esperado:
+# column                  total_rows  null_count  completeness_pct
+# emergency_contact        5000000     900000      82.00  ⚠️ PROBLEMA
+# phone_number             5000000     250000      95.00
+# email                    5000000      15000      99.70  ✓
+# student_id               5000000          0     100.00  ✓
+
+# ========================================
+# PROFILING AVANZADO: Unicidad y Duplicados
+# ========================================
+def find_duplicates(df, key_columns):
+    duplicate_counts = df.groupBy(key_columns).count() \
+        .filter(col("count") > 1) \
+        .orderBy(col("count").desc())
+
+    total_duplicates = duplicate_counts.agg({"count": "sum"}).collect()[0][0]
+
+    return duplicate_counts, total_duplicates
+
+# Buscar duplicados por combinación nombre+apellido+fecha_nacimiento
+duplicates_df, total_dups = find_duplicates(
+    df,
+    ['first_name', 'last_name', 'birth_date']
+)
+
+print(f"Total registros duplicados: {total_dups}")
+duplicates_df.show(10)
+
+# Resultado esperado:
+# +----------+---------+----------+-----+
+# |first_name|last_name|birth_date|count|
+# +----------+---------+----------+-----+
+# |John      |Smith    |2000-05-15|    8|  ⚠️ 8 registros idénticos
+# |Maria     |Garcia   |1999-08-22|    5|
+# |Wei       |Zhang    |2001-03-10|    4|
+# +----------+---------+----------+-----+
+
+# ========================================
+# PROFILING: Validez con Expresiones Regulares
+# ========================================
+import re
+
+def validate_email_format(df, email_column):
+    # Patrón regex para emails válidos
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+    df_validated = df.withColumn(
+        'email_valid',
+        col(email_column).rlike(email_regex)
+    )
+
+    invalid_count = df_validated.filter(col('email_valid') == False).count()
+    total_count = df_validated.count()
+    validity_pct = ((total_count - invalid_count) / total_count) * 100
+
+    return df_validated, validity_pct, invalid_count
+
+df_with_validation, validity, invalid = validate_email_format(df, 'email')
+
+print(f"Emails válidos: {validity:.2f}%")
+print(f"Emails inválidos: {invalid:,} registros")
+
+# Mostrar ejemplos de emails inválidos
+df_with_validation.filter(col('email_valid') == False) \
+    .select('student_id', 'email') \
+    .show(10, truncate=False)
+
+# Resultado esperado:
+# Emails válidos: 94.20%
+# Emails inválidos: 290,000 registros
+# +----------+-------------------------+
+# |student_id|email                    |
+# +----------+-------------------------+
+# |STU12345  |john.smith              |  ⚠️ Falta @dominio
+# |STU67890  |maria@                  |  ⚠️ Falta dominio
+# |STU11223  |invalid@.com            |  ⚠️ Dominio inválido
+# |STU44556  |test@@example.com       |  ⚠️ Doble @
+# +----------+-------------------------+
+
+# ========================================
+# PROFILING: Distribución Estadística (Outliers)
+# ========================================
+from pyspark.sql.functions import mean, stddev, percentile_approx
+
+def detect_outliers_iqr(df, numeric_column):
+    # Calcular Q1, Q3, IQR
+    quantiles = df.approxQuantile(numeric_column, [0.25, 0.75], 0.01)
+    Q1, Q3 = quantiles[0], quantiles[1]
+    IQR = Q3 - Q1
+
+    # Límites para outliers
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Detectar outliers
+    outliers = df.filter(
+        (col(numeric_column) < lower_bound) |
+        (col(numeric_column) > upper_bound)
+    )
+
+    outlier_count = outliers.count()
+    outlier_pct = (outlier_count / df.count()) * 100
+
+    return outliers, lower_bound, upper_bound, outlier_pct
+
+# Ejemplo: detectar outliers en calificaciones promedio (GPA)
+outliers_gpa, lower, upper, pct = detect_outliers_iqr(df, 'gpa')
+
+print(f"Rango válido GPA: [{lower:.2f}, {upper:.2f}]")
+print(f"Outliers detectados: {pct:.2f}%")
+
+outliers_gpa.select('student_id', 'gpa', 'major').show(10)
+
+# Resultado esperado:
+# Rango válido GPA: [2.50, 4.00]
+# Outliers detectados: 2.30%
+# +----------+----+-----------------+
+# |student_id|gpa |major            |
+# +----------+----+-----------------+
+# |STU99887  |0.50|Computer Science |  ⚠️ GPA anormalmente bajo
+# |STU55443  |4.80|Physics          |  ⚠️ GPA > 4.0 (error sistema)
+# |STU22110  |-1.2|Mathematics      |  ⚠️ GPA negativo (imposible)
+# +----------+----+-----------------+
+
+# ========================================
+# PROFILING AUTOMÁTICO: Pandas Profiling
+# ========================================
+from pandas_profiling import ProfileReport
+
+# Convertir muestra de Spark a Pandas (1M registros)
+df_sample = df.limit(1000000).toPandas()
+
+# Generar reporte HTML exhaustivo
+profile = ProfileReport(
+    df_sample,
+    title="MIT Student Records - Data Quality Report",
+    explorative=True,
+    minimal=False
+)
+
+# Guardar reporte
+profile.to_file("/reports/mit_profiling_report.html")
+
+print("✅ Reporte de profiling generado en /reports/mit_profiling_report.html")
+print("El reporte incluye:")
+print("  - Distribuciones de todas las variables")
+print("  - Matriz de correlaciones")
+print("  - Valores faltantes por columna")
+print("  - Alertas de calidad automáticas")
+print("  - Análisis de cardinalidad")</code></pre>
+                </div>
+
+                <!-- ETAPA 2: ESTANDARIZACIÓN -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">2️⃣ Estandarización de Formatos</h3>
+                    <p>Conversión de datos a formatos uniformes y estándares internacionales. <strong>Fundamental para integración de datos</strong> de múltiples fuentes.</p>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h5>📅 Fechas → ISO 8601</h5>
+                            <p><strong>Problema:</strong> "12/03/2025" (¿dd/mm o mm/dd?)</p>
+                            <p><strong>Solución:</strong> "2025-03-12" (sin ambigüedad)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🌍 Códigos de País → ISO 3166</h5>
+                            <p><strong>Problema:</strong> "España", "Spain", "ESP", "ES"</p>
+                            <p><strong>Solución:</strong> "ES" (código alpha-2 estándar)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>📞 Teléfonos → E.164</h5>
+                            <p><strong>Problema:</strong> "+34 91 123 45 67", "911234567"</p>
+                            <p><strong>Solución:</strong> "+34911234567" (formato internacional)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>💰 Moneda → ISO 4217</h5>
+                            <p><strong>Problema:</strong> "100€", "100 euros", "EUR 100"</p>
+                            <p><strong>Solución:</strong> {"amount": 100, "currency": "EUR"}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box example-green mb-2">
+                    <h4>💻 Código: Estandarización de Fechas con PySpark</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import col, to_date, when, regexp_replace, lit
+from pyspark.sql.types import StringType
+from datetime import datetime
+
+# Dataset de ejemplo: Universidad de Stanford
+# 3M registros con fechas en 15 formatos diferentes
+df = spark.read.parquet("hdfs://namenode:9000/data/stanford/enrollment_history.parquet")
+
+# Mostrar muestra de fechas en formato caótico
+df.select('student_id', 'enrollment_date').show(10, truncate=False)
+
+# Resultado ANTES de limpieza:
+# +----------+----------------+
+# |student_id|enrollment_date |
+# +----------+----------------+
+# |STU001    |09/15/2023      |  ⚠️ mm/dd/yyyy
+# |STU002    |15-09-2023      |  ⚠️ dd-mm-yyyy
+# |STU003    |2023.09.15      |  ⚠️ yyyy.mm.dd
+# |STU004    |Sep 15, 2023    |  ⚠️ texto
+# |STU005    |20230915        |  ⚠️ yyyymmdd
+# |STU006    |15/09/23        |  ⚠️ dd/mm/yy (ambiguo año)
+# +----------+----------------+
+
+# ========================================
+# ESTRATEGIA: Detectar formato y convertir
+# ========================================
+def standardize_dates(df, date_column):
+    """
+    Convierte múltiples formatos de fecha a ISO 8601 (YYYY-MM-DD)
+    """
+
+    df_standardized = df.withColumn(
+        'date_standardized',
+        # Formato 1: yyyy-mm-dd (ya estándar)
+        when(
+            col(date_column).rlike(r'^\d{4}-\d{2}-\d{2}$'),
+            to_date(col(date_column), 'yyyy-MM-dd')
+        )
+        # Formato 2: dd/mm/yyyy
+        .when(
+            col(date_column).rlike(r'^\d{2}/\d{2}/\d{4}$'),
+            to_date(col(date_column), 'dd/MM/yyyy')
+        )
+        # Formato 3: mm/dd/yyyy (USA)
+        .when(
+            col(date_column).rlike(r'^\d{2}/\d{2}/\d{4}$') &
+            (col(date_column).substr(1, 2) > '12'),  # Si primer campo > 12, es día
+            to_date(col(date_column), 'MM/dd/yyyy')
+        )
+        # Formato 4: dd-mm-yyyy
+        .when(
+            col(date_column).rlike(r'^\d{2}-\d{2}-\d{4}$'),
+            to_date(col(date_column), 'dd-MM-yyyy')
+        )
+        # Formato 5: yyyy.mm.dd
+        .when(
+            col(date_column).rlike(r'^\d{4}\.\d{2}\.\d{2}$'),
+            to_date(col(date_column), 'yyyy.MM.dd')
+        )
+        # Formato 6: yyyymmdd (sin separadores)
+        .when(
+            col(date_column).rlike(r'^\d{8}$'),
+            to_date(col(date_column), 'yyyyMMdd')
+        )
+        # Formato 7: Mon dd, yyyy (texto)
+        .when(
+            col(date_column).rlike(r'^[A-Za-z]{3} \d{2}, \d{4}$'),
+            to_date(col(date_column), 'MMM dd, yyyy')
+        )
+        # Formato 8: dd/mm/yy (año corto - asumir 20xx)
+        .when(
+            col(date_column).rlike(r'^\d{2}/\d{2}/\d{2}$'),
+            to_date(
+                regexp_replace(col(date_column), r'(\d{2})$', '20$1'),
+                'dd/MM/yyyy'
+            )
+        )
+        # Valor por defecto: NULL (formato no reconocido)
+        .otherwise(None)
+    )
+
+    # Contar conversiones exitosas
+    total = df_standardized.count()
+    converted = df_standardized.filter(col('date_standardized').isNotNull()).count()
+    failed = total - converted
+
+    print(f"✅ Conversiones exitosas: {converted:,} ({converted/total*100:.2f}%)")
+    print(f"❌ Conversiones fallidas: {failed:,} ({failed/total*100:.2f}%)")
+
+    return df_standardized
+
+# Aplicar estandarización
+df_clean = standardize_dates(df, 'enrollment_date')
+
+# Mostrar resultado
+df_clean.select('student_id', 'enrollment_date', 'date_standardized').show(10, truncate=False)
+
+# Resultado DESPUÉS de limpieza:
+# ✅ Conversiones exitosas: 2,985,432 (99.51%)
+# ❌ Conversiones fallidas: 14,568 (0.49%)
+#
+# +----------+----------------+-----------------+
+# |student_id|enrollment_date |date_standardized|
+# +----------+----------------+-----------------+
+# |STU001    |09/15/2023      |2023-09-15       | ✓
+# |STU002    |15-09-2023      |2023-09-15       | ✓
+# |STU003    |2023.09.15      |2023-09-15       | ✓
+# |STU004    |Sep 15, 2023    |2023-09-15       | ✓
+# |STU005    |20230915        |2023-09-15       | ✓
+# |STU006    |15/09/23        |2023-09-15       | ✓
+# |STU007    |invalid-date    |null             | ⚠️ → mover a cuarentena
+# +----------+----------------+-----------------+
+
+# ========================================
+# GUARDAR: Datos limpios y cuarentena separados
+# ========================================
+# Datos válidos → partición limpia
+df_clean.filter(col('date_standardized').isNotNull()) \
+    .write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/data/stanford/enrollment_history_clean.parquet')
+
+# Datos inválidos → cuarentena para revisión manual
+df_clean.filter(col('date_standardized').isNull()) \
+    .write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/quarantine/enrollment_invalid_dates.parquet')
+
+print("✅ Datos estandarizados guardados en enrollment_history_clean.parquet")
+print("⚠️  Datos inválidos movidos a /quarantine/ para revisión manual")</code></pre>
+                </div>
+
+                <!-- ETAPA 3: GESTIÓN DE VALORES FALTANTES -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">3️⃣ Gestión de Valores Faltantes (Missing Values)</h3>
+                    <p>Los valores nulos pueden <strong>sesgar modelos estadísticos</strong> y reducir la representatividad de los datos. Las estrategias varían según el contexto y el tipo de dato.</p>
+
+                    <h4 class="color-primary">Estrategias de Imputación</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estrategia</th>
+                                    <th>Descripción</th>
+                                    <th>Casos de Uso</th>
+                                    <th>Ventajas</th>
+                                    <th>Limitaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Eliminación</strong></td>
+                                    <td>Borrar registros/columnas con nulos</td>
+                                    <td>&lt;5% nulos, datos abundantes</td>
+                                    <td>Simple, no introduce sesgo</td>
+                                    <td>Pierde información, reduce tamaño dataset</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Media/Mediana</strong></td>
+                                    <td>Reemplazar con valor central</td>
+                                    <td>Variables numéricas continuas</td>
+                                    <td>Rápido, no altera distribución</td>
+                                    <td>Reduce varianza, ignora correlaciones</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Moda</strong></td>
+                                    <td>Reemplazar con valor más frecuente</td>
+                                    <td>Variables categóricas</td>
+                                    <td>Preserva distribución de frecuencias</td>
+                                    <td>Aumenta artificialmente la moda</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Forward/Backward Fill</strong></td>
+                                    <td>Propagar último valor válido</td>
+                                    <td>Series temporales (sensores, logs)</td>
+                                    <td>Preserva tendencias temporales</td>
+                                    <td>Solo válido para datos secuenciales</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Interpolación</strong></td>
+                                    <td>Estimar con función matemática</td>
+                                    <td>Series temporales con patrones</td>
+                                    <td>Suaviza datos, realista</td>
+                                    <td>Asume continuidad matemática</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>KNN Imputation</strong></td>
+                                    <td>Predecir con K vecinos más cercanos</td>
+                                    <td>Datos correlacionados</td>
+                                    <td>Considera relaciones multivariadas</td>
+                                    <td>Costoso computacionalmente</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Regresión</strong></td>
+                                    <td>Modelo predictivo (LR, RF)</td>
+                                    <td>Alta correlación entre variables</td>
+                                    <td>Preserva relaciones estadísticas</td>
+                                    <td>Requiere entrenamiento, overfitting</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Múltiple Imputation</strong></td>
+                                    <td>Genera N datasets imputados (MICE)</td>
+                                    <td>Investigación científica rigurosa</td>
+                                    <td>Cuantifica incertidumbre</td>
+                                    <td>Muy costoso, complejo de implementar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="example-box example-blue mb-2">
+                    <h4>💻 Código: Imputación Avanzada con PySpark y scikit-learn</h4>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, mean, when, lag, lead
+from pyspark.sql.window import Window
+from pyspark.ml.feature import Imputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import KNNImputer, IterativeImputer
+import pandas as pd
+import numpy as np
+
+# Dataset: Universidad de Oxford - Registros de asistencia
+# 2M estudiantes, 15% valores nulos en "attendance_rate"
+df = spark.read.parquet("hdfs://namenode:9000/data/oxford/student_attendance.parquet")
+
+# Mostrar problema
+df.select('student_id', 'attendance_rate', 'gpa', 'credits_enrolled').show(10)
+
+# +----------+---------------+----+----------------+
+# |student_id|attendance_rate|gpa |credits_enrolled|
+# +----------+---------------+----+----------------+
+# |STU001    |85.5           |3.2 |18              |
+# |STU002    |null           |3.8 |21              | ⚠️ Nulo
+# |STU003    |null           |2.9 |15              | ⚠️ Nulo
+# |STU004    |92.3           |3.9 |24              |
+# +----------+---------------+----+----------------+
+
+# ========================================
+# MÉTODO 1: Imputación Simple (Media)
+# ========================================
+mean_attendance = df.select(mean('attendance_rate')).collect()[0][0]
+
+df_imputed_mean = df.withColumn(
+    'attendance_imputed',
+    when(col('attendance_rate').isNull(), mean_attendance)
+    .otherwise(col('attendance_rate'))
+)
+
+print(f"Media de asistencia: {mean_attendance:.2f}%")
+print(f"Registros imputados: {df.filter(col('attendance_rate').isNull()).count():,}")
+
+# ========================================
+# MÉTODO 2: Imputación por Grupo (Media por Carrera)
+# ========================================
+from pyspark.sql.functions import avg
+
+# Calcular media de asistencia por carrera (major)
+mean_by_major = df.groupBy('major').agg(
+    avg('attendance_rate').alias('major_avg_attendance')
+)
+
+# Join y reemplazar nulos con media del grupo
+df_imputed_group = df.join(mean_by_major, on='major', how='left') \
+    .withColumn(
+        'attendance_imputed',
+        when(col('attendance_rate').isNull(), col('major_avg_attendance'))
+        .otherwise(col('attendance_rate'))
+    ) \
+    .drop('major_avg_attendance')
+
+# Ejemplo: Estudiantes de Computer Science tienen media 88.5%
+#          Estudiantes de History tienen media 79.2%
+# → Imputación más realista que media global
+
+# ========================================
+# MÉTODO 3: Forward Fill (Series Temporales)
+# ========================================
+# Dataset: registros semanales de asistencia con gaps
+df_timeseries = spark.read.parquet("hdfs://namenode:9000/data/oxford/weekly_attendance.parquet")
+
+# Definir ventana ordenada por fecha
+window_spec = Window.partitionBy('student_id').orderBy('week_date')
+
+# Forward fill: propagar último valor válido
+df_ffill = df_timeseries.withColumn(
+    'attendance_ffill',
+    when(col('attendance').isNull(),
+         lag('attendance').over(window_spec))
+    .otherwise(col('attendance'))
+)
+
+# Backward fill (en caso de nulos al inicio)
+df_bfill = df_ffill.withColumn(
+    'attendance_final',
+    when(col('attendance_ffill').isNull(),
+         lead('attendance').over(window_spec))
+    .otherwise(col('attendance_ffill'))
+)
+
+df_bfill.select('student_id', 'week_date', 'attendance', 'attendance_final').show(15)
+
+# Resultado:
+# +----------+----------+----------+----------------+
+# |student_id|week_date |attendance|attendance_final|
+# +----------+----------+----------+----------------+
+# |STU001    |2024-W01  |85.0      |85.0            |
+# |STU001    |2024-W02  |null      |85.0            | ✓ Forward fill
+# |STU001    |2024-W03  |null      |85.0            | ✓ Forward fill
+# |STU001    |2024-W04  |88.5      |88.5            |
+# |STU001    |2024-W05  |null      |88.5            | ✓ Forward fill
+# +----------+----------+----------+----------------+
+
+# ========================================
+# MÉTODO 4: KNN Imputation (Vecinos Cercanos)
+# ========================================
+# Convertir a Pandas para usar scikit-learn
+df_pandas = df.select('student_id', 'attendance_rate', 'gpa',
+                       'credits_enrolled', 'study_hours_week').toPandas()
+
+# Separar ID y features
+student_ids = df_pandas['student_id']
+features = df_pandas[['attendance_rate', 'gpa', 'credits_enrolled', 'study_hours_week']]
+
+# Aplicar KNN Imputer (k=5 vecinos)
+knn_imputer = KNNImputer(n_neighbors=5, weights='distance')
+features_imputed = knn_imputer.fit_transform(features)
+
+# Reconstruir DataFrame
+df_knn = pd.DataFrame(
+    features_imputed,
+    columns=['attendance_rate', 'gpa', 'credits_enrolled', 'study_hours_week']
+)
+df_knn['student_id'] = student_ids
+
+print("KNN Imputation completada:")
+print(f"  - Método: K-Nearest Neighbors (k=5)")
+print(f"  - Peso: Distancia euclidiana")
+print(f"  - Variables consideradas: attendance, GPA, créditos, horas estudio")
+
+# Ejemplo: Si un estudiante con GPA 3.8, 21 créditos, 25h estudio tiene attendance=null,
+# KNN busca los 5 estudiantes más similares y promedia su asistencia (ej: 89.3%)
+
+# ========================================
+# MÉTODO 5: Regresión Multiple (MICE - Multivariate Imputation)
+# ========================================
+# MICE: Crea modelo de regresión para cada variable con nulos
+# Itera múltiples veces hasta convergencia
+
+mice_imputer = IterativeImputer(
+    max_iter=10,           # Iteraciones de convergencia
+    random_state=42,
+    estimator=None         # Usa BayesianRidge por defecto
+)
+
+features_mice = mice_imputer.fit_transform(features)
+
+df_mice = pd.DataFrame(
+    features_mice,
+    columns=['attendance_rate', 'gpa', 'credits_enrolled', 'study_hours_week']
+)
+df_mice['student_id'] = student_ids
+
+print("MICE Imputation completada:")
+print(f"  - Iteraciones: {mice_imputer.n_iter_}")
+print(f"  - Convergencia: ✓")
+print(f"  - Estimador: BayesianRidge Regression")
+
+# ========================================
+# COMPARACIÓN DE MÉTODOS
+# ========================================
+# Volver a Spark para análisis
+df_comparison = spark.createDataFrame(df_pandas[['student_id', 'attendance_rate']]) \
+    .withColumnRenamed('attendance_rate', 'original')
+
+df_comparison = df_comparison.join(
+    spark.createDataFrame(df_imputed_mean.select('student_id', 'attendance_imputed')
+                          .withColumnRenamed('attendance_imputed', 'mean_imputation')),
+    on='student_id'
+).join(
+    spark.createDataFrame(df_knn[['student_id', 'attendance_rate']]
+                          .rename(columns={'attendance_rate': 'knn_imputation'})),
+    on='student_id'
+).join(
+    spark.createDataFrame(df_mice[['student_id', 'attendance_rate']]
+                          .rename(columns={'attendance_rate': 'mice_imputation'})),
+    on='student_id'
+)
+
+# Calcular RMSE para cada método (usando registros originalmente completos)
+from pyspark.sql.functions import sqrt, pow as spark_pow
+
+df_test = df_comparison.filter(col('original').isNotNull())
+
+rmse_mean = df_test.select(
+    sqrt(mean(spark_pow(col('original') - col('mean_imputation'), 2)))
+).collect()[0][0]
+
+rmse_knn = df_test.select(
+    sqrt(mean(spark_pow(col('original') - col('knn_imputation'), 2)))
+).collect()[0][0]
+
+rmse_mice = df_test.select(
+    sqrt(mean(spark_pow(col('original') - col('mice_imputation'), 2)))
+).collect()[0][0]
+
+print("\n📊 Comparación de Métodos de Imputación:")
+print(f"  Mean Imputation:  RMSE = {rmse_mean:.3f}")
+print(f"  KNN Imputation:   RMSE = {rmse_knn:.3f}")  # Típicamente el mejor
+print(f"  MICE Imputation:  RMSE = {rmse_mice:.3f}")
+print(f"\n✅ Mejor método: KNN Imputation (menor error)")</code></pre>
+                </div>
+
+                <!-- ETAPA 4: ELIMINACIÓN DE DUPLICADOS -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">4️⃣ Eliminación de Duplicados (Deduplication)</h3>
+                    <p>Los duplicados pueden surgir por <strong>integración de múltiples fuentes, errores de entrada</strong> o variaciones tipográficas. La deduplicación difusa (fuzzy matching) es crucial cuando los registros no son idénticos byte a byte.</p>
+
+                    <h4 class="color-secondary">Algoritmos de Similitud</h4>
+                    <div class="comparison-grid">
+                        <div class="feature-card">
+                            <h5>📏 Levenshtein Distance</h5>
+                            <p><strong>Concepto:</strong> Número mínimo de operaciones (inserción, eliminación, sustitución) para transformar string A en B</p>
+                            <p><strong>Ejemplo:</strong> "Maria" → "María" (1 operación)</p>
+                            <p><strong>Uso:</strong> Nombres, direcciones</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🎯 Jaro-Winkler</h5>
+                            <p><strong>Concepto:</strong> Score 0-1 basado en caracteres comunes y transposiciones, con bonus para prefijos comunes</p>
+                            <p><strong>Ejemplo:</strong> "John Smith" vs "Jon Smith" = 0.96</p>
+                            <p><strong>Uso:</strong> Nombres completos, entidades</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🔤 Soundex / Metaphone</h5>
+                            <p><strong>Concepto:</strong> Codifica palabras fonéticamente (suenan similar → mismo código)</p>
+                            <p><strong>Ejemplo:</strong> "Smith", "Smyth" → S530</p>
+                            <p><strong>Uso:</strong> Apellidos, búsqueda fonética</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🧩 Token-based (Jaccard)</h5>
+                            <p><strong>Concepto:</strong> Similitud = tokens comunes / total tokens</p>
+                            <p><strong>Ejemplo:</strong> "Data Science" vs "Science Data" = 1.0 (orden no importa)</p>
+                            <p><strong>Uso:</strong> Texto largo, descripciones</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box example-green mb-2">
+                    <h4>💻 Código: Deduplicación Fuzzy con PySpark</h4>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, lower, trim, regexp_replace, soundex, levenshtein
+from pyspark.sql.functions import udf, struct, collect_list, size, array_distinct
+from pyspark.sql.types import DoubleType, ArrayType, StructType, StructField, StringType
+import jellyfish  # Librería para algoritmos avanzados de similitud
+
+# Dataset: Cambridge University - Alumni database
+# 500K registros con variaciones de nombres duplicados
+df = spark.read.parquet("hdfs://namenode:9000/data/cambridge/alumni.parquet")
+
+# Mostrar ejemplos de duplicados sutiles
+df.select('alumni_id', 'full_name', 'email', 'graduation_year').show(20, truncate=False)
+
+# +--------+----------------------+---------------------------+--------------+
+# |alumni_id|full_name            |email                      |graduation_year|
+# +--------+----------------------+---------------------------+--------------+
+# |ALU001  |John Michael Smith   |j.smith@cam.ac.uk          |2015          |
+# |ALU002  |John M. Smith        |john.smith@cam.ac.uk       |2015          | ⚠️ Duplicado
+# |ALU003  |J. Michael Smith     |jmsmith@gmail.com          |2015          | ⚠️ Duplicado
+# |ALU045  |María García López   |maria.garcia@cam.ac.uk     |2018          |
+# |ALU046  |Maria Garcia Lopez   |m.garcia@cam.ac.uk         |2018          | ⚠️ Duplicado (sin tildes)
+# |ALU089  |Dr. Emily Johnson    |e.johnson@cam.ac.uk        |2012          |
+# |ALU090  |Emily Rose Johnson   |emily.johnson@cam.ac.uk    |2012          | ⚠️ Duplicado (con título/middle name)
+# +--------+----------------------+---------------------------+--------------+
+
+# ========================================
+# PASO 1: Normalización Pre-procesamiento
+# ========================================
+def normalize_name(df, name_column):
+    """
+    Normaliza nombres para mejorar matching:
+    - Lowercase
+    - Trim espacios
+    - Remover títulos (Dr., Prof., etc.)
+    - Remover puntos y comas
+    - Remover acentos
+    """
+    df_normalized = df.withColumn(
+        'name_normalized',
+        trim(lower(col(name_column)))
+    )
+
+    # Remover títulos comunes
+    titles = ['dr.', 'prof.', 'mr.', 'mrs.', 'ms.', 'sir', 'dame']
+    for title in titles:
+        df_normalized = df_normalized.withColumn(
+            'name_normalized',
+            regexp_replace('name_normalized', f'^{title}\\s+', '')
+        )
+
+    # Remover puntos (J. Smith → J Smith)
+    df_normalized = df_normalized.withColumn(
+        'name_normalized',
+        regexp_replace('name_normalized', r'\.', '')
+    )
+
+    # Remover acentos (María → Maria)
+    import unicodedata
+    def remove_accents(text):
+        if text:
+            return ''.join(
+                c for c in unicodedata.normalize('NFD', text)
+                if unicodedata.category(c) != 'Mn'
+            )
+        return text
+
+    remove_accents_udf = udf(remove_accents, StringType())
+    df_normalized = df_normalized.withColumn(
+        'name_normalized',
+        remove_accents_udf('name_normalized')
+    )
+
+    return df_normalized
+
+df_normalized = normalize_name(df, 'full_name')
+
+df_normalized.select('alumni_id', 'full_name', 'name_normalized').show(10, truncate=False)
+
+# Resultado:
+# +--------+----------------------+--------------------+
+# |alumni_id|full_name            |name_normalized     |
+# +--------+----------------------+--------------------+
+# |ALU001  |John Michael Smith   |john michael smith  |
+# |ALU002  |John M. Smith        |john m smith        |
+# |ALU003  |J. Michael Smith     |j michael smith     |
+# |ALU045  |María García López   |maria garcia lopez  | ✓ Sin acentos
+# |ALU046  |Maria Garcia Lopez   |maria garcia lopez  | ✓ Normalizado
+# |ALU089  |Dr. Emily Johnson    |emily johnson       | ✓ Sin título
+# +--------+----------------------+--------------------+
+
+# ========================================
+# PASO 2: Deduplicación Exacta (Post-normalización)
+# ========================================
+# Después de normalizar, algunos duplicados son ahora idénticos
+duplicates_exact = df_normalized.groupBy('name_normalized', 'graduation_year') \
+    .agg(
+        collect_list('alumni_id').alias('duplicate_ids'),
+        collect_list('full_name').alias('original_names')
+    ) \
+    .filter(size('duplicate_ids') > 1)
+
+print(f"Duplicados exactos (post-normalización): {duplicates_exact.count():,}")
+
+duplicates_exact.show(5, truncate=False)
+
+# +--------------------+--------------+------------------------+--------------------------------+
+# |name_normalized     |graduation_year|duplicate_ids           |original_names                  |
+# +--------------------+--------------+------------------------+--------------------------------+
+# |maria garcia lopez  |2018          |[ALU045, ALU046]        |[María García López, Maria...]  |
+# |john michael smith  |2015          |[ALU001, ALU002, ALU003]|[John Michael Smith, John M...] |
+# +--------------------+--------------+------------------------+--------------------------------+
+
+# ========================================
+# PASO 3: Deduplicación Fuzzy (Jaro-Winkler)
+# ========================================
+# Para detectar similares NO idénticos: "Emily Johnson" vs "Emily Rose Johnson"
+
+def jaro_winkler_similarity(s1, s2):
+    """Calcula similitud Jaro-Winkler (0-1)"""
+    if s1 is None or s2 is None:
+        return 0.0
+    return jellyfish.jaro_winkler_similarity(s1, s2)
+
+jaro_winkler_udf = udf(jaro_winkler_similarity, DoubleType())
+
+# Realizar self-join para comparar todos los pares
+# (Optimizado: solo comparar si graduation_year coincide y primera letra coincide)
+df_aliases = df_normalized.alias('df1')
+df_aliases2 = df_normalized.alias('df2')
+
+# Self-join con condiciones de bloqueo para eficiencia
+similar_pairs = df_aliases.join(
+    df_aliases2,
+    (col('df1.graduation_year') == col('df2.graduation_year')) &
+    (col('df1.name_normalized').substr(1, 1) == col('df2.name_normalized').substr(1, 1)) &
+    (col('df1.alumni_id') < col('df2.alumni_id'))  # Evitar duplicados (A-B = B-A)
+).withColumn(
+    'similarity',
+    jaro_winkler_udf(col('df1.name_normalized'), col('df2.name_normalized'))
+).filter(
+    (col('similarity') >= 0.92) &  # Threshold: 92% similitud
+    (col('df1.alumni_id') != col('df2.alumni_id'))  # No comparar consigo mismo
+).select(
+    col('df1.alumni_id').alias('id1'),
+    col('df1.full_name').alias('name1'),
+    col('df2.alumni_id').alias('id2'),
+    col('df2.full_name').alias('name2'),
+    col('similarity')
+).orderBy(col('similarity').desc())
+
+print(f"Pares similares detectados (threshold 0.92): {similar_pairs.count():,}")
+
+similar_pairs.show(10, truncate=False)
+
+# Resultado:
+# +-----+----------------------+-----+----------------------+----------+
+# |id1  |name1                |id2  |name2                 |similarity|
+# +-----+----------------------+-----+----------------------+----------+
+# |ALU001|John Michael Smith   |ALU002|John M. Smith        |0.96      | ⚠️ Muy similar
+# |ALU001|John Michael Smith   |ALU003|J. Michael Smith     |0.93      | ⚠️ Similar
+# |ALU089|Dr. Emily Johnson    |ALU090|Emily Rose Johnson   |0.94      | ⚠️ Similar
+# |ALU125|Wei Zhang            |ALU126|Wei Z.               |0.95      | ⚠️ Abreviación
+# +-----+----------------------+-----+----------------------+----------+
+
+# ========================================
+# PASO 4: Algoritmo de Fusión (Merge Strategy)
+# ========================================
+# Estrategia: De cada grupo de duplicados, conservar el registro más completo
+
+def select_master_record(duplicate_group):
+    """
+    De un grupo de duplicados, selecciona el "master" según criterios:
+    1. Mayor cantidad de campos no nulos
+    2. Email más completo (@cam.ac.uk > @gmail.com)
+    3. Alumni_id más antiguo (menor ID)
+    """
+    # Ordenar por criterios
+    sorted_group = sorted(
+        duplicate_group,
+        key=lambda x: (
+            -sum(1 for v in x.values() if v is not None),  # Más campos completos
+            '@cam.ac.uk' in x.get('email', ''),            # Email institucional
+            x.get('alumni_id', '')                          # ID menor (más antiguo)
+        ),
+        reverse=True
+    )
+    return sorted_group[0]
+
+# Agrupar duplicados y seleccionar master
+# (Implementación simplificada - en producción usar GraphFrames para clustering)
+
+print("✅ Deduplicación fuzzy completada")
+print(f"   - Algoritmo: Jaro-Winkler (threshold 0.92)")
+print(f"   - Pares similares: {similar_pairs.count():,}")
+print(f"   - Estrategia: Conservar registro más completo")
+
+# ========================================
+# PASO 5: Guardar Resultados
+# ========================================
+# Master records (deduplicated)
+df_deduplicated = df_normalized.filter(
+    ~col('alumni_id').isin([row.id2 for row in similar_pairs.collect()])
+)
+
+df_deduplicated.write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/data/cambridge/alumni_deduplicated.parquet')
+
+# Registro de merge (audit trail)
+similar_pairs.write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/data/cambridge/deduplication_audit.parquet')
+
+print(f"✅ Registros originales: {df.count():,}")
+print(f"✅ Registros únicos: {df_deduplicated.count():,}")
+print(f"✅ Duplicados removidos: {df.count() - df_deduplicated.count():,}")
+print(f"✅ Reducción: {((df.count() - df_deduplicated.count()) / df.count() * 100):.2f}%")</code></pre>
+                </div>
+
+                <!-- ETAPA 5 y 6: Corrección de Errores + Codificación -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">5️⃣ Corrección de Errores Tipográficos y Semánticos</h3>
+                    <p>Uso de <strong>diccionarios, listas blancas</strong> y algoritmos de similitud fonética para corregir errores de escritura.</p>
+
+                    <div class="example-box example-blue">
+                        <h4>Ejemplos de Correcciones</h4>
+                        <ul>
+                            <li><strong>Productos:</strong> "IPhonee" → "iPhone" (Levenshtein distance = 1)</li>
+                            <li><strong>Países:</strong> "Spian" → "Spain" (Teclado: i/a adyacentes)</li>
+                            <li><strong>Carreras:</strong> "Computer Sceince" → "Computer Science" (Typo común)</li>
+                            <li><strong>Ciudades:</strong> "Madrd" → "Madrid" (Falta vocal)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">6️⃣ Homogeneización de Codificación (Encoding)</h3>
+                    <p>Conversión a <strong>UTF-8</strong> para evitar problemas de caracteres especiales en sistemas distribuidos.</p>
+
+                    <div class="warning-box">
+                        <h4 class="color-warning">⚠️ Problemas Comunes de Encoding</h4>
+                        <ul>
+                            <li><strong>Mojibake:</strong> "MÃ©xico" en lugar de "México" (UTF-8 interpretado como Latin-1)</li>
+                            <li><strong>BOM:</strong> Byte Order Mark (\ufeff) al inicio de archivos CSV</li>
+                            <li><strong>Line endings:</strong> CRLF (Windows) vs LF (Unix) en HDFS</li>
+                            <li><strong>NULL bytes:</strong> \x00 en campos de texto corrupto</li>
+                        </ul>
+                    </div>
+
+                    <pre><code class="language-python"># Ejemplo: Conversión de codificación en PySpark
+from pyspark.sql.functions import col, udf
+from pyspark.sql.types import StringType
+
+def fix_encoding(text):
+    """Intenta reparar encoding corrupto"""
+    if text is None:
+        return None
+    try:
+        # Detectar si es UTF-8 mal interpretado como Latin-1
+        fixed = text.encode('latin-1').decode('utf-8')
+        return fixed
+    except:
+        return text  # Si falla, devolver original
+
+fix_encoding_udf = udf(fix_encoding, StringType())
+
+df_fixed = df.withColumn(
+    'city_name_fixed',
+    fix_encoding_udf(col('city_name'))
+)
+
+# Antes: "MÃ©xico", "SÃ£o Paulo"
+# Después: "México", "São Paulo"</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: NORMALIZACIÓN -->
+            <section class="section" id="normalizacion">
+                <h2 class="section-title">📏 Normalización de Datos</h2>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">¿Por qué Normalizar?</h3>
+                    <p>Los algoritmos de Machine Learning son <strong>sensibles a la escala</strong> de las variables. Sin normalización:</p>
+                    <ul>
+                        <li><strong>KNN, SVM:</strong> Variables con mayor rango dominan la distancia euclidiana</li>
+                        <li><strong>Gradient Descent:</strong> Convergencia lenta o inestable</li>
+                        <li><strong>Neural Networks:</strong> Activaciones saturadas, gradientes explosivos</li>
+                        <li><strong>Regularización (L1/L2):</strong> Penaliza desproporcionadamente variables con mayor escala</li>
+                    </ul>
+                </div>
+
+                <!-- NORMALIZACIÓN NUMÉRICA -->
+                <div class="highlight-box primary mt-2 mb-2">
+                    <h3 class="color-primary">1️⃣ Normalización Numérica</h3>
+
+                    <h4 class="color-primary">Técnicas de Escalado</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Técnica</th>
+                                    <th>Fórmula</th>
+                                    <th>Rango Resultante</th>
+                                    <th>Casos de Uso</th>
+                                    <th>Sensibilidad Outliers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Min-Max</strong></td>
+                                    <td>(x - min) / (max - min)</td>
+                                    <td>[0, 1]</td>
+                                    <td>Neural Networks, imágenes</td>
+                                    <td>⚠️ Alta</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Z-Score</strong></td>
+                                    <td>(x - μ) / σ</td>
+                                    <td>[-∞, +∞] (μ=0, σ=1)</td>
+                                    <td>Regresión, PCA, clustering</td>
+                                    <td>⚠️ Alta</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Robust Scaler</strong></td>
+                                    <td>(x - Q2) / (Q3 - Q1)</td>
+                                    <td>[-∞, +∞] (mediana=0)</td>
+                                    <td>Datos con outliers</td>
+                                    <td>✅ Baja</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MaxAbs Scaler</strong></td>
+                                    <td>x / max(|x|)</td>
+                                    <td>[-1, 1]</td>
+                                    <td>Datos sparse (matrices dispersas)</td>
+                                    <td>⚠️ Alta</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Log Transform</strong></td>
+                                    <td>log(x + 1)</td>
+                                    <td>[0, +∞]</td>
+                                    <td>Distribuciones sesgadas, ingresos</td>
+                                    <td>✅ Reduce impacto</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Box-Cox</strong></td>
+                                    <td>(x^λ - 1) / λ</td>
+                                    <td>Depende de λ</td>
+                                    <td>Normalizar distribución gaussiana</td>
+                                    <td>✅ Mitiga outliers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="example-box example-green mb-2">
+                    <h4>💻 Código: Normalización Numérica con PySpark ML</h4>
+                    <pre><code class="language-python">from pyspark.ml.feature import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
+from pyspark.ml.feature import VectorAssembler
+from pyspark.sql.functions import log1p, col
+from pyspark.sql import SparkSession
+
+# Dataset: Caltech - Student Performance Analytics
+# Variables: GPA (0-4), study_hours (0-80), attendance (0-100), assignments_completed (0-50)
+df = spark.read.parquet("hdfs://namenode:9000/data/caltech/student_performance.parquet")
+
+# Mostrar distribución original
+df.describe(['gpa', 'study_hours_week', 'attendance_pct', 'assignments_completed']).show()
+
+# +-------+---------+----------------+-------------+---------------------+
+# |summary|gpa      |study_hours_week|attendance_pct|assignments_completed|
+# +-------+---------+----------------+-------------+---------------------+
+# |mean   |3.15     |28.5            |85.2          |38.7                |
+# |stddev |0.62     |15.3            |12.8          |8.2                 |
+# |min    |1.20     |5.0             |45.0          |10                  |
+# |max    |4.00     |75.0            |100.0         |50                  |
+# +-------+---------+----------------+-------------+---------------------+
+
+# Problema: Las escalas son muy diferentes (GPA 1-4, study_hours 5-75)
+# → Sesgaría algoritmos basados en distancia (KNN, K-Means)
+
+# ========================================
+# PASO 1: Crear Vector de Features
+# ========================================
+feature_columns = ['gpa', 'study_hours_week', 'attendance_pct', 'assignments_completed']
+
+assembler = VectorAssembler(
+    inputCols=feature_columns,
+    outputCol='features_raw'
+)
+
+df_vectorized = assembler.transform(df)
+
+# ========================================
+# MÉTODO 1: Min-Max Normalization [0, 1]
+# ========================================
+minmax_scaler = MinMaxScaler(
+    inputCol='features_raw',
+    outputCol='features_minmax'
+)
+
+minmax_model = minmax_scaler.fit(df_vectorized)
+df_minmax = minmax_model.transform(df_vectorized)
+
+# Verificar rango [0, 1]
+from pyspark.ml.linalg import Vectors
+from pyspark.sql.functions import udf
+from pyspark.sql.types import ArrayType, DoubleType
+
+vector_to_array = udf(lambda v: v.toArray().tolist(), ArrayType(DoubleType()))
+
+df_minmax_exploded = df_minmax.withColumn('features_array', vector_to_array('features_minmax'))
+
+print("Min-Max Scaling:")
+df_minmax_exploded.select('student_id', 'features_array').show(5, truncate=False)
+
+# Resultado:
+# +----------+--------------------------------+
+# |student_id|features_array                  |
+# +----------+--------------------------------+
+# |STU001    |[0.68, 0.45, 0.85, 0.72]        | ✓ Todos en [0, 1]
+# |STU002    |[0.95, 0.78, 0.92, 0.88]        |
+# |STU003    |[0.42, 0.31, 0.65, 0.55]        |
+# +----------+--------------------------------+
+
+# ========================================
+# MÉTODO 2: Standard Scaler (Z-Score)
+# ========================================
+standard_scaler = StandardScaler(
+    inputCol='features_raw',
+    outputCol='features_standard',
+    withMean=True,   # Centrar en 0
+    withStd=True     # Escalar a σ=1
+)
+
+standard_model = standard_scaler.fit(df_vectorized)
+df_standard = standard_model.transform(df_vectorized)
+
+df_standard_exploded = df_standard.withColumn('features_array', vector_to_array('features_standard'))
+
+print("Standard Scaler (Z-Score):")
+df_standard_exploded.select('student_id', 'features_array').show(5, truncate=False)
+
+# Resultado:
+# +----------+---------------------------------------+
+# |student_id|features_array                         |
+# +----------+---------------------------------------+
+# |STU001    |[0.15, -0.52, 0.23, -0.38]            | ✓ μ≈0, σ≈1
+# |STU002    |[1.85, 1.42, 1.15, 1.22]              | ⚠️ Outlier positivo
+# |STU003    |[-1.12, -1.35, -0.98, -1.08]          | ⚠️ Outlier negativo
+# +----------+---------------------------------------+
+
+# Verificar μ≈0 y σ≈1
+from pyspark.sql.functions import explode, mean as spark_mean, stddev as spark_stddev
+
+df_stats = df_standard.select(explode(vector_to_array('features_standard')).alias('value'))
+mean_val = df_stats.select(spark_mean('value')).collect()[0][0]
+std_val = df_stats.select(spark_stddev('value')).collect()[0][0]
+
+print(f"  Mean: {mean_val:.6f} (expected ~0)")
+print(f"  Std:  {std_val:.6f} (expected ~1)")
+
+# ========================================
+# MÉTODO 3: Robust Scaler (Resistente a Outliers)
+# ========================================
+robust_scaler = RobustScaler(
+    inputCol='features_raw',
+    outputCol='features_robust',
+    withCentering=True,  # Centrar en mediana
+    withScaling=True     # Escalar con IQR
+)
+
+robust_model = robust_scaler.fit(df_vectorized)
+df_robust = robust_model.transform(df_vectorized)
+
+df_robust_exploded = df_robust.withColumn('features_array', vector_to_array('features_robust'))
+
+print("Robust Scaler (Mediana + IQR):")
+df_robust_exploded.select('student_id', 'features_array').show(5, truncate=False)
+
+# Ventaja: Los outliers NO distorsionan la escala
+# +----------+---------------------------------------+
+# |student_id|features_array                         |
+# +----------+---------------------------------------+
+# |STU001    |[0.12, -0.48, 0.20, -0.35]            |
+# |STU002    |[1.52, 1.15, 0.95, 0.98]              | ✓ Menos extremo que Z-score
+# |STU003    |[-0.95, -1.12, -0.85, -0.92]          | ✓ Menos extremo
+# +----------+---------------------------------------+
+
+# ========================================
+# MÉTODO 4: Log Transform (Skewed Distributions)
+# ========================================
+# Caso: Si study_hours tiene distribución muy sesgada (mayoría 10-20h, algunos 70h)
+
+df_log = df.withColumn('study_hours_log', log1p(col('study_hours_week')))
+
+# Comparar distribuciones
+df_log.select('study_hours_week', 'study_hours_log').describe().show()
+
+# +-------+----------------+----------------+
+# |summary|study_hours_week|study_hours_log |
+# +-------+----------------+----------------+
+# |mean   |28.5            |3.25            | ✓ Escala reducida
+# |stddev |15.3            |0.48            | ✓ Menor varianza
+# |min    |5.0             |1.79            |
+# |max    |75.0            |4.33            |
+# +-------+----------------+----------------+
+
+print("✅ Log Transform redujo el rango de 70 a 2.54 (4.33 - 1.79)")
+print("   Útil para modelos sensibles a outliers (regresión lineal)")
+
+# ========================================
+# COMPARACIÓN: Impacto en K-Means Clustering
+# ========================================
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.evaluation import ClusteringEvaluator
+
+# Función auxiliar para entrenar K-Means
+def evaluate_kmeans(df, features_col, k=4):
+    kmeans = KMeans(featuresCol=features_col, k=k, seed=42)
+    model = kmeans.fit(df)
+    predictions = model.transform(df)
+
+    evaluator = ClusteringEvaluator(featuresCol=features_col)
+    silhouette = evaluator.evaluate(predictions)
+
+    return silhouette, model.summary.trainingCost
+
+# Sin normalización
+silhouette_raw, cost_raw = evaluate_kmeans(df_vectorized, 'features_raw')
+
+# Con Min-Max
+silhouette_minmax, cost_minmax = evaluate_kmeans(df_minmax, 'features_minmax')
+
+# Con Standard Scaler
+silhouette_standard, cost_standard = evaluate_kmeans(df_standard, 'features_standard')
+
+print("\n📊 Impacto de la Normalización en K-Means:")
+print(f"  Sin normalización:  Silhouette={silhouette_raw:.3f}, Cost={cost_raw:.2f}")
+print(f"  Min-Max:            Silhouette={silhouette_minmax:.3f}, Cost={cost_minmax:.2f}")
+print(f"  Standard Scaler:    Silhouette={silhouette_standard:.3f}, Cost={cost_standard:.2f}")
+print(f"\n✅ Mejor método: Standard Scaler (mayor Silhouette score)")
+
+# Resultado típico:
+#   Sin normalización:  Silhouette=0.42, Cost=85234.12  ⚠️ Dominado por study_hours
+#   Min-Max:            Silhouette=0.68, Cost=1245.87   ✓ Mejor balance
+#   Standard Scaler:    Silhouette=0.72, Cost=1189.33   ✓✓ Óptimo</code></pre>
+                </div>
+
+                <!-- NORMALIZACIÓN CATEGÓRICA -->
+                <div class="highlight-box secondary mt-2 mb-2">
+                    <h3 class="color-secondary">2️⃣ Normalización Categórica</h3>
+                    <p>Transformación de variables categóricas a representaciones numéricas comprensibles por algoritmos de ML.</p>
+
+                    <div class="grid-features">
+                        <div class="feature-card">
+                            <h5>🏷️ Label Encoding</h5>
+                            <p><strong>Concepto:</strong> Asignar entero a cada categoría (0, 1, 2, ...)</p>
+                            <p><strong>Problema:</strong> Implica orden artificial</p>
+                            <p><strong>Uso:</strong> Variables ordinales (low/medium/high)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🔢 One-Hot Encoding</h5>
+                            <p><strong>Concepto:</strong> Crear columna binaria por categoría</p>
+                            <p><strong>Ventaja:</strong> Sin orden artificial</p>
+                            <p><strong>Problema:</strong> Alta dimensionalidad</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>🎯 Target Encoding</h5>
+                            <p><strong>Concepto:</strong> Reemplazar categoría con media de target</p>
+                            <p><strong>Ventaja:</strong> Reduce dimensionalidad</p>
+                            <p><strong>Riesgo:</strong> Overfitting (usar regularización)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h5>📊 Frequency Encoding</h5>
+                            <p><strong>Concepto:</strong> Reemplazar con frecuencia relativa</p>
+                            <p><strong>Ventaja:</strong> Simple, interpretable</p>
+                            <p><strong>Uso:</strong> Categorías con cardinalidad alta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box example-blue mb-2">
+                    <h4>💻 Código: One-Hot Encoding con PySpark</h4>
+                    <pre><code class="language-python">from pyspark.ml.feature import StringIndexer, OneHotEncoder
+from pyspark.ml import Pipeline
+
+# Dataset: Yale University - Course Enrollments
+# Categorías: major (50 valores), department (25 valores), term (4 valores)
+df = spark.read.parquet("hdfs://namenode:9000/data/yale/course_enrollments.parquet")
+
+# Mostrar categorías
+df.select('student_id', 'major', 'department', 'term').show(5, truncate=False)
+
+# +----------+------------------+----------------+--------+
+# |student_id|major             |department      |term    |
+# +----------+------------------+----------------+--------+
+# |STU001    |Computer Science  |Engineering     |Fall    |
+# |STU002    |Psychology        |Social Sciences |Spring  |
+# |STU003    |Biology           |Sciences        |Fall    |
+# +----------+------------------+----------------+--------+
+
+# ========================================
+# PASO 1: String Indexer (Categórico → Numérico)
+# ========================================
+indexers = [
+    StringIndexer(inputCol=col, outputCol=f"{col}_index", handleInvalid="keep")
+    for col in ['major', 'department', 'term']
+]
+
+# ========================================
+# PASO 2: One-Hot Encoder
+# ========================================
+encoders = [
+    OneHotEncoder(inputCol=f"{col}_index", outputCol=f"{col}_onehot")
+    for col in ['major', 'department', 'term']
+]
+
+# ========================================
+# PASO 3: Pipeline Completo
+# ========================================
+pipeline = Pipeline(stages=indexers + encoders)
+model = pipeline.fit(df)
+df_encoded = model.transform(df)
+
+# Mostrar resultado
+df_encoded.select('student_id', 'major', 'major_index', 'major_onehot').show(5, truncate=False)
+
+# +----------+------------------+-----------+-------------------------+
+# |student_id|major             |major_index|major_onehot             |
+# +----------+------------------+-----------+-------------------------+
+# |STU001    |Computer Science  |0.0        |(49,[0],[1.0])           | ✓ Vector sparse
+# |STU002    |Psychology        |5.0        |(49,[5],[1.0])           |
+# |STU003    |Biology           |2.0        |(49,[2],[1.0])           |
+# +----------+------------------+-----------+-------------------------+
+
+# Explicación: (49,[0],[1.0]) = Vector de 49 dimensiones, posición 0 = 1.0, resto = 0
+
+print("✅ One-Hot Encoding completado:")
+print(f"   Major: 50 categorías → 49 columnas binarias")
+print(f"   Department: 25 categorías → 24 columnas binarias")
+print(f"   Term: 4 categorías → 3 columnas binarias")
+print(f"   Total features añadidas: 49 + 24 + 3 = 76 columnas")</code></pre>
+                </div>
+
+                <!-- ESTANDARIZACIÓN DE NOMENCLATURAS -->
+                <div class="highlight-box primary mt-2">
+                    <h3 class="color-primary">3️⃣ Estandarización de Nomenclaturas</h3>
+                    <p>Uso de <strong>catálogos maestros</strong> y estándares internacionales para unificar códigos y nombres.</p>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Dominio</th>
+                                    <th>Estándar</th>
+                                    <th>Ejemplo Antes</th>
+                                    <th>Ejemplo Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Países</strong></td>
+                                    <td>ISO 3166-1 alpha-2</td>
+                                    <td>"USA", "United States", "US", "America"</td>
+                                    <td>"US"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Idiomas</strong></td>
+                                    <td>ISO 639-1</td>
+                                    <td>"Español", "Spanish", "Castellano"</td>
+                                    <td>"es"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Monedas</strong></td>
+                                    <td>ISO 4217</td>
+                                    <td>"€", "euros", "EUR"</td>
+                                    <td>"EUR"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Enfermedades</strong></td>
+                                    <td>ICD-10</td>
+                                    <td>"Diabetes tipo 2", "T2DM"</td>
+                                    <td>"E11"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Medicamentos</strong></td>
+                                    <td>ATC (Anatomical Therapeutic Chemical)</td>
+                                    <td>"Ibuprofeno", "Advil", "Ibuprofen"</td>
+                                    <td>"M01AE01"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Carreras Universitarias</strong></td>
+                                    <td>ISCED-F 2013</td>
+                                    <td>"CS", "CompSci", "Informática"</td>
+                                    <td>"0613" (Software and applications)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-box example-green mt-2">
+                        <h4>Ejemplo: Mapeo a Catálogo Maestro</h4>
+                        <pre><code class="language-python"># Diccionario de mapeo: variantes → código estándar
+country_mapping = {
+    "USA": "US", "United States": "US", "America": "US", "U.S.A.": "US",
+    "España": "ES", "Spain": "ES", "Espana": "ES",
+    "UK": "GB", "United Kingdom": "GB", "England": "GB", "Britain": "GB",
+    # ... más mappings
+}
+
+# Aplicar mapeo
+from pyspark.sql.functions import create_map, lit
+
+country_map_expr = create_map([lit(x) for x in sum(country_mapping.items(), ())])
+
+df_standardized = df.withColumn(
+    'country_code_iso',
+    country_map_expr[col('country_name')]
+)
+
+# Antes: "USA", "United States", "U.S.A."
+# Después: "US", "US", "US"  ✓ Estandarizado</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: HERRAMIENTAS -->
+            <section class="section" id="herramientas">
+                <h2 class="section-title">🛠️ Herramientas de Limpieza y Normalización</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🐼 Pandas Profiling</h4>
+                        <p><strong>Función:</strong> Generación automática de reportes de calidad</p>
+                        <p><strong>Features:</strong> Distribuciones, correlaciones, valores faltantes, alertas automáticas</p>
+                        <p><strong>Uso:</strong> Análisis exploratorio rápido (datasets <1M registros)</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔧 OpenRefine</h4>
+                        <p><strong>Función:</strong> Limpieza interactiva de datos (GUI)</p>
+                        <p><strong>Features:</strong> Clustering fuzzy, facetas, transformaciones GREL, reconciliación con APIs</p>
+                        <p><strong>Uso:</strong> Datasets tabulares pequeños (<100K), exploración manual</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🏭 Talend Data Preparation</h4>
+                        <p><strong>Función:</strong> Plataforma ETL enterprise con UI drag-and-drop</p>
+                        <p><strong>Features:</strong> 150+ transformaciones, conectores a 900+ fuentes, ML para sugerencias</p>
+                        <p><strong>Uso:</strong> Pipelines complejos, integración multi-fuente, equipos no técnicos</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚡ Apache Spark (PySpark)</h4>
+                        <p><strong>Función:</strong> Procesamiento distribuido de Big Data</p>
+                        <p><strong>Features:</strong> Scala, cluster computing, lazy evaluation, DataFrames API</p>
+                        <p><strong>Uso:</strong> Datasets >1 TB, transformaciones batch, pipelines ML</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🌊 Apache NiFi</h4>
+                        <p><strong>Función:</strong> Orquestación de flujos de datos (dataflows)</p>
+                        <p><strong>Features:</strong> UI visual, 300+ processors, garantía de entrega, trazabilidad</p>
+                        <p><strong>Uso:</strong> Ingestión en tiempo real, routing condicional, transformaciones complejas</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>✅ Great Expectations</h4>
+                        <p><strong>Función:</strong> Framework de validación de calidad de datos</p>
+                        <p><strong>Features:</strong> Expectations declarativas, data docs, profiling automático</p>
+                        <p><strong>Uso:</strong> CI/CD pipelines, monitoreo continuo, regression tests</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔬 Trifacta Wrangler</h4>
+                        <p><strong>Función:</strong> Data wrangling con ML-powered sugerencias</p>
+                        <p><strong>Features:</strong> Detección automática de errores, transformaciones visuales</p>
+                        <p><strong>Uso:</strong> Analistas de negocio, exploración iterativa</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🐍 Python (scikit-learn)</h4>
+                        <p><strong>Función:</strong> Librería ML con transformers de preprocessing</p>
+                        <p><strong>Features:</strong> Imputers, scalers, encoders, pipelines, custom transformers</p>
+                        <p><strong>Uso:</strong> Integración con workflows ML, notebooks Jupyter</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary mt-2">
+                    <h3 class="color-secondary">Comparativa: ¿Cuándo usar cada herramienta?</h3>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Criterio</th>
+                                    <th>Pandas/OpenRefine</th>
+                                    <th>Talend/NiFi</th>
+                                    <th>PySpark</th>
+                                    <th>Great Expectations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tamaño de datos</strong></td>
+                                    <td>&lt; 1 GB</td>
+                                    <td>1 GB - 100 GB</td>
+                                    <td>&gt; 100 GB</td>
+                                    <td>Cualquier tamaño</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Complejidad</strong></td>
+                                    <td>Baja (exploración)</td>
+                                    <td>Media (ETL multi-paso)</td>
+                                    <td>Alta (transformaciones complejas)</td>
+                                    <td>Media (validación)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Habilidad técnica</strong></td>
+                                    <td>Básica (Excel-like)</td>
+                                    <td>Media (drag-and-drop)</td>
+                                    <td>Alta (programación)</td>
+                                    <td>Media (Python básico)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Velocidad setup</strong></td>
+                                    <td>Minutos</td>
+                                    <td>Horas</td>
+                                    <td>Días (cluster setup)</td>
+                                    <td>Horas</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Automatización</strong></td>
+                                    <td>Limitada</td>
+                                    <td>✅ Full</td>
+                                    <td>✅ Full</td>
+                                    <td>✅ Full (CI/CD)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Costo</strong></td>
+                                    <td>Gratis (open source)</td>
+                                    <td>Enterprise ($$$$)</td>
+                                    <td>Medio (infra cluster)</td>
+                                    <td>Gratis / Paid tiers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: CASO DE ESTUDIO -->
+            <section class="section" id="caso-estudio">
+                <h2 class="section-title">🏥 Caso de Estudio: Hospital Clínico San Carlos (Madrid)</h2>
+
+                <div class="highlight-box secondary">
+                    <h3 class="color-secondary">Contexto del Proyecto</h3>
+                    <p>El <strong>Hospital Clínico San Carlos</strong>, uno de los hospitales universitarios más grandes de España, gestiona <strong>10 TB de datos clínicos</strong> diarios provenientes de:</p>
+                    <ul>
+                        <li>📋 <strong>Sistema EHR (Epic):</strong> Historias clínicas electrónicas</li>
+                        <li>🔬 <strong>Laboratorios:</strong> Analíticas de sangre, orina, microbiología (6 sistemas legacy)</li>
+                        <li>🏥 <strong>Sistemas de imagen médica:</strong> PACS (Picture Archiving System) con DICOM</li>
+                        <li>💊 <strong>Farmacia:</strong> Prescripciones y dispensación de medicamentos</li>
+                        <li>🚑 <strong>Urgencias:</strong> Triaje, admisiones, alta de pacientes</li>
+                        <li>📊 <strong>Sistemas administrativos:</strong> Facturación, seguros, citaciones</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box mt-2">
+                    <h4 class="color-warning">⚠️ Problemas Identificados (Auditoría 2023)</h4>
+                    <ul>
+                        <li><strong>Fechas inválidas:</strong> 3.2% de registros con fechas imposibles ("30/02/2024", fechas futuras en historiales)</li>
+                        <li><strong>Códigos ICD-10 inválidos:</strong> 8% de diagnósticos con códigos obsoletos o mal escritos ("E115" en lugar de "E11.5")</li>
+                        <li><strong>Duplicados de pacientes:</strong> 12,400 registros duplicados por variaciones de nombre ("José García", "Jose Garcia", "J. García")</li>
+                        <li><strong>Valores faltantes críticos:</strong> 15% de analíticas sin hora de extracción (crítico para interpretación)</li>
+                        <li><strong>Unidades inconsistentes:</strong> Glucemia en mg/dL (España) vs mmol/L (algunos equipos importados)</li>
+                        <li><strong>Encoding corrupto:</strong> Nombres con caracteres mojibake ("JosÃ©" en lugar de "José")</li>
+                        <li><strong>Inconsistencias cross-system:</strong> Peso del paciente con 5 kg de diferencia entre EHR y quirófano</li>
+                    </ul>
+
+                    <p class="mt-1"><strong>Impacto:</strong></p>
+                    <ul>
+                        <li>❌ Retraso promedio de <strong>25 minutos</strong> en interpretación de analíticas por falta de contexto temporal</li>
+                        <li>❌ <strong>€2.3M anuales</strong> en rechazos de facturación por códigos diagnóstico inválidos</li>
+                        <li>❌ <strong>18%</strong> de estudios epidemiológicos con conclusiones sesgadas por duplicados</li>
+                        <li>❌ Riesgo de <strong>errores médicos</strong> por inconsistencias de datos críticos (medicación, alergias)</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <h3 class="color-primary">Solución Implementada: Pipeline de Limpieza Automático</h3>
+
+                    <h4 class="color-primary">Arquitectura del Sistema</h4>
+                    <div class="example-box example-blue">
+                        <ol>
+                            <li><strong>Ingestión (Apache NiFi):</strong>
+                                <ul>
+                                    <li>Conectores a 6 sistemas legacy (HL7, FHIR, CSV, SQL)</li>
+                                    <li>Transformación a formato común (Avro)</li>
+                                    <li>Escritura a HDFS en Data Lake (zona raw)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Profiling Automático (Talend Data Preparation):</strong>
+                                <ul>
+                                    <li>Análisis diario de 10 TB con pandas-profiling y Great Expectations</li>
+                                    <li>Generación de reportes HTML con alertas automáticas</li>
+                                    <li>Dashboard Grafana con KPIs de calidad</li>
+                                </ul>
+                            </li>
+                            <li><strong>Limpieza y Normalización (PySpark):</strong>
+                                <ul>
+                                    <li><strong>Fechas:</strong> Estandarización a ISO 8601, validación de rangos lógicos</li>
+                                    <li><strong>ICD-10:</strong> Validación contra catálogo oficial OMS, corrección fuzzy (Levenshtein ≤2)</li>
+                                    <li><strong>Deduplicación:</strong> Jaro-Winkler (threshold 0.94) + validación cruzada con DNI/NIE</li>
+                                    <li><strong>Imputación:</strong> Timestamps faltantes mediante interpolación lineal (series temporales)</li>
+                                    <li><strong>Unidades:</strong> Conversión automática mg/dL ↔ mmol/L con tabla de factores</li>
+                                    <li><strong>Encoding:</strong> Detección y corrección UTF-8 corrupto</li>
+                                    <li><strong>Reconciliación:</strong> Peso/talla promediado de múltiples fuentes con ponderación por confiabilidad</li>
+                                </ul>
+                            </li>
+                            <li><strong>Cuarentena y Revisión Manual:</strong>
+                                <ul>
+                                    <li>Registros no corregibles automáticamente → Zona /quarantine/ en HDFS</li>
+                                    <li>Dashboard web para staff clínico (revisión priorizada por severidad)</li>
+                                    <li>Workflow Apache Airflow para asignación y tracking</li>
+                                </ul>
+                            </li>
+                            <li><strong>Validación Continua (Great Expectations):</strong>
+                                <ul>
+                                    <li>300+ expectations definidas (rangos, formatos, relaciones)</li>
+                                    <li>Ejecución en CI/CD antes de promocionar datos a zona "trusted"</li>
+                                    <li>Alertas automáticas a Slack/Email si fallan validaciones críticas</li>
+                                </ul>
+                            </li>
+                            <li><strong>Data Warehouse Limpio:</strong>
+                                <ul>
+                                    <li>Datos validados → Snowflake (zona trusted)</li>
+                                    <li>Modelos dimensionales para BI (Tableau, PowerBI)</li>
+                                    <li>Acceso seguro con RBAC (Role-Based Access Control)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="example-box example-green mt-2">
+                    <h4>💻 Código: Pipeline PySpark Simplificado del Hospital</h4>
+                    <pre><code class="language-python"># Pipeline de limpieza Hospital Clínico San Carlos (versión simplificada)
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, to_date, when, regexp_replace, trim, lower
+from pyspark.sql.functions import udf, mean as spark_mean
+from pyspark.sql.types import StringType, DoubleType
+from datetime import datetime
+import re
+
+spark = SparkSession.builder \
+    .appName("HospitalSanCarlos_DataCleaning") \
+    .config("spark.executor.memory", "16g") \
+    .config("spark.executor.cores", "4") \
+    .getOrCreate()
+
+# ========================================
+# PASO 1: Cargar datos raw de HDFS
+# ========================================
+df_lab_results = spark.read.parquet("hdfs://namenode:9000/raw/laboratory_results/")
+
+print(f"Registros totales cargados: {df_lab_results.count():,}")
+
+# ========================================
+# PASO 2: Estandarización de Fechas
+# ========================================
+def standardize_clinical_dates(df):
+    """Convierte múltiples formatos de fecha y valida rangos lógicos"""
+    df = df.withColumn(
+        'test_date_clean',
+        when(
+            col('test_date').rlike(r'^\d{2}/\d{2}/\d{4}$'),
+            to_date(col('test_date'), 'dd/MM/yyyy')
+        ).when(
+            col('test_date').rlike(r'^\d{4}-\d{2}-\d{2}$'),
+            to_date(col('test_date'), 'yyyy-MM-dd')
+        ).otherwise(None)
+    )
+
+    # Validar rango lógico: fecha no puede ser futura ni anterior a 1900
+    today = datetime.now().date()
+    df = df.withColumn(
+        'test_date_valid',
+        when(
+            (col('test_date_clean') <= today) &
+            (col('test_date_clean') >= '1900-01-01'),
+            col('test_date_clean')
+        ).otherwise(None)
+    )
+
+    return df
+
+df_clean = standardize_clinical_dates(df_lab_results)
+
+# ========================================
+# PASO 3: Validación de Códigos ICD-10
+# ========================================
+# Cargar catálogo oficial de ICD-10 (WHO)
+icd10_catalog = spark.read.csv("hdfs://namenode:9000/reference/icd10_codes.csv", header=True)
+valid_codes = set([row.code for row in icd10_catalog.collect()])
+
+def validate_icd10(code):
+    """Valida y corrige códigos ICD-10"""
+    if code in valid_codes:
+        return code
+
+    # Intentar corrección común: E115 → E11.5
+    if code and len(code) == 4 and code[0].isalpha():
+        corrected = f"{code[:3]}.{code[3]}"
+        if corrected in valid_codes:
+            return corrected
+
+    return None  # Código inválido → cuarentena
+
+validate_icd10_udf = udf(validate_icd10, StringType())
+
+df_clean = df_clean.withColumn(
+    'diagnosis_code_clean',
+    validate_icd10_udf(col('diagnosis_code'))
+)
+
+# ========================================
+# PASO 4: Normalización de Unidades (Glucemia)
+# ========================================
+def convert_glucose_to_mgdl(value, unit):
+    """Convierte glucemia a mg/dL estándar"""
+    if unit == 'mmol/L':
+        return value * 18.0  # Factor de conversión
+    elif unit == 'mg/dL':
+        return value
+    else:
+        return None
+
+convert_glucose_udf = udf(convert_glucose_to_mgdl, DoubleType())
+
+df_clean = df_clean.withColumn(
+    'glucose_mgdl',
+    convert_glucose_udf(col('glucose_value'), col('glucose_unit'))
+)
+
+# ========================================
+# PASO 5: Imputación de Timestamps
+# ========================================
+# Si falta hora de extracción, imputar con mediana del día
+from pyspark.sql.window import Window
+from pyspark.sql.functions import approx_count_distinct
+
+window_by_date = Window.partitionBy('test_date_valid')
+
+df_clean = df_clean.withColumn(
+    'extraction_time_imputed',
+    when(
+        col('extraction_time').isNull(),
+        spark_mean('extraction_time').over(window_by_date)
+    ).otherwise(col('extraction_time'))
+)
+
+# ========================================
+# PASO 6: Corrección de Encoding
+# ========================================
+def fix_mojibake(text):
+    """Intenta reparar UTF-8 corrupto"""
+    if text is None:
+        return None
+    try:
+        return text.encode('latin-1').decode('utf-8')
+    except:
+        return text
+
+fix_encoding_udf = udf(fix_mojibake, StringType())
+
+df_clean = df_clean.withColumn(
+    'patient_name_clean',
+    fix_encoding_udf(col('patient_name'))
+)
+
+# ========================================
+# PASO 7: Segregación: Datos Limpios vs Cuarentena
+# ========================================
+# Datos válidos: todos los campos críticos son no nulos
+df_trusted = df_clean.filter(
+    col('test_date_valid').isNotNull() &
+    col('diagnosis_code_clean').isNotNull() &
+    col('glucose_mgdl').isNotNull()
+)
+
+# Datos con problemas: al menos un campo crítico es nulo
+df_quarantine = df_clean.filter(
+    col('test_date_valid').isNull() |
+    col('diagnosis_code_clean').isNull() |
+    col('glucose_mgdl').isNull()
+)
+
+# Guardar en zonas separadas
+df_trusted.write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/trusted/laboratory_results/')
+
+df_quarantine.write.mode('overwrite') \
+    .parquet('hdfs://namenode:9000/quarantine/laboratory_results/')
+
+# ========================================
+# PASO 8: Métricas de Calidad
+# ========================================
+total = df_lab_results.count()
+trusted = df_trusted.count()
+quarantine = df_quarantine.count()
+
+print("\n📊 Resumen de Limpieza:")
+print(f"  Total registros:      {total:,}")
+print(f"  Datos limpios:        {trusted:,} ({trusted/total*100:.2f}%)")
+print(f"  En cuarentena:        {quarantine:,} ({quarantine/total*100:.2f}%)")
+print(f"  Fechas corregidas:    {df_clean.filter(col('test_date_valid').isNotNull()).count():,}")
+print(f"  ICD-10 corregidos:    {df_clean.filter(col('diagnosis_code_clean').isNotNull()).count():,}")
+print(f"  Encoding reparado:    {df_clean.filter(col('patient_name_clean') != col('patient_name')).count():,}")
+
+spark.stop()</code></pre>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <h3 class="color-primary">📈 Resultados del Proyecto</h3>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Métrica</th>
+                                    <th>Antes (2023)</th>
+                                    <th>Después (2024)</th>
+                                    <th>Mejora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tasa de Error General</strong></td>
+                                    <td>38.2%</td>
+                                    <td>1.8%</td>
+                                    <td class="color-success">-95.3%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fechas Inválidas</strong></td>
+                                    <td>3.2%</td>
+                                    <td>0.1%</td>
+                                    <td class="color-success">-96.9%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Códigos ICD-10 Erróneos</strong></td>
+                                    <td>8.0%</td>
+                                    <td>0.5%</td>
+                                    <td class="color-success">-93.8%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Duplicados de Pacientes</strong></td>
+                                    <td>12,400</td>
+                                    <td>187</td>
+                                    <td class="color-success">-98.5%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tiempo Interpretación Analíticas</strong></td>
+                                    <td>25 min</td>
+                                    <td>8 min</td>
+                                    <td class="color-success">-68%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rechazos de Facturación</strong></td>
+                                    <td>€2.3M/año</td>
+                                    <td>€180K/año</td>
+                                    <td class="color-success">-92.2%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Precisión Modelos ML</strong></td>
+                                    <td>72%</td>
+                                    <td>91%</td>
+                                    <td class="color-success">+26.4%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Satisfacción Personal Médico</strong></td>
+                                    <td>62%</td>
+                                    <td>88%</td>
+                                    <td class="color-success">+41.9%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-box example-green mt-2">
+                        <h4>💰 ROI del Proyecto</h4>
+                        <p><strong>Inversión Total:</strong> €850,000 (infraestructura Hadoop, licencias Talend, 6 meses desarrollo)</p>
+                        <p><strong>Ahorros Anuales:</strong></p>
+                        <ul>
+                            <li>Reducción rechazos facturación: €2.12M</li>
+                            <li>Reducción tiempo personal clínico: €680K (340 horas/mes × €2,000/hora)</li>
+                            <li>Evitación de multas GDPR: €150K (estimado)</li>
+                            <li>Mejora en grants de investigación: €420K (datos fiables → mayor tasa aprobación)</li>
+                        </ul>
+                        <p><strong>Total Ahorros:</strong> €3.37M/año</p>
+                        <p><strong>ROI:</strong> <span class="color-success"><strong>296%</strong></span> en el primer año</p>
+                        <p><strong>Payback period:</strong> 3.8 meses</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary mt-2">
+                    <h3 class="color-secondary">🎯 Lecciones Aprendidas</h3>
+                    <ol>
+                        <li><strong>Automatización es clave:</strong> Limpieza manual NO escala a 10 TB/día</li>
+                        <li><strong>Cuarentena > Eliminación:</strong> Revisar registros problemáticos evitó pérdida de datos críticos</li>
+                        <li><strong>Catálogos maestros esenciales:</strong> ICD-10, ISO standards evitaron correcciones ad-hoc</li>
+                        <li><strong>Validación continua:</strong> Great Expectations detectó regresiones antes de producción</li>
+                        <li><strong>Colaboración clínica:</strong> Involucrar médicos en definición de reglas de validación fue crucial</li>
+                        <li><strong>Monitoreo en tiempo real:</strong> Dashboards Grafana permitieron detectar degradación de calidad inmediatamente</li>
+                        <li><strong>Documentación:</strong> Data lineage con Apache Atlas facilitó auditorías y debugging</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: MAPA MENTAL -->
+            <section class="section" id="mapa-mental">
+                <h2 class="section-title">🗺️ Mapa Mental: Limpieza y Normalización de Datos</h2>
+
+                <div class="mindmap-container">
+                    <div class="mermaid">
+mindmap
+  root((Limpieza y Normalización))
+    Limpieza[Data Cleansing]
+      Profiling[1. Profiling]
+        Completitud(Valores Nulos)
+        Unicidad(Duplicados)
+        Validez(Formatos)
+      Estandarizacion[2. Estandarización]
+        Fechas(ISO 8601)
+        Codigos(ISO 3166 ICD-10)
+        Encoding(UTF-8)
+      Imputacion[3. Gestión Nulos]
+        Simple(Media Mediana Moda)
+        Avanzada(KNN MICE Regresión)
+        Temporal(Forward Backward Fill)
+      Deduplicacion[4. Duplicados]
+        Exacta(Post normalización)
+        Fuzzy(Jaro Winkler Levenshtein)
+        Soundex(Similitud Fonética)
+      Correccion[5. Errores]
+        Tipograficos(Levenshtein)
+        Semanticos(Reglas Negocio)
+    Normalizacion[Data Normalization]
+      Numerica[Escalado Numérico]
+        MinMax(Rango 0 a 1)
+        ZScore(Media 0 Desv 1)
+        Robust(Mediana IQR)
+        Log(Reducir Skewness)
+      Categorica[Variables Categóricas]
+        LabelEncoding(0 1 2)
+        OneHot(Columnas Binarias)
+        Target(Media Target)
+        Frequency(Frecuencia Relativa)
+      Nomenclaturas[Catálogos Maestros]
+        Paises(ISO 3166)
+        Idiomas(ISO 639)
+        Monedas(ISO 4217)
+    Herramientas[Herramientas]
+      Exploracion[Análisis]
+        PandasProfiling(Reportes HTML)
+        OpenRefine(GUI Interactiva)
+      ETL[Pipelines]
+        Talend(Enterprise)
+        NiFi(Dataflows)
+        PySpark(Big Data)
+      Validacion[Quality Assurance]
+        GreatExpectations(Expectations)
+        Airflow(Orquestación)
+    CasoUso[Caso Hospital San Carlos]
+      Problema[Problemas]
+        FechasInvalidas(3.2 pct)
+        ICD10Errores(8 pct)
+        Duplicados(12400 registros)
+      Solucion[Pipeline Automático]
+        NiFi(Ingestión)
+        PySpark(Limpieza)
+        Cuarentena(Revisión Manual)
+      Resultados[Resultados]
+        ErrorReduccion(38 a 1.8 pct)
+        ROI(296 pct primer año)
+        Satisfaccion(Mejora 41.9 pct)
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</body>
+
+</html>

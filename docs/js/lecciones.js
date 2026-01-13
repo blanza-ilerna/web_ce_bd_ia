@@ -148,9 +148,71 @@ function initCodeHighlighting() {
 }
 
 /**
+ * Añade botones de copia a todos los bloques de código
+ */
+function initCopyButtons() {
+    document.querySelectorAll('pre').forEach(pre => {
+        // Verificar si ya tiene botón
+        if (pre.querySelector('.copy-btn')) return;
+
+        // Crear contenedor relativo si no lo es
+        if (getComputedStyle(pre).position === 'static') {
+            pre.style.position = 'relative';
+        }
+
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.textContent = '📋 Copiar';
+        button.style.cssText = `
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        `;
+
+        button.addEventListener('mouseenter', () => {
+            button.style.background = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            button.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+
+        button.addEventListener('click', () => {
+            const code = pre.querySelector('code');
+            const text = code ? code.innerText : pre.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ ¡Copiado!';
+                button.style.background = 'rgba(76, 175, 80, 0.3)'; // Green tint
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.textContent = '❌ Error';
+            });
+        });
+
+        pre.appendChild(button);
+    });
+}
+
+/**
  * Inicialización cuando se carga el DOM
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('Lección iLERNA - Documento cargado correctamente');
 
     // Inicializar funcionalidades
@@ -158,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // initScrollAnimations(); // COMENTADO: Causaba problemas de visualización
     initBackToTop();
     initCodeHighlighting();
+    initCopyButtons();
 
     // Log para debug
     console.log('Todas las funcionalidades inicializadas');
@@ -170,14 +233,14 @@ const LeccionUtils = {
     /**
      * Formatea un número con separador de miles
      */
-    formatNumber: function(num) {
+    formatNumber: function (num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     /**
      * Trunca un texto a una longitud específica
      */
-    truncateText: function(text, maxLength) {
+    truncateText: function (text, maxLength) {
         if (text.length <= maxLength) return text;
         return text.substr(0, maxLength) + '...';
     },
@@ -185,7 +248,7 @@ const LeccionUtils = {
     /**
      * Genera un ID único
      */
-    generateId: function(prefix = 'id') {
+    generateId: function (prefix = 'id') {
         return prefix + '_' + Math.random().toString(36).substr(2, 9);
     }
 };

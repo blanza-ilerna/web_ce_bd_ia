@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Detección y Corrección de Errores en Big Data: Validaciones, outliers, imputación y reconciliación. Estrategias con Spark y Machine Learning">
+    <meta name="author" content="iLERNA">
+    <title>Detección y Corrección de Errores | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicaciones Big Data</a> ›
+                    <span>Detección y Corrección de Errores</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Detección y Corrección de Errores</h1>
+                <p class="subtitle">Estrategias de Validación, Limpieza y Reconciliación en Big Data</p>
+            </div>
+
+            <!-- TABLE OF CONTENTS -->
+            <section class="section">
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">📑 Índice de Contenidos</h3>
+                    <div class="grid-features">
+                        <div class="feature-card toc-card">
+                            <a href="#introduccion">
+                                <h4>1. Introducción</h4>
+                                <p>Importancia de la detección de errores</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#tipos-errores">
+                                <h4>2. Tipos de Errores</h4>
+                                <p>Sintácticos, semánticos, duplicación...</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#metodos-deteccion">
+                                <h4>3. Métodos de Detección</h4>
+                                <p>Validaciones, ML, checksums</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#estrategias-correccion">
+                                <h4>4. Estrategias de Corrección</h4>
+                                <p>Imputación, deduplicación, reconciliación</p>
+                            </a>
+                        </div>
+                        <div class="feature-card toc-card">
+                            <a href="#caso-estudio">
+                                <h4>5. Caso de Estudio</h4>
+                                <p>Universidad de Barcelona</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <h2 class="section-title">Importancia de la Detección y Corrección de Errores</h2>
+                <p>La <strong>detección y corrección de errores</strong> son esenciales para garantizar la integridad de
+                    los datos en Big Data, donde los errores pueden originarse en múltiples etapas: captura,
+                    integración, transformación o almacenamiento. En entornos educativos, donde se gestionan millones
+                    de registros estudiantiles, académicos y administrativos, un solo error puede propagarse y afectar
+                    decisiones críticas.</p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">🎯 Caso Real - MIT</p>
+                    <p class="content">El MIT detectó que el 12% de las calificaciones importadas desde sistemas legacy
+                        contenían errores sintácticos (caracteres especiales, formatos incorrectos) que impedían el
+                        cálculo correcto de promedios académicos. Implementaron un pipeline de validación automática con
+                        Apache Spark que detecta y corrige errores en tiempo real, reduciendo incidencias del 12% al
+                        0.3% y eliminando 400+ horas/año de corrección manual.</p>
+                </div>
+
+                <h3>Impacto de los Errores No Detectados</h3>
+                <div class="grid-features">
+                    <div class="disadvantage-box">
+                        <h4>❌ Decisiones Académicas Erróneas</h4>
+                        <p>Asignación incorrecta de becas, matrículas de honor o admisiones por datos defectuosos.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Reportes Institucionales Inválidos</h4>
+                        <p>Métricas de rendimiento, tasas de graduación y rankings universitarios distorsionados.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Pérdida de Acreditaciones</h4>
+                        <p>Auditorías educativas fallan por inconsistencias en registros históricos.</p>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Modelos Predictivos Sesgados</h4>
+                        <p>Predicciones de abandono o rendimiento estudiantil con errores del 20-30%.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: TIPOS DE ERRORES -->
+            <section class="section" id="tipos-errores">
+                <h2 class="section-title">🔍 Tipos Comunes de Errores en Big Data</h2>
+
+                <!-- ERROR 1: SINTÁCTICOS -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">1. Errores Sintácticos</h3>
+                    <p><strong>Definición:</strong> Formatos inválidos, tipos de datos incorrectos o caracteres no
+                        reconocidos que violan el esquema de datos.</p>
+
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Valor Erróneo</th>
+                                    <th>Tipo de Error</th>
+                                    <th>Impacto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>student_age</code></td>
+                                    <td>"veinte"</td>
+                                    <td>Texto en campo numérico</td>
+                                    <td>Falla procesamiento estadístico</td>
+                                </tr>
+                                <tr>
+                                    <td><code>enrollment_date</code></td>
+                                    <td>"32/15/2025"</td>
+                                    <td>Formato fecha inválido</td>
+                                    <td>Imposible ordenar cronológicamente</td>
+                                </tr>
+                                <tr>
+                                    <td><code>email</code></td>
+                                    <td>"estudiante@universidad"</td>
+                                    <td>Formato email incompleto</td>
+                                    <td>Notificaciones no llegan</td>
+                                </tr>
+                                <tr>
+                                    <td><code>final_grade</code></td>
+                                    <td>"8.5#"</td>
+                                    <td>Caracter especial no válido</td>
+                                    <td>Conversión a número falla</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="color-primary mt-1">Detección con Spark SQL</h4>
+                    <pre><code class="language-sql">-- Detectar errores sintácticos en edad
+SELECT student_id, age
+FROM students
+WHERE age NOT RLIKE '^[0-9]+$'  -- No es número
+   OR CAST(age AS INT) IS NULL  -- No se puede convertir
+   OR CAST(age AS INT) < 0      -- Valor negativo
+   OR CAST(age AS INT) > 120;   -- Valor imposible
+
+-- Resultado: 1,250 registros con errores (2.5% del total)</code></pre>
+                </div>
+
+                <!-- ERROR 2: SEMÁNTICOS -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">2. Errores Semánticos</h3>
+                    <p><strong>Definición:</strong> Incongruencias lógicas que violan reglas de negocio, aunque el
+                        formato sea técnicamente válido.</p>
+
+                    <div class="example-box example-purple">
+                        <h4>Ejemplos Académicos de Errores Semánticos</h4>
+                        <ul>
+                            <li><strong>Fechas imposibles:</strong> Fecha de graduación anterior a fecha de ingreso</li>
+                            <li><strong>Contradicciones:</strong> Estado "Graduado" pero créditos_completados = 60/240
+                            </li>
+                            <li><strong>Rangos inválidos:</strong> Calificación final = 12.5 (escala 0-10)</li>
+                            <li><strong>Lógica quebrada:</strong> Estudiante inscrito en "Física Cuántica III" sin
+                                aprobar I y II</li>
+                            <li><strong>Inconsistencia temporal:</strong> Edad = 18 años pero año_nacimiento = 1985</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="color-secondary mt-1">Validación Semántica con PySpark</h4>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, year, current_date, datediff
+
+spark = SparkSession.builder.appName("SemanticValidation").getOrCreate()
+df = spark.read.parquet("/data/students/")
+
+# Regla 1: Fecha de graduación no puede ser anterior a ingreso
+semantic_errors_1 = df.filter(
+    col("graduation_date") < col("enrollment_date")
+)
+print(f"Error temporal: {semantic_errors_1.count()} registros")
+
+# Regla 2: Edad calculada debe coincidir con edad declarada
+df_with_calc_age = df.withColumn(
+    "calculated_age",
+    (year(current_date()) - col("birth_year"))
+)
+
+semantic_errors_2 = df_with_calc_age.filter(
+    abs(col("age") - col("calculated_age")) > 1  # Tolerancia 1 año
+)
+print(f"Error edad: {semantic_errors_2.count()} registros")
+
+# Regla 3: Créditos cursados no pueden exceder plan de estudios
+semantic_errors_3 = df.filter(
+    col("credits_completed") > col("total_credits_required")
+)
+print(f"Error créditos: {semantic_errors_3.count()} registros")
+
+# Consolidar todos los errores semánticos
+all_semantic_errors = semantic_errors_1.union(semantic_errors_2).union(semantic_errors_3)
+all_semantic_errors.write.parquet("/output/semantic_errors/")</code></pre>
+                </div>
+
+                <!-- ERROR 3: DUPLICACIÓN -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">3. Errores de Duplicación</h3>
+                    <p><strong>Definición:</strong> Registros repetidos con variaciones mínimas (typos, abreviaciones,
+                        espacios extra) que representan la misma entidad.</p>
+
+                    <div class="comparison-grid">
+                        <div class="highlight-box secondary">
+                            <h4 class="color-secondary text-center">Duplicados Exactos</h4>
+                            <p>Todos los campos idénticos. <strong>Fáciles de detectar.</strong></p>
+                            <pre style="font-size: 0.85rem;">ID: 12345
+Nombre: María García López
+Email: maria.garcia@uni.edu
+DNI: 12345678A</pre>
+                            <pre style="font-size: 0.85rem;">ID: 67890
+Nombre: María García López
+Email: maria.garcia@uni.edu
+DNI: 12345678A</pre>
+                        </div>
+                        <div class="warning-box">
+                            <h4 class="color-warning text-center">Duplicados Fuzzy</h4>
+                            <p>Variaciones menores. <strong>Requieren similitud textual.</strong></p>
+                            <pre style="font-size: 0.85rem;">Nombre: María García López
+Email: maria.garcia@uni.edu</pre>
+                            <pre style="font-size: 0.85rem;">Nombre: Maria Garcia Lopez (sin tildes)
+Email: m.garcia@uni.edu (abreviado)</pre>
+                        </div>
+                    </div>
+
+                    <h4 class="color-primary mt-1">Detección Fuzzy con Levenshtein</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import levenshtein, lower, trim
+
+# Normalizar nombres
+df_normalized = df.withColumn(
+    "name_normalized",
+    lower(trim(col("first_name")))
+)
+
+# Detectar duplicados con similitud > 85%
+from pyspark.sql import Window
+from pyspark.sql.functions import row_number
+
+# Self-join para comparar cada registro con los demás
+df_pairs = df_normalized.alias("a").crossJoin(
+    df_normalized.alias("b")
+).filter(
+    (col("a.student_id") < col("b.student_id")) &  # Evitar duplicados del join
+    (levenshtein(col("a.name_normalized"), col("b.name_normalized")) <= 2)  # Máximo 2 caracteres diferentes
+)
+
+# Resultado: 850 pares de posibles duplicados
+df_pairs.select(
+    "a.student_id", "a.name_normalized",
+    "b.student_id", "b.name_normalized",
+    levenshtein("a.name_normalized", "b.name_normalized").alias("distance")
+).show()
+
+# +----------+-------------------+----------+-------------------+--------+
+# |student_id|name_normalized    |student_id|name_normalized    |distance|
+# +----------+-------------------+----------+-------------------+--------+
+# |10001     |maria garcia lopez |10234     |maria garcia lopex |1       |
+# |10002     |john smith         |10567     |jon smith          |1       |
+# +----------+-------------------+----------+-------------------+--------+</code></pre>
+                </div>
+
+                <!-- ERROR 4: INTEGRACIÓN -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">4. Errores de Integración</h3>
+                    <p><strong>Definición:</strong> Inconsistencias al combinar datos de fuentes heterogéneas con
+                        diferentes formatos, unidades o convenciones.</p>
+
+                    <div class="example-box example-purple">
+                        <h4>Escenario: Fusión de 3 Campus</h4>
+                        <p>Una universidad fusiona bases de datos de 3 campus autónomos:</p>
+                        <ul>
+                            <li><strong>Campus A:</strong> Notas en escala 0-100</li>
+                            <li><strong>Campus B:</strong> Notas en escala 0-10</li>
+                            <li><strong>Campus C:</strong> Notas en letras (A, B, C, D, F)</li>
+                        </ul>
+                        <p><strong>Problema:</strong> Sin normalización, el promedio global es inválido.</p>
+                    </div>
+
+                    <h4 class="color-secondary mt-1">Normalización Multi-Fuente</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import when, regexp_extract
+
+# Función de normalización a escala 0-10
+def normalize_grade(df, source_column, campus):
+    if campus == "A":  # 0-100 → 0-10
+        return df.withColumn("normalized_grade", col(source_column) / 10)
+    elif campus == "B":  # Ya en 0-10
+        return df.withColumn("normalized_grade", col(source_column))
+    elif campus == "C":  # Letras → 0-10
+        return df.withColumn(
+            "normalized_grade",
+            when(col(source_column) == "A", 10.0)
+            .when(col(source_column) == "B", 8.0)
+            .when(col(source_column) == "C", 6.0)
+            .when(col(source_column) == "D", 4.0)
+            .when(col(source_column) == "F", 0.0)
+            .otherwise(None)
+        )
+
+# Aplicar normalización
+df_campus_a = normalize_grade(df_a, "grade", "A")
+df_campus_b = normalize_grade(df_b, "grade", "B")
+df_campus_c = normalize_grade(df_c, "grade", "C")
+
+# Unificar datasets
+df_unified = df_campus_a.union(df_campus_b).union(df_campus_c)
+
+# Calcular promedio global válido
+avg_grade = df_unified.agg({"normalized_grade": "avg"}).collect()[0][0]
+print(f"Promedio global normalizado: {avg_grade:.2f}/10")</code></pre>
+                </div>
+
+                <!-- ERROR 5: TRANSMISIÓN -->
+                <div class="warning-box mb-2">
+                    <h3 class="color-warning">5. Errores de Transmisión/Almacenamiento</h3>
+                    <p><strong>Definición:</strong> Pérdida o corrupción de datos durante la replicación en sistemas
+                        distribuidos (HDFS, Cassandra, S3).</p>
+
+                    <h4 class="color-warning">Checksum en HDFS</h4>
+                    <pre><code class="language-python">import hashlib
+from hdfs import InsecureClient
+
+client = InsecureClient('http://namenode:50070', user='hdfs')
+
+def verify_file_integrity(hdfs_path):
+    # Leer archivo de HDFS
+    with client.read(hdfs_path) as reader:
+        content = reader.read()
+
+    # Calcular checksum
+    checksum_calculated = hashlib.md5(content).hexdigest()
+
+    # Obtener checksum almacenado
+    file_status = client.status(hdfs_path)
+    checksum_stored = file_status.get('checksum', None)
+
+    if checksum_calculated == checksum_stored:
+        print(f"✓ Integridad verificada: {hdfs_path}")
+        return True
+    else:
+        print(f"✗ CORRUPCIÓN DETECTADA: {hdfs_path}")
+        print(f"  Esperado: {checksum_stored}")
+        print(f"  Calculado: {checksum_calculated}")
+        return False
+
+# Verificar lote de archivos
+files = client.list('/data/grades/2025/')
+corrupted = [f for f in files if not verify_file_integrity(f'/data/grades/2025/{f}')]
+
+print(f"Archivos corruptos: {len(corrupted)}/{len(files)}")</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: MÉTODOS DE DETECCIÓN -->
+            <section class="section" id="metodos-deteccion">
+                <h2 class="section-title">🔬 Métodos de Detección de Errores</h2>
+
+                <!-- MÉTODO 1: VALIDACIONES -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">1. Validaciones Automáticas con Reglas de Negocio</h3>
+                    <p>Se aplican <strong>constraints</strong> y <strong>reglas lógicas</strong> para identificar datos
+                        inválidos según el dominio académico.</p>
+
+                    <h4 class="color-primary">Biblioteca de Reglas de Validación</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Regla</th>
+                                    <th>Expresión SQL</th>
+                                    <th>Ejemplo Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Rango edad</strong></td>
+                                    <td><code>age BETWEEN 16 AND 70</code></td>
+                                    <td>age = 150</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Formato email</strong></td>
+                                    <td><code>email RLIKE '^[^@]+@[^@]+\.[^@]+$'</code></td>
+                                    <td>email = "juan@"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Escala notas</strong></td>
+                                    <td><code>grade BETWEEN 0.0 AND 10.0</code></td>
+                                    <td>grade = 15.2</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fechas lógicas</strong></td>
+                                    <td><code>graduation_date >= enrollment_date</code></td>
+                                    <td>graduación antes de ingreso</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- MÉTODO 2: CROSS-CHECKING -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">2. Comparación entre Fuentes (Cross-Checking)</h3>
+                    <p>Contrasta datos entre sistemas independientes (LMS, SIS, ERP) para detectar inconsistencias.</p>
+
+                    <h4 class="color-secondary">Ejemplo: Verificar Créditos Cursados</h4>
+                    <pre><code class="language-sql">-- Sistema LMS (Learning Management System)
+SELECT student_id, SUM(credits) AS lms_credits
+FROM lms.course_enrollments
+WHERE status = 'COMPLETED'
+GROUP BY student_id;
+
+-- Sistema SIS (Student Information System)
+SELECT student_id, credits_completed AS sis_credits
+FROM sis.student_records;
+
+-- Cross-check: Detectar discrepancias
+SELECT
+    lms.student_id,
+    lms.lms_credits,
+    sis.sis_credits,
+    ABS(lms.lms_credits - sis.sis_credits) AS discrepancy
+FROM lms_credits lms
+JOIN sis_credits sis ON lms.student_id = sis.student_id
+WHERE ABS(lms.lms_credits - sis.sis_credits) > 3  -- Tolerancia 3 créditos
+ORDER BY discrepancy DESC;
+
+-- Resultado: 340 estudiantes con discrepancias > 3 créditos</code></pre>
+                </div>
+
+                <!-- MÉTODO 3: ML -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">3. Modelos Estadísticos y Machine Learning</h3>
+                    <p>Detectan <strong>outliers</strong> y <strong>anomalías</strong> utilizando técnicas estadísticas
+                        o algoritmos de clustering.</p>
+
+                    <h4 class="color-primary">Detección de Outliers con IQR (Rango Intercuartílico)</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import expr, percentile_approx
+
+# Calcular Q1, Q3 y IQR para tiempo de estudio
+quantiles = df.approxQuantile("study_hours_per_week", [0.25, 0.75], 0.01)
+Q1, Q3 = quantiles[0], quantiles[1]
+IQR = Q3 - Q1
+
+# Límites para outliers
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Detectar outliers
+outliers = df.filter(
+    (col("study_hours_per_week") < lower_bound) |
+    (col("study_hours_per_week") > upper_bound)
+)
+
+print(f"Outliers detectados: {outliers.count()} / {df.count()}")
+print(f"Rango normal: [{lower_bound:.1f}, {upper_bound:.1f}] horas/semana")
+
+# Ejemplo resultado:
+# Outliers detectados: 156 / 12,000
+# Rango normal: [5.0, 35.0] horas/semana
+# → 156 estudiantes reportan <5h o >35h semanales (posibles errores)</code></pre>
+
+                    <h4 class="color-primary mt-1">Detección de Anomalías con Isolation Forest</h4>
+                    <pre><code class="language-python">from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.linalg import Vectors
+import numpy as np
+
+# Preparar features para detección de anomalías en rendimiento académico
+feature_cols = ["attendance_rate", "assignments_submitted", "avg_grade", "study_hours"]
+assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
+df_features = assembler.transform(df)
+
+# Método simplificado: Distancia al centroide (Isolation Forest requiere librerías externas)
+from pyspark.ml.stat import Summarizer
+
+# Calcular centroide (media) de cada feature
+summary = df_features.select(
+    Summarizer.mean(col("features")).alias("mean_vector")
+).collect()[0]
+
+mean_vector = summary["mean_vector"]
+
+# Calcular distancia euclidiana al centroide
+from pyspark.sql.types import DoubleType
+from pyspark.ml.linalg import DenseVector
+
+def euclidean_distance(features, centroid):
+    return float(np.linalg.norm(np.array(features) - np.array(centroid)))
+
+distance_udf = udf(lambda f: euclidean_distance(f.toArray(), mean_vector.toArray()), DoubleType())
+
+df_with_distance = df_features.withColumn("anomaly_score", distance_udf(col("features")))
+
+# Detectar anomalías (top 5% distancias)
+threshold = df_with_distance.approxQuantile("anomaly_score", [0.95], 0.01)[0]
+anomalies = df_with_distance.filter(col("anomaly_score") > threshold)
+
+print(f"Anomalías detectadas: {anomalies.count()} estudiantes con patrones inusuales")
+
+# Analizar características de anomalías
+anomalies.select("student_id", *feature_cols, "anomaly_score").show()
+# Ejemplo: Estudiantes con 95% asistencia pero 0 tareas entregadas (fraude académico?)</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: ESTRATEGIAS DE CORRECCIÓN -->
+            <section class="section" id="estrategias-correccion">
+                <h2 class="section-title">🛠️ Estrategias de Corrección de Errores</h2>
+
+                <!-- ESTRATEGIA 1: IMPUTACIÓN -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">1. Imputación de Valores Faltantes</h3>
+                    <p>Sustitución de valores nulos o faltantes con estimaciones basadas en estadísticas o modelos
+                        predictivos.</p>
+
+                    <div class="comparison-grid">
+                        <div class="highlight-box primary">
+                            <h4 class="color-primary text-center">Métodos Estadísticos</h4>
+                            <ul>
+                                <li><strong>Media/Mediana:</strong> Para variables numéricas</li>
+                                <li><strong>Moda:</strong> Para variables categóricas</li>
+                                <li><strong>Interpolación:</strong> Para series temporales</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box secondary">
+                            <h4 class="color-secondary text-center">Métodos Predictivos</h4>
+                            <ul>
+                                <li><strong>KNN:</strong> Imputar con vecinos similares</li>
+                                <li><strong>Regresión:</strong> Predecir valor faltante</li>
+                                <li><strong>Random Forest:</strong> Modelo ML avanzado</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4 class="color-secondary mt-1">Imputación con PySpark</h4>
+                    <pre><code class="language-python">from pyspark.ml.feature import Imputer
+
+# Método 1: Imputar con mediana (robusto a outliers)
+imputer = Imputer(
+    inputCols=["study_hours_per_week", "attendance_rate"],
+    outputCols=["study_hours_imputed", "attendance_imputed"],
+    strategy="median"  # Opciones: mean, median, mode
+)
+
+model = imputer.fit(df)
+df_imputed = model.transform(df)
+
+# Método 2: Imputación por grupo (más preciso)
+# Ejemplo: Imputar notas faltantes con la media del mismo curso
+from pyspark.sql import Window
+from pyspark.sql.functions import avg, when, col
+
+window_spec = Window.partitionBy("course_id")
+
+df_imputed_group = df.withColumn(
+    "grade_imputed",
+    when(
+        col("grade").isNull(),
+        avg("grade").over(window_spec)  # Media del curso
+    ).otherwise(col("grade"))
+)
+
+# Comparar antes/después
+print("Valores nulos antes:", df.filter(col("grade").isNull()).count())
+print("Valores nulos después:", df_imputed_group.filter(col("grade_imputed").isNull()).count())</code></pre>
+                </div>
+
+                <!-- ESTRATEGIA 2: DEDUPLICACIÓN -->
+                <div class="highlight-box primary mb-2">
+                    <h3 class="color-primary">2. Eliminación de Duplicados</h3>
+                    <p>Uso de algoritmos de similitud para identificar y fusionar registros duplicados.</p>
+
+                    <h4 class="color-primary">Estrategia de Fusión de Duplicados</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import first, collect_list, concat_ws
+from pyspark.sql import Window
+
+# Paso 1: Agrupar duplicados por DNI
+window = Window.partitionBy("dni").orderBy(col("created_at").desc())
+
+df_with_rank = df.withColumn("rank", row_number().over(window))
+
+# Paso 2: Seleccionar registro "master" (más reciente)
+df_master = df_with_rank.filter(col("rank") == 1).drop("rank")
+
+# Paso 3: Fusionar información de duplicados
+# Estrategia: Priorizar campos no nulos del registro más reciente
+df_dedup = df.groupBy("dni").agg(
+    first("student_id", ignorenulls=True).alias("student_id"),
+    first("name", ignorenulls=True).alias("name"),
+    first("email", ignorenulls=True).alias("email"),
+    first("phone", ignorenulls=True).alias("phone"),
+    first("address", ignorenulls=True).alias("address")
+)
+
+# Resultado: Reducción de 50,000 a 48,500 registros (1,500 duplicados eliminados)
+print(f"Registros originales: {df.count()}")
+print(f"Registros deduplicados: {df_dedup.count()}")
+print(f"Duplicados eliminados: {df.count() - df_dedup.count()}")</code></pre>
+                </div>
+
+                <!-- ESTRATEGIA 3: RECONCILIACIÓN -->
+                <div class="highlight-box secondary mb-2">
+                    <h3 class="color-secondary">3. Reconciliación de Fuentes</h3>
+                    <p>Seleccionar la fuente más confiable según criterios jerárquicos cuando existen conflictos.</p>
+
+                    <h4 class="color-secondary">Jerarquía de Confiabilidad</h4>
+                    <div class="styled-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Prioridad</th>
+                                    <th>Sistema</th>
+                                    <th>Justificación</th>
+                                    <th>Datos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="success-cell"><strong>1</strong></td>
+                                    <td><strong>SIS (Registro Oficial)</strong></td>
+                                    <td>Sistema master, auditable, histórico completo</td>
+                                    <td>Matrículas, títulos, expediente</td>
+                                </tr>
+                                <tr>
+                                    <td class="success-cell"><strong>2</strong></td>
+                                    <td><strong>LMS (Moodle/Canvas)</strong></td>
+                                    <td>Datos pedagógicos en tiempo real</td>
+                                    <td>Notas, asistencia, entregas</td>
+                                </tr>
+                                <tr>
+                                    <td class="warning-cell"><strong>3</strong></td>
+                                    <td><strong>Portal Estudiantil</strong></td>
+                                    <td>Auto-reportado por estudiantes</td>
+                                    <td>Contacto, preferencias</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="color-secondary mt-1">Implementación de Reconciliación</h4>
+                    <pre><code class="language-python">from pyspark.sql.functions import coalesce, when
+
+# Unir tres fuentes de datos
+df_sis = spark.read.parquet("/data/sis/students/")
+df_lms = spark.read.parquet("/data/lms/students/")
+df_portal = spark.read.parquet("/data/portal/students/")
+
+# Join por student_id
+df_joined = df_sis.alias("sis") \
+    .join(df_lms.alias("lms"), "student_id", "left") \
+    .join(df_portal.alias("portal"), "student_id", "left")
+
+# Reconciliación con prioridad: SIS > LMS > Portal
+df_reconciled = df_joined.select(
+    "student_id",
+    # Email: Priorizar SIS, luego Portal (LMS no confiable para contacto)
+    coalesce("sis.email", "portal.email").alias("email"),
+
+    # Calificación final: Priorizar SIS (oficial), fallback a LMS
+    coalesce("sis.final_grade", "lms.final_grade").alias("final_grade"),
+
+    # Teléfono: Portal más actualizado para datos de contacto
+    coalesce("portal.phone", "sis.phone").alias("phone"),
+
+    # Dirección: SIS es fuente canónica
+    col("sis.address").alias("address")
+)
+
+# Métricas de reconciliación
+print("Conflictos resueltos:")
+print(f"  - Email: {df_joined.filter(col('sis.email') != col('portal.email')).count()}")
+print(f"  - Calificación: {df_joined.filter(col('sis.final_grade') != col('lms.final_grade')).count()}")</code></pre>
+                </div>
+
+                <!-- ESTRATEGIA 4: REPROCESAMIENTO -->
+                <div class="warning-box mb-2">
+                    <h3 class="color-warning">4. Reprocesamiento de Datos</h3>
+                    <p>Regenerar registros corruptos a partir de logs, backups o sistemas maestros.</p>
+
+                    <h4 class="color-warning">Recovery desde S3 Versioning</h4>
+                    <pre><code class="language-python">import boto3
+from datetime import datetime, timedelta
+
+s3 = boto3.client('s3')
+bucket = 'university-data-lake'
+
+# Detectar archivos corruptos
+corrupted_files = [
+    'grades/2025/january/week1.parquet',
+    'grades/2025/january/week2.parquet'
+]
+
+# Restaurar desde versión anterior (24h antes)
+target_date = datetime.now() - timedelta(days=1)
+
+for file_key in corrupted_files:
+    # Listar versiones del archivo
+    versions = s3.list_object_versions(Bucket=bucket, Prefix=file_key)
+
+    # Encontrar versión más cercana a target_date
+    for version in versions['Versions']:
+        if version['LastModified'] < target_date:
+            version_id = version['VersionId']
+
+            # Restaurar versión
+            s3.copy_object(
+                Bucket=bucket,
+                CopySource={'Bucket': bucket, 'Key': file_key, 'VersionId': version_id},
+                Key=file_key
+            )
+            print(f"✓ Restaurado {file_key} desde versión {version_id}")
+            break</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: CASO DE ESTUDIO -->
+            <section class="section" id="caso-estudio">
+                <h2 class="section-title">🎓 Caso de Estudio: Universidad de Barcelona</h2>
+
+                <div class="highlight-box primary">
+                    <h3 class="color-primary">Contexto del Proyecto</h3>
+                    <p>La <strong>Universidad de Barcelona (UB)</strong> gestiona un Data Lake de 85 TB con datos de
+                        50,000 estudiantes, 5,000 profesores y 80 programas académicos. Tras migrar a un sistema
+                        unificado, detectaron múltiples problemas de calidad de datos que afectaban decisiones críticas.
+                    </p>
+                </div>
+
+                <h3 class="color-secondary mt-2">Problemas Identificados</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Error</th>
+                                <th>Magnitud</th>
+                                <th>Impacto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Calificaciones inválidas</strong></td>
+                                <td>8% fuera de rango 0-10</td>
+                                <td>Promedios académicos incorrectos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fechas imposibles</strong></td>
+                                <td>12% graduaciones antes de ingreso</td>
+                                <td>Reportes institucionales inválidos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duplicados</strong></td>
+                                <td>3.2% registros duplicados</td>
+                                <td>Inflación de métricas de matrícula</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Inconsistencias cross-system</strong></td>
+                                <td>15% discrepancias créditos LMS vs SIS</td>
+                                <td>Errores en elegibilidad de títulos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary mt-2">Solución Implementada</h3>
+                <div class="highlight-box secondary">
+                    <h4 class="color-secondary">Pipeline de Detección y Corrección</h4>
+                    <ol>
+                        <li><strong>Ingesta:</strong> Sqoop importa datos de 12 sistemas legacy diariamente (03:00)</li>
+                        <li><strong>Validación:</strong> 35 reglas de negocio con Great Expectations (03:30)</li>
+                        <li><strong>Detección ML:</strong> Isolation Forest detecta anomalías en rendimiento (04:00)</li>
+                        <li><strong>Corrección:</strong> Pipeline PySpark aplica imputación y deduplicación (04:30)</li>
+                        <li><strong>Reconciliación:</strong> Jerarquía SIS > LMS > Portal resuelve conflictos (05:00)
+                        </li>
+                        <li><strong>Alertas:</strong> Dashboard Power BI + emails si errores críticos (05:30)</li>
+                    </ol>
+                </div>
+
+                <h3 class="color-secondary mt-2">Resultados (12 meses después)</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Métrica</th>
+                                <th>Antes</th>
+                                <th>Después</th>
+                                <th>Mejora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Errores sintácticos</strong></td>
+                                <td class="error-cell">8%</td>
+                                <td class="success-cell">0.2%</td>
+                                <td>-97.5%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Errores semánticos</strong></td>
+                                <td class="error-cell">12%</td>
+                                <td class="success-cell">0.8%</td>
+                                <td>-93.3%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duplicados</strong></td>
+                                <td class="error-cell">3.2%</td>
+                                <td class="success-cell">0.1%</td>
+                                <td>-96.9%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Inconsistencias</strong></td>
+                                <td class="error-cell">15%</td>
+                                <td class="success-cell">1.5%</td>
+                                <td>-90%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tiempo corrección manual</strong></td>
+                                <td class="warning-cell">600 h/año</td>
+                                <td class="success-cell">30 h/año</td>
+                                <td>-95%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="color-primary mt-2">Impacto en Modelos Predictivos</h3>
+                <div class="comparison-grid">
+                    <div class="highlight-box primary">
+                        <h4 class="color-primary text-center">Predicción de Abandono</h4>
+                        <ul>
+                            <li><strong>Precisión antes:</strong> 72% (datos sucios)</li>
+                            <li><strong>Precisión después:</strong> 89% (+17%)</li>
+                            <li><strong>Resultado:</strong> 420 estudiantes identificados correctamente, 340
+                                intervenciones exitosas</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <h4 class="color-secondary text-center">Asignación de Recursos</h4>
+                        <ul>
+                            <li><strong>Errores antes:</strong> 180 plazas mal asignadas/semestre</li>
+                            <li><strong>Errores después:</strong> 12 plazas mal asignadas/semestre</li>
+                            <li><strong>Resultado:</strong> Optimización de ocupación +8%, ahorro €150K/año</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary mt-2">
+                    <p class="title">✅ Conclusión del Caso</p>
+                    <p class="content">La Universidad de Barcelona logró <strong>reducir errores en un 95%</strong>
+                        mediante un pipeline automatizado de detección y corrección. El proyecto eliminó 570 horas
+                        anuales de trabajo manual, mejoró la precisión de modelos predictivos en +17-25%, y generó un
+                        ROI del <strong>380%</strong> en el primer año (inversión en infraestructura vs ahorros
+                        operativos + mejora de decisiones).</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

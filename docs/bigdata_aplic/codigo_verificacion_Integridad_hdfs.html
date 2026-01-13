@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a interactuar con HDFS desde Python utilizando la librería Snakebite. Verificación de integridad de bloques y gestión de archivos sin dependencias de Java.">
+    <meta name="author" content="iLERNA">
+    <title>Integridad HDFS con Snakebite | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Aplicación de Big Data</a> ›
+                    <span>Integridad HDFS con Snakebite</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- TÍTULO PRINCIPAL -->
+            <div class="hero">
+                <h1>Verificación de Integridad en HDFS con Snakebite</h1>
+                <p class="subtitle">Interacción eficiente con Hadoop usando Python puro</p>
+            </div>
+
+            <!-- SECCIÓN 1: CONTEXTO HDFS -->
+            <section class="section">
+                <h2 class="section-title">Contexto: HDFS y Bloques</h2>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>📦 Bloques de Datos</h4>
+                        <p>HDFS (Hadoop Distributed File System) divide los archivos grandes en piezas más pequeñas
+                            llamadas <strong>bloques</strong> (por defecto 128 MB). Estos bloques se distribuyen a
+                            través de varios nodos (DataNodes) en el clúster.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🔄 Replicación</h4>
+                        <p>Para garantizar la tolerancia a fallos, cada bloque se replica varias veces (por defecto 3).
+                            Si un nodo falla, HDFS puede recuperar los datos de una réplica en otro nodo. La
+                            verificación de integridad asegura que estos bloques no estén corruptos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: LIBRERÍA SNAKEBITE -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es Snakebite?</h2>
+                <p>
+                    <strong>Snakebite</strong> es una librería cliente de HDFS escrita totalmente en Python (Pure Python
+                    Client), creada originalmente por <strong>Spotify</strong>. A diferencia de otras librerías que
+                    envuelven la API de Java o usan REST, Snakebite se comunica directamente con el protocolo RPC de
+                    Hadoop.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">🚀 Ventajas Principales</p>
+                    <p class="content">
+                        La gran ventaja de Snakebite es que <strong>no requiere cargar la JVM (Java Virtual
+                            Machine)</strong>. Esto hace que sea mucho más rápido y ligero para scripts de Python que
+                        necesitan realizar operaciones rápidas de sistema de archivos (listar, borrar, leer, verificar).
+                    </p>
+                </div>
+
+                <h3>Métodos Principales</h3>
+                <p>Al igual que `Great Expectations`, Snakebite ofrece métodos intuitivos para gestionar HDFS. Aquí
+                    tienes los más esenciales:</p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">Client(host, port)</p>
+                        <p class="description"><strong>🔌 Conexión:</strong> Crea la conexión con el NameNode. No
+                            necesita configuración XML compleja, solo host y puerto (default 8020).</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">ls(['/path'])</p>
+                        <p class="description"><strong>📂 Listado:</strong> Devuelve un generador con la información de
+                            archivos y directorios. Mucho más rápido que `hdfs dfs -ls`.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">stat(['/path'])</p>
+                        <p class="description"><strong>📊 Metadatos:</strong> Obtiene información detallada: tamaño,
+                            permisos, propietario y factor de replicación.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">fsck(['/path'])</p>
+                        <p class="description"><strong>🏥 Diagnóstico:</strong> (Extensión) Permite verificar el estado
+                            de salud de los bloques de un archivo, vital para detectar corrupción.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-ml);">
+                        <p class="title" style="color: var(--color-ml); font-family: monospace;">cat(['/path'])</p>
+                        <p class="description"><strong>📖 Lectura:</strong> Lee el contenido de los archivos
+                            directamente en un stream de Python.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CÓDIGO DE EJEMPLO -->
+            <section class="section">
+                <h2 class="section-title">💻 Implementación: Verificación de Integridad</h2>
+                <p>
+                    El siguiente script utiliza `snakebite` para auditar un archivo genómico crítico, verificando sus
+                    metadatos y buscando bloques corruptos que necesiten reparación.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from snakebite.client import Client
+
+# Configurar cliente HDFS
+# Conectamos al NameNode en el puerto estándar 8020. use_trash=False borra permanentemente si se solicitara.
+hdfs_client = Client("namenode_host", 8020, use_trash=False)
+
+# Función para verificar integridad de bloques
+def check_block_integrity(file_path):
+    try:
+        # Obtener información del archivo (stat devuelve un iterador/lista)
+        file_info = hdfs_client.stat([file_path])[0]
+        print(f"Verificando integridad de: {file_path}")
+        print(f"Tamaño: {file_info['length']} bytes, Réplicas: {file_info['replication']}")
+
+        # Verificar bloques y detectar corrupciones usando fsck
+        # corrupt=True filtra para buscar específicamente problemas
+        for block in hdfs_client.fsck([file_path], corrupt=True):
+            if block['corrupt']:
+                print(f"Bloque corrupto detectado en {file_path}: {block['block_id']}")
+                
+                # Iniciar reparación automática
+                # Nota: repair() solicitaría al NameNode regenerar las réplicas desde nodos sanos
+                hdfs_client.repair([file_path])
+                print(f"Reparación iniciada para {file_path}")
+            else:
+                print(f"Bloque {block['block_id']} intacto")
+                
+    except Exception as e:
+        print(f"Error al verificar integridad: {e}")
+
+# Ejemplo de uso
+file_path = "/data/genomics_data.fasta"
+check_block_integrity(file_path)</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EXPLICACIÓN DEL CÓDIGO -->
+            <section class="section">
+                <h2 class="section-title">🔍 Análisis del Script</h2>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="example-item" style="border-left-color: var(--color-primary);">
+                        <p class="title" style="color: var(--color-primary); font-family: monospace;">
+                            Client("namenode_host", 8020)</p>
+                        <p class="description"><strong>🔌 Instanciación:</strong> Crea un socket persistente con el
+                            Cluster. Al ser Python puro, esta conexión es casi instantánea comparada con la JVM, ideal
+                            para scripts rápidos o funciones Lambda.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-secondary);">
+                        <p class="title" style="color: var(--color-secondary); font-family: monospace;">
+                            hdfs_client.stat([file_path])</p>
+                        <p class="description"><strong>📊 Estadísticas:</strong> Consultar metadatos (tamaño, réplicas)
+                            es el primer paso vital. Permite validar si el archivo cumple las políticas del clúster
+                            antes de leerlo.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-primary);">
+                        <p class="title" style="color: var(--color-primary); font-family: monospace;">
+                            hdfs_client.fsck(...) </p>
+                        <p class="description"><strong>🏥 Chequeo de Salud:</strong> La función clave del script. Al
+                            iterar sobre los bloques, Snakebite comprueba los checksums sin transferir todo el dato,
+                            solo metadatos.</p>
+                    </div>
+
+                    <div class="example-item" style="border-left-color: var(--color-secondary);">
+                        <p class="title" style="color: var(--color-secondary); font-family: monospace;">
+                            hdfs_client.repair(...)</p>
+                        <p class="description"><strong>🛠️ Reparación:</strong> Abstracción poderosa. Envía un comando
+                            al NameNode para que marque los bloques corruptos y active la re-replicación automática
+                            desde copias sanas.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning">
+                    <p class="title">⚠️ Nota sobre Snakebite</p>
+                    <p class="content">
+                        Snakebite original (de Spotify) fue revolucionario por implementar el <strong>protocolo RPC de
+                            Hadoop nativamente en Python</strong>, eliminando la necesidad de la JVM (Java Virtual
+                        Machine). Esto lo hacía extremadamente rápido para operaciones de metadatos. Sin embargo,
+                        soporta principalmente Python 2 y versiones antiguas de Hadoop.
+                    </p>
+                </div>
+
+                <h3 class="mt-4">Alternativa Moderna: PyArrow</h3>
+                <p>
+                    Hoy en día, el estándar para interactuar con sistemas HDFS desde Python es <strong>PyArrow</strong>.
+                    Aunque bajo el capó suele utilizar librerías C++ (`libhdfs3`) o JNI para comunicarse, ofrece una
+                    interfaz mucho más robusta y compatible con el ecosistema moderno (Pandas, Parquet).
+                </p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">🚀 La evolución del RPC</p>
+                    <p class="content">
+                        Mientras Snakebite "hablaba" el protocolo RPC de Hadoop directamente, herramientas modernas como
+                        PyArrow abstraen esta complejidad usando <strong>Apache Arrow</strong> como formato de memoria
+                        común. Esto permite transferencias de datos "Zero-Copy" entre sistemas, aunque a menudo
+                        reintroducen dependencias binarias (C++) o de Java, perdiendo la pureza "Python-only" de
+                        Snakebite pero ganando en rendimiento de transferencia de datos masivos.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: PYARROW -->
+            <section class="section">
+                <h2 class="section-title">🏹 Implementación Moderna con PyArrow</h2>
+                <p>
+                    A diferencia de Snakebite, <strong>PyArrow</strong> utiliza las librerías nativas de Hadoop (o JNI)
+                    para conectar, lo que asegura compatibilidad total con Hadoop 3.x.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from pyarrow import fs
+
+# 1. Conexión al sistema de archivos HDFS
+# PyArrow detecta automáticamente la configuración de Hadoop si las variables de entorno están seteadas
+hdfs = fs.HadoopFileSystem(host='namenode_host', port=8020)
+
+# 2. Listar archivos y obtener información
+file_info = hdfs.get_file_info("/data/ventas.parquet")
+
+if file_info.type == fs.FileType.File:
+    print(f"Archivo encontrado: {file_info.path}")
+    print(f"Tamaño: {file_info.size} bytes")
+    
+    # 3. Lectura eficiente (Zero-Copy si es posible)
+    with hdfs.open_input_stream("/data/ventas.parquet") as stream:
+        print("Leídos primeros 100 bytes:", stream.read(100))
+        
+# 4. Operaciones avanzadas (PyArrow se integra nativamente con Parquet)
+import pyarrow.parquet as pq
+
+# Lee directamente desde HDFS a una tabla Arrow (súper eficiente)
+table = pq.read_table("/data/ventas.parquet", filesystem=hdfs)
+print(f"Esquema del dataset:\n{table.schema}")</code></pre>
+                </div>
+
+                <div class="example-item" style="border-left-color: var(--color-ml); margin-top: 1rem;">
+                    <p class="title" style="color: var(--color-ml); font-family: monospace;">fs.HadoopFileSystem(host,
+                        port)</p>
+                    <p class="description"><strong>🔗 Conector Oficial:</strong> Utiliza el driver C++ oficial de Arrow,
+                        garantizando que si funciona en Hadoop, funciona en Python.</p>
+                </div>
+            </section>
+
+            <!-- RESUMEN -->
+            <section class="section">
+                <h2 class="section-title">📚 Resumen</h2>
+                <div class="scenario-box neutral">
+                    <p>
+                        La elección de la herramienta depende del entorno: <strong>Snakebite</strong> es ideal para
+                        scripts de mantenimiento ligeros y sin dependencias de Java en clústeres antiguos. Para entornos
+                        modernos de producción data-intensive (Hadoop 3.x), <strong>PyArrow</strong> es el estándar
+                        gracias a su robustez, integración con Pandas/Parquet y su arquitectura de memoria eficiente.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
