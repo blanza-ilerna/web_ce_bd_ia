@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entornos de Modelado de IA: Evaluación de Resultados - iLERNA">
+    <meta name="keywords"
+        content="IA, Evaluación, Métricas, Precisión, Recall, F1-score, MSE, Clustering, Scikit-learn, TensorBoard">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Evaluación de Resultados en IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Evaluación de Resultados</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Evaluación de Resultados</h1>
+            <p class="subtitle">Midiendo el Éxito de los Modelos de IA</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="section-title">La Importancia de Medir</h2>
+            <p class="mb-4">
+                Entrenar un modelo es solo la mitad del trabajo. Una vez finalizado el entrenamiento, es esencial medir
+                su rendimiento rigurosamente para garantizar que cumple con los objetivos del negocio y generaliza
+                correctamente ante nuevos datos.
+            </p>
+            <div class="highlight-box primary">
+                <p>
+                    No existe una métrica universal. La elección depende totalmente del tipo de problema: ¿estamos
+                    clasificando correos spam, prediciendo el precio de una casa o agrupando clientes por
+                    comportamiento?
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CLASIFICACIÓN -->
+        <section class="section">
+            <h2 class="section-title">Métricas para Clasificación</h2>
+            <p class="mb-4">Utilizadas cuando la variable objetivo es una categoría (ej. Sí/No, Gato/Perro).</p>
+
+            <div class="grid-features mb-4">
+                <div class="feature-card primary">
+                    <h4>Precisión (Precision)</h4>
+                    <p>De todos los casos que predije como positivos, ¿cuántos eran realmente positivos?</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Recall (Sensibilidad)</h4>
+                    <p>De todos los casos positivos reales, ¿cuántos fue capaz de detectar el modelo?</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>F1-Score</h4>
+                    <p>La media armónica entre Precisión y Recall. Ideal cuando hay clases desbalanceadas.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Exactitud (Accuracy)</h4>
+                    <p>El porcentaje total de aciertos. Puede ser engañosa si el dataset está desbalanceado.</p>
+                </div>
+            </div>
+
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Ejemplo Práctico con Scikit-learn</h3>
+                <pre><code class="language-python">from sklearn.metrics import classification_report, confusion_matrix
+
+# Valores reales vs Predicciones del modelo
+y_real    = [0, 1, 1, 0, 1, 1, 0, 0, 1, 0]
+y_predich = [0, 1, 0, 0, 1, 1, 0, 1, 1, 0]
+
+print("Informe de Clasificación:")
+print(classification_report(y_real, y_predich, target_names=['Clase 0', 'Clase 1']))
+
+# Matriz de Confusión
+# [[TN, FP],
+#  [FN, TP]]
+print("Matriz de Confusión:")
+print(confusion_matrix(y_real, y_predich))</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: REGRESIÓN -->
+        <section class="section">
+            <h2 class="section-title">Métricas para Regresión</h2>
+            <p class="mb-4">Utilizadas cuando se predice un valor numérico continuo (ej. temperatura, precio).</p>
+
+            <div class="card primary mb-6">
+                <h3 class="color-primary">Error Cuadrático Medio (MSE) y R²</h3>
+                <ul class="mb-4">
+                    <li><strong>MSE (Mean Squared Error):</strong> Penaliza fuertemente los errores grandes al elevar la
+                        diferencia al cuadrado.</li>
+                    <li><strong>MAE (Mean Absolute Error):</strong> Promedio de la diferencia absoluta. Más
+                        interpretable.</li>
+                    <li><strong>R² (Coeficiente de Determinación):</strong> Indica qué porcentaje de la varianza de los
+                        datos explica el modelo (1.0 es perfecto).</li>
+                </ul>
+
+                <pre><code class="language-python">from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+# Precios reales vs Predichos (en miles de euros)
+precios_reales = np.array([100, 150, 200, 250])
+precios_predic = np.array([110, 140, 210, 245])
+
+mse = mean_squared_error(precios_reales, precios_predic)
+r2 = r2_score(precios_reales, precios_predic)
+
+print(f"MSE: {mse:.2f}")  # Salida: 112.50
+print(f"R² Score: {r2:.4f}") # Salida: 0.96 (Muy buen ajuste)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CLUSTERING -->
+        <section class="section">
+            <h2 class="section-title">Métricas para Clustering (No Supervisado)</h2>
+            <p class="mb-4">Al no tener etiquetas "correctas", medir la calidad de los grupos es más complejo.</p>
+
+            <div class="grid-features mb-6">
+                <div class="feature-card secondary">
+                    <h4>Índice de Silueta</h4>
+                    <p>Mide cuán similar es un objeto a su propio grupo (cohesión) comparado con otros grupos
+                        (separación). Varía de -1 a 1.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>Entropía / Inercia</h4>
+                    <p>Mide la "pureza" de los clústeres o la suma de las distancias al cuadrado de las muestras a su
+                        centro de clúster más cercano.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: VISUALIZACIÓN -->
+        <section class="section">
+            <h2 class="section-title">Herramientas de Visualización Avanzada</h2>
+
+            <div class="card primary">
+                <h3 class="color-primary">TensorBoard</h3>
+                <p class="mb-4">
+                    Herramienta de visualización de Google incluida con TensorFlow. Permite monitorear experimentos en
+                    tiempo real, ver curvas de pérdida (loss) y precisión (accuracy) durante el entrenamiento, y
+                    visualizar grafos de modelos complejos.
+                </p>
+
+                <h4 class="font-bold mb-2">Uso básico mediante Callback:</h4>
+                <pre><code class="language-python">from tensorflow.keras.callbacks import TensorBoard
+import datetime
+
+# Definir directorio de logs
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+# Entrenar pasando el callback
+model.fit(x_train, y_train, 
+          epochs=5, 
+          callbacks=[tensorboard_callback])
+
+# Para ver los resultados, ejecutar en terminal:
+# tensorboard --logdir logs/fit</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

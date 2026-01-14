@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entornos de Modelado de IA: Ejemplo Práctico End-to-End - iLERNA">
+    <meta name="keywords"
+        content="IA, Scikit-learn, Tutorial, Iris Dataset, Clasificación, Python, Pipeline, GridSearchCV">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ejemplo Práctico: Clasificación con Scikit-learn | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Ejemplo Práctico</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Ejemplo Práctico End-to-End</h1>
+            <p class="subtitle">Entrenando un Modelo de Clasificación con Scikit-learn y el Dataset Iris</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN Y PREPARACIÓN -->
+        <section class="section">
+            <h2 class="section-title">1. Preparación del Entorno</h2>
+            <p class="mb-4">
+                En este ejemplo completo, recorreremos fase a fase el entrenamiento de un modelo de clasificación para
+                predecir la especie de flor (Iris) basándonos en sus medidas. Puedes consultar más info sobre el dataset
+                en <a href="https://www.kaggle.com/datasets/uciml/iris" target="_blank">Kaggle</a>.
+            </p>
+
+            <div class="highlight-box primary mb-4">
+                <p><strong>Objetivo:</strong> Configurar un entorno robusto, reproducible y libre de ruido.</p>
+                <p>En esta fase, establecemos los cimientos del proyecto. Fijamos una semilla global <span
+                        class="code-badge">RANDOM_STATE</span> para controlar la aleatoriedad en divisiones de datos e
+                    inicialización de
+                    algoritmos. Importamos estrictamente lo necesario: <strong>NumPy/Pandas</strong> (datos),
+                    <strong>Matplotlib</strong> (gráficos) y <strong>Scikit-learn</strong> (modelado).
+                </p>
+            </div>
+
+            <!-- Por qué es crítico -->
+            <div class="feature-card secondary mb-4">
+                <h4>Por qué es crítico</h4>
+                <p>La <strong>reproducibilidad</strong> no es opcional. Si tu compañero ejecuta tu código y obtiene un
+                    94% de accuracy mientras tú obtienes un 96% solo por una división aleatoria distinta, cualquier
+                    conclusión sobre "mejoras" en el modelo carece de validez científica.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content">Un error clásico es configurar estilos globales de librerías visuales (como <span
+                        class="code-badge">seaborn.set()</span>) al inicio, lo que puede enmascarar problemas en los
+                    datos o hacer que gráficos posteriores sean ilegibles inesperadamente.</p>
+            </div>
+
+            <pre><code class="language-python"># 1. Preparación del entorno
+# Reproducibilidad
+RANDOM_STATE = 42
+
+# Núcleo científico
+import numpy as np
+import pandas as pd
+
+# Visualización (solo matplotlib)
+import matplotlib.pyplot as plt
+from pandas.plotting import scatter_matrix
+
+# Scikit-learn
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
+from sklearn.preprocessing import StandardScaler, label_binarize
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import (accuracy_score, classification_report, confusion_matrix, RocCurveDisplay)
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+
+# Persistencia de modelos
+import joblib
+
+print("Librerías importadas correctamente.")</code></pre>
+        </section>
+
+        <!-- SECCIÓN 2: CARGA DE DATOS -->
+        <section class="section">
+            <h2 class="section-title">2. Carga del Dataset</h2>
+            <p class="mb-4">
+                Cargamos Iris usando el parámetro <span class="code-badge">as_frame=True</span>. Esto instruye a
+                Scikit-learn para que devuelva los datos envueltos en un objeto <code>Bunch</code> que contiene
+                DataFrames de Pandas en lugar de simples arrays de NumPy.
+            </p>
+            <div class="highlight-box secondary mb-4">
+                <strong>Clave:</strong> Es vital verificar que los <code>target_names</code> (setosa, versicolor,
+                virginica) están correctamente mapeados a los índices numéricos (0, 1, 2) para evitar confusiones en los
+                reportes finales.
+            </div>
+
+            <!-- Estructura -->
+            <div class="feature-card primary mb-4">
+                <h4>Estructura de Datos</h4>
+                <p>Separamos inmediatamente la matriz de características (<strong>X</strong>) del vector objetivo
+                    (<strong>y</strong>). Verificamos <code>X.shape</code> para confirmar que tenemos 150 muestras y 4
+                    columnas (sépalo/pétalo) y, crucialmente, guardamos <code>target_names</code> para poder traducir
+                    las predicciones numéricas a nombres humanos.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content">Olvidar verificar el alineamiento de los datos o confundir índices. Si entrenamos
+                    asumiendo que el '0' es 'virginica' cuando en realidad es 'setosa', todas las decisiones de negocio
+                    posteriores serán erróneas.</p>
+            </div>
+
+            <pre><code class="language-python"># 2. Carga del dataset
+iris = load_iris(as_frame=True)
+X = iris.data       # Cuatro variables numéricas (sepal/petal length/width)
+y = iris.target     # Etiquetas: 0=setosa, 1=versicolor, 2=virginica
+target_names = iris.target_names
+
+print("Dimensiones X:", X.shape)
+print("Clases:", list(target_names))
+print(X.head())</code></pre>
+        </section>
+
+        <!-- SECCIÓN 3: EDA -->
+        <section class="section">
+            <h2 class="section-title">3. Análisis Exploratorio de Datos (EDA)</h2>
+            <p class="mb-4">
+                Antes de lanzarnos a modelar, necesitamos "sentir" los datos. El EDA no es un paso burocrático, es donde
+                se ganan o pierden las competiciones de Kaggle.
+            </p>
+
+            <!-- Estadísticos -->
+            <div class="feature-card secondary mb-4">
+                <h4>1. Estadísticos Descriptivos y Balance</h4>
+                <p>Usamos <span class="code-badge">describe()</span> para verificar las escalas (¿Todo en cm? ¿Valores
+                    extraños?) y
+                    confirmamos que las clases están balanceadas. En Iris, tenemos 50 de cada una; un desbalance grave
+                    haría que la métrica "Accuracy" fuera engañosa.</p>
+            </div>
+
+            <!-- Visualización -->
+            <div class="feature-card primary mb-4">
+                <h4>2. Separabilidad Visual</h4>
+                <p>La matriz de dispersión es reveladora: veremos que una clase (Setosa) está visualmente separada del
+                    resto por el tamaño del pétalo, anticipando que será fácil de clasificar. Las otras dos presentan
+                    cierto solapamiento.</p>
+            </div>
+
+            <!-- Riesgo -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Peligro de Data Leakage</p>
+                <p class="content">Jamás uses todo el dataset para decidir transformaciones complejas (como imputación
+                    de nulos basada en la media global) antes de dividir en train/test, o estarás "filtrando"
+                    información del futuro al modelo.</p>
+            </div>
+
+            <pre><code class="language-python"># 3. Análisis Exploratorio
+# Estadísticos básicos
+display(X.describe().T)
+
+# Balance de clases
+class_counts = pd.Series(y, name="class").value_counts().sort_index()
+print("\nConteo por clase:")
+print(class_counts.rename(index=dict(enumerate(target_names))))
+
+# Matriz de dispersión
+_ = scatter_matrix(pd.concat([X, pd.Series(y, name='class')], axis=1),
+                   figsize=(10, 10), diagonal='hist')
+plt.suptitle("Scatter Matrix - Iris Features", y=1.02)
+plt.show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 4: SPLIT Y PREPROCESAMIENTO -->
+        <section class="section">
+            <h2 class="section-title">4. División Train/Test y Pipeline</h2>
+            <p class="mb-4">
+                Dividimos los datos (80% train / 20% test). Usamos <code>stratify=y</code> para garantizar que la
+                proporción de clases se mantenga idéntica en ambos conjuntos.
+            </p>
+            <div class="feature-card primary mb-4">
+                <h4>El poder del Pipeline</h4>
+                <p>Encapsulamos el escalado (<span class="code-badge">StandardScaler</span>) dentro de un Pipeline. Esto
+                    asegura que la media y desviación estándar se calculen SOLO con los datos de entrenamiento y se
+                    apliquen ciegamente a test.</p>
+            </div>
+
+            <!-- Errores Comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content"><strong>Escalar antes de dividir:</strong> Esto es el "pecado capital" de la ciencia
+                    de datos. Si calculas la media usando todo el dataset, tu modelo "sabrá" información sobre la
+                    distribución del conjunto de test, invalidando la evaluación.</p>
+            </div>
+
+            <pre><code class="language-python"># 4. División y Preprocesado
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    stratify=y,
+    random_state=RANDOM_STATE
+)
+
+num_features = X.columns.tolist()
+
+# Pipeline de preprocesamiento (solo escalado en este caso)
+preprocess = ColumnTransformer(
+    transformers=[('num', StandardScaler(), num_features)],
+    remainder='drop'
+)
+
+print("Train shape:", X_train.shape, "Test shape:", X_test.shape)</code></pre>
+        </section>
+
+        <!-- SECCIÓN 5: MODELO BASELINE -->
+        <section class="section">
+            <h2 class="section-title">5. Modelo Base (Baseline)</h2>
+            <p class="mb-4">
+                Entrenamos una <strong>Regresión Logística</strong> simple.
+            </p>
+
+            <!-- Objetivo -->
+            <div class="feature-card secondary mb-4">
+                <h4>Objetivo del Baseline</h4>
+                <p>Establecer una "línea base" simple y honesta. Si un modelo sencillo como <span
+                        class="code-badge">LogisticRegression</span> ya obtiene un 95% de accuracy, implementar una red
+                    neuronal compleja para ganar un 0.5% extra quizás no valga la pena en términos de coste y
+                    mantenibilidad.</p>
+            </div>
+
+            <!-- Interpretación -->
+            <div class="feature-card primary mb-4">
+                <h4>Interpretación</h4>
+                <p>Miramos el <span class="code-badge">classification_report</span> por clase. A menudo, el modelo
+                    acierta perfectamente una clase ("setosa" en nuestro caso) pero confunde las otras dos. Este nivel
+                    de detalle se pierde si solo miras la "Accuracy" global.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content">Ajustar hiperparámetros del baseline usando el conjunto de test. El test es sagrado y
+                    no se toca hasta el final absoluto.</p>
+            </div>
+
+            <pre><code class="language-python"># 5. Baseline: Regresión Logística
+baseline_clf = Pipeline(steps=[
+    ('prep', preprocess),
+    ('model', LogisticRegression(max_iter=1000, random_state=RANDOM_STATE))
+])
+
+baseline_clf.fit(X_train, y_train)
+y_pred = baseline_clf.predict(X_test)
+
+print("Baseline Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=target_names))</code></pre>
+        </section>
+
+        <!-- SECCIÓN 6: COMPARACIÓN DE MODELOS -->
+        <section class="section">
+            <h2 class="section-title">6. Comparación con Validación Cruzada</h2>
+            <p class="mb-4">
+                Probamos varios algoritmos (Logistic Regression, SVC, Random Forest) usando <span
+                    class="code-badge">cross_val_score</span> (K-Fold=5).
+            </p>
+
+            <!-- Por qué -->
+            <div class="feature-card secondary mb-4">
+                <h4>Por qué Cross-Validation</h4>
+                <p>Una sola división train/test puede ser "afortunada" o "desafortunada". La validación cruzada entrena
+                    y evalúa 5 veces en distintos fragmentos de los datos (folds). Nos ofrece una media y una desviación
+                    estándar.</p>
+            </div>
+
+            <!-- Interpretación -->
+            <div class="feature-card primary mb-4">
+                <h4>Qué mirar</h4>
+                <p>Buscamos el candidato con <strong>mayor media</strong> y <strong>menor desviación</strong>. Si un
+                    modelo tiene gran accuracy pero mucha varianza, es inestable y arriesgado para producción.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content">Usar CV sin Pipeline. Si escalas los datos fuera del bucle de validación cruzada,
+                    estás introduciendo fuga de datos en cada uno de los 5 pliegues.</p>
+            </div>
+
+            <pre><code class="language-python"># 6. Comparación de Modelos
+models = {
+    "LogisticRegression": LogisticRegression(max_iter=1000, random_state=RANDOM_STATE),
+    "SVC (rbf)": SVC(kernel='rbf', probability=True, random_state=RANDOM_STATE),
+    "RandomForest": RandomForestClassifier(n_estimators=200, random_state=RANDOM_STATE)
+}
+
+print("Resultados de Cross-Validation (Accuracy):")
+for name, model in models.items():
+    pipe = Pipeline([('prep', preprocess), ('model', model)])
+    scores = cross_val_score(pipe, X_train, y_train, cv=5, scoring='accuracy')
+    print(f"{name}: {scores.mean():.4f} ± {scores.std():.4f}")</code></pre>
+        </section>
+
+        <!-- SECCIÓN 7: HIPERPARÁMETROS -->
+        <section class="section">
+            <h2 class="section-title">7. Ajuste de Hiperparámetros (GridSearch)</h2>
+            <p class="mb-4">
+                Elegimos el mejor candidato (SVC) y afinamos sus tuercas. Usamos <span
+                    class="code-badge">GridSearchCV</span> para probar
+                sistemáticamente combinaciones de sus hiperparámetros:
+            </p>
+
+
+            <!-- Claves -->
+            <div class="feature-card primary mb-4">
+                <h4>Parámetros Clave del SVC</h4>
+                <ul class="mini-list">
+                    <li><strong>C:</strong> Controla la penalización de errores. Valor bajo = margen suave (más error
+                        permitido); Valor alto = margen estricto.</li>
+                    <li><strong>Kernel:</strong> Define la forma de la frontera. <code>linear</code> para líneas rectas,
+                        <code>rbf</code> para curvas complejas.
+                    </li>
+                    <li><strong>Gamma:</strong> En RBF, define el alcance de influencia de cada punto.</li>
+                </ul>
+            </div>
+
+            <!-- Advertencia -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Coste Computacional</p>
+                <p class="content">¡Cuidado con la explosión combinatoria! Si tienes 5 parámetros con 10 valores cada
+                    uno y 5-fold CV, entrenarás 50,000 modelos (5^5 * 5). Empieza siempre con rejillas pequeñas (<span
+                        class="code-badge">GridSearchCV</span> es de fuerza bruta).</p>
+            </div>
+
+            <!-- Interpretación -->
+            <div class="feature-card secondary mb-4">
+                <h4>Qué mirar en el Output</h4>
+                <p>El atributo <span class="code-badge">best_params_</span> nos dice qué configuración ganó, y <span
+                        class="code-badge">best_score_</span> nos da su accuracy media estimada en validación (¡no en
+                    test!).</p>
+            </div>
+
+            <pre><code class="language-python"># 7. Optimización de SVC
+svc_pipe = Pipeline([
+    ('prep', preprocess),
+    ('model', SVC(probability=True, random_state=RANDOM_STATE))
+])
+
+param_grid = {
+    'model__kernel': ['rbf', 'linear'],
+    'model__C': [0.1, 1, 10],
+    'model__gamma': ['scale', 'auto']
+}
+
+grid = GridSearchCV(svc_pipe, param_grid, cv=5, scoring='accuracy', n_jobs=-1)
+grid.fit(X_train, y_train)
+
+print("Mejor CV Accuracy:", grid.best_score_)
+print("Mejores Parámetros:", grid.best_params_)</code></pre>
+        </section>
+
+        <!-- SECCIÓN 8: EVALUACIÓN FINAL -->
+        <section class="section">
+            <h2 class="section-title">8. Evaluación Final en Test</h2>
+
+            <p class="mb-4">
+                Llegó la hora de la verdad. Usamos el modelo ganador para predecir sobre el conjunto de
+                <strong>Test</strong> usando <span class="code-badge">predict(X_test)</span>.
+            </p>
+
+            <!-- Interpretación -->
+            <div class="feature-card primary mb-4">
+                <h4>Matriz de Confusión</h4>
+                <p>La <span class="code-badge">confusion_matrix</span> es más informativa que la accuracy simple.
+                    <br>Las <strong>diagonales</strong> muestran los aciertos. Los elementos fuera de la diagonal son
+                    errores. En Iris, es típico ver errores entre <em>versicolor</em> (clase 1) y <em>virginica</em>
+                    (clase 2) porque son biológicamente similares.
+                </p>
+            </div>
+
+            <!-- Error Grave -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Pecado Mortal: Tuning en Test</p>
+                <p class="content">Si tras ver un "mal" resultado en test (ej. 90%), vuelves al paso 7, ajustas la
+                    rejilla para que suba a 95% y lo presentas como tu resultado final, has hecho trampa. Has optimizado
+                    para ese set de test específico. El resultado real en producción será probablemente peor.</p>
+            </div>
+
+            <pre><code class="language-python"># 8. Evaluación Final
+best_model = grid.best_estimator_
+y_test_pred = best_model.predict(X_test)
+acc = accuracy_score(y_test, y_test_pred)
+
+print("Test Accuracy:", acc)
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_test_pred))
+
+# Visualización simple de la matriz
+cm = confusion_matrix(y_test, y_test_pred)
+fig, ax = plt.subplots(figsize=(4, 4))
+im = ax.imshow(cm, cmap='Blues')
+ax.set_title("Matriz de Confusión")
+# (Código de etiquetado de ejes simplificado por brevedad)
+plt.show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 9: CURVAS ROC -->
+        <section class="section">
+            <h2 class="section-title">9. Curvas ROC (One-vs-Rest)</h2>
+            <p class="mb-4">
+                Al ser un problema multiclase, usamos la estrategia <em>One-vs-Rest</em> para trazar una curva ROC por
+                cada especie.
+            </p>
+
+            <!-- Objetivo -->
+            <div class="feature-card secondary mb-4">
+                <h4>Objetivo</h4>
+                <p>Evaluar la capacidad de discriminación del modelo independientemente del umbral de decisión. Usamos
+                    <span class="code-badge">label_binarize</span> para convertir nuestras etiquetas (0, 1, 2) en
+                    formato binario para cada clase y <span class="code-badge">RocCurveDisplay</span> para pintar.
+                </p>
+            </div>
+
+            <!-- Interpretación -->
+            <div class="feature-card primary mb-4">
+                <h4>Qué mirar</h4>
+                <p>Cuanto más se acerque la curva a la <strong>esquina superior izquierda</strong> (AUC = 1.0), mejor.
+                    Si una clase tiene una curva cercana a la diagonal (AUC = 0.5), el modelo la está clasificando al
+                    azar.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content">Usar ROC en datasets muy desbalanceados puede ser optimista. En esos casos, las
+                    curvas <strong>Precision-Recall</strong> son más honestas.</p>
+            </div>
+
+            <pre><code class="language-python"># 9. Curvas ROC
+y_test_bin = label_binarize(y_test, classes=np.unique(y))
+y_score = best_model.predict_proba(X_test)
+
+fig = plt.figure(figsize=(6, 5))
+for i in range(y_test_bin.shape[1]):
+    RocCurveDisplay.from_predictions(y_test_bin[:, i], y_score[:, i], name=target_names[i])
+    
+plt.title("ROC Curves (One-vs-Rest)")
+plt.plot([0, 1], [0, 1], "k--") # Línea aleatoria
+plt.show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 10: IMPORTANCIA DE VARIABLES -->
+        <section class="section">
+            <h2 class="section-title">10. Importancia de Variables</h2>
+            <p class="mb-4">
+                Entrenamos un RandomForest auxiliar para inspeccionar el atributo <span
+                    class="code-badge">feature_importances_</span>.
+            </p>
+
+            <!-- Hipótesis -->
+            <div class="feature-card secondary mb-4">
+                <h4>Validación de Hipótesis</h4>
+                <p>En el EDA vimos que el <strong>pétalo</strong> separaba mejor las clases que el sépalo. Esperamos que
+                    el modelo confirme esto asignando mayor peso a <code>petal length</code> y <code>petal width</code>.
+                </p>
+            </div>
+
+            <!-- Interpretación -->
+            <div class="feature-card primary mb-4">
+                <h4>Interpretabilidad</h4>
+                <p>Saber qué variables usa el modelo es crucial para la confianza del negocio. Si el modelo predice bien
+                    pero se basa en ruido o variables prohibidas (sesgo), no es útil.</p>
+            </div>
+
+            <!-- Errores comunes -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ Errores comunes</p>
+                <p class="content"><strong>Causalidad ≠ Correlación:</strong> Que el modelo use el pétalo no significa
+                    que "agrandar el pétalo" convierta una flor en otra. Solo significa que estadísticamente ayuda a
+                    distinguir.</p>
+            </div>
+
+            <pre><code class="language-python"># 10. Feature Importance con RandomForest
+rf_pipe = Pipeline([
+    ('prep', preprocess),
+    ('model', RandomForestClassifier(n_estimators=300, random_state=RANDOM_STATE))
+])
+rf_pipe.fit(X_train, y_train)
+
+importances = rf_pipe.named_steps['model'].feature_importances_
+feat_imp = pd.Series(importances, index=X.columns).sort_values(ascending=False)
+
+print("Importancia de Variables:")
+print(feat_imp)
+feat_imp.plot(kind='bar', title="Feature Importances")
+plt.show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 11: PERSISTENCIA -->
+        <section class="section">
+            <h2 class="section-title">11. Persistencia e Inferencia</h2>
+            <p class="mb-4">
+                El último paso es guardar nuestro trabajo para usarlo en producción usando <span
+                    class="code-badge">joblib.dump</span>.
+            </p>
+
+            <!-- Pipeline Completo -->
+            <div class="feature-card primary mb-4">
+                <h4>Pipeline Completo = Seguridad</h4>
+                <p>Guardamos el objeto <code>best_estimator_</code> entero. Este objeto contiene:</p>
+                <ol class="mini-list">
+                    <li>El transformador <code>StandardScaler</code> ya ajustado (con media/std del train).</li>
+                    <li>El modelo SVC optimizado.</li>
+                </ol>
+                <p>Esto garantiza que los nuevos datos crudos pasen exactamente por el mismo proceso de limpieza.</p>
+            </div>
+
+            <!-- Validación -->
+            <div class="feature-card secondary mb-4">
+                <h4>Prueba de Humo (Smoke Test)</h4>
+                <p>Recargamos el archivo <code>.joblib</code> y hacemos una predicción simple. Si funciona, confirmamos
+                    que el artefacto es <strong>autosuficiente</strong> y no depende de variables en la memoria del
+                    notebook.</p>
+            </div>
+
+            <!-- Error Común -->
+            <div class="warning-box mb-4">
+                <p class="title">⚠️ El Error más Común</p>
+                <p class="content"><strong>Guardar solo el modelo sin el preprocesado.</strong><br>Si guardas solo el
+                    SVC, cuando lleguen datos nuevos a producción tendrás que recordar exactamente cómo escalaste los
+                    datos originales. Si lo olvidas o lo calculas diferente, el modelo fallará estrepitosamente.</p>
+            </div>
+
+            <pre><code class="language-python"># 11. Guardar y Cargar Modelo
+model_path = "best_iris_model.joblib"
+joblib.dump(best_model, model_path)
+print(f"Modelo guardado en {model_path}")
+
+# Simulación de Inferencia en Producción
+loaded_model = joblib.load(model_path)
+sample = pd.DataFrame([[5.1, 3.5, 1.4, 0.2]], columns=X.columns)
+
+pred = loaded_model.predict(sample)[0]
+proba = loaded_model.predict_proba(sample)[0]
+
+print(f"\nPredicción para {sample.values[0]}: {target_names[pred]}")
+print(f"Confianza: {max(proba):.2%}")</code></pre>
+        </section>
+
+        <!-- SECCIÓN 12: CÓDIGO COMPLETO -->
+        <section class="section">
+            <h2 class="section-title">12. Código Completo Consolidado</h2>
+            <p class="mb-4">
+                A continuación, tienes todo el código unificado en un solo script listo para copiar y ejecutar.
+            </p>
+
+            <pre><code class="language-python"># ==========================================
+# EJEMPLO PRÁCTICO: CLASIFICACIÓN CON IRIS
+# ==========================================
+
+# 1. PREPARACIÓN DEL ENTORNO
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import joblib
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import (accuracy_score, classification_report, confusion_matrix)
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+
+# Fijar semilla para reproducibilidad
+RANDOM_STATE = 42
+
+# 2. CARGA DE DATOS
+print("--- 2. CARGA DE DATOS ---")
+iris = load_iris(as_frame=True)
+X = iris.data
+y = iris.target
+target_names = iris.target_names
+print(f"Dataset cargado. X shape: {X.shape}")
+
+# 3. ANÁLISIS EXPLORATORIO (EDA)
+print("\n--- 3. EDA BÁSICO ---")
+print(X.describe().T)
+
+# 4. DIVISIÓN Y PREPROCESADO
+print("\n--- 4. DIVISIÓN TRAIN/TEST ---")
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=RANDOM_STATE
+)
+
+# Pipeline de preprocesamiento
+preprocess = ColumnTransformer(
+    transformers=[('num', StandardScaler(), X.columns.tolist())],
+    remainder='drop'
+)
+print(f"Train samples: {len(X_train)}, Test samples: {len(X_test)}")
+
+# 5. MODELO BASELINE
+print("\n--- 5. MODELO BASELINE ---")
+baseline = Pipeline([
+    ('prep', preprocess),
+    ('model', LogisticRegression(max_iter=1000, random_state=RANDOM_STATE))
+])
+baseline.fit(X_train, y_train)
+print(f"Baseline Accuracy: {baseline.score(X_test, y_test):.4f}")
+
+# 6. COMPARACIÓN DE MODELOS
+print("\n--- 6. CROSS-VALIDATION ---")
+models = {
+    "LogisticRegression": LogisticRegression(max_iter=1000, random_state=RANDOM_STATE),
+    "SVC": SVC(probability=True, random_state=RANDOM_STATE),
+    "RandomForest": RandomForestClassifier(random_state=RANDOM_STATE)
+}
+
+for name, model in models.items():
+    pipe = Pipeline([('prep', preprocess), ('model', model)])
+    scores = cross_val_score(pipe, X_train, y_train, cv=5, scoring='accuracy')
+    print(f"{name}: {scores.mean():.4f} (+/- {scores.std():.4f})")
+
+# 7. OPTIMIZACIÓN (GRID SEARCH)
+print("\n--- 7. TUNING SVC ---")
+svc_pipe = Pipeline([
+    ('prep', preprocess),
+    ('model', SVC(probability=True, random_state=RANDOM_STATE))
+])
+params = {
+    'model__kernel': ['rbf', 'linear'],
+    'model__C': [0.1, 1, 10],
+    'model__gamma': ['scale', 'auto']
+}
+grid = GridSearchCV(svc_pipe, params, cv=5, scoring='accuracy', n_jobs=-1)
+grid.fit(X_train, y_train)
+print(f"Best Params: {grid.best_params_}")
+print(f"Best CV Score: {grid.best_score_:.4f}")
+
+# 8. EVALUACIÓN FINAL
+print("\n--- 8. TEST FINAL ---")
+best_model = grid.best_estimator_
+y_pred = best_model.predict(X_test)
+print(f"Test Accuracy: {accuracy_score(y_test, y_pred):.4f}")
+print("\nReporte de Clasificación:")
+print(classification_report(y_test, y_pred, target_names=target_names))
+
+# 11. PERSISTENCIA
+print("\n--- 11. OUPUT ---")
+joblib.dump(best_model, "modelo_iris_final.joblib")
+print("Modelo guardado como 'modelo_iris_final.joblib'")</code></pre>
+        </section>
+
+        <section class="section">
+            <div class="highlight-box secondary">
+                <h3>Siguientes Pasos</h3>
+                <ul class="mb-0">
+                    <li>Añadir más modelos (<strong>KNN</strong>, <strong>Gradient Boosting</strong>) y comparar.</li>
+                    <li>Probar <strong>RandomizedSearchCV</strong> para espacios de hiperparámetros más amplios.</li>
+                    <li>Incluir selección de características o <strong>PCA</strong> en el pipeline.</li>
+                    <li>Registrar experimentos con herramientas como <strong>MLflow</strong>.</li>
+                    <li>Desplegar el modelo detrás de una API REST (<strong>FastAPI</strong> o <strong>Flask</strong>).
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

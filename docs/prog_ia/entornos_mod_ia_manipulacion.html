@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entornos de Modelado de IA: Manipulación y Preparación de Datos - iLERNA">
+    <meta name="keywords" content="IA, Limpieza de Datos, Pandas, NumPy, Scikit-learn, Spark, Normalización, ETL">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Manipulación de Datos en IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Manipulación de Datos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Manipulación y Preparación de Datos</h1>
+            <p class="subtitle">Del Caos a la Información Estructurada</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="section-title">El Paso Crítico: "Garbage In, Garbage Out"</h2>
+            <p class="mb-4">
+                Antes de que cualquier algoritmo de IA pueda aprender, los datos deben ser preparados meticulosamente.
+                Los datos del mundo real suelen ser incompletos, inconsistentes y ruidosos. La fase de
+                <strong>preparación de datos</strong> suele consumir entre el 60% y el 80% del tiempo de un proyecto de
+                ciencia de datos.
+            </p>
+            <p class="mb-4">
+                Este proceso incluye la limpieza (tratamiento de valores nulos y duplicados), la transformación
+                (convertir formatos, normalizar escalas) y la selección de características (elegir las variables más
+                relevantes para el modelo).
+            </p>
+
+            <div class="highlight-box primary">
+                <p>
+                    A continuación, analizamos las herramientas fundamentales para esta etapa crítica, desde librerías
+                    de Python hasta soluciones Big Data y herramientas visuales.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: PANDAS Y NUMPY -->
+        <section class="section">
+            <h2 class="section-title">El Ecosistema Python: Pandas y NumPy</h2>
+
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Limpieza y Manipulación Ágil</h3>
+                <p class="mb-2">
+                    <strong>Pandas</strong> y <strong>NumPy</strong> son el estándar de la industria para trabajar con
+                    datos en memoria. Ofrecen estructuras de datos flexibles y funciones vectorizadas de alto
+                    rendimiento para filtrar, limpiar y transformar datasets complejos.
+                </p>
+                <p class="mb-4">
+                    Permiten detectar automáticamente valores faltantes (`NaN`), rellenarlos con estrategias
+                    estadísticas (media, mediana) o eliminar registros corruptos, así como realizar conversiones de
+                    tipos de datos de forma masiva.
+                </p>
+
+                <h4 class="font-bold mb-2">Ejemplo de Limpieza con Pandas:</h4>
+                <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+# Crear DataFrame con datos "sucios"
+data = {
+    'nombre': ['Ana', 'Juan', 'Luis', np.nan],
+    'edad': [25, 30, np.nan, 22],
+    'salario': ['30000', '45000', '50000', 'missing']
+}
+df = pd.read_csv("datos_ventas.csv") # Simulación de carga
+
+# 1. Tratar valores nulos (Imputación)
+# Rellenar edad faltante con la media
+df['edad'].fillna(df['edad'].mean(), inplace=True)
+
+# 2. Conversión de formatos
+# Convertir 'salario' a numérico, forzando errores a NaN
+df['salario'] = pd.to_numeric(df['salario'], errors='coerce')
+
+# 3. Eliminar filas que sigan teniendo nulos críticos
+df.dropna(subset=['nombre', 'salario'], inplace=True)
+
+print("Datos limpios:")
+print(df.head())</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: SCIKIT-LEARN -->
+        <section class="section">
+            <h2 class="section-title">Preprocesamiento para ML con Scikit-learn</h2>
+
+            <div class="card primary mb-6">
+                <h3 class="color-primary">Transformación y Normalización</h3>
+                <p class="mb-2">
+                    Una vez los datos están limpios, deben transformarse para que los algoritmos matemáticos puedan
+                    procesarlos eficientemente. <strong>Scikit-learn</strong> ofrece módulos robustos como
+                    `preprocessing` para estas tareas.
+                </p>
+                <div class="grid-features mb-4">
+                    <div class="feature-card secondary">
+                        <h4>StandardScaler / MinMaxScaler</h4>
+                        <p>Normalizan los datos numéricos para que todas las variables tengan la misma escala, evitando
+                            que una variable domine a las demás (ej. salario vs edad).</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>OneHotEncoder</h4>
+                        <p>Convierte variables categóricas (texto como "Rojo", "Verde") en vectores numéricos binarios
+                            que las redes neuronales pueden entender.</p>
+                    </div>
+                </div>
+
+                <h4 class="font-bold mb-2">Pipline de Preprocesamiento:</h4>
+                <pre><code class="language-python">from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+import pandas as pd
+
+# Datos de ejemplo
+X = pd.DataFrame({
+    'edad': [25, 45, 35],
+    'ciudad': ['Madrid', 'Barcelona', 'Madrid']
+})
+
+# Definir transformaciones
+preprocessor = ColumnTransformer(
+    transformers=[
+        # Escalar 'edad' (media 0, desviación 1)
+        ('num', StandardScaler(), ['edad']),
+        # Codificar 'ciudad' como vectores binarios
+        ('cat', OneHotEncoder(), ['ciudad'])
+    ])
+
+# Aplicar transformaciones
+X_transformed = preprocessor.fit_transform(X)
+
+print("Matriz procesada lista para entrenar:")
+print(X_transformed)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: BIG DATA (SPARK) -->
+        <section class="section">
+            <h2 class="section-title">Volúmenes Masivos: Apache Spark</h2>
+
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Procesamiento Distribuido con PySpark</h3>
+                <p class="mb-2">
+                    Cuando los datos superan la memoria de una sola máquina (Terabytes o Petabytes), Pandas no es
+                    suficiente. <strong>Apache Spark</strong> distribuye los datos a través de un clúster de servidores,
+                    permitiendo realizar las mismas operaciones de limpieza y transformación en paralelo.
+                </p>
+                <p class="mb-4">
+                    Su módulo `Spark MLlib` incluye herramientas específicas para Feature Engineering a gran escala,
+                    como `VectorAssembler` y `StringIndexer`.
+                </p>
+
+                <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.ml.feature import VectorAssembler, StringIndexer
+
+spark = SparkSession.builder.appName("DataPrep").getOrCreate()
+
+# Cargar dataset distribuido
+df = spark.read.csv("hdfs://datos_log_masivos.csv", header=True, inferSchema=True)
+
+# Indexar columna de texto (String -> Índice Numérico)
+indexer = StringIndexer(inputCol="categoria", outputCol="categoria_index")
+df_indexed = indexer.fit(df).transform(df)
+
+# Ensamblar todas las características en un solo vector (requisito de Spark ML)
+assembler = VectorAssembler(
+    inputCols=["edad", "salario", "categoria_index"],
+    outputCol="features")
+
+output = assembler.transform(df_indexed)
+output.select("features", "label").show(5)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: HERRAMIENTAS VISUALES -->
+        <section class="section">
+            <h2 class="section-title">Herramientas Visuales y No-Code</h2>
+            <p class="mb-4">
+                No siempre es necesario programar. Existen herramientas potentes para analistas que permiten preparar
+                datos mediante interfaces visuales intuitivas.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4>Power BI</h4>
+                    <p>
+                        A través de su editor <strong>Power Query</strong>, permite realizar transformaciones complejas
+                        (ETL) paso a paso: filtrar filas, dividir columnas, reemplazar valores y combinar tablas, todo
+                        sin escribir código, aunque permite usar lenguaje M para lógica avanzada.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Google Cloud DataPrep</h4>
+                    <p>
+                        Servicio inteligente en la nube (basado en Trifacta) que sugiere transformaciones
+                        automáticamente al analizar los datos. Visualiza la distribución de valores en tiempo real,
+                        facilitando la detección de anomalías y outliers antes de exportar a BigQuery.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

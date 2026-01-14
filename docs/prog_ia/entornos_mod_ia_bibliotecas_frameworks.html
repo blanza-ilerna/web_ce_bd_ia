@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entornos de Modelado de IA: Bibliotecas y Frameworks - iLERNA">
+    <meta name="keywords"
+        content="IA, TensorFlow, PyTorch, Scikit-learn, OpenCV, Hugging Face, NLP, Computer Vision, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Bibliotecas y Frameworks de IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Bibliotecas y Frameworks</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Bibliotecas y Frameworks de IA</h1>
+            <p class="subtitle">El pilar técnico del modelado inteligente</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="section-title">El Ecosistema del Modelado</h2>
+            <p class="mb-4">
+                El desarrollo de Inteligencia Artificial ha evolucionado desde la escritura manual de algoritmos
+                matemáticos complejos hacia el uso de sofisticados frameworks y bibliotecas. Estas herramientas actúan
+                como cimientos robustos que abstraen la complejidad del cálculo tensorial, la diferenciación automática
+                y la optimización de hardware, permitiendo a ingenieros y científicos de datos centrarse en el diseño de
+                arquitecturas y la resolución de problemas de negocio.
+            </p>
+            <p class="mb-4">
+                Un framework de IA moderno no es solo una colección de funciones; es un ecosistema completo que abarca
+                desde la preparación de datos y el entrenamiento distribuido en clústeres de GPUs, hasta el despliegue
+                de modelos optimizados en dispositivos móviles o servidores en la nube. La elección de la herramienta
+                adecuada puede determinar la velocidad de experimentación, la escalabilidad del producto final y la
+                facilidad de mantenimiento a largo plazo.
+            </p>
+
+            <div class="highlight-box primary">
+                <p>
+                    A continuación, exploraremos en profundidad las herramientas más influyentes del panorama actual,
+                    detallando sus características, filosofías de diseño y casos de uso ideales, acompañados de ejemplos
+                    prácticos.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: DEEP LEARNING -->
+        <section class="section">
+            <h2 class="section-title">Redes Neuronales y Aprendizaje Profundo</h2>
+
+            <!-- TensorFlow -->
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">TensorFlow y Keras (Google)</h3>
+                <p class="mb-2">
+                    <strong>TensorFlow</strong>, desarrollado por el equipo de Google Brain, es una plataforma de código
+                    abierto de extremo a extremo para el aprendizaje automático. Desde su lanzamiento en 2015, se ha
+                    establecido como el estándar industrial para el desarrollo de productos de IA a gran escala. Su
+                    arquitectura permite desplegar cómputo no solo en CPUs y GPUs, sino también en TPUs (Tensor
+                    Processing Units), hardware especializado de Google para acelerar cargas de trabajo de ML.
+                </p>
+                <p class="mb-2">
+                    <strong>Keras</strong>, integrada oficialmente en TensorFlow 2.0, actúa como la API de alto nivel
+                    del framework. Diseñada con el ser humano en mente y no la máquina, Keras prioriza la experiencia
+                    del desarrollador, ofreciendo una sintaxis clara, consistente y modular. Esto permite prototipar
+                    redes neuronales complejas en cuestión de minutos, apilando capas como si fueran bloques de
+                    construcción, sin sacrificar la potencia subyacente de TensorFlow.
+                </p>
+                <p class="mb-4">
+                    Más allá del entrenamiento, el ecosistema de TensorFlow brilla en la fase de producción (MLOps).
+                    Herramientas como TensorFlow Extended (TFX) para pipelines de datos, TensorFlow Lite para ejecutar
+                    modelos en dispositivos móviles y IoT, y TensorFlow.js para ejecutar modelos directamente en el
+                    navegador, lo convierten en la opción predilecta para empresas que necesitan llevar sus modelos del
+                    laboratorio al mundo real de forma robusta y escalable.
+                </p>
+
+                <h4 class="font-bold mb-2">Ejemplo de Red Neuronal Simple:</h4>
+                <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+
+# Definición de una red neuronal secuencial simple
+# Input: vectores de 784 dimensiones (ej. imágenes aplanadas de 28x28)
+# Capas ocultas: Una densa con 128 neuronas y activación ReLU, seguida de Dropout para evitar overfitting
+# Output: 10 neuronas (probabilidades para 10 clases)
+model = keras.Sequential([
+    keras.layers.Dense(128, activation='relu', input_shape=(784,)),
+    keras.layers.Dropout(0.2),
+    keras.layers.Dense(10, activation='softmax')
+])
+
+# Compilación definiendo optimizador, función de pérdida y métricas
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+print("Modelo TensorFlow compilado correctamente y listo para entrenar.")</code></pre>
+            </div>
+
+            <!-- PyTorch -->
+            <div class="card primary mb-6">
+                <h3 class="color-primary">PyTorch (Meta AI)</h3>
+                <p class="mb-2">
+                    <strong>PyTorch</strong>, nacido en el laboratorio de investigación de IA de Facebook (ahora Meta),
+                    ha ganado una popularidad explosiva debido a su filosofía de "Python primero". A diferencia de los
+                    grafos estáticos de las primeras versiones de TensorFlow, PyTorch introdujo el concepto de grafos
+                    computacionales dinámicos. Esto significa que la estructura de la red neuronal se puede modificar
+                    sobre la marcha durante la ejecución, lo que es invaluable para trabajar con datos de longitud
+                    variable (como texto) y arquitecturas complejas.
+                </p>
+                <p class="mb-2">
+                    Esta flexibilidad, sumada a una interfaz que se siente natural para cualquier programador de Python
+                    y una facilidad superior para la depuración (debugging), lo ha convertido en el framework dominante
+                    en el ámbito académico y de investigación. La mayoría de los "papers" científicos modernos y los
+                    avances de vanguardia en IA se publican con implementaciones en PyTorch, gracias a su capacidad para
+                    facilitar la experimentación rápida y la innovación.
+                </p>
+                <p class="mb-4">
+                    Aunque inicialmente se le consideraba menos apto para producción que TensorFlow, PyTorch ha madurado
+                    enormemente con la introducción de <strong>TorchScript</strong> y <strong>TorchServe</strong>. Estas
+                    herramientas permiten serializar modelos y optimizarlos para entornos de alta eficiencia, cerrando
+                    la brecha entre la investigación y el despliegue industrial. Grandes compañías como OpenAI
+                    (creadores de GPT) y Tesla utilizan PyTorch como base para sus sistemas de inteligencia artificial.
+                </p>
+
+                <h4 class="font-bold mb-2">Ejemplo de Clase de Modelo en PyTorch:</h4>
+                <pre><code class="language-python">import torch
+import torch.nn as nn
+
+# Definición de una red neuronal como una clase de Python
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
+        # Definición de capas
+        self.fc1 = nn.Linear(784, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        # Definición del flujo de datos (Forward Pass)
+        x = torch.relu(self.fc1(x))
+        return self.fc2(x)
+
+# Instanciación y verificación
+net = SimpleNet()
+print(net)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MACHINE LEARNING CLÁSICO -->
+        <section class="section">
+            <h2 class="section-title">Aprendizaje Automático Clásico</h2>
+
+            <!-- Scikit-Learn -->
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Scikit-learn (Sklearn)</h3>
+                <p class="mb-2">
+                    <strong>Scikit-learn</strong> es la piedra angular del aprendizaje automático clásico en Python.
+                    Construida sobre las sólidas bases de NumPy, SciPy y Matplotlib, ofrece una colección coherente y
+                    eficiente de herramientas para minería y análisis de datos. Su mayor virtud es su API consistente:
+                    prácticamente todos los algoritmos, desde una regresión lineal simple hasta un complejo bosque
+                    aleatorio, se utilizan con los mismos métodos `.fit()`, `.predict()` y `.transform()`.
+                </p>
+                <p class="mb-2">
+                    Aunque no está diseñada para Deep Learning ni para el uso intensivo de GPUs, Scikit-learn sigue
+                    siendo imbatible para datos estructurados (tablas de Excel, bases de datos SQL). Cubre una gama
+                    inmensa de necesidades: algoritmos de clasificación (SVM, KNN), regresión, clustering (K-Means,
+                    DBSCAN), reducción de dimensionalidad (PCA) y selección de modelos. Es a menudo la primera
+                    herramienta que se utiliza en un proyecto para establecer un "baseline" o línea base de rendimiento.
+                </p>
+                <p class="mb-4">
+                    Además de los algoritmos de predicción, Scikit-learn incluye utilidades excepcionales para el
+                    <strong>preprocesamiento de datos</strong>. Funciones para imputar valores nulos, escalar variables
+                    numéricas, codificar variables categóricas y dividir datasets en conjuntos de entrenamiento y prueba
+                    son esenciales en cualquier pipeline de datos, incluso si el modelado final se realiza luego con una
+                    red neuronal en otro framework.
+                </p>
+
+                <h4 class="font-bold mb-2">Entrenamiento de un Random Forest:</h4>
+                <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+# Cargar datos de ejemplo y dividir en entrenamiento/prueba
+data = load_iris()
+X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, test_size=0.2)
+
+# Crear y entrenar un Bosque Aleatorio con 100 árboles
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_train, y_train)
+
+# Evaluar el modelo
+print(f"Precisión en test: {clf.score(X_test, y_test):.2f}")</code></pre>
+            </div>
+
+            <!-- XGBoost -->
+            <div class="card primary mb-6">
+                <h3 class="color-primary">XGBoost (Extreme Gradient Boosting)</h3>
+                <p class="mb-2">
+                    <strong>XGBoost</strong> es una biblioteca optimizada de "Gradient Boosting" distribuido, diseñada
+                    para ser altamente eficiente, flexible y portátil. Nació con un objetivo claro: velocidad de
+                    ejecución y rendimiento del modelo. Su algoritmo principal se basa en construir un ensamble de
+                    árboles de decisión de manera secuencial, donde cada nuevo árbol intenta corregir los errores
+                    cometidos por los anteriores, logrando una precisión que a menudo supera a otros algoritmos
+                    clásicos.
+                </p>
+                <p class="mb-2">
+                    Esta librería se ha convertido en una leyenda en la comunidad de ciencia de datos, dominando las
+                    competiciones de Kaggle y otros torneos de modelado predictivo durante años. Su capacidad para
+                    manejar valores faltantes de forma nativa, su soporte para regularización (que evita el sobreajuste)
+                    y su implementación de "tree pruning" (poda de árboles) la hacen extremadamente robusta para una
+                    gran variedad de problemas de datos tabulares.
+                </p>
+                <p class="mb-4">
+                    Técnicamente, XGBoost destaca por su capacidad de escalado. Puede ejecutarse en una sola máquina, en
+                    clusters distribuidos como Hadoop y Spark, o aprovechar la aceleración por GPU. Proporciona
+                    interfaces para múltiples lenguajes (C++, Python, R, Java, Julia), lo que facilita su integración en
+                    casi cualquier stack tecnológico existente en una empresa.
+                </p>
+
+                <pre><code class="language-python">import xgboost as xgb
+from sklearn.datasets import load_diabetes
+
+# Cargar dataset de diabetes
+data = load_diabetes()
+X, y = data.data, data.target
+
+# Configurar y entrenar el modelo XGBoost regressor
+# objective='reg:squarederror' indica que es un problema de regresión
+model = xgb.XGBRegressor(objective="reg:squarederror", n_estimators=50, learning_rate=0.1)
+model.fit(X, y)
+
+print("Entrenamiento completado. El modelo está listo para predecir.")</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: PROCESAMIENTO DEL LENGUAJE NATURAL (NLP) -->
+        <section class="section">
+            <h2 class="section-title">Procesamiento del Lenguaje Natural (NLP)</h2>
+
+            <!-- Hugging Face -->
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Hugging Face Transformers</h3>
+                <p class="mb-2">
+                    Conocida a menudo como el "GitHub del Machine Learning", <strong>Hugging Face</strong> ha
+                    democratizado el acceso a la Inteligencia Artificial de vanguardia. Su biblioteca `transformers`
+                    permite a cualquier desarrollador descargar, configurar y utilizar modelos de última generación
+                    (State-of-the-Art) para procesamiento de texto, imagen y audio con apenas unas pocas líneas de
+                    código.
+                </p>
+                <p class="mb-2">
+                    Esta biblioteca proporciona acceso unificado a miles de modelos preentrenados creados por gigantes
+                    tecnológicos y la comunidad, incluyendo arquitecturas famosas como <strong>BERT</strong>,
+                    <strong>GPT-2</strong>, <strong>T5</strong>, <strong>Llama</strong> y <strong>Whisper</strong>. La
+                    filosofía es facilitar el "Transfer Learning": tomar un modelo que ya "sabe" leer y escribir gracias
+                    a haber sido entrenado con todo internet, y ajustarlo finamente (fine-tuning) para una tarea
+                    específica con un dataset propio y pequeño.
+                </p>
+                <p class="mb-4">
+                    Además de los modelos, el ecosistema de Hugging Face incluye `Datasets` para acceder a corpus de
+                    datos masivos y `Spaces` para desplegar demos interactivas. Se ha convertido en el centro de
+                    colaboración más importante del mundo para la comunidad de código abierto en IA, fomentando la
+                    transparencia y la reproducibilidad de la ciencia.
+                </p>
+
+                <pre><code class="language-python">from transformers import pipeline
+
+# 'pipeline' descarga automáticamente el modelo y tokenizador necesarios
+# En este caso, un modelo preentrenado para análisis de sentimiento
+classifier = pipeline('sentiment-analysis')
+
+# Uso inmediato del modelo
+texto = "¡El curso de IA de iLERNA está superando mis expectativas!"
+resultado = classifier(texto)
+
+print(f"Texto: {texto}")
+print(f"Resultado: {resultado}")</code></pre>
+            </div>
+
+            <!-- SpaCy -->
+            <div class="card primary mb-6">
+                <h3 class="color-primary">SpaCy</h3>
+                <p class="mb-2">
+                    A diferencia de otras librerías académicas que ofrecen docenas de algoritmos para la misma tarea,
+                    <strong>SpaCy</strong> es una biblioteca de NLP "con opinión": ofrece la <em>mejor</em>
+                    implementación posible para cada tarea, optimizada al máximo para el rendimiento. Está escrita en
+                    Cython (una extensión de C para Python), lo que le permite procesar grandes volúmenes de texto a
+                    velocidades vertiginosas, convirtiéndola en el estándar para sistemas de NLP en producción
+                    industrial.
+                </p>
+                <p class="mb-2">
+                    SpaCy destaca en tareas de procesamiento lingüístico estructural: tokenización robusta, etiquetado
+                    gramatical (POS tagging), análisis de dependencias sintácticas y reconocimiento de entidades
+                    nombradas (NER). Sus modelos preentrenados soportan más de 60 idiomas y son capaces de identificar
+                    personas, organizaciones, países y fechas en un texto con gran precisión "out-of-the-box".
+                </p>
+                <p class="mb-4">
+                    Su diseño modular permite integrarla fácilmente en pipelines de Deep Learning más grandes,
+                    conectándose con TensorFlow o PyTorch si es necesario. Es la herramienta ideal cuando el objetivo no
+                    es investigar nuevos modelos de lenguaje, sino construir aplicaciones que necesiten entender,
+                    limpiar y estructurar texto masivo de forma eficiente y fiable.
+                </p>
+
+                <pre><code class="language-python">import spacy
+
+# Cargar el modelo pequeño de español (requiere: python -m spacy download es_core_news_sm)
+# nlp es el objeto que procesa el texto a través del pipeline
+nlp = spacy.blank("es") 
+
+texto = "Apple está considerando abrir una nueva sede en Madrid por 50 millones de euros."
+doc = nlp(texto)
+
+print("Entidades detectadas:")
+# Iterar sobre las entidades reconocidas (Organizaciones, Lugares, Cantidades...)
+for ent in doc.ents:
+    print(f" - {ent.text}: {ent.label_}")</code></pre>
+            </div>
+
+            <!-- LangChain -->
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">LangChain</h3>
+                <p class="mb-2">
+                    Con la explosión de los Grandes Modelos de Lenguaje (LLMs) como GPT-4, surgió la necesidad de
+                    herramientas para orquestar su comportamiento. <strong>LangChain</strong> es un framework diseñado
+                    para desarrollar aplicaciones impulsadas por modelos de lenguaje, permitiendo que estos no sean solo
+                    generadores de texto aislados, sino componentes conscientes de su entorno y capaces de razonar.
+                </p>
+                <p class="mb-2">
+                    Su concepto central son las "Cadenas" (Chains), que permiten unir múltiples llamadas a LLMs y otras
+                    herramientas en secuencias lógicas. Por ejemplo, una cadena podría: 1) buscar información en Google,
+                    2) resumir los resultados con un LLM, y 3) traducir el resumen a otro idioma. LangChain abstrae la
+                    complejidad de gestionar prompts (instrucciones), "memoria" (historial de chat) y "agentes" (modelos
+                    que deciden qué acciones tomar).
+                </p>
+                <p class="mb-4">
+                    Una de sus aplicaciones más potentes es la Generación Aumentada por Recuperación (RAG). LangChain
+                    facilita conectar un LLM (como ChatGPT) a tus propios datos privados (PDFs, bases de datos),
+                    permitiendo que el modelo responda preguntas sobre documentación interna de una empresa sin haber
+                    sido entrenado explícitamente con ella.
+                </p>
+
+                <pre><code class="language-python">from langchain.prompts import PromptTemplate
+
+# Definición de una plantilla para estructurar la entrada al modelo
+# Esto permite reutilizar la lógica con diferentes variables
+template = "Eres un experto en nomenclatura. Sugiere 3 nombres creativos para una empresa que fabrica: {producto}."
+
+prompt = PromptTemplate(input_variables=["producto"], template=template)
+
+# Al formatear el prompt se inyecta el valor de la variable
+prompt_final = prompt.format(producto="calcetines inteligentes con calefacción")
+
+print(prompt_final)
+# El siguiente paso sería pasar este string a un modelo LLM conectado</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: VISIÓN ARTIFICIAL Y CIENTÍFICA -->
+        <section class="section">
+            <h2 class="section-title">Visión y Computación Científica</h2>
+
+            <!-- OpenCV -->
+            <div class="card primary mb-6">
+                <h3 class="color-primary">OpenCV (Open Source Computer Vision)</h3>
+                <p class="mb-2">
+                    Iniciada por Intel en 1999, <strong>OpenCV</strong> es la biblioteca de visión por computadora más
+                    grande y utilizada del mundo. Con más de 2500 algoritmos optimizados, cubre todo el espectro del
+                    procesamiento de imágenes clásico y moderno: desde operaciones básicas como filtrado, detección de
+                    bordes y transformaciones geométricas, hasta tareas complejas como detección de rostros, seguimiento
+                    de objetos en movimiento y reconstrucción 3D.
+                </p>
+                <p class="mb-2">
+                    Su principal fortaleza es la eficiencia en tiempo real. Escrita en C/C++ optimizado (con wrappers
+                    para Python, Java y MATLAB), OpenCV aprovecha las instrucciones hardware del procesador y la
+                    aceleración GPU (vía CUDA) para procesar flujos de video a altas tasas de fotogramas. Esto la hace
+                    indispensable en sistemas de vigilancia, robótica autónoma e inspección industrial.
+                </p>
+                <p class="mb-4">
+                    Aunque el Deep Learning ha reemplazado a OpenCV en tareas de clasificación compleja, la biblioteca
+                    sigue siendo fundamental para el preprocesamiento de imágenes (recortar, redimensionar, normalizar
+                    color) antes de alimentar una red neuronal, y para el post-procesamiento de los resultados.
+                </p>
+
+                <h4 class="font-bold mb-2">Creación de una imagen sintética:</h4>
+                <pre><code class="language-python">import cv2
+import numpy as np
+
+# Crear un lienzo negro de 512x512 píxeles con 3 canales de color (RGB)
+imagen = np.zeros((512, 512, 3), np.uint8)
+
+# Dibujar elementos geométricos
+# Línea azul diagonal (grosor 5px)
+cv2.line(imagen, (0, 0), (511, 511), (255, 0, 0), 5)
+# Rectángulo verde
+cv2.rectangle(imagen, (384, 0), (510, 128), (0, 255, 0), 3)
+# Círculo rojo relleno
+cv2.circle(imagen, (447, 63), 63, (0, 0, 255), -1)
+
+print("Operaciones geométricas realizadas. La imagen es ahora una matriz NumPy.")</code></pre>
+            </div>
+
+            <!-- Pandas y NumPy -->
+            <div class="card secondary mb-6">
+                <h3 class="color-secondary">Pandas y NumPy</h3>
+                <p class="mb-2">
+                    Aunque técnicamente no son "librerías de IA", <strong>NumPy</strong> y <strong>Pandas</strong>
+                    constituyen la base sobre la que se asienta todo el ecosistema de Data Science en Python.
+                    <strong>NumPy</strong> proporciona el objeto `ndarray`, una estructura de datos ultra-eficiente para
+                    el cálculo numérico vectorial y matricial. Bibliotecas como TensorFlow o PyTorch operan internamente
+                    con tensores que son, en esencia, generalizaciones de los arrays de NumPy.
+                </p>
+                <p class="mb-2">
+                    <strong>Pandas</strong>, construida sobre NumPy, proporciona el `DataFrame`, una estructura tabular
+                    similar a una hoja de cálculo o una tabla SQL, pero con esteroides programáticos. Es la herramienta
+                    estándar <em>de facto</em> para la ingestión, limpieza, filtrado, transformación y análisis
+                    exploratorio de datos (EDA). Antes de que cualquier dato llegue a un modelo de IA, casi con
+                    seguridad ha pasado por un DataFrame de Pandas.
+                </p>
+                <p class="mb-4">
+                    La sinergia entre ambas es total. Mientras NumPy maneja la matemática de bajo nivel (álgebra lineal,
+                    transformadas de Fourier, generación de números aleatorios), Pandas ofrece las herramientas de alto
+                    nivel para manejar datos del mundo real (series temporales, datos faltantes, unión de tablas,
+                    lectura de CSV/Excel). Sin el dominio de estas dos librerías, el modelado eficaz en IA es imposible.
+                </p>
+
+                <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+# Crear un DataFrame con datos sintéticos
+# 5 filas, 3 columnas (A, B, C) con enteros aleatorios entre 0 y 100
+df = pd.DataFrame(np.random.randint(0, 100, size=(5, 3)), columns=['A', 'B', 'C'])
+
+# Operaciones de manipulación de datos
+df['D'] = df['A'] + df['B']  # Nueva columna calculada
+filtro = df[df['C'] > 50]    # Filtrar filas donde C es mayor que 50
+
+print("DataFrame Original:")
+print(df)
+print("\nEstadísticas descriptivas:")
+print(df.describe())</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="highlight-box primary text-center">
+                <h3 class="color-white">Conclusión</h3>
+                <p>
+                    El panorama de herramientas de IA es vasto y dinámico. La elección del framework depende
+                    fundamentalmente del problema a resolver: <strong>PyTorch</strong> domina la investigación flexible,
+                    <strong>TensorFlow</strong> brilla en despliegues productivos robustos, y
+                    <strong>Scikit-learn</strong> sigue siendo el rey insustituible para datos tabulares. Dominar estas
+                    herramientas es dominar el lenguaje en el que se escribe el futuro de la tecnología.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
