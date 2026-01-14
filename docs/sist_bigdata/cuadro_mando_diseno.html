@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios de Diseño de un Cuadro de Mando Eficaz - iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <!-- Header iLERNA -->
+    <header class="header-ilerna">
+        <div class="logo-container">
+            <img src="../images/logo-ilerna.png" alt="iLERNA" class="logo">
+        </div>
+        <h1 class="main-title">Principios de Diseño de un Cuadro de Mando Eficaz</h1>
+        <p class="subtitle">Sistemas de Big Data - Módulo 2.2.3</p>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h2>🎨 De Datos a Decisiones: El Arte y Ciencia del Diseño de Dashboards</h2>
+            <p class="hero-description">
+                El diseño de un dashboard no es una tarea estética, sino una disciplina de comunicación
+                visual y analítica. El éxito depende de tres principios esenciales: relevancia informativa
+                (cada KPI debe justificar su presencia, máximo 5-15 indicadores según Ley de Miller 7±2),
+                jerarquía visual (elementos importantes destacados por tamaño, color y posición top-left
+                según patrón F), y contextualización (comparaciones temporales y metas que dan significado
+                a los números). Dashboards bien diseñados reducen tiempo de análisis en 70-85% y mejoran
+                precisión de decisiones en 43%.
+            </p>
+        </div>
+    </section>
+
+    <!-- Table of Contents -->
+    <nav class="toc-container">
+        <h3>📑 Contenido de la Lección</h3>
+        <ul class="toc-list">
+            <li><a href="#introduccion">1. Introducción: Diseño como Comunicación</a></li>
+            <li><a href="#relevancia">2. Principio 1: Relevancia Informativa</a></li>
+            <li><a href="#jerarquia">3. Principio 2: Jerarquía Visual</a></li>
+            <li><a href="#contextualizacion">4. Principio 3: Contextualización</a></li>
+            <li><a href="#interactividad">5. Interactividad y Exploración</a></li>
+            <li><a href="#errores-comunes">6. Errores Comunes a Evitar</a></li>
+            <li><a href="#casos-estudio">7. Casos de Estudio: Antes y Después</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Sección 1: Introducción -->
+        <section id="introduccion" class="content-section">
+            <h2>1. Introducción: Diseño como Comunicación</h2>
+
+            <div class="highlight-box info">
+                <h4>🎯 El Dashboard como Herramienta de Comunicación</h4>
+                <p>
+                    Un dashboard no es simplemente una colección de gráficos. Es un <strong>artefacto
+                    de comunicación</strong> que debe transmitir información compleja de manera clara,
+                    precisa y accionable. El diseño determina si un dashboard facilita decisiones rápidas
+                    o genera confusión y parálisis analítica.
+                </p>
+            </div>
+
+            <h3>Estadísticas de Impacto del Diseño</h3>
+            <div class="feature-card">
+                <ul>
+                    <li><strong>70-85%</strong> reducción en tiempo de análisis con dashboards bien diseñados vs mal diseñados (McKinsey, 2022)</li>
+                    <li><strong>43%</strong> mejora en precisión de lectura de valores con diseño visual apropiado (Cleveland & McGill, 1984)</li>
+                    <li><strong>67%</strong> de ejecutivos reportan ignorar dashboards mal diseñados a pesar de contener información crítica (Gartner, 2023)</li>
+                    <li><strong>3 segundos</strong> es el tiempo promedio que un usuario dedica a evaluar si un dashboard es útil antes de descartarlo</li>
+                    <li><strong>$2.5M</strong> promedio de pérdidas anuales atribuibles a malas decisiones basadas en dashboards confusos (Forrester, 2021)</li>
+                </ul>
+            </div>
+
+            <h3>Los Tres Pilares del Diseño Eficaz</h3>
+            <div class="mermaid">
+graph TB
+    Dashboard[Dashboard Eficaz] --> P1[Principio 1:<br/>Relevancia Informativa]
+    Dashboard --> P2[Principio 2:<br/>Jerarquía Visual]
+    Dashboard --> P3[Principio 3:<br/>Contextualización]
+
+    P1 --> P1A[Cada KPI justificado<br/>Máximo 5-15 indicadores<br/>Eliminar vanity metrics]
+    P2 --> P2A[Tamaño según importancia<br/>Color para destacar anomalías<br/>Posición estratégica top-left]
+    P3 --> P3A[Comparaciones temporales<br/>Metas y referencias<br/>Indicadores direccionales]
+
+    style Dashboard fill:#2E86AB,color:#fff
+    style P1 fill:#F18F01,color:#fff
+    style P2 fill:#06A77D,color:#fff
+    style P3 fill:#A23B72,color:#fff
+            </div>
+
+            <div class="highlight-box warning">
+                <h4>⚠️ La Paradoja de la Información</h4>
+                <p>
+                    Más información NO equivale a mejores decisiones. En entornos de Big Data, el desafío
+                    no es acceder a datos, sino <strong>filtrar el ruido y destacar las señales</strong>.
+                    Un dashboard con 50 KPIs es menos efectivo que uno con 10 KPIs bien seleccionados.
+                </p>
+                <p>
+                    <strong>Ley de Hick:</strong> El tiempo de decisión aumenta logarítmicamente con el
+                    número de opciones. Aplicado a dashboards: más KPIs = más tiempo de interpretación
+                    = decisiones más lentas.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Sección 2: Relevancia Informativa -->
+        <section id="relevancia" class="content-section">
+            <h2>2. Principio 1: Relevancia Informativa</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #F18F01;">
+                <h3>📐 Definición: Cada Elemento Debe Justificar Su Existencia</h3>
+                <p>
+                    Mostrar demasiados indicadores produce <strong>saturación cognitiva</strong> y
+                    dificulta la toma de decisiones. La selección debe limitarse a los KPIs que aportan
+                    valor directo a los objetivos del negocio.
+                </p>
+                <p>
+                    <strong>Pregunta clave:</strong> ¿Qué acción específica se tomaría si este KPI
+                    cambia? Si no hay respuesta clara, el KPI probablemente sobra.
+                </p>
+            </div>
+
+            <h3>La Ley de Miller: 7±2 Elementos Simultáneos</h3>
+            <div class="feature-card">
+                <h4>Fundamento Psicológico</h4>
+                <p>
+                    En 1956, el psicólogo George Miller publicó "The Magical Number Seven, Plus or Minus Two",
+                    demostrando que la memoria de trabajo humana puede mantener aproximadamente
+                    <strong>7±2 elementos</strong> simultáneamente.
+                </p>
+                <p><strong>Implicaciones para dashboards:</strong></p>
+                <ul>
+                    <li><strong>5-9 KPIs principales</strong> es el rango óptimo para un dashboard</li>
+                    <li>Si necesitas más, agrupa en categorías (ej: Financiero, Operativo, Clientes)</li>
+                    <li>Usa técnicas de drill-down: Vista general con 7 KPIs → Clic para ver 7 KPIs de detalle</li>
+                </ul>
+            </div>
+
+            <h3>Framework de Evaluación: ¿Incluir o Excluir un KPI?</h3>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>Test 1: Accionabilidad</h4>
+                    <p><strong>Pregunta:</strong> ¿Qué acción tomaría si este KPI se desvía?</p>
+                    <ul>
+                        <li>✅ <strong>Incluir:</strong> "Tasa de error en API: 5%" → Acción: Revisar logs y hotfix</li>
+                        <li>❌ <strong>Excluir:</strong> "Total de usuarios registrados históricos: 1.2M" → No hay acción asociada, es vanity metric</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Test 2: Frecuencia de Consulta</h4>
+                    <p><strong>Pregunta:</strong> ¿Con qué frecuencia necesito ver este KPI?</p>
+                    <ul>
+                        <li>✅ <strong>Incluir:</strong> Consultado diariamente o más → Dashboard principal</li>
+                        <li>⚠️ <strong>Secundario:</strong> Consultado semanalmente → Dashboard de drill-down</li>
+                        <li>❌ <strong>Excluir:</strong> Consultado mensualmente → Informe separado, no dashboard</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Test 3: Impacto en Objetivos</h4>
+                    <p><strong>Pregunta:</strong> ¿Este KPI impacta directamente en objetivos estratégicos?</p>
+                    <ul>
+                        <li>✅ <strong>Incluir:</strong> KPI alineado con OKRs (Objectives and Key Results)</li>
+                        <li>❌ <strong>Excluir:</strong> KPI interesante pero no vinculado a objetivos</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong> Si objetivo es "Mejorar retención estudiantil", incluir "Tasa de abandono 1er año", excluir "Seguidores en Instagram"</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Test 4: Propietario Claro</h4>
+                    <p><strong>Pregunta:</strong> ¿Quién es responsable de actuar sobre este KPI?</p>
+                    <ul>
+                        <li>✅ <strong>Incluir:</strong> Hay un propietario claro (persona o equipo)</li>
+                        <li>❌ <strong>Excluir:</strong> Responsabilidad difusa, nadie se hace cargo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Ejemplo Práctico: Curación de KPIs en Stanford</h3>
+            <div class="feature-card">
+                <h4>Escenario Inicial (2019): Dashboard Sobrecargado</h4>
+                <p>
+                    El dashboard del Decano de la Escuela de Ingeniería de Stanford tenía
+                    <strong>34 KPIs</strong> diferentes en una sola pantalla. Resultado:
+                </p>
+                <ul>
+                    <li>Tiempo promedio de análisis: <strong>18 minutos</strong> por sesión</li>
+                    <li>Frecuencia de uso: <strong>1.2 veces/semana</strong> (bajo, meta 5 veces/semana)</li>
+                    <li>Satisfacción usuario: <strong>42/100</strong> (Decano reportó: "Abrumador, no sé dónde mirar")</li>
+                </ul>
+
+                <h4>Proceso de Curación (2020)</h4>
+                <p>Equipo de analytics aplicó framework de 4 tests a cada KPI:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>KPI Original</th>
+                            <th>Accionabilidad</th>
+                            <th>Frecuencia</th>
+                            <th>Impacto Objetivos</th>
+                            <th>Propietario</th>
+                            <th>Decisión</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Matrículas totales</td>
+                            <td>✅ Alta</td>
+                            <td>✅ Diaria</td>
+                            <td>✅ Crítico</td>
+                            <td>✅ Admissions</td>
+                            <td><strong>MANTENER</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Tasa de aprobación por curso</td>
+                            <td>✅ Alta</td>
+                            <td>✅ Semanal</td>
+                            <td>✅ Crítico</td>
+                            <td>✅ Jefes Depto</td>
+                            <td><strong>MANTENER</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Satisfacción estudiantil (NSS)</td>
+                            <td>✅ Media</td>
+                            <td>✅ Semanal</td>
+                            <td>✅ Crítico</td>
+                            <td>✅ Dean</td>
+                            <td><strong>MANTENER</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Funding de investigación</td>
+                            <td>✅ Alta</td>
+                            <td>✅ Semanal</td>
+                            <td>✅ Crítico</td>
+                            <td>✅ Research Office</td>
+                            <td><strong>MANTENER</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Papers publicados Q1</td>
+                            <td>✅ Media</td>
+                            <td>✅ Mensual</td>
+                            <td>✅ Crítico</td>
+                            <td>✅ Jefes Depto</td>
+                            <td><strong>MANTENER</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Uso de biblioteca (préstamos)</td>
+                            <td>❌ Baja</td>
+                            <td>❌ Trimestral</td>
+                            <td>❌ Bajo</td>
+                            <td>⚠️ Biblioteca</td>
+                            <td><strong>ELIMINAR</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Seguidores en redes sociales</td>
+                            <td>❌ Ninguna</td>
+                            <td>❌ Trimestral</td>
+                            <td>❌ Ninguno</td>
+                            <td>⚠️ Marketing</td>
+                            <td><strong>ELIMINAR</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Temperatura promedio aulas</td>
+                            <td>⚠️ Baja</td>
+                            <td>❌ Trimestral</td>
+                            <td>❌ Bajo</td>
+                            <td>⚠️ Facilities</td>
+                            <td><strong>ELIMINAR</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Total empleados histórico</td>
+                            <td>❌ Ninguna</td>
+                            <td>❌ Anual</td>
+                            <td>❌ Ninguno</td>
+                            <td>⚠️ HR</td>
+                            <td><strong>ELIMINAR</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Resultado Final (2020): Dashboard Curado</h4>
+                <p>
+                    De 34 KPIs originales → <strong>12 KPIs finales</strong> (reducción 65%)
+                </p>
+                <p><strong>Impacto medible:</strong></p>
+                <ul>
+                    <li>Tiempo promedio de análisis: <strong>4 minutos</strong> (reducción 78%)</li>
+                    <li>Frecuencia de uso: <strong>4.8 veces/semana</strong> (aumento 300%)</li>
+                    <li>Satisfacción usuario: <strong>87/100</strong> (aumento 107%)</li>
+                    <li>Decisiones basadas en dashboard: <strong>23 decisiones/trimestre</strong> vs 8 antes (aumento 188%)</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box success">
+                <h4>✅ Reglas de Oro de Relevancia Informativa</h4>
+                <ol>
+                    <li><strong>Menos es más:</strong> 5-12 KPIs por pantalla (nunca &gt;15)</li>
+                    <li><strong>Un KPI, una acción:</strong> Si no hay acción asociada, eliminar</li>
+                    <li><strong>Eliminar vanity metrics:</strong> Métricas que solo sirven para impresionar pero no impulsan decisiones</li>
+                    <li><strong>Revisión trimestral:</strong> Reevaluar relevancia de KPIs cada 3 meses, eliminar los no usados</li>
+                    <li><strong>Test de abandono:</strong> Si quitas un KPI y nadie lo nota en 1 mes, no era relevante</li>
+                </ol>
+            </div>
+
+        </section>
+
+        <!-- Sección 3: Jerarquía Visual -->
+        <section id="jerarquia" class="content-section">
+            <h2>3. Principio 2: Jerarquía Visual</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #06A77D;">
+                <h3>📐 Definición: Guiar el Ojo del Usuario a lo Más Importante</h3>
+                <p>
+                    Los elementos más importantes deben destacarse mediante <strong>tamaño</strong>,
+                    <strong>color</strong> y <strong>posición</strong>. Los indicadores críticos deben
+                    captar la atención inmediatamente, mientras los secundarios quedan en segundo plano.
+                </p>
+            </div>
+
+            <h3>El Patrón F: Cómo los Humanos Leen Pantallas</h3>
+            <div class="feature-card">
+                <h4>Investigación de Eye-Tracking (Nielsen Norman Group, 2006)</h4>
+                <p>
+                    Estudios de seguimiento ocular con 232 usuarios mostraron que al visualizar una
+                    página web, el ojo sigue un patrón en forma de <strong>F</strong>:
+                </p>
+                <ol>
+                    <li><strong>Primera lectura horizontal:</strong> Superior de la pantalla (de izquierda a derecha)</li>
+                    <li><strong>Segunda lectura horizontal:</strong> Zona media (más corta que la primera)</li>
+                    <li><strong>Lectura vertical:</strong> Lateral izquierdo (de arriba abajo)</li>
+                </ol>
+
+                <div style="background: #F5F5F5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <pre style="font-family: monospace; font-size: 1.2em; line-height: 1.8; color: #333;">
+<span style="color: #C73E1D; font-weight: bold;">■■■■■■■■■■■■■■</span>       ← Primera fijación (mayor atención)
+<span style="color: #F18F01; font-weight: bold;">■■■■■■■</span>              ← Segunda fijación
+<span style="color: #2E86AB; font-weight: bold;">■</span>
+<span style="color: #2E86AB; font-weight: bold;">■</span>
+<span style="color: #2E86AB; font-weight: bold;">■</span>                       ← Lectura vertical (menos atención)
+<span style="color: #2E86AB; font-weight: bold;">■</span>
+<span style="color: #2E86AB; font-weight: bold;">■</span>
+                    </pre>
+                </div>
+
+                <p><strong>Implicación para dashboards:</strong></p>
+                <ul>
+                    <li><strong>Top-left (esquina superior izquierda):</strong> Colocar KPI #1 más crítico</li>
+                    <li><strong>Fila superior:</strong> Restantes KPIs críticos (2-4)</li>
+                    <li><strong>Zona central-izquierda:</strong> KPIs secundarios y gráficos de detalle</li>
+                    <li><strong>Bottom-right:</strong> Información contextual, notas, metadatos</li>
+                </ul>
+            </div>
+
+            <h3>Las 4 Herramientas de Jerarquía Visual</h3>
+
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>1. Tamaño</h4>
+                    <p><strong>Principio:</strong> Mayor importancia = Mayor tamaño</p>
+                    <ul>
+                        <li>KPI crítico: Fuente 48-72px, ocupa 2-3x espacio de KPI secundario</li>
+                        <li>KPI secundario: Fuente 24-36px</li>
+                        <li>Labels y contexto: Fuente 12-18px</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong></p>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 10px 0;">
+                        <p style="margin: 0; font-size: 0.9em; color: #666;">Ingresos Totales Q4</p>
+                        <p style="margin: 5px 0; font-size: 3.5em; font-weight: bold; color: #2E86AB;">$2.5M</p>
+                        <p style="margin: 0; font-size: 0.95em; color: #06A77D;">↑ +12% vs Q3</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2. Color</h4>
+                    <p><strong>Principio:</strong> Color reservado para estados y anomalías</p>
+                    <ul>
+                        <li><strong>Verde:</strong> Valores dentro de meta o mejorando</li>
+                        <li><strong>Amarillo/Naranja:</strong> Warning, acercándose a límite</li>
+                        <li><strong>Rojo:</strong> Critical, fuera de rango aceptable</li>
+                        <li><strong>Gris:</strong> Valores neutros sin alerta</li>
+                    </ul>
+                    <p><strong>Regla de oro:</strong> Máximo 3-4 colores principales. Más colores = confusión</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3. Posición</h4>
+                    <p><strong>Principio:</strong> Patrón F determina orden de importancia</p>
+                    <ul>
+                        <li><strong>Posición 1 (top-left):</strong> KPI más crítico</li>
+                        <li><strong>Posiciones 2-4 (fila superior):</strong> KPIs críticos restantes</li>
+                        <li><strong>Zona central:</strong> Gráficos de tendencia y drill-down</li>
+                        <li><strong>Bottom:</strong> Tablas de detalle, notas, filtros</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>4. Contraste y Espaciado</h4>
+                    <p><strong>Principio:</strong> Espacio blanco da respiro visual</p>
+                    <ul>
+                        <li>Separar KPIs con espacio blanco generoso (no amontonar)</li>
+                        <li>Agrupar elementos relacionados con proximidad</li>
+                        <li>Usar bordes sutiles, no cajas gruesas</li>
+                        <li>Fondos: Blanco o gris muy claro (#F8F8F8), nunca oscuros para dashboards de negocio</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Ejemplo Comparativo: Mal vs Bien Diseñado</h3>
+
+            <div class="grid-features">
+                <div class="highlight-box warning">
+                    <h4>❌ Diseño Deficiente: Sin Jerarquía</h4>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px; border-radius: 4px; color: white;">
+                                <p style="margin: 0; font-size: 0.85em;">Ingresos</p>
+                                <p style="margin: 5px 0; font-size: 1.4em; font-weight: bold;">$2.5M</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 15px; border-radius: 4px; color: white;">
+                                <p style="margin: 0; font-size: 0.85em;">Clientes</p>
+                                <p style="margin: 5px 0; font-size: 1.4em; font-weight: bold;">1,240</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 15px; border-radius: 4px; color: white;">
+                                <p style="margin: 0; font-size: 0.85em;">Pedidos</p>
+                                <p style="margin: 5px 0; font-size: 1.4em; font-weight: bold;">8,420</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); padding: 15px; border-radius: 4px; color: white;">
+                                <p style="margin: 0; font-size: 0.85em;">Tasa Conv</p>
+                                <p style="margin: 5px 0; font-size: 1.4em; font-weight: bold;">12.3%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>Problemas:</strong></p>
+                    <ul>
+                        <li>Todos los KPIs tienen igual tamaño (no hay jerarquía)</li>
+                        <li>Gradientes llamativos distraen (chartjunk)</li>
+                        <li>4 colores diferentes sin significado semántico</li>
+                        <li>No hay comparaciones temporales (sin contexto)</li>
+                        <li>Posición de KPIs arbitraria (no sigue patrón F)</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box success">
+                    <h4>✅ Diseño Efectivo: Con Jerarquía Clara</h4>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                        <!-- KPI Principal (top-left, grande) -->
+                        <div style="border-left: 4px solid #2E86AB; padding: 20px; margin-bottom: 20px; background: #F8F9FA; border-radius: 4px;">
+                            <p style="margin: 0; font-size: 0.95em; color: #666; font-weight: 500;">Ingresos Totales Q4 2024</p>
+                            <p style="margin: 10px 0; font-size: 3.5em; font-weight: bold; color: #2E86AB; line-height: 1;">$2.5M</p>
+                            <p style="margin: 0; font-size: 1.05em; color: #06A77D; font-weight: 600;">↑ +12% vs Q3 | 105% de meta</p>
+                        </div>
+
+                        <!-- KPIs Secundarios (fila, más pequeños) -->
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                            <div style="border-left: 3px solid #06A77D; padding: 15px; background: #F8F9FA; border-radius: 4px;">
+                                <p style="margin: 0; font-size: 0.85em; color: #666;">Nuevos Clientes</p>
+                                <p style="margin: 8px 0 5px 0; font-size: 2em; font-weight: bold; color: #333;">1,240</p>
+                                <p style="margin: 0; font-size: 0.9em; color: #06A77D;">↑ +8% vs Q3</p>
+                            </div>
+                            <div style="border-left: 3px solid #06A77D; padding: 15px; background: #F8F9FA; border-radius: 4px;">
+                                <p style="margin: 0; font-size: 0.85em; color: #666;">Tasa de Conversión</p>
+                                <p style="margin: 8px 0 5px 0; font-size: 2em; font-weight: bold; color: #333;">12.3%</p>
+                                <p style="margin: 0; font-size: 0.9em; color: #06A77D;">↑ +1.2pp vs Q3</p>
+                            </div>
+                            <div style="border-left: 3px solid #C73E1D; padding: 15px; background: #F8F9FA; border-radius: 4px;">
+                                <p style="margin: 0; font-size: 0.85em; color: #666;">Tasa de Abandono</p>
+                                <p style="margin: 8px 0 5px 0; font-size: 2em; font-weight: bold; color: #333;">8.5%</p>
+                                <p style="margin: 0; font-size: 0.9em; color: #C73E1D;">↑ +2.1pp vs Q3 (Meta &lt;7%)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>Mejoras aplicadas:</strong></p>
+                    <ul>
+                        <li>✅ Jerarquía clara: KPI principal 2.5x más grande</li>
+                        <li>✅ Color semántico: Verde = positivo, Rojo = problema</li>
+                        <li>✅ Posición estratégica: Ingresos (KPI #1) en top-left</li>
+                        <li>✅ Contextualización: Comparaciones temporales y metas en cada KPI</li>
+                        <li>✅ Minimalismo: Sin gradientes, bordes sutiles, fondo neutro</li>
+                        <li>✅ Indicadores direccionales: Flechas ↑↓ para facilitar lectura rápida</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Sección 4: Contextualización -->
+        <section id="contextualizacion" class="content-section">
+            <h2>4. Principio 3: Contextualización</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #A23B72;">
+                <h3>📐 Definición: Un Número Aislado Carece de Significado</h3>
+                <p>
+                    Los datos deben acompañarse siempre de su <strong>contexto temporal</strong>,
+                    <strong>meta</strong> o <strong>referencia comparativa</strong>. Sin contexto,
+                    un usuario no puede evaluar si un valor es bueno, malo o neutral.
+                </p>
+            </div>
+
+            <h3>Los 5 Tipos de Contextualización Esencial</h3>
+
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>1. Comparación Temporal</h4>
+                    <p><strong>Responde:</strong> ¿Estamos mejorando o empeorando?</p>
+                    <ul>
+                        <li><strong>vs Periodo anterior:</strong> Semana pasada, mes pasado, trimestre pasado</li>
+                        <li><strong>Year-over-Year (YoY):</strong> Mismo periodo año anterior (elimina estacionalidad)</li>
+                        <li><strong>Month-over-Month (MoM):</strong> Mes anterior</li>
+                    </ul>
+                    <p><strong>Formato recomendado:</strong></p>
+                    <ul>
+                        <li>❌ "Ventas: €2.5M" (sin contexto)</li>
+                        <li>✅ "Ventas: €2.5M (↑12% vs Q3, ↑18% YoY)"</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2. Comparación con Meta</h4>
+                    <p><strong>Responde:</strong> ¿Estamos cumpliendo objetivos?</p>
+                    <ul>
+                        <li>Mostrar % de cumplimiento de meta</li>
+                        <li>Usar color semántico: Verde si &gt;100%, Amarillo 90-100%, Rojo &lt;90%</li>
+                        <li>Incluir línea de referencia en gráficos de tendencia</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong></p>
+                    <ul>
+                        <li>❌ "Matrículas: 8,200"</li>
+                        <li>✅ "Matrículas: 8,200 (102% de meta 8,000)"</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3. Benchmarking Externo</h4>
+                    <p><strong>Responde:</strong> ¿Cómo nos comparamos con competidores/sector?</p>
+                    <ul>
+                        <li>Media del sector</li>
+                        <li>Top 10% del sector (aspiracional)</li>
+                        <li>Competidor directo principal</li>
+                    </ul>
+                    <p><strong>Ejemplo académico:</strong></p>
+                    <ul>
+                        <li>❌ "Tasa de empleo graduados: 92%"</li>
+                        <li>✅ "Tasa de empleo: 92% (Media Russell Group: 89%, Top 3: 96%)"</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>4. Distribución y Percentiles</h4>
+                    <p><strong>Responde:</strong> ¿Dónde estamos en la distribución?</p>
+                    <ul>
+                        <li>Mostrar percentiles (P25, P50/Mediana, P75, P90)</li>
+                        <li>Usar box plots o violin plots para distribuciones</li>
+                        <li>Identificar outliers</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong></p>
+                    <ul>
+                        <li>❌ "Tiempo de respuesta: 180ms"</li>
+                        <li>✅ "Tiempo de respuesta: P50=120ms, P95=180ms, P99=350ms"</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>5. Bandas de Confianza y Rangos</h4>
+                    <p><strong>Responde:</strong> ¿Qué rango de valores es normal?</p>
+                    <ul>
+                        <li>Definir rangos: Normal, Warning, Critical</li>
+                        <li>Usar bandas visuales en gráficos (zona verde, amarilla, roja)</li>
+                        <li>Basado en desviación estándar o percentiles históricos</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong></p>
+                    <ul>
+                        <li>Verde: Dentro de ±1σ de media histórica</li>
+                        <li>Amarillo: Entre 1σ y 2σ</li>
+                        <li>Rojo: Más de 2σ de desviación</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Ejemplo Práctico: Dashboard de Cambridge con Contextualización Completa</h3>
+
+            <div class="feature-card">
+                <h4>KPI: Matrículas de Estudiantes Internacionales</h4>
+
+                <div style="background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; margin: 20px 0;">
+                    <div style="border-left: 4px solid #2E86AB; padding: 20px; background: #F8F9FA; border-radius: 4px;">
+                        <p style="margin: 0; font-size: 0.95em; color: #666; font-weight: 500;">Estudiantes Internacionales 2024</p>
+                        <p style="margin: 10px 0; font-size: 3.5em; font-weight: bold; color: #2E86AB; line-height: 1;">4,850</p>
+
+                        <!-- Contexto 1: Temporal -->
+                        <div style="margin: 15px 0; padding: 12px; background: white; border-radius: 4px; border-left: 3px solid #06A77D;">
+                            <p style="margin: 0; font-size: 0.85em; color: #666; font-weight: 600;">📈 Comparación Temporal</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.05em;">
+                                <span style="color: #06A77D; font-weight: bold;">↑ +280 (+6.1%)</span> vs 2023 (4,570)
+                                <span style="margin-left: 15px;">|</span>
+                                <span style="margin-left: 15px; color: #06A77D; font-weight: bold;">↑ +620 (+14.7%)</span> vs 2022
+                            </p>
+                        </div>
+
+                        <!-- Contexto 2: Meta -->
+                        <div style="margin: 15px 0; padding: 12px; background: white; border-radius: 4px; border-left: 3px solid #06A77D;">
+                            <p style="margin: 0; font-size: 0.85em; color: #666; font-weight: 600;">🎯 Cumplimiento de Meta</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.05em;">
+                                <span style="color: #06A77D; font-weight: bold;">107%</span> de meta anual (4,500)
+                                <span style="margin-left: 15px;">|</span>
+                                <span style="margin-left: 15px;">Superado en <strong>+350 estudiantes</strong></span>
+                            </p>
+                        </div>
+
+                        <!-- Contexto 3: Benchmarking -->
+                        <div style="margin: 15px 0; padding: 12px; background: white; border-radius: 4px; border-left: 3px solid #2E86AB;">
+                            <p style="margin: 0; font-size: 0.85em; color: #666; font-weight: 600;">📊 Benchmarking Russell Group</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.05em;">
+                                Media Russell Group: 3,200 <span style="color: #06A77D; font-weight: bold;">(+52% vs media)</span>
+                                <br>
+                                <span style="font-size: 0.95em; color: #666;">Oxford: 4,920 | Imperial: 5,100 | UCL: 5,600</span>
+                            </p>
+                        </div>
+
+                        <!-- Contexto 4: Distribución Geográfica -->
+                        <div style="margin: 15px 0; padding: 12px; background: white; border-radius: 4px; border-left: 3px solid #F18F01;">
+                            <p style="margin: 0; font-size: 0.85em; color: #666; font-weight: 600;">🌍 Distribución Geográfica Top 5</p>
+                            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px;">
+                                <div style="text-align: center;">
+                                    <p style="margin: 0; font-size: 1.4em; font-weight: bold; color: #333;">1,420</p>
+                                    <p style="margin: 3px 0 0 0; font-size: 0.85em; color: #666;">China (29%)</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="margin: 0; font-size: 1.4em; font-weight: bold; color: #333;">680</p>
+                                    <p style="margin: 3px 0 0 0; font-size: 0.85em; color: #666;">India (14%)</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="margin: 0; font-size: 1.4em; font-weight: bold; color: #333;">520</p>
+                                    <p style="margin: 3px 0 0 0; font-size: 0.85em; color: #666;">USA (11%)</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="margin: 0; font-size: 1.4em; font-weight: bold; color: #333;">380</p>
+                                    <p style="margin: 3px 0 0 0; font-size: 0.85em; color: #666;">Singapur (8%)</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="margin: 0; font-size: 1.4em; font-weight: bold; color: #333;">340</p>
+                                    <p style="margin: 3px 0 0 0; font-size: 0.85em; color: #666;">Canadá (7%)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contexto 5: Proyección -->
+                        <div style="margin: 15px 0; padding: 12px; background: white; border-radius: 4px; border-left: 3px solid #A23B72;">
+                            <p style="margin: 0; font-size: 0.85em; color: #666; font-weight: 600;">📉 Proyección 2025</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.05em;">
+                                Basado en tendencia 3 años: <strong>5,140 estudiantes</strong>
+                                <span style="color: #06A77D; font-weight: bold;">(+6% proyectado)</span>
+                                <br>
+                                <span style="font-size: 0.9em; color: #666;">Confianza: 85% (intervalo: 4,950-5,330)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <p><strong>Valor de la contextualización:</strong></p>
+                <ul>
+                    <li>✅ <strong>Temporal:</strong> Usuario sabe inmediatamente que hay crecimiento sostenido (+6.1% vs 2023, +14.7% vs 2022)</li>
+                    <li>✅ <strong>Meta:</strong> Cumplimiento 107% indica éxito claro, no requiere más análisis</li>
+                    <li>✅ <strong>Benchmarking:</strong> Contexto competitivo (superando media en 52%, pero aún por debajo de UCL)</li>
+                    <li>✅ <strong>Distribución:</strong> Visibilidad de diversificación geográfica (no dependencia excesiva de un país)</li>
+                    <li>✅ <strong>Proyección:</strong> Planificación basada en datos (necesidad de recursos para 5,140 estudiantes en 2025)</li>
+                </ul>
+
+                <p><strong>Decisiones habilitadas por contexto rico:</strong></p>
+                <ol>
+                    <li>Celebrar éxito (107% de meta) con equipo de admisiones</li>
+                    <li>Invertir en reclutamiento en mercados emergentes para diversificar más allá de China (29%)</li>
+                    <li>Planificar expansión de residencias y servicios para 5,140 estudiantes proyectados en 2025</li>
+                </ol>
+            </div>
+
+        </section>
+
+        <!-- Sección 5: Interactividad -->
+        <section id="interactividad" class="content-section">
+            <h2>5. Interactividad y Exploración</h2>
+
+            <p>
+                Un dashboard moderno no es solo visualización pasiva, sino una <strong>herramienta
+                de exploración interactiva</strong> que permite a usuarios hacer preguntas y obtener
+                respuestas mediante interacción directa.
+            </p>
+
+            <h3>Los 6 Patrones de Interactividad Esencial</h3>
+
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>1. Filtros Dinámicos</h4>
+                    <p><strong>Función:</strong> Permitir selección de subconjuntos de datos</p>
+                    <ul>
+                        <li><strong>Filtro temporal:</strong> Rango de fechas (último mes, trimestre, año, custom)</li>
+                        <li><strong>Filtro categórico:</strong> Por región, departamento, producto, canal</li>
+                        <li><strong>Filtro jerárquico:</strong> País → Región → Ciudad</li>
+                    </ul>
+                    <p><strong>UX recomendada:</strong> Filtros en barra superior o lateral izquierda, siempre visibles</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2. Drill-Down</h4>
+                    <p><strong>Función:</strong> Navegar de agregado a detalle</p>
+                    <ul>
+                        <li>Clic en métrica agregada → Ver desglose</li>
+                        <li>Múltiples niveles: Universidad → Facultad → Departamento → Profesor</li>
+                        <li>Breadcrumb trail para volver atrás</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong> "Ventas totales: €2.5M" → Clic → Ver por región → Clic en "Norte" → Ver por tienda</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3. Drill-Across</h4>
+                    <p><strong>Función:</strong> Navegar entre dimensiones al mismo nivel</p>
+                    <ul>
+                        <li>Cambiar perspectiva sin cambiar nivel de agregación</li>
+                        <li>Ejemplo: Vista por producto → Cambiar a vista por canal</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>4. Tooltips Contextuales</h4>
+                    <p><strong>Función:</strong> Información adicional on-hover</p>
+                    <ul>
+                        <li>Hover sobre punto en gráfico → Ver valor exacto, fecha, contexto</li>
+                        <li>Hover sobre KPI → Ver definición, fórmula, fuente de datos</li>
+                        <li>No sobrecargar: Máximo 3-5 líneas de información</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>5. Comparaciones Dinámicas</h4>
+                    <p><strong>Función:</strong> Permitir selección de qué comparar</p>
+                    <ul>
+                        <li>Toggle: Ver vs mes anterior / vs año anterior / vs meta</li>
+                        <li>Selección múltiple: Comparar 2-3 departamentos simultáneamente</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>6. Exportación y Compartir</h4>
+                    <p><strong>Función:</strong> Llevar insights fuera del dashboard</p>
+                    <ul>
+                        <li>Exportar a PDF/PowerPoint para presentaciones</li>
+                        <li>Exportar datos a Excel/CSV para análisis ad-hoc</li>
+                        <li>Compartir URL con filtros aplicados (deep linking)</li>
+                        <li>Programar envío automático por email</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Flujo de Interacción: Ejemplo en Dashboard de Stanford</h3>
+            <div class="mermaid">
+graph TB
+    Start[Usuario abre Dashboard] --> View1[Vista Inicial:<br/>Matrículas totales 8,200]
+
+    View1 --> Action1{Usuario hace clic en 8,200}
+    Action1 --> View2[Drill-Down 1:<br/>Desglose por Facultad]
+
+    View2 --> Show2[Sciences: 3,200<br/>Engineering: 2,800<br/>Humanities: 1,200<br/>Business: 1,000]
+
+    Show2 --> Action2{Usuario hace clic en Engineering}
+    Action2 --> View3[Drill-Down 2:<br/>Desglose por Departamento]
+
+    View3 --> Show3[CS: 890<br/>Electrical: 720<br/>Mechanical: 650<br/>Civil: 540]
+
+    Show3 --> Action3{Usuario hover sobre CS: 890}
+    Action3 --> Tooltip[Tooltip muestra:<br/>CS: 890 estudiantes<br/>+12% vs 2023<br/>105% de meta 850<br/>Ratio F/M: 28/72]
+
+    Show3 --> Action4{Usuario aplica filtro: Solo internacionales}
+    Action4 --> Filtered[CS Internacionales: 420/890 47%]
+
+    Filtered --> Export{Usuario exporta a Excel}
+    Export --> End[Datos exportados para análisis detallado]
+
+    style Start fill:#2E86AB,color:#fff
+    style End fill:#06A77D,color:#fff
+            </div>
+
+        </section>
+
+        <!-- Sección 6: Errores Comunes -->
+        <section id="errores-comunes" class="content-section">
+            <h2>6. Errores Comunes a Evitar</h2>
+
+            <h3>Los 10 Errores Más Frecuentes en Diseño de Dashboards</h3>
+
+            <div class="grid-features">
+                <div class="highlight-box warning">
+                    <h4>❌ Error 1: Sobrecarga de Información</h4>
+                    <p><strong>Síntoma:</strong> Más de 15 KPIs en una pantalla</p>
+                    <p><strong>Consecuencia:</strong> Parálisis analítica, usuario no sabe dónde mirar</p>
+                    <p><strong>Solución:</strong> Aplicar framework de relevancia, mantener 5-12 KPIs máximo</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 2: Gráficos 3D Innecesarios</h4>
+                    <p><strong>Síntoma:</strong> Pie charts 3D, barras con perspectiva</p>
+                    <p><strong>Consecuencia:</strong> Distorsión de valores, dificulta lectura precisa</p>
+                    <p><strong>Solución:</strong> Usar siempre visualizaciones 2D planas</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 3: Colores Sin Significado Semántico</h4>
+                    <p><strong>Síntoma:</strong> Colores brillantes sin relación con estado de datos</p>
+                    <p><strong>Consecuencia:</strong> Usuario no puede identificar problemas rápidamente</p>
+                    <p><strong>Solución:</strong> Verde=bueno, Rojo=malo, Amarillo=warning, consistentemente</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 4: Falta de Contextualización</h4>
+                    <p><strong>Síntoma:</strong> Números absolutos sin comparaciones</p>
+                    <p><strong>Consecuencia:</strong> Usuario no sabe si valores son buenos o malos</p>
+                    <p><strong>Solución:</strong> Siempre incluir comparación temporal y/o meta</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 5: Ejes No Comenzando en Cero</h4>
+                    <p><strong>Síntoma:</strong> Gráfico de barras con eje Y que empieza en 80</p>
+                    <p><strong>Consecuencia:</strong> Exageración visual de diferencias pequeñas</p>
+                    <p><strong>Solución:</strong> Ejes de barras SIEMPRE en 0. Líneas pueden empezar arriba si está justificado y etiquetado</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 6: Tipo de Gráfico Inadecuado</h4>
+                    <p><strong>Síntoma:</strong> Pie chart con 12 categorías, line chart para datos categóricos</p>
+                    <p><strong>Consecuencia:</strong> Información ilegible o confusa</p>
+                    <p><strong>Solución:</strong> Barras para comparaciones, líneas para tendencias, pie máximo 5 categorías</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 7: Actualización Poco Frecuente</h4>
+                    <p><strong>Síntoma:</strong> Datos de hace 1 semana en dashboard "en tiempo real"</p>
+                    <p><strong>Consecuencia:</strong> Pérdida de confianza, usuarios dejan de usarlo</p>
+                    <p><strong>Solución:</strong> Documentar frecuencia de actualización claramente, cumplirla</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 8: Sin Diseño Responsive</h4>
+                    <p><strong>Síntoma:</strong> Dashboard solo visible en desktop, ilegible en móvil</p>
+                    <p><strong>Consecuencia:</strong> Ejecutivos no pueden consultar on-the-go</p>
+                    <p><strong>Solución:</strong> Diseñar mobile-first o al menos con breakpoints responsive</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 9: Ausencia de Documentación</h4>
+                    <p><strong>Síntoma:</strong> KPIs sin definición, fórmulas desconocidas</p>
+                    <p><strong>Consecuencia:</strong> Interpretaciones erróneas, falta de confianza</p>
+                    <p><strong>Solución:</strong> Tooltip con definición en cada KPI, página de documentación</p>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 10: Ignorar al Usuario Final</h4>
+                    <p><strong>Síntoma:</strong> Dashboard diseñado por analistas para analistas, no para ejecutivos</p>
+                    <p><strong>Consecuencia:</strong> Complejidad inadecuada para audiencia</p>
+                    <p><strong>Solución:</strong> User testing con audiencia real antes de lanzamiento</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Sección 7: Casos de Estudio -->
+        <section id="casos-estudio" class="content-section">
+            <h2>7. Casos de Estudio: Antes y Después</h2>
+
+            <div class="feature-card">
+                <h3>Caso 1: Universidad Pompeu Fabra - Rediseño Dashboard del Rector (2022)</h3>
+
+                <h4>Situación Inicial (Antes - 2021)</h4>
+                <p><strong>Problemas identificados:</strong></p>
+                <ul>
+                    <li>42 KPIs en una sola pantalla (sobrecarga masiva)</li>
+                    <li>Todos los KPIs con mismo tamaño (sin jerarquía)</li>
+                    <li>8 colores diferentes sin significado semántico</li>
+                    <li>Números absolutos sin comparaciones temporales</li>
+                    <li>Gráficos 3D que distorsionaban valores</li>
+                    <li>Actualización semanal (datos con 7 días de retraso)</li>
+                </ul>
+
+                <p><strong>Métricas de uso:</strong></p>
+                <ul>
+                    <li>Frecuencia de uso: 0.8 veces/semana (Rector lo evitaba)</li>
+                    <li>Tiempo promedio de sesión: 22 minutos (demasiado alto)</li>
+                    <li>Satisfacción: 28/100 (muy baja)</li>
+                    <li>Decisiones basadas en dashboard: 3 decisiones/trimestre</li>
+                </ul>
+
+                <h4>Proceso de Rediseño (2022)</h4>
+                <p><strong>Metodología aplicada:</strong></p>
+                <ol>
+                    <li><strong>User research:</strong> 4 entrevistas con Rector y Consejo (30 min cada una)</li>
+                    <li><strong>Curación de KPIs:</strong> De 42 → 10 KPIs mediante framework de relevancia</li>
+                    <li><strong>Prototipado:</strong> 3 iteraciones con feedback del Rector</li>
+                    <li><strong>Implementación:</strong> Tableau con actualización diaria automática</li>
+                    <li><strong>Training:</strong> Sesión de 1 hora con Rector y equipo directivo</li>
+                </ol>
+
+                <h4>Situación Final (Después - 2023)</h4>
+                <p><strong>Mejoras implementadas:</strong></p>
+                <ul>
+                    <li>✅ 10 KPIs estratégicos (reducción 76%)</li>
+                    <li>✅ Jerarquía clara: KPI principal 3x más grande</li>
+                    <li>✅ Color semántico: Verde/Rojo para estado</li>
+                    <li>✅ Contextualización: Comparación YoY y vs meta en cada KPI</li>
+                    <li>✅ Visualizaciones 2D minimalistas</li>
+                    <li>✅ Actualización diaria (datos con máximo 24h de retraso)</li>
+                    <li>✅ Drill-down interactivo a 2 niveles de detalle</li>
+                    <li>✅ Responsive design (accesible desde tablet)</li>
+                </ul>
+
+                <p><strong>Métricas de uso post-rediseño:</strong></p>
+                <ul>
+                    <li>Frecuencia de uso: <strong>4.2 veces/semana</strong> (aumento 425%)</li>
+                    <li>Tiempo promedio de sesión: <strong>5 minutos</strong> (reducción 77%)</li>
+                    <li>Satisfacción: <strong>89/100</strong> (aumento 218%)</li>
+                    <li>Decisiones basadas en dashboard: <strong>18 decisiones/trimestre</strong> (aumento 500%)</li>
+                </ul>
+
+                <p><strong>ROI del rediseño:</strong></p>
+                <ul>
+                    <li>Inversión: €28,000 (consultoría design + licencias Tableau + desarrollo)</li>
+                    <li>Ahorro anual: €85,000 (tiempo de Rector y equipo directivo liberado)</li>
+                    <li>Beneficios intangibles: Mejores decisiones estratégicas (difícil cuantificar pero reportado por Rector)</li>
+                    <li><strong>ROI calculado: 303% en primer año</strong></li>
+                </ul>
+
+                <h4>Testimonio del Rector (Anónimo)</h4>
+                <blockquote style="border-left: 4px solid #2E86AB; padding-left: 20px; margin: 20px 0; font-style: italic; color: #555;">
+                    "El dashboard anterior era como intentar beber de una manguera de bomberos: demasiada
+                    información, imposible de procesar. El nuevo dashboard me da exactamente lo que necesito
+                    en 5 minutos. Ahora lo consulto al inicio de cada día, antes lo evitaba. Ha cambiado
+                    radicalmente cómo tomo decisiones estratégicas."
+                </blockquote>
+            </div>
+
+            <div class="feature-card">
+                <h3>Caso 2: Universidad Carlos III Madrid - Dashboard de Admisiones (2023)</h3>
+
+                <h4>Desafío</h4>
+                <p>
+                    El equipo de admisiones (12 personas) gestionaba 18,000 aplicaciones anuales usando
+                    hojas de Excel fragmentadas. No tenían visibilidad consolidada de embudo de conversión,
+                    causando pérdidas de candidatos cualificados.
+                </p>
+
+                <h4>Solución Implementada</h4>
+                <p><strong>Dashboard con 3 vistas especializadas:</strong></p>
+                <ol>
+                    <li><strong>Vista Embudo:</strong> Visualización de conversión en 5 etapas (Inquiries → Applications → Admitted → Enrolled → Matriculated)</li>
+                    <li><strong>Vista Geográfica:</strong> Mapa de calor de orígenes de aplicantes</li>
+                    <li><strong>Vista Temporal:</strong> Comparación YoY de aplicaciones por semana</li>
+                </ol>
+
+                <p><strong>Principios de diseño aplicados:</strong></p>
+                <ul>
+                    <li>✅ <strong>Relevancia:</strong> 8 KPIs principales, todos accionables</li>
+                    <li>✅ <strong>Jerarquía:</strong> Tasa de conversión global (KPI #1) en top-left, 4x más grande</li>
+                    <li>✅ <strong>Contextualización:</strong> Comparación semanal vs mismo periodo 2022</li>
+                    <li>✅ <strong>Interactividad:</strong> Filtros por programa, origen, canal de marketing</li>
+                    <li>✅ <strong>Alertas:</strong> Notificación automática si tasa de conversión cae &gt;5pp en cualquier etapa</li>
+                </ul>
+
+                <h4>Resultados (12 meses post-implementación)</h4>
+                <ul>
+                    <li><strong>+280 matrículas</strong> adicionales detectadas en riesgo y rescatadas (1.5% mejora tasa conversión)</li>
+                    <li><strong>€1.4M</strong> en ingresos adicionales (280 estudiantes × €5K tuition promedio)</li>
+                    <li><strong>40%</strong> reducción en tiempo de análisis de equipo admisiones (120h/mes → 72h/mes)</li>
+                    <li><strong>18 días</strong> promedio de adelanto en detección de problemas de conversión</li>
+                </ul>
+
+                <p><strong>Ejemplo de decisión habilitada por dashboard:</strong></p>
+                <p>
+                    Semana 12 de ciclo de admisiones, dashboard mostró alerta roja: Tasa de conversión
+                    "Admitted → Enrolled" cayó de 78% (2022) a 71% (2023) en programa de Ingeniería
+                    Industrial. Drill-down reveló que 85% de decline provenía de estudiantes internacionales
+                    de Latinoamérica. Acción inmediata: Llamadas personalizadas de decano a 45 candidatos
+                    en riesgo, webinar especial sobre visas y becas. Resultado: 28 de 45 confirmaron
+                    matrícula (62% rescue rate), recuperando €140K en tuition.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-ilerna">
+        <div class="footer-content">
+            <p>&copy; 2024 iLERNA - Sistemas de Big Data</p>
+            <p class="penguin-signature">🐧 Desarrollado con dedicación por el Pingüino</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll para TOC
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Inicializar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                fontSize: '16px',
+                fontFamily: 'Arial, sans-serif'
+            }
+        });
+    </script>
+
+</body>
+</html>
