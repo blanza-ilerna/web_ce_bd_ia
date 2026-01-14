@@ -592,10 +592,10 @@ import joblib
 
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, label_binarize
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import (accuracy_score, classification_report, confusion_matrix)
+from sklearn.metrics import (accuracy_score, classification_report, confusion_matrix, RocCurveDisplay)
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
@@ -674,8 +674,31 @@ print(f"Test Accuracy: {accuracy_score(y_test, y_pred):.4f}")
 print("\nReporte de Clasificación:")
 print(classification_report(y_test, y_pred, target_names=target_names))
 
+# 9. CURVAS ROC
+print("\n--- 9. CURVAS ROC ---")
+y_test_bin = label_binarize(y_test, classes=np.unique(y))
+y_score = best_model.predict_proba(X_test)
+
+fig_roc = plt.figure(figsize=(6, 5))
+for i in range(y_test_bin.shape[1]):
+    RocCurveDisplay.from_predictions(y_test_bin[:, i], y_score[:, i], name=target_names[i])
+plt.title("ROC Curves (One-vs-Rest)")
+plt.plot([0, 1], [0, 1], "k--")
+# plt.show() # Descomentar para ver en notebook local
+
+# 10. FEATURE IMPORTANCE
+print("\n--- 10. FEATURE IMPORTANCE ---")
+rf_pipe = Pipeline([
+    ('prep', preprocess),
+    ('model', RandomForestClassifier(n_estimators=300, random_state=RANDOM_STATE))
+])
+rf_pipe.fit(X_train, y_train)
+importances = rf_pipe.named_steps['model'].feature_importances_
+feat_imp = pd.Series(importances, index=X.columns).sort_values(ascending=False)
+print(feat_imp)
+
 # 11. PERSISTENCIA
-print("\n--- 11. OUPUT ---")
+print("\n--- 11. OUTPUT ---")
 joblib.dump(best_model, "modelo_iris_final.joblib")
 print("Modelo guardado como 'modelo_iris_final.joblib'")</code></pre>
         </section>
