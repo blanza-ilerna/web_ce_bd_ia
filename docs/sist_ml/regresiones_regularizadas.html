@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Regresiones Regularizadas: Ridge, Lasso y Elastic Net. Aprende a evitar el sobreajuste mediante penalizaciones en los coeficientes del modelo.">
+    <meta name="keywords"
+        content="Regresión Regularizada, Ridge, Lasso, Elastic Net, Overfitting, Scikit-learn, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Regresiones Regularizadas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Regresiones Regularizadas</span>
+                </div>
+            </div>
+            <h1 class="text-center">Regresiones Regularizadas</h1>
+            <p class="subtitle text-center">Ridge, Lasso y Elastic Net: Controlando el sobreajuste</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN A LA REGULARIZACIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Qué es la Regularización?</h2>
+                <p>
+                    La <strong>regularización</strong> es uno de los conceptos más fundamentales en el aprendizaje
+                    supervisado, diseñado específicamente para gestionar el equilibrio entre el <strong>sesgo
+                        (bias)</strong> y la <strong>varianza (variance)</strong>. Cuando entrenamos un modelo de
+                    regresión con muchas variables, este tiende a intentar ajustarse perfectamente a cada punto del
+                    conjunto de entrenamiento. Si bien esto reduce el error inicial, a menudo captura el "ruido" y las
+                    fluctuaciones aleatorias en lugar de la relación real subyacente, lo que resulta en un rendimiento
+                    pobre con datos nuevos (sobreajuste).
+                </p>
+                <p>
+                    La esencia de la regularización consiste en añadir un <strong>término de penalización</strong> a la
+                    función de pérdida estándar (como el Error Cuadrático Medio). En lugar de simplemente minimizar la
+                    diferencia entre las predicciones y los valores reales, el modelo adquiere un segundo objetivo:
+                    mantener los coeficientes lo más pequeños posible. Esta restricción extra castiga la complejidad del
+                    modelo, favoreciendo soluciones más simples y "suaves" que tienen muchas más probabilidades de
+                    generalizar correctamente ante datos nunca vistos.
+                </p>
+                <p>
+                    Matemáticamente, esta penalización es controlada por un hiperparámetro llamado <strong>alfa
+                        (α)</strong> o <strong>lambda (λ)</strong>. Si alfa es cero, volvemos a una regresión lineal
+                    ordinaria. A medida que alfa aumenta, la influencia de la penalización crece, obligando a los
+                    coeficientes a encogerse. Elegir el valor correcto es un acto de equilibrio: muy poca regularización
+                    permite el sobreajuste, mientras que demasiada puede simplificar el modelo en exceso, cayendo en el
+                    infraajuste (underfitting).
+                </p>
+                <p>
+                    Es importante destacar que, dado que la regularización actúa sobre la magnitud de los coeficientes,
+                    es <strong>imprescindible escalar los datos</strong> (normalización o estandarización) antes de
+                    aplicar estas técnicas. Si una variable tiene un rango mucho mayor que otra, su coeficiente será
+                    naturalmente más pequeño y la penalización no se aplicará de forma equitativa.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">🎯 Objetivo</p>
+                    <p class="content">
+                        Reducir la varianza del modelo sacrificando un poco de sesgo, con el fin de mejorar su capacidad
+                        de <strong>generalización</strong> ante datos nuevos.
+                    </p>
+                </div>
+
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4>⚠️ Overfitting</h4>
+                        <p>El modelo aprende el "ruido" de los datos de entrenamiento, volviéndose demasiado complejo.
+                        </p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🛡️ Regularización</h4>
+                        <p>Añade una restricción que "suaviza" el modelo, impidiendo que los coeficientes crezcan
+                            demasiado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: TIPOS DE REGULARIZACIÓN -->
+            <section class="section">
+                <h2 class="section-title">Principales Técnicas</h2>
+
+                <div class="grid-features">
+                    <!-- RIDGE -->
+                    <div class="feature-card primary">
+                        <h3>Ridge (Regularización L2)</h3>
+                        <p>
+                            La regresión Ridge utiliza una penalización <strong>L2</strong>, que es la suma de los
+                            <strong>cuadrados</strong> de los coeficientes. Es especialmente eficaz para combatir la
+                            <strong>multicolinealidad</strong> (cuando las variables están muy correlacionadas entre
+                            sí).
+                        </p>
+                        <div class="highlight-box"
+                            style="background: #f9f9f9; padding: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                            Pérdida + α * Σ(β²)
+                        </div>
+                        <ul class="mini-list">
+                            <li><strong>Encogimiento suave:</strong> Reduce los pesos de las variables, pero nunca los
+                                hace exactamente cero.</li>
+                            <li><strong>Estabilidad:</strong> Mantiene todas las variables en el modelo, pero reduce su
+                                impacto individual.</li>
+                            <li><strong>Uso:</strong> Ideal cuando crees que la mayoría de tus variables tienen algún
+                                impacto en el resultado.</li>
+                        </ul>
+                    </div>
+
+                    <!-- LASSO -->
+                    <div class="feature-card secondary">
+                        <h3>Lasso (Regularización L1)</h3>
+                        <p>
+                            Lasso utiliza una penalización <strong>L1</strong> (valor absoluto). Esta diferencia
+                            matemática fundamental permite que Lasso realice una <strong>selección de
+                                características</strong> automática al forzar algunos coeficientes a ser
+                            <strong>exactamente cero</strong>.
+                        </p>
+                        <div class="highlight-box"
+                            style="background: #f9f9f9; padding: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                            Pérdida + α * Σ|β|
+                        </div>
+                        <ul class="mini-list">
+                            <li><strong>Modelos dispersos:</strong> Crea modelos más "limpios" y fáciles de interpretar
+                                al eliminar variables irrelevantes.</li>
+                            <li><strong>Limitación:</strong> Si hay variables muy correlacionadas, Lasso tiende a elegir
+                                una al azar y descartar las demás.</li>
+                            <li><strong>Uso:</strong> Ideal cuando sospechas que solo unas pocas variables son realmente
+                                importantes.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card primary-bg" style="margin-top: 1.5rem;">
+                    <h3>Elastic Net: El Equilibrio Perfecto</h3>
+                    <p>
+                        Elastic Net combina lo mejor de ambos mundos al aplicar tanto la penalización L1 como la L2. Fue
+                        diseñado para superar las limitaciones de Lasso, especialmente cuando existen <strong>grupos de
+                            variables correlacionadas</strong>. Mientras Lasso descartaría la mayoría, Elastic Net
+                        tiende a incluirlas como un grupo.
+                    </p>
+                    <p>
+                        Mediante el parámetro <code class="code-badge">l1_ratio</code>, podemos elegir si el modelo se
+                        comporta más como Ridge (cercano a 0) o más como Lasso (cercano a 1). Es la opción por defecto
+                        más robusta cuando no estamos seguros de la estructura de nuestros datos.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN NUEVA: DIFERENCIAS Y SIMILITUDES -->
+            <section class="section">
+                <h2 class="section-title">⚖️ Similitudes y Diferencias</h2>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🤝 Semejanzas</h4>
+                        <ul class="mini-list">
+                            <li><strong>Objetivo:</strong> Todas buscan prevenir el sobreajuste y mejorar la
+                                generalización.</li>
+                            <li><strong>Hiperparámetro:</strong> Todas usan un parámetro de control (alfa) para
+                                determinar la fuerza de la penalización.</li>
+                            <li><strong>Preprocesamiento:</strong> Todas requieren que los datos estén escalados para
+                                funcionar correctamente.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔍 Diferencias Clave</h4>
+                        <ul class="mini-list">
+                            <li><strong>Selección:</strong> Solo Lasso y Elastic Net eliminan variables (coeficientes =
+                                0). Ridge las mantiene todas.</li>
+                            <li><strong>Correlación:</strong> Ridge distribuye el peso entre variables correlacionadas;
+                                Lasso elige una; Elastic Net las agrupa.</li>
+                            <li><strong>Interpretación:</strong> Lasso genera los modelos más sencillos de explicar al
+                                reducir el número de predictores.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: IMPLEMENTACIÓN Y EJEMPLOS PRÁCTICOS -->
+            <section class="section">
+                <h2 class="section-title">💻 Ejemplos de Implementación</h2>
+                <p>
+                    A continuación, exploramos cómo aplicar estas técnicas utilizando <code
+                        class="code-badge">scikit-learn</code>, desde un ejemplo básico hasta la optimización automática
+                    de parámetros.
+                </p>
+
+                <h3>1. Comparativa con el Dataset de Diabetes</h3>
+                <p>
+                    Utilizamos un dataset real de progresión de diabetes para observar cómo Lasso puede realizar
+                    selección de variables.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.linear_model import Ridge, Lasso, ElasticNet
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Cargar datos reales
+diabetes = load_diabetes()
+X, y = diabetes.data, diabetes.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# IMPORTANTE: Escalar los datos antes de regularizar
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Comparativa de impacto en los coeficientes (Lasso vs Ridge)
+lasso = Lasso(alpha=0.5).fit(X_train_scaled, y_train)
+ridge = Ridge(alpha=0.5).fit(X_train_scaled, y_train)
+
+print(f"Variables eliminadas por Lasso: {np.sum(lasso.coef_ == 0)} de {X.shape[1]}")
+print(f"Precisión R² Lasso: {lasso.score(X_test_scaled, y_test):.4f}")
+print(f"Precisión R² Ridge: {ridge.score(X_test_scaled, y_test):.4f}")</code></pre>
+                </div>
+
+                <h3>2. Optimización Automática (Cross-Validation)</h3>
+                <p>
+                    En lugar de elegir &alpha; al azar, <code class="code-badge">scikit-learn</code> proporciona
+                    versiones que realizan <strong>Validación Cruzada</strong> internamente para encontrar el valor
+                    óptimo.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.linear_model import RidgeCV, LassoCV
+
+# Buscar el mejor alfa en un rango logarítmico
+alphas = np.logspace(-4, 4, 100)
+
+# El modelo busca automáticamente el mejor alfa usando CV
+lasso_cv = LassoCV(alphas=alphas, cv=5, random_state=42)
+lasso_cv.fit(X_train_scaled, y_train)
+
+print(f"Mejor valor de Alpha encontrado: {lasso_cv.alpha_}")
+print(f"Puntaje R² óptimo: {lasso_cv.score(X_test_scaled, y_test):.4f}")</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4 style="margin-top: 0;">💡 Visualizando el Shrinkage (Encogimiento)</h4>
+                    <p>
+                        Si graficaras los coeficientes para diferentes valores de &alpha;, verías que en
+                        <strong>Ridge</strong> las líneas se acercan asintóticamente al cero pero nunca lo tocan,
+                        mientras que en <strong>Lasso</strong>, las líneas "chocan" contra el eje cero una a una a
+                        medida que aumentas la penalización.
+                    </p>
+                </div>
+            </section>
+
+            <!-- RESUMEN -->
+            <section class="section">
+                <h2 class="section-title">📚 Resumen Comparativo</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Técnica</th>
+                                <th>Penalización</th>
+                                <th>Selección de Variables</th>
+                                <th>Ideal para...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Ridge</strong></td>
+                                <td>Cuadrado (L2)</td>
+                                <td>No</td>
+                                <td>Multicolinealidad</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lasso</strong></td>
+                                <td>Absoluto (L1)</td>
+                                <td>Sí</td>
+                                <td>Reducir dimensionalidad</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Elastic Net</strong></td>
+                                <td>L1 + L2</td>
+                                <td>Sí</td>
+                                <td>Muchos datos correlacionados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

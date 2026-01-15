@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Regresión Polinómica: Capturando relaciones no lineales. Aprende cómo extender la regresión lineal para modelar curvas complejas y los riesgos del sobreajuste.">
+    <meta name="keywords"
+        content="Regresión Polinómica, Polynomial Regression, Machine Learning, Curvas, Grado del Polinomio, Overfitting, Scikit-learn">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Regresión Polinómica | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Regresión Polinómica</span>
+                </div>
+            </div>
+            <h1 class="text-center">Regresión Polinómica</h1>
+            <p class="subtitle text-center">Capturando la complejidad más allá de las líneas rectas</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: ¿POR QUÉ REGRESIÓN POLINÓMICA? -->
+            <section class="section">
+                <h2 class="section-title">¿Por qué necesitamos curvas?</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: start;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p>
+                            En el mundo real, los datos rara vez siguen una trayectoria perfectamente recta. Imagina la
+                            trayectoria de un proyectil, el crecimiento de una bacteria bajo ciertas condiciones o el
+                            consumo de combustible de un coche a diferentes velocidades. Estos fenómenos son
+                            inherentemente <strong>no lineales</strong>.
+                        </p>
+                        <p>
+                            La <strong>Regresión Polinómica</strong> es una forma de regresión lineal en la que la
+                            relación entre la variable independiente $x$ y la variable dependiente $y$ se modela como un
+                            polinomio de grado $n$. Aunque el modelo es no lineal respecto a $x$, sigue siendo
+                            <strong>lineal respecto a los parámetros</strong> (los coeficientes que el modelo intenta
+                            aprender).
+                        </p>
+                    </div>
+                    <div
+                        style="flex-shrink: 0; background: #fafafa; padding: 1rem; border-radius: 1rem; border: 2px solid #eee;">
+                        <svg width="350" height="220" viewBox="0 0 350 220">
+                            <!-- Ejes -->
+                            <line x1="40" y1="180" x2="310" y2="180" stroke="#333" stroke-width="2" />
+                            <line x1="40" y1="180" x2="40" y2="30" stroke="#333" stroke-width="2" />
+
+                            <!-- Datos (forma de parábola invertida) -->
+                            <circle cx="60" cy="150" r="4" fill="#8A7AAF" />
+                            <circle cx="90" cy="110" r="4" fill="#8A7AAF" />
+                            <circle cx="120" cy="80" r="4" fill="#8A7AAF" />
+                            <circle cx="150" cy="65" r="4" fill="#8A7AAF" />
+                            <circle cx="180" cy="60" r="4" fill="#8A7AAF" />
+                            <circle cx="210" cy="68" r="4" fill="#8A7AAF" />
+                            <circle cx="240" cy="85" r="4" fill="#8A7AAF" />
+                            <circle cx="270" cy="120" r="4" fill="#8A7AAF" />
+                            <circle cx="300" cy="165" r="4" fill="#8A7AAF" />
+
+                            <!-- Línea Recta (ajuste pobre) -->
+                            <line x1="50" y1="110" x2="300" y2="105" stroke="#f44336" stroke-width="2"
+                                stroke-dasharray="4" />
+                            <text x="310" y="105" font-size="10" fill="#f44336">Lineal (R² bajo)</text>
+
+                            <!-- Curva Polinómica (ajuste bueno) -->
+                            <path d="M 50 165 Q 175 20 310 175" fill="none" stroke="#49B9CE" stroke-width="3" />
+                            <text x="90" y="45" font-size="12" font-weight="700" fill="#49B9CE">Polinómica Grado
+                                2</text>
+                        </svg>
+                        <p
+                            style="font-size: 0.85rem; text-align: center; color: #666; margin-top: 0.5rem; max-width: 350px;">
+                            Comparativa: Una línea recta no puede capturar la tendencia curva de los datos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: EL CONCEPTO MATEMÁTICO -->
+            <section class="section">
+                <h2 class="section-title">El poder de las potencias</h2>
+                <p>
+                    La magia de este modelo no reside en cambiar el algoritmo de regresión, sino en <strong>transformar
+                        los datos</strong>. En lugar de usar solo $x$ como entrada, creamos nuevas características
+                    basadas en el exponente de $x$:
+                </p>
+                <div class="highlight-box"
+                    style="background: linear-gradient(to right, #E8F7FA, #F0EDF5); border-left: 4px solid #49B9CE; text-align: center; padding: 1.5rem;">
+                    <p style="font-size: 1.25rem; font-family: 'Montserrat', sans-serif; font-weight: 700;">
+                        $y = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + ... + \beta_n x^n + \epsilon$
+                    </p>
+                </div>
+                <p>
+                    A medida que aumentamos el <strong>grado del polinomio ($n$)</strong>, el modelo gana flexibilidad
+                    para ajustarse a curvas más complejas. Sin embargo, esto introduce el mayor riesgo de este
+                    algoritmo: el sobreajuste.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>Grado 1 (Lineal)</h4>
+                        <p>Una línea recta. Riesgo de <strong>infraajuste (underfitting)</strong> si los datos son
+                            realmente curvos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Grado 2-3 (Suave)</h4>
+                        <p>Parábolas o curvas en S. Suelen ser excelentes para modelar fenómenos físicos y económicos.
+                        </p>
+                    </div>
+                    <div class="feature-card warning">
+                        <h4>Grado 10+ (Complejo)</h4>
+                        <p>La curva serpentea para tocar cada punto. Riesgo extremo de <strong>sobreajuste
+                                (overfitting)</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: IMPLEMENTACIÓN CON SCIKIT-LEAR -->
+            <section class="section">
+                <h2 class="section-title">💻 Implementación con Pipelines</h2>
+                <p>
+                    En la práctica, utilizamos <code class="code-badge">PolynomialFeatures</code> para generar las
+                    potencias y luego las pasamos a un modelo de <code class="code-badge">LinearRegression</code>. La
+                    mejor forma de organizar esto es mediante un <strong>Pipeline</strong>.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+import numpy as np
+
+# Datos de ejemplo (una curva con ruido)
+X = np.arange(0, 30).reshape(-1, 1)
+y = 0.5 * X**2 - 2*X + 5 + np.random.normal(0, 10, X.shape)
+
+# Crear un Pipeline que:
+# 1. Genere las potencias (Grado 2 en este caso)
+# 2. Aplique la regresión lineal sobre esas nuevas potencias
+model = Pipeline([
+    ('poly', PolynomialFeatures(degree=2)),
+    ('linear', LinearRegression())
+])
+
+# Entrenar
+model.fit(X, y)
+
+# Predecir
+y_pred = model.predict(X)
+
+print(f"Coeficientes aprendidos: {model.named_steps['linear'].coef_}")
+print(f"Intersección: {model.named_steps['linear'].intercept_}")</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: DIFERENCIAS Y SIMILITUDES -->
+            <section class="section">
+                <h2 class="section-title">⚖️ Comparativa: Lineal vs Polinómica</h2>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>Regresión Lineal</th>
+                                <th>Regresión Polinómica</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Forma</strong></td>
+                                <td>Línea recta (hiperplano)</td>
+                                <td>Curva de grado <em>n</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Flexibilidad</strong></td>
+                                <td>Baja</td>
+                                <td>Alta (depende del grado)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Riesgo Principal</strong></td>
+                                <td>Infraajuste (Underfitting)</td>
+                                <td>Sobreajuste (Overfitting)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td>Mínima</td>
+                                <td>Puede explotar con muchos grados y variables</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="warning-box">
+                <h4 style="margin-top: 0;">💡 El "Curse of Dimensionality"</h4>
+                <p>
+                    Ten mucho cuidado al usar regresión polinómica con <strong>múltiples variables</strong> de entrada.
+                    Si tienes 10 variables y pides un grado 3, el número de características resultantes crecerá
+                    exponencialmente (incluyendo interacciones como $x_1 x_2, x_1 x_2 x_3$), lo que puede saturar la
+                    memoria y el tiempo de cálculo.
+                </p>
+            </div>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

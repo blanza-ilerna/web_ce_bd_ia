@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjuntos de Datos: Entrenamiento, Validación y Prueba - iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <!-- Header iLERNA -->
+    <header class="header-ilerna">
+        <div class="logo-container">
+            <img src="../images/logo-ilerna.png" alt="iLERNA" class="logo">
+        </div>
+        <h1 class="main-title">Conjuntos de Datos: Entrenamiento, Validación y Prueba</h1>
+        <p class="subtitle">Sistemas de Aprendizaje Automático - Módulo 2.3.1</p>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h2>📊 División Estratégica de Datos para Machine Learning</h2>
+            <p class="hero-description">
+                Entrenar y evaluar un modelo con los mismos datos genera una falsa sensación de éxito:
+                el modelo puede memorizar (overfitting) sin aprender patrones generalizables. La solución
+                es dividir el dataset en tres subconjuntos independientes: Training Set (60-80%) para
+                aprender patrones, Validation Set (10-20%) para ajustar hiperparámetros, y Test Set
+                (10-20%) para evaluación final imparcial. Esta lección cubre proporciones óptimas,
+                validación cruzada K-Fold, y mejores prácticas con código Python.
+            </p>
+        </div>
+    </section>
+
+    <!-- Table of Contents -->
+    <nav class="toc-container">
+        <h3>📑 Contenido de la Lección</h3>
+        <ul class="toc-list">
+            <li><a href="#introduccion">1. Introducción: ¿Por Qué Dividir los Datos?</a></li>
+            <li><a href="#training-set">2. Training Set (Conjunto de Entrenamiento)</a></li>
+            <li><a href="#validation-set">3. Validation Set (Conjunto de Validación)</a></li>
+            <li><a href="#test-set">4. Test Set (Conjunto de Prueba)</a></li>
+            <li><a href="#proporciones">5. Proporciones Típicas de División</a></li>
+            <li><a href="#cross-validation">6. Validación Cruzada (K-Fold)</a></li>
+            <li><a href="#implementacion">7. Implementación Práctica en Python</a></li>
+            <li><a href="#mejores-practicas">8. Mejores Prácticas y Errores Comunes</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Sección 1: Introducción -->
+        <section id="introduccion" class="content-section">
+            <h2>1. Introducción: ¿Por Qué Dividir los Datos?</h2>
+
+            <div class="highlight-box warning">
+                <h4>⚠️ El Problema: Overfitting y Evaluación Sesgada</h4>
+                <p>
+                    Uno de los errores más comunes en Machine Learning es entrenar un modelo y luego
+                    evaluarlo con los mismos datos. Esto genera una <strong>falsa sensación de éxito</strong>:
+                    el modelo puede obtener 99% de accuracy simplemente porque ha <strong>memorizado</strong>
+                    los datos de entrenamiento, sin aprender patrones generalizables.
+                </p>
+                <p>
+                    Este fenómeno se llama <strong>overfitting</strong> (sobreajuste): el modelo se ajusta
+                    perfectamente a los datos de entrenamiento pero falla con datos nuevos.
+                </p>
+            </div>
+
+            <h3>La Solución: División en Tres Subconjuntos</h3>
+            <p>
+                Para evaluar correctamente el rendimiento de un modelo, dividimos el dataset original
+                en <strong>tres subconjuntos independientes</strong>, cada uno con un propósito específico:
+            </p>
+
+            <div class="mermaid">
+graph LR
+    A[Dataset Original<br/>100% de datos] --> B[Training Set<br/>60-80%]
+    A --> C[Validation Set<br/>10-20%]
+    A --> D[Test Set<br/>10-20%]
+
+    B --> E[Modelo aprende<br/>ajusta parámetros]
+    C --> F[Ajustar hiperparámetros<br/>comparar modelos]
+    D --> G[Evaluación final<br/>rendimiento real]
+
+    style A fill:#2E86AB,color:#fff
+    style B fill:#06A77D,color:#fff
+    style C fill:#F18F01,color:#fff
+    style D fill:#C73E1D,color:#fff
+            </div>
+
+            <div class="feature-card">
+                <h3>Analogía: Preparación para un Examen</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Conjunto</th>
+                            <th>Analogía Académica</th>
+                            <th>Propósito en ML</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Training Set</strong></td>
+                            <td>Material de estudio y ejercicios resueltos</td>
+                            <td>El modelo aprende patrones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Validation Set</strong></td>
+                            <td>Exámenes de práctica para autoevaluación</td>
+                            <td>Ajustar hiperparámetros y detectar overfitting</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Test Set</strong></td>
+                            <td>Examen final oficial (solo una vez)</td>
+                            <td>Evaluación imparcial del rendimiento real</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- Sección 2: Training Set -->
+        <section id="training-set" class="content-section">
+            <h2>2. Training Set (Conjunto de Entrenamiento)</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #06A77D;">
+                <h3>📐 Definición</h3>
+                <p>
+                    El <strong>Training Set</strong> es el subconjunto de datos que el modelo utiliza para
+                    <strong>aprender</strong>. Durante el entrenamiento, el modelo ajusta sus parámetros
+                    internos (pesos en redes neuronales, coeficientes en regresión lineal, reglas en
+                    árboles de decisión) para minimizar el error en estos datos.
+                </p>
+            </div>
+
+            <h3>Características del Training Set</h3>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>Tamaño Típico</h4>
+                    <p><strong>60-80%</strong> del dataset total</p>
+                    <p>Es el conjunto más grande porque el modelo necesita suficientes ejemplos para aprender patrones robustos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Qué Aprende el Modelo</h4>
+                    <ul>
+                        <li>Relaciones entre características (X) y etiquetas (y)</li>
+                        <li>Patrones y regularidades en los datos</li>
+                        <li>Fronteras de decisión para clasificación</li>
+                        <li>Funciones de mapeo para regresión</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Riesgo Principal: Overfitting</h4>
+                    <p>
+                        Si el modelo es muy complejo o entrena demasiado tiempo, puede <strong>memorizar</strong>
+                        el training set en lugar de aprender patrones generalizables.
+                    </p>
+                    <p><strong>Señal de alerta:</strong> Accuracy muy alto en training (99%) pero bajo en validation (70%)</p>
+                </div>
+            </div>
+
+            <h3>Ejemplo: Entrenamiento de un Clasificador</h3>
+            <pre><code>from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+
+# Cargar datos
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# Supongamos X_train, y_train ya separados (70% del total)
+# El modelo ajusta sus parámetros internos
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_train, y_train)  # ← El modelo APRENDE de estos datos
+
+# Después del fit(), el modelo ha:
+# - Construido 100 árboles de decisión
+# - Aprendido qué combinaciones de características predicen cada clase
+# - Ajustado las reglas de división en cada nodo
+
+print(f"Número de características usadas: {modelo.n_features_in_}")
+print(f"Clases aprendidas: {modelo.classes_}")
+# Número de características usadas: 4
+# Clases aprendidas: [0 1 2]</code></pre>
+
+        </section>
+
+        <!-- Sección 3: Validation Set -->
+        <section id="validation-set" class="content-section">
+            <h2>3. Validation Set (Conjunto de Validación)</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #F18F01;">
+                <h3>📐 Definición</h3>
+                <p>
+                    El <strong>Validation Set</strong> es el subconjunto utilizado para <strong>ajustar
+                    hiperparámetros</strong> y <strong>comparar diferentes modelos</strong> durante el
+                    desarrollo. A diferencia del test set, el validation set <strong>sí influye</strong>
+                    en las decisiones del desarrollador.
+                </p>
+            </div>
+
+            <h3>Usos Principales del Validation Set</h3>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>1. Selección de Hiperparámetros</h4>
+                    <p>Encontrar los mejores valores para configuraciones no aprendidas automáticamente:</p>
+                    <ul>
+                        <li><strong>Learning rate:</strong> Velocidad de aprendizaje</li>
+                        <li><strong>Número de capas/neuronas:</strong> Arquitectura de red</li>
+                        <li><strong>Regularización (L1, L2):</strong> Control de overfitting</li>
+                        <li><strong>n_estimators, max_depth:</strong> Parámetros de Random Forest</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2. Comparación de Modelos</h4>
+                    <p>Evaluar qué algoritmo funciona mejor para el problema:</p>
+                    <ul>
+                        <li>Random Forest vs XGBoost vs Red Neuronal</li>
+                        <li>Regresión Lineal vs Regresión Polinómica</li>
+                        <li>SVM con kernel RBF vs kernel lineal</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3. Detección de Overfitting</h4>
+                    <p>Monitorizar si el modelo generaliza o solo memoriza:</p>
+                    <ul>
+                        <li>Si training accuracy sube pero validation baja → Overfitting</li>
+                        <li><strong>Early Stopping:</strong> Detener entrenamiento cuando validation deja de mejorar</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Ejemplo: Búsqueda de Hiperparámetros con Validation Set</h3>
+            <pre><code>from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Diferentes configuraciones a probar
+hiperparametros = [
+    {'n_estimators': 50, 'max_depth': 5},
+    {'n_estimators': 100, 'max_depth': 10},
+    {'n_estimators': 200, 'max_depth': 15},
+    {'n_estimators': 100, 'max_depth': None},  # Sin límite de profundidad
+]
+
+mejores_params = None
+mejor_accuracy = 0
+
+# Probar cada configuración
+for params in hiperparametros:
+    modelo = RandomForestClassifier(**params, random_state=42)
+    modelo.fit(X_train, y_train)
+
+    # Evaluar en VALIDATION set (no en test)
+    y_val_pred = modelo.predict(X_val)
+    accuracy = accuracy_score(y_val, y_val_pred)
+
+    print(f"Params: {params}")
+    print(f"  → Accuracy en VALIDATION: {accuracy:.3f}")
+
+    if accuracy > mejor_accuracy:
+        mejor_accuracy = accuracy
+        mejores_params = params
+
+print(f"\n✅ Mejores hiperparámetros: {mejores_params}")
+print(f"✅ Mejor accuracy en validation: {mejor_accuracy:.3f}")
+
+# Salida típica:
+# Params: {'n_estimators': 50, 'max_depth': 5}
+#   → Accuracy en VALIDATION: 0.909
+# Params: {'n_estimators': 100, 'max_depth': 10}
+#   → Accuracy en VALIDATION: 0.955
+# Params: {'n_estimators': 200, 'max_depth': 15}
+#   → Accuracy en VALIDATION: 0.955
+# Params: {'n_estimators': 100, 'max_depth': None}
+#   → Accuracy en VALIDATION: 0.932
+#
+# ✅ Mejores hiperparámetros: {'n_estimators': 100, 'max_depth': 10}
+# ✅ Mejor accuracy en validation: 0.955</code></pre>
+
+            <div class="highlight-box info">
+                <h4>💡 Diferencia Clave: Validation vs Test</h4>
+                <p>
+                    El <strong>validation set</strong> se usa múltiples veces durante el desarrollo para
+                    tomar decisiones (qué hiperparámetros usar, qué modelo elegir). Por tanto, existe
+                    cierto <strong>sesgo indirecto</strong>: optimizamos para este conjunto.
+                </p>
+                <p>
+                    El <strong>test set</strong> se usa <strong>una única vez</strong> al final, cuando
+                    todas las decisiones ya están tomadas. Proporciona una estimación <strong>imparcial</strong>
+                    del rendimiento real.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Sección 4: Test Set -->
+        <section id="test-set" class="content-section">
+            <h2>4. Test Set (Conjunto de Prueba)</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #C73E1D;">
+                <h3>📐 Definición</h3>
+                <p>
+                    El <strong>Test Set</strong> es el subconjunto reservado para la <strong>evaluación
+                    final</strong> del modelo. Se utiliza <strong>una única vez</strong>, cuando el modelo
+                    está completamente entrenado y sus hiperparámetros ya han sido ajustados.
+                </p>
+                <p>
+                    <strong>Regla de oro:</strong> El test set debe permanecer <strong>intocable</strong>
+                    hasta el momento de la evaluación final.
+                </p>
+            </div>
+
+            <h3>Características del Test Set</h3>
+            <div class="grid-features">
+                <div class="feature-card" style="border-left: 3px solid #C73E1D;">
+                    <h4>Propósito Único</h4>
+                    <p>
+                        Obtener una <strong>estimación imparcial</strong> del rendimiento del modelo
+                        en datos completamente nuevos, simulando su comportamiento en producción.
+                    </p>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid #C73E1D;">
+                    <h4>Tamaño Típico</h4>
+                    <p><strong>10-20%</strong> del dataset total</p>
+                    <p>Debe ser suficientemente grande para proporcionar métricas estadísticamente significativas.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid #C73E1D;">
+                    <h4>Uso Único</h4>
+                    <p>
+                        Se evalúa <strong>una sola vez</strong>. Si ajustas el modelo después de ver
+                        resultados del test set, introduces <strong>data leakage</strong> y la evaluación
+                        deja de ser imparcial.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Ejemplo: Evaluación Final en Test Set</h3>
+            <pre><code>from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Entrenar modelo final con los mejores hiperparámetros encontrados
+modelo_final = RandomForestClassifier(**mejores_params, random_state=42)
+modelo_final.fit(X_train, y_train)
+
+# ============================================
+# EVALUACIÓN FINAL EN TEST SET (ÚNICA VEZ)
+# ============================================
+y_test_pred = modelo_final.predict(X_test)
+
+# Métricas de rendimiento
+accuracy_test = accuracy_score(y_test, y_test_pred)
+print(f"🎯 ACCURACY EN TEST SET: {accuracy_test:.3f}")
+
+# Reporte detallado por clase
+print("\n📊 Classification Report:")
+print(classification_report(y_test, y_test_pred, target_names=['setosa', 'versicolor', 'virginica']))
+
+# Matriz de confusión
+print("\n🔢 Confusion Matrix:")
+print(confusion_matrix(y_test, y_test_pred))
+
+# Salida típica:
+# 🎯 ACCURACY EN TEST SET: 0.957
+#
+# 📊 Classification Report:
+#               precision    recall  f1-score   support
+#       setosa       1.00      1.00      1.00         8
+#   versicolor       0.88      1.00      0.93         7
+#    virginica       1.00      0.88      0.93         8
+#     accuracy                           0.96        23
+#    macro avg       0.96      0.96      0.96        23
+# weighted avg       0.96      0.96      0.96        23
+#
+# 🔢 Confusion Matrix:
+# [[8 0 0]
+#  [0 7 0]
+#  [0 1 7]]</code></pre>
+
+            <div class="highlight-box warning">
+                <h4>⚠️ Error Grave: Usar el Test Set Múltiples Veces</h4>
+                <p>
+                    Si evalúas en el test set, ajustas el modelo basándote en esos resultados, y vuelves
+                    a evaluar, estás cometiendo <strong>data leakage</strong>. El test set ha "contaminado"
+                    tus decisiones y la evaluación ya no es imparcial.
+                </p>
+                <p><strong>Consecuencia:</strong> El modelo puede parecer mejor de lo que realmente es en producción.</p>
+            </div>
+
+        </section>
+
+        <!-- Sección 5: Proporciones -->
+        <section id="proporciones" class="content-section">
+            <h2>5. Proporciones Típicas de División</h2>
+
+            <div class="feature-card">
+                <h3>Proporciones Estándar</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Conjunto</th>
+                            <th>Proporción Típica</th>
+                            <th>Ejemplo (10,000 muestras)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Training Set</strong></td>
+                            <td>60-80%</td>
+                            <td>7,000 muestras</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Validation Set</strong></td>
+                            <td>10-20%</td>
+                            <td>1,500 muestras</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Test Set</strong></td>
+                            <td>10-20%</td>
+                            <td>1,500 muestras</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>División Más Común: 70/15/15</h3>
+            <div class="mermaid">
+pie title División de Dataset (70/15/15)
+    "Training Set (70%)" : 70
+    "Validation Set (15%)" : 15
+    "Test Set (15%)" : 15
+            </div>
+
+            <h3>Factores que Influyen en las Proporciones</h3>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>Dataset Grande (&gt;100,000 muestras)</h4>
+                    <p>Se puede usar proporción más pequeña para validation/test:</p>
+                    <ul>
+                        <li><strong>80/10/10</strong> o incluso <strong>90/5/5</strong></li>
+                        <li>10,000 muestras de test siguen siendo estadísticamente significativas</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Dataset Pequeño (&lt;1,000 muestras)</h4>
+                    <p>Necesitas maximizar datos de entrenamiento:</p>
+                    <ul>
+                        <li><strong>60/20/20</strong> para mantener suficientes datos en cada conjunto</li>
+                        <li>Considerar <strong>validación cruzada</strong> en lugar de validation set fijo</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Clases Desbalanceadas</h4>
+                    <p>Asegurar que cada clase esté representada en todos los conjuntos:</p>
+                    <ul>
+                        <li>Usar <strong>stratified split</strong> (stratify=y)</li>
+                        <li>Verificar que clases minoritarias tengan suficientes muestras en test</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Ejemplo: División con Estratificación</h3>
+            <pre><code>from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+
+# Cargar dataset
+iris = load_iris()
+X, y = iris.data, iris.target
+
+print(f"Dataset total: {len(y)} muestras")
+print(f"Distribución de clases: {dict(zip(*np.unique(y, return_counts=True)))}")
+# Dataset total: 150 muestras
+# Distribución de clases: {0: 50, 1: 50, 2: 50}
+
+# PASO 1: Separar 70% training, 30% temporal (para val + test)
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y,
+    test_size=0.30,      # 30% para validation + test
+    random_state=42,     # Reproducibilidad
+    stratify=y           # Mantener proporción de clases
+)
+
+# PASO 2: Dividir el 30% temporal en 50/50 (15% val, 15% test del total)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp,
+    test_size=0.50,      # 50% del temporal = 15% del total
+    random_state=42,
+    stratify=y_temp
+)
+
+# Verificar tamaños
+print(f"\n📊 División final:")
+print(f"  Training:   {len(X_train)} muestras ({len(X_train)/len(X)*100:.0f}%)")
+print(f"  Validation: {len(X_val)} muestras ({len(X_val)/len(X)*100:.0f}%)")
+print(f"  Test:       {len(X_test)} muestras ({len(X_test)/len(X)*100:.0f}%)")
+
+# Verificar estratificación (proporción de clases)
+print(f"\n🎯 Verificación de estratificación:")
+print(f"  Training - Clase 0: {sum(y_train==0)}, Clase 1: {sum(y_train==1)}, Clase 2: {sum(y_train==2)}")
+print(f"  Validation - Clase 0: {sum(y_val==0)}, Clase 1: {sum(y_val==1)}, Clase 2: {sum(y_val==2)}")
+print(f"  Test - Clase 0: {sum(y_test==0)}, Clase 1: {sum(y_test==1)}, Clase 2: {sum(y_test==2)}")
+
+# Salida:
+# 📊 División final:
+#   Training:   105 muestras (70%)
+#   Validation: 22 muestras (15%)
+#   Test:       23 muestras (15%)
+#
+# 🎯 Verificación de estratificación:
+#   Training - Clase 0: 35, Clase 1: 35, Clase 2: 35
+#   Validation - Clase 0: 7, Clase 1: 8, Clase 2: 7
+#   Test - Clase 0: 8, Clase 1: 7, Clase 2: 8</code></pre>
+
+        </section>
+
+        <!-- Sección 6: Cross-Validation -->
+        <section id="cross-validation" class="content-section">
+            <h2>6. Validación Cruzada (K-Fold Cross-Validation)</h2>
+
+            <div class="highlight-box" style="border-left: 4px solid #A23B72;">
+                <h3>📐 ¿Cuándo Usar Validación Cruzada?</h3>
+                <p>
+                    Cuando el dataset es <strong>pequeño</strong> y dividir en train/val/test dejaría
+                    muy pocas muestras en cada conjunto, la validación cruzada permite <strong>maximizar
+                    el uso de los datos disponibles</strong>.
+                </p>
+            </div>
+
+            <h3>Cómo Funciona K-Fold Cross-Validation</h3>
+            <div class="mermaid">
+graph TB
+    subgraph "K-Fold Cross-Validation (K=5)"
+        F1[Fold 1: VAL | Train | Train | Train | Train]
+        F2[Fold 2: Train | VAL | Train | Train | Train]
+        F3[Fold 3: Train | Train | VAL | Train | Train]
+        F4[Fold 4: Train | Train | Train | VAL | Train]
+        F5[Fold 5: Train | Train | Train | Train | VAL]
+    end
+
+    F1 --> R1[Score 1: 0.95]
+    F2 --> R2[Score 2: 0.90]
+    F3 --> R3[Score 3: 0.95]
+    F4 --> R4[Score 4: 0.91]
+    F5 --> R5[Score 5: 0.93]
+
+    R1 & R2 & R3 & R4 & R5 --> Final[Promedio: 0.928 ± 0.022]
+
+    style Final fill:#06A77D,color:#fff
+            </div>
+
+            <h3>Proceso de K-Fold</h3>
+            <div class="feature-card">
+                <ol>
+                    <li><strong>Dividir el dataset en K particiones</strong> (folds), típicamente K=5 o K=10</li>
+                    <li><strong>Entrenar el modelo K veces</strong>, usando cada vez una partición diferente como validación y las K-1 restantes como entrenamiento</li>
+                    <li><strong>Calcular métricas en cada iteración</strong></li>
+                    <li><strong>Promediar las K métricas</strong> para obtener una estimación robusta del rendimiento</li>
+                    <li><strong>El test set se mantiene completamente separado</strong> y solo se usa al final</li>
+                </ol>
+            </div>
+
+            <h3>Implementación con scikit-learn</h3>
+            <pre><code>from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+
+# Crear modelo
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Validación cruzada con K=5 folds
+# Nota: Usamos X_train, y_train (NO incluye test set)
+scores = cross_val_score(
+    modelo,
+    X_train,
+    y_train,
+    cv=5,                # Número de folds
+    scoring='accuracy'   # Métrica a calcular
+)
+
+print("📊 Resultados de 5-Fold Cross-Validation:")
+print(f"   Accuracy en cada fold: {scores}")
+print(f"   Accuracy promedio: {scores.mean():.3f}")
+print(f"   Desviación estándar: {scores.std():.3f}")
+print(f"   Intervalo de confianza: {scores.mean():.3f} ± {scores.std()*2:.3f}")
+
+# Salida típica:
+# 📊 Resultados de 5-Fold Cross-Validation:
+#    Accuracy en cada fold: [0.952 0.905 0.952 0.905 0.905]
+#    Accuracy promedio: 0.924
+#    Desviación estándar: 0.022
+#    Intervalo de confianza: 0.924 ± 0.044
+
+# Entrenar modelo final con todos los datos de entrenamiento
+modelo.fit(X_train, y_train)
+
+# Evaluación final en TEST SET (una sola vez)
+accuracy_final = modelo.score(X_test, y_test)
+print(f"\n🎯 Accuracy final en TEST SET: {accuracy_final:.3f}")</code></pre>
+
+            <div class="highlight-box success">
+                <h4>✅ Ventajas de K-Fold Cross-Validation</h4>
+                <ul>
+                    <li><strong>Maximiza uso de datos:</strong> Cada muestra se usa tanto para entrenar como para validar</li>
+                    <li><strong>Estimación más robusta:</strong> El promedio de K evaluaciones es más fiable que una sola</li>
+                    <li><strong>Detecta varianza:</strong> La desviación estándar indica qué tan estable es el modelo</li>
+                    <li><strong>Ideal para datasets pequeños:</strong> No "desperdicias" datos en un validation set fijo</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- Sección 7: Implementación -->
+        <section id="implementacion" class="content-section">
+            <h2>7. Implementación Práctica Completa en Python</h2>
+
+            <h3>Pipeline Completo: De División a Evaluación Final</h3>
+            <pre><code>"""
+Pipeline completo de división de datos y evaluación en Machine Learning
+Dataset: Iris (clasificación multiclase)
+"""
+
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# ============================================
+# 1. CARGAR Y EXPLORAR DATOS
+# ============================================
+print("=" * 60)
+print("1. CARGA DE DATOS")
+print("=" * 60)
+
+iris = load_iris()
+X, y = iris.data, iris.target
+
+print(f"Total de muestras: {len(y)}")
+print(f"Características: {iris.feature_names}")
+print(f"Clases: {iris.target_names}")
+print(f"Distribución: {dict(zip(iris.target_names, np.bincount(y)))}")
+
+# ============================================
+# 2. DIVISIÓN EN TRAIN / VALIDATION / TEST
+# ============================================
+print("\n" + "=" * 60)
+print("2. DIVISIÓN DE DATOS (70% / 15% / 15%)")
+print("=" * 60)
+
+# Primera división: 70% train, 30% temporal
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.30, random_state=42, stratify=y
+)
+
+# Segunda división: 50% validation, 50% test (del temporal)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.50, random_state=42, stratify=y_temp
+)
+
+print(f"Training set:   {len(X_train)} muestras ({len(X_train)/len(X)*100:.0f}%)")
+print(f"Validation set: {len(X_val)} muestras ({len(X_val)/len(X)*100:.0f}%)")
+print(f"Test set:       {len(X_test)} muestras ({len(X_test)/len(X)*100:.0f}%)")
+
+# ============================================
+# 3. BÚSQUEDA DE HIPERPARÁMETROS (usando Validation Set)
+# ============================================
+print("\n" + "=" * 60)
+print("3. BÚSQUEDA DE HIPERPARÁMETROS")
+print("=" * 60)
+
+hiperparametros = [
+    {'n_estimators': 50, 'max_depth': 5},
+    {'n_estimators': 100, 'max_depth': 10},
+    {'n_estimators': 200, 'max_depth': 15},
+    {'n_estimators': 100, 'max_depth': None},
+]
+
+mejores_params = None
+mejor_accuracy_val = 0
+
+for params in hiperparametros:
+    modelo = RandomForestClassifier(**params, random_state=42)
+    modelo.fit(X_train, y_train)
+
+    # Evaluar en VALIDATION (no en test)
+    accuracy_val = accuracy_score(y_val, modelo.predict(X_val))
+    accuracy_train = accuracy_score(y_train, modelo.predict(X_train))
+
+    # Detectar overfitting: gran diferencia entre train y validation
+    gap = accuracy_train - accuracy_val
+    status = "⚠️ Posible overfitting" if gap > 0.1 else "✅ OK"
+
+    print(f"Params: {params}")
+    print(f"  Train: {accuracy_train:.3f} | Val: {accuracy_val:.3f} | Gap: {gap:.3f} {status}")
+
+    if accuracy_val > mejor_accuracy_val:
+        mejor_accuracy_val = accuracy_val
+        mejores_params = params
+
+print(f"\n🏆 Mejores hiperparámetros: {mejores_params}")
+print(f"🏆 Mejor accuracy en validation: {mejor_accuracy_val:.3f}")
+
+# ============================================
+# 4. VALIDACIÓN CRUZADA (opcional, para estimación más robusta)
+# ============================================
+print("\n" + "=" * 60)
+print("4. VALIDACIÓN CRUZADA (5-Fold)")
+print("=" * 60)
+
+modelo_cv = RandomForestClassifier(**mejores_params, random_state=42)
+cv_scores = cross_val_score(modelo_cv, X_train, y_train, cv=5, scoring='accuracy')
+
+print(f"Scores por fold: {cv_scores}")
+print(f"Promedio: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
+
+# ============================================
+# 5. ENTRENAMIENTO DEL MODELO FINAL
+# ============================================
+print("\n" + "=" * 60)
+print("5. ENTRENAMIENTO DEL MODELO FINAL")
+print("=" * 60)
+
+modelo_final = RandomForestClassifier(**mejores_params, random_state=42)
+modelo_final.fit(X_train, y_train)
+
+print(f"Modelo entrenado con {len(X_train)} muestras")
+print(f"Hiperparámetros: {mejores_params}")
+
+# ============================================
+# 6. EVALUACIÓN FINAL EN TEST SET (UNA SOLA VEZ)
+# ============================================
+print("\n" + "=" * 60)
+print("6. EVALUACIÓN FINAL EN TEST SET")
+print("=" * 60)
+
+y_test_pred = modelo_final.predict(X_test)
+accuracy_test = accuracy_score(y_test, y_test_pred)
+
+print(f"\n🎯 ACCURACY FINAL EN TEST SET: {accuracy_test:.3f}")
+
+print("\n📊 Classification Report:")
+print(classification_report(y_test, y_test_pred, target_names=iris.target_names))
+
+print("🔢 Confusion Matrix:")
+print(confusion_matrix(y_test, y_test_pred))
+
+# ============================================
+# 7. RESUMEN FINAL
+# ============================================
+print("\n" + "=" * 60)
+print("7. RESUMEN")
+print("=" * 60)
+print(f"Dataset total: {len(X)} muestras")
+print(f"División: 70% train / 15% val / 15% test")
+print(f"Modelo seleccionado: RandomForestClassifier")
+print(f"Mejores hiperparámetros: {mejores_params}")
+print(f"Cross-validation (5-fold): {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
+print(f"Accuracy final en TEST: {accuracy_test:.3f}")</code></pre>
+
+        </section>
+
+        <!-- Sección 8: Mejores Prácticas -->
+        <section id="mejores-practicas" class="content-section">
+            <h2>8. Mejores Prácticas y Errores Comunes</h2>
+
+            <h3>Mejores Prácticas</h3>
+            <div class="grid-features">
+                <div class="feature-card" style="border-left: 3px solid #06A77D;">
+                    <h4>1. Usar Estratificación</h4>
+                    <p>
+                        Siempre usar <code>stratify=y</code> en clasificación para mantener la proporción
+                        de clases en todos los conjuntos.
+                    </p>
+                    <pre><code>train_test_split(X, y, stratify=y)</code></pre>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid #06A77D;">
+                    <h4>2. Fijar Semilla Aleatoria</h4>
+                    <p>
+                        Usar <code>random_state</code> para reproducibilidad. Documenta qué semilla usaste.
+                    </p>
+                    <pre><code>random_state=42  # Reproducible</code></pre>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid #06A77D;">
+                    <h4>3. No Contaminar el Test Set</h4>
+                    <p>
+                        Nunca aplicar transformaciones (normalización, encoding) usando información del
+                        test set. Ajustar transformadores solo con training data.
+                    </p>
+                    <pre><code># ✅ Correcto
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+# ❌ Incorrecto
+scaler.fit(X)  # Incluye test!</code></pre>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid #06A77D;">
+                    <h4>4. Documentar División y Resultados</h4>
+                    <p>
+                        Registrar proporciones, semilla aleatoria, y métricas obtenidas para
+                        reproducibilidad y trazabilidad.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Errores Comunes a Evitar</h3>
+            <div class="grid-features">
+                <div class="highlight-box warning">
+                    <h4>❌ Error 1: Evaluar con los Mismos Datos de Entrenamiento</h4>
+                    <p>
+                        <strong>Problema:</strong> Accuracy inflado artificialmente, no refleja rendimiento real.
+                    </p>
+                    <pre><code># ❌ INCORRECTO
+modelo.fit(X, y)
+accuracy = modelo.score(X, y)  # ¡Evalúa con datos de entrenamiento!</code></pre>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 2: Usar Test Set Múltiples Veces</h4>
+                    <p>
+                        <strong>Problema:</strong> Data leakage - optimizas indirectamente para el test set.
+                    </p>
+                    <pre><code># ❌ INCORRECTO: Ciclo de ajuste basado en test
+for params in grid:
+    modelo.fit(X_train)
+    score = modelo.score(X_test)  # ¡Ajustas según test!
+    if score > best:
+        best_params = params</code></pre>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 3: Olvidar Estratificación</h4>
+                    <p>
+                        <strong>Problema:</strong> Conjuntos desbalanceados, especialmente con clases minoritarias.
+                    </p>
+                    <pre><code># ❌ Sin estratificación: puede dejar una clase sin muestras en test
+train_test_split(X, y, test_size=0.2)
+
+# ✅ Con estratificación: mantiene proporción de clases
+train_test_split(X, y, test_size=0.2, stratify=y)</code></pre>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h4>❌ Error 4: Data Leakage en Preprocesamiento</h4>
+                    <p>
+                        <strong>Problema:</strong> Normalizar usando todo el dataset "filtra" información del test al modelo.
+                    </p>
+                    <pre><code># ❌ INCORRECTO: fit con todo el dataset
+scaler.fit(X)  # Incluye información del test
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+# ✅ CORRECTO: fit solo con training
+scaler.fit(X_train)  # Solo training
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)</code></pre>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h3>Caso de Estudio: Spotify - Sistema de Recomendación</h3>
+                <p>
+                    El sistema de recomendación de Spotify utiliza una división rigurosa de datos:
+                </p>
+                <ul>
+                    <li><strong>Training set:</strong> Millones de interacciones históricas de usuarios (canciones reproducidas, skips, likes)</li>
+                    <li><strong>Validation set:</strong> Usuarios recientes para probar diferentes configuraciones de hiperparámetros del modelo de recomendación</li>
+                    <li><strong>Test set:</strong> Grupo de usuarios completamente separados que nunca participaron en el entrenamiento, para medir el rendimiento real del sistema</li>
+                </ul>
+                <p>
+                    <strong>Resultado:</strong> Esta metodología permite a Spotify medir con precisión si sus recomendaciones realmente mejoran la experiencia del usuario antes de desplegarlas a millones de personas.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-ilerna">
+        <div class="footer-content">
+            <p>&copy; 2024 iLERNA - Sistemas de Aprendizaje Automático</p>
+            <p class="penguin-signature">🐧 Desarrollado con dedicación por el Pingüino</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll para TOC
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Inicializar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                fontSize: '16px',
+                fontFamily: 'Arial, sans-serif'
+            }
+        });
+    </script>
+
+</body>
+</html>

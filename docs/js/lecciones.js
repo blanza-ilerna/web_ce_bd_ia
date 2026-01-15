@@ -186,23 +186,51 @@ function initCopyButtons() {
             button.style.background = 'rgba(255, 255, 255, 0.1)';
         });
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
             const code = pre.querySelector('code');
             const text = code ? code.innerText : pre.innerText;
 
-            navigator.clipboard.writeText(text).then(() => {
+            const showSuccess = () => {
                 const originalText = button.textContent;
                 button.textContent = '✅ ¡Copiado!';
-                button.style.background = 'rgba(76, 175, 80, 0.3)'; // Green tint
+                button.classList.add('copied');
+                button.style.background = 'rgba(76, 175, 80, 0.3)';
 
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    button.textContent = '📋 Copiar';
+                    button.classList.remove('copied');
                     button.style.background = 'rgba(255, 255, 255, 0.1)';
                 }, 2000);
-            }).catch(err => {
-                console.error('Error al copiar:', err);
+            };
+
+            const showError = () => {
                 button.textContent = '❌ Error';
-            });
+                setTimeout(() => {
+                    button.textContent = '📋 Copiar';
+                }, 2000);
+            };
+
+            // Intentar usar Clipboard API moderna
+            try {
+                await navigator.clipboard.writeText(text);
+                showSuccess();
+            } catch (err) {
+                // Fallback para entornos donde Clipboard API falla (ej. http o file://)
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed'; // Evitar scroll al final
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showSuccess();
+                } catch (fallbackErr) {
+                    console.error('Error al copiar (fallback):', fallbackErr);
+                    showError();
+                }
+            }
         });
 
         pre.appendChild(button);
