@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Árboles de Decisión: Modelos jerárquicos e interpretables. Aprende cómo funcionan las particiones de datos y la creación de reglas condicionales.">
+    <meta name="keywords"
+        content="Árboles de Decisión, Decision Trees, Clasificación, Regresión, Gini, Entropía, Scikit-learn">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Árboles de Decisión | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Árboles de Decisión</span>
+                </div>
+            </div>
+            <h1 class="text-center">Árboles de Decisión</h1>
+            <p class="subtitle text-center">Mapas lógicos para la toma de decisiones automatizada</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="section-title">¿Cómo razona un árbol?</h2>
+                <p>
+                    Los <strong>árboles de decisión</strong> son modelos jerárquicos que dividen el espacio de datos en
+                    regiones más simples mediante reglas condicionales. Su funcionamiento es similar a un juego de
+                    preguntas: "¿Es el color rojo?", "¿Es el precio mayor a 50€?".
+                </p>
+                <p>
+                    En cada <strong>nodo</strong> del árbol se realiza una partición según el valor de una variable,
+                    descendiendo por las ramas hasta llegar a las <strong>hojas</strong>, donde se asigna la predicción
+                    final.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🧠 Interpretabilidad</h4>
+                        <p>Permiten representar el razonamiento del modelo de forma explícita y visual.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚡ Flexibilidad</h4>
+                        <p>Manejan tanto variables numéricas como categóricas sin necesidad de mucho preprocesamiento.
+                        </p>
+                    </div>
+                    <div class="feature-card warning">
+                        <h4>⚠️ Sobreajuste</h4>
+                        <p>Tienden a memorizar los datos si no se limita su profundidad (max_depth).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: EJEMPLO DE CLASIFICACIÓN -->
+            <section class="section">
+                <h2 class="section-title">💻 Ejemplo 1: Clasificación (Iris)</h2>
+                <p>
+                    Entrenamos un árbol para identificar especies de flores basándonos en sus medidas.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
+
+# Cargar datos
+iris = load_iris()
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)
+
+# Crear modelo limitando la profundidad para evitar sobreajuste
+clf = DecisionTreeClassifier(max_depth=3, random_state=42)
+clf.fit(X_train, y_train)
+
+# Precisión
+print(f"Precisión: {clf.score(X_test, y_test):.4f}")
+
+# Visualizar la estructura
+plt.figure(figsize=(12,8))
+plot_tree(clf, feature_names=iris.feature_names, class_names=iris.target_names, filled=True)
+plt.show()</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EJEMPLO DE REGRESIÓN -->
+            <section class="section">
+                <h2 class="section-title">📉 Ejemplo 2: Regresión (Diabetes)</h2>
+                <p>
+                    Los árboles también pueden predecir valores continuos agrupando instancias similares en las hojas.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.tree import DecisionTreeRegressor
+from sklearn.datasets import load_diabetes
+from sklearn.metrics import r2_score
+
+# Cargar datos
+diabetes = load_diabetes()
+X_train, X_test, y_train, y_test = train_test_split(diabetes.data, diabetes.target, test_size=0.2, random_state=42)
+
+# Entrenar regresor
+regressor = DecisionTreeRegressor(max_depth=5, random_state=42)
+regressor.fit(X_train, y_train)
+
+# Evaluación
+y_pred = regressor.predict(X_test)
+print(f"Puntaje R²: {r2_score(y_test, y_pred):.4f}")</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: IMPORTANCIA DE VARIABLES -->
+            <section class="section">
+                <h2 class="section-title">📊 Importancia de las Características</h2>
+                <p>
+                    Una de las mayores utilidades de los árboles es que nos dicen qué variables son más determinantes
+                    para la predicción.
+                </p>
+                <div class="highlight-box secondary">
+                    <p class="content">
+                        A través del atributo <code class="code-badge">feature_importances_</code>, podemos identificar
+                        qué columnas están aportando más valor y simplificar modelos eliminando el "ruido".
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

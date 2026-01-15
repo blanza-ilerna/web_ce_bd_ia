@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Regresión Logística: Clasificación y probabilidad. Aprende cómo el modelo estima la pertenencia a una clase mediante la función sigmoide.">
+    <meta name="keywords"
+        content="Regresión Logística, Logistic Regression, Clasificación Binaria, Sigmoide, Probabilidad, Scikit-learn">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Regresión Logística | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Regresión Logística</span>
+                </div>
+            </div>
+            <h1 class="text-center">Regresión Logística</h1>
+            <p class="subtitle text-center">Clasificación basada en probabilidades</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: ¿QUÉ ES LA REGRESIÓN LOGÍSTICA? -->
+            <section class="section">
+                <h2 class="section-title">¿Regresión o Clasificación?</h2>
+                <p>
+                    A pesar de su nombre, la <strong>Regresión Logística</strong> es un algoritmo de
+                    <strong>clasificación</strong>. Se utiliza para predecir la probabilidad de que una instancia
+                    pertenezca a una categoría específica (por ejemplo, "Spam" o "No Spam", "Enfermo" o "Sano").
+                </p>
+                <p>
+                    A diferencia de la regresión lineal, que busca predecir un valor numérico continuo, la logística
+                    estima la <strong>probabilidad de pertenencia a una clase</strong>. Si la probabilidad es mayor a un
+                    umbral (normalmente 0.5), se asigna la clase positiva.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">📈 La Función Sigmoide</p>
+                    <p class="content">
+                        Para convertir un valor real en una probabilidad entre 0 y 1, el modelo utiliza la
+                        <strong>función logística o sigmoide</strong>. Su forma de "S" asegura que, sin importar cuán
+                        grande o pequeño sea el valor de entrada, la salida siempre estará en el rango de probabilidad.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: EJEMPLO DE CLASIFICACIÓN BINARIA -->
+            <section class="section">
+                <h2 class="section-title">💻 Ejemplo: Clasificando Flores (Iris)</h2>
+                <p>
+                    En este ejemplo, simplificamos el famoso dataset de Iris para convertirlo en un problema binario:
+                    distinguir entre <em>Iris setosa</em> e <em>Iris versicolor</em>.
+                </p>
+
+                <div class="code-container">
+                    <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_iris
+import numpy as np
+
+# 1. Cargar datos
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 2. Filtrar para tener solo dos clases (0 y 1)
+mask = y != 2
+X_bin, y_bin = X[mask], y[mask]
+
+# 3. Estandarización (Muy recomendada para logística)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_bin)
+
+# 4. División entrenamiento/prueba
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_bin, test_size=0.2, random_state=42)
+
+# 5. Entrenamiento
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# 6. Evaluación
+accuracy = model.score(X_test, y_test)
+print(f"Precisión del modelo: {accuracy:.4f}")
+
+# Predecir probabilidades
+probs = model.predict_proba(X_test[:3])
+print("Probabilidades por clase:\n", probs)</code></pre>
+                </div>
+
+                <div class="feature-card primary-bg" style="margin-top: 1.5rem;">
+                    <h4>Interpretación de Resultados</h4>
+                    <p>
+                        El modelo aprende a trazar una "frontera de decisión". Al usar <code
+                            class="code-badge">predict_proba()</code>, podemos ver que el modelo no solo dice "es la
+                        clase A", sino que dice "estoy un 98% seguro de que es la clase A". Esta información es vital en
+                        medicina o finanzas.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: PUNTOS CLAVE -->
+            <section class="section">
+                <h2 class="section-title">🔑 Conceptos Fundamentales</h2>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🎯 Frontera de Decisión</h4>
+                        <p>Es la línea (o plano) que divide las clases. Las instancias a un lado se clasifican como 0 y
+                            al otro como 1.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚖️ Escalado</h4>
+                        <p>Al igual que Ridge o Lasso, la regresión logística se beneficia enormemente de la
+                            estandarización de variables.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📦 Multiclase</h4>
+                        <p>Aunque es binaria por naturaleza, puede extenderse a múltiples clases mediante estrategias
+                            como "One-vs-Rest" (OvR).</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
