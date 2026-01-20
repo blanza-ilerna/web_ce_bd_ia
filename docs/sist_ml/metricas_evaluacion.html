@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Métricas de Evaluación en Machine Learning - Clasificación, Regresión y Aprendizaje No Supervisado">
+    <meta name="keywords"
+        content="Machine Learning, Métricas, Accuracy, Precision, Recall, F1-Score, MSE, RMSE, MAE, R², Silhouette">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Métricas de Evaluación en Machine Learning | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <!-- PRISM.JS PARA CÓDIGO -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> →
+                <span>Métricas de Evaluación</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HERO -->
+        <div class="hero">
+            <h1>📊 Métricas de Evaluación en Machine Learning</h1>
+            <p class="subtitle">Cómo medir el rendimiento real de tus modelos</p>
+        </div>
+
+        <!-- TABLE OF CONTENTS -->
+        <nav class="toc-container">
+            <h3>📑 Contenido de la Lección</h3>
+            <ul class="toc-list">
+                <li><a href="#importancia">1. Importancia de las métricas</a></li>
+                <li><a href="#tipos-problemas">2. Tipos de problemas: Clasificación, Regresión y Clustering</a></li>
+                <li><a href="#metricas-clasificacion">3. Métricas de Clasificación: Accuracy, Precision, Recall y F1</a>
+                </li>
+                <li><a href="#metricas-regresion">4. Métricas de Regresión: MSE, RMSE, MAE y R²</a></li>
+                <li><a href="#mse-vs-mae">5. Comparativa Técnica: MSE vs MAE</a></li>
+                <li><a href="#metricas-no-supervisado">6. Métricas No Supervisadas: Silhouette y Varianza Explicada</a>
+                </li>
+                <li><a href="#guia-seleccion">7. Guía de Selección: ¿Qué métrica usar en cada caso?</a></li>
+                <li><a href="#resumen">8. Resumen y Puntos Clave</a></li>
+            </ul>
+        </nav>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section id="importancia">
+            <h2>¿Por qué son importantes las métricas?</h2>
+            <p>
+                En Machine Learning, entrenar un modelo es solo el primer paso. Lo verdaderamente crítico es
+                <strong>evaluar su rendimiento</strong> de forma objetiva y cuantificable. Sin métricas adecuadas,
+                no podemos saber si nuestro modelo es útil en producción.
+            </p>
+            <p>
+                <strong>No existe una métrica universal</strong> porque cada una resalta distintos aspectos del
+                rendimiento.
+                La elección adecuada depende del <strong>tipo de problema</strong> (clasificación, regresión,
+                clustering)
+                y del <strong>contexto de negocio</strong>.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo real – Detección de fraude en tarjetas de crédito</p>
+                <p class="content">
+                    En un sistema de detección de fraude, el <strong>accuracy</strong> puede ser engañoso: si solo el
+                    0.1%
+                    de las transacciones son fraudulentas, un modelo que predice "no fraude" siempre tendría 99.9% de
+                    accuracy,
+                    pero sería completamente inútil. Aquí necesitamos métricas como <strong>Recall</strong> y
+                    <strong>F1-Score</strong>
+                    que capturen mejor el rendimiento en clases desbalanceadas.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: TIPOS DE PROBLEMAS -->
+        <section id="tipos-problemas">
+            <h2>Clasificación de métricas según el tipo de problema</h2>
+
+            <div class="grid-comparison">
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">📊 Clasificación</h3>
+                    <p>
+                        Predicción de <strong>categorías discretas</strong>: spam/no spam, enfermo/sano,
+                        gato/perro/pájaro.
+                    </p>
+                    <p><strong>Métricas:</strong> Accuracy, Precision, Recall, F1-Score, AUC-ROC</p>
+                </div>
+                <div class="card primary-bg">
+                    <h3 class="color-primary">📈 Regresión</h3>
+                    <p>
+                        Predicción de <strong>valores continuos</strong>: precio de una casa, temperatura, ventas
+                        futuras.
+                    </p>
+                    <p><strong>Métricas:</strong> MSE, RMSE, MAE, R², MAPE</p>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">🔍 Aprendizaje No Supervisado</h3>
+                    <p>
+                        <strong>Sin etiquetas</strong>: clustering, reducción de dimensionalidad, detección de
+                        anomalías.
+                    </p>
+                    <p><strong>Métricas:</strong> Silhouette Score, Davies-Bouldin, Varianza Explicada</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MÉTRICAS DE CLASIFICACIÓN -->
+        <section id="metricas-clasificacion">
+            <h2>Métricas de evaluación en clasificación</h2>
+            <h3 class="color-primary">La matriz de confusión: base de todo</h3>
+
+            <p>
+                Todas las métricas de clasificación se derivan de la <strong>matriz de confusión</strong>,
+                que compara las predicciones del modelo con las etiquetas reales:
+            </p>
+
+            <!-- SVG MATRIZ DE CONFUSIÓN -->
+            <div class="svg-container">
+                <svg viewBox="0 0 700 450" style="max-width: 600px;">
+                    <defs>
+                        <linearGradient id="tpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#81C784;stop-opacity:0.8" />
+                        </linearGradient>
+                        <linearGradient id="fpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FF5252;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#FF8A80;stop-opacity:0.8" />
+                        </linearGradient>
+                        <linearGradient id="fnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FFA726;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#FFB74D;stop-opacity:0.8" />
+                        </linearGradient>
+                        <linearGradient id="tnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#81C784;stop-opacity:0.8" />
+                        </linearGradient>
+                    </defs>
+
+                    <rect x="0" y="0" width="700" height="450" rx="15" fill="#f5f5f5" />
+
+                    <!-- Título -->
+                    <text x="350" y="40" text-anchor="middle" font-family="Montserrat" font-size="22" font-weight="700"
+                        fill="#333333">
+                        Matriz de Confusión
+                    </text>
+
+                    <!-- Etiquetas superiores -->
+                    <text x="350" y="80" text-anchor="middle" font-family="Montserrat" font-size="16" font-weight="700"
+                        fill="#49B9CE">
+                        Predicción del Modelo
+                    </text>
+                    <text x="280" y="110" text-anchor="middle" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="#333333">
+                        Positivo
+                    </text>
+                    <text x="470" y="110" text-anchor="middle" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="#333333">
+                        Negativo
+                    </text>
+
+                    <!-- Etiquetas laterales -->
+                    <text x="80" y="200" text-anchor="middle" font-family="Montserrat" font-size="16" font-weight="700"
+                        fill="#8A7AAF" transform="rotate(-90 80 200)">
+                        Realidad
+                    </text>
+                    <text x="130" y="210" text-anchor="end" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="#333333">
+                        Positivo
+                    </text>
+                    <text x="130" y="330" text-anchor="end" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="#333333">
+                        Negativo
+                    </text>
+
+                    <!-- Cuadrante TP (Verdadero Positivo) -->
+                    <rect x="160" y="140" width="180" height="110" rx="10" fill="url(#tpGrad)" stroke="#4CAF50"
+                        stroke-width="3" />
+                    <text x="250" y="185" text-anchor="middle" font-family="Montserrat" font-size="18" font-weight="700"
+                        fill="#ffffff">
+                        TP
+                    </text>
+                    <text x="250" y="210" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Verdadero
+                    </text>
+                    <text x="250" y="230" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Positivo
+                    </text>
+
+                    <!-- Cuadrante FN (Falso Negativo) -->
+                    <rect x="360" y="140" width="180" height="110" rx="10" fill="url(#fnGrad)" stroke="#FFA726"
+                        stroke-width="3" />
+                    <text x="450" y="185" text-anchor="middle" font-family="Montserrat" font-size="18" font-weight="700"
+                        fill="#ffffff">
+                        FN
+                    </text>
+                    <text x="450" y="210" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Falso
+                    </text>
+                    <text x="450" y="230" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Negativo
+                    </text>
+
+                    <!-- Cuadrante FP (Falso Positivo) -->
+                    <rect x="160" y="270" width="180" height="110" rx="10" fill="url(#fpGrad)" stroke="#FF5252"
+                        stroke-width="3" />
+                    <text x="250" y="315" text-anchor="middle" font-family="Montserrat" font-size="18" font-weight="700"
+                        fill="#ffffff">
+                        FP
+                    </text>
+                    <text x="250" y="340" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Falso
+                    </text>
+                    <text x="250" y="360" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Positivo
+                    </text>
+
+                    <!-- Cuadrante TN (Verdadero Negativo) -->
+                    <rect x="360" y="270" width="180" height="110" rx="10" fill="url(#tnGrad)" stroke="#4CAF50"
+                        stroke-width="3" />
+                    <text x="450" y="315" text-anchor="middle" font-family="Montserrat" font-size="18" font-weight="700"
+                        fill="#ffffff">
+                        TN
+                    </text>
+                    <text x="450" y="340" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Verdadero
+                    </text>
+                    <text x="450" y="360" text-anchor="middle" font-family="Montserrat" font-size="13" fill="#ffffff">
+                        Negativo
+                    </text>
+
+                    <!-- Leyenda -->
+                    <text x="350" y="420" text-anchor="middle" font-family="Montserrat" font-size="12" fill="#555555">
+                        Verde = Aciertos | Rojo = Error Tipo I | Naranja = Error Tipo II
+                    </text>
+                </svg>
+            </div>
+
+            <!-- Métricas principales -->
+            <h3 class="color-primary mt-2">Métricas principales</h3>
+
+            <div class="grid-features">
+                <!-- Accuracy -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🎯 Accuracy (Exactitud)</h4>
+                    <p>Porcentaje de predicciones correctas sobre el total.</p>
+                    <div class="formula-block">
+                        Accuracy = (TP + TN) / (TP + TN + FP + FN)
+                    </div>
+                    <p><strong>Cuándo usarla:</strong> Clases balanceadas.</p>
+                    <p><strong>Limitación:</strong> Engañosa con clases desbalanceadas.</p>
+                </div>
+
+                <!-- Precision -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔍 Precision (Precisión)</h4>
+                    <p>De todas las predicciones positivas, ¿cuántas son correctas?</p>
+                    <div class="formula-block">
+                        Precision = TP / (TP + FP)
+                    </div>
+                    <p><strong>Cuándo usarla:</strong> Cuando los falsos positivos son costosos (ej: spam, diagnóstico
+                        médico).</p>
+                </div>
+
+                <!-- Recall -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🎣 Recall (Sensibilidad)</h4>
+                    <p>De todos los casos positivos reales, ¿cuántos detectó el modelo?</p>
+                    <div class="formula-block">
+                        Recall = TP / (TP + FN)
+                    </div>
+                    <p><strong>Cuándo usarla:</strong> Cuando los falsos negativos son costosos (ej: detección de
+                        cáncer, fraude).</p>
+                </div>
+
+                <!-- F1-Score -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⚖️ F1-Score</h4>
+                    <p>Media armónica entre Precision y Recall. Balance entre ambas.</p>
+                    <div class="formula-block">
+                        F1 = 2 × (Precision × Recall) / (Precision + Recall)
+                    </div>
+                    <p><strong>Cuándo usarla:</strong> Clases desbalanceadas donde importan tanto FP como FN.</p>
+                </div>
+
+                <!-- AUC-ROC -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📊 AUC-ROC</h4>
+                    <p>Área bajo la curva ROC. Mide la capacidad discriminativa del modelo.</p>
+                    <div class="formula-block">
+                        AUC = 1.0 (perfecto) | 0.5 (aleatorio)
+                    </div>
+                    <p><strong>Cuándo usarla:</strong> Evaluar modelos independientemente del umbral de decisión.</p>
+                </div>
+            </div>
+
+            <!-- Ejemplo de código -->
+            <div class="highlight-box primary mt-2">
+                <p class="title">Ejemplo en Python – Métricas de clasificación con scikit-learn</p>
+            </div>
+            <div class="code-copy-container">
+                <button class="copy-code-btn" onclick="copyCode(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copiar</span>
+                </button>
+                <pre><code class="language-python">from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_classification
+
+# Crear dataset de ejemplo (clasificación binaria desbalanceada)
+X, y = make_classification(n_samples=1000, n_features=20, n_classes=2,
+                           weights=[0.9, 0.1], random_state=42)
+
+# Dividir datos
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Entrenar modelo
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_train, y_train)
+
+# Predicciones
+y_pred = modelo.predict(X_test)
+y_pred_proba = modelo.predict_proba(X_test)[:, 1]  # Probabilidades para AUC-ROC
+
+# Calcular métricas
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+auc_roc = roc_auc_score(y_test, y_pred_proba)
+
+print("📊 MÉTRICAS DE CLASIFICACIÓN")
+print(f"Accuracy:  {accuracy:.3f}")
+print(f"Precision: {precision:.3f}")
+print(f"Recall:    {recall:.3f}")
+print(f"F1-Score:  {f1:.3f}")
+print(f"AUC-ROC:   {auc_roc:.3f}")
+
+print("\n🔢 Matriz de Confusión:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\n📋 Reporte Completo:")
+print(classification_report(y_test, y_pred))</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MÉTRICAS DE REGRESIÓN -->
+        <section id="metricas-regresion">
+            <h2>Métricas de evaluación en regresión</h2>
+            <h3 class="color-secondary">Midiendo la distancia entre predicción y realidad</h3>
+
+            <p>
+                En problemas de regresión, evaluamos <strong>qué tan cerca están las predicciones de los valores
+                    reales</strong>.
+                Las métricas se basan en el concepto de <strong>error</strong>: la diferencia entre el valor predicho y
+                el real.
+            </p>
+
+            <div class="grid-features">
+                <!-- MSE -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📐 MSE (Mean Squared Error)</h4>
+                    <p>Media de los errores al cuadrado. Penaliza más los errores grandes.</p>
+                    <div class="formula-block">
+                        MSE = (1/n) × Σ(y_real - y_pred)²
+                    </div>
+                    <p><strong>Ventaja:</strong> Diferenciable, útil para optimización.</p>
+                    <p><strong>Desventaja:</strong> Sensible a outliers.</p>
+                </div>
+
+                <!-- RMSE -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📏 RMSE (Root Mean Squared Error)</h4>
+                    <p>Raíz cuadrada del MSE. Valores en el mismo rango que la variable objetivo.</p>
+                    <div class="formula-block">
+                        RMSE = √MSE
+                    </div>
+                    <p><strong>Ventaja:</strong> Interpretable en las unidades originales.</p>
+                    <p><strong>Uso común:</strong> Predicción de precios, temperaturas.</p>
+                </div>
+
+                <!-- MAE -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📊 MAE (Mean Absolute Error)</h4>
+                    <p>Media de los errores absolutos. Penaliza menos los errores grandes.</p>
+                    <div class="formula-block">
+                        MAE = (1/n) × Σ|y_real - y_pred|
+                    </div>
+                    <p><strong>Ventaja:</strong> Más robusta a outliers que MSE.</p>
+                    <p><strong>Desventaja:</strong> No diferenciable en cero.</p>
+                </div>
+
+                <!-- R² -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📈 R² (Coeficiente de Determinación)</h4>
+                    <p>Proporción de varianza explicada por el modelo.</p>
+                    <div class="formula-block">
+                        R² = 1 - (SS_res / SS_tot)
+                    </div>
+                    <p><strong>Interpretación:</strong> 1 = perfecto, 0 = predice la media, negativo = peor que la
+                        media.</p>
+                </div>
+
+                <!-- MAPE -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📉 MAPE (Mean Absolute Percentage Error)</h4>
+                    <p>Error porcentual medio absoluto. Fácil de interpretar.</p>
+                    <div class="formula-block">
+                        MAPE = (100/n) × Σ|y_real - y_pred| / |y_real|
+                    </div>
+                    <p><strong>Ventaja:</strong> Independiente de la escala.</p>
+                    <p><strong>Limitación:</strong> Indefinido cuando y_real = 0.</p>
+                </div>
+            </div>
+
+            <!-- Ejemplo de código -->
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Ejemplo en Python – Métricas de regresión con scikit-learn</p>
+            </div>
+            <div class="code-copy-container">
+                <button class="copy-code-btn" onclick="copyCode(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copiar</span>
+                </button>
+                <pre><code class="language-python">from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_regression
+import numpy as np
+
+# Crear dataset de ejemplo
+X, y = make_regression(n_samples=1000, n_features=10, noise=20, random_state=42)
+
+# Dividir datos
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Entrenar modelo
+modelo = LinearRegression()
+modelo.fit(X_train, y_train)
+
+# Predicciones
+y_pred = modelo.predict(X_test)
+
+# Calcular métricas
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# MAPE manual (scikit-learn no lo incluye por defecto)
+mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+
+print("📊 MÉTRICAS DE REGRESIÓN")
+print(f"MSE:   {mse:.2f}")
+print(f"RMSE:  {rmse:.2f}")
+print(f"MAE:   {mae:.2f}")
+print(f"R²:    {r2:.3f}")
+print(f"MAPE:  {mape:.2f}%")
+
+# Ejemplo de interpretación
+print(f"\n💡 Interpretación:")
+print(f"El modelo explica el {r2*100:.1f}% de la varianza de los datos")
+print(f"Error promedio: {mae:.2f} unidades")</code></pre>
+            </div>
+
+            <!-- Ejemplo real -->
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Ejemplo real – Predicción de precios de viviendas en Zillow</p>
+                <p class="content">
+                    Zillow utiliza modelos de regresión para estimar precios de viviendas. Usan principalmente
+                    <strong>RMSE</strong>
+                    porque está en dólares (interpretable) y <strong>MAPE</strong> para comparar el rendimiento entre
+                    diferentes
+                    rangos de precios. Un MAPE del 5% significa que, en promedio, las predicciones se desvían un 5% del
+                    precio real.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: COMPARATIVA MSE vs MAE -->
+        <section id="mse-vs-mae">
+            <h2>MSE vs MAE: ¿Cuál elegir?</h2>
+            <h3 class="color-primary">Sensibilidad a outliers</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>MSE / RMSE</th>
+                            <th>MAE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sensibilidad a outliers</td>
+                            <td>Alta (penaliza errores grandes)</td>
+                            <td>Baja (trata todos los errores igual)</td>
+                        </tr>
+                        <tr>
+                            <td>Diferenciabilidad</td>
+                            <td>Sí (útil para gradiente descendente)</td>
+                            <td>No en cero</td>
+                        </tr>
+                        <tr>
+                            <td>Interpretabilidad</td>
+                            <td>RMSE en unidades originales</td>
+                            <td>Directamente en unidades originales</td>
+                        </tr>
+                        <tr>
+                            <td>Cuándo usar</td>
+                            <td>Cuando los errores grandes son críticos</td>
+                            <td>Cuando hay outliers o errores uniformes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box primary">
+                <p class="title">💡 Regla práctica</p>
+                <p class="content">
+                    Usa <strong>MSE/RMSE</strong> cuando quieras penalizar fuertemente los errores grandes (ej:
+                    predicción de demanda
+                    donde subestimar es muy costoso). Usa <strong>MAE</strong> cuando todos los errores tengan el mismo
+                    peso
+                    o cuando haya outliers que no quieras que dominen la métrica.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: APRENDIZAJE NO SUPERVISADO -->
+        <section id="metricas-no-supervisado">
+            <h2>Métricas en aprendizaje no supervisado</h2>
+            <h3 class="color-secondary">Evaluación sin etiquetas</h3>
+
+            <p>
+                En aprendizaje no supervisado <strong>no disponemos de etiquetas reales</strong> para comparar,
+                por lo que la evaluación es más compleja y depende del tipo de problema.
+            </p>
+
+            <!-- Clustering -->
+            <h3 class="color-secondary mt-2">Métricas para Clustering</h3>
+
+            <div class="grid-features">
+                <!-- Silhouette Score -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎯 Silhouette Score</h4>
+                    <p>Mide qué tan similar es un punto a su propio cluster comparado con otros clusters.</p>
+                    <div class="formula-block">
+                        Rango: [-1, 1]<br>
+                        1 = clusters perfectos<br>
+                        0 = clusters solapados<br>
+                        -1 = asignación incorrecta
+                    </div>
+                </div>
+
+                <!-- Davies-Bouldin Index -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📊 Davies-Bouldin Index</h4>
+                    <p>Ratio entre la dispersión intra-cluster y la separación inter-cluster.</p>
+                    <div class="formula-block">
+                        Rango: [0, ∞)<br>
+                        0 = clusters perfectos<br>
+                        Valores bajos = mejor
+                    </div>
+                </div>
+
+                <!-- Inertia -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎲 Inertia (Inercia)</h4>
+                    <p>Suma de distancias al cuadrado de cada punto a su centroide más cercano.</p>
+                    <div class="formula-block">
+                        Valores bajos = clusters compactos<br>
+                        Útil para el método del codo
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejemplo de código clustering -->
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Ejemplo en Python – Métricas de clustering con scikit-learn</p>
+            </div>
+            <div class="code-copy-container">
+                <button class="copy-code-btn" onclick="copyCode(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copiar</span>
+                </button>
+                <pre><code class="language-python">from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score, davies_bouldin_score
+from sklearn.datasets import make_blobs
+import matplotlib.pyplot as plt
+
+# Crear dataset de ejemplo
+X, y_true = make_blobs(n_samples=500, n_features=2, centers=4,
+                       cluster_std=1.0, random_state=42)
+
+# Aplicar K-Means
+kmeans = KMeans(n_clusters=4, random_state=42)
+y_pred = kmeans.fit_predict(X)
+
+# Calcular métricas
+silhouette = silhouette_score(X, y_pred)
+davies_bouldin = davies_bouldin_score(X, y_pred)
+inertia = kmeans.inertia_
+
+print("📊 MÉTRICAS DE CLUSTERING")
+print(f"Silhouette Score:     {silhouette:.3f}")
+print(f"Davies-Bouldin Index: {davies_bouldin:.3f}")
+print(f"Inertia:              {inertia:.2f}")
+
+# Método del codo para encontrar k óptimo
+inertias = []
+silhouettes = []
+K_range = range(2, 11)
+
+for k in K_range:
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(X)
+    inertias.append(kmeans.inertia_)
+    silhouettes.append(silhouette_score(X, kmeans.labels_))
+
+print("\n📈 Método del codo:")
+for k, inertia, sil in zip(K_range, inertias, silhouettes):
+    print(f"k={k}: Inertia={inertia:.2f}, Silhouette={sil:.3f}")</code></pre>
+            </div>
+
+            <!-- Reducción de dimensionalidad -->
+            <h3 class="color-secondary mt-2">Métricas para Reducción de Dimensionalidad</h3>
+
+            <div class="grid-features">
+                <!-- Varianza Explicada -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📊 Varianza Explicada (PCA)</h4>
+                    <p>Proporción de información del espacio original que se conserva.</p>
+                    <div class="formula-block">
+                        Rango: [0, 1]<br>
+                        0.95 = conserva 95% de la información
+                    </div>
+                </div>
+
+                <!-- Error de Reconstrucción -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔄 Error de Reconstrucción</h4>
+                    <p>Diferencia entre los datos originales y los reconstruidos desde el espacio reducido.</p>
+                    <div class="formula-block">
+                        Valores bajos = mejor preservación<br>
+                        Útil en autoencoders
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejemplo de código PCA -->
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Ejemplo en Python – Varianza explicada con PCA</p>
+            </div>
+            <div class="code-copy-container">
+                <button class="copy-code-btn" onclick="copyCode(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copiar</span>
+                </button>
+                <pre><code class="language-python">from sklearn.decomposition import PCA
+from sklearn.datasets import load_digits
+import numpy as np
+
+# Cargar dataset (imágenes de dígitos 8x8 = 64 dimensiones)
+digits = load_digits()
+X = digits.data
+
+print(f"Dimensiones originales: {X.shape}")
+
+# Aplicar PCA con diferentes números de componentes
+for n_components in [10, 20, 30, 40]:
+    pca = PCA(n_components=n_components)
+    X_reduced = pca.fit_transform(X)
+
+    # Varianza explicada total
+    varianza_explicada = pca.explained_variance_ratio_.sum()
+
+    print(f"\n📊 PCA con {n_components} componentes:")
+    print(f"   Varianza explicada: {varianza_explicada:.3f} ({varianza_explicada*100:.1f}%)")
+    print(f"   Dimensiones reducidas: {X_reduced.shape}")
+
+# Encontrar número óptimo de componentes para 95% de varianza
+pca_full = PCA()
+pca_full.fit(X)
+varianza_acumulada = np.cumsum(pca_full.explained_variance_ratio_)
+n_componentes_95 = np.argmax(varianza_acumulada >= 0.95) + 1
+
+print(f"\n✅ Para conservar 95% de varianza se necesitan {n_componentes_95} componentes")
+print(f"   Reducción: {X.shape[1]} → {n_componentes_95} dimensiones")</code></pre>
+            </div>
+
+            <!-- Ejemplo real -->
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Ejemplo real – Segmentación de clientes en Amazon</p>
+                <p class="content">
+                    Amazon utiliza clustering (K-Means, DBSCAN) para segmentar clientes según su comportamiento de
+                    compra.
+                    Evalúan la calidad de los clusters con <strong>Silhouette Score</strong> para asegurar que los
+                    grupos
+                    sean coherentes y bien separados, permitiendo personalizar recomendaciones y campañas de marketing.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: TABLA COMPARATIVA GENERAL -->
+        <section id="guia-seleccion">
+            <h2>Tabla comparativa: ¿Qué métrica usar?</h2>
+            <h3 class="color-primary">Guía rápida de selección</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Problema</th>
+                            <th>Contexto</th>
+                            <th>Métrica Recomendada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Clasificación binaria balanceada</td>
+                            <td>Clases con similar cantidad de muestras</td>
+                            <td>Accuracy, AUC-ROC</td>
+                        </tr>
+                        <tr>
+                            <td>Clasificación desbalanceada</td>
+                            <td>Clase minoritaria importante (fraude, enfermedad)</td>
+                            <td>F1-Score, Recall, Precision</td>
+                        </tr>
+                        <tr>
+                            <td>Detección de spam</td>
+                            <td>Minimizar falsos positivos (correos legítimos como spam)</td>
+                            <td>Precision</td>
+                        </tr>
+                        <tr>
+                            <td>Detección de cáncer</td>
+                            <td>Minimizar falsos negativos (no detectar enfermedad)</td>
+                            <td>Recall</td>
+                        </tr>
+                        <tr>
+                            <td>Predicción de precios</td>
+                            <td>Errores grandes son críticos</td>
+                            <td>RMSE, R²</td>
+                        </tr>
+                        <tr>
+                            <td>Predicción con outliers</td>
+                            <td>Datos con valores atípicos frecuentes</td>
+                            <td>MAE</td>
+                        </tr>
+                        <tr>
+                            <td>Comparar modelos entre escalas</td>
+                            <td>Diferentes rangos de valores objetivo</td>
+                            <td>MAPE, R²</td>
+                        </tr>
+                        <tr>
+                            <td>Segmentación de clientes</td>
+                            <td>Clustering sin etiquetas</td>
+                            <td>Silhouette Score, Davies-Bouldin</td>
+                        </tr>
+                        <tr>
+                            <td>Compresión de datos</td>
+                            <td>Reducción de dimensionalidad</td>
+                            <td>Varianza Explicada, Error de Reconstrucción</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Advertencia importante</h4>
+                <p>
+                    <strong>No existe una métrica perfecta.</strong> En proyectos reales, es común usar
+                    <strong>múltiples métricas</strong>
+                    para obtener una visión completa del rendimiento. Por ejemplo, en clasificación desbalanceada,
+                    reporta
+                    Precision, Recall, F1-Score y AUC-ROC simultáneamente. El contexto de negocio siempre debe guiar la
+                    elección.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: RESUMEN FINAL -->
+        <section id="resumen">
+            <h2 class="text-center">Resumen y puntos clave</h2>
+
+            <div class="final-grid">
+                <div class="final-card technical">
+                    <h3 class="color-primary">✅ Clasificación</h3>
+                    <ul>
+                        <li><strong>Accuracy:</strong> útil con clases balanceadas</li>
+                        <li><strong>Precision:</strong> minimiza falsos positivos</li>
+                        <li><strong>Recall:</strong> minimiza falsos negativos</li>
+                        <li><strong>F1-Score:</strong> balance en clases desbalanceadas</li>
+                        <li><strong>AUC-ROC:</strong> capacidad discriminativa global</li>
+                    </ul>
+                </div>
+                <div class="final-card philosophical">
+                    <h3 class="color-secondary">✅ Regresión</h3>
+                    <ul>
+                        <li><strong>MSE/RMSE:</strong> penaliza errores grandes</li>
+                        <li><strong>MAE:</strong> robusta a outliers</li>
+                        <li><strong>R²:</strong> proporción de varianza explicada</li>
+                        <li><strong>MAPE:</strong> error porcentual interpretable</li>
+                    </ul>
+                </div>
+                <div class="final-card technical">
+                    <h3 class="color-primary">✅ No Supervisado</h3>
+                    <ul>
+                        <li><strong>Silhouette Score:</strong> calidad de clusters</li>
+                        <li><strong>Davies-Bouldin:</strong> compacidad y separación</li>
+                        <li><strong>Varianza Explicada:</strong> información conservada (PCA)</li>
+                        <li><strong>Inertia:</strong> método del codo para K-Means</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="challenge-box">
+                <h3>💡 Para llevarte de esta lección</h3>
+                <p>
+                    La elección de métricas es tan importante como la elección del modelo. <strong>No existe una métrica
+                        universal</strong>
+                    porque cada una captura diferentes aspectos del rendimiento. Siempre considera el <strong>contexto
+                        del problema</strong>,
+                    el <strong>balance de clases</strong>, y el <strong>coste de los errores</strong>. En producción,
+                    usa múltiples métricas
+                    para obtener una visión completa y toma decisiones informadas basadas en el impacto real del
+                    negocio.
+                    Recuerda: <strong>una métrica alta no siempre significa un modelo útil</strong> si no está alineada
+                    con los objetivos.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">
+            Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.
+        </p>
+        <p class="description">
+            Titulaciones 100% oficiales. ¡Sin pruebas libres!
+        </p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- PRISM.JS CORE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Script para copiar código -->
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                button.classList.add('copied');
+                button.querySelector('span').textContent = '¡Copiado!';
+
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('span').textContent = 'Copiar';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Métricas de Evaluación en Machine Learning: Accuracy, Precision, Recall, F-Scores, ROC AUC, PR AUC y Brier Score">
+    <meta name="keywords" content="machine learning, métricas, accuracy, precision, recall, F1, ROC, AUC, matriz confusión, evaluación modelos">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Métricas de Evaluación en Machine Learning | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> →
+                <span>Métricas de Evaluación en ML</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Métricas de Evaluación en Machine Learning</h1>
+            <p class="subtitle">Cómo Medir el Rendimiento de Modelos Predictivos</p>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDOS -->
+        <section>
+            <div class="toc-container">
+                <h3>Índice de Contenidos</h3>
+                <ul class="toc-list">
+                    <li><a href="#importancia">1. ¿Por qué son importantes las métricas?</a></li>
+                    <li><a href="#conceptos">2. Conceptos fundamentales</a></li>
+                    <li><a href="#matriz-confusion">3. La matriz de confusión</a></li>
+                    <li><a href="#accuracy">4. Accuracy (Exactitud)</a></li>
+                    <li><a href="#precision-recall">5. Precision y Recall</a></li>
+                    <li><a href="#f-scores">6. F-Scores</a></li>
+                    <li><a href="#probabilisticas">7. Métricas probabilísticas</a></li>
+                    <li><a href="#guia-seleccion">8. Guía de selección de métricas</a></li>
+                    <li><a href="#casos-practicos">9. Casos prácticos del mundo real</a></li>
+                    <li><a href="#resumen">10. Resumen y puntos clave</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: IMPORTANCIA DE LAS MÉTRICAS -->
+        <section id="importancia">
+            <h2>¿Por qué son importantes las métricas?</h2>
+
+            <p>
+                Las <strong>métricas de evaluación</strong> son fundamentales en Machine Learning porque nos permiten <strong>cuantificar el rendimiento</strong> de nuestros modelos de manera objetiva. Sin métricas adecuadas, no podemos:
+            </p>
+
+            <div class="highlight-box primary">
+                <ul>
+                    <li><strong class="color-primary">Comparar modelos:</strong> Determinar qué algoritmo funciona mejor para nuestro problema específico</li>
+                    <li><strong class="color-primary">Optimizar hiperparámetros:</strong> Ajustar configuraciones del modelo para maximizar el rendimiento</li>
+                    <li><strong class="color-primary">Detectar problemas:</strong> Identificar overfitting, underfitting o sesgos en los datos</li>
+                    <li><strong class="color-primary">Tomar decisiones de negocio:</strong> Evaluar si el modelo cumple los requisitos para producción</li>
+                    <li><strong class="color-primary">Comunicar resultados:</strong> Presentar el rendimiento de forma clara a stakeholders no técnicos</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Real: Detección de Cáncer</p>
+                <p class="content">
+                    IBM Watson Health usa modelos ML para detectar cáncer en imágenes médicas. En este caso, <strong>usar solo Accuracy sería catastrófico</strong> si el 95% de los pacientes están sanos:
+                </p>
+                <div class="formula-block" style="margin-top: 1rem;">
+                    ❌ Modelo simplista: "Todos están sanos" → Accuracy = 95% pero 0% de casos de cáncer detectados<br>
+                    ✅ Modelo real: Optimizado con Recall → Detecta el 98% de los cánceres, salvando vidas
+                </div>
+            </div>
+
+            <p>
+                <strong class="color-secondary">La métrica correcta depende del problema y del coste de los errores.</strong> Elegir la métrica equivocada puede llevar a optimizar un modelo que, aunque tenga buenos números, falle en la práctica real.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 2: CONCEPTOS FUNDAMENTALES -->
+        <section id="conceptos">
+            <h2>Conceptos fundamentales</h2>
+
+            <h3 class="color-secondary">Tipos de problemas en ML</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Clasificación</h4>
+                    <p>Predecir categorías o etiquetas discretas</p>
+                    <div class="highlight-box primary">
+                        <p class="title">Ejemplos:</p>
+                        <ul>
+                            <li>Spam vs No-spam</li>
+                            <li>Gato vs Perro vs Pájaro</li>
+                            <li>Fraude vs Legítimo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Regresión</h4>
+                    <p>Predecir valores numéricos continuos</p>
+                    <div class="highlight-box secondary">
+                        <p class="title">Ejemplos:</p>
+                        <ul>
+                            <li>Precio de una vivienda</li>
+                            <li>Temperatura mañana</li>
+                            <li>Ventas del próximo mes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>Esta lección se centra en métricas de clasificación</h4>
+                <p>Las métricas de clasificación son las más comunes y complejas. Las métricas de regresión (MSE, RMSE, MAE, R²) se estudian en módulos posteriores.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MATRIZ DE CONFUSIÓN -->
+        <section id="matriz-confusion">
+            <h2>La matriz de confusión: base de todas las métricas</h2>
+
+            <p>
+                La <strong>matriz de confusión</strong> es una tabla que resume los resultados de predicción de un clasificador, comparando las <strong>predicciones</strong> con las <strong>etiquetas reales</strong>. Es la base para calcular casi todas las métricas de clasificación.
+            </p>
+
+            <div class="svg-container">
+                <svg width="480" height="420" viewBox="0 0 480 420" style="max-width: 100%;">
+                    <!-- Título -->
+                    <text x="240" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Matriz de Confusión (Clasificación Binaria)</text>
+
+                    <!-- Etiquetas de ejes -->
+                    <text x="240" y="60" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">Predicción del Modelo</text>
+                    <text x="30" y="240" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat" transform="rotate(-90, 30, 240)">Valor Real</text>
+
+                    <!-- Cabeceras columnas -->
+                    <rect x="140" y="80" width="140" height="35" fill="#49B9CE" rx="5"/>
+                    <text x="210" y="102" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">Negativo (0)</text>
+
+                    <rect x="300" y="80" width="140" height="35" fill="#8A7AAF" rx="5"/>
+                    <text x="370" y="102" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">Positivo (1)</text>
+
+                    <!-- Cabeceras filas -->
+                    <rect x="60" y="135" width="60" height="100" fill="#49B9CE" rx="5"/>
+                    <text x="90" y="190" font-size="13" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat" transform="rotate(-90, 90, 190)">Negativo (0)</text>
+
+                    <rect x="60" y="255" width="60" height="100" fill="#8A7AAF" rx="5"/>
+                    <text x="90" y="310" font-size="13" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat" transform="rotate(-90, 90, 310)">Positivo (1)</text>
+
+                    <!-- Celda TN (True Negative) -->
+                    <rect x="140" y="135" width="140" height="100" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                    <text x="210" y="165" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">TN</text>
+                    <text x="210" y="187" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">True Negative</text>
+                    <text x="210" y="210" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Negativo Correctamente</text>
+                    <text x="210" y="225" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Clasificado</text>
+
+                    <!-- Celda FP (False Positive) -->
+                    <rect x="300" y="135" width="140" height="100" fill="#FFC1CC" stroke="#E74C3C" stroke-width="3" rx="8"/>
+                    <text x="370" y="165" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">FP</text>
+                    <text x="370" y="187" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">False Positive</text>
+                    <text x="370" y="203" font-size="11" fill="#C0392B" text-anchor="middle" font-family="Montserrat" font-weight="bold">Error Tipo I</text>
+                    <text x="370" y="217" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">"Falsa Alarma"</text>
+                    <text x="370" y="230" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Real: No | Pred: Sí</text>
+
+                    <!-- Celda FN (False Negative) -->
+                    <rect x="140" y="255" width="140" height="100" fill="#FFE5B4" stroke="#F39C12" stroke-width="3" rx="8"/>
+                    <text x="210" y="285" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">FN</text>
+                    <text x="210" y="307" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">False Negative</text>
+                    <text x="210" y="323" font-size="11" fill="#D68910" text-anchor="middle" font-family="Montserrat" font-weight="bold">Error Tipo II</text>
+                    <text x="210" y="337" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">"Miss"</text>
+                    <text x="210" y="350" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Real: Sí | Pred: No</text>
+
+                    <!-- Celda TP (True Positive) -->
+                    <rect x="300" y="255" width="140" height="100" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                    <text x="370" y="285" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">TP</text>
+                    <text x="370" y="307" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">True Positive</text>
+                    <text x="370" y="330" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Positivo Correctamente</text>
+                    <text x="370" y="345" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat" font-style="italic">Clasificado</text>
+
+                    <!-- Leyenda -->
+                    <text x="240" y="390" font-size="11" fill="#27AE60" text-anchor="middle" font-family="Montserrat" font-weight="bold">✓ Correctos: TN + TP</text>
+                    <text x="240" y="410" font-size="11" fill="#E74C3C" text-anchor="middle" font-family="Montserrat" font-weight="bold">✗ Errores: FP + FN</text>
+                </svg>
+            </div>
+
+            <div class="grid-features mt-2">
+                <div class="card primary-bg">
+                    <p><strong>TN (True Negative)</strong></p>
+                    <p>Predijimos "No" y era "No" ✓</p>
+                </div>
+
+                <div class="card" style="background: #FFC1CC;">
+                    <p><strong>FP (False Positive)</strong></p>
+                    <p>Predijimos "Sí" pero era "No" ✗</p>
+                    <p class="color-error"><strong>Falsa alarma</strong></p>
+                </div>
+
+                <div class="card" style="background: #FFE5B4;">
+                    <p><strong>FN (False Negative)</strong></p>
+                    <p>Predijimos "No" pero era "Sí" ✗</p>
+                    <p class="color-warning"><strong>Caso perdido</strong></p>
+                </div>
+
+                <div class="card secondary-bg">
+                    <p><strong>TP (True Positive)</strong></p>
+                    <p>Predijimos "Sí" y era "Sí" ✓</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary mt-2">
+                <p class="title">Ejemplo: Detector de Spam</p>
+                <p class="content">De 1000 emails analizados:</p>
+                <div class="grid-features mt-1">
+                    <div class="card">
+                        <p class="formula-block color-primary">TN = 850</p>
+                        <p>Emails legítimos correctos</p>
+                    </div>
+                    <div class="card">
+                        <p class="formula-block color-error">FP = 30</p>
+                        <p>Legítimos marcados spam</p>
+                    </div>
+                    <div class="card">
+                        <p class="formula-block color-warning">FN = 20</p>
+                        <p>Spam no detectado</p>
+                    </div>
+                    <div class="card">
+                        <p class="formula-block color-secondary">TP = 100</p>
+                        <p>Spam correctamente detectado</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: ACCURACY -->
+        <section id="accuracy">
+            <h2>Accuracy (Exactitud)</h2>
+
+            <h3 class="color-primary">Definición y Fórmula</h3>
+
+            <p>
+                La <strong>Accuracy</strong> es la métrica más intuitiva: mide el <strong>porcentaje de predicciones correctas</strong> sobre el total de predicciones.
+            </p>
+
+            <div class="formula-block">
+                Accuracy = (TP + TN) / (TP + TN + FP + FN)
+            </div>
+            <p class="text-center"><strong>Traducción:</strong> Predicciones Correctas / Total de Predicciones</p>
+
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo del Detector de Spam:</p>
+                <div class="formula-block">
+                    Accuracy = (100 + 850) / (100 + 850 + 30 + 20)<br>
+                    Accuracy = 950 / 1000 = <strong class="color-success">0.95 (95%)</strong>
+                </div>
+            </div>
+
+            <h3 class="color-secondary">¿Cuándo Usar Accuracy?</h3>
+
+            <div class="comparison-grid">
+                <div class="advantage-box">
+                    <h4>✅ USAR cuando:</h4>
+                    <ul>
+                        <li>Las clases están <strong>balanceadas</strong> (50-50 o similar)</li>
+                        <li>Todos los errores tienen el <strong>mismo coste</strong></li>
+                        <li>El problema es <strong>multi-clase</strong> balanceado</li>
+                    </ul>
+                </div>
+
+                <div class="disadvantage-box">
+                    <h4>❌ NO USAR cuando:</h4>
+                    <ul>
+                        <li>Las clases están <strong>desbalanceadas</strong></li>
+                        <li>Un tipo de error es <strong>más costoso</strong> que otro</li>
+                        <li>La clase minoritaria es la <strong>más importante</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ El Problema del Desbalanceo</h4>
+                <p>Imagina un dataset de fraude bancario donde el <strong>99% son transacciones legítimas</strong> y solo el <strong>1% son fraudes</strong>:</p>
+                <div class="formula-block">
+                    Modelo simplista: "Todas las transacciones son legítimas"<br>
+                    → Accuracy = 99%<br>
+                    → Fraudes detectados = 0%<br><br>
+                    <strong>¡El modelo es INÚTIL aunque tenga 99% de accuracy!</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: PRECISION Y RECALL -->
+        <section id="precision-recall">
+            <h2>Precision y Recall: el trade-off fundamental</h2>
+
+            <div class="feature-card primary">
+                <h3 class="color-primary">Precision (Precisión)</h3>
+
+                <p>
+                    La <strong>Precision</strong> responde: <em>"De todas las predicciones POSITIVAS que hice, ¿cuántas fueron correctas?"</em>
+                </p>
+
+                <div class="formula-block">
+                    Precision = TP / (TP + FP)
+                </div>
+                <p class="text-center">Verdaderos Positivos / Total de Predicciones Positivas</p>
+
+                <div class="highlight-box primary">
+                    <p class="title">Interpretación Intuitiva:</p>
+                    <p class="content">Precision alta significa que cuando el modelo dice "SÍ", <strong>probablemente tiene razón</strong>. Minimiza los <strong>Falsos Positivos (FP)</strong>.</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title">Ejemplo Spam:</p>
+                    <div class="formula-block">
+                        TP = 100 (spam detectado correctamente)<br>
+                        FP = 30 (emails legítimos marcados como spam)<br><br>
+                        Precision = 100 / (100 + 30) = <strong class="color-success">0.77 (77%)</strong><br><br>
+                        → El 77% de los emails marcados como spam realmente LO SON
+                    </div>
+                </div>
+
+                <div class="advantage-box">
+                    <h4>✅ Usar Precision cuando:</h4>
+                    <ul>
+                        <li><strong>Los Falsos Positivos son muy costosos</strong></li>
+                        <li>Ejemplo: Filtro de spam (marcar email importante como spam)</li>
+                        <li>Ejemplo: Sistema de recomendación (recomendar producto irrelevante)</li>
+                        <li>Ejemplo: Alertas de seguridad (demasiadas falsas alarmas causan fatiga)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-card secondary mt-2">
+                <h3 class="color-secondary">Recall (Sensibilidad / Exhaustividad)</h3>
+
+                <p>
+                    El <strong>Recall</strong> responde: <em>"De todos los casos POSITIVOS reales, ¿cuántos detecté?"</em>
+                </p>
+
+                <div class="formula-block">
+                    Recall = TP / (TP + FN)
+                </div>
+                <p class="text-center">Verdaderos Positivos / Total de Casos Positivos Reales</p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">Interpretación Intuitiva:</p>
+                    <p class="content">Recall alto significa que el modelo <strong>encuentra la mayoría de los casos positivos</strong>. Minimiza los <strong>Falsos Negativos (FN)</strong>.</p>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo Spam:</p>
+                    <div class="formula-block">
+                        TP = 100 (spam detectado correctamente)<br>
+                        FN = 20 (spam que pasó como legítimo)<br><br>
+                        Recall = 100 / (100 + 20) = <strong class="color-success">0.83 (83%)</strong><br><br>
+                        → Detectamos el 83% de TODO el spam real
+                    </div>
+                </div>
+
+                <div class="advantage-box">
+                    <h4>✅ Usar Recall cuando:</h4>
+                    <ul>
+                        <li><strong>Los Falsos Negativos son muy costosos</strong></li>
+                        <li>Ejemplo: Detección de cáncer (NO detectar un cáncer es fatal)</li>
+                        <li>Ejemplo: Fraude bancario (perder fraudes es muy costoso)</li>
+                        <li>Ejemplo: Detección de fallos en aviones (NO detectar fallo = desastre)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box mt-2">
+                <h4>⚖️ El Trade-off Precision vs Recall</h4>
+                <p><strong>Aumentar Precision suele disminuir Recall, y viceversa.</strong> Es como ajustar un umbral de decisión:</p>
+
+                <div class="grid-features mt-1">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Umbral Alto (Estricto)</h4>
+                        <p>Solo predecimos "Positivo" cuando estamos MUY seguros</p>
+                        <p>→ <strong class="color-success">Precision ALTA</strong></p>
+                        <p>→ <strong class="color-error">Recall BAJO</strong></p>
+                        <p>→ Menos FP, más FN</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Umbral Bajo (Permisivo)</h4>
+                        <p>Predecimos "Positivo" con poca evidencia</p>
+                        <p>→ <strong class="color-error">Precision BAJA</strong></p>
+                        <p>→ <strong class="color-success">Recall ALTO</strong></p>
+                        <p>→ Más FP, menos FN</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: F-SCORES -->
+        <section id="f-scores">
+            <h2>F-Scores: combinando Precision y Recall</h2>
+
+            <p>
+                Los <strong>F-Scores</strong> son métricas que combinan Precision y Recall en un solo número, permitiendo <strong>balancear ambas métricas</strong> según la importancia relativa que les demos.
+            </p>
+
+            <div class="feature-card primary">
+                <h3 class="color-primary">⚖️ F1 Score (Media Armónica)</h3>
+
+                <p>
+                    El <strong>F1 Score</strong> es la <strong>media armónica</strong> entre Precision y Recall. Da <strong>igual peso</strong> a ambas métricas.
+                </p>
+
+                <div class="formula-block">
+                    F1 = 2 × (Precision × Recall) / (Precision + Recall)
+                </div>
+                <p class="text-center">Rango: [0, 1] donde 1 es perfecto</p>
+
+                <div class="highlight-box primary">
+                    <p class="title">¿Por qué Media Armónica?</p>
+                    <p class="content">La media armónica <strong>penaliza valores desequilibrados</strong>. Si Precision=0.9 y Recall=0.1, la media aritmética daría 0.5, pero F1 da ~0.18, reflejando que el modelo es malo.</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title">Ejemplo Spam (continuación):</p>
+                    <div class="formula-block">
+                        Precision = 0.77<br>
+                        Recall = 0.83<br><br>
+                        F1 = 2 × (0.77 × 0.83) / (0.77 + 0.83)<br>
+                        F1 = 2 × 0.639 / 1.60 = <strong class="color-success">0.80 (80%)</strong>
+                    </div>
+                </div>
+
+                <div class="advantage-box">
+                    <h4>✅ Usar F1 cuando:</h4>
+                    <ul>
+                        <li>Las clases están <strong>desbalanceadas</strong></li>
+                        <li>Quieres <strong>balancear Precision y Recall</strong></li>
+                        <li>Ambos tipos de error (FP y FN) son <strong>igualmente importantes</strong></li>
+                        <li>Necesitas una <strong>métrica única</strong> para comparar modelos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-card secondary mt-2">
+                <h3 class="color-secondary">F2 Score y F0.5 Score: Ajustando Prioridades</h3>
+
+                <p>
+                    Los <strong>F-beta scores</strong> permiten <strong>dar más peso a Precision o Recall</strong> según nuestras necesidades:
+                </p>
+
+                <div class="formula-block">
+                    F_β = (1 + β²) × (Precision × Recall) / (β² × Precision + Recall)
+                </div>
+
+                <div class="grid-features mt-1">
+                    <div class="card" style="border-left: 4px solid #F39C12;">
+                        <p class="formula-block color-warning">F2 Score (β = 2)</p>
+                        <p><strong>Da el doble de importancia a Recall</strong> que a Precision</p>
+                        <p><strong>Úsalo cuando:</strong> Falsos Negativos son MÁS costosos que Falsos Positivos</p>
+                        <p class="color-warning"><strong>Ej:</strong> Detección de cáncer</p>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid #3498DB;">
+                        <p class="formula-block" style="color: #3498DB;">F0.5 Score (β = 0.5)</p>
+                        <p><strong>Da el doble de importancia a Precision</strong> que a Recall</p>
+                        <p><strong>Úsalo cuando:</strong> Falsos Positivos son MÁS costosos que Falsos Negativos</p>
+                        <p style="color: #3498DB;"><strong>Ej:</strong> Motor de búsqueda</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container mt-2">
+                <h4>Comparación Visual del Impacto de Beta</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Peso Recall</th>
+                            <th>Peso Precision</th>
+                            <th>Prioridad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>F0.5</strong></td>
+                            <td>1</td>
+                            <td><strong>2</strong></td>
+                            <td>Evitar FP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>F1</strong></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Balance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>F2</strong></td>
+                            <td><strong>2</strong></td>
+                            <td>1</td>
+                            <td>Evitar FN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: MÉTRICAS PROBABILÍSTICAS -->
+        <section id="probabilisticas">
+            <h2>Métricas probabilísticas: ROC AUC, PR AUC y Brier Score</h2>
+
+            <p>
+                Estas métricas evalúan la <strong>calidad de las probabilidades</strong> predichas por el modelo, no solo las etiquetas finales.
+            </p>
+
+            <div class="feature-card primary">
+                <h3 class="color-primary">ROC AUC (Receiver Operating Characteristic - Area Under Curve)</h3>
+
+                <p>
+                    El <strong>ROC AUC</strong> mide la <strong>capacidad del modelo para distinguir entre clases</strong> a través de todos los umbrales posibles.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">¿Qué es la Curva ROC?</p>
+                    <p class="content">Gráfico que muestra <strong>TPR (True Positive Rate = Recall)</strong> vs <strong>FPR (False Positive Rate)</strong> para diferentes umbrales de clasificación.</p>
+                    <div class="formula-block">
+                        TPR = TP / (TP + FN) → Recall<br>
+                        FPR = FP / (FP + TN) → Tasa de Falsos Positivos
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title">Interpretación del AUC</p>
+                    <ul>
+                        <li><strong>AUC = 1.0:</strong> Clasificador perfecto</li>
+                        <li><strong>AUC = 0.9-0.99:</strong> Excelente</li>
+                        <li><strong>AUC = 0.8-0.89:</strong> Muy bueno</li>
+                        <li><strong>AUC = 0.7-0.79:</strong> Bueno</li>
+                        <li><strong>AUC = 0.5:</strong> Modelo aleatorio (inútil)</li>
+                        <li><strong>AUC < 0.5:</strong> Peor que aleatorio</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-grid mt-1">
+                    <div class="advantage-box">
+                        <h4>✅ Usar ROC AUC cuando:</h4>
+                        <ul>
+                            <li>Quieres evaluar el <strong>modelo en todos los umbrales</strong></li>
+                            <li>Las clases están <strong>balanceadas</strong></li>
+                            <li>Te importa la <strong>capacidad de separación</strong> general</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantage-box">
+                        <h4>❌ NO usar ROC AUC cuando:</h4>
+                        <ul>
+                            <li>Las clases están <strong>muy desbalanceadas</strong> (puede ser optimista)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card secondary mt-2">
+                <h3 class="color-secondary">PR AUC (Precision-Recall Area Under Curve)</h3>
+
+                <p>
+                    El <strong>PR AUC</strong> es el área bajo la curva que grafica <strong>Precision vs Recall</strong> para diferentes umbrales. Es <strong>más informativo que ROC AUC en datasets desbalanceados</strong>.
+                </p>
+
+                <div class="highlight-box secondary">
+                    <p class="title">¿Por qué es mejor para datos desbalanceados?</p>
+                    <p class="content">PR AUC se centra en la <strong>clase positiva (minoritaria)</strong>. ROC AUC puede ser engañosamente alto cuando hay muchos negativos bien clasificados, incluso si el modelo falla en la clase positiva.</p>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">Comparación: ROC AUC vs PR AUC</p>
+                    <p class="content"><strong>Dataset: 1% fraudes (99% legítimo)</strong></p>
+                    <div class="formula-block">
+                        Modelo A: ROC AUC = 0.92 | PR AUC = <strong class="color-error">0.45</strong> ❌<br>
+                        Modelo B: ROC AUC = 0.88 | PR AUC = <strong class="color-success">0.72</strong> ✅<br><br>
+                        → Modelo B es MEJOR para detectar fraudes
+                    </div>
+                </div>
+
+                <div class="advantage-box">
+                    <h4>✅ Usar PR AUC cuando:</h4>
+                    <ul>
+                        <li>Las clases están <strong>muy desbalanceadas</strong></li>
+                        <li>La <strong>clase positiva es la importante</strong></li>
+                        <li>Quieres una métrica más <strong>conservadora y realista</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-card mt-2" style="border: 2px solid #3498DB;">
+                <h3 style="color: #3498DB;">Brier Score: Calidad de Probabilidades</h3>
+
+                <p>
+                    El <strong>Brier Score</strong> mide el <strong>error cuadrático medio</strong> entre las probabilidades predichas y los resultados reales. Evalúa qué tan <strong>bien calibradas</strong> están las probabilidades.
+                </p>
+
+                <div class="formula-block">
+                    Brier Score = (1/N) × Σ(p_i - y_i)²
+                </div>
+                <p class="text-center">Rango: [0, 1] donde <strong>0 es perfecto</strong> (menor es mejor)</p>
+
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo:</p>
+                    <p class="content">Si el modelo predice P(cáncer) = 0.3 pero el paciente SÍ tiene cáncer (y=1):</p>
+                    <div class="formula-block">
+                        Error = (0.3 - 1)² = 0.49<br><br>
+                        Un modelo que predice 0.8 tendría error = (0.8 - 1)² = 0.04 (mejor)
+                    </div>
+                </div>
+
+                <div class="advantage-box">
+                    <h4>✅ Usar Brier Score cuando:</h4>
+                    <ul>
+                        <li>Necesitas <strong>probabilidades bien calibradas</strong></li>
+                        <li>Las probabilidades se usan para <strong>tomar decisiones</strong> (ej: medicina)</li>
+                        <li>Quieres evaluar la <strong>confianza del modelo</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: GUÍA DE SELECCIÓN -->
+        <section id="guia-seleccion">
+            <h2 class="color-primary text-center">Guía de selección de métricas</h2>
+
+            <p class="text-center">
+                Diagrama de flujo para <strong>elegir la métrica correcta</strong> según las características de tu problema
+            </p>
+
+            <div class="svg-container">
+                <svg width="800" height="500" viewBox="0 0 800 500" style="max-width: 100%;">
+                    <!-- Título -->
+                    <text x="400" y="25" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Árbol de Decisión: ¿Qué Métrica Usar?</text>
+
+                    <!-- NIVEL 1: Tipo de predicción -->
+                    <rect x="300" y="45" width="200" height="50" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2" rx="8"/>
+                    <text x="400" y="68" font-size="12" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">¿Qué quieres predecir?</text>
+                    <text x="400" y="85" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">Etiquetas o Probabilidades</text>
+
+                    <!-- Flechas desde nivel 1 -->
+                    <line x1="350" y1="95" x2="200" y2="130" stroke="#49B9CE" stroke-width="2"/>
+                    <line x1="450" y1="95" x2="600" y2="130" stroke="#8A7AAF" stroke-width="2"/>
+
+                    <!-- RAMA IZQUIERDA: ETIQUETAS -->
+                    <rect x="100" y="130" width="200" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="6"/>
+                    <text x="200" y="150" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Etiquetas (0 o 1)</text>
+                    <text x="200" y="163" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Predicciones binarias</text>
+
+                    <!-- RAMA DERECHA: PROBABILIDADES -->
+                    <rect x="500" y="130" width="200" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="6"/>
+                    <text x="600" y="150" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Probabilidades</text>
+                    <text x="600" y="163" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Confianza: 0.0 - 1.0</text>
+
+                    <!-- NIVEL 2: Balanceo -->
+                    <line x1="200" y1="170" x2="200" y2="200" stroke="#49B9CE" stroke-width="2"/>
+
+                    <rect x="100" y="200" width="200" height="40" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="6" stroke-dasharray="4,4"/>
+                    <text x="200" y="220" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">¿Clases balanceadas?</text>
+                    <text x="200" y="235" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">(~50-50)</text>
+
+                    <!-- Flechas SÍ/NO -->
+                    <text x="130" y="255" font-size="10" font-weight="bold" fill="#27AE60" font-family="Montserrat">SÍ</text>
+                    <line x1="150" y1="240" x2="100" y2="280" stroke="#27AE60" stroke-width="2"/>
+
+                    <text x="270" y="255" font-size="10" font-weight="bold" fill="#E74C3C" font-family="Montserrat">NO</text>
+                    <line x1="250" y1="240" x2="300" y2="280" stroke="#E74C3C" stroke-width="2"/>
+
+                    <!-- ACCURACY -->
+                    <rect x="30" y="280" width="140" height="50" fill="#27AE60" stroke="#1e7e3c" stroke-width="2" rx="8"/>
+                    <text x="100" y="302" font-size="14" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">ACCURACY</text>
+                    <text x="100" y="318" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">% correctas</text>
+
+                    <!-- DESBALANCEADAS -->
+                    <rect x="230" y="280" width="140" height="40" fill="#FFF3CD" stroke="#F39C12" stroke-width="2" rx="6"/>
+                    <text x="300" y="298" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Desbalanceadas</text>
+                    <text x="300" y="312" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">¿Qué error es costoso?</text>
+
+                    <!-- Flechas desde desbalanceadas -->
+                    <line x1="250" y1="320" x2="180" y2="360" stroke="#3498DB" stroke-width="2"/>
+                    <line x1="300" y1="320" x2="300" y2="360" stroke="#8A7AAF" stroke-width="2"/>
+                    <line x1="350" y1="320" x2="420" y2="360" stroke="#F39C12" stroke-width="2"/>
+
+                    <text x="195" y="350" font-size="8" fill="#3498DB" font-family="Montserrat">FP</text>
+                    <text x="290" y="350" font-size="8" fill="#8A7AAF" font-family="Montserrat">Igual</text>
+                    <text x="400" y="350" font-size="8" fill="#F39C12" font-family="Montserrat">FN</text>
+
+                    <!-- PRECISION -->
+                    <rect x="110" y="360" width="130" height="50" fill="#3498DB" stroke="#2874A6" stroke-width="2" rx="8"/>
+                    <text x="175" y="382" font-size="13" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">PRECISION</text>
+                    <text x="175" y="398" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Evita FP</text>
+
+                    <!-- F1 -->
+                    <rect x="260" y="360" width="130" height="50" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2" rx="8"/>
+                    <text x="325" y="382" font-size="13" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">F1 SCORE</text>
+                    <text x="325" y="398" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Balance</text>
+
+                    <!-- RECALL -->
+                    <rect x="410" y="360" width="130" height="50" fill="#F39C12" stroke="#D68910" stroke-width="2" rx="8"/>
+                    <text x="475" y="382" font-size="13" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">RECALL</text>
+                    <text x="475" y="398" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Evita FN</text>
+
+                    <!-- RAMA PROBABILIDADES -->
+                    <line x1="600" y1="170" x2="600" y2="200" stroke="#8A7AAF" stroke-width="2"/>
+
+                    <rect x="500" y="200" width="200" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="6" stroke-dasharray="4,4"/>
+                    <text x="600" y="220" font-size="11" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">¿Necesitas calibración?</text>
+
+                    <!-- Flechas probabilidades -->
+                    <text x="530" y="255" font-size="10" font-weight="bold" fill="#27AE60" font-family="Montserrat">SÍ</text>
+                    <line x1="550" y1="240" x2="500" y2="280" stroke="#E74C3C" stroke-width="2"/>
+
+                    <text x="670" y="255" font-size="10" font-weight="bold" fill="#E74C3C" font-family="Montserrat">NO</text>
+                    <line x1="650" y1="240" x2="700" y2="280" stroke="#8A7AAF" stroke-width="2"/>
+
+                    <!-- BRIER SCORE -->
+                    <rect x="430" y="280" width="140" height="50" fill="#E74C3C" stroke="#C0392B" stroke-width="2" rx="8"/>
+                    <text x="500" y="302" font-size="12" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">BRIER SCORE</text>
+                    <text x="500" y="318" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Calibración</text>
+
+                    <!-- Pregunta balanceo en probabilidades -->
+                    <rect x="620" y="280" width="140" height="40" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="6" stroke-dasharray="4,4"/>
+                    <text x="690" y="300" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">¿Balanceadas?</text>
+
+                    <!-- Flechas finales -->
+                    <text x="640" y="335" font-size="8" fill="#E74C3C" font-family="Montserrat">NO</text>
+                    <line x1="660" y1="320" x2="620" y2="360" stroke="#9B59B6" stroke-width="2"/>
+
+                    <text x="740" y="335" font-size="8" fill="#27AE60" font-family="Montserrat">SÍ</text>
+                    <line x1="720" y1="320" x2="760" y2="360" stroke="#16A085" stroke-width="2"/>
+
+                    <!-- PR AUC -->
+                    <rect x="560" y="360" width="120" height="50" fill="#9B59B6" stroke="#7D3C98" stroke-width="2" rx="8"/>
+                    <text x="620" y="382" font-size="12" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">PR AUC</text>
+                    <text x="620" y="398" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Desbalanceo</text>
+
+                    <!-- ROC AUC -->
+                    <rect x="700" y="360" width="120" height="50" fill="#16A085" stroke="#117A65" stroke-width="2" rx="8"/>
+                    <text x="760" y="382" font-size="12" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">ROC AUC</text>
+                    <text x="760" y="398" font-size="8" fill="white" text-anchor="middle" font-family="Montserrat">Separación</text>
+
+                    <!-- Leyenda -->
+                    <rect x="30" y="440" width="740" height="50" fill="#F9F9F9" stroke="#e5e5e5" stroke-width="1" rx="6"/>
+                    <text x="400" y="457" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Resumen Rápido</text>
+                    <text x="100" y="478" font-size="9" fill="#555555" font-family="Montserrat">Balanceadas: Accuracy, ROC</text>
+                    <text x="280" y="478" font-size="9" fill="#555555" font-family="Montserrat">Desbalanceadas: F1, PR AUC</text>
+                    <text x="460" y="478" font-size="9" fill="#555555" font-family="Montserrat">FP costosos: Precision</text>
+                    <text x="620" y="478" font-size="9" fill="#555555" font-family="Montserrat">FN costosos: Recall</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: CASOS PRÁCTICOS -->
+        <section id="casos-practicos">
+            <h2>Casos prácticos del mundo real</h2>
+
+            <p>
+                Veamos cómo las empresas tecnológicas líderes eligen sus métricas según el contexto del problema:
+            </p>
+
+            <div class="grid-comparison">
+                <!-- CASO 1: GMAIL SPAM -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Gmail - Filtro de Spam</h4>
+                    <p><strong>Problema:</strong> Clasificar emails como spam o legítimo</p>
+                    <div class="highlight-box primary">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block color-primary">PRECISION</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> Un email importante marcado como spam (FP) causa más daño que dejar pasar algo de spam (FN). Google optimiza para <strong>minimizar Falsos Positivos</strong>.</p>
+                </div>
+
+                <!-- CASO 2: DETECCIÓN DE CÁNCER -->
+                <div class="feature-card" style="border-color: #E74C3C;">
+                    <h4 class="color-error">IBM Watson - Cáncer</h4>
+                    <p><strong>Problema:</strong> Detectar tumores en imágenes médicas</p>
+                    <div class="highlight-box" style="background: #FADBD8; border-color: #E74C3C;">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block color-error">RECALL</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> NO detectar un cáncer (FN) es fatal. Es preferible tener algunas falsas alarmas (FP) y hacer más pruebas, que <strong>perder un caso de cáncer</strong>.</p>
+                </div>
+
+                <!-- CASO 3: FRAUDE BANCARIO -->
+                <div class="feature-card" style="border-color: #F39C12;">
+                    <h4 class="color-warning">PayPal - Fraude</h4>
+                    <p><strong>Problema:</strong> Detectar transacciones fraudulentas (1% del total)</p>
+                    <div class="highlight-box warning">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block color-warning">PR AUC + F2 Score</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> Dataset muy desbalanceado. PR AUC evalúa mejor el rendimiento en la clase minoritaria. F2 prioriza <strong>detectar fraudes (Recall)</strong> sobre precisión.</p>
+                </div>
+
+                <!-- CASO 4: NETFLIX RECOMENDACIONES -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Netflix - Recomendaciones</h4>
+                    <p><strong>Problema:</strong> Predecir si un usuario verá una película</p>
+                    <div class="highlight-box secondary">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block color-secondary">PRECISION + ROC AUC</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> Recomendar contenido malo (FP) frustra usuarios. ROC AUC evalúa la capacidad general de ranking. Optimizan para <strong>alta relevancia</strong>.</p>
+                </div>
+
+                <!-- CASO 5: TESLA AUTOPILOT -->
+                <div class="feature-card" style="border-color: #27AE60;">
+                    <h4 class="color-success">Tesla - Detección Peatones</h4>
+                    <p><strong>Problema:</strong> Detectar peatones en tiempo real</p>
+                    <div class="highlight-box" style="background: #D5F4E6; border-color: #27AE60;">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block color-success">RECALL (99.99%+)</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> NO detectar un peatón (FN) = accidente mortal. Toleran <strong>falsas alarmas</strong> (frenar sin razón) para garantizar seguridad máxima.</p>
+                </div>
+
+                <!-- CASO 6: FACEBOOK MODERACIÓN -->
+                <div class="feature-card" style="border-color: #3498DB;">
+                    <h4 style="color: #3498DB;">Meta - Moderación</h4>
+                    <p><strong>Problema:</strong> Detectar contenido inapropiado</p>
+                    <div class="highlight-box" style="background: #D6EAF8; border-color: #3498DB;">
+                        <p class="title">Métrica Principal:</p>
+                        <p class="formula-block" style="color: #3498DB;">F1 Score (balanceado)</p>
+                    </div>
+                    <p><strong class="color-error">¿Por qué?</strong> Necesitan <strong>balancear</strong>: borrar contenido legítimo (FP) vs dejar contenido tóxico (FN). Ambos errores dañan la plataforma.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 10: RESUMEN -->
+        <section id="resumen">
+            <h2 class="color-primary text-center">Resumen: puntos clave</h2>
+
+            <div class="final-grid">
+                <div class="final-card technical">
+                    <h3 class="color-primary">Principios Fundamentales</h3>
+                    <ul>
+                        <li>La <strong>métrica correcta depende del problema</strong>, no existe una "mejor" métrica universal</li>
+                        <li><strong>Accuracy falla</strong> con clases desbalanceadas</li>
+                        <li>El <strong>coste de los errores</strong> determina si usar Precision o Recall</li>
+                        <li><strong>F-scores</strong> combinan Precision y Recall con pesos ajustables</li>
+                    </ul>
+                </div>
+
+                <div class="final-card philosophical">
+                    <h3 class="color-secondary">Reglas Rápidas</h3>
+                    <ul>
+                        <li><strong>Balanceadas:</strong> Accuracy, ROC AUC</li>
+                        <li><strong>Desbalanceadas:</strong> F1, PR AUC</li>
+                        <li><strong>FP costosos:</strong> Precision, F0.5</li>
+                        <li><strong>FN costosos:</strong> Recall, F2</li>
+                        <li><strong>Probabilidades:</strong> Brier Score</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="challenge-box mt-2">
+                <h3>La Regla de Oro</h3>
+                <p>
+                    <strong class="color-primary">"No optimices ciegamente una métrica."</strong><br>
+                    Entiende tu problema, los costes de cada error, y elige la métrica que <strong>alinee el modelo con los objetivos de negocio</strong>. Una métrica incorrecta puede llevar a un modelo técnicamente bueno pero <strong>inútil en la práctica</strong>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">
+            Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.
+        </p>
+        <p class="description">
+            Titulaciones 100% oficiales. ¡Sin pruebas libres!
+        </p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

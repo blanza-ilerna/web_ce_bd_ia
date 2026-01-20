@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Data Skew en Big Data: Definición, causas (Hot Keys), consecuencias y estrategias de mitigación (Salting, Broadcast Joins).">
+    <title>Data Skew: El Problema del Sesgo de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Big Data</a> ›
+                    <span>Data Skew</span>
+                </div>
+            </div>
+            <h1 class="text-center">Data Skew: El Enemigo de la Paralelización</h1>
+        </header>
+
+        <main>
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>⚖️ ¿Por qué mi Clúster es Lento si tengo 100 Nodos?</h2>
+                    <p class="hero-description">
+                        En teoría, distribuir datos entre 100 nodos debería hacer el procesamiento 100 veces más rápido.
+                        En la práctica, el <strong>Data Skew</strong> (sesgo de datos) rompe esta promesa. Ocurre cuando
+                        la distribución de los datos no es uniforme, provocando que unos pocos nodos se sobrecarguen
+                        mientras el resto espera ocioso. Es la causa #1 de fallos de memoria (OOM) y rendimiento
+                        pobre en Spark, Hive y Hadoop.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Table of Contents -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. ¿Qué es el Data Skew?</a></li>
+                    <li><a href="#causas">2. Causas Comunes: El Problema de las "Hot Keys"</a></li>
+                    <li><a href="#consecuencias">3. Consecuencias: El Efecto "Straggler"</a></li>
+                    <li><a href="#mitigacion">4. Estrategias de Mitigación</a></li>
+                </ul>
+            </nav>
+
+            <!-- Sección 1: Introducción -->
+            <section id="introduccion" class="content-section">
+                <h2>1. ¿Qué es el Data Skew?</h2>
+
+                <div class="highlight-box warning">
+                    <h4>⚠️ Definición</h4>
+                    <p>
+                        El <strong>Data Skew</strong> es un desequilibrio en la distribución de los datos a través de
+                        las particiones o nodos de un sistema distribuido. En lugar de tener una carga de trabajo
+                        repartida equitativamente, algunos nodos reciben una cantidad desproporcionada de datos.
+                    </p>
+                </div>
+
+                <h3>Visualizando el Problema</h3>
+                <p>
+                    Imaginemos que tenemos que procesar 1 millón de registros usando 4 nodos.
+                </p>
+
+                <div class="grid-features" style="grid-template-columns: 1fr 1fr;">
+                    <div class="feature-card">
+                        <h4>✅ Distribución Uniforme (Ideal)</h4>
+                        <div
+                            style="display: flex; align-items: flex-end; justify-content: space-around; height: 150px; border-bottom: 2px solid #333; padding-bottom: 10px;">
+                            <div
+                                style="width: 20%; background-color: #43A047; height: 80%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                25%</div>
+                            <div
+                                style="width: 20%; background-color: #43A047; height: 80%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                25%</div>
+                            <div
+                                style="width: 20%; background-color: #43A047; height: 80%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                25%</div>
+                            <div
+                                style="width: 20%; background-color: #43A047; height: 80%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                25%</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px;">Todos los nodos terminan al mismo tiempo.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>❌ Con Data Skew (Realidad)</h4>
+                        <div
+                            style="display: flex; align-items: flex-end; justify-content: space-around; height: 150px; border-bottom: 2px solid #333; padding-bottom: 10px;">
+                            <div
+                                style="width: 20%; background-color: #C73E1D; height: 95%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                80%</div>
+                            <div
+                                style="width: 20%; background-color: #F18F01; height: 10%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                5%</div>
+                            <div
+                                style="width: 20%; background-color: #F18F01; height: 5%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                5%</div>
+                            <div
+                                style="width: 20%; background-color: #F18F01; height: 10%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                10%</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px;">Un nodo trabaja mientras el resto espera.</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Sección 2: Causas -->
+            <section id="causas" class="content-section">
+                <h2>2. Causas Comunes: El Problema de las "Hot Keys"</h2>
+
+                <p>
+                    La causa más frecuente de Data Skew es la existencia de <strong>Hot Keys</strong>: claves de
+                    particionado que aparecen con mucha más frecuencia que otras.
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🌍 Particionado por País</h4>
+                        <p><strong>Escenario:</strong> Procesar logs de acceso global.</p>
+                        <p><strong>Problema:</strong> Si particionamos por `country_code`, el nodo que procese "US"
+                            (Estados Unidos) o "CN" (China) tendrá cientos de millones de registros, mientras que el
+                            nodo que procese "AD" (Andorra) tendrá muy pocos.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📱 Redes Sociales (Claves NULL)</h4>
+                        <p><strong>Escenario:</strong> Unir tablas de usuarios.</p>
+                        <p><strong>Problema:</strong> Los valores `NULL` o vacíos a menudo se envían al mismo
+                            particionador. Si el 30% de tus registros tienen `user_id = NULL`, todos irán al mismo nodo,
+                            colapsándolo inmediatamente.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⭐ Influencers y Bestsellers</h4>
+                        <p><strong>Escenario:</strong> E-commerce o Twitter.</p>
+                        <p><strong>Problema:</strong> Un producto viral en Amazon o un tweet de una celebridad genera
+                            millones de interacciones. Al hacer un `GROUP BY product_id` o `JOIN` por usuario, esa clave
+                            específica sobrecarga su nodo.</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Sección 3: Consecuencias -->
+            <section id="consecuencias" class="content-section">
+                <h2>3. Consecuencias: El Efecto "Straggler"</h2>
+
+                <div class="highlight-box info">
+                    <h4>🐢 El Problema del Nodo Más Lento</h4>
+                    <p>
+                        En computación distribuida, <strong>la velocidad del clúster es la velocidad de su nodo más
+                            lento</strong>.
+                        Si 99 nodos terminan en 1 minuto pero 1 nodo tarda 1 hora debido al skew, el trabajo total tarda
+                        1 hora.
+                    </p>
+                </div>
+
+                <div class="grid-features">
+                    <div class="feature-card" style="border-left: 4px solid #C73E1D;">
+                        <h4>1. Desperdicio de Recursos</h4>
+                        <p>El 99% de tu clúster (CPU y RAM) se queda ocioso esperando a que termine el nodo
+                            sobrecargado. Estás pagando por 100 servidores pero usando efectivamente solo 1 al final.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #C73E1D;">
+                        <h4>2. Errores Out Of Memory (OOM)</h4>
+                        <p>Si la cantidad de datos para una sola clave excede la memoria RAM de un solo nodo, el proceso
+                            fallará con un error de memoria, sin importar cuán grande sea el clúster total.</p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #C73E1D;">
+                        <h4>3. Latencia Impredecible</h4>
+                        <p>Trabajos que normalmente toman minutos pueden saltar a horas aleatoriamente dependiendo de la
+                            distribución de datos del día (ej. Black Friday).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 4: Mitigación -->
+            <section id="mitigacion" class="content-section">
+                <h2>4. Estrategias de Mitigación</h2>
+
+                <h3>1. Salting (Salado de Claves)</h3>
+                <p>
+                    Consiste en añadir un sufijo aleatorio a las claves que sufren de skew para distribuirlas en
+                    múltiples particiones.
+                </p>
+                <div class="highlight-box success">
+                    <h4>🛠️ Cómo funciona el Salting</h4>
+                    <ol>
+                        <li>Identificar la clave problemática (ej. "US").</li>
+                        <li>Añadir un sufijo aleatorio del 1 al N (ej. "US_1", "US_2", ..., "US_5").</li>
+                        <li>Ahora los datos de "US" se reparten entre 5 nodos en lugar de 1.</li>
+                        <li>Realizar la agregación parcial en cada nodo.</li>
+                        <li>Eliminar el sufijo y realizar la agregación final global.</li>
+                    </ol>
+                </div>
+
+                <h3>2. Broadcast Join (Map-Side Join)</h3>
+                <p>
+                    Si una de las tablas es pequeña, en lugar de barajar (shuffle) ambas tablas, enviamos una copia
+                    completa de la tabla pequeña a todos los nodos.
+                </p>
+                <ul>
+                    <li><strong>Ventaja:</strong> Evita el shuffle de la tabla grande, eliminando el skew de red.</li>
+                    <li><strong>Requisito:</strong> Una tabla debe caber en la memoria de cada nodo.</li>
+                </ul>
+
+                <h3>3. Filtrado de Skew (Arquitectura Lambda)</h3>
+                <pre><code class="language-python"># Pseudocódigo de estrategia de aislamiento
+# 1. Separar los datos en dos streams
+df_normal = df.filter(col("country") != "US")
+df_skewed = df.filter(col("country") == "US")
+
+# 2. Procesar df_normal de forma estándar (rápido)
+res_normal = df_normal.groupBy("country").count()
+
+# 3. Procesar df_skewed con técnicas especiales (ej. más paralelismo o salting)
+res_skewed = df_skewed.repartition(100).groupBy("country").count()
+
+# 4. Unir resultados
+final_result = res_normal.union(res_skewed)</code></pre>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

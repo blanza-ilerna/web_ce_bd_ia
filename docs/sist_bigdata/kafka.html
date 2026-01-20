@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apache Kafka en Big Data: Plataforma de streaming distribuido para procesamiento de datos en tiempo real">
+    <meta name="keywords" content="Apache Kafka, streaming, Big Data, procesamiento tiempo real, mensajería distribuida, topics, particiones">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Apache Kafka en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Sistemas de Big Data</a> →
+                <span>Apache Kafka</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Apache Kafka en Big Data</h1>
+            <p class="subtitle">Plataforma de Streaming Distribuido para Procesamiento de Datos en Tiempo Real</p>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDOS -->
+        <section>
+            <div class="toc-container">
+                <h3>Índice de Contenidos</h3>
+                <ul class="toc-list">
+                    <li><a href="#que-es-kafka">1. ¿Qué es Apache Kafka?</a></li>
+                    <li><a href="#arquitectura">2. Arquitectura y Componentes Fundamentales</a></li>
+                    <li><a href="#productores">3. Productores: Publicando Mensajes</a></li>
+                    <li><a href="#consumidores">4. Consumidores y Consumer Groups</a></li>
+                    <li><a href="#casos-uso">5. Casos de Uso en Big Data</a></li>
+                    <li><a href="#kafka-streams">6. Kafka Streams y ksqlDB</a></li>
+                    <li><a href="#comparativa">7. Kafka vs Otras Tecnologías</a></li>
+                    <li><a href="#configuracion">8. Configuración y Buenas Prácticas</a></li>
+                    <li><a href="#resumen">9. Resumen y Conclusiones</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section id="que-es-kafka">
+            <h2>¿Qué es Apache Kafka?</h2>
+
+            <p>
+                <strong>Apache Kafka</strong> es una plataforma de streaming distribuido de código abierto creada originalmente por LinkedIn en 2011 y posteriormente donada a la Apache Software Foundation. Kafka está diseñado para manejar <strong>flujos de datos en tiempo real</strong> a escala masiva, procesando millones de eventos por segundo con baja latencia.
+            </p>
+
+            <p>
+                En arquitecturas de Big Data, Kafka actúa como un <strong>sistema nervioso central</strong> que permite la comunicación entre múltiples aplicaciones, microservicios y sistemas de procesamiento de datos, garantizando la entrega fiable de mensajes con alta disponibilidad y tolerancia a fallos.
+            </p>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Real: LinkedIn</p>
+                <p class="content">LinkedIn procesa más de <strong>7 billones de mensajes diarios</strong> a través de Kafka, gestionando actividades de usuarios, recomendaciones, análisis en tiempo real y sincronización de datos entre más de 100 sistemas diferentes con una latencia promedio de menos de 10 milisegundos.</p>
+            </div>
+
+            <h3>Capacidades Principales</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Publicar y Suscribir</h4>
+                    <p>Permite publicar y consumir flujos de registros como un sistema de mensajería distribuido.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Almacenamiento Duradero</h4>
+                    <p>Almacena flujos de registros de forma duradera y tolerante a fallos con replicación.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Procesamiento en Tiempo Real</h4>
+                    <p>Procesa flujos de datos conforme ocurren con baja latencia (milisegundos).</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Escalabilidad Horizontal</h4>
+                    <p>Escala fácilmente añadiendo más brokers y particiones sin interrupciones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ARQUITECTURA -->
+        <section id="arquitectura">
+            <h2>Arquitectura y Componentes Fundamentales</h2>
+
+            <h3 class="color-secondary">Diagrama de Arquitectura Kafka</h3>
+
+            <div class="svg-container">
+                <svg width="900" height="550" viewBox="0 0 900 550" style="max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Arquitectura Completa de Apache Kafka</text>
+
+                    <!-- PRODUCTORES -->
+                    <rect x="50" y="80" width="180" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
+                    <text x="140" y="110" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">PRODUCTORES</text>
+                    <text x="140" y="130" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Aplicaciones que</text>
+                    <text x="140" y="145" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">publican mensajes</text>
+
+                    <!-- Apps productoras -->
+                    <circle cx="80" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
+                    <text x="80" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App1</text>
+
+                    <circle cx="140" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
+                    <text x="140" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App2</text>
+
+                    <circle cx="200" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
+                    <text x="200" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App3</text>
+
+                    <!-- CLUSTER KAFKA (Centro) -->
+                    <rect x="280" y="60" width="340" height="350" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="4" rx="15"/>
+                    <text x="450" y="90" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">KAFKA CLUSTER</text>
+
+                    <!-- ZooKeeper -->
+                    <rect x="300" y="110" width="140" height="50" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                    <text x="370" y="130" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">ZooKeeper</text>
+                    <text x="370" y="148" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Coordinación cluster</text>
+
+                    <!-- Brokers -->
+                    <text x="450" y="190" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">BROKERS (Servidores Kafka)</text>
+
+                    <!-- Broker 1 -->
+                    <rect x="300" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="345" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 1</text>
+
+                    <rect x="310" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="345" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic A</text>
+                    <text x="345" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0,1</text>
+
+                    <rect x="310" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="345" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic B</text>
+                    <text x="345" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0</text>
+
+                    <rect x="310" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
+                    <text x="345" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
+                    <text x="345" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P2</text>
+                    <text x="345" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic B-P1</text>
+
+                    <!-- Broker 2 -->
+                    <rect x="405" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="450" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 2</text>
+
+                    <rect x="415" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="450" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic A</text>
+                    <text x="450" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 2</text>
+
+                    <rect x="415" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="450" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic C</text>
+                    <text x="450" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0</text>
+
+                    <rect x="415" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
+                    <text x="450" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
+                    <text x="450" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P0</text>
+                    <text x="450" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic B-P0</text>
+
+                    <!-- Broker 3 -->
+                    <rect x="510" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="555" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 3</text>
+
+                    <rect x="520" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="555" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic B</text>
+                    <text x="555" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 1</text>
+
+                    <rect x="520" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
+                    <text x="555" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic C</text>
+                    <text x="555" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 1</text>
+
+                    <rect x="520" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
+                    <text x="555" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
+                    <text x="555" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P1</text>
+                    <text x="555" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic C-P0</text>
+
+                    <!-- CONSUMIDORES -->
+                    <rect x="670" y="80" width="180" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="10"/>
+                    <text x="760" y="110" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">CONSUMIDORES</text>
+                    <text x="760" y="130" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Aplicaciones que</text>
+                    <text x="760" y="145" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">leen mensajes</text>
+
+                    <!-- Apps consumidoras -->
+                    <circle cx="700" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
+                    <text x="700" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C1</text>
+
+                    <circle cx="760" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
+                    <text x="760" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C2</text>
+
+                    <circle cx="820" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
+                    <text x="820" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C3</text>
+
+                    <!-- CONSUMER GROUPS -->
+                    <rect x="670" y="200" width="180" height="100" fill="white" stroke="#8A7AAF" stroke-width="2" rx="10"/>
+                    <text x="760" y="225" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group 1</text>
+
+                    <rect x="680" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1" rx="5"/>
+                    <text x="715" y="255" font-size="10" fill="#333333" text-anchor="middle" font-family="Montserrat">Consumer A</text>
+                    <text x="715" y="270" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0,1</text>
+
+                    <rect x="760" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1" rx="5"/>
+                    <text x="795" y="255" font-size="10" fill="#333333" text-anchor="middle" font-family="Montserrat">Consumer B</text>
+                    <text x="795" y="270" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 2</text>
+
+                    <rect x="670" y="320" width="180" height="60" fill="white" stroke="#8A7AAF" stroke-width="2" rx="10"/>
+                    <text x="760" y="345" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group 2</text>
+                    <text x="760" y="365" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Lee todos los mensajes</text>
+
+                    <!-- Flechas Productores -> Cluster -->
+                    <path d="M 230 120 L 280 180" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" fill="none"/>
+                    <text x="250" y="145" font-size="11" fill="#49B9CE" font-weight="bold" font-family="Montserrat">Publish</text>
+
+                    <!-- Flechas Cluster -> Consumidores -->
+                    <path d="M 620 180 L 670 120" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)" fill="none"/>
+                    <text x="640" y="145" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">Subscribe</text>
+
+                    <!-- ZooKeeper conectado a Brokers -->
+                    <line x1="370" y1="160" x2="345" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
+                    <line x1="370" y1="160" x2="450" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
+                    <line x1="440" y1="160" x2="555" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
+
+                    <!-- Marcadores de flecha -->
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        </marker>
+                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        </marker>
+                    </defs>
+
+                    <!-- Leyenda -->
+                    <rect x="50" y="440" width="800" height="90" fill="#fafafa" stroke="#e5e5e5" stroke-width="2" rx="8"/>
+                    <text x="450" y="465" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Conceptos Clave de la Arquitectura</text>
+
+                    <text x="70" y="490" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#49B9CE">Productores:</tspan> Publican mensajes a topics específicos</text>
+                    <text x="70" y="508" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#8A7AAF">Brokers:</tspan> Servidores que almacenan y sirven mensajes</text>
+
+                    <text x="470" y="490" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#49B9CE">Particiones:</tspan> División de topics para paralelismo</text>
+                    <text x="470" y="508" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#8A7AAF">Consumer Groups:</tspan> Procesamiento paralelo coordinado</text>
+                </svg>
+            </div>
+
+            <h3 class="color-primary mt-2">Componentes del Ecosistema</h3>
+
+            <div class="grid-features">
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Topic</p>
+                    <p>Categoría o flujo de mensajes (ej: "pedidos", "logs")</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-secondary);">
+                    <p class="formula-block color-secondary">Partición</p>
+                    <p>División ordenada de un topic para escalabilidad</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Broker</p>
+                    <p>Servidor Kafka que almacena y sirve datos</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-secondary);">
+                    <p class="formula-block color-secondary">Producer</p>
+                    <p>Cliente que publica mensajes a topics</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Consumer</p>
+                    <p>Cliente que lee mensajes de topics</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-secondary);">
+                    <p class="formula-block color-secondary">Consumer Group</p>
+                    <p>Grupo de consumidores que colaboran</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Offset</p>
+                    <p>Posición única de mensaje en partición</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-secondary);">
+                    <p class="formula-block color-secondary">ZooKeeper</p>
+                    <p>Coordinación y metadata del cluster (hasta v3.x)</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Réplica</p>
+                    <p>Copia de partición para alta disponibilidad</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-secondary);">
+                    <p class="formula-block color-secondary">Leader/Follower</p>
+                    <p>Réplica principal y sus copias de respaldo</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: PRODUCTORES -->
+        <section id="productores">
+            <h2>Productores: Publicando Mensajes</h2>
+
+            <p>
+                Los <strong>productores</strong> son aplicaciones que publican datos a topics de Kafka. Un productor puede enviar mensajes de forma síncrona o asíncrona, y Kafka garantiza su entrega ordenada dentro de cada partición.
+            </p>
+
+            <h3 class="color-primary">Ejemplo: Productor en Python</h3>
+
+            <pre><code class="language-python">from kafka import KafkaProducer
+import json
+from datetime import datetime
+
+# Configuración del productor
+producer = KafkaProducer(
+    bootstrap_servers=['localhost:9092'],
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    # Garantías de entrega
+    acks='all',  # Esperar confirmación de todas las réplicas
+    retries=3,   # Reintentos en caso de fallo
+    max_in_flight_requests_per_connection=1  # Orden garantizado
+)
+
+# Datos de ejemplo: evento de compra en e-commerce
+pedido = {
+    'pedido_id': 'PED-2024-001',
+    'usuario_id': 'USR-12345',
+    'producto': 'Laptop Dell XPS 15',
+    'precio': 1299.99,
+    'cantidad': 1,
+    'timestamp': datetime.now().isoformat(),
+    'estado': 'confirmado'
+}
+
+# Publicar mensaje al topic 'pedidos'
+future = producer.send(
+    topic='pedidos',
+    key=pedido['usuario_id'].encode('utf-8'),  # Key para particionamiento
+    value=pedido
+)
+
+# Esperar confirmación (síncrono)
+try:
+    record_metadata = future.get(timeout=10)
+    print(f"✅ Mensaje enviado a:")
+    print(f"   Topic: {record_metadata.topic}")
+    print(f"   Partición: {record_metadata.partition}")
+    print(f"   Offset: {record_metadata.offset}")
+except Exception as e:
+    print(f"❌ Error al enviar mensaje: {e}")
+finally:
+    producer.close()
+
+# Salida esperada:
+# ✅ Mensaje enviado a:
+#    Topic: pedidos
+#    Partición: 2
+#    Offset: 15847</code></pre>
+
+            <h3 class="color-secondary mt-2">Ejemplo: Productor en Java</h3>
+
+            <pre><code class="language-java">import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.serialization.StringSerializer;
+import java.util.Properties;
+
+public class KafkaProducerExample {
+    public static void main(String[] args) {
+        // Configuración del productor
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                  StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                  StringSerializer.class.getName());
+
+        // Garantías de entrega
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.RETRIES_CONFIG, 3);
+        props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1);
+
+        // Crear productor
+        KafkaProducer&lt;String, String&gt; producer =
+            new KafkaProducer&lt;&gt;(props);
+
+        // Crear mensaje
+        String topic = "eventos-usuario";
+        String key = "usuario-12345";
+        String value = "{\"evento\":\"login\",\"timestamp\":\"2024-12-15T10:30:00Z\"}";
+
+        ProducerRecord&lt;String, String&gt; record =
+            new ProducerRecord&lt;&gt;(topic, key, value);
+
+        // Enviar mensaje con callback asíncrono
+        producer.send(record, new Callback() {
+            @Override
+            public void onCompletion(RecordMetadata metadata, Exception e) {
+                if (e != null) {
+                    System.err.println("❌ Error: " + e.getMessage());
+                } else {
+                    System.out.println("✅ Enviado a partición " +
+                                     metadata.partition() +
+                                     " offset " + metadata.offset());
+                }
+            }
+        });
+
+        producer.close();
+    }
+}</code></pre>
+
+            <div class="highlight-box primary mt-2">
+                <p class="title">Configuraciones Clave del Productor</p>
+                <div class="grid-features">
+                    <div class="card">
+                        <p class="formula-block">acks=0</p>
+                        <p>No espera confirmación. Máximo throughput, sin garantía.</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">acks=1</p>
+                        <p>Espera confirmación del líder. Balance throughput/durabilidad.</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">acks=all (-1)</p>
+                        <p>Espera a todas las réplicas. Máxima durabilidad, menor throughput.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CONSUMIDORES -->
+        <section id="consumidores">
+            <h2>Consumidores y Consumer Groups</h2>
+
+            <p>
+                Los <strong>consumidores</strong> leen mensajes de topics. Kafka organiza consumidores en <strong>Consumer Groups</strong> para procesamiento paralelo: cada partición es procesada por un solo consumidor del grupo, permitiendo escalabilidad horizontal.
+            </p>
+
+            <h3 class="color-secondary">Ejemplo: Consumidor en Python</h3>
+
+            <pre><code class="language-python">from kafka import KafkaConsumer
+import json
+
+# Configuración del consumidor
+consumer = KafkaConsumer(
+    'pedidos',  # Topic a consumir
+    bootstrap_servers=['localhost:9092'],
+    auto_offset_reset='earliest',  # Desde el principio si es nuevo
+    enable_auto_commit=True,       # Commit automático de offsets
+    group_id='procesador-pedidos', # Consumer Group
+    value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+)
+
+print("🔄 Consumidor iniciado, esperando mensajes...")
+
+# Procesar mensajes en loop infinito
+for message in consumer:
+    pedido = message.value
+
+    print(f"\n📦 Nuevo pedido recibido:")
+    print(f"   Topic: {message.topic}")
+    print(f"   Partición: {message.partition}")
+    print(f"   Offset: {message.offset}")
+    print(f"   Key: {message.key.decode('utf-8') if message.key else 'None'}")
+    print(f"   Pedido ID: {pedido['pedido_id']}")
+    print(f"   Usuario: {pedido['usuario_id']}")
+    print(f"   Producto: {pedido['producto']}")
+    print(f"   Precio: ${pedido['precio']}")
+
+    # Procesar pedido (lógica de negocio aquí)
+    procesar_pedido(pedido)
+
+def procesar_pedido(pedido):
+    """Lógica de procesamiento del pedido"""
+    print(f"   ✅ Pedido {pedido['pedido_id']} procesado correctamente")</code></pre>
+
+            <h3 class="color-primary mt-2">Procesamiento Paralelo con Consumer Groups</h3>
+
+            <pre><code class="language-python">from kafka import KafkaConsumer
+from multiprocessing import Process
+import json
+
+def crear_consumidor(consumer_id, group_id, topic):
+    """Crear un consumidor individual en el grupo"""
+    consumer = KafkaConsumer(
+        topic,
+        bootstrap_servers=['localhost:9092'],
+        auto_offset_reset='earliest',
+        group_id=group_id,  # Mismo group_id para todos
+        value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+    )
+
+    print(f"🎯 Consumidor {consumer_id} iniciado en grupo '{group_id}'")
+
+    for message in consumer:
+        print(f"[Consumer-{consumer_id}] Procesando mensaje de "
+              f"partición {message.partition}, offset {message.offset}")
+
+# Crear 3 consumidores en el mismo grupo
+def main():
+    group_id = 'procesador-paralelo'
+    topic = 'pedidos'
+    num_consumers = 3
+
+    # Iniciar consumidores en procesos separados
+    processes = []
+    for i in range(num_consumers):
+        p = Process(target=crear_consumidor,
+                   args=(i+1, group_id, topic))
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+
+if __name__ == '__main__':
+    main()</code></pre>
+
+            <div class="svg-container mt-2">
+                <svg width="700" height="300" viewBox="0 0 700 300" style="max-width: 100%;">
+                    <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Distribución de Particiones entre Consumidores</text>
+
+                    <!-- Topic con 3 particiones -->
+                    <text x="100" y="70" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat">Topic: pedidos</text>
+
+                    <rect x="50" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="100" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 0</text>
+                    <text x="100" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-1000</text>
+
+                    <rect x="170" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="220" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 1</text>
+                    <text x="220" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-2000</text>
+
+                    <rect x="290" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                    <text x="340" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 2</text>
+                    <text x="340" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-1500</text>
+
+                    <!-- Consumer Group -->
+                    <text x="220" y="185" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group: procesador-paralelo</text>
+
+                    <rect x="50" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                    <text x="100" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 1</text>
+                    <text x="100" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
+                    <text x="100" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 0</text>
+
+                    <rect x="170" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                    <text x="220" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 2</text>
+                    <text x="220" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
+                    <text x="220" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 1</text>
+
+                    <rect x="290" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                    <text x="340" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 3</text>
+                    <text x="340" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
+                    <text x="340" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 2</text>
+
+                    <!-- Flechas de asignación -->
+                    <path d="M 100 145 L 100 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+                    <path d="M 220 145 L 220 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+                    <path d="M 340 145 L 340 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+
+                    <defs>
+                        <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        </marker>
+                    </defs>
+
+                    <!-- Nota explicativa -->
+                    <rect x="450" y="80" width="220" height="190" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="8"/>
+                    <text x="560" y="105" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Ventajas</text>
+
+                    <text x="465" y="130" font-size="11" fill="#333333" font-family="Montserrat">• Procesamiento paralelo</text>
+                    <text x="465" y="150" font-size="11" fill="#333333" font-family="Montserrat">• Escalabilidad horizontal</text>
+                    <text x="465" y="170" font-size="11" fill="#333333" font-family="Montserrat">• Alta disponibilidad</text>
+                    <text x="465" y="190" font-size="11" fill="#333333" font-family="Montserrat">• Rebalanceo automático</text>
+
+                    <text x="560" y="220" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Si un consumidor falla,</text>
+                    <text x="560" y="235" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">sus particiones se</text>
+                    <text x="560" y="250" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">reasignan automáticamente</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CASOS DE USO -->
+        <section id="casos-uso">
+            <h2>Casos de Uso en Big Data</h2>
+
+            <p>
+                Kafka es fundamental en arquitecturas de Big Data modernas, donde se requiere procesamiento de datos en tiempo real a gran escala. Las empresas más importantes del mundo confían en Kafka para sus infraestructuras críticas.
+            </p>
+
+            <div class="grid-comparison">
+                <div class="feature-card primary">
+                    <h3 class="color-primary">Netflix</h3>
+                    <p><strong>Uso:</strong> Procesamiento de eventos de streaming</p>
+                    <ul>
+                        <li>500+ billones de eventos/día</li>
+                        <li>Análisis de comportamiento de usuarios</li>
+                        <li>Recomendaciones en tiempo real</li>
+                        <li>Monitorización de calidad de streaming</li>
+                        <li>A/B testing en producción</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">Uber</h3>
+                    <p><strong>Uso:</strong> Procesamiento de ubicaciones GPS</p>
+                    <ul>
+                        <li>1+ trillón de mensajes/día</li>
+                        <li>Tracking en tiempo real de conductores</li>
+                        <li>Cálculo dinámico de precios (surge pricing)</li>
+                        <li>Matching conductores-pasajeros</li>
+                        <li>Análisis de demanda predictivo</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h3 class="color-primary">LinkedIn</h3>
+                    <p><strong>Uso:</strong> Actividad de usuarios y ETL</p>
+                    <ul>
+                        <li>7+ trillones de mensajes/día</li>
+                        <li>Feed de noticias personalizado</li>
+                        <li>Recomendaciones de conexiones</li>
+                        <li>Sincronización de 100+ microservicios</li>
+                        <li>Data lake ingestion en tiempo real</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">Bancos</h3>
+                    <p><strong>Uso:</strong> Detección de fraude</p>
+                    <ul>
+                        <li>Análisis de transacciones en milisegundos</li>
+                        <li>Bloqueo automático de tarjetas sospechosas</li>
+                        <li>Machine Learning en tiempo real</li>
+                        <li>Cumplimiento normativo (compliance)</li>
+                        <li>Auditoría completa de eventos</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h3 class="color-primary">E-commerce</h3>
+                    <p><strong>Uso:</strong> Gestión de inventario y pedidos</p>
+                    <ul>
+                        <li>Sincronización de stock en tiempo real</li>
+                        <li>Procesamiento de pedidos distribuido</li>
+                        <li>Notificaciones instantáneas a usuarios</li>
+                        <li>Analytics de comportamiento de compra</li>
+                        <li>Personalización de catálogo</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">IoT</h3>
+                    <p><strong>Uso:</strong> Telemetría de dispositivos</p>
+                    <ul>
+                        <li>Millones de sensores enviando datos</li>
+                        <li>Mantenimiento predictivo en fábricas</li>
+                        <li>Smart cities (tráfico, energía)</li>
+                        <li>Monitorización de salud (wearables)</li>
+                        <li>Agricultura de precisión</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: KAFKA STREAMS -->
+        <section id="kafka-streams">
+            <h2>Procesamiento de Streams con Kafka Streams y ksqlDB</h2>
+
+            <p>
+                <strong>Kafka Streams</strong> es una librería cliente para construir aplicaciones de procesamiento de streams en tiempo real. <strong>ksqlDB</strong> permite consultas SQL sobre streams de Kafka sin escribir código.
+            </p>
+
+            <h3 class="color-primary">Ejemplo: Kafka Streams en Java</h3>
+
+            <pre><code class="language-java">import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.common.serialization.Serdes;
+import java.time.Duration;
+import java.util.Properties;
+
+public class KafkaStreamsExample {
+    public static void main(String[] args) {
+        Properties props = new Properties();
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "analisis-ventas");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
+                  Serdes.String().getClass());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
+                  Serdes.String().getClass());
+
+        StreamsBuilder builder = new StreamsBuilder();
+
+        // 1. Leer stream de pedidos
+        KStream&lt;String, String&gt; pedidos = builder.stream("pedidos");
+
+        // 2. Filtrar solo pedidos confirmados
+        KStream&lt;String, String&gt; confirmados = pedidos
+            .filter((key, value) -&gt; value.contains("\"estado\":\"confirmado\""));
+
+        // 3. Transformar: extraer precio
+        KStream&lt;String, Double&gt; precios = confirmados
+            .mapValues(value -&gt; extraerPrecio(value));
+
+        // 4. Agregar: calcular total por usuario (ventana de 1 hora)
+        KTable&lt;Windowed&lt;String&gt;, Double&gt; totalPorUsuario = precios
+            .groupByKey()
+            .windowedBy(TimeWindows.of(Duration.ofHours(1)))
+            .reduce((valor1, valor2) -&gt; valor1 + valor2);
+
+        // 5. Filtrar usuarios con gastos > $500 en 1 hora
+        KStream&lt;Windowed&lt;String&gt;, Double&gt; gastosAltos = totalPorUsuario
+            .toStream()
+            .filter((key, valor) -&gt; valor &gt; 500.0);
+
+        // 6. Enviar alertas a topic de notificaciones
+        gastosAltos
+            .mapValues(valor -&gt; "⚠️ Gasto alto detectado: $" + valor)
+            .to("alertas-gastos");
+
+        // Construir y ejecutar
+        KafkaStreams streams = new KafkaStreams(builder.build(), props);
+        streams.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+    }
+
+    private static Double extraerPrecio(String json) {
+        return 1299.99; // Parsear JSON en implementación real
+    }
+}</code></pre>
+
+            <h3 class="color-secondary mt-2">Ejemplo: ksqlDB - SQL para Streams</h3>
+
+            <pre><code class="language-sql">-- 1. Crear stream desde topic de Kafka
+CREATE STREAM pedidos_stream (
+    pedido_id VARCHAR,
+    usuario_id VARCHAR,
+    producto VARCHAR,
+    precio DOUBLE,
+    cantidad INT,
+    timestamp VARCHAR,
+    estado VARCHAR
+) WITH (
+    KAFKA_TOPIC='pedidos',
+    VALUE_FORMAT='JSON'
+);
+
+-- 2. Filtrar solo pedidos confirmados
+CREATE STREAM pedidos_confirmados AS
+SELECT *
+FROM pedidos_stream
+WHERE estado = 'confirmado';
+
+-- 3. Calcular total de ventas por producto en ventana de 1 hora
+CREATE TABLE ventas_por_producto_hora AS
+SELECT
+    producto,
+    SUM(precio * cantidad) AS total_ventas,
+    COUNT(*) AS num_pedidos,
+    WINDOWSTART AS ventana_inicio,
+    WINDOWEND AS ventana_fin
+FROM pedidos_confirmados
+WINDOW TUMBLING (SIZE 1 HOUR)
+GROUP BY producto;
+
+-- 4. Detectar productos con más de $10,000 en ventas por hora
+CREATE STREAM productos_alto_volumen AS
+SELECT
+    producto,
+    total_ventas,
+    num_pedidos
+FROM ventas_por_producto_hora
+WHERE total_ventas > 10000;
+
+-- 5. Consultar en tiempo real
+SELECT * FROM productos_alto_volumen EMIT CHANGES;</code></pre>
+
+            <div class="highlight-box secondary mt-2">
+                <p class="title">Operaciones Comunes en Kafka Streams</p>
+                <div class="grid-features">
+                    <div class="card">
+                        <p class="formula-block">filter()</p>
+                        <p>Filtrar registros por condición</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">map()</p>
+                        <p>Transformar cada registro</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">groupBy()</p>
+                        <p>Agrupar por clave</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">reduce()</p>
+                        <p>Agregar valores del grupo</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">join()</p>
+                        <p>Combinar dos streams</p>
+                    </div>
+
+                    <div class="card">
+                        <p class="formula-block">windowing()</p>
+                        <p>Procesar por ventanas de tiempo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: COMPARATIVA -->
+        <section id="comparativa">
+            <h2>Kafka vs Otras Tecnologías de Mensajería</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Apache Kafka</th>
+                            <th>RabbitMQ</th>
+                            <th>AWS Kinesis</th>
+                            <th>Apache Pulsar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Throughput</strong></td>
+                            <td><strong class="color-primary">Muy Alto</strong> (millones msgs/seg)</td>
+                            <td>Medio (miles msgs/seg)</td>
+                            <td>Alto (1 MB/seg por shard)</td>
+                            <td>Muy Alto</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Latencia</strong></td>
+                            <td><strong class="color-primary">Muy Baja</strong> (~2-5 ms)</td>
+                            <td>Baja (~1-10 ms)</td>
+                            <td>Media (~200-500 ms)</td>
+                            <td>Muy Baja (~5 ms)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retención de Datos</strong></td>
+                            <td><strong class="color-primary">Ilimitada</strong> (configurable)</td>
+                            <td>Temporal (mientras no se consume)</td>
+                            <td>Hasta 365 días</td>
+                            <td>Ilimitada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modelo</strong></td>
+                            <td>Pub/Sub + Log distribuido</td>
+                            <td>Pub/Sub + Colas</td>
+                            <td>Streaming gestionado</td>
+                            <td>Pub/Sub multinivel</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Orden de Mensajes</strong></td>
+                            <td><strong class="color-primary">Garantizado</strong> por partición</td>
+                            <td>Por cola</td>
+                            <td>Por shard</td>
+                            <td>Garantizado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escalabilidad</strong></td>
+                            <td><strong class="color-primary">Horizontal</strong> (petabytes)</td>
+                            <td>Limitada (clusters)</td>
+                            <td>Auto-escalable (AWS)</td>
+                            <td>Horizontal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caso de Uso Principal</strong></td>
+                            <td>Streaming masivo, Big Data</td>
+                            <td>Microservicios, tareas complejas</td>
+                            <td>AWS-first, analytics</td>
+                            <td>Multi-tenancy, geo-replicación</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complejidad Operacional</strong></td>
+                            <td>Media-Alta</td>
+                            <td>Baja-Media</td>
+                            <td><strong class="color-primary">Muy Baja</strong> (gestionado)</td>
+                            <td>Media-Alta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Licencia</strong></td>
+                            <td>Apache 2.0 (Open Source)</td>
+                            <td>MPL (Open Source)</td>
+                            <td>Propietario AWS</td>
+                            <td>Apache 2.0 (Open Source)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box mt-2">
+                <h4>¿Cuándo usar cada tecnología?</h4>
+                <div class="grid-features">
+                    <div class="advantage-box">
+                        <h4>Usar Kafka cuando:</h4>
+                        <ul>
+                            <li>Necesitas throughput masivo</li>
+                            <li>Streaming en tiempo real</li>
+                            <li>Retención histórica de eventos</li>
+                            <li>Event sourcing / CQRS</li>
+                            <li>Pipelines de Big Data</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantage-box">
+                        <h4>Usar RabbitMQ cuando:</h4>
+                        <ul>
+                            <li>Microservicios con lógica compleja</li>
+                            <li>Enrutamiento avanzado de mensajes</li>
+                            <li>Confirmaciones transaccionales</li>
+                            <li>Prioridades de mensajes</li>
+                            <li>Menor volumen de datos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: CONFIGURACIÓN -->
+        <section id="configuracion">
+            <h2>Configuración y Buenas Prácticas</h2>
+
+            <h3 class="color-primary">Instalación y Configuración Básica</h3>
+
+            <pre><code class="language-bash"># 1. Descargar Apache Kafka
+wget https://downloads.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz
+tar -xzf kafka_2.13-3.6.1.tgz
+cd kafka_2.13-3.6.1
+
+# 2. Iniciar ZooKeeper (coordinador del cluster)
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+# 3. Iniciar Kafka Broker (en otra terminal)
+bin/kafka-server-start.sh config/server.properties
+
+# 4. Crear un topic
+bin/kafka-topics.sh --create \
+  --topic pedidos \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 \
+  --replication-factor 1
+
+# 5. Listar topics
+bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+
+# 6. Describir un topic (ver particiones, réplicas, etc.)
+bin/kafka-topics.sh --describe \
+  --topic pedidos \
+  --bootstrap-server localhost:9092
+
+# 7. Productor de consola (para testing)
+bin/kafka-console-producer.sh \
+  --topic pedidos \
+  --bootstrap-server localhost:9092
+
+# 8. Consumidor de consola (para testing)
+bin/kafka-console-consumer.sh \
+  --topic pedidos \
+  --from-beginning \
+  --bootstrap-server localhost:9092</code></pre>
+
+            <h3 class="color-secondary mt-2">Configuración de Producción</h3>
+
+            <pre><code class="language-yaml"># server.properties - Configuración del Broker
+
+# Identificación del broker
+broker.id=0
+
+# Listeners (interfaces de red)
+listeners=PLAINTEXT://0.0.0.0:9092
+advertised.listeners=PLAINTEXT://kafka-broker-1.ejemplo.com:9092
+
+# Directorios de logs (datos)
+log.dirs=/var/kafka-logs
+
+# Número de threads para I/O de red
+num.network.threads=8
+num.io.threads=16
+
+# Tamaño de buffers de red (aumentar para alto throughput)
+socket.send.buffer.bytes=102400
+socket.receive.buffer.bytes=102400
+socket.request.max.bytes=104857600
+
+# Retención de logs
+log.retention.hours=168  # 7 días
+log.retention.bytes=1073741824  # 1 GB por partición
+log.segment.bytes=1073741824  # Tamaño de segmento: 1 GB
+
+# Compresión
+compression.type=snappy  # snappy, gzip, lz4, zstd
+
+# Replicación
+default.replication.factor=3
+min.insync.replicas=2  # Mínimo de réplicas sincronizadas
+unclean.leader.election.enable=false  # No permitir líderes desactualizados
+
+# ZooKeeper
+zookeeper.connect=zk1:2181,zk2:2181,zk3:2181
+zookeeper.connection.timeout.ms=18000
+
+# Configuraciones de rendimiento
+num.replica.fetchers=4
+replica.lag.time.max.ms=10000
+
+# Auto-creación de topics (desactivar en producción)
+auto.create.topics.enable=false</code></pre>
+
+            <h3 class="color-primary mt-2">Buenas Prácticas</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Particionamiento</h4>
+                    <ul>
+                        <li>Más particiones = más paralelismo</li>
+                        <li>Regla: 1-2 particiones por TB/día</li>
+                        <li>Usar keys para orden garantizado</li>
+                        <li>Evitar hot partitions (distribución uniforme)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Seguridad</h4>
+                    <ul>
+                        <li>Habilitar SSL/TLS para encriptación</li>
+                        <li>SASL para autenticación</li>
+                        <li>ACLs para autorización por topic</li>
+                        <li>Encriptar datos en reposo</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Rendimiento</h4>
+                    <ul>
+                        <li>Batching de mensajes (linger.ms)</li>
+                        <li>Compresión (snappy recomendado)</li>
+                        <li>Ajustar buffer.memory y batch.size</li>
+                        <li>Monitorizar lag de consumidores</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Alta Disponibilidad</h4>
+                    <ul>
+                        <li>Replication factor ≥ 3</li>
+                        <li>min.insync.replicas = 2</li>
+                        <li>acks=all para datos críticos</li>
+                        <li>Cluster multi-datacenter</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Gestión de Schemas</h4>
+                    <ul>
+                        <li>Usar Schema Registry (Avro)</li>
+                        <li>Versionado de schemas</li>
+                        <li>Compatibilidad hacia atrás</li>
+                        <li>Documentar contratos de datos</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Monitorización</h4>
+                    <ul>
+                        <li>JMX metrics exportadas</li>
+                        <li>Prometheus + Grafana</li>
+                        <li>Consumer lag monitoring</li>
+                        <li>Alertas de under-replicated partitions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: RESUMEN -->
+        <section id="resumen">
+            <h2 class="text-center">Resumen y Conclusiones</h2>
+
+            <div class="final-grid">
+                <div class="final-card technical">
+                    <h3 class="color-primary">Conceptos Clave</h3>
+                    <ul>
+                        <li><strong>Kafka</strong> es una plataforma de streaming distribuido para Big Data</li>
+                        <li><strong>Topics y Particiones</strong> permiten paralelismo masivo</li>
+                        <li><strong>Consumer Groups</strong> facilitan procesamiento escalable</li>
+                        <li><strong>Replicación</strong> garantiza alta disponibilidad</li>
+                        <li><strong>Retención</strong> permite rejugado de eventos históricos</li>
+                    </ul>
+                </div>
+
+                <div class="final-card philosophical">
+                    <h3 class="color-secondary">Ventajas Principales</h3>
+                    <ul>
+                        <li><strong>Throughput extremo:</strong> Millones de msgs/segundo</li>
+                        <li><strong>Baja latencia:</strong> Procesamiento en milisegundos</li>
+                        <li><strong>Escalabilidad horizontal:</strong> Petabytes de datos</li>
+                        <li><strong>Durabilidad:</strong> Persistencia garantizada</li>
+                        <li><strong>Ecosistema rico:</strong> Kafka Streams, Connect, ksqlDB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="challenge-box mt-2">
+                <h3>Apache Kafka en el Futuro del Big Data</h3>
+                <p>
+                    Apache Kafka se ha consolidado como la <strong>columna vertebral de las arquitecturas modernas de datos</strong>, siendo adoptado por miles de empresas globalmente. Su capacidad para manejar streaming en tiempo real a escala masiva lo convierte en una pieza fundamental para aplicaciones de <strong>IoT, Machine Learning en tiempo real, arquitecturas event-driven</strong> y pipelines de <strong>Big Data</strong>. Con el crecimiento exponencial de datos y la demanda de procesamiento en tiempo real, Kafka continuará siendo una tecnología esencial en los próximos años.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">
+            Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.
+        </p>
+        <p class="description">
+            Titulaciones 100% oficiales. ¡Sin pruebas libres!
+        </p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

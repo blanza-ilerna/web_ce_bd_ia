@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Monitoreo Continuo de Calidad de Datos: Métricas, herramientas, automatización y observabilidad en pipelines de Big Data.">
+    <title>Monitoreo Continuo de la Calidad de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Monitoreo de Calidad</span>
+                </div>
+            </div>
+            <h1 class="text-center">Monitoreo Continuo de la Calidad de Datos</h1>
+        </header>
+
+        <main>
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>🔍 La Calidad no es un Estado, es un Proceso</h2>
+                    <p class="hero-description">
+                        En entornos de Big Data, los datos fluyen constantemente. Validarlos una sola vez no es
+                        suficiente.
+                        El <strong>monitoreo continuo</strong> y la <strong>observabilidad de datos</strong> son
+                        esenciales para detectar desviaciones
+                        en tiempo real, garantizando la integridad a lo largo de todo el ciclo de vida del dato, desde
+                        la ingestión hasta el análisis.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Table of Contents -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. ¿Qué es la Observabilidad de Datos?</a></li>
+                    <li><a href="#componentes">2. Componentes Clave del Monitoreo</a></li>
+                    <li><a href="#herramientas">3. Herramientas y Fases de Calidad</a></li>
+                    <li><a href="#casos">4. Ejemplos Prácticos y Casos de Estudio</a></li>
+                </ul>
+            </nav>
+
+            <!-- Sección 1: Introducción -->
+            <section id="introduccion" class="content-section">
+                <h2>1. ¿Qué es la Observabilidad de Datos?</h2>
+
+                <div class="highlight-box info">
+                    <h4>📡 Definición</h4>
+                    <p>
+                        La calidad de datos es dinámica. Las plataformas de <strong>observabilidad de datos</strong>
+                        combinan métricas,
+                        alertas automatizadas y visualizaciones avanzadas para supervisar la salud del pipeline en
+                        tiempo real.
+                        Permiten responder a la pregunta: <em>"¿Están mis datos sanos y listos para ser usados?"</em>
+                    </p>
+                </div>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🛑 Detección Temprana</h4>
+                        <p>Identificar anomalías (nulls excesivos, duplicados) antes de que rompan los dashboards o
+                            modelos de ML.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Ciclo de Vida Completo</h4>
+                        <p>Monitoreo desatendido 24/7 desde la fuente (Source) hasta el destino (Data Warehouse/Lake).
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔔 Acción Inmediata</h4>
+                        <p>Alertas automáticas que disparan acciones correctivas o notifican a los ingenieros de datos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 2: Componentes -->
+            <section id="componentes" class="content-section">
+                <h2>2. Componentes Clave del Monitoreo</h2>
+
+                <h3>A. Definición de Métricas y Umbrales</h3>
+                <p>Establecer reglas claras de lo que constituye un "dato saludable".</p>
+                <div class="grid-features" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="feature-card">
+                        <h4>📊 KPIs de Calidad</h4>
+                        <ul>
+                            <li><strong>Registros Válidos:</strong> > 95%</li>
+                            <li><strong>Tasa de Duplicación:</strong>
+                                < 1%</li>
+                            <li><strong>Campos Nulos:</strong>
+                                < 5%</li>
+                            <li><strong>Latencia:</strong> Actualización < 1 hora</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🧩 Reglas de Negocio</h4>
+                        <ul>
+                            <li>"El precio nunca puede ser negativo."</li>
+                            <li>"La fecha de venta no puede ser futura."</li>
+                            <li>"El ID de cliente debe existir en la tabla maestra."</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>B. Automatización y Alertas</h3>
+                <div class="highlight-box success">
+                    <h4>🤖 Pipelines Inteligentes</h4>
+                    <p>
+                        No dependas de la revisión manual. Integra validaciones directamente en tus flujos ETL con
+                        herramientas como <strong>Apache Airflow</strong> o <strong>Oozie</strong>.
+                        Configura auditorías programadas (ej. diarias o en cada micro-batch) que verifiquen los datos
+                        automáticamente.
+                    </p>
+                </div>
+
+                <h3>C. Visualización y Mantenimiento</h3>
+                <p>
+                    Utiliza dashboards en <strong>Grafana</strong>, <strong>Power BI</strong> o <strong>Apache
+                        Superset</strong> para visualizar la tendencia de la calidad a lo largo del tiempo.
+                    Adicionalmente, implementa scripts de mantenimiento proactivo (ej. `hdfs fsck`) para detectar
+                    corrupción física de bloques.
+                </p>
+
+            </section>
+
+            <!-- Sección 3: Herramientas -->
+            <section id="herramientas" class="content-section">
+                <h2>3. Herramientas y Fases de Calidad</h2>
+
+                <p>El stack tecnológico para asegurar la calidad es diverso y cubre distintas fases del tratamiento del
+                    dato.</p>
+
+                <div class="feature-card">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Descripción</th>
+                                <th>Herramientas Típicas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Profiling</strong></td>
+                                <td>Análisis preliminar de patrones, distribución y anomalías.</td>
+                                <td>Pandas Profiling, Talend</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estandarización</strong></td>
+                                <td>Formateo de fechas, unidades y conversión de tipos.</td>
+                                <td>OpenRefine, PySpark</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Imputación</strong></td>
+                                <td>Sustitución inteligente de valores faltantes (media, mediana, ML).</td>
+                                <td>Scikit-Learn, Spark MLlib</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deduplicación</strong></td>
+                                <td>Eliminación de registros repetidos (similitud exacta o fuzzy).</td>
+                                <td>FuzzyWuzzy, Jaro-Winkler</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Homogeneización</strong></td>
+                                <td>Unificación de codificación (UTF-8, ISO) y formatos de texto.</td>
+                                <td>Python, SQL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección 4: Casos -->
+            <section id="casos" class="content-section">
+                <h2>4. Ejemplos Prácticos y Casos de Estudio</h2>
+
+                <div class="highlight-box warning">
+                    <h4>🛒 Ejemplo Práctico: Retail con Great Expectations</h4>
+                    <p>
+                        Una empresa de retail implementa la librería <strong>Great Expectations</strong> orquestada con
+                        <strong>Airflow</strong>.
+                        Cada carga de datos de ventas pasa por 30 reglas de validación (completitud de SKUs, validez de
+                        precios).
+                    </p>
+                    <p>
+                        <strong>Resultado:</strong> Si una sola regla crítica falla, Airflow <strong>detiene el pipeline
+                            inmediatamente</strong> y envía una alerta a Slack, evitando que datos corruptos lleguen al
+                        dashboard del CEO.
+                    </p>
+                </div>
+
+                <div class="highlight-box" style="border-left: 4px solid #49B9CE; background-color: #f0fbfc;">
+                    <h4>📱 Caso de Estudio: Telecomunicaciones y Observabilidad</h4>
+                    <p>
+                        Una gran telco gestiona 50 TB de datos de red en un Data Lake. Utilizan una plataforma de
+                        observabilidad como <strong>Monte Carlo</strong>.
+                    </p>
+                    <ul>
+                        <li><strong>Métricas Monitoreadas:</strong> Completitud (95%), Unicidad (99%), Latencia (< 30
+                                min).</li>
+                        <li><strong>Visualización:</strong> Dashboard en Grafana mostrando tendencias de calidad.</li>
+                        <li><strong>Impacto:</strong>
+                            <ul>
+                                <li>📉 <strong>-70%</strong> en tiempo de respuesta a incidentes de datos.</li>
+                                <li>📈 <strong>+25%</strong> en la fiabilidad percibida de los análisis.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Tutorial completo de Databricks Free Edition con Apache Spark: DataFrames, SQL, visualizaciones y mejores prácticas">
+    <meta name="keywords"
+        content="Databricks, Apache Spark, Big Data, DataFrames, PySpark, Delta Lake, tutorial, Free Edition">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Databricks Free Edition - Tutorial Apache Spark | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Big Data Aplicado</a> →
+                <span>Databricks Free Edition</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Databricks Free Edition</h1>
+            <p class="subtitle">Tutorial Completo con Apache Spark - Plataforma Gratuita 2025</p>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDOS -->
+        <section>
+            <div class="toc-container">
+                <h3>Índice de Contenidos</h3>
+                <ul class="toc-list">
+                    <li><a href="#que-es-databricks">1. ¿Qué es Databricks?</a></li>
+                    <li><a href="#arquitectura">2. Arquitectura de Databricks</a></li>
+                    <li><a href="#registro">3. Tutorial: Registro en Free Edition</a></li>
+                    <li><a href="#primer-notebook">4. Creando tu Primer Notebook</a></li>
+                    <li><a href="#dataframes">5. Trabajando con DataFrames</a></li>
+                    <li><a href="#sql-spark">6. Usando SQL en Spark</a></li>
+                    <li><a href="#archivos">7. Lectura y Escritura de Archivos</a></li>
+                    <li><a href="#visualizacion">8. Visualización de Datos</a></li>
+                    <li><a href="#mejores-practicas">9. Mejores Prácticas</a></li>
+                    <li><a href="#recursos">10. Recursos y Próximos Pasos</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section id="que-es-databricks">
+            <h2>¿Qué es Databricks?</h2>
+
+            <p>
+                <strong>Databricks</strong> es una plataforma unificada de análisis de datos basada en la nube que
+                simplifica el trabajo con <strong>Apache Spark</strong>. Fue fundada por los creadores originales de
+                Spark (Ali Ghodsi, Matei Zaharia, Ion Stoica) en 2013, y se ha convertido en la solución líder para
+                procesamiento de Big Data, machine learning e inteligencia artificial a escala empresarial.
+            </p>
+
+            <p>
+                <strong>Databricks Free Edition</strong> (lanzada en junio 2025, reemplazando a Community Edition)
+                ofrece acceso <strong>100% gratuito y permanente</strong> a la plataforma completa con computación
+                serverless, notebooks interactivos, Databricks Assistant con IA, Genie para análisis con lenguaje
+                natural, y acceso ilimitado a Databricks Academy. Ideal para estudiantes, desarrolladores y
+                profesionales que quieren aprender Big Data y AI sin costos.
+            </p>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Real:</p>
+                <p class="content">Netflix utiliza Databricks para procesar más de 1 trillón de eventos diarios,
+                    optimizando recomendaciones de contenido para 230+ millones de usuarios globalmente mediante
+                    algoritmos de machine learning en Spark.</p>
+            </div>
+
+            <h3>Conceptos Fundamentales</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Notebooks</h4>
+                    <p>Entornos colaborativos interactivos que combinan código (Python, Scala, SQL), visualizaciones y
+                        documentación en un solo lugar.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Serverless Compute</h4>
+                    <p>En Free Edition, la computación es automática y serverless - sin necesidad de configurar
+                        clusters. Databricks gestiona todo automáticamente.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Apache Spark</h4>
+                    <p>Motor de procesamiento distribuido que permite análisis de datos masivos hasta 100x más rápido
+                        que Hadoop MapReduce.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">DataFrames</h4>
+                    <p>Estructuras de datos distribuidas similares a tablas SQL, optimizadas para operaciones en
+                        paralelo a gran escala.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ARQUITECTURA -->
+        <section id="arquitectura">
+            <h2>Arquitectura de Databricks</h2>
+
+            <p>
+                Databricks implementa una arquitectura de tres capas que separa el almacenamiento, la computación y la
+                gestión, permitiendo escalabilidad independiente y costos optimizados.
+            </p>
+
+            <div class="svg-container">
+                <svg width="900" height="500" viewBox="0 0 900 500" style="max-width: 100%;">
+                    <!-- Título -->
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Arquitectura de Databricks + Apache Spark</text>
+
+                    <!-- CAPA 1: CONTROL PLANE -->
+                    <rect x="50" y="60" width="800" height="100" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="450" y="85" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">CONTROL PLANE (Gestión Databricks)</text>
+
+                    <rect x="80" y="95" width="180" height="50" fill="white" stroke="#49B9CE" stroke-width="2" rx="5" />
+                    <text x="170" y="115" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Web UI</text>
+                    <text x="170" y="132" font-size="11" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Notebooks / Dashboards</text>
+
+                    <rect x="290" y="95" width="180" height="50" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="380" y="115" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Jobs Manager</text>
+                    <text x="380" y="132" font-size="11" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Scheduler / Orquestación</text>
+
+                    <rect x="500" y="95" width="180" height="50" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="590" y="115" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Cluster Manager</text>
+                    <text x="590" y="132" font-size="11" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Escalado / Monitoreo</text>
+
+                    <rect x="710" y="95" width="120" height="50" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="770" y="115" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Security</text>
+                    <text x="770" y="132" font-size="11" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Auth / Permisos</text>
+
+                    <!-- CAPA 2: DATA PLANE (SPARK CLUSTERS) -->
+                    <rect x="50" y="190" width="800" height="180" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="450" y="215" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">DATA PLANE (Clusters Apache Spark)</text>
+
+                    <!-- Driver Node -->
+                    <rect x="120" y="240" width="200" height="110" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="220" y="262" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">DRIVER NODE</text>
+                    <rect x="140" y="270" width="160" height="30" fill="white" stroke="#8A7AAF" stroke-width="1"
+                        rx="5" />
+                    <text x="220" y="290" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Spark Context</text>
+                    <rect x="140" y="305" width="160" height="30" fill="white" stroke="#8A7AAF" stroke-width="1"
+                        rx="5" />
+                    <text x="220" y="325" font-size="11" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">DAG Scheduler</text>
+
+                    <!-- Worker Nodes -->
+                    <rect x="360" y="240" width="140" height="110" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="430" y="262" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">WORKER 1</text>
+                    <rect x="375" y="270" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="430" y="287" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Executor</text>
+                    <rect x="375" y="300" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="430" y="317" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Cache / Tasks</text>
+
+                    <rect x="530" y="240" width="140" height="110" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="600" y="262" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">WORKER 2</text>
+                    <rect x="545" y="270" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="600" y="287" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Executor</text>
+                    <rect x="545" y="300" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="600" y="317" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Cache / Tasks</text>
+
+                    <rect x="700" y="240" width="140" height="110" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="770" y="262" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">WORKER N</text>
+                    <rect x="715" y="270" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="770" y="287" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Executor</text>
+                    <rect x="715" y="300" width="110" height="25" fill="white" stroke="#49B9CE" stroke-width="1"
+                        rx="4" />
+                    <text x="770" y="317" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Cache / Tasks</text>
+
+                    <!-- Flechas Driver -> Workers -->
+                    <path d="M 320 295 L 355 295" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                        fill="none" />
+                    <path d="M 320 295 L 520 295" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                        fill="none" />
+                    <path d="M 320 295 L 690 295" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)"
+                        fill="none" />
+
+                    <!-- CAPA 3: STORAGE LAYER -->
+                    <rect x="50" y="400" width="800" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="450" y="425" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">STORAGE LAYER (Data Lake)</text>
+
+                    <rect x="100" y="440" width="150" height="30" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="175" y="460" font-size="12" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">AWS S3</text>
+
+                    <rect x="280" y="440" width="150" height="30" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="355" y="460" font-size="12" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Azure Blob</text>
+
+                    <rect x="460" y="440" width="150" height="30" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="535" y="460" font-size="12" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Google Cloud</text>
+
+                    <rect x="640" y="440" width="150" height="30" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="715" y="460" font-size="12" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Delta Lake</text>
+
+                    <!-- Flechas Workers -> Storage -->
+                    <path d="M 430 350 L 175 435" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                        fill="none" stroke-dasharray="5,5" />
+                    <path d="M 600 350 L 535 435" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                        fill="none" stroke-dasharray="5,5" />
+                    <path d="M 770 350 L 715 435" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                        fill="none" stroke-dasharray="5,5" />
+
+                    <!-- Flechas Control -> Data Plane -->
+                    <path d="M 450 160 L 450 185" stroke="#333333" stroke-width="3" marker-end="url(#arrowdark)"
+                        fill="none" />
+
+                    <!-- Marcadores de flecha -->
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                        <marker id="arrowdark" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#333333" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Driver Node</h4>
+                    <p>Coordina la ejecución del código, convierte operaciones en un DAG (grafo acíclico dirigido) y
+                        distribuye tareas a los workers.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Worker Nodes</h4>
+                    <p>Ejecutan las tareas asignadas, almacenan datos en caché para procesamiento rápido y reportan
+                        resultados al Driver.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Delta Lake</h4>
+                    <p>Capa de almacenamiento ACID sobre data lakes que garantiza transacciones, versionado y time
+                        travel de datos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: REGISTRO -->
+        <section id="registro">
+            <h2>Tutorial: Registro en Databricks Free Edition</h2>
+
+            <h3 class="color-secondary">Paso 1: Acceso a la Plataforma</h3>
+
+            <p>
+                Visita la página oficial de Databricks Free Edition y completa el registro gratuito. <strong>No requiere
+                    tarjeta de crédito ni información de pago.</strong>
+            </p>
+
+            <div class="highlight-box secondary">
+                <p class="title">URL de Registro (2025):</p>
+                <div class="formula-block">https://www.databricks.com/learn/free-edition</div>
+                <div class="formula-block mt-1">https://signup.databricks.com/</div>
+            </div>
+
+            <div class="warning-box mt-2">
+                <h4>Actualizado en 2025:</h4>
+                <p><strong>Free Edition reemplazó a Community Edition en junio 2025</strong> con muchas más
+                    funcionalidades: computación serverless automática, Databricks Assistant (IA para código), Genie
+                    (análisis con lenguaje natural), Mosaic AI para agentes, y acceso gratuito ilimitado a todos los
+                    cursos de Databricks Academy. Ya no necesitas configurar clusters manualmente. Es permanente, sin
+                    fecha de expiración.</p>
+            </div>
+
+            <h3 class="color-primary mt-2">Paso 2: Computación Serverless (Automática)</h3>
+
+            <p>
+                <strong>¡Buenas noticias!</strong> En Databricks Free Edition, la computación es <strong>serverless y
+                    automática</strong>. Ya no necesitas crear ni configurar clusters manualmente como en versiones
+                anteriores. Databricks gestiona todos los recursos computacionales automáticamente cuando ejecutas
+                código.
+            </p>
+
+            <div class="grid-features">
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Serverless</p>
+                    <p>Sin configuración de clusters</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Automático</p>
+                    <p>Databricks gestiona recursos</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Instantáneo</p>
+                    <p>Comienza a programar inmediatamente</p>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-primary);">
+                    <p class="formula-block color-primary">Gratis</p>
+                    <p>Sin costos ocultos</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary mt-2">
+                <p class="title">Características de Free Edition (2025):</p>
+                <ul>
+                    <li><strong>Computación Serverless:</strong> Automática, sin configuración</li>
+                    <li><strong>Storage incluido:</strong> Almacenamiento predeterminado incluido</li>
+                    <li><strong>Databricks Assistant:</strong> IA que ayuda a escribir y depurar código</li>
+                    <li><strong>Genie:</strong> Análisis de datos con lenguaje natural (BI conversacional)</li>
+                    <li><strong>Mosaic AI:</strong> Construcción de agentes y aplicaciones de IA</li>
+                    <li><strong>Notebooks ilimitados:</strong> Python, SQL, Scala, R colaborativos</li>
+                    <li><strong>Databricks Academy:</strong> Acceso gratuito a todos los cursos</li>
+                    <li><strong>Lakeflow Pipelines:</strong> ETL/ELT para ingeniería de datos</li>
+                    <li><strong>Sin expiración:</strong> Uso permanente con límite de cuota justa</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: PRIMER NOTEBOOK -->
+        <section id="primer-notebook">
+            <h2>Creando tu Primer Notebook</h2>
+
+            <h3 class="color-secondary">Paso 3: Nuevo Notebook</h3>
+
+            <div class="grid-features">
+                <div class="card" style="border: 2px solid var(--color-secondary);">
+                    <p class="color-secondary"><strong>Workspace</strong></p>
+                    <p>Click en "Create" → "Notebook"</p>
+                </div>
+
+                <div class="card" style="border: 2px solid var(--color-secondary);">
+                    <p class="color-secondary"><strong>Nombre</strong></p>
+                    <p>Asigna nombre: "Tutorial-Spark"</p>
+                </div>
+
+                <div class="card" style="border: 2px solid var(--color-secondary);">
+                    <p class="color-secondary"><strong>Lenguaje</strong></p>
+                    <p>Selecciona "Python" (o SQL)</p>
+                </div>
+
+                <div class="card" style="border: 2px solid var(--color-secondary);">
+                    <p class="color-secondary"><strong>Compute</strong></p>
+                    <p>¡Automático! Sin configuración</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary mt-2">
+                <p class="title">Nuevo en Free Edition:</p>
+                <p class="content">El notebook se ejecuta automáticamente con computación serverless. No necesitas
+                    seleccionar ni esperar a que un cluster inicie. Simplemente escribe código y ejecuta - Databricks
+                    gestiona todo por ti.</p>
+            </div>
+
+            <h3 class="color-primary mt-2">Paso 4: Primera Celda de Código Python</h3>
+
+            <p>Vamos a verificar que Spark está funcionando correctamente y conocer su versión:</p>
+
+            <pre><code class="language-python"># Verificar versión de Spark
+print("✨ Verificando Apache Spark...")
+print(f"Versión de Spark: {spark.version}")
+print(f"Contexto de Spark activo: {spark.sparkContext.appName}")
+
+# Información del cluster
+sc = spark.sparkContext
+print(f"\n🔧 Configuración del Cluster:")
+print(f"Master: {sc.master}")
+print(f"Número de executors: {sc.defaultParallelism}")</code></pre>
+
+            <div class="highlight-box primary mt-1">
+                <p class="title">Salida esperada:</p>
+                <pre style="background: white; padding: 1rem; border-radius: 0.5rem; margin: 0;">✨ Verificando Apache Spark...
+Versión de Spark: 3.4.1
+Contexto de Spark activo: Databricks Shell
+
+🔧 Configuración del Cluster:
+Master: local[*, 4]
+Número de executors: 8</pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: DATAFRAMES -->
+        <section id="dataframes">
+            <h2>Trabajando con DataFrames de Spark</h2>
+
+            <h3 class="color-secondary">Paso 5: Crear tu Primer DataFrame</h3>
+
+            <p>Los DataFrames son la estructura fundamental en Spark. Vamos a crear uno desde cero con datos de ventas:
+            </p>
+
+            <pre><code class="language-python"># Importar tipos de datos de Spark
+from pyspark.sql import Row
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
+
+# Crear datos de ejemplo: ventas de una tienda online
+datos_ventas = [
+    Row(producto="Laptop", categoria="Electrónica", precio=1200.00, cantidad=15, region="Europa"),
+    Row(producto="Mouse", categoria="Accesorios", precio=25.99, cantidad=150, region="América"),
+    Row(producto="Teclado", categoria="Accesorios", precio=75.50, cantidad=80, region="Asia"),
+    Row(producto="Monitor", categoria="Electrónica", precio=350.00, cantidad=45, region="Europa"),
+    Row(producto="Webcam", categoria="Accesorios", precio=89.99, cantidad=60, region="América"),
+    Row(producto="SSD", categoria="Almacenamiento", precio=129.99, cantidad=200, region="Asia"),
+    Row(producto="RAM", categoria="Componentes", precio=85.00, cantidad=120, region="Europa"),
+    Row(producto="Auriculares", categoria="Audio", precio=149.99, cantidad=95, region="América")
+]
+
+# Crear DataFrame de Spark
+df_ventas = spark.createDataFrame(datos_ventas)
+
+# Mostrar el DataFrame
+print("📦 DataFrame de Ventas creado correctamente\n")
+df_ventas.show()
+
+# Información del esquema
+print("\n📋 Esquema del DataFrame:")
+df_ventas.printSchema()</code></pre>
+
+            <h3 class="color-primary mt-2">Paso 6: Operaciones Básicas con DataFrames</h3>
+
+            <p>Ahora vamos a realizar operaciones comunes de análisis de datos:</p>
+
+            <pre><code class="language-python"># 1. SELECCIONAR COLUMNAS ESPECÍFICAS
+print("🔍 1. Seleccionar solo producto y precio:")
+df_ventas.select("producto", "precio").show(5)
+
+# 2. FILTRAR DATOS (productos caros > $100)
+print("\n💰 2. Productos con precio mayor a $100:")
+df_ventas.filter(df_ventas.precio > 100).show()
+
+# 3. ORDENAR DATOS (por precio descendente)
+print("\n📊 3. Productos ordenados por precio (mayor a menor):")
+df_ventas.orderBy(df_ventas.precio.desc()).show(5)
+
+# 4. AGREGAR NUEVA COLUMNA (calcular ingresos totales)
+from pyspark.sql.functions import col
+
+df_con_ingresos = df_ventas.withColumn(
+    "ingresos_totales",
+    col("precio") * col("cantidad")
+)
+
+print("\n💵 4. DataFrame con ingresos totales calculados:")
+df_con_ingresos.select("producto", "precio", "cantidad", "ingresos_totales").show()
+
+# 5. AGRUPACIÓN Y AGREGACIÓN (ventas por región)
+print("\n🌍 5. Total de ventas por región:")
+ventas_por_region = df_con_ingresos.groupBy("region").sum("ingresos_totales")
+ventas_por_region.show()
+
+# 6. ESTADÍSTICAS DESCRIPTIVAS
+print("\n📈 6. Estadísticas del DataFrame:")
+df_ventas.describe("precio", "cantidad").show()</code></pre>
+
+            <div class="highlight-box primary mt-1">
+                <p class="title">Ejemplo de salida (ventas por región):</p>
+                <pre style="background: white; padding: 1rem; border-radius: 0.5rem; margin: 0;">🌍 5. Total de ventas por región:
++-------+--------------------+
+| region|sum(ingresos_totales)|
++-------+--------------------+
+| Europa|            38650.0|
+|América|            22043.55|
+|   Asia|            32039.0|
++-------+--------------------+</pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: SQL EN SPARK -->
+        <section id="sql-spark">
+            <h2>Usando SQL en Spark</h2>
+
+            <h3 class="color-secondary">Paso 7: Queries SQL Directas</h3>
+
+            <p>Spark permite usar SQL estándar para consultar DataFrames. Primero, registramos el DataFrame como una
+                tabla temporal:</p>
+
+            <pre><code class="language-python"># Registrar DataFrame como vista temporal SQL
+df_con_ingresos.createOrReplaceTempView("ventas")
+
+# Ahora podemos usar SQL directamente
+print("📊 Análisis SQL de ventas:\n")
+
+# Query 1: Top 3 productos por ingresos
+query1 = """
+SELECT
+    producto,
+    categoria,
+    precio,
+    cantidad,
+    ingresos_totales,
+    ROUND(ingresos_totales / SUM(ingresos_totales) OVER () * 100, 2) as porcentaje_ingresos
+FROM ventas
+ORDER BY ingresos_totales DESC
+LIMIT 3
+"""
+
+print("🏆 Top 3 productos por ingresos totales:")
+spark.sql(query1).show()
+
+# Query 2: Resumen por categoría
+query2 = """
+SELECT
+    categoria,
+    COUNT(*) as num_productos,
+    SUM(cantidad) as unidades_totales,
+    ROUND(AVG(precio), 2) as precio_promedio,
+    ROUND(SUM(ingresos_totales), 2) as ingresos_categoria
+FROM ventas
+GROUP BY categoria
+ORDER BY ingresos_categoria DESC
+"""
+
+print("\n📦 Resumen por categoría:")
+spark.sql(query2).show()
+
+# Query 3: Productos premium (precio > promedio)
+query3 = """
+SELECT
+    producto,
+    precio,
+    CASE
+        WHEN precio > (SELECT AVG(precio) FROM ventas) THEN 'Premium'
+        ELSE 'Estándar'
+    END as segmento
+FROM ventas
+ORDER BY precio DESC
+"""
+
+print("\n💎 Segmentación de productos (Premium vs Estándar):")
+spark.sql(query3).show()</code></pre>
+        </section>
+
+        <!-- SECCIÓN 7: ARCHIVOS -->
+        <section id="archivos">
+            <h2>Lectura y Escritura de Archivos</h2>
+
+            <h3 class="color-primary">Paso 8: Cargar Datos desde CSV</h3>
+
+            <p>Databricks proporciona datasets de ejemplo que puedes usar directamente. Vamos a cargar un archivo CSV:
+            </p>
+
+            <pre><code class="language-python"># Cargar dataset de ejemplo: diamonds (diamantes)
+ruta_csv = "/databricks-datasets/Rdatasets/data-001/csv/ggplot2/diamonds.csv"
+
+df_diamonds = spark.read.csv(
+    ruta_csv,
+    header=True,          # Primera fila contiene nombres de columnas
+    inferSchema=True      # Inferir tipos de datos automáticamente
+)
+
+print("💎 Dataset de Diamonds cargado correctamente")
+print(f"Total de registros: {df_diamonds.count()}")
+print(f"Total de columnas: {len(df_diamonds.columns)}\n")
+
+# Mostrar primeras filas
+df_diamonds.show(10)
+
+# Ver esquema inferido
+print("\n📋 Esquema del dataset:")
+df_diamonds.printSchema()
+
+# Estadísticas básicas
+print("\n📊 Estadísticas de columnas numéricas:")
+df_diamonds.select("carat", "price", "depth", "table").describe().show()</code></pre>
+
+            <div class="warning-box mt-1">
+                <h4>Tip Profesional:</h4>
+                <p>Usa <code>inferSchema=True</code> solo en desarrollo. En producción, es mejor definir el esquema
+                    explícitamente para mejor rendimiento y control de tipos de datos.</p>
+            </div>
+
+            <h3 class="color-secondary mt-2">Paso 9: Guardar Resultados</h3>
+
+            <p>Después de procesar datos, puedes guardarlos en diferentes formatos:</p>
+
+            <pre><code class="language-python"># Filtrar diamantes premium (precio > 10000)
+df_premium = df_diamonds.filter(df_diamonds.price > 10000)
+
+print(f"💎 Diamantes premium encontrados: {df_premium.count()}\n")
+
+# OPCIÓN 1: Guardar como CSV
+output_path_csv = "/FileStore/tables/diamonds_premium.csv"
+df_premium.write.mode("overwrite").option("header", True).csv(output_path_csv)
+print(f"✅ Guardado en CSV: {output_path_csv}")
+
+# OPCIÓN 2: Guardar como Parquet (formato columnar optimizado)
+output_path_parquet = "/FileStore/tables/diamonds_premium.parquet"
+df_premium.write.mode("overwrite").parquet(output_path_parquet)
+print(f"✅ Guardado en Parquet: {output_path_parquet}")
+
+# OPCIÓN 3: Guardar como Delta Table (formato recomendado en Databricks)
+output_path_delta = "/FileStore/tables/diamonds_premium_delta"
+df_premium.write.mode("overwrite").format("delta").save(output_path_delta)
+print(f"✅ Guardado en Delta Lake: {output_path_delta}")
+
+# Verificar que se guardó correctamente
+df_verificacion = spark.read.format("delta").load(output_path_delta)
+print(f"\n🔍 Verificación - Registros leídos desde Delta: {df_verificacion.count()}")</code></pre>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">CSV</h4>
+                    <p>Formato universal, fácil de compartir, pero menos eficiente en espacio y lectura.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Parquet</h4>
+                    <p>Formato columnar comprimido, ideal para análisis. 10-100x más rápido que CSV.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Delta Lake</h4>
+                    <p>Formato ACID con transacciones, time travel y versionado. <strong>Recomendado para
+                            producción.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: VISUALIZACIÓN -->
+        <section id="visualizacion">
+            <h2>Visualización de Datos</h2>
+
+            <h3 class="color-primary">Paso 10: Gráficos Integrados</h3>
+
+            <p>Databricks incluye visualizaciones nativas. Después de ejecutar <code>display(df)</code>, puedes crear
+                gráficos interactivos desde la UI.</p>
+
+            <pre><code class="language-python"># Preparar datos para visualización
+from pyspark.sql.functions import col, sum as _sum, avg, count
+
+# Análisis de ventas por categoría
+ventas_categoria = df_con_ingresos.groupBy("categoria").agg(
+    _sum("ingresos_totales").alias("ingresos_totales"),
+    _sum("cantidad").alias("unidades_vendidas"),
+    avg("precio").alias("precio_promedio")
+).orderBy(col("ingresos_totales").desc())
+
+# Mostrar con visualización integrada de Databricks
+display(ventas_categoria)
+
+# Análisis de ventas por región
+ventas_region = df_con_ingresos.groupBy("region").agg(
+    _sum("ingresos_totales").alias("ingresos_totales"),
+    count("producto").alias("num_productos")
+)
+
+display(ventas_region)</code></pre>
+
+            <div class="highlight-box primary mt-2">
+                <p class="title">Tipos de Gráficos Disponibles en Databricks:</p>
+                <div class="grid-features">
+                    <div class="card">
+                        <p class="color-primary"><strong>Bar Chart</strong></p>
+                        <p>Comparación de categorías</p>
+                    </div>
+                    <div class="card">
+                        <p class="color-secondary"><strong>Line Chart</strong></p>
+                        <p>Tendencias temporales</p>
+                    </div>
+                    <div class="card">
+                        <p class="color-primary"><strong>Pie Chart</strong></p>
+                        <p>Distribución porcentual</p>
+                    </div>
+                    <div class="card">
+                        <p class="color-secondary"><strong>Map</strong></p>
+                        <p>Visualización geográfica</p>
+                    </div>
+                    <div class="card">
+                        <p class="color-primary"><strong>Scatter Plot</strong></p>
+                        <p>Correlación de variables</p>
+                    </div>
+                    <div class="card">
+                        <p class="color-secondary"><strong>Pivot Table</strong></p>
+                        <p>Tablas dinámicas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: MEJORES PRÁCTICAS -->
+        <section id="mejores-practicas">
+            <h2>Mejores Prácticas en Databricks</h2>
+
+            <div class="grid-comparison">
+                <div class="feature-card primary">
+                    <h3 class="color-primary">Optimización</h3>
+                    <ul>
+                        <li>Usa <code>.cache()</code> para DataFrames usados múltiples veces</li>
+                        <li>Particiona datos grandes con <code>partitionBy()</code></li>
+                        <li>Prefiere Parquet/Delta sobre CSV</li>
+                        <li>Limita <code>.collect()</code> en datasets grandes</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">Límites de Free Edition</h3>
+                    <ul>
+                        <li>Computación serverless con cuota justa de uso</li>
+                        <li>Un workspace por cuenta</li>
+                        <li>Solo para uso no comercial/educativo</li>
+                        <li>Sin SLA ni soporte garantizado</li>
+                        <li>Si excedes cuota: pausa hasta reinicio diario</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h3 class="color-primary">Organización</h3>
+                    <ul>
+                        <li>Estructura folders por proyecto</li>
+                        <li>Usa nombres descriptivos en notebooks</li>
+                        <li>Documenta código con markdown cells</li>
+                        <li>Versionado con Git integration</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h3 class="color-secondary">Rendimiento</h3>
+                    <ul>
+                        <li>Evita operaciones row-by-row</li>
+                        <li>Usa funciones nativas de Spark</li>
+                        <li>Broadcast joins para tablas pequeñas</li>
+                        <li>Revisa query plans con <code>.explain()</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 10: RECURSOS -->
+        <section id="recursos">
+            <h2 class="text-center">Recursos y Próximos Pasos</h2>
+
+            <div class="challenge-box">
+                <h3>¡Felicidades! Has completado el tutorial inicial</h3>
+                <p>
+                    Ahora tienes las bases para trabajar con Apache Spark en Databricks. Los conceptos que has aprendido
+                    son fundamentales para Big Data, Machine Learning y Análisis de Datos a escala empresarial.
+                </p>
+            </div>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Documentación Oficial</h4>
+                    <ul>
+                        <li><a href="https://docs.databricks.com/" target="_blank">Databricks Documentation</a></li>
+                        <li><a href="https://spark.apache.org/docs/latest/" target="_blank">Apache Spark Docs</a></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Próximos Temas</h4>
+                    <ul>
+                        <li>Machine Learning con MLlib</li>
+                        <li>Streaming en tiempo real</li>
+                        <li>Delta Lake avanzado</li>
+                        <li>Optimización de queries</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Casos de Uso Reales</h4>
+                    <ul>
+                        <li>Netflix: Recomendaciones</li>
+                        <li>Comcast: Análisis de red</li>
+                        <li>Shell: IoT y sensores</li>
+                        <li>H&M: Análisis de ventas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box mt-2">
+                <h4>Dato Curioso sobre Databricks Free Edition</h4>
+                <p>
+                    <strong>El 11 de junio de 2025</strong>, Databricks lanzó <strong>Free Edition</strong> en el Data +
+                    AI Summit de San Francisco, reemplazando a Community Edition junto con una inversión de <strong>$100
+                        millones</strong> para educación en Data y AI. La nueva Free Edition incluye características que
+                    antes solo estaban disponibles para clientes de pago: Databricks Assistant (IA para escribir
+                    código), Genie (análisis con lenguaje natural), acceso completo a Mosaic AI para construir agentes,
+                    y entrenamiento ilimitado en Databricks Academy.
+                </p>
+                <p class="mt-1">
+                    En <strong>noviembre de 2025</strong>, Databricks organizó su primer <strong>Free Edition
+                        Hackathon</strong> donde cientos de miles de desarrolladores, estudiantes y aficionados crearon
+                    proyectos de IA y datos. Más de <strong>1,200 universidades</strong> (incluyendo Duke, Georgia Tech,
+                    UC Berkeley) y <strong>100,000+ estudiantes</strong> ya utilizan Free Edition para aprender Big Data
+                    y AI en un mercado donde las posiciones de AI/ML han crecido <strong>74% anualmente</strong>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">
+            Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.
+        </p>
+        <p class="description">
+            Titulaciones 100% oficiales. ¡Sin pruebas libres!
+        </p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
