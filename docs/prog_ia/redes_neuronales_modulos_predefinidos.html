@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Tipos de módulos predefinidos más comunes: capas, bloques arquitectónicos y modelos pre-entrenados.">
+    <meta name="keywords"
+        content="Keras, TensorFlow, Dense, CNN, LSTM, Attention, ResNet, BERT, Transformer, Transfer Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Tipos de Módulos Predefinidos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>Tipos de Módulos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Tipos de Módulos Predefinidos</h1>
+            <p class="subtitle">De las Capas Básicas a las Arquitecturas de Vanguardia</p>
+        </div>
+
+        <!-- SECCIÓN 1: CAPAS BÁSICAS -->
+        <section class="section">
+            <h2>1. Capas Básicas: Los Cimientos</h2>
+            <p>Las capas son los componentes fundamentales que transforman los datos de entrada mediante operaciones
+                matemáticas específicas. En el diseño de modelos modernos, estas capas se apilan estratégicamente para
+                extraer información jerárquica.</p>
+
+            <div class="layout-grid-stack">
+                <!-- DENSAS -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Densas / Lineales (Dense Layers)</h4>
+                    <p>
+                        Las capas densas son el tipo más básico de capa en una red neuronal, donde cada neurona está
+                        conectada a todas las neuronas de la capa anterior. Su función principal es realizar una
+                        combinación lineal de las entradas (pesos por entradas más sesgo) seguida de una función de
+                        activación no lineal.
+                    </p>
+                    <p>
+                        Se utilizan fundamentalmente para aprender representaciones globales de los datos. En un modelo
+                        de clasificación, las últimas capas suelen ser densas para poder integrar toda la información
+                        extraída por capas previas y tomar una decisión final basada en el conjunto completo de
+                        características.
+                    </p>
+                    <p>
+                        Sin embargo, tienen limitaciones importantes: son computacionalmente costosas en términos de
+                        parámetros y no tienen en cuenta la estructura espacial de los datos. Por ello, se debe tener
+                        especial cuidado con la normalización de las entradas y el uso de técnicas de regularización
+                        para evitar que el modelo memorice el ruido del entrenamiento.
+                    </p>
+                </div>
+
+                <!-- CONVOLUCIONALES -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Convolucionales (Convolutional Layers)</h4>
+                    <p>
+                        A diferencia de las densas, las capas convolucionales (Conv1D/2D/3D) están diseñadas para
+                        procesar datos con una estructura de cuadrícula o secuencia, extrayendo patrones locales como
+                        bordes, texturas o formas. Funcionan deslizando un filtro o "kernel" sobre los datos, lo que
+                        permite detectar la misma característica sin importar su posición (invarianza a la traslación).
+                    </p>
+                    <p>
+                        Estas capas suelen ir acompañadas de operaciones de <strong>Pooling</strong> (como Max o Average
+                        Pooling), que reducen la resolución espacial para quedarse con la información más relevante, y
+                        en tareas de generación de imágenes, de <strong>Upsampling</strong> para recuperar el tamaño
+                        original. Son el estándar absoluto en visión artificial por su eficiencia y efectividad.
+                    </p>
+                    <p>
+                        Su gran ventaja reside en el "compartir pesos": un mismo filtro se aplica a toda la imagen, lo
+                        que reduce drásticamente el número de parámetros en comparación con una capa densa equivalente.
+                        Esto las hace ideales para detectar jerarquías de conceptos visuales, desde simples líneas hasta
+                        objetos complejos.
+                    </p>
+                </div>
+
+                <!-- RECURRENTES -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Recurrentes (LSTM / GRU)</h4>
+                    <p>
+                        Las redes recurrentes están especializadas en el procesamiento de secuencias temporales donde el
+                        orden de los elementos es crítico. A diferencia de las capas anteriores, mantienen un "estado"
+                        que funciona como memoria interna, permitiendo que la información de pasos previos influya en el
+                        procesamiento del paso actual.
+                    </p>
+                    <p>
+                        Variantes avanzadas como <strong>LSTM</strong> (Long Short-Term Memory) y <strong>GRU</strong>
+                        (Gated Recurrent Unit)
+                        fueron diseñadas para mitigar el problema del desvanecimiento del gradiente, permitiendo a la
+                        red recordar información relevante a largo plazo. Se han utilizado históricamente en traducción
+                        de texto, predicción de series temporales y análisis de audio.
+                    </p>
+                    <p>
+                        Aunque han sido el núcleo del procesamiento de lenguaje natural (NLP) durante años, su
+                        naturaleza secuencial impide la paralelización masiva durante el entrenamiento. Debido a esto,
+                        están siendo desplazadas en muchas aplicaciones por arquitecturas de Atención y Transformers,
+                        que son más rápidas y eficaces en secuencias muy largas.
+                    </p>
+                </div>
+
+                <!-- ATENCIÓN -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Atención (Multi-Head Attention)</h4>
+                    <p>
+                        La capa de atención permite al modelo "mirar" todas las partes de una secuencia al mismo tiempo
+                        y decidir cuáles son las más importantes para entender el elemento actual. En lugar de procesar
+                        los datos uno a uno, calcula relaciones globales dinámicas entre todos los componentes de la
+                        entrada.
+                    </p>
+                    <p>
+                        El mecanismo de <strong>Multi-Head Attention</strong> divide esta búsqueda de relevancia en
+                        múltiples
+                        "cabezas" paralelas, permitiendo que el modelo capture diferentes tipos de relaciones
+                        simultáneamente (por ejemplo, en una frase, una cabeza puede centrarse en la gramática y otra en
+                        el significado semántico).
+                    </p>
+                    <p>
+                        Es el motor fundamental de los <strong>Transformers</strong>. Su capacidad para procesar
+                        información en
+                        paralelo y capturar dependencias de largo alcance sin importar la distancia física de los
+                        elementos ha revolucionado no solo el texto (GPT, BERT), sino también la visión (ViT) y la
+                        generación de proteínas.
+                    </p>
+                </div>
+
+                <!-- EMBEDDINGS -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Embeddings</h4>
+                    <p>
+                        Los embeddings son capas de proyección que convierten datos categóricos (como palabras o IDs de
+                        usuario) en vectores de números reales en un espacio continuo. A diferencia de representar
+                        palabras como códigos aislados, los embeddings aprenden a situar conceptos similares en
+                        posiciones cercanas del espacio vectorial.
+                    </p>
+                    <p>
+                        Esto permite capturar relaciones semánticas complejas: el modelo puede aprender matemáticamente
+                        que "Rey" es a "Hombre" como "Reina" es a "Mujer". Son esenciales en cualquier tarea que trabaje
+                        con datos discretos, ya que proporcionan una representación densa y rica en significado para que
+                        el resto de la red trabaje sobre ella.
+                    </p>
+                </div>
+
+                <!-- NORMALIZACIONES -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Normalizaciones (BatchNorm / LayerNorm)</h4>
+                    <p>
+                        Estas capas ajustan las activaciones de la red para que tengan una media de cero y una varianza
+                        de uno. <strong>BatchNorm</strong> lo hace a través de los datos del batch de entrenamiento,
+                        mientras que
+                        <strong>LayerNorm</strong> lo hace de forma independiente para cada ejemplo, siendo muy común en
+                        modelos de
+                        texto.
+                    </p>
+                    <p>
+                        Su principal beneficio es la estabilidad y la velocidad: permiten usar tasas de aprendizaje más
+                        altas sin que el entrenamiento se vuelva caótico. Además de acelerar la convergencia, actúan
+                        como un ligero regularizador, facilitando que el modelo aprenda patrones generales en lugar de
+                        obsesionarse con los valores atípicos de los datos.
+                    </p>
+                </div>
+
+                <!-- REGULARIZACIONES -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Regularizaciones (Dropout / Weight Decay)</h4>
+                    <p>
+                        El sobreajuste (overfitting) ocurre cuando una red neuronal "se aprende de memoria" los datos de
+                        entrenamiento pero falla con datos nuevos. Las capas de <strong>Dropout</strong> combaten esto
+                        desactivando
+                        aleatoriamente un porcentaje de neuronas durante cada paso del entrenamiento, obligando a la red
+                        a no depender de rutas específicas.
+                    </p>
+                    <p>
+                        Otras técnicas como el <strong>Weight Decay</strong> (penalización de pesos grandes) o el
+                        <strong>Early Stopping</strong>
+                        (detener el entrenamiento cuando el error de validación deja de bajar) complementan esta labor.
+                        El objetivo es siempre forzar a la red a encontrar soluciones más simples y robustas que
+                        funcionen bien en el mundo real.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: BLOQUES Y PATRONES -->
+        <section class="section">
+            <h2>2. Bloques y Patrones Arquitectónicos</h2>
+            <p>Cuando las capas se agrupan de forma inteligente, surgen patrones que resuelven problemas complejos de
+                entrenamiento y eficiencia.</p>
+
+            <div class="scenario-box">
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>🔗 Bloques Residuales (ResNet) <span style="font-weight: normal; margin-left: 10px;"></span>
+                        </h4>
+                        <p>Introducen conexiones de salto (skip connections) que suman la entrada directamente a la
+                            salida del bloque operacional. Esto mitiga el problema del desvanecimiento del gradiente,
+                            permitiendo entrenar redes extremadamente profundas (cientos de capas) con éxito.</p>
+                    </div>
+                </div>
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>⚡ Bloques de Eficiencia <span style="font-weight: normal; margin-left: 10px;"></span></h4>
+                        <p>Inception y convoluciones separables (Xception, MobileNet). Optimizan el uso de parámetros y
+                            cómputo dividiendo operaciones complejas en varias más pequeñas y eficientes, permitiendo
+                            ejecutar IA en dispositivos móviles.</p>
+                    </div>
+                </div>
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>🏗️ Encoder-Decoder (U-Net) <span style="font-weight: normal; margin-left: 10px;"></span>
+                        </h4>
+                        <p>Estructuras que primero comprimen la información en una representación latente (encoder) y
+                            luego la reconstruyen (decoder). Es el diseño estándar para segmentación de imágenes médicas
+                            y de satélite.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p class="title">El Estándar Transformer</p>
+                <p class="content">
+                    Consiste en una pila repetitiva de capas de atención y normalización combinadas con MLP. Su diseño
+                    modular y capacidad de paralelización lo han convertido en el estándar indiscutible para grandes
+                    modelos de lenguaje y visión.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MODELOS PRE-ENTRENADOS -->
+        <section class="section">
+            <h2>3. El Atajo: Modelos Pre-entrenados</h2>
+            <p>El <strong>Transfer Learning</strong> permite usar modelos ya entrenados en bases de datos gigantescas
+                para aplicar ese conocimiento a tus propios problemas con un esfuerzo mínimo.</p>
+
+            <div class="layout-grid-stack">
+                <!-- RESNET / EFFICIENTNET -->
+                <div class="feature-card">
+                    <h4>Vision Models: ResNet y EfficientNet</h4>
+                    <p>
+                        <strong>ResNet</strong> (Residual Networks) revolucionó el campo al demostrar que las redes más
+                        profundas
+                        podían entrenarse fácilmente mediante conexiones de salto. Es la arquitectura más utilizada como
+                        base para extraer características de imágenes debido a su solidez y facilidad de implementación.
+                    </p>
+                    <p>
+                        <strong>EfficientNet</strong>, por su parte, utiliza una técnica de escalado sistemático para
+                        equilibrar
+                        profundidad, anchura y resolución. Es capaz de alcanzar precisiones de estado del arte (SOTA)
+                        con una fracción de los parámetros de modelos anteriores, siendo la elección ideal cuando los
+                        recursos computacionales son limitados pero se requiere alta precisión.
+                    </p>
+                    <p>
+                        Ambos modelos se usan hoy para todo: desde el reconocimiento facial y la detección de
+                        enfermedades en radiografías hasta el control de calidad en líneas de producción industriales,
+                        donde actúan como potentes "ojos" ya entrenados.
+                    </p>
+                </div>
+
+                <!-- YOLO -->
+                <div class="feature-card">
+                    <h4>YOLO (You Only Look Once)</h4>
+                    <p>
+                        <strong>YOLO</strong> es el estándar de la industria para la detección de objetos en tiempo
+                        real. A
+                        diferencia de otros sistemas que escanean la imagen varias veces, YOLO procesa la imagen
+                        completa en una sola pasada de red, prediciendo simultáneamente las cajas delimitadoras y las
+                        clases de los objetos detectados.
+                    </p>
+                    <p>
+                        Su diseño optimizado permite velocidades de procesamiento increíbles (hasta 60-120 FPS), lo que
+                        lo hace perfecto para aplicaciones de videovigilancia, conducción autónoma y robótica. Cada
+                        nueva versión (como v8 o v10) mejora el equilibrio entre velocidad y precisión, adaptándose
+                        mejor a objetos pequeños y escenas complejas.
+                    </p>
+                </div>
+
+                <!-- BERT / GPT -->
+                <div class="feature-card">
+                    <h4>Language Models: BERT y GPT</h4>
+                    <p>
+                        <strong>BERT</strong> (Bidirectional Encoder Representations from Transformers) está diseñado
+                        para entender
+                        el contexto de una palabra mirando tanto a su izquierda como a su derecha. Esto lo hace
+                        insuperable en tareas de comprensión donde el matiz es clave, como el análisis de sentimiento,
+                        la detección de spam y la búsqueda semántica.
+                    </p>
+                    <p>
+                        <strong>GPT</strong> (Generative Pre-trained Transformer), por el contrario, está optimizado
+                        para la
+                        predicción del siguiente elemento en una secuencia. Su enfoque auto-regresivo le permite generar
+                        texto coherente y creativo, realizar traducciones y programar código. Es el motor detrás de la
+                        ola actual de inteligencia artificial generativa.
+                    </p>
+                    <p>
+                        Mientras BERT es excelente para "leer e interpretar", GPT es excelente para "crear y razonar".
+                        Ambos han eliminado la necesidad de entrenar modelos de lenguaje desde cero para la mayoría de
+                        las empresas, permitiendo usar una versión pre-entrenada y ajustarla con pocos datos.
+                    </p>
+                </div>
+
+                <!-- CLIP -->
+                <div class="feature-card">
+                    <h4>Multimodal: CLIP</h4>
+                    <p>
+                        <strong>CLIP</strong> (Contrastive Language-Image Pre-training) es un modelo puente que aprende
+                        a relacionar
+                        imágenes y texto de forma simultánea. Ha sido entrenado en cientos de millones de pares de
+                        imagen-texto, aprendiendo a entender visualmente conceptos descritos en lenguaje natural.
+                    </p>
+                    <p>
+                        Es el componente crítico que permite crear herramientas como DALL-E o Stable Diffusion, ya que
+                        traduce las instrucciones de texto del usuario en un espacio matemático que el generador de
+                        imágenes puede entender. También permite clasificar imágenes de categorías nunca vistas durante
+                        el entrenamiento (Zero-shot classification).
+                    </p>
+                </div>
+            </div>
+
+            <div class="warning-box" style="margin-top: 2rem;">
+                <h4>💡 Ventaja Competitiva</h4>
+                <p>El uso de estos modelos reduce el coste computacional y la cantidad de datos necesarios. El
+                    conocimiento ya está "cocinado"; tú solo necesitas añadir el ingrediente final para tu problema
+                    específico mediante el <strong>Fine-tuning</strong>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Modelado de redes neuronales, estructura, funcionamiento y ejemplos con TensorFlow">
+    <meta name="keywords"
+        content="Redes Neuronales, Deep Learning, TensorFlow, Keras, Perceptrón, CNN, RNN, Transformers, IA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Modelado de Redes Neuronales | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.5/dist/mermaid.min.js"></script>
+    <script src="../js/mermaid-config.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>Modelado de Redes Neuronales</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Modelado de Redes Neuronales</h1>
+            <p class="subtitle">Estructura, Funcionamiento y Ejemplos con TensorFlow</p>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDOS -->
+        <section>
+            <div class="toc-container">
+                <h3>Índice de Contenidos</h3>
+                <ul class="toc-list">
+                    <li><a href="#intro">1. ¿Qué es una Red Neuronal?</a></li>
+                    <li><a href="#estructura">2. Estructura Básica</a></li>
+                    <li><a href="#como-aprenden">3. ¿Cómo Aprenden?</a></li>
+                    <li><a href="#por-que-funcionan">4. ¿Por qué Funcionan?</a></li>
+                    <li><a href="#tipos-habituales">5. Tipos Habituales de Redes</a></li>
+                    <li><a href="#tensorflow-ejemplo">6. Ejemplo con TensorFlow</a></li>
+                    <li><a href="#regularizacion">7. Regularización y Generalización</a></li>
+                    <li><a href="#metricas">8. Métricas y Evaluación</a></li>
+                    <li><a href="#aplicaciones">9. Aplicaciones Reales</a></li>
+                    <li><a href="#ventajas-limites">10. Ventajas y Límites</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section id="intro">
+            <h2>¿Qué es una Red Neuronal?</h2>
+
+            <p>
+                Una red neuronal es un <strong>modelo matemático de aprendizaje automático</strong> inspirado, de forma
+                simplificada, en el funcionamiento del cerebro biológico. Está constituida por capas de "neuronas
+                artificiales" interconectadas. Cada neurona procesa información numérica recibida, la combina mediante
+                pesos y sesgos, y aplica una función de activación para generar una salida.
+            </p>
+
+            <div class="concept-card">
+                <div class="formula-container" style="flex: 1; min-width: 250px;">
+                    <p class="formula-title">Cálculo de una Neurona Básica</p>
+                    <p class="formula-text">$$ y = \sigma(w \cdot x + b) $$</p>
+                    <p style="font-size: 0.9rem; color: var(--text-medium);">
+                        Donde: <strong>x</strong> son las entradas, <strong>w</strong> los pesos, <strong>b</strong> el
+                        sesgo y <strong>σ</strong> (sigma) la función de activación.
+                    </p>
+                </div>
+                <div class="content" style="flex: 1; min-width: 250px;">
+                    <p>En esencia, es un <strong>sistema diferenciable</strong> de capas conectadas que aprende
+                        ajustando sus pesos para transformar datos de entrada en salidas útiles (predicciones), todo
+                        ello guiado por una función de pérdida y un algoritmo optimizador.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ESTRUCTURA -->
+        <section id="estructura">
+            <h2>Estructura de una Red Neuronal</h2>
+            <p>El flujo de información en una red neuronal típica se organiza en tres tipos principales de capas:</p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Capa de Entrada</h4>
+                    <p>Es la puerta de acceso de los datos a la red. Recibe la información cruda, como valores de
+                        píxeles de una imagen, palabras codificadas o lecturas de sensores, y la pasa a las siguientes
+                        capas.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Capas Ocultas</h4>
+                    <p>El núcleo de procesamiento. Estas capas transforman progresivamente la representación de los
+                        datos mediante neuronas y funciones de activación no lineales (como <strong>ReLU</strong>,
+                        <strong>tanh</strong>, o <strong>sigmoid</strong>), extrayendo características cada vez más
+                        complejas.
+                    </p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Capa de Salida</h4>
+                    <p>Entrega el resultado final del modelo. Dependiendo de la tarea, puede ser una clasificación
+                        (probabilidades de clases), un valor continuo (regresión) o una decisión binaria.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CÓMO APRENDEN -->
+        <section id="como-aprenden">
+            <h2>¿Cómo Aprenden?</h2>
+            <p>El proceso de aprendizaje es un ciclo iterativo que busca minimizar el error en las predicciones. Se
+                compone de cuatro pasos fundamentales:</p>
+
+            <div class="scenario-box neutral">
+                <h4>1. Propagación hacia delante (Forward Propagation)</h4>
+                <p>La red recibe las entradas, realiza los cálculos capa por capa y genera una predicción inicial. Al
+                    principio, como los pesos son aleatorios, esta predicción suele ser incorrecta.</p>
+            </div>
+
+            <div class="scenario-box neutral">
+                <h4>2. Cálculo de la Función de Pérdida (Loss Function)</h4>
+                <p>Se mide la discrepancia entre la predicción de la red y el valor real (objetivo). Funciones comunes
+                    incluyen la <strong>Entropía Cruzada</strong> (para clasificación) o el <strong>Error Cuadrático
+                        Medio (MSE)</strong> (para regresión).</p>
+            </div>
+
+            <div class="scenario-box neutral">
+                <h4>3. Retropropagación (Backpropagation)</h4>
+                <p>El paso clave. Se calcula el gradiente del error respecto a cada peso de la red, determine cuánto
+                    contribuyó cada neurona al error total.</p>
+            </div>
+
+            <div class="scenario-box neutral">
+                <h4>4. Optimización</h4>
+                <p>Un algoritmo optimizador (como <strong>SGD</strong> o <strong>Adam</strong>) actualiza los pesos en
+                    la dirección opuesta al gradiente para reducir el error en la siguiente iteración.</p>
+            </div>
+
+            <p class="text-center mt-1">Este ciclo se repite durante múltiples <strong>épocas</strong> (vueltas
+                completas al dataset) hasta que el rendimiento del modelo se estabiliza.</p>
+        </section>
+
+        <!-- SECCIÓN 4: POR QUÉ FUNCIONAN -->
+        <section id="por-que-funcionan">
+            <h2>¿Por qué Funcionan?</h2>
+            <div class="highlight-box secondary">
+                <p class="title">La Magia de la No-Linealidad</p>
+                <p class="content">
+                    Las redes neuronales funcionan gracias a las <strong>activaciones no lineales</strong>. Sin ellas,
+                    una red profunda sería equivalente a una simple regresión lineal, incapaz de resolver problemas
+                    complejos. La no-linealidad permite a la red aproximar prácticamente cualquier función matemática
+                    compleja.
+                </p>
+                <p class="content" style="margin-top: 1rem;">
+                    Con suficiente profundidad (número de capas) y ancho (neuronas por capa), y alimentada con
+                    suficientes datos, la red aprende a identificar <strong>patrones jerárquicos</strong>: desde bordes
+                    y texturas simples en las primeras capas, hasta formas, objetos y conceptos abstractos en las capas
+                    profundas.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: TIPOS HABITUALES -->
+        <section id="tipos-habituales">
+            <h2>Tipos Habituales de Redes Neuronales</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Perceptrón Multicapa (MLP)</h4>
+                    <p>Redes formadas por capas densas de neuronas. Son versátiles y útiles para trabajar con datos
+                        tabulares estructurados o problemas relativamente simples.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Redes Convolucionales (CNN)</h4>
+                    <p>Diseñadas para procesar datos con estructura de rejilla, como imágenes. Explotan patrones
+                        espaciales locales y son el estándar en visión artificial (clasificación, detección de objetos,
+                        segmentación).</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Redes Recurrentes (RNN, LSTM, GRU)</h4>
+                    <p>Especializadas en datos secuenciales (texto, audio, series temporales) ya que tienen "memoria" de
+                        estados previos. Aunque potentes, han sido desplazadas en gran medida por los Transformers.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Transformers</h4>
+                    <p>La arquitectura moderna dominante. Basados en mecanismos de <strong>atención</strong> que
+                        permiten procesar secuencias completas en paralelo. Son la base de los LLMs (como GPT) y cada
+                        vez más usados en visión (Vision Transformers).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: EJEMPLO TENSORFLOW -->
+        <section id="tensorflow-ejemplo">
+            <h2>Ejemplo de Implementación con TensorFlow</h2>
+            <p>A continuación, vemos cómo definir una red neuronal simple (MLP) utilizando la API de Keras en TensorFlow
+                para un problema de clasificación binaria.</p>
+
+            <div class="code-container">
+                <pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers, models
+
+# 1. Definición del modelo (Arquitectura Secuencial)
+model = models.Sequential([
+    # Capa de entrada (ej. 20 características) y primera capa oculta con 64 neuronas
+    # Activación ReLU para introducir no-linealidad
+    layers.Dense(64, activation='relu', input_shape=(20,)),
+    
+    # Segunda capa oculta con 32 neuronas
+    layers.Dense(32, activation='relu'),
+    
+    # Capa de salida: 1 neurona con activación Sigmoid
+    # (Produce una probabilidad entre 0 y 1 para clasificación binaria)
+    layers.Dense(1, activation='sigmoid')
+])
+
+# 2. Compilación del modelo
+# Definimos cómo va a aprender la red
+model.compile(
+    optimizer='adam',                # Optimizador moderno y eficiente
+    loss='binary_crossentropy',      # Función de pérdida para clasificación binaria
+    metrics=['accuracy']             # Métrica para evaluar el rendimiento
+)
+
+# 3. Resumen de la arquitectura
+model.summary()
+
+# (Opcional) Entrenamiento del modelo con datos
+# history = model.fit(x_train, y_train, epochs=10, batch_size=32, validation_split=0.2)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: REGULARIZACIÓN -->
+        <section id="regularizacion">
+            <h2>Regularización y Generalización</h2>
+            <p>
+                El objetivo final no es solo que la red aprenda los datos de entrenamiento, sino que
+                <strong>generalice</strong> bien a datos nuevos que nunca ha visto. Para evitar el <strong>sobreajuste
+                    (overfitting)</strong> —donde la red memoriza el ruido del entrenamiento— se emplean varias
+                técnicas:
+            </p>
+
+            <div class="grid-3">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Técnicas de Modelo</h4>
+                    <ul>
+                        <li><strong>Dropout:</strong> Apagar aleatoriamente neuronas durante el entrenamiento para
+                            evitar co-dependencias.</li>
+                        <li><strong>Weight Decay:</strong> Penalizar pesos grandes para mantener el modelo simple.</li>
+                        <li><strong>Early Stopping:</strong> Detener el entrenamiento cuando la validación deja de
+                            mejorar.</li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Datos</h4>
+                    <p><strong>Aumento de Datos (Data Augmentation):</strong> Generar variaciones sintéticas de los
+                        datos de entrenamiento (rotar imágenes, añadir ruido al audio, modificar texto) para robustecer
+                        el modelo.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Validación</h4>
+                    <p>Mantener siempre conjuntos de <strong>Validación</strong> y <strong>Prueba</strong> estrictamente
+                        separados del entrenamiento para obtener una evaluación honesta del rendimiento real.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: MÉTRICAS Y EVALUACIÓN -->
+        <section id="metricas">
+            <h2>Métricas y Evaluación</h2>
+            <p>La elección de la métrica de evaluación es crítica y depende totalmente de la tarea a resolver. No basta
+                con mirar un solo número.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Problema</th>
+                            <th>Métricas Comunes</th>
+                            <th>Consideración Importante</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Clasificación</td>
+                            <td>Accuracy, Precision, Recall, F1-Score, AUC-ROC</td>
+                            <td>Esencial analizar el desglose por clase si los datos están desbalanceados.</td>
+                        </tr>
+                        <tr>
+                            <td>Regresión</td>
+                            <td>MAE (Error Absoluto Medio), MSE (Error Cuadrático Medio)</td>
+                            <td>MSE penaliza más los errores grandes (outliers) que MAE.</td>
+                        </tr>
+                        <tr>
+                            <td>Visión/Detección</td>
+                            <td>IoU (Intersection over Union), mAP (mean Average Precision)</td>
+                            <td>Evalúa tanto la localización (caja) como la clasificación correcta.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Importante</h4>
+                <p>Mire siempre más allá del promedio. Analice los <strong>errores típicos</strong> y el rendimiento en
+                    los casos borde para entender realmente cómo se comporta su modelo.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: APLICACIONES -->
+        <section id="aplicaciones">
+            <h2>Aplicaciones en el Mundo Real</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">👁️ Visión Artificial</h4>
+                    <p>Reconocimiento facial, diagnóstico médico asistido por imagen, vehículos autónomos y sistemas de
+                        conducción asistida.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🗣️ Procesamiento de Lenguaje (NLP)</h4>
+                    <p>Traducción automática, clasificación de textos, chatbots inteligentes, resumen automático de
+                        documentos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔊 Audio y Señal</h4>
+                    <p>Reconocimiento de voz (ASR), detección de eventos sonoros, mejora de audio.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🏭 Industria y Otros</h4>
+                    <p>Sistemas de recomendación personalizados, detección de fraude financiero, control de procesos
+                        industriales y mantenimiento predictivo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 10: VENTAJAS Y LÍMITES -->
+        <section id="ventajas-limites">
+            <h2>Ventajas y Limitaciones</h2>
+            <div class="comparison-grid">
+                <div class="advantage-box">
+                    <h4>Ventajas</h4>
+                    <ul>
+                        <li><strong>Gran capacidad de representación:</strong> Pueden modelar relaciones extremadamente
+                            complejas y no lineales.</li>
+                        <li><strong>Rendimiento SOTA:</strong> Ofrecen resultados de vanguardia (State-Of-The-Art) en
+                            tareas perceptuales (visión, audio).</li>
+                        <li><strong>Aprendizaje Transferido:</strong> Permiten usar modelos pre-entrenados y ajustarlos
+                            (fine-tuning) a nuevas tareas con menos datos.</li>
+                    </ul>
+                </div>
+                <div class="disadvantage-box">
+                    <h4>Límites y Desafíos</h4>
+                    <ul>
+                        <li><strong>Datos y Cómputo:</strong> Requieren grandes volúmenes de datos y potencia de cálculo
+                            (GPUs) significativa para el entrenamiento.</li>
+                        <li><strong>Caja Negra (Opacidad):</strong> A menudo es difícil interpretar por qué la red tomó
+                            una decisión específica (falta de interpretabilidad).</li>
+                        <li><strong>Sensibilidad a Sesgos:</strong> Si los datos de entrenamiento tienen sesgos, la red
+                            los aprenderá y amplificará.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- SECCIÓN 11: MAPA MENTAL -->
+        <section class="section">
+            <h2 class="section-title">Resumen Visual</h2>
+            <div class="mindmap-container">
+                <pre class="mermaid">
+mindmap
+  root((Redes Neuronales))
+    Definicion
+      Modelo Matematico
+      Inspiracion Biologica
+    Estructura
+      Capa Entrada
+      Capas Ocultas
+      Capa Salida
+      Neurona
+        Pesos
+        Sesgo
+        Activacion
+    Aprendizaje
+      Forward Propagation
+      Loss Function
+      Backpropagation
+      Optimizacion
+        SGD
+        Adam
+    Tipos
+      MLP Tabular
+      CNN Vision
+      RNN Secuencias
+      Transformers
+    Aplicaciones
+      Vision Artificial
+      NLP
+      Audio y Voz
+                </pre>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

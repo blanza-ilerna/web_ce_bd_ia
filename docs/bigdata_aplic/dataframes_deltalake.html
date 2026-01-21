@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="DataFrames y Delta Lake en Databricks: procesamiento distribuido con Spark y almacenamiento ACID para Big Data">
+    <meta name="keywords"
+        content="DataFrames, Delta Lake, Databricks, Apache Spark, PySpark, Big Data, ACID, Time Travel, MERGE">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>DataFrames y Delta Lake en Databricks | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Big Data Aplicado</a> →
+                <span>DataFrames y Delta Lake</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>DataFrames y Delta Lake</h1>
+            <p class="subtitle">Procesamiento Distribuido y Almacenamiento ACID en Databricks</p>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDOS -->
+        <section>
+            <div class="toc-container">
+                <h3>Índice de Contenidos</h3>
+                <ul class="toc-list">
+                    <li><a href="#que-son-dataframes">1. ¿Qué son los DataFrames?</a></li>
+                    <li><a href="#creacion-dataframes">2. Creación y Operaciones Básicas</a></li>
+                    <li><a href="#transformaciones">3. Transformaciones Avanzadas</a></li>
+                    <li><a href="#delta-lake">4. ¿Qué es Delta Lake?</a></li>
+                    <li><a href="#operaciones-acid">5. Operaciones ACID con Delta Lake</a></li>
+                    <li><a href="#time-travel">6. Time Travel y Versionado</a></li>
+                    <li><a href="#optimizacion">7. Optimización con OPTIMIZE y Z-ORDER</a></li>
+                    <li><a href="#casos-uso">8. Casos de Uso Reales</a></li>
+                    <li><a href="#mejores-practicas">9. Mejores Prácticas</a></li>
+                    <li><a href="#recursos">10. Recursos y Próximos Pasos</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN A DATAFRAMES -->
+        <section id="que-son-dataframes">
+            <h2>¿Qué son los DataFrames?</h2>
+
+            <p>
+                Un <strong>DataFrame</strong> en Apache Spark es una colección distribuida de datos organizada en
+                columnas con nombre, similar a una tabla en una base de datos relacional o un DataFrame de pandas, pero
+                optimizado para procesamiento masivo en paralelo. Es la estructura de datos fundamental en Spark para
+                Big Data.
+            </p>
+
+            <p>
+                Los DataFrames permiten ejecutar operaciones SQL y transformaciones complejas en terabytes de datos
+                distribuidos a través de múltiples nodos, aprovechando el motor <strong>Catalyst Optimizer</strong> de
+                Spark para optimización automática de queries.
+            </p>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Real:</p>
+                <p class="content">Uber procesa más de 100 petabytes de datos usando DataFrames de Spark para análisis
+                    en tiempo real de trayectos, optimización de rutas y predicción de demanda, ejecutando millones de
+                    transformaciones por segundo en clusters distribuidos.</p>
+            </div>
+
+            <h3>Características Clave</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Distribuido</h4>
+                    <p>Los datos se distribuyen automáticamente en múltiples nodos para procesamiento paralelo masivo.
+                    </p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Lazy Evaluation</h4>
+                    <p>Las transformaciones no se ejecutan hasta que se llama una acción, optimizando el plan de
+                        ejecución.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Inmutable</h4>
+                    <p>Una vez creado, no puede modificarse. Cada transformación genera un nuevo DataFrame.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Optimizado</h4>
+                    <p>Catalyst Optimizer y Tungsten Engine optimizan automáticamente el código para máximo rendimiento.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CREACIÓN Y OPERACIONES BÁSICAS -->
+        <section id="creacion-dataframes">
+            <h2>Creación y Operaciones Básicas</h2>
+
+            <h3>Creación de DataFrames</h3>
+
+            <p>Existen múltiples formas de crear DataFrames en Spark. Veamos las más comunes:</p>
+
+            <div class="code-block">
+                <pre><code class="language-python"># 1. DESDE LISTAS DE PYTHON
+from pyspark.sql import Row
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
+
+# Método 1: Lista de tuplas
+data = [
+    ("Alice", 34, "Data Engineer", 95000.0),
+    ("Bob", 28, "Data Scientist", 105000.0),
+    ("Carol", 31, "ML Engineer", 110000.0),
+    ("David", 45, "Data Architect", 135000.0)
+]
+
+columns = ["nombre", "edad", "puesto", "salario"]
+df = spark.createDataFrame(data, columns)
+
+print("DataFrame creado desde lista:")
+df.show()
+
+# Método 2: Lista de objetos Row
+data_rows = [
+    Row(nombre="Emma", edad=29, puesto="Analytics Engineer", salario=98000.0),
+    Row(nombre="Frank", edad=38, puesto="Platform Engineer", salario=120000.0)
+]
+
+df_rows = spark.createDataFrame(data_rows)
+df_rows.show()
+
+# 2. DEFINIR ESQUEMA EXPLÍCITO (mejor práctica para producción)
+schema = StructType([
+    StructField("nombre", StringType(), nullable=False),
+    StructField("edad", IntegerType(), nullable=False),
+    StructField("puesto", StringType(), nullable=False),
+    StructField("salario", DoubleType(), nullable=True)
+])
+
+df_schema = spark.createDataFrame(data, schema)
+
+print("\nEsquema del DataFrame:")
+df_schema.printSchema()
+
+# 3. DESDE ARCHIVOS CSV
+df_csv = spark.read.csv(
+    "/databricks-datasets/samples/population-vs-price/data_geo.csv",
+    header=True,
+    inferSchema=True
+)
+
+print(f"\nRegistros del CSV: {df_csv.count()}")
+df_csv.show(5)</code></pre>
+            </div>
+
+            <div class="output-box">
+                <p class="output-title">Salida:</p>
+                <pre>+------+----+--------------+---------+
+|nombre|edad|        puesto|  salario|
++------+----+--------------+---------+
+| Alice|  34| Data Engineer|  95000.0|
+|   Bob|  28|Data Scientist| 105000.0|
+| Carol|  31|   ML Engineer| 110000.0|
+| David|  45|Data Architect| 135000.0|
++------+----+--------------+---------+</pre>
+            </div>
+
+            <h3>Operaciones de Selección y Filtrado</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python">from pyspark.sql.functions import col, upper, length
+
+# 1. SELECCIONAR COLUMNAS
+print("1. Seleccionar columnas específicas:")
+df.select("nombre", "puesto").show()
+
+# 2. SELECCIONAR CON TRANSFORMACIONES
+print("\n2. Transformar durante la selección:")
+df.select(
+    col("nombre"),
+    upper(col("puesto")).alias("puesto_mayusculas"),
+    (col("salario") * 12).alias("salario_anual")
+).show()
+
+# 3. FILTRAR DATOS (WHERE / FILTER)
+print("\n3. Empleados con salario > 100,000:")
+df.filter(col("salario") > 100000).show()
+
+# Equivalente con where()
+df.where("salario > 100000").show()
+
+# 4. FILTROS MÚLTIPLES
+print("\n4. Filtros combinados:")
+df.filter(
+    (col("edad") >= 30) &
+    (col("salario") >= 100000)
+).show()
+
+# 5. FILTRAR CON ISIN
+print("\n5. Filtrar por lista de valores:")
+df.filter(
+    col("puesto").isin("Data Scientist", "ML Engineer")
+).show()
+
+# 6. FILTRAR NULL / NOT NULL
+print("\n6. Valores no nulos:")
+df.filter(col("salario").isNotNull()).show()</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TRANSFORMACIONES AVANZADAS -->
+        <section id="transformaciones">
+            <h2>Transformaciones Avanzadas</h2>
+
+            <h3>Agregaciones y Agrupaciones</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python">from pyspark.sql.functions import count, avg, sum, max, min, round, when
+
+# Dataset de ejemplo: ventas por departamento
+ventas_data = [
+    ("Electrónica", "Laptop", 1200, 15),
+    ("Electrónica", "Mouse", 25, 150),
+    ("Hogar", "Sofá", 899, 8),
+    ("Electrónica", "Monitor", 350, 45),
+    ("Hogar", "Mesa", 450, 12),
+    ("Ropa", "Camisa", 35, 200),
+    ("Ropa", "Pantalón", 65, 120),
+    ("Hogar", "Lámpara", 89, 30)
+]
+
+df_ventas = spark.createDataFrame(
+    ventas_data,
+    ["departamento", "producto", "precio", "cantidad"]
+)
+
+print("Dataset original:")
+df_ventas.show()
+
+# 1. AGREGACIÓN BÁSICA
+print("\n1. Estadísticas globales:")
+df_ventas.select(
+    count("*").alias("total_productos"),
+    round(avg("precio"), 2).alias("precio_promedio"),
+    sum("cantidad").alias("unidades_totales")
+).show()
+
+# 2. GROUP BY CON MÚLTIPLES AGREGACIONES
+print("\n2. Análisis por departamento:")
+df_ventas.groupBy("departamento").agg(
+    count("producto").alias("num_productos"),
+    sum("cantidad").alias("unidades_vendidas"),
+    round(avg("precio"), 2).alias("precio_medio"),
+    max("precio").alias("precio_max"),
+    min("precio").alias("precio_min"),
+    round(sum(col("precio") * col("cantidad")), 2).alias("ingresos_totales")
+).orderBy(col("ingresos_totales").desc()).show()
+
+# 3. MÚLTIPLES GROUP BY
+print("\n3. Ventas por departamento y rango de precio:")
+df_ventas.withColumn(
+    "rango_precio",
+    when(col("precio") < 100, "Bajo")
+    .when(col("precio") < 500, "Medio")
+    .otherwise("Alto")
+).groupBy("departamento", "rango_precio").agg(
+    count("*").alias("productos"),
+    round(sum(col("precio") * col("cantidad")), 2).alias("ingresos")
+).orderBy("departamento", "rango_precio").show()</code></pre>
+            </div>
+
+            <div class="output-box">
+                <p class="output-title">Salida agregación por departamento:</p>
+                <pre>+------------+-------------+-----------------+------------+----------+----------------+
+|departamento|num_productos|unidades_vendidas|precio_medio|precio_max|ingresos_totales|
++------------+-------------+-----------------+------------+----------+----------------+
+| Electrónica|            3|              210|      525.0 |      1200|         36525.0|
+|        Ropa|            2|              320|       50.0 |        65|         14800.0|
+|       Hogar|            3|               50|      479.33|       899|         14660.0|
++------------+-------------+-----------------+------------+----------+----------------+</pre>
+            </div>
+
+            <h3>Joins y Combinaciones</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python"># Crear DataFrames para demostrar joins
+empleados = spark.createDataFrame([
+    (1, "Alice", "Engineering"),
+    (2, "Bob", "Sales"),
+    (3, "Carol", "Engineering"),
+    (4, "David", "Marketing")
+], ["emp_id", "nombre", "dept_id"])
+
+departamentos = spark.createDataFrame([
+    ("Engineering", "New York", 50),
+    ("Sales", "Chicago", 30),
+    ("Marketing", "Boston", 25),
+    ("HR", "Seattle", 15)
+], ["dept_id", "ubicacion", "num_empleados"])
+
+# 1. INNER JOIN (solo coincidencias)
+print("1. INNER JOIN:")
+empleados.join(
+    departamentos,
+    on="dept_id",
+    how="inner"
+).show()
+
+# 2. LEFT JOIN (todos de la izquierda)
+print("\n2. LEFT JOIN:")
+empleados.join(
+    departamentos,
+    on="dept_id",
+    how="left"
+).show()
+
+# 3. RIGHT JOIN (todos de la derecha)
+print("\n3. RIGHT JOIN:")
+empleados.join(
+    departamentos,
+    on="dept_id",
+    how="right"
+).show()
+
+# 4. FULL OUTER JOIN (todos)
+print("\n4. FULL OUTER JOIN:")
+empleados.join(
+    departamentos,
+    on="dept_id",
+    how="outer"
+).show()
+
+# 5. JOIN CON CONDICIONES MÚLTIPLES
+salarios = spark.createDataFrame([
+    (1, 95000),
+    (2, 85000),
+    (3, 105000),
+    (4, 78000)
+], ["emp_id", "salario"])
+
+# Join de 3 tablas
+print("\n5. Join múltiple con salarios:")
+empleados.join(
+    departamentos, "dept_id"
+).join(
+    salarios, "emp_id"
+).select(
+    "nombre",
+    "dept_id",
+    "ubicacion",
+    "salario"
+).show()</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: INTRODUCCIÓN A DELTA LAKE -->
+        <section id="delta-lake">
+            <h2>¿Qué es Delta Lake?</h2>
+
+            <p>
+                <strong>Delta Lake</strong> es una capa de almacenamiento open-source que aporta <strong>confiabilidad
+                    ACID</strong> (Atomicidad, Consistencia, Aislamiento, Durabilidad) a los data lakes. Fue creado por
+                Databricks y es el formato predeterminado en su plataforma, resolviendo los principales problemas de los
+                data lakes tradicionales basados en Parquet o CSV.
+            </p>
+
+            <p>
+                Delta Lake se construye sobre Apache Parquet, añadiendo un registro de transacciones (transaction log)
+                que garantiza la integridad de los datos, versionado automático y capacidad de "time travel" para
+                consultar versiones históricas.
+            </p>
+
+            <!-- Diagrama comparativo -->
+            <div class="svg-container">
+                <svg width="900" height="450" viewBox="0 0 900 450" style="max-width: 100%;">
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Data Lake Tradicional vs Delta Lake</text>
+
+                    <!-- DATA LAKE TRADICIONAL -->
+                    <text x="225" y="70" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Data Lake Tradicional</text>
+
+                    <rect x="50" y="90" width="350" height="60" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="70" y="115" font-size="14" font-weight="bold" fill="#333333"
+                        font-family="Montserrat">Problemas:</text>
+                    <text x="70" y="135" font-size="12" fill="#555555" font-family="Montserrat">Sin transacciones ACID,
+                        datos inconsistentes</text>
+
+                    <rect x="50" y="160" width="350" height="60" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="70" y="185" font-size="12" fill="#555555" font-family="Montserrat">Lecturas durante
+                        escrituras = errores</text>
+                    <text x="70" y="205" font-size="12" fill="#555555" font-family="Montserrat">Sin versionado,
+                        imposible recuperar datos</text>
+
+                    <rect x="50" y="230" width="350" height="60" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="70" y="255" font-size="12" fill="#555555" font-family="Montserrat">Schema drift, corrupción
+                        de datos</text>
+                    <text x="70" y="275" font-size="12" fill="#555555" font-family="Montserrat">Operaciones lentas
+                        (merge/delete)</text>
+
+                    <rect x="50" y="300" width="350" height="60" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="70" y="325" font-size="12" fill="#555555" font-family="Montserrat">Archivos pequeños = bajo
+                        rendimiento</text>
+                    <text x="70" y="345" font-size="12" fill="#555555" font-family="Montserrat">Sin auditoría ni linaje
+                        de datos</text>
+
+                    <!-- DELTA LAKE -->
+                    <text x="675" y="70" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Delta Lake</text>
+
+                    <rect x="500" y="90" width="350" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="520" y="115" font-size="14" font-weight="bold" fill="#333333"
+                        font-family="Montserrat">Soluciones:</text>
+                    <text x="520" y="135" font-size="12" fill="#555555" font-family="Montserrat">Transacciones ACID,
+                        datos consistentes</text>
+
+                    <rect x="500" y="160" width="350" height="60" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="520" y="185" font-size="12" fill="#555555" font-family="Montserrat">Lecturas/escrituras
+                        concurrentes seguras</text>
+                    <text x="520" y="205" font-size="12" fill="#555555" font-family="Montserrat">Time Travel, versionado
+                        automático</text>
+
+                    <rect x="500" y="230" width="350" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="520" y="255" font-size="12" fill="#555555" font-family="Montserrat">Schema enforcement,
+                        datos válidos</text>
+                    <text x="520" y="275" font-size="12" fill="#555555" font-family="Montserrat">MERGE, DELETE, UPDATE
+                        optimizados</text>
+
+                    <rect x="500" y="300" width="350" height="60" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="520" y="325" font-size="12" fill="#555555" font-family="Montserrat">Auto-compactación de
+                        archivos</text>
+                    <text x="520" y="345" font-size="12" fill="#555555" font-family="Montserrat">Auditoría completa
+                        (transaction log)</text>
+
+                    <!-- Flecha de mejora -->
+                    <path d="M 410 220 L 490 220" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue)"
+                        fill="none" />
+                    <text x="450" y="210" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">MEJORA</text>
+
+                    <!-- Comparación de rendimiento -->
+                    <rect x="50" y="380" width="800" height="50" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                        rx="8" />
+                    <text x="450" y="405" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Delta Lake: hasta 10-100x más rápido en operaciones
+                        MERGE/UPDATE/DELETE</text>
+                    <text x="450" y="425" font-size="12" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Usado por: Netflix, Adobe, Comcast, Visa, Shell, Apple Music, y +1000
+                        empresas</text>
+
+                    <defs>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <h3>Ventajas de Delta Lake</h3>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">ACID</h4>
+                    <p>Garantiza transacciones atómicas, consistentes, aisladas y duraderas, eliminando la corrupción de
+                        datos.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Time Travel</h4>
+                    <p>Consulta versiones históricas de tus datos, revierte cambios erróneos y audita modificaciones.
+                    </p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Streaming</h4>
+                    <p>Lectura y escritura unificada para batch y streaming, eliminando complejidad de arquitecturas
+                        lambda.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Schema Validation</h4>
+                    <p>Valida automáticamente esquemas, previniendo inserciones de datos con formato incorrecto.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: OPERACIONES ACID CON DELTA LAKE -->
+        <section id="operaciones-acid">
+            <h2>Operaciones ACID con Delta Lake</h2>
+
+            <h3>Crear y Escribir Delta Tables</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python"># 1. CREAR DELTA TABLE DESDE UN DATAFRAME
+from pyspark.sql.functions import current_timestamp
+
+# Dataset de ejemplo: transacciones
+transacciones = spark.createDataFrame([
+    (1, "2025-12-01", "Alice", 1250.50, "Completada"),
+    (2, "2025-12-01", "Bob", 899.99, "Completada"),
+    (3, "2025-12-02", "Carol", 3200.00, "Pendiente"),
+    (4, "2025-12-02", "David", 150.75, "Completada"),
+    (5, "2025-12-03", "Emma", 2100.00, "Procesando")
+], ["id", "fecha", "cliente", "monto", "estado"])
+
+# Escribir como Delta Table
+delta_path = "/FileStore/delta/transacciones"
+
+transacciones.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .save(delta_path)
+
+print("Delta Table creada exitosamente")
+
+# 2. LEER DELTA TABLE
+df_delta = spark.read.format("delta").load(delta_path)
+print("\nContenido de Delta Table:")
+df_delta.show()
+
+# 3. APPEND (añadir nuevos registros)
+nuevas_transacciones = spark.createDataFrame([
+    (6, "2025-12-04", "Frank", 575.25, "Completada"),
+    (7, "2025-12-04", "Grace", 1899.00, "Procesando")
+], ["id", "fecha", "cliente", "monto", "estado"])
+
+nuevas_transacciones.write \
+    .format("delta") \
+    .mode("append") \
+    .save(delta_path)
+
+print("\nNuevos registros añadidos")
+
+# 4. OVERWRITE CON PARTICIONES
+# Sobrescribir solo transacciones de una fecha específica
+transacciones_actualizadas = spark.createDataFrame([
+    (3, "2025-12-02", "Carol", 3200.00, "Completada"),  # actualizado
+], ["id", "fecha", "cliente", "monto", "estado"])
+
+transacciones_actualizadas.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("replaceWhere", "fecha = '2025-12-02'") \
+    .save(delta_path)
+
+print("\nRegistros actualizados con replaceWhere")</code></pre>
+            </div>
+
+            <h3>MERGE, UPDATE y DELETE</h3>
+
+            <p>
+                Delta Lake soporta operaciones SQL estándar que son extremadamente lentas o imposibles en data lakes
+                tradicionales:
+            </p>
+
+            <div class="code-block">
+                <pre><code class="language-python">from delta.tables import DeltaTable
+
+# Obtener referencia a Delta Table
+delta_table = DeltaTable.forPath(spark, delta_path)
+
+# 1. UPDATE - Actualizar registros existentes
+print("1. UPDATE: Cambiar estados pendientes a completados")
+delta_table.update(
+    condition="estado = 'Pendiente'",
+    set={"estado": "'Completada'"}
+)
+
+# Verificar cambios
+spark.read.format("delta").load(delta_path).filter("id = 3").show()
+
+# 2. DELETE - Eliminar registros
+print("\n2. DELETE: Eliminar transacciones menores a 200")
+delta_table.delete("monto < 200")
+
+print("Registros después de DELETE:")
+spark.read.format("delta").load(delta_path).show()
+
+# 3. MERGE (UPSERT) - Actualizar si existe, insertar si no
+# Crear datos actualizados y nuevos
+actualizaciones = spark.createDataFrame([
+    (1, "2025-12-01", "Alice", 1250.50, "Reembolsada"),  # existe: actualizar
+    (8, "2025-12-05", "Henry", 999.99, "Completada")     # no existe: insertar
+], ["id", "fecha", "cliente", "monto", "estado"])
+
+print("\n3. MERGE (UPSERT):")
+delta_table.alias("target").merge(
+    actualizaciones.alias("updates"),
+    "target.id = updates.id"  # condición de match
+).whenMatchedUpdate(set={
+    "estado": "updates.estado",
+    "monto": "updates.monto"
+}).whenNotMatchedInsert(values={
+    "id": "updates.id",
+    "fecha": "updates.fecha",
+    "cliente": "updates.cliente",
+    "monto": "updates.monto",
+    "estado": "updates.estado"
+}).execute()
+
+print("Después de MERGE:")
+spark.read.format("delta").load(delta_path).orderBy("id").show()</code></pre>
+            </div>
+
+            <div class="highlight-box warning">
+                <p class="title">Rendimiento:</p>
+                <p class="content">MERGE en Delta Lake es <strong>10-100x más rápido</strong> que implementaciones
+                    tradicionales con Parquet. Delta usa predicción de particiones y skip data para optimizar
+                    automáticamente.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: TIME TRAVEL -->
+        <section id="time-travel">
+            <h2>Time Travel y Versionado</h2>
+
+            <p>
+                Una de las características más poderosas de Delta Lake es <strong>Time Travel</strong>: la capacidad de
+                consultar versiones históricas de tus datos, revertir cambios erróneos y auditar modificaciones.
+            </p>
+
+            <h3>Consultar Versiones Históricas</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python"># 1. VER HISTORIAL DE TRANSACCIONES
+print("1. Historial completo de la tabla:")
+delta_table = DeltaTable.forPath(spark, delta_path)
+history = delta_table.history()
+
+history.select(
+    "version",
+    "timestamp",
+    "operation",
+    "operationParameters"
+).show(truncate=False)
+
+# 2. CONSULTAR VERSIÓN ESPECÍFICA (por número)
+print("\n2. Consultar versión 0 (estado original):")
+df_version_0 = spark.read \
+    .format("delta") \
+    .option("versionAsOf", 0) \
+    .load(delta_path)
+
+df_version_0.show()
+
+# 3. CONSULTAR POR TIMESTAMP
+print("\n3. Consultar datos como estaban hace 2 horas:")
+df_timestamp = spark.read \
+    .format("delta") \
+    .option("timestampAsOf", "2025-12-09 10:00:00") \
+    .load(delta_path)
+
+# 4. SQL TIME TRAVEL
+spark.sql(f"""
+    SELECT * FROM delta.`{delta_path}`
+    VERSION AS OF 1
+""").show()
+
+print("\n4. SQL con timestamp:")
+spark.sql(f"""
+    SELECT * FROM delta.`{delta_path}`
+    TIMESTAMP AS OF '2025-12-08'
+""").show()
+
+# 5. COMPARAR VERSIONES
+print("\n5. Comparar versión actual vs versión anterior:")
+df_actual = spark.read.format("delta").load(delta_path)
+df_anterior = spark.read.format("delta").option("versionAsOf", 0).load(delta_path)
+
+print(f"Versión actual: {df_actual.count()} registros")
+print(f"Versión anterior: {df_anterior.count()} registros")
+
+# Registros eliminados
+eliminados = df_anterior.subtract(df_actual)
+print("\nRegistros que fueron eliminados:")
+eliminados.show()
+
+# Registros nuevos
+nuevos = df_actual.subtract(df_anterior)
+print("\nRegistros que fueron añadidos:")
+nuevos.show()</code></pre>
+            </div>
+
+            <h3>Restaurar y Vacuuming</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python"># 1. RESTORE - Revertir tabla a versión anterior
+from delta.tables import DeltaTable
+
+print("1. RESTORE: Revertir a versión 2")
+delta_table = DeltaTable.forPath(spark, delta_path)
+
+# Restaurar a versión específica
+delta_table.restoreToVersion(2)
+
+print("Tabla restaurada:")
+spark.read.format("delta").load(delta_path).show()
+
+# También se puede restaurar por timestamp
+# delta_table.restoreToTimestamp("2025-12-08 15:30:00")
+
+# 2. VACUUM - Limpiar archivos antiguos
+print("\n2. VACUUM: Limpiar archivos no utilizados")
+
+# IMPORTANTE: VACUUM elimina archivos que ya no son referenciados
+# por defecto mantiene 7 días de historial
+
+# Vacuum con retención de 168 horas (7 días) - recomendado en producción
+delta_table.vacuum(168)
+
+# IMPORTANTE: Después de VACUUM, no puedes hacer time travel
+# más allá del período de retención
+
+# 3. DESCRIBE HISTORY - Ver detalles de operaciones
+print("\n3. Detalles del historial:")
+delta_table.history().select(
+    "version",
+    "timestamp",
+    "userId",
+    "userName",
+    "operation",
+    "operationMetrics"
+).show(10, truncate=False)</code></pre>
+            </div>
+
+            <div class="highlight-box warning">
+                <p class="title">Importante sobre VACUUM:</p>
+                <ul>
+                    <li>VACUUM elimina permanentemente archivos no utilizados</li>
+                    <li>Retención predeterminada: 7 días (no eliminar antes)</li>
+                    <li>Después de VACUUM no puedes hacer time travel más allá de la retención</li>
+                    <li>En producción: <code>vacuum(168)</code> (7 días)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: OPTIMIZACIÓN -->
+        <section id="optimizacion">
+            <h2>Optimización con OPTIMIZE y Z-ORDER</h2>
+
+            <p>
+                Delta Lake incluye comandos de optimización que mejoran drásticamente el rendimiento de lectura mediante
+                compactación de archivos y organización inteligente de datos.
+            </p>
+
+            <h3>OPTIMIZE - Compactación de Archivos</h3>
+
+            <div class="code-block">
+                <pre><code class="language-python"># Problema: Muchos archivos pequeños reducen el rendimiento
+# Solución: OPTIMIZE compacta archivos en tamaños óptimos
+
+# 1. OPTIMIZE BÁSICO
+print("1. OPTIMIZE: Compactar archivos pequeños")
+
+# SQL
+spark.sql(f"""
+    OPTIMIZE delta.`{delta_path}`
+""")
+
+# Python API
+delta_table = DeltaTable.forPath(spark, delta_path)
+delta_table.optimize().executeCompaction()
+
+print("Optimización completada")
+
+# 2. OPTIMIZE CON WHERE (solo optimizar particiones específicas)
+print("\n2. OPTIMIZE parcial (solo ciertas particiones):")
+
+spark.sql(f"""
+    OPTIMIZE delta.`{delta_path}`
+    WHERE fecha >= '2025-12-01'
+""")
+
+# 3. Ver métricas de optimización
+result = delta_table.optimize().executeCompaction()
+print("\nMétricas de optimización:")
+result.show()
+
+# Información típica:
+# - numFilesAdded: archivos nuevos creados
+# - numFilesRemoved: archivos pequeños eliminados
+# - filesAdded: detalles de archivos nuevos
+# - filesRemoved: detalles de archivos eliminados</code></pre>
+            </div>
+
+            <h3>Z-ORDER - Clustering Multidimensional</h3>
+
+            <p>
+                <strong>Z-ORDER</strong> organiza los datos usando el algoritmo Z-order curve para colocar información
+                relacionada en los mismos archivos, permitiendo skip data más eficiente.
+            </p>
+
+            <div class="code-block">
+                <pre><code class="language-python"># Z-ORDER es especialmente útil cuando filtras por múltiples columnas
+
+# 1. Z-ORDER POR UNA COLUMNA
+print("1. Z-ORDER por columna de fecha:")
+
+spark.sql(f"""
+    OPTIMIZE delta.`{delta_path}`
+    ZORDER BY (fecha)
+""")
+
+# 2. Z-ORDER POR MÚLTIPLES COLUMNAS
+print("\n2. Z-ORDER multidimensional:")
+
+spark.sql(f"""
+    OPTIMIZE delta.`{delta_path}`
+    ZORDER BY (fecha, estado)
+""")
+
+# Python API
+delta_table.optimize().executeZOrderBy("fecha", "estado")
+
+# 3. CASO DE USO REAL
+# Si frecuentemente consultas por cliente Y fecha:
+# SELECT * FROM tabla WHERE cliente = 'Alice' AND fecha > '2025-12-01'
+
+# Z-ORDER optimizará para esas columnas:
+spark.sql(f"""
+    OPTIMIZE delta.`{delta_path}`
+    ZORDER BY (cliente, fecha)
+""")
+
+print("Z-ORDER aplicado")
+
+# RESULTADOS ESPERADOS:
+# - Consultas filtradas: 2-10x más rápidas
+# - Reducción de datos leídos: 50-90%
+# - Especialmente efectivo en tablas grandes (> 1 TB)</code></pre>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p class="title">Cuándo usar Z-ORDER:</p>
+                <ul>
+                    <li><strong>Tablas grandes</strong> (> 1 TB) con consultas frecuentes</li>
+                    <li><strong>Filtros multidimensionales</strong> (WHERE con 2-4 columnas)</li>
+                    <li><strong>Columnas de alta cardinalidad</strong> (muchos valores únicos)</li>
+                    <li><strong>NO usar</strong> en columnas de partición (ya están optimizadas)</li>
+                    <li><strong>Ejecutar periódicamente</strong> después de múltiples escrituras</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: CASOS DE USO REALES -->
+        <section id="casos-uso">
+            <h2>Casos de Uso Reales</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Netflix</h4>
+                    <p><strong>Problema:</strong> Procesar 1+ trillón de eventos/día para recomendaciones.</p>
+                    <p><strong>Solución Delta:</strong> Time travel para auditoría de modelos ML, MERGE para actualizar
+                        perfiles de usuarios en tiempo real, transacciones ACID para garantizar consistencia en
+                        pipelines de datos críticos.</p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Visa</h4>
+                    <p><strong>Problema:</strong> Detección de fraude en 100M transacciones/hora.</p>
+                    <p><strong>Solución Delta:</strong> Streaming + batch unificado, schema enforcement para validar
+                        transacciones, Z-ORDER en merchant_id + timestamp para consultas rápidas de patrones
+                        sospechosos.</p>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Adobe</h4>
+                    <p><strong>Problema:</strong> Analytics en 50+ petabytes de datos de comportamiento web.</p>
+                    <p><strong>Solución Delta:</strong> OPTIMIZE para reducir 10,000+ archivos pequeños a 100 archivos
+                        óptimos, time travel para comparar métricas históricas, DELETE eficiente para GDPR compliance.
+                    </p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Shell</h4>
+                    <p><strong>Problema:</strong> Análisis IoT de millones de sensores en refinerías.</p>
+                    <p><strong>Solución Delta:</strong> Escrituras concurrentes desde múltiples fuentes sin conflictos,
+                        ACID para garantizar integridad en datos de seguridad crítica, particionado + Z-ORDER para
+                        consultas geoespaciales rápidas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: MEJORES PRÁCTICAS -->
+        <section id="mejores-practicas">
+            <h2>Mejores Prácticas</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Esquemas</h4>
+                    <ul>
+                        <li>Definir esquema explícito en producción</li>
+                        <li>Activar schema enforcement</li>
+                        <li>Usar schema evolution con cuidado</li>
+                        <li>Validar tipos de datos</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Particionado</h4>
+                    <ul>
+                        <li>Particionar por columnas filtradas frecuentemente</li>
+                        <li>Evitar alta cardinalidad (&lt; 1000 particiones)</li>
+                        <li>Tamaño de partición: 100MB - 1GB</li>
+                        <li>Usar Z-ORDER en lugar de over-partitioning</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Rendimiento</h4>
+                    <ul>
+                        <li>OPTIMIZE después de muchas escrituras pequeñas</li>
+                        <li>Z-ORDER en columnas filtradas (2-4 máx)</li>
+                        <li>Auto-optimize en tablas críticas</li>
+                        <li>Cachear DataFrames usados múltiples veces</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Mantenimiento</h4>
+                    <ul>
+                        <li>VACUUM con retención >= 7 días</li>
+                        <li>Monitorear historial con DESCRIBE HISTORY</li>
+                        <li>Programar OPTIMIZE periódicamente</li>
+                        <li>Backup crítico: exportar versiones antiguas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 10: RECURSOS Y CONCLUSIÓN -->
+        <section id="recursos">
+            <h2>Recursos y Próximos Pasos</h2>
+
+            <div class="highlight-box primary" style="text-align: center;">
+                <p class="title">¡Has dominado DataFrames y Delta Lake!</p>
+                <p class="content">
+                    Ahora comprendes las estructuras de datos fundamentales de Spark y cómo Delta Lake aporta
+                    confiabilidad ACID a data lakes. Estas tecnologías son esenciales para arquitecturas modernas de Big
+                    Data y están en uso en miles de empresas globalmente.
+                </p>
+            </div>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Documentación</h4>
+                    <p><a href="https://docs.delta.io/" target="_blank">Delta Lake Docs</a></p>
+                    <p><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html" target="_blank">Spark
+                            SQL Guide</a></p>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Próximos Temas</h4>
+                    <ul>
+                        <li>Structured Streaming</li>
+                        <li>Delta Live Tables</li>
+                        <li>Unity Catalog</li>
+                        <li>Advanced optimization</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Práctica Recomendada</h4>
+                    <ul>
+                        <li>Crear pipeline ETL completo</li>
+                        <li>Implementar CDC con Delta</li>
+                        <li>Optimizar tabla real grande</li>
+                        <li>Proyecto end-to-end</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DATO CURIOSO -->
+            <div class="highlight-box warning">
+                <p class="title">Dato Curioso sobre Delta Lake</p>
+                <p class="content">
+                    <strong>Delta Lake fue open-sourced en 2019</strong> y se convirtió en proyecto de la <strong>Linux
+                        Foundation</strong> en 2020. Hoy es usado por más de <strong>7,000 empresas</strong> incluyendo
+                    Netflix, Adobe, Comcast, Visa, y Shell. El proyecto tiene <strong>6,000+ estrellas en GitHub</strong>
+                    y es compatible con Apache Spark, Presto, Trino, Apache Hive y más.
+                </p>
+                <p class="content" style="margin-top: 0.75rem;">
+                    En benchmarks, Delta Lake ha demostrado ser hasta <strong>100x más rápido</strong> que
+                    implementaciones tradicionales de data lakes para operaciones MERGE/UPDATE/DELETE, procesando
+                    <strong>petabytes de datos</strong> con consistencia ACID completa.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
