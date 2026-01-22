@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concepto de Problema en IA - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Formalización y resolución de problemas en Inteligencia Artificial.">
+    <meta name="keywords"
+        content="problema IA, inteligencia artificial, espacio de estados, búsqueda, formulación, representación, backtracking, 8 reinas, ILERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Concepto de Problema en IA - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. Formalización y resolución de problemas.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Concepto de Problema en IA</span>
+                </div>
+            </div>
+            <h1 class="text-center">Concepto de Problema en IA</h1>
+            <p class="subtitle text-center">Formalización y Resolución de Problemas en Inteligencia Artificial</p>
+        </header>
+
+        <!-- Introducción -->
+        <section style="margin-top: 3rem;">
+            <h2 class="color-neutral">¿Qué es un Problema en IA?</h2>
+            <p>
+                Un <strong>problema en Inteligencia Artificial</strong> es una situación inicial desde la cual se desea
+                alcanzar un <strong>estado objetivo</strong>, aplicando un conjunto de <strong>operaciones o
+                    acciones</strong> dentro de un marco de <strong>restricciones</strong>. Es la base fundamental sobre
+                la que trabajan todos los sistemas inteligentes.
+            </p>
+            <p>
+                A diferencia de un algoritmo determinista, donde el camino está completamente especificado, en IA el
+                sistema debe <strong>buscar</strong> la solución explorando un espacio de estados posibles, evaluando
+                alternativas y tomando decisiones.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Definición Formal de un Problema en IA:</p>
+                <p class="content text-center" style="font-size: 1.5rem; font-weight: bold; color: #49B9CE;">
+                    P = (E<sub>i</sub>, A, E<sub>f</sub>, R)
+                </p>
+                <p class="content text-center">
+                    Un problema se modela como una <strong>cuádrupla</strong> que especifica completamente el espacio de
+                    búsqueda y las reglas del juego.
+                </p>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo Real: Navegación GPS</p>
+                <p class="content">
+                    <strong>E<sub>i</sub></strong>: Tu ubicación actual (Madrid, Calle Alcalá)<br>
+                    <strong>A</strong>: {girar_derecha, girar_izquierda, seguir_recto, dar_vuelta}<br>
+                    <strong>E<sub>f</sub></strong>: Destino objetivo (Barcelona, Plaza Catalunya)<br>
+                    <strong>R</strong>: {evitar_peajes, minimizar_tiempo, ruta_más_corta}<br><br>
+                    <em>Google Maps resuelve ~1 billón de problemas de navegación al año usando variantes de algoritmos
+                        A* y Dijkstra.</em>
+                </p>
+            </div>
+
+            <h3 class="color-neutral">Los 4 Componentes Fundamentales</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">E<sub>i</sub> - Estado Inicial</h4>
+                    <p>Representa el <strong>punto de partida</strong> del sistema. Describe la configuración completa
+                        del mundo en el momento t=0. Ejemplo: posición inicial de un robot, tablero de ajedrez al
+                        inicio.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">A - Acciones/Operadores</h4>
+                    <p>Conjunto de <strong>transformaciones posibles</strong> que cambian el estado actual. Cada acción
+                        tiene precondiciones (cuándo se puede aplicar) y efectos (cómo modifica el estado).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">E<sub>f</sub> - Estado Final</h4>
+                    <p>Describe la <strong>condición objetivo</strong> que debe cumplirse. Puede ser un estado
+                        específico (llegar a casilla X) o una condición general (temperatura < 20°C).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">R - Restricciones</h4>
+                    <p><strong>Limitaciones o condiciones</strong> que deben respetarse. Pueden ser físicas (un robot no
+                        puede atravesar paredes), temporales (deadline) o de recursos (presupuesto máximo).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tipos de Representación -->
+        <section>
+            <h2 class="color-neutral">Tipos de Representación de Problemas</h2>
+            <p>
+                El modo en que se representan los estados y las acciones tiene <strong>importancia crucial</strong> para
+                la eficiencia del sistema. La elección del tipo de representación influye directamente en:
+            </p>
+            <ul>
+                <li><strong>Velocidad de búsqueda:</strong> estructura de datos eficiente = menos tiempo</li>
+                <li><strong>Uso de memoria:</strong> representaciones compactas permiten problemas más grandes</li>
+                <li><strong>Generalización:</strong> capacidad del sistema para adaptarse a variantes del problema</li>
+                <li><strong>Interpretabilidad:</strong> facilidad para humanos de entender el razonamiento del sistema
+                </li>
+            </ul>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">1. Tabular/Discreta</h4>
+                    <p>Estados finitos y enumerables. Simple e intuitivo, permite búsqueda exhaustiva. Útil en
+                        Q-Learning.</p>
+                    <p><em>Ejemplo: Tres en Raya, Sudoku, juegos de mesa simples</em></p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">2. Simbólica/Reglas</h4>
+                    <p>Lógica proposicional/predicados. IF condición THEN acción. Interpretable por humanos, fácil
+                        mantenimiento.</p>
+                    <p><em>Ejemplo: Sistemas Expertos como MYCIN (diagnóstico médico)</em></p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">3. Numérica/Vectorial</h4>
+                    <p>Espacios continuos en R<sup>n</sup>. Óptimo para ML/DL, gradientes calculables, álgebra lineal
+                        eficiente.</p>
+                    <p><em>Ejemplo: Redes Neuronales, Optimización, Regresión</em></p>
+                </div>
+            </div>
+
+            <h3 class="color-neutral">Comparación de Representaciones</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Tabular</th>
+                        <th>Simbólica</th>
+                        <th>Vectorial</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Escalabilidad</strong></td>
+                        <td>Baja (crece exponencial)</td>
+                        <td>Media</td>
+                        <td>Alta (GPU-friendly)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interpretabilidad</strong></td>
+                        <td>Alta</td>
+                        <td>Muy Alta</td>
+                        <td>Baja (caja negra)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flexibilidad</strong></td>
+                        <td>Rígida</td>
+                        <td>Alta</td>
+                        <td>Muy Alta</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mejor Aplicación</strong></td>
+                        <td>Juegos simples</td>
+                        <td>Sistemas expertos</td>
+                        <td>ML/Optimización</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Fases de Resolución -->
+        <section>
+            <h2 class="color-neutral">4 Fases de Resolución de un Problema</h2>
+            <p>
+                Resolver un problema en IA implica seguir una <strong>secuencia estructurada</strong> que permite al
+                sistema analizar, modelar y actuar. Estas fases son iterativas: puede ser necesario volver a formulación
+                si la búsqueda no encuentra soluciones.
+            </p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Formulación</h4>
+                        <p>Fase crítica donde se <strong>define formalmente</strong> el problema: E<sub>i</sub>, A,
+                            E<sub>f</sub>, R. Una formulación ambigua hace que el sistema busque soluciones
+                            irrelevantes.</p>
+                        <p><em>Ejemplo: Planificación urbana no necesita cada semáforo, pero sí puntos de
+                                congestión.</em></p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Representación</h4>
+                        <p>Construcción del <strong>modelo interno</strong>. Traducir realidad a formato manipulable:
+                            grafos, listas, árboles, vectores.</p>
+                        <p><em>Ejemplo: Viaje entre ciudades → grafo (nodos=ciudades, aristas=conexiones con
+                                peso=distancia).</em></p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Búsqueda</h4>
+                        <p>Explorar <strong>espacio de estados</strong> para hallar secuencia de acciones. Puede ser
+                            determinista o probabilística.</p>
+                        <p><em>Algoritmos: BFS, DFS, A*, IDA*, UCS, Dijkstra, búsqueda en haz.</em></p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Ejecución</h4>
+                        <p>Aplicar solución y <strong>comprobar</strong> si cumple condiciones. Incluye
+                            retroalimentación y aprendizaje para mejorar futuras ejecuciones.</p>
+                        <p><em>Si el plan falla, el sistema debe re-planificar (robustez ante incertidumbre).</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box warning" style="margin-top: 2rem;">
+                <p class="title">Ejemplo Completo: Sistema de Entrega con Drone</p>
+                <p class="content">
+                    <strong>1. Formulación:</strong><br>
+                    • E<sub>i</sub>: Drone en almacén [lat: 40.42, lon: -3.70]<br>
+                    • A: {volar_N, volar_S, volar_E, volar_O, subir, bajar}<br>
+                    • E<sub>f</sub>: Paquete entregado en [lat: 40.45, lon: -3.68]<br>
+                    • R: {batería >= 20%, evitar aeropuerto, T < 30min}<br><br>
+
+                        <strong>2. Representación:</strong> Grafo 3D de ciudad (nodos = intersecciones aéreas, aristas =
+                        rutas permitidas)<br><br>
+
+                        <strong>3. Búsqueda:</strong> A* con heurística = distancia euclidiana + evitar obstáculos
+                        dinámicos<br><br>
+
+                        <strong>4. Ejecución:</strong> Volar ruta calculada. Si viento fuerte → re-planificar en tiempo
+                        real
+                </p>
+            </div>
+        </section>
+
+        <!-- Ejemplo Práctico: 8 Reinas -->
+        <section>
+            <h2 class="color-neutral">Implementación Práctica: El Problema de las 8 Reinas</h2>
+
+            <h3 class="color-primary">Definición del Problema</h3>
+            <p>
+                <strong>Objetivo:</strong> Colocar 8 reinas en un tablero de ajedrez 8×8 de forma que ninguna ataque a
+                otra (no pueden compartir fila, columna o diagonal).
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Formalización del Problema:</p>
+                <p class="content">
+                    <strong>E<sub>i</sub>:</strong> Tablero vacío (8×8), 0 reinas colocadas<br>
+                    <strong>A:</strong> {colocar_reina(fila, columna)} donde posición es válida<br>
+                    <strong>E<sub>f</sub>:</strong> 8 reinas en el tablero, ninguna se ataca mutuamente<br>
+                    <strong>R:</strong> {no_mismo_fila, no_mismo_columna, no_mismo_diagonal}
+                </p>
+            </div>
+
+            <h3 class="color-secondary">Solución con Backtracking</h3>
+            <pre><code class="language-python">def es_seguro(tablero, fila, col):
+    """
+    Verifica si es seguro colocar una reina en tablero[fila][col]
+    Comprueba restricciones: misma columna, diagonal izq, diagonal der
+    """
+    # Verificar columna hacia arriba
+    for i in range(fila):
+        if tablero[i][col] == 1:
+            return False
+
+    # Verificar diagonal superior izquierda
+    i, j = fila - 1, col - 1
+    while i >= 0 and j >= 0:
+        if tablero[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
+
+    # Verificar diagonal superior derecha
+    i, j = fila - 1, col + 1
+    while i >= 0 and j < len(tablero):
+        if tablero[i][j] == 1:
+            return False
+        i -= 1
+        j += 1
+
+    return True
+
+def resolver_n_reinas_util(tablero, fila):
+    """
+    Utiliza BACKTRACKING para resolver el problema
+    - FASE 1 (Formulación): Ya definida arriba
+    - FASE 2 (Representación): Tablero = matriz 8x8
+    - FASE 3 (Búsqueda): Backtracking DFS
+    - FASE 4 (Ejecución): Devuelve solución encontrada
+    """
+    n = len(tablero)
+
+    # Caso base: todas las reinas colocadas (E_f alcanzado)
+    if fila >= n:
+        return True
+
+    # Probar colocar reina en cada columna de esta fila
+    for col in range(n):
+        # Verificar RESTRICCIONES (R)
+        if es_seguro(tablero, fila, col):
+            # Aplicar ACCIÓN: colocar reina
+            tablero[fila][col] = 1
+
+            # Recursión: intentar colocar resto de reinas
+            if resolver_n_reinas_util(tablero, fila + 1):
+                return True
+
+            # BACKTRACKING: si no funcionó, quitar reina
+            tablero[fila][col] = 0
+
+    # Si no hay solución en esta rama
+    return False
+
+def resolver_n_reinas(n=8):
+    """
+    Función principal: inicializa y resuelve el problema
+    """
+    # FASE 2: Representación (matriz nxn)
+    tablero = [[0 for _ in range(n)] for _ in range(n)]
+
+    # FASE 3: Búsqueda
+    if resolver_n_reinas_util(tablero, 0):
+        print(f"Solución encontrada para {n} reinas:")
+        imprimir_tablero(tablero)
+        return tablero
+    else:
+        print(f"No existe solución para {n} reinas")
+        return None
+
+def imprimir_tablero(tablero):
+    """Visualización de la solución"""
+    for fila in tablero:
+        print(" ".join("Q" if celda == 1 else "." for celda in fila))
+
+# Ejecutar
+resolver_n_reinas(8)</code></pre>
+
+            <div class="highlight-box secondary">
+                <p class="title">Salida del Programa:</p>
+                <p class="content">
+                    <code style="font-family: monospace; white-space: pre;">
+Q . . . . . . .
+. . . . Q . . .
+. . . . . . . Q
+. . . . . Q . .
+. . Q . . . . .
+. . . . . . Q .
+. Q . . . . . .
+. . . Q . . . .
+                    </code><br><br>
+                    Total de estados explorados: ~2,057<br>
+                    Soluciones distintas posibles: 92
+                </p>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Reales -->
+        <section>
+            <h2 class="color-neutral">Aplicaciones Reales de Resolución de Problemas</h2>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Google Maps</h4>
+                    <p><strong>Problema:</strong> Encontrar ruta óptima entre dos puntos considerando tráfico en tiempo
+                        real.</p>
+                    <p><strong>Algoritmo:</strong> A* con heurística basada en distancia y datos de tráfico</p>
+                    <p><strong>Escala:</strong> 1+ billón de rutas/año, 220 países</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">DeepMind AlphaGo</h4>
+                    <p><strong>Problema:</strong> Jugar Go al nivel de campeones mundiales (10<sup>170</sup> estados
+                        posibles).</p>
+                    <p><strong>Técnica:</strong> Monte Carlo Tree Search + Redes Neuronales profundas</p>
+                    <p><strong>Logro:</strong> Venció a Lee Sedol (2016), 4-1</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Amazon Robotics</h4>
+                    <p><strong>Problema:</strong> Navegación en almacén con obstáculos dinámicos (personas, otros
+                        robots).</p>
+                    <p><strong>Algoritmo:</strong> RRT* (Rapidly-exploring Random Trees)</p>
+                    <p><strong>Escala:</strong> 200K+ robots en operación</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Optimización de Vuelos</h4>
+                    <p><strong>Problema:</strong> Asignar tripulaciones, aviones y rutas minimizando costos.</p>
+                    <p><strong>Técnica:</strong> Constraint Satisfaction + Programación Lineal</p>
+                    <p><strong>Ahorro:</strong> $1-5M/año por aerolínea</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complejidad y Desafíos -->
+        <section>
+            <h2 class="color-neutral">Complejidad y Desafíos</h2>
+
+            <h3 class="color-primary">Explosión Combinatoria</h3>
+            <p>
+                Muchos problemas en IA sufren de <strong>explosión combinatoria</strong>: el número de estados crece
+                exponencialmente con el tamaño del problema. Esto hace inviable la búsqueda exhaustiva.
+            </p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Ajedrez</h4>
+                    <p>Estados posibles: ~10<sup>43</sup><br>Factor ramificación: b ≈ 35<br>Profundidad: d ≈ 80
+                        movimientos</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Go</h4>
+                    <p>Estados posibles: 10<sup>170</sup><br>Factor ramificación: b ≈ 250<br>Más que átomos en el
+                        universo</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Protein Folding</h4>
+                    <p>Configuraciones: 10<sup>300+</sup><br>Complejidad: NP-Hard<br>Solución: AlphaFold 2 (Deep
+                        Learning)</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">TSP (100 ciudades)</h4>
+                    <p>Permutaciones: 100! ≈ 10<sup>157</sup><br>Brute-force: >edad del universo<br>Heurística: Reduce a
+                        minutos</p>
+                </div>
+            </div>
+
+            <h3 class="color-neutral" style="margin-top: 2rem;">Desafíos Principales</h3>
+            <div class="layout-grid-stack">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Incertidumbre</h4>
+                    <p>Mundo real tiene ruido, información incompleta, eventos estocásticos. Solución: MDP (Markov
+                        Decision Processes), POMDP.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Tiempo Real</h4>
+                    <p>Decisiones deben tomarse en milisegundos (coches autónomos). Solución: Búsqueda limitada por
+                        tiempo, aproximaciones.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Multi-Agente</h4>
+                    <p>Múltiples agentes con objetivos diferentes (cooperativos o adversarios). Solución: Teoría de
+                        juegos, Minimax.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Entorno Dinámico</h4>
+                    <p>Entorno cambia mientras el agente planifica. Solución: Re-planificación continua, aprendizaje
+                        adaptativo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dato Curioso -->
+        <section>
+            <div class="curiosity-box">
+                <h4>Dato Curioso: El Problema del Viajante (TSP)</h4>
+                <p>
+                    El <strong>Travelling Salesman Problem (TSP)</strong> es uno de los problemas más estudiados en
+                    ciencias de la computación. Aparece en logística, fabricación de chips, secuenciación de ADN y más.
+                </p>
+
+                <div class="highlight-box primary">
+                    <p class="title">Números impresionantes:</p>
+                    <p class="content">
+                        • TSP de 10 ciudades: 3,628,800 rutas posibles<br>
+                        • TSP de 20 ciudades: 1.2×10<sup>18</sup> rutas<br>
+                        • TSP de 50 ciudades: 1.5×10<sup>64</sup> rutas<br>
+                        • Record mundial (2004): TSP de <strong>24,978 ciudades</strong> (Suecia) resuelto óptimamente
+                    </p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <p class="title">Aplicaciones Reales:</p>
+                    <p class="content">
+                        • <strong>FedEx/UPS:</strong> Optimizan rutas de miles de camiones diariamente<br>
+                        • <strong>Fabricación microchips:</strong> Optimizar ruta del láser reduce tiempo de producción
+                        30%<br>
+                        • <strong>Telescopios espaciales:</strong> Hubble y James Webb planifican secuencia de
+                        observaciones<br>
+                        • <strong>Secuenciación DNA:</strong> Ordenar fragmentos genéticos eficientemente
+                    </p>
+                </div>
+
+                <p class="text-center">
+                    El TSP es un problema <strong>NP-Hard</strong>, lo que significa que el tiempo necesario para
+                    resolverlo de forma exacta crece más rápido que cualquier función polinómica a medida que añadimos
+                    ciudades. No existe un algoritmo que garantice la solución óptima en un tiempo razonable para
+                    problemas a gran escala. Sin embargo, en el campo de la IA se utilizan <strong>heurísticas y
+                        metaheurísticas</strong> avanzadas (como <em>Lin-Kernighan</em>, el algoritmo de
+                    <em>Christofides</em>, algoritmos genéticos o colonias de hormigas) que encuentran soluciones
+                    extremadamente cercanas al óptimo en cuestión de segundos o minutos, permitiendo su uso en logística
+                    y fabricación real.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Referencias -->
+        <section>
+            <h2 class="color-neutral">Referencias y Lecturas Adicionales</h2>
+            <ul class="reference-list">
+                <li><a href="http://aima.cs.berkeley.edu/" target="_blank">Russell, S., & Norvig, P. (2020).
+                        <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson.</a></li>
+                <li><a href="https://ai.stanford.edu/~nilsson/synthe.html" target="_blank">Nilsson, N. J. (1998).
+                        <em>Artificial Intelligence: A New Synthesis</em>. Morgan Kaufmann.</a></li>
+                <li><a href="https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/" target="_blank">Cormen,
+                        T. H., et al. (2009). <em>Introduction to Algorithms</em> (3rd ed.). MIT Press.</a></li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

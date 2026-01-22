@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Reglas de Asociación - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Descubre los algoritmos de reglas de asociación: Apriori y FP-Growth para análisis de patrones.">
+    <meta name="keywords"
+        content="reglas de asociación, association rules, Apriori, FP-Growth, soporte, confianza, lift, market basket analysis, aprendizaje no supervisado, machine learning, ILERNA, Big Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Algoritmos de Reglas de Asociación - iLERNA">
+    <meta property="og:description"
+        content="Curso de Especialización de Big Data e Inteligencia Artificial. Aprende reglas de asociación y minería de patrones frecuentes.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/mermaid-ilerna.css">
+
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                    <span>Algoritmos de Reglas de Asociación</span>
+                </div>
+            </div>
+            <h1 class="text-center">Algoritmos de Reglas de Asociación</h1>
+            <p class="subtitle text-center">Descubriendo Patrones Ocultos en Datos Transaccionales</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-neutral">¿Qué son las Reglas de Asociación?</h2>
+            <p>
+                Los <strong>algoritmos de reglas de asociación</strong> son técnicas de <strong>aprendizaje no
+                    supervisado</strong> diseñadas para descubrir relaciones interesantes entre variables en grandes
+                conjuntos de datos. A diferencia de otros métodos de ML, no buscan predecir un valor objetivo, sino
+                identificar <strong>patrones de co-ocurrencia</strong> que revelan comportamientos ocultos.
+            </p>
+            <p>
+                El caso de uso más conocido es el <strong>análisis de la cesta de la compra</strong> (Market Basket
+                Analysis), donde se identifican productos que frecuentemente se compran juntos. Sin embargo, sus
+                aplicaciones van mucho más allá del retail.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Ejemplo Clásico:</p>
+                <p class="content">El famoso caso "pañales y cerveza" de Walmart descubrió que los viernes por la noche,
+                    los hombres que compraban pañales también compraban cerveza. Esta regla de asociación permitió
+                    optimizar la disposición de productos y aumentar las ventas cruzadas.</p>
+            </div>
+
+            <h3 class="color-neutral">Estructura de una Regla de Asociación</h3>
+            <p>
+                Una regla de asociación tiene la forma <strong>A ⇒ B</strong>, donde:
+            </p>
+            <ul>
+                <li><strong>A (Antecedente)</strong>: Conjunto de elementos que aparecen en una transacción</li>
+                <li><strong>B (Consecuente)</strong>: Conjunto de elementos que se asocian con A</li>
+            </ul>
+
+            <div class="highlight-box secondary">
+                <p class="title">Ejemplo de Regla:</p>
+                <p class="content">{Pan, Mantequilla} ⇒ {Leche}<br><br>
+                    <em>"Los clientes que compran pan y mantequilla también tienden a comprar leche"</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Métricas Fundamentales -->
+        <section>
+            <h2 class="color-neutral">Métricas de Evaluación</h2>
+            <p>
+                Para determinar la calidad e interés de una regla de asociación, se utilizan tres métricas
+                fundamentales: <strong>Soporte</strong>, <strong>Confianza</strong> y <strong>Lift</strong>.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Soporte (Support)</h4>
+                    <p>Frecuencia con la que aparece un itemset en el dataset. Indica la relevancia estadística de la
+                        regla.</p>
+                    <div class="formula-box">
+                        Support(A ⇒ B) = P(A ∪ B) = Transacciones con A y B / Total de transacciones
+                    </div>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Confianza (Confidence)</h4>
+                    <p>Probabilidad de encontrar B dado que A está presente. Mide la fiabilidad de la regla.</p>
+                    <div class="formula-box">
+                        Confidence(A ⇒ B) = P(B|A) = Support(A ∪ B) / Support(A)
+                    </div>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Lift (Elevación)</h4>
+                    <p>Ratio entre la confianza observada y la esperada si A y B fueran independientes. Valores > 1
+                        indican asociación positiva.</p>
+                    <div class="formula-box">
+                        Lift(A ⇒ B) = Confidence(A ⇒ B) / Support(B) = P(A ∪ B) / P(A) × P(B)
+                    </div>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Interpretación del Lift</h4>
+                    <ul>
+                        <li><strong>Lift = 1</strong>: A y B son independientes</li>
+                        <li><strong>Lift > 1</strong>: A y B se asocian positivamente</li>
+                        <li><strong>Lift < 1</strong>: A y B se asocian negativamente</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="color-neutral">Ejemplo Numérico</h3>
+            <p>Supongamos un supermercado con 1000 transacciones:</p>
+            <ul>
+                <li>400 transacciones contienen <strong>Pan</strong></li>
+                <li>600 transacciones contienen <strong>Leche</strong></li>
+                <li>300 transacciones contienen <strong>Pan Y Leche</strong></li>
+            </ul>
+
+            <div class="highlight-box primary">
+                <p class="title">Cálculo para la regla {Pan} ⇒ {Leche}:</p>
+                <p class="content">
+                    <strong>Support</strong> = 300/1000 = <strong>0.30 (30%)</strong><br>
+                    <strong>Confidence</strong> = 300/400 = <strong>0.75 (75%)</strong><br>
+                    <strong>Lift</strong> = 0.75 / 0.60 = <strong>1.25</strong><br><br>
+                    <em>Interpretación: El 75% de los clientes que compran pan también compran leche, y esta asociación
+                        es un 25% más probable de lo que sería por azar.</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Algoritmo Apriori -->
+        <section>
+            <h2 class="color-neutral">Algoritmo Apriori</h2>
+            <p>
+                El algoritmo <strong>Apriori</strong>, propuesto por Agrawal y Srikant en 1994, es el método clásico
+                para la minería de reglas de asociación. Su nombre proviene del uso del conocimiento <em>a priori</em>
+                sobre las propiedades de los itemsets frecuentes.
+            </p>
+
+            <h3 class="color-primary">Principio Apriori</h3>
+            <div class="highlight-box secondary">
+                <p class="title">Propiedad Antimonótona:</p>
+                <p class="content">"Si un itemset es infrecuente, todos sus superconjuntos también serán
+                    infrecuentes"<br><br>
+                    Esta propiedad permite <strong>podar el espacio de búsqueda</strong> de forma eficiente. Si {A, B}
+                    no supera el umbral de soporte mínimo, no tiene sentido evaluar {A, B, C}.</p>
+            </div>
+
+            <h3 class="color-neutral">Funcionamiento del Algoritmo</h3>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Generar itemsets de tamaño 1</h4>
+                        <p>Contar la frecuencia de cada ítem individual y filtrar los que superen el soporte mínimo.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Generar candidatos de tamaño k+1</h4>
+                        <p>Combinar itemsets frecuentes de tamaño k para formar candidatos de tamaño k+1.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Podar candidatos inválidos</h4>
+                        <p>Eliminar candidatos que contengan subconjuntos infrecuentes (aplicar principio Apriori).</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Contar soporte y filtrar</h4>
+                        <p>Escanear el dataset para contar el soporte de cada candidato y retener solo los frecuentes.
+                        </p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Repetir hasta convergencia</h4>
+                        <p>Continuar hasta que no se puedan generar más itemsets frecuentes de mayor tamaño.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="color-neutral">Implementación en Python</h3>
+            <pre><code class="language-python">from mlxtend.frequent_patterns import apriori, association_rules
+from mlxtend.preprocessing import TransactionEncoder
+import pandas as pd
+
+# Datos de transacciones
+transacciones = [
+    ['Pan', 'Leche', 'Mantequilla'],
+    ['Pan', 'Leche'],
+    ['Leche', 'Huevos'],
+    ['Pan', 'Mantequilla'],
+    ['Pan', 'Leche', 'Mantequilla', 'Huevos'],
+    ['Leche', 'Mantequilla'],
+    ['Pan', 'Huevos'],
+    ['Pan', 'Leche', 'Huevos']
+]
+
+# Codificar transacciones en formato one-hot
+te = TransactionEncoder()
+te_array = te.fit_transform(transacciones)
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+print("Dataset codificado:")
+print(df)
+
+# Encontrar itemsets frecuentes con soporte mínimo del 30%
+itemsets_frecuentes = apriori(df, min_support=0.3, use_colnames=True)
+print("\nItemsets frecuentes:")
+print(itemsets_frecuentes)
+
+# Generar reglas de asociación con confianza mínima del 70%
+reglas = association_rules(itemsets_frecuentes,
+                           metric="confidence",
+                           min_threshold=0.7)
+
+# Mostrar reglas ordenadas por lift
+reglas_ordenadas = reglas.sort_values('lift', ascending=False)
+print("\nReglas de asociación:")
+print(reglas_ordenadas[['antecedents', 'consequents',
+                        'support', 'confidence', 'lift']])</code></pre>
+
+            <h3 class="color-neutral">Limitaciones de Apriori</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Múltiples Escaneos</h4>
+                    <p>Requiere escanear el dataset completo en cada iteración, lo que es costoso para grandes
+                        volúmenes.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Generación de Candidatos</h4>
+                    <p>Puede generar un número exponencial de candidatos, especialmente con soportes bajos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Algoritmo FP-Growth -->
+        <section>
+            <h2 class="color-neutral">Algoritmo FP-Growth</h2>
+            <p>
+                El algoritmo <strong>FP-Growth</strong> (Frequent Pattern Growth), propuesto por Han, Pei y Yin en 2000,
+                es una alternativa más eficiente a Apriori. Utiliza una estructura de datos compacta llamada
+                <strong>FP-Tree</strong> que elimina la necesidad de generar candidatos explícitamente.
+            </p>
+
+            <h3 class="color-primary">Ventajas sobre Apriori</h3>
+            <div class="highlight-box primary">
+                <p class="title">Mejoras de FP-Growth:</p>
+                <p class="content">
+                    <strong>1. Solo 2 escaneos del dataset</strong>: El primero para construir el árbol, el segundo
+                    implícito en la estructura.<br>
+                    <strong>2. Sin generación de candidatos</strong>: Los patrones se extraen directamente del
+                    árbol.<br>
+                    <strong>3. Estructura compacta</strong>: El FP-Tree comprime el dataset manteniendo toda la
+                    información necesaria.
+                </p>
+            </div>
+
+            <h3 class="color-neutral">Estructura FP-Tree</h3>
+            <p>
+                El FP-Tree es un árbol de prefijos donde:
+            </p>
+            <ul>
+                <li>Cada nodo representa un ítem con su contador de frecuencia</li>
+                <li>Las ramas comparten prefijos comunes, comprimiendo transacciones similares</li>
+                <li>Una tabla de encabezados permite acceso rápido a todos los nodos de cada ítem</li>
+            </ul>
+
+            <h3 class="color-neutral">Funcionamiento del Algoritmo</h3>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Primer escaneo: Contar frecuencias</h4>
+                        <p>Calcular el soporte de cada ítem individual y filtrar los infrecuentes.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Ordenar ítems por frecuencia</h4>
+                        <p>En cada transacción, ordenar los ítems frecuentes de mayor a menor soporte.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Construir el FP-Tree</h4>
+                        <p>Insertar cada transacción ordenada en el árbol, incrementando contadores y creando nodos
+                            según sea necesario.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Minar patrones frecuentes</h4>
+                        <p>Extraer patrones recursivamente construyendo árboles condicionales para cada ítem.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="color-neutral">Implementación en Python</h3>
+            <pre><code class="language-python">from mlxtend.frequent_patterns import fpgrowth, association_rules
+from mlxtend.preprocessing import TransactionEncoder
+import pandas as pd
+
+# Datos de transacciones (mismo ejemplo anterior)
+transacciones = [
+    ['Pan', 'Leche', 'Mantequilla'],
+    ['Pan', 'Leche'],
+    ['Leche', 'Huevos'],
+    ['Pan', 'Mantequilla'],
+    ['Pan', 'Leche', 'Mantequilla', 'Huevos'],
+    ['Leche', 'Mantequilla'],
+    ['Pan', 'Huevos'],
+    ['Pan', 'Leche', 'Huevos']
+]
+
+# Codificar transacciones
+te = TransactionEncoder()
+te_array = te.fit_transform(transacciones)
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+# Encontrar itemsets frecuentes con FP-Growth
+# Más eficiente que Apriori para datasets grandes
+itemsets_frecuentes = fpgrowth(df, min_support=0.3, use_colnames=True)
+print("Itemsets frecuentes (FP-Growth):")
+print(itemsets_frecuentes)
+
+# Generar reglas de asociación
+reglas = association_rules(itemsets_frecuentes,
+                           metric="lift",
+                           min_threshold=1.0)
+
+# Filtrar reglas con alta confianza
+reglas_filtradas = reglas[reglas['confidence'] >= 0.6]
+print("\nReglas con Lift > 1 y Confianza >= 60%:")
+print(reglas_filtradas[['antecedents', 'consequents',
+                        'support', 'confidence', 'lift']])</code></pre>
+        </section>
+
+        <!-- Comparativa -->
+        <section>
+            <h2 class="color-neutral">Comparativa: Apriori vs FP-Growth</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Apriori</th>
+                        <th>FP-Growth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Escaneos del dataset</strong></td>
+                        <td>Múltiples (uno por nivel)</td>
+                        <td>Solo 2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generación de candidatos</strong></td>
+                        <td>Sí (puede ser exponencial)</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Uso de memoria</strong></td>
+                        <td>Menor (sin árbol)</td>
+                        <td>Mayor (FP-Tree)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Velocidad</strong></td>
+                        <td>Lento para datasets grandes</td>
+                        <td>Rápido</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mejor para</strong></td>
+                        <td>Datasets pequeños, soporte alto</td>
+                        <td>Datasets grandes, soporte bajo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Aplicaciones -->
+        <section>
+            <h2 class="color-neutral">Aplicaciones Prácticas</h2>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Retail y E-commerce</h4>
+                    <p>Análisis de cesta de compra, recomendación de productos complementarios, optimización de layout
+                        de tienda y diseño de promociones cruzadas.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Medicina y Salud</h4>
+                    <p>Identificación de combinaciones de síntomas, interacciones medicamentosas, patrones de
+                        comorbilidad y factores de riesgo asociados.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Análisis Web</h4>
+                    <p>Patrones de navegación de usuarios, secuencias de clics frecuentes y optimización de la
+                        experiencia de usuario en sitios web.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Telecomunicaciones</h4>
+                    <p>Detección de fraude, análisis de patrones de llamadas y predicción de abandono de clientes
+                        (churn).</p>
+                </div>
+            </div>
+
+            <h3 class="color-neutral">Caso de Uso: Sistema de Recomendación</h3>
+            <pre><code class="language-python">from mlxtend.frequent_patterns import fpgrowth, association_rules
+import pandas as pd
+
+def recomendar_productos(producto_actual, reglas_df, top_n=3):
+    """
+    Recomienda productos basándose en reglas de asociación.
+
+    Args:
+        producto_actual: Producto que el cliente está viendo
+        reglas_df: DataFrame con reglas de asociación
+        top_n: Número de recomendaciones a devolver
+
+    Returns:
+        Lista de productos recomendados
+    """
+    # Filtrar reglas donde el producto actual está en el antecedente
+    reglas_relevantes = reglas_df[
+        reglas_df['antecedents'].apply(lambda x: producto_actual in x)
+    ]
+
+    # Ordenar por lift (mayor asociación primero)
+    reglas_ordenadas = reglas_relevantes.sort_values('lift', ascending=False)
+
+    # Extraer productos consecuentes únicos
+    recomendaciones = []
+    for _, regla in reglas_ordenadas.iterrows():
+        for item in regla['consequents']:
+            if item not in recomendaciones and item != producto_actual:
+                recomendaciones.append(item)
+                if len(recomendaciones) >= top_n:
+                    return recomendaciones
+
+    return recomendaciones
+
+# Ejemplo de uso
+# Suponiendo que ya tenemos las reglas calculadas
+# recomendaciones = recomendar_productos('Pan', reglas, top_n=3)
+# print(f"Clientes que compran Pan también compran: {recomendaciones}")</code></pre>
+        </section>
+
+        <!-- Limitaciones -->
+        <section>
+            <h2 class="color-neutral">Limitaciones y Consideraciones</h2>
+
+            <div class="highlight-box warning">
+                <p class="title">Aspectos a Tener en Cuenta:</p>
+                <p class="content">
+                    <strong>1. Explosión de reglas</strong>: Con soportes bajos, el número de reglas puede ser
+                    inmanejable. Es crucial establecer umbrales adecuados.<br><br>
+                    <strong>2. Sensibilidad a umbrales</strong>: La elección de min_support y min_confidence afecta
+                    significativamente los resultados.<br><br>
+                    <strong>3. Correlación vs Causalidad</strong>: Las reglas muestran co-ocurrencia, no relaciones
+                    causales. {A ⇒ B} no significa que A cause B.<br><br>
+                    <strong>4. Sin información temporal</strong>: Los algoritmos básicos no capturan secuencias
+                    temporales (para eso existen algoritmos de patrones secuenciales).<br><br>
+                    <strong>5. Reglas triviales</strong>: Pueden aparecer reglas obvias o sin valor de negocio que
+                    requieren filtrado manual.
+                </p>
+            </div>
+
+            <h3 class="color-neutral">Buenas Prácticas</h3>
+            <ul>
+                <li><strong>Empezar con soportes altos</strong> e ir reduciendo gradualmente</li>
+                <li><strong>Filtrar por múltiples métricas</strong>: Combinar soporte, confianza y lift</li>
+                <li><strong>Validar con expertos del dominio</strong>: No todas las reglas estadísticamente válidas son
+                    útiles</li>
+                <li><strong>Considerar el contexto temporal</strong>: Las asociaciones pueden variar por temporada,
+                    promociones, etc.</li>
+                <li><strong>Usar FP-Growth para datasets grandes</strong>: Especialmente con millones de transacciones
+                </li>
+            </ul>
+        </section>
+
+        <!-- Mapa Mental -->
+        <section>
+            <h2 class="color-neutral">Mapa Conceptual</h2>
+            <div class="mermaid">
+                mindmap
+                root((Reglas de Asociacion))
+                Metricas
+                Soporte
+                Frecuencia del itemset
+                Confianza
+                Probabilidad condicional
+                Lift
+                Independencia estadistica
+                Algoritmos
+                Apriori
+                Principio antimonotono
+                Multiples escaneos
+                Generacion de candidatos
+                FP-Growth
+                FP-Tree compacto
+                Solo 2 escaneos
+                Sin candidatos
+                Aplicaciones
+                Market Basket
+                Recomendaciones
+                Diagnostico medico
+                Deteccion de fraude
+                Limitaciones
+                Explosion de reglas
+                Sin causalidad
+                Sin temporalidad
+            </div>
+        </section>
+
+        <!-- Referencias -->
+        <section>
+            <h2 class="color-neutral">Referencias y Lecturas Adicionales</h2>
+            <ul>
+                <li>Agrawal, R., & Srikant, R. (1994). "Fast algorithms for mining association rules". <em>Proc. 20th
+                        Int. Conf. Very Large Data Bases, VLDB</em>.</li>
+                <li>Han, J., Pei, J., & Yin, Y. (2000). "Mining frequent patterns without candidate generation".
+                    <em>ACM SIGMOD Record</em>.
+                </li>
+                <li><a href="http://rasbt.github.io/mlxtend/" target="_blank">Documentación de mlxtend</a> - Biblioteca
+                    Python para Apriori y FP-Growth</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#49B9CE',
+                primaryTextColor: '#333',
+                primaryBorderColor: '#333',
+                lineColor: '#8A7AAF',
+                secondaryColor: '#F5F5F5',
+                tertiaryColor: '#FFF'
+            }
+        });
+    </script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
