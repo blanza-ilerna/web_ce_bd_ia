@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Teorema de Bayes: la piedra angular del razonamiento probabilístico en IA, con ejemplos prácticos y aplicaciones en Machine Learning">
+    <meta name="keywords"
+        content="Teorema de Bayes, probabilidad, machine learning, naive bayes, inferencia bayesiana, IA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Teorema de Bayes | iLERNA">
+    <meta property="og:description" content="La piedra angular del razonamiento probabilístico en Inteligencia Artificial">
+    <meta property="og:type" content="article">
+    <title>Teorema de Bayes | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Matemáticas y Conceptos Básicos</a> ›
+                <span>Teorema de Bayes</span>
+            </div>
+        </div>
+        <h1 class="text-center">El Teorema de Bayes</h1>
+        <p class="subtitle text-center">La Piedra Angular del Razonamiento Probabilístico en Inteligencia Artificial</p>
+    </header>
+
+    <div class="container">
+        <!-- SECCIÓN 1: ¿QUÉ ES EL TEOREMA DE BAYES? -->
+        <section class="section">
+            <h2>¿Qué es el Teorema de Bayes?</h2>
+            <p>
+                El <strong>Teorema de Bayes</strong> es una de las herramientas matemáticas más poderosas y fundamentales en el campo de la probabilidad y la estadística. Permite <strong>actualizar nuestras creencias</strong> a medida que obtenemos nueva evidencia.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="tech-title">Ejemplo Real del Mundo:</p>
+                <p>
+                    <strong>Gmail de Google</strong> utiliza clasificadores bayesianos para filtrar más de <strong>100 mil millones de mensajes de spam</strong> diariamente, con una precisión del 99.9%. El sistema aprende constantemente.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: LA FÓRMULA DEL TEOREMA DE BAYES -->
+        <section class="section">
+            <h2>La Fórmula del Teorema de Bayes</h2>
+
+            <div class="highlight-box secondary formula-container">
+                <p class="formula-text">P(A|B) = [P(B|A) × P(A)] / P(B)</p>
+                <p class="mt-1">
+                    <strong>La probabilidad de A dado B</strong> es igual a la probabilidad de B dado A multiplicada por la probabilidad de A, todo dividido por la probabilidad de B
+                </p>
+            </div>
+
+            <h3 class="color-primary">Componentes de la Fórmula</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">P(A|B) - Posterior</h4>
+                    <p>Lo que <strong>queremos calcular</strong>: nuestra creencia actualizada.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">P(B|A) - Likelihood</h4>
+                    <p>Probabilidad de observar la evidencia si A es verdadero.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">P(A) - Prior</h4>
+                    <p>Nuestra <strong>creencia inicial</strong> antes de ver la evidencia.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">P(B) - Evidencia</h4>
+                    <p>Probabilidad total de observar B. Normaliza el resultado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLO MÉDICO DETALLADO -->
+        <section class="section">
+            <h2>Ejemplo Médico Detallado</h2>
+            <p>
+                Supongamos una <strong>enfermedad rara</strong> que afecta al <strong>0.1% de la población</strong> (1 de cada 1,000 personas). Existe un test con:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Sensibilidad: 99%</h4>
+                    <p>Si estás enfermo, el test será positivo el 99% de las veces.</p>
+                    <p><code>P(Test+|Enfermo) = 0.99</code></p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Especificidad: 99%</h4>
+                    <p>Si estás sano, el test será negativo el 99% de las veces.</p>
+                    <p><code>P(Test-|Sano) = 0.99</code></p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3 class="color-warning">Pregunta Clave</h3>
+                <p class="tech-title">
+                    Si el test da <strong>POSITIVO</strong>, ¿cuál es la probabilidad de que realmente estés enfermo?
+                </p>
+                <p class="mt-1">
+                    La mayoría responde intuitivamente "99%" (la sensibilidad del test).<br>
+                    <strong class="color-warning">Pero esto es INCORRECTO. ¡Veamos por qué!</strong>
+                </p>
+            </div>
+
+            <h3 class="color-primary mt-2">Aplicando el Teorema de Bayes</h3>
+            <p><strong>Paso 1: Identificar los valores conocidos</strong></p>
+            <ul>
+                <li><strong>P(Enfermo)</strong> = 0.001 (prevalencia: 0.1%)</li>
+                <li><strong>P(Test+ | Enfermo)</strong> = 0.99 (sensibilidad)</li>
+                <li><strong>P(Test+ | Sano)</strong> = 0.01 (falso positivo: 1 - especificidad)</li>
+            </ul>
+
+            <p class="mt-2"><strong>Paso 2: Calcular P(Test+)</strong></p>
+            <div class="code-container">
+                <pre><code class="language-bash">P(Test+) = P(Test+|Enfermo) × P(Enfermo) + P(Test+|Sano) × P(Sano)
+P(Test+) = (0.99 × 0.001) + (0.01 × 0.999)
+P(Test+) = 0.00099 + 0.00999 = 0.01098</code></pre>
+            </div>
+
+            <p class="mt-2"><strong>Paso 3: Aplicar la fórmula de Bayes</strong></p>
+            <div class="code-container">
+                <pre><code class="language-bash">P(Enfermo|Test+) = [P(Test+|Enfermo) × P(Enfermo)] / P(Test+)
+P(Enfermo|Test+) = (0.99 × 0.001) / 0.01098
+P(Enfermo|Test+) = 0.00099 / 0.01098 ≈ 0.0902</code></pre>
+            </div>
+
+            <div class="highlight-box success">
+                <p class="tech-title color-success">RESULTADO FINAL</p>
+                <p class="formula-text color-success">P(Enfermo|Test+) ≈ 9.02%</p>
+                <p class="mt-1">
+                    Aunque el test tiene 99% de precisión, si da positivo solo hay <strong>~9% de probabilidad</strong> de estar realmente enfermo. ¡La intuición humana falla aquí!
+                </p>
+            </div>
+
+            <div class="highlight-box warning mt-2">
+                <h4 class="color-warning">¿Por qué este resultado sorprendente?</h4>
+                <p>La clave está en la <strong>prevalencia baja</strong> de la enfermedad (0.1%). De cada 1,000 personas:</p>
+                <ul>
+                    <li>1 está enferma, 999 están sanas</li>
+                    <li>El test detectará correctamente: <strong>1 × 0.99 ≈ 1 positivo verdadero</strong></li>
+                    <li>Pero dará falsos positivos: <strong>999 × 0.01 ≈ 10 positivos falsos</strong></li>
+                    <li>Total de positivos: <strong>11 personas</strong> (1 verdadero + 10 falsos)</li>
+                    <li>Probabilidad real: <strong>1/11 ≈ 9%</strong></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: IMPLEMENTACIÓN EN PYTHON -->
+        <section class="section">
+            <h2>Implementación en Python</h2>
+
+            <h3 class="color-primary">Función Básica del Teorema de Bayes</h3>
+            <div class="code-container">
+                <pre><code class="language-python">def teorema_bayes(prior, likelihood, evidencia):
+    """Calcula P(A|B) usando el Teorema de Bayes"""
+    posterior = (likelihood * prior) / evidencia
+    return posterior
+
+# Ejemplo: Diagnóstico médico
+P_enfermo = 0.001
+P_test_pos_dado_enfermo = 0.99
+P_test_pos_dado_sano = 0.01
+P_sano = 1 - P_enfermo
+
+# Calcular P(Test+)
+P_test_positivo = (P_test_pos_dado_enfermo * P_enfermo +
+                   P_test_pos_dado_sano * P_sano)
+
+# Aplicar Teorema de Bayes
+resultado = teorema_bayes(
+    prior=P_enfermo,
+    likelihood=P_test_pos_dado_enfermo,
+    evidencia=P_test_positivo
+)
+
+print(f"Probabilidad: {resultado:.4f} = {resultado*100:.2f}%")
+# Salida: Probabilidad: 0.0902 = 9.02%</code></pre>
+            </div>
+
+            <h3 class="color-primary mt-2">Naive Bayes con scikit-learn</h3>
+            <div class="code-container">
+                <pre><code class="language-python">from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+# Dataset de emails
+mensajes = [
+    "Gana dinero rápido! Haz clic aquí",      # SPAM
+    "Oferta limitada! Compra ahora",          # SPAM
+    "Reunión mañana a las 10",                # NO SPAM
+    "¿Nos vemos para cenar el viernes?",      # NO SPAM
+]
+etiquetas = [1, 1, 0, 0]  # 1=spam, 0=no spam
+
+# Convertir texto a vectores (Bag of Words)
+vectorizador = CountVectorizer()
+X = vectorizador.fit_transform(mensajes)
+
+# Entrenar clasificador
+clasificador = MultinomialNB()
+clasificador.fit(X, etiquetas)
+
+# Predecir nuevos mensajes
+nuevos = ["Oferta increíble compra ya", "¿Confirmamos reunión?"]
+X_nuevos = vectorizador.transform(nuevos)
+predicciones = clasificador.predict(X_nuevos)
+
+for i, msg in enumerate(nuevos):
+    clase = "SPAM" if predicciones[i] == 1 else "NO SPAM"
+    print(f"{msg} → {clase}")
+
+# Salida:
+# Oferta increíble compra ya → SPAM
+# ¿Confirmamos reunión? → NO SPAM</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: APLICACIONES EN IA Y BIG DATA -->
+        <section class="section">
+            <h2>Aplicaciones en IA y Big Data</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Redes Bayesianas</h4>
+                    <p>Grafos probabilísticos para modelar dependencias. Usadas en diagnóstico médico y detección de fraudes.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Filtros Bayesianos</h4>
+                    <p>Aprendizaje adaptativo: <strong>Gmail</strong> (spam), <strong>SpamAssassin</strong> (phishing), antivirus (malware).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">ML Probabilístico</h4>
+                    <p>Modelos con incertidumbre: Gaussian Processes, Variational Autoencoders, Bayesian Neural Networks.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Robótica</h4>
+                    <p>Navegación bajo incertidumbre: <strong>SLAM</strong>, coches autónomos Tesla, drones.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box mt-2">
+                <h3 class="tech-title text-center">Caso Real: Tesla Autopilot</h3>
+                <p>
+                    El sistema de conducción autónoma de Tesla utiliza <strong>inferencia bayesiana</strong> para fusionar datos de múltiples sensores (cámaras, radar, ultrasonido) y actualizar continuamente su comprensión del entorno, <strong>10+ veces por segundo</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: CONCLUSIONES CLAVE -->
+        <section class="section">
+            <h2 class="text-center">Conclusiones Clave</h2>
+            <div class="highlight-box primary">
+                <h3 class="color-primary">Puntos Esenciales para Recordar</h3>
+                <ul>
+                    <li>El Teorema de Bayes permite <strong>actualizar creencias</strong> con nueva evidencia</li>
+                    <li>La fórmula básica: <strong>P(A|B) = [P(B|A) × P(A)] / P(B)</strong></li>
+                    <li>El <strong>prior</strong> representa conocimiento inicial</li>
+                    <li>La <strong>prevalencia</strong> (prior) tiene impacto dramático en los resultados</li>
+                    <li>Los clasificadores <strong>Naive Bayes</strong> son simples, rápidos y efectivos</li>
+                    <li>Es fundamental en <strong>IA moderna</strong>: spam, diagnósticos, coches autónomos</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: EJERCICIO PROPUESTO -->
+        <section class="section">
+            <div class="warning-box">
+                <h3 class="color-warning">Ejercicio Propuesto</h3>
+                <p class="tech-title">
+                    En una ciudad, el 2% de la población tiene cierta enfermedad. Existe un test con 98% de sensibilidad y 95% de especificidad.
+                </p>
+                <p class="tech-title mt-1">
+                    <strong>Pregunta:</strong> Si una persona da positivo, ¿cuál es la probabilidad de que realmente esté enferma?
+                </p>
+                <p class="mt-1">
+                    <strong>Pista:</strong> Calcula P(Test+) considerando verdaderos positivos y falsos positivos. ¡La respuesta puede sorprenderte!
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="description">Centro oficial de FP online y presencial. Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

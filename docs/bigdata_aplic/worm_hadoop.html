@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Once Read Many (WORM) en Hadoop | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>WORM en Hadoop</span>
+                </div>
+            </div>
+            <h1 class="text-center">Write Once Read Many (WORM)</h1>
+            <p class="subtitle text-center">Principio Fundamental en Hadoop y Sistemas Big Data</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2>¿Qué es WORM?</h2>
+                <p>
+                    <strong>Write Once Read Many (WORM)</strong> es un paradigma de almacenamiento que permite escribir
+                    datos <strong>una única vez</strong> y leerlos <strong>múltiples veces</strong>, pero <strong>NO
+                        permite modificaciones</strong> posteriores. Este principio es fundamental en arquitecturas de Big
+                    Data, especialmente en <strong>Hadoop HDFS</strong>, donde optimiza el rendimiento y simplifica la
+                    gestión de datos masivos.
+                </p>
+                <p>
+                    A diferencia de los sistemas de archivos tradicionales que permiten lectura/escritura aleatoria, WORM
+                    fue diseñado específicamente para manejar <strong>volúmenes masivos de datos</strong> (petabytes) con
+                    operaciones de <strong>streaming secuencial</strong>, reduciendo la complejidad y aumentando el
+                    throughput.
+                </p>
+
+                <div class="highlight-box">
+                    <p><strong>📊 Ejemplo Real - Facebook:</strong></p>
+                    <p>Facebook almacena más de <strong>300 petabytes</strong> de fotos en HDFS. Cuando subes una foto, se
+                        escribe una vez y luego puede ser leída millones de veces, pero nunca se modifica el archivo
+                        original. Si quieres aplicar un filtro, se crea una <strong>nueva copia</strong>, no se edita la
+                        original.</p>
+                </div>
+
+                <h3>Conceptos Fundamentales</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>📝 Write Once</h4>
+                        <p>Los datos se escriben <strong>una sola vez</strong> y no pueden ser modificados. Cualquier cambio
+                            requiere crear un nuevo archivo.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Read Many</h4>
+                        <p>Los datos pueden ser leídos <strong>ilimitadas veces</strong> por múltiples procesos
+                            simultáneamente sin degradación de rendimiento.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🚫 No Modificación</h4>
+                        <p><strong>Inmutabilidad</strong>: Los archivos no admiten actualizaciones in-place. Solo append
+                            (agregar al final) está permitido en algunos casos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚡ Optimización</h4>
+                        <p>Diseñado para <strong>streaming secuencial</strong> de grandes bloques de datos (64-128 MB),
+                            maximizando el throughput.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ARQUITECTURA WORM EN HDFS -->
+            <section class="section">
+                <h2>Arquitectura WORM en Hadoop HDFS</h2>
+
+                <p>
+                    Hadoop Distributed File System (HDFS) implementa el modelo WORM a través de su arquitectura
+                    maestro-esclavo con <strong>NameNode</strong> y <strong>DataNodes</strong>. Cuando escribes un archivo
+                    en HDFS, los datos se dividen en <strong>bloques</strong> (típicamente 128 MB) que se replican en
+                    múltiples nodos para tolerancia a fallos.
+                </p>
+
+                <h3>🏗️ Flujo de Escritura WORM en HDFS</h3>
+                <div class="svg-container">
+                    <svg width="900" height="500" viewBox="0 0 900 500" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">Proceso WORM: Escritura Una Vez, Lectura Múltiple</text>
+
+                        <!-- CLIENTE -->
+                        <rect x="50" y="80" width="150" height="70" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="125" y="110" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">CLIENTE</text>
+                        <text x="125" y="130" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Aplicación que</text>
+                        <text x="125" y="145" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Arial">escribe datos</text>
+
+                        <!-- NAMENODE -->
+                        <rect x="375" y="80" width="150" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="110" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">NAMENODE</text>
+                        <text x="450" y="130" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Gestiona metadatos</text>
+                        <text x="450" y="145" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Decide ubicación</text>
+
+                        <!-- DATANODES -->
+                        <rect x="150" y="250" width="140" height="90" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="220" y="275" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DATANODE 1</text>
+                        <text x="220" y="295" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque A</text>
+                        <text x="220" y="310" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Réplica 1</text>
+                        <text x="220" y="325" font-size="10" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">WRITE ONCE ✓</text>
+
+                        <rect x="380" y="250" width="140" height="90" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="275" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DATANODE 2</text>
+                        <text x="450" y="295" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque A</text>
+                        <text x="450" y="310" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Réplica 2</text>
+                        <text x="450" y="325" font-size="10" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">WRITE ONCE ✓</text>
+
+                        <rect x="610" y="250" width="140" height="90" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="680" y="275" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DATANODE 3</text>
+                        <text x="680" y="295" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque A</text>
+                        <text x="680" y="310" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Réplica 3</text>
+                        <text x="680" y="325" font-size="10" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">WRITE ONCE ✓</text>
+
+                        <!-- Flechas ESCRITURA -->
+                        <path d="M 200 115 L 370 115" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="285" y="105" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">1. Solicitud escritura</text>
+
+                        <path d="M 450 150 L 280 245" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+                        <text x="340" y="185" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">2. Asigna nodos</text>
+
+                        <path d="M 450 150 L 450 245" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <path d="M 450 150 L 620 245" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                            fill="none" />
+
+                        <path d="M 125 150 L 220 245" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                            fill="none" stroke-dasharray="5,5" />
+                        <text x="150" y="210" font-size="11" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">3. Escribe datos</text>
+
+                        <!-- LECTORES -->
+                        <ellipse cx="220" cy="420" rx="70" ry="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                        <text x="220" y="425" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">LECTOR 1</text>
+
+                        <ellipse cx="450" cy="420" rx="70" ry="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                        <text x="450" y="425" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">LECTOR 2</text>
+
+                        <ellipse cx="680" cy="420" rx="70" ry="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                        <text x="680" y="425" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">LECTOR N</text>
+
+                        <!-- Flechas LECTURA -->
+                        <path d="M 220 340 L 220 385" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="240" y="365" font-size="11" font-weight="bold" fill="#49B9CE"
+                            font-family="Arial">READ</text>
+
+                        <path d="M 450 340 L 450 385" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="470" y="365" font-size="11" font-weight="bold" fill="#49B9CE"
+                            font-family="Arial">READ</text>
+
+                        <path d="M 680 340 L 680 385" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)"
+                            fill="none" />
+                        <text x="700" y="365" font-size="11" font-weight="bold" fill="#49B9CE"
+                            font-family="Arial">READ</text>
+
+                        <!-- Etiqueta READ MANY -->
+                        <rect x="350" y="460" width="200" height="30" fill="#49B9CE" rx="15" />
+                        <text x="450" y="480" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">✓ READ MANY (Ilimitado)</text>
+
+                        <!-- Marcadores de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>📋 Pasos del Proceso WORM</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>1️⃣ Solicitud de Escritura</h4>
+                        <p>El cliente contacta al NameNode para escribir un nuevo archivo. El NameNode valida permisos y
+                            disponibilidad.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>2️⃣ Asignación de Nodos</h4>
+                        <p>El NameNode selecciona DataNodes donde se almacenarán las réplicas (típicamente 3) considerando
+                            rack awareness.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>3️⃣ Escritura Única</h4>
+                        <p>Los datos se escriben secuencialmente en bloques. Una vez completada, el archivo es
+                            <strong>inmutable</strong>.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>4️⃣ Lectura Múltiple</h4>
+                        <p>Cualquier número de lectores pueden acceder simultáneamente sin bloqueos ni degradación de
+                            rendimiento.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EJEMPLO DE CÓDIGO -->
+            <section class="section">
+                <h2>💻 Implementación en Código</h2>
+
+                <h3>Escritura WORM en Java (Hadoop API)</h3>
+                <p>
+                    Este código muestra cómo escribir datos en HDFS siguiendo el principio WORM. Una vez cerrado el stream,
+                    el archivo <strong>no puede modificarse</strong>.
+                </p>
+
+                <div class="highlight-box">
+                    <pre><code class="language-java">import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import java.io.IOException;
+
+public class WORMExample {
+
+    public static void main(String[] args) throws IOException {
+        // Configuración de Hadoop
+        Configuration conf = new Configuration();
+        conf.set("fs.defaultFS", "hdfs://namenode:9000");
+
+        // Obtener sistema de archivos HDFS
+        FileSystem fs = FileSystem.get(conf);
+
+        // Ruta del archivo (WRITE ONCE)
+        Path filePath = new Path("/user/data/sensor_data.txt");
+
+        // Crear archivo - Solo se puede hacer UNA VEZ
+        FSDataOutputStream outputStream = fs.create(filePath);
+
+        // Escribir datos
+        String data = "Timestamp,Temperature,Humidity\n";
+        data += "2024-12-09T10:00:00,22.5,65\n";
+        data += "2024-12-09T10:01:00,22.7,64\n";
+
+        outputStream.write(data.getBytes());
+        outputStream.flush();
+        outputStream.close(); // ¡IMPORTANTE! Después de cerrar, NO se puede modificar
+
+        System.out.println("✓ Archivo escrito en HDFS (WORM aplicado)");
+
+        // ❌ ESTO FALLARÍA - No se puede sobrescribir
+        // fs.create(filePath); // IOException: File already exists
+
+        // ✓ ESTO SÍ FUNCIONA - Lectura múltiple
+        FSDataInputStream inputStream = fs.open(filePath);
+        byte[] buffer = new byte[1024];
+        int bytesRead = inputStream.read(buffer);
+        System.out.println("Datos leídos: " + new String(buffer, 0, bytesRead));
+        inputStream.close();
+
+        fs.close();
+    }
+}</code></pre>
+                </div>
+
+                <h3>Lectura Múltiple en Python (PySpark)</h3>
+                <p>
+                    Con PySpark, múltiples procesos pueden leer el mismo archivo HDFS simultáneamente sin problemas.
+                </p>
+
+                <div class="highlight-box">
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+
+# Crear sesión Spark
+spark = SparkSession.builder \
+    .appName("WORM_Read_Example") \
+    .config("spark.hadoop.fs.defaultFS", "hdfs://namenode:9000") \
+    .getOrCreate()
+
+# LECTURA 1: Análisis de temperatura promedio
+df1 = spark.read.csv("hdfs:///user/data/sensor_data.txt", header=True)
+avg_temp = df1.select("Temperature").agg({"Temperature": "avg"})
+print("Temperatura promedio:", avg_temp.collect())
+
+# LECTURA 2: Filtrado de humedad alta (SIMULTÁNEA)
+df2 = spark.read.csv("hdfs:///user/data/sensor_data.txt", header=True)
+high_humidity = df2.filter(df2.Humidity > 60)
+print("Registros con humedad > 60:", high_humidity.count())
+
+# LECTURA 3: Exportar a otro formato (SIMULTÁNEA)
+df3 = spark.read.csv("hdfs:///user/data/sensor_data.txt", header=True)
+df3.write.parquet("hdfs:///user/output/sensor_data.parquet")
+
+# ✓ Todas las lecturas son CONCURRENTES y SIN BLOQUEOS
+# ❌ Pero NO se puede modificar el archivo original
+
+spark.stop()</code></pre>
+                </div>
+
+                <h3>Comandos HDFS CLI</h3>
+
+                <div class="highlight-box">
+                    <pre><code class="language-bash"># Escribir archivo en HDFS (WRITE ONCE)
+hdfs dfs -put local_file.txt /user/data/
+
+# Leer archivo (READ MANY - puede hacerse infinitas veces)
+hdfs dfs -cat /user/data/local_file.txt
+hdfs dfs -tail /user/data/local_file.txt
+
+# ❌ ESTO NO FUNCIONA - No se puede modificar
+hdfs dfs -appendToFile new_data.txt /user/data/local_file.txt
+# Error: Append not supported
+
+# ✓ ALTERNATIVA - Crear nuevo archivo versionado
+hdfs dfs -put updated_file.txt /user/data/local_file_v2.txt
+
+# Verificar inmutabilidad
+hdfs dfs -chmod 444 /user/data/local_file.txt  # Solo lectura
+hdfs dfs -ls /user/data/
+# -r--r--r--   3 hadoop supergroup   1024 2024-12-09 10:30 /user/data/local_file.txt</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: COMPARACIÓN -->
+            <section class="section">
+                <h2>⚖️ WORM vs Sistemas Tradicionales</h2>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>WORM (HDFS)</th>
+                                <th>Sistemas Tradicionales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Escritura</strong></td>
+                                <td>✅ Una sola vez, secuencial</td>
+                                <td>Múltiples, aleatoria</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Modificación</strong></td>
+                                <td>❌ No permitida</td>
+                                <td>✅ Update/Delete permitido</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lectura</strong></td>
+                                <td>✅ Ilimitada, concurrente</td>
+                                <td>✅ Concurrente (con locks)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Throughput</strong></td>
+                                <td><strong>Muy alto</strong> (streaming)</td>
+                                <td>Moderado (random I/O)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia</strong></td>
+                                <td>Alta (batch processing)</td>
+                                <td><strong>Baja</strong> (real-time)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consistencia</strong></td>
+                                <td>✅ <strong>Simplificada</strong> (inmutable)</td>
+                                <td>Compleja (ACID)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Escalabilidad</strong></td>
+                                <td>✅ <strong>Lineal</strong> (horizontal)</td>
+                                <td>Limitada (vertical)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Casos de Uso</strong></td>
+                                <td>Logs, datasets, archivos</td>
+                                <td>Transacciones, aplicaciones</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: VENTAJAS Y LIMITACIONES -->
+            <section class="section">
+                <h2>✅❌ Ventajas y Limitaciones</h2>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3>✅ Ventajas de WORM</h3>
+                        <ul>
+                            <li><strong>Alto throughput</strong>: Streaming secuencial optimizado para grandes bloques (128
+                                MB)</li>
+                            <li><strong>Simplicidad</strong>: No requiere gestión de locks, transacciones ni rollbacks</li>
+                            <li><strong>Escalabilidad lineal</strong>: Añadir más nodos aumenta capacidad y rendimiento
+                                proporcionalmente</li>
+                            <li><strong>Tolerancia a fallos</strong>: Replicación automática en múltiples nodos</li>
+                            <li><strong>Consistencia garantizada</strong>: Inmutabilidad elimina problemas de race
+                                conditions</li>
+                            <li><strong>Auditoría</strong>: Los datos originales nunca cambian (compliance, forense)</li>
+                            <li><strong>Paralelismo masivo</strong>: MapReduce y Spark pueden procesar sin conflictos</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>❌ Limitaciones de WORM</h3>
+                        <ul>
+                            <li><strong>No updates</strong>: No se pueden modificar archivos existentes, solo crear nuevos
+                            </li>
+                            <li><strong>Alta latencia</strong>: No apto para aplicaciones de tiempo real o transaccionales
+                            </li>
+                            <li><strong>Desperdicio de espacio</strong>: Actualizar datos requiere duplicar todo el archivo
+                            </li>
+                            <li><strong>Small files problem</strong>: Muchos archivos pequeños degradan el rendimiento del
+                                NameNode</li>
+                            <li><strong>No random write</strong>: Solo escritura secuencial (append limitado)</li>
+                            <li><strong>Complejidad de versionado</strong>: Gestionar versiones manualmente (file_v1,
+                                file_v2...)</li>
+                            <li><strong>No ACID completo</strong>: No hay transacciones atómicas multi-archivo</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: CASOS DE USO -->
+            <section class="section">
+                <h2>🌐 Casos de Uso Reales</h2>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>📊 Análisis de Logs</h4>
+                        <p><strong>Google</strong>: Almacena petabytes de logs de búsquedas. Se escriben una vez y se
+                            analizan múltiples veces con MapReduce.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎬 Streaming de Video</h4>
+                        <p><strong>Netflix</strong>: Películas y series se codifican una vez en múltiples resoluciones y se
+                            leen millones de veces.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔬 Datos Científicos</h4>
+                        <p><strong>CERN</strong>: Datos del Large Hadron Collider (petabytes) se almacenan inmutables para
+                            análisis repetidos.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📸 Almacenamiento de Imágenes</h4>
+                        <p><strong>Facebook</strong>: 300+ PB de fotos. Cada imagen se escribe una vez y se accede millones
+                            de veces sin modificarse.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🏦 Compliance Financiero</h4>
+                        <p><strong>Bancos</strong>: Transacciones históricas inmutables para auditorías y regulaciones
+                            (GDPR, SOX).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🌡️ IoT y Sensores</h4>
+                        <p><strong>Tesla</strong>: Datos de telemetría de vehículos (temperatura, velocidad) escritos
+                            continuamente y analizados en batch.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📚 Archivos Históricos</h4>
+                        <p><strong>Bibliotecas Digitales</strong>: Digitalización de libros, periódicos antiguos que no
+                            cambian pero se consultan frecuentemente.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🧬 Genómica</h4>
+                        <p><strong>23andMe</strong>: Secuencias de ADN se almacenan una vez y se analizan repetidamente con
+                            nuevos algoritmos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: ESTRATEGIAS DE ACTUALIZACIÓN -->
+            <section class="section">
+                <h2>🔄 Estrategias para "Actualizar" Datos WORM</h2>
+
+                <p>
+                    Dado que WORM no permite modificaciones, existen <strong>patrones de diseño</strong> para manejar
+                    actualizaciones:
+                </p>
+
+                <div class="highlight-box">
+                    <h3>1️⃣ Versionado de Archivos</h3>
+                    <p>Crear nuevas versiones con timestamp o número de versión:</p>
+                    <pre><code class="language-bash"># Estructura con versionado
+/user/data/sales_2024-12-01.csv
+/user/data/sales_2024-12-02.csv
+/user/data/sales_2024-12-03.csv
+
+# O con versiones numéricas
+/user/data/customers_v1.parquet
+/user/data/customers_v2.parquet
+/user/data/customers_v3.parquet</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>2️⃣ Append-Only (Delta Updates)</h3>
+                    <p>Escribir solo los cambios (deltas) en archivos adicionales:</p>
+                    <pre><code class="language-bash"># Archivo base
+/user/data/users/base.parquet        # 1M usuarios
+
+# Deltas incrementales
+/user/data/users/delta_001.parquet   # 10K nuevos usuarios
+/user/data/users/delta_002.parquet   # 5K nuevos usuarios
+
+# En lectura, merge de base + deltas
+# Total: 1,015,000 usuarios</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>3️⃣ Particionamiento Temporal</h3>
+                    <p>Dividir datos por tiempo (día, mes, año):</p>
+                    <pre><code class="language-python"># Estructura particionada
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("Partitioned").getOrCreate()
+
+# Escribir con particiones
+df.write \
+  .partitionBy("year", "month", "day") \
+  .parquet("hdfs:///user/data/logs/")
+
+# Resultado:
+# /user/data/logs/year=2024/month=12/day=01/
+# /user/data/logs/year=2024/month=12/day=02/
+# ...
+
+# Cada partición es inmutable, pero puedes añadir nuevas particiones</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>4️⃣ Compactación Periódica</h3>
+                    <p>Consolidar múltiples archivos pequeños en uno grande (usado por <strong>Apache Hudi, Delta
+                            Lake</strong>):</p>
+                    <pre><code class="language-python"># Compactación con Delta Lake (sobre HDFS)
+from delta.tables import DeltaTable
+
+# Crear tabla Delta
+df.write.format("delta").save("hdfs:///delta/table")
+
+# Actualizar datos (crea nuevos archivos Parquet)
+DeltaTable.forPath(spark, "hdfs:///delta/table") \
+    .update(condition="id = 123", set={"status": "'active'"})
+
+# Compactación automática (merge de archivos pequeños)
+DeltaTable.forPath(spark, "hdfs:///delta/table").optimize().executeCompaction()</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: DATO CURIOSO -->
+            <section class="section">
+                <div class="highlight-box" style="background: #FFF8DC; border-color: #FFA726;">
+                    <h4>💡 Dato Curioso sobre WORM</h4>
+
+                    <p>
+                        El principio WORM no es exclusivo de Hadoop. El <strong>sistema de archivos de CDs y DVDs</strong>
+                        también es WORM: una vez grabados, los datos no pueden modificarse. Esta misma filosofía inspiró el
+                        diseño de HDFS.
+                    </p>
+
+                    <h5>📊 Números Impresionantes:</h5>
+                    <ul>
+                        <li><strong>Yahoo!</strong> fue uno de los primeros en adoptar Hadoop, gestionando <strong>102
+                                petabytes</strong> en más de 40,000 nodos</li>
+                        <li><strong>LinkedIn</strong> procesa <strong>1 billón de eventos/día</strong> con Kafka + HDFS
+                            (todo WORM)</li>
+                        <li>El <strong>Large Hadron Collider (CERN)</strong> genera <strong>1 petabyte/segundo</strong>
+                            durante colisiones, almacenado en HDFS</li>
+                        <li><strong>Spotify</strong> almacena <strong>5 petabytes</strong> de logs de reproducción de
+                            canciones para recomendaciones</li>
+                    </ul>
+
+                    <div class="feature-card" style="margin-top: 1rem;">
+                        <p class="text-center">
+                            🌍 <strong>Hadoop HDFS</strong> es el sistema de archivos distribuido más usado del mundo,
+                            gestionando <strong>exabytes de datos</strong> bajo el principio WORM en compañías como
+                            Facebook, Netflix, Amazon, Twitter, Alibaba y Microsoft.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MERMAID MINDMAP -->
+            <section class="section">
+                <h2 class="text-center">Mapa Mental: WORM en Hadoop</h2>
+<div class="mermaid">
+                    mindmap
+                      root((WORM))
+                        Concepto
+                          Write Once
+                            Una sola escritura
+                            Inmutabilidad
+                          Read Many
+                            Lecturas ilimitadas
+                            Sin degradación
+                          Optimización
+                            Streaming secuencial
+                            Bloques grandes 128MB
+                        Arquitectura HDFS
+                          NameNode
+                            Gestión metadatos
+                            Asignación nodos
+                          DataNodes
+                            Almacenamiento bloques
+                            Replicación 3x
+                        Flujo
+                          Solicitud escritura
+                          Asignación nodos
+                          Escritura única
+                          Lectura múltiple
+                        Ventajas
+                          Alto throughput
+                          Simplicidad
+                          Escalabilidad lineal
+                          Tolerancia fallos
+                          Consistencia garantizada
+                          Paralelismo masivo
+                        Limitaciones
+                          No updates
+                          Alta latencia
+                          Small files problem
+                          No random write
+                        Casos de Uso
+                          Logs Google
+                          Fotos Facebook 300PB
+                          Videos Netflix
+                          Datos CERN
+                          Genómica 23andMe
+                          IoT Tesla
+                        Estrategias Update
+                          Versionado
+                          Append only deltas
+                          Particionamiento temporal
+                          Compactación Delta Lake
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 iLERNA - Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <p>Centro oficial de FP online y presencial | <a href="https://www.ilerna.es/"
+                    target="_blank">www.ilerna.es</a></p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

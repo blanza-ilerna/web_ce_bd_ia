@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadoop y HDFS | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Hadoop y HDFS</span>
+                </div>
+            </div>
+            <h1 class="text-center">Hadoop y HDFS</h1>
+            <p class="subtitle text-center">Procesamiento Distribuido de Big Data a Escala Masiva</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN A HADOOP -->
+            <section class="section">
+                <h2>¿Qué es Apache Hadoop?</h2>
+                <p>
+                    <strong>Apache Hadoop</strong> es un framework de software de código abierto diseñado para el
+                    <strong>almacenamiento y procesamiento distribuido</strong> de grandes volúmenes de datos (Big Data)
+                    en clústeres de servidores commodity. Fue creado por Doug Cutting y Mike Cafarella en 2005,
+                    inspirándose en los papers de Google sobre <strong>Google File System (GFS)</strong> y
+                    <strong>MapReduce</strong>.
+                </p>
+                <p>
+                    Hadoop permite procesar <strong>petabytes de datos</strong> dividiéndolos en bloques más pequeños y
+                    distribuyéndolos a través de múltiples nodos, proporcionando <strong>tolerancia a fallos</strong>,
+                    <strong>escalabilidad horizontal</strong> y <strong>procesamiento paralelo masivo</strong>.
+                </p>
+
+                <div class="highlight-box">
+                    <p><strong>🌐 Ejemplo Real - Facebook:</strong></p>
+                    <p>Facebook utiliza uno de los clústeres Hadoop más grandes del mundo, con más de <strong>300
+                            petabytes de datos</strong> distribuidos en más de <strong>4,000 servidores</strong>.
+                        Procesan más de <strong>100 petabytes de datos diarios</strong> para análisis de usuarios,
+                        recomendaciones y detección de contenido inapropiado.</p>
+                </div>
+
+                <h3>Conceptos Fundamentales</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>Escalabilidad Horizontal</h4>
+                        <p>Capacidad de añadir más nodos (servidores) al clúster para aumentar la capacidad de
+                            almacenamiento y procesamiento sin límites teóricos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Tolerancia a Fallos</h4>
+                        <p>Los datos se replican en múltiples nodos (por defecto 3 réplicas). Si un nodo falla, los
+                            datos siguen disponibles desde otras réplicas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Procesamiento Paralelo</h4>
+                        <p>Los datos se procesan simultáneamente en múltiples nodos, reduciendo drásticamente el tiempo
+                            de ejecución de tareas complejas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Locality Data</h4>
+                        <p>El procesamiento se ejecuta donde están los datos almacenados, minimizando la transferencia
+                            de datos por la red y mejorando el rendimiento.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ARQUITECTURA DE HADOOP -->
+            <section class="section">
+                <h2>Arquitectura del Ecosistema Hadoop</h2>
+
+                <p>
+                    Hadoop se compone de cuatro módulos principales que trabajan conjuntamente para proporcionar una
+                    plataforma completa de Big Data:
+                </p>
+
+                <h3>🏗️ Componentes Core de Hadoop</h3>
+                <div class="svg-container">
+                    <svg width="900" height="500" viewBox="0 0 900 500" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">Arquitectura de Apache Hadoop</text>
+
+                        <!-- Hadoop Common -->
+                        <rect x="50" y="60" width="800" height="70" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="450" y="90" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">Hadoop Common</text>
+                        <text x="450" y="110" font-size="12" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Librerías y utilidades comunes necesarias por otros módulos
+                            Hadoop</text>
+
+                        <!-- HDFS -->
+                        <rect x="50" y="160" width="380" height="130" fill="#49B9CE" stroke="#1e7e9c" stroke-width="3"
+                            rx="10" />
+                        <text x="240" y="190" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">HDFS</text>
+                        <text x="240" y="210" font-size="14" fill="white" text-anchor="middle"
+                            font-family="Arial">(Hadoop Distributed File System)</text>
+                        <text x="240" y="235" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Sistema de archivos distribuido</text>
+                        <text x="240" y="255" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Almacenamiento escalable</text>
+                        <text x="240" y="275" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Réplicas de datos (tolerancia a fallos)</text>
+
+                        <!-- YARN -->
+                        <rect x="470" y="160" width="380" height="130" fill="#8A7AAF" stroke="#6b5b95" stroke-width="3"
+                            rx="10" />
+                        <text x="660" y="190" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">YARN</text>
+                        <text x="660" y="210" font-size="14" fill="white" text-anchor="middle" font-family="Arial">(Yet
+                            Another Resource Negotiator)</text>
+                        <text x="660" y="235" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Gestor de recursos del clúster</text>
+                        <text x="660" y="255" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Planificación de tareas</text>
+                        <text x="660" y="275" font-size="11" fill="white" text-anchor="middle" font-family="Arial">•
+                            Asignación de CPU y memoria</text>
+
+                        <!-- MapReduce -->
+                        <rect x="50" y="320" width="380" height="130" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3"
+                            rx="10" />
+                        <text x="240" y="350" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">MapReduce</text>
+                        <text x="240" y="370" font-size="14" fill="#333333" text-anchor="middle"
+                            font-family="Arial">(Modelo de Procesamiento)</text>
+                        <text x="240" y="395" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">•
+                            Procesamiento paralelo de datos</text>
+                        <text x="240" y="415" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">•
+                            Fase Map + Fase Reduce</text>
+                        <text x="240" y="435" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">•
+                            Ejecuta sobre YARN</text>
+
+                        <!-- Hadoop Ecosystem -->
+                        <rect x="470" y="320" width="380" height="130" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="10" />
+                        <text x="660" y="350" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">Ecosistema Hadoop</text>
+                        <text x="660" y="375" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Hive • Pig • HBase • Spark • Kafka</text>
+                        <text x="660" y="395" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Sqoop • Flume • Oozie • Zookeeper</text>
+                        <text x="660" y="415" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Mahout • Ambari • Storm • Flink</text>
+                        <text x="660" y="435" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Herramientas especializadas de procesamiento</text>
+
+                        <!-- Flechas de relación -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <path d="M 240 130 L 240 158" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" />
+                        <path d="M 660 130 L 660 158" stroke="#8A7AAF" stroke-width="3"
+                            marker-end="url(#arrowpurple)" />
+                        <path d="M 240 292 L 240 318" stroke="#8A7AAF" stroke-width="3"
+                            marker-end="url(#arrowpurple)" />
+                        <path d="M 660 292 L 660 318" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" />
+
+                        <!-- Nota -->
+                        <text x="450" y="480" font-size="12" fill="#777777" text-anchor="middle" font-family="Arial"
+                            font-style="italic">Todos los componentes interactúan entre sí para formar el ecosistema
+                            completo de Hadoop</text>
+                    </svg>
+                </div>
+
+                <h3>📦 Desglose de Componentes</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>1. Hadoop Common</h4>
+                        <p>Conjunto de utilidades y librerías Java compartidas por todos los módulos de Hadoop.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>2. HDFS</h4>
+                        <p>Sistema de archivos distribuido diseñado para almacenar grandes volúmenes de datos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>3. YARN</h4>
+                        <p>Gestor de recursos que planifica y ejecuta aplicaciones en el clúster Hadoop.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>4. MapReduce</h4>
+                        <p>Framework de procesamiento paralelo para analizar grandes conjuntos de datos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: HDFS EN PROFUNDIDAD -->
+            <section class="section">
+                <h2>HDFS: Sistema de Archivos Distribuido</h2>
+
+                <p>
+                    <strong>HDFS (Hadoop Distributed File System)</strong> es el sistema de almacenamiento principal de
+                    Hadoop. Está diseñado para almacenar <strong>archivos muy grandes</strong> (terabytes, petabytes)
+                    distribuyéndolos en múltiples servidores, garantizando alta disponibilidad y tolerancia a fallos
+                    mediante replicación.
+                </p>
+
+                <h3>🗄️ Arquitectura Maestro-Esclavo de HDFS</h3>
+                <div class="svg-container">
+                    <svg width="900" height="550" viewBox="0 0 900 550" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">Arquitectura HDFS: NameNode + DataNodes</text>
+
+                        <!-- Cliente -->
+                        <rect x="350" y="60" width="200" height="50" fill="#FFF8DC" stroke="#FFA726" stroke-width="3"
+                            rx="8" />
+                        <text x="450" y="90" font-size="16" font-weight="bold" fill="#E65100" text-anchor="middle"
+                            font-family="Arial">CLIENTE HDFS</text>
+
+                        <!-- NameNode (Maestro) -->
+                        <rect x="320" y="150" width="260" height="100" fill="#49B9CE" stroke="#1e7e9c" stroke-width="4"
+                            rx="10" />
+                        <text x="450" y="180" font-size="18" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">NAMENODE (Maestro)</text>
+                        <text x="450" y="205" font-size="12" fill="white" text-anchor="middle" font-family="Arial">•
+                            Gestiona metadatos del sistema</text>
+                        <text x="450" y="225" font-size="12" fill="white" text-anchor="middle" font-family="Arial">•
+                            Mapea bloques a DataNodes</text>
+                        <text x="450" y="245" font-size="12" fill="white" text-anchor="middle" font-family="Arial">• Un
+                            único NameNode activo por clúster</text>
+
+                        <!-- Rack 1 -->
+                        <rect x="50" y="300" width="250" height="220" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                            rx="8" stroke-dasharray="5,5" />
+                        <text x="175" y="325" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">RACK 1</text>
+
+                        <!-- DataNode 1 -->
+                        <rect x="70" y="340" width="90" height="80" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="5" />
+                        <text x="115" y="365" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">DataNode 1</text>
+                        <text x="115" y="385" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque A</text>
+                        <text x="115" y="400" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque B</text>
+                        <text x="115" y="415" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque C</text>
+
+                        <!-- DataNode 2 -->
+                        <rect x="180" y="340" width="90" height="80" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="5" />
+                        <text x="225" y="365" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">DataNode 2</text>
+                        <text x="225" y="385" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque A'</text>
+                        <text x="225" y="400" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque D</text>
+                        <text x="225" y="415" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque E</text>
+
+                        <!-- DataNode 3 -->
+                        <rect x="125" y="440" width="90" height="65" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="170" y="465" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DataNode 3</text>
+                        <text x="170" y="485" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque B'</text>
+                        <text x="170" y="498" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque C'</text>
+
+                        <!-- Rack 2 -->
+                        <rect x="350" y="300" width="250" height="220" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                            rx="8" stroke-dasharray="5,5" />
+                        <text x="475" y="325" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">RACK 2</text>
+
+                        <!-- DataNode 4 -->
+                        <rect x="370" y="340" width="90" height="80" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="5" />
+                        <text x="415" y="365" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">DataNode 4</text>
+                        <text x="415" y="385" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque A''</text>
+                        <text x="415" y="400" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque F</text>
+                        <text x="415" y="415" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque G</text>
+
+                        <!-- DataNode 5 -->
+                        <rect x="480" y="340" width="90" height="80" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="5" />
+                        <text x="525" y="365" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">DataNode 5</text>
+                        <text x="525" y="385" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque D'</text>
+                        <text x="525" y="400" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque E'</text>
+                        <text x="525" y="415" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque H</text>
+
+                        <!-- DataNode 6 -->
+                        <rect x="425" y="440" width="90" height="65" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2"
+                            rx="5" />
+                        <text x="470" y="465" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DataNode 6</text>
+                        <text x="470" y="485" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque F'</text>
+                        <text x="470" y="498" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque G'</text>
+
+                        <!-- Rack 3 -->
+                        <rect x="650" y="300" width="200" height="220" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="2"
+                            rx="8" stroke-dasharray="5,5" />
+                        <text x="750" y="325" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">RACK 3</text>
+
+                        <!-- DataNode 7 -->
+                        <rect x="680" y="360" width="120" height="70" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="740" y="385" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">DataNode 7</text>
+                        <text x="740" y="405" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque H'</text>
+                        <text x="740" y="420" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Bloque I</text>
+
+                        <!-- DataNode 8 -->
+                        <rect x="680" y="445" width="120" height="60" fill="#8A7AAF" stroke="#6b5b95" stroke-width="2"
+                            rx="5" />
+                        <text x="740" y="465" font-size="12" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">DataNode 8</text>
+                        <text x="740" y="485" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque I'</text>
+                        <text x="740" y="498" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Bloque J</text>
+
+                        <!-- Flechas de comunicación -->
+                        <defs>
+                            <marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <!-- Cliente a NameNode -->
+                        <path d="M 450 110 L 450 148" stroke="#FFA726" stroke-width="3" marker-end="url(#arrow1)" />
+
+                        <!-- NameNode a DataNodes -->
+                        <path d="M 380 250 L 150 338" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrow1)"
+                            stroke-dasharray="3,3" />
+                        <path d="M 450 250 L 450 338" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrow1)"
+                            stroke-dasharray="3,3" />
+                        <path d="M 520 250 L 740 358" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrow1)"
+                            stroke-dasharray="3,3" />
+
+                        <!-- Leyenda -->
+                        <text x="450" y="545" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial"
+                            font-style="italic">Los bloques con ' son réplicas (por defecto factor de replicación =
+                            3)</text>
+                    </svg>
+                </div>
+
+                <h3>🔑 Características Clave de HDFS</h3>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>Descripción</th>
+                                <th>Valor Predeterminado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tamaño de Bloque</strong></td>
+                                <td>Los archivos se dividen en bloques de tamaño fijo distribuidos en el clúster</td>
+                                <td>128 MB</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Factor de Replicación</strong></td>
+                                <td>Número de copias de cada bloque almacenadas en diferentes nodos</td>
+                                <td>3 réplicas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Arquitectura</strong></td>
+                                <td>Modelo maestro-esclavo con un NameNode y múltiples DataNodes</td>
+                                <td>1 + N nodos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tolerancia a Fallos</strong></td>
+                                <td>Sistema automáticamente detecta y recupera bloques perdidos</td>
+                                <td>Automática</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rack Awareness</strong></td>
+                                <td>Distribución inteligente de réplicas entre diferentes racks físicos</td>
+                                <td>Habilitado</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Escritura</strong></td>
+                                <td>Optimizado para escritura secuencial (una sola vez)</td>
+                                <td>Write-Once</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lectura</strong></td>
+                                <td>Optimizado para lectura múltiple y streaming de datos</td>
+                                <td>Read-Many</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>💻 Comandos Básicos de HDFS</h3>
+
+                <div class="highlight-box">
+                    <p><strong>Comandos Shell de HDFS:</strong></p>
+                    <pre><code class="language-bash"># Listar archivos en HDFS
+hdfs dfs -ls /user/hadoop/
+
+# Crear directorio en HDFS
+hdfs dfs -mkdir -p /user/hadoop/input
+
+# Copiar archivo local a HDFS
+hdfs dfs -put localfile.txt /user/hadoop/input/
+
+# Copiar archivo de HDFS a local
+hdfs dfs -get /user/hadoop/output/result.txt ./
+
+# Ver contenido de archivo
+hdfs dfs -cat /user/hadoop/input/data.txt
+
+# Eliminar archivo o directorio
+hdfs dfs -rm /user/hadoop/input/oldfile.txt
+hdfs dfs -rm -r /user/hadoop/old_directory/
+
+# Ver información de bloques y réplicas
+hdfs fsck /user/hadoop/bigfile.txt -files -blocks -locations
+
+# Verificar estado del sistema HDFS
+hdfs dfsadmin -report</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: MAPREDUCE -->
+            <section class="section">
+                <h2>MapReduce: Procesamiento Paralelo</h2>
+
+                <p>
+                    <strong>MapReduce</strong> es un modelo de programación diseñado para procesar grandes volúmenes de
+                    datos de forma paralela y distribuida. Se compone de dos fases principales: <strong>Map</strong>
+                    (transformación) y <strong>Reduce</strong> (agregación).
+                </p>
+
+                <h3>⚙️ Flujo de MapReduce</h3>
+                <div class="svg-container">
+                    <svg width="900" height="400" viewBox="0 0 900 400" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">Proceso MapReduce: Map → Shuffle → Reduce</text>
+
+                        <!-- INPUT -->
+                        <rect x="50" y="70" width="150" height="60" fill="#FFF8DC" stroke="#FFA726" stroke-width="3"
+                            rx="8" />
+                        <text x="125" y="95" font-size="14" font-weight="bold" fill="#E65100" text-anchor="middle"
+                            font-family="Arial">INPUT DATA</text>
+                        <text x="125" y="115" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Archivo dividido</text>
+                        <text x="125" y="128" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">en
+                            bloques</text>
+
+                        <!-- MAPPERS -->
+                        <text x="350" y="60" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                            font-family="Arial">FASE MAP</text>
+
+                        <rect x="280" y="80" width="140" height="50" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="5" />
+                        <text x="350" y="100" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">Mapper 1</text>
+                        <text x="350" y="118" font-size="10" fill="white" text-anchor="middle" font-family="Arial">(key,
+                            value) pairs</text>
+
+                        <rect x="280" y="150" width="140" height="50" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="5" />
+                        <text x="350" y="170" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">Mapper 2</text>
+                        <text x="350" y="188" font-size="10" fill="white" text-anchor="middle" font-family="Arial">(key,
+                            value) pairs</text>
+
+                        <rect x="280" y="220" width="140" height="50" fill="#49B9CE" stroke="#1e7e9c" stroke-width="2"
+                            rx="5" />
+                        <text x="350" y="240" font-size="13" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">Mapper 3</text>
+                        <text x="350" y="258" font-size="10" fill="white" text-anchor="middle" font-family="Arial">(key,
+                            value) pairs</text>
+
+                        <!-- SHUFFLE & SORT -->
+                        <rect x="470" y="130" width="140" height="100" fill="#8A7AAF" stroke="#6b5b95" stroke-width="3"
+                            rx="8" />
+                        <text x="540" y="155" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">SHUFFLE</text>
+                        <text x="540" y="175" font-size="14" font-weight="bold" fill="white" text-anchor="middle"
+                            font-family="Arial">& SORT</text>
+                        <text x="540" y="200" font-size="10" fill="white" text-anchor="middle"
+                            font-family="Arial">Agrupa por clave</text>
+                        <text x="540" y="215" font-size="10" fill="white" text-anchor="middle" font-family="Arial">y
+                            ordena datos</text>
+
+                        <!-- REDUCERS -->
+                        <text x="730" y="60" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                            font-family="Arial">FASE REDUCE</text>
+
+                        <rect x="660" y="100" width="140" height="50" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="730" y="120" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">Reducer 1</text>
+                        <text x="730" y="138" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Agregación A-M</text>
+
+                        <rect x="660" y="170" width="140" height="50" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                            rx="5" />
+                        <text x="730" y="190" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">Reducer 2</text>
+                        <text x="730" y="208" font-size="10" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Agregación N-Z</text>
+
+                        <!-- OUTPUT -->
+                        <rect x="710" y="270" width="150" height="60" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"
+                            rx="8" />
+                        <text x="785" y="295" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                            font-family="Arial">OUTPUT DATA</text>
+                        <text x="785" y="315" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Resultado final</text>
+                        <text x="785" y="328" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">agregado</text>
+
+                        <!-- Flechas -->
+                        <defs>
+                            <marker id="arrowmap" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
+                            </marker>
+                            <marker id="arrowreduce" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                            </marker>
+                        </defs>
+
+                        <path d="M 200 100 L 278 105" stroke="#FFA726" stroke-width="2" marker-end="url(#arrowmap)" />
+                        <path d="M 200 100 L 278 175" stroke="#FFA726" stroke-width="2" marker-end="url(#arrowmap)" />
+                        <path d="M 200 100 L 278 245" stroke="#FFA726" stroke-width="2" marker-end="url(#arrowmap)" />
+
+                        <path d="M 420 105 L 468 160" stroke="#49B9CE" stroke-width="2"
+                            marker-end="url(#arrowreduce)" />
+                        <path d="M 420 175 L 468 180" stroke="#49B9CE" stroke-width="2"
+                            marker-end="url(#arrowreduce)" />
+                        <path d="M 420 245 L 468 200" stroke="#49B9CE" stroke-width="2"
+                            marker-end="url(#arrowreduce)" />
+
+                        <path d="M 610 160 L 658 125" stroke="#8A7AAF" stroke-width="2"
+                            marker-end="url(#arrowreduce)" />
+                        <path d="M 610 200 L 658 195" stroke="#8A7AAF" stroke-width="2"
+                            marker-end="url(#arrowreduce)" />
+
+                        <path d="M 730 150 L 730 268" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowmap)" />
+                        <path d="M 730 220 L 760 268" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowmap)" />
+
+                        <!-- Leyenda -->
+                        <text x="450" y="365" font-size="11" fill="#555555" text-anchor="middle"
+                            font-family="Arial">Ejemplo: Contar palabras en millones de documentos</text>
+                        <text x="450" y="385" font-size="10" fill="#777777" text-anchor="middle" font-family="Arial"
+                            font-style="italic">Map emite (palabra, 1) → Shuffle agrupa por palabra → Reduce suma
+                            ocurrencias</text>
+                    </svg>
+                </div>
+
+                <h3>📝 Ejemplo: WordCount en MapReduce (Java)</h3>
+
+                <div class="highlight-box">
+                    <p><strong>Clase Mapper (Fase Map):</strong></p>
+                    <pre><code class="language-java">public class TokenizerMapper extends Mapper&lt;Object, Text, Text, IntWritable&gt; {
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    public void map(Object key, Text value, Context context)
+            throws IOException, InterruptedException {
+
+        // Dividir línea en palabras
+        StringTokenizer itr = new StringTokenizer(value.toString());
+
+        // Emitir (palabra, 1) para cada palabra
+        while (itr.hasMoreTokens()) {
+            word.set(itr.nextToken());
+            context.write(word, one);
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>Clase Reducer (Fase Reduce):</strong></p>
+                    <pre><code class="language-java">public class IntSumReducer extends Reducer&lt;Text, IntWritable, Text, IntWritable&gt; {
+
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable&lt;IntWritable&gt; values, Context context)
+            throws IOException, InterruptedException {
+
+        int sum = 0;
+
+        // Sumar todas las ocurrencias de la palabra
+        for (IntWritable val : values) {
+            sum += val.get();
+        }
+
+        result.set(sum);
+        context.write(key, result);  // Emitir (palabra, conteo_total)
+    }
+}</code></pre>
+                </div>
+
+                <div class="highlight-box" style="background: #FFF8DC; border-color: #FFA726;">
+                    <h4>🏢 Caso Práctico - LinkedIn</h4>
+                    <p>
+                        LinkedIn utiliza MapReduce para analizar el <strong>grafo social completo</strong> de más de 900
+                        millones de usuarios. Procesan billones de conexiones para generar recomendaciones de:
+                    </p>
+                    <ul>
+                        <li><strong>Personas que quizás conozcas:</strong> Análisis de amigos en común y conexiones de
+                            segundo grado</li>
+                        <li><strong>Empleos recomendados:</strong> Matching entre habilidades del perfil y requisitos de
+                            ofertas</li>
+                        <li><strong>Contenido relevante:</strong> Análisis de intereses basado en interacciones previas
+                        </li>
+                        <li><strong>Grupos sugeridos:</strong> Clustering de usuarios con intereses similares</li>
+                    </ul>
+                    <p style="font-style: italic;">
+                        Estos análisis se ejecutan diariamente procesando más de <strong>3 petabytes de datos</strong>
+                        en clústeres con miles de nodos Hadoop.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: YARN -->
+            <section class="section">
+                <h2>YARN: Gestor de Recursos del Clúster</h2>
+
+                <p>
+                    <strong>YARN (Yet Another Resource Negotiator)</strong> es el gestor de recursos de Hadoop que
+                    separa la gestión de recursos del procesamiento de datos. Permite ejecutar múltiples frameworks de
+                    procesamiento (MapReduce, Spark, Flink) sobre el mismo clúster HDFS, maximizando la utilización de
+                    recursos.
+                </p>
+
+                <h3>🎯 Componentes de YARN</h3>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>ResourceManager</h4>
+                        <p>Maestro global que gestiona la asignación de recursos en todo el clúster.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>NodeManager</h4>
+                        <p>Agente en cada nodo que monitoriza recursos locales (CPU, RAM, disco).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>ApplicationMaster</h4>
+                        <p>Coordina la ejecución de una aplicación específica negociando recursos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Container</h4>
+                        <p>Unidad de recursos (CPU + RAM) asignada para ejecutar tareas.</p>
+                    </div>
+                </div>
+
+                <h3>✅ Ventajas de YARN sobre Hadoop 1.x</h3>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>📊 Multi-Framework</h4>
+                        <p>Permite ejecutar Spark, MapReduce, Flink, Storm simultáneamente en el mismo clúster.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🚀 Escalabilidad</h4>
+                        <p>Soporta clústeres de más de 10,000 nodos y cientos de miles de tareas concurrentes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚡ Eficiencia</h4>
+                        <p>Mejor utilización de recursos con asignación dinámica y granular.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔒 Aislamiento</h4>
+                        <p>Aplicaciones aisladas en containers con recursos garantizados.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: CASOS DE USO -->
+            <section class="section">
+                <h2>Casos de Uso Empresariales</h2>
+
+                <p>
+                    Hadoop es utilizado por las empresas tecnológicas más grandes del mundo para resolver problemas de
+                    Big Data a escala masiva:
+                </p>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>🟣 Yahoo!</h4>
+                        <p><strong>Escala:</strong> +42,000 nodos, 600 PB</p>
+                        <p>Pionero en adopción de Hadoop. Análisis de búsquedas, personalización de contenido, detección
+                            de spam y análisis de logs.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔴 Netflix</h4>
+                        <p><strong>Escala:</strong> 15 PB procesados/día</p>
+                        <p>Sistema de recomendaciones, análisis de comportamiento de usuarios, optimización de calidad
+                            de video (QoE), A/B testing.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔵 eBay</h4>
+                        <p><strong>Escala:</strong> 40 PB de almacenamiento</p>
+                        <p>Motor de búsqueda de productos, detección de fraudes, recomendaciones personalizadas,
+                            análisis de mercado.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🟢 Spotify</h4>
+                        <p><strong>Escala:</strong> 10 PB+ de logs</p>
+                        <p>Análisis de patrones de escucha, generación de playlists personalizadas (Discover Weekly),
+                            predicción de éxitos musicales.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🐦 Twitter/X</h4>
+                        <p><strong>Escala:</strong> 500M+ tweets/día</p>
+                        <p>Análisis de tendencias en tiempo real, detección de bots, análisis de sentimientos,
+                            recomendación de contenido.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🚗 Uber</h4>
+                        <p><strong>Escala:</strong> 100 PB+ de datos</p>
+                        <p>Predicción de demanda, optimización de rutas, surge pricing dinámico, análisis de
+                            comportamiento de conductores.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: VENTAJAS Y DESAFÍOS -->
+            <section class="section">
+                <h2>Ventajas y Desafíos de Hadoop</h2>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>✅ VENTAJAS</th>
+                                <th>⚠️ DESAFÍOS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Escalabilidad ilimitada:</strong> Añadir nodos aumenta linealmente la
+                                    capacidad</td>
+                                <td><strong>Latencia alta:</strong> No diseñado para consultas interactivas en tiempo
+                                    real</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tolerancia a fallos:</strong> Replicación automática de datos</td>
+                                <td><strong>Complejidad:</strong> Requiere conocimientos especializados para
+                                    administración</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coste-efectivo:</strong> Usa hardware commodity estándar</td>
+                                <td><strong>NameNode SPOF:</strong> Único punto de fallo (aunque existe HA)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Procesamiento batch:</strong> Excelente para grandes volúmenes offline</td>
+                                <td><strong>Small files:</strong> Ineficiente con muchos archivos pequeños</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ecosistema rico:</strong> Spark, Hive, Pig, HBase, Kafka, etc.</td>
+                                <td><strong>MapReduce lento:</strong> Comparado con Spark en procesamiento iterativo
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Open Source:</strong> Sin costes de licencia, comunidad activa</td>
+                                <td><strong>Configuración compleja:</strong> Tuning de parámetros requiere experiencia
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: CONCLUSIÓN -->
+            <section class="section">
+                <h2 class="text-center">🎓 Conclusión</h2>
+                <p>
+                    Apache Hadoop revolucionó el procesamiento de Big Data al democratizar el acceso a tecnologías de
+                    almacenamiento y computación distribuida a escala masiva. Su arquitectura de <strong>escalabilidad
+                        horizontal</strong>, <strong>tolerancia a fallos</strong> y <strong>procesamiento
+                        paralelo</strong> sigue siendo fundamental en la era del Big Data, aunque hoy convive con
+                    tecnologías más modernas como <strong>Apache Spark</strong> y soluciones cloud-native.
+                </p>
+                <p style="font-style: italic;">
+                    Empresas como Facebook, Netflix, LinkedIn, Yahoo! y Uber procesan <strong>petabytes de datos
+                        diarios</strong> sobre Hadoop, demostrando su capacidad para resolver los desafíos más complejos
+                    de Big Data a escala global.
+                </p>
+            </section>
+
+            <!-- DATO CURIOSO FINAL -->
+            <section class="section">
+                <div class="highlight-box" style="background: #FFF8DC; border-color: #FFA726;">
+                    <h4>💡 Curiosidad: El Origen del Nombre "Hadoop"</h4>
+                    <p>
+                        El nombre "Hadoop" no es un acrónimo técnico. Doug Cutting, creador del proyecto, lo nombró así
+                        por el <strong>elefante de peluche amarillo de su hijo</strong>. De ahí que el logo oficial de
+                        Hadoop sea un elefante amarillo. 🐘
+                    </p>
+                    <p>
+                        Cuando su hijo tenía 2 años, inventó la palabra "Hadoop" para referirse a su juguete favorito.
+                        Años después, esa palabra casual se convirtió en una de las tecnologías más importantes del Big
+                        Data.
+                    </p>
+                </div>
+            </section>
+
+            <!-- MERMAID MINDMAP -->
+            <section class="section">
+                <h2 class="text-center">Mapa Mental: Ecosistema Hadoop</h2>
+                <div class="mermaid">
+mindmap
+  root((Hadoop))
+    HDFS
+      Arquitectura
+        NameNode Maestro
+        DataNodes Esclavos
+        Bloques 128MB
+      Características
+        Replicación 3x
+        Tolerancia fallos
+        Rack Awareness
+        Write Once Read Many
+      Casos de Uso
+        Facebook 300PB
+        Yahoo 600PB
+        Almacenamiento masivo
+    YARN
+      Componentes
+        ResourceManager
+        NodeManager
+        ApplicationMaster
+        Container
+      Ventajas
+        Multi framework
+        Escalabilidad 10K nodos
+        Eficiencia recursos
+        Aislamiento
+    MapReduce
+      Fases
+        Map transformación
+        Shuffle agrupación
+        Reduce agregación
+      Ejemplos
+        WordCount
+        LinkedIn grafo social
+        Procesamiento paralelo
+    Ecosistema
+      Procesamiento
+        Apache Spark
+        Apache Flink
+        Storm
+      Almacenamiento
+        HBase
+        Cassandra
+      Ingesta
+        Kafka
+        Flume
+        Sqoop
+      Consulta
+        Hive
+        Pig
+        Presto
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 iLERNA - Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <p>Centro oficial de FP online y presencial | <a href="https://www.ilerna.es/"
+                    target="_blank">www.ilerna.es</a></p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

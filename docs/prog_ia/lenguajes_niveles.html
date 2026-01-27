@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenguajes de Programación por Niveles | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../images/logo_ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Lenguajes de Programación por Niveles</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Lenguajes de Programación por Niveles</h1>
+            <p class="subtitle">Del Código Máquina al Alto Nivel: Evolución y Diferencias</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section>
+            <h2>¿Qué son los Niveles de Programación?</h2>
+            <p>
+                Los ordenadores solo entienden <strong>lenguaje binario</strong> (0s y 1s), pero los programadores escriben código que los humanos pueden entender. Entre estos dos extremos existen diferentes <strong>niveles de abstracción</strong> que permiten comunicarnos con las máquinas de forma cada vez más intuitiva.
+            </p>
+            <p>
+                Cuanto <strong>más bajo</strong> el nivel, más cerca estamos del hardware y más control tenemos, pero el código es más difícil de escribir. Cuanto <strong>más alto</strong> el nivel, más fácil es programar, pero perdemos control directo sobre el hardware.
+            </p>
+
+            <!-- PIRÁMIDE DE ABSTRACCIÓN -->
+            <div class="svg-container">
+                <svg width="700" height="450" viewBox="0 0 700 450">
+                    <!-- Título -->
+                    <text x="350" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Pirámide de Abstracción de Lenguajes</text>
+                    <text x="350" y="50" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">De bajo nivel (difícil, control total) a alto nivel (fácil, abstracto)</text>
+
+                    <!-- NIVEL 3: Lenguajes de Alto Nivel (arriba - más amplio) -->
+                    <path d="M 350 80 L 600 180 L 600 220 L 350 120 L 100 220 L 100 180 Z" fill="#A3E0EA" stroke="#49B9CE" stroke-width="3"/>
+                    <text x="350" y="150" font-size="18" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">LENGUAJES DE ALTO NIVEL</text>
+                    <text x="350" y="170" font-size="13" fill="#555555" text-anchor="middle" font-family="Montserrat">Python, Java, C++, JavaScript</text>
+                    <text x="350" y="190" font-size="11" fill="#777777" text-anchor="middle" font-family="Montserrat">✓ Fácil de escribir  ✓ Portable  ✓ Abstracto</text>
+
+                    <!-- NIVEL 2: Ensamblador (medio) -->
+                    <path d="M 350 120 L 550 200 L 550 260 L 350 180 L 150 260 L 150 200 Z" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="3"/>
+                    <text x="350" y="225" font-size="17" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">LENGUAJE ENSAMBLADOR</text>
+                    <text x="350" y="245" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Assembly (ASM)</text>
+                    <text x="350" y="260" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">↔ Mnemonics legibles  ↔ Específico del procesador</text>
+
+                    <!-- NIVEL 1: Lenguaje Máquina (abajo - base) -->
+                    <path d="M 350 180 L 500 280 L 500 340 L 350 240 L 200 340 L 200 280 Z" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"/>
+                    <text x="350" y="300" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">LENGUAJE MÁQUINA</text>
+                    <text x="350" y="320" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Código Binario (0s y 1s)</text>
+                    <text x="350" y="335" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">✗ Difícil de leer  ✓ Control total  ✓ Máxima velocidad</text>
+
+                    <!-- Hardware en la base -->
+                    <rect x="220" y="360" width="260" height="50" fill="#333333" stroke="#000000" stroke-width="2" rx="5"/>
+                    <text x="350" y="385" font-size="15" font-weight="bold" fill="white" text-anchor="middle" font-family="Montserrat">💻 HARDWARE (CPU, RAM, Disco)</text>
+                    <text x="350" y="402" font-size="11" fill="#CCCCCC" text-anchor="middle" font-family="Montserrat">Electrónica, transistores, circuitos</text>
+
+                    <!-- Flechas laterales -->
+                    <text x="50" y="150" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">MÁS</text>
+                    <text x="50" y="165" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">FÁCIL</text>
+                    <path d="M 50 175 L 50 250" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowdown)" fill="none"/>
+
+                    <text x="650" y="300" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">MÁS</text>
+                    <text x="650" y="315" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">CONTROL</text>
+                    <path d="M 650 325 L 650 250" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowup)" fill="none"/>
+
+                    <!-- Marcadores de flecha -->
+                    <defs>
+                        <marker id="arrowdown" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <path d="M0,0 L10,5 L0,10 L3,5 Z" fill="#49B9CE"/>
+                        </marker>
+                        <marker id="arrowup" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <path d="M10,0 L0,5 L10,10 L7,5 Z" fill="#8A7AAF"/>
+                        </marker>
+                    </defs>
+
+                    <!-- Leyenda inferior -->
+                    <text x="350" y="438" font-size="11" fill="#333333" text-anchor="middle" font-family="Montserrat" font-style="italic">A mayor altura = mayor abstracción y facilidad | A menor altura = mayor control y velocidad</text>
+                </svg>
+            </div>
+
+            <!-- CONCEPTOS CLAVE EN GRID -->
+            <h3>Conceptos Fundamentales</h3>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Abstracción</h4>
+                    <p>Ocultar detalles complejos del hardware para simplificar la programación. Más abstracción = más fácil de usar.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Compilación</h4>
+                    <p>Proceso de traducir código de alto nivel a lenguaje máquina. El compilador es el "traductor" entre ambos mundos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Portabilidad</h4>
+                    <p>Capacidad de ejecutar el mismo código en diferentes sistemas. Los lenguajes de alto nivel son más portables.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Rendimiento</h4>
+                    <p>Velocidad de ejecución del código. El lenguaje máquina es el más rápido; los de alto nivel son más lentos pero más fáciles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: LENGUAJE MÁQUINA -->
+        <section>
+            <h2>1. Lenguaje Máquina: El Código Binario</h2>
+
+            <div>
+                <h3 class="color-secondary">¿Qué es el Lenguaje Máquina?</h3>
+                <p>
+                    Es el <strong>único lenguaje</strong> que el procesador (CPU) puede entender y ejecutar directamente. Consiste en secuencias de <strong>bits</strong> (0 y 1) que representan instrucciones específicas para el hardware.
+                </p>
+                <p>
+                    Cada arquitectura de procesador (Intel x86, ARM, RISC-V) tiene su propio <strong>conjunto de instrucciones</strong> en lenguaje máquina, por lo que el código binario <strong>no es portable</strong> entre diferentes CPUs.
+                </p>
+
+                <!-- EJEMPLO DE CÓDIGO BINARIO -->
+                <div class="highlight-box secondary">
+                    <p class="title">Ejemplo: Sumar dos números (x86 de 32 bits)</p>
+                    <div class="code-container">
+                        <pre style="background: #333333; padding: 1rem; border-radius: 0.75rem; color: #00FF00; font-family: 'Courier New', monospace; font-weight: 700;">10110000 01100001</pre>
+                    </div>
+                    <p class="content">
+                        <strong>Traducción:</strong> "Mover el valor 97 (letra 'a' en ASCII) al registro AL"
+                    </p>
+                    <p class="content">
+                        Los primeros 8 bits (10110000) son el <strong>código de operación</strong> (opcode) que indica "MOVER". Los siguientes 8 bits (01100001) son el <strong>operando</strong> (el valor 97).
+                    </p>
+                </div>
+
+                <!-- CARACTERÍSTICAS -->
+                <h4 class="color-secondary">Características del Lenguaje Máquina</h4>
+                <div class="comparison-grid">
+                    <div class="advantage-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li><strong>Ejecución directa:</strong> Sin traducción</li>
+                            <li><strong>Máxima velocidad:</strong> El más rápido</li>
+                            <li><strong>Control total:</strong> Acceso directo al hardware</li>
+                        </ul>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li><strong>Ilegible:</strong> Imposible de entender</li>
+                            <li><strong>No portable:</strong> Específico de cada CPU</li>
+                            <li><strong>Propenso a errores:</strong> Difícil de depurar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: LENGUAJE ENSAMBLADOR -->
+        <section>
+            <h2>2. Lenguaje Ensamblador (Assembly): El Paso Intermedio</h2>
+
+            <div>
+                <h3 class="color-primary">¿Qué es el Lenguaje Ensamblador?</h3>
+                <p>
+                    Es una <strong>representación simbólica</strong> del lenguaje máquina que utiliza <strong>mnemonics</strong> (palabras cortas como MOV, ADD, JMP) en lugar de números binarios. Cada instrucción en ensamblador corresponde a <strong>una instrucción en lenguaje máquina</strong>.
+                </p>
+                <p>
+                    Un programa llamado <strong>ensamblador</strong> (assembler) traduce el código ASM a lenguaje máquina. Es como tener un "traductor" que convierte palabras legibles en binario.
+                </p>
+
+                <!-- EJEMPLO DE CÓDIGO ENSAMBLADOR -->
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo: Sumar dos números (Assembly x86)</p>
+                    <div class="code-container">
+                        <pre class="language-x86asm"><code>MOV AX, 5       ; Mover el valor 5 al registro AX
+MOV BX, 3       ; Mover el valor 3 al registro BX
+ADD AX, BX      ; Sumar BX a AX (resultado en AX)
+MOV resultado, AX ; Guardar el resultado en memoria</code></pre>
+                    </div>
+                    <p class="content">
+                        <strong>Resultado:</strong> AX = 8. Los comentarios (después de ';') explican cada línea. Mucho más legible que binario.
+                    </p>
+                </div>
+
+                <!-- COMPARACIÓN VISUAL -->
+                <div class="svg-container">
+                    <svg width="750" height="300" viewBox="0 0 750 300">
+                        <!-- Título -->
+                        <text x="375" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">De Binario a Ensamblador: Misma Operación, Formato Diferente</text>
+
+                        <!-- Lenguaje Máquina -->
+                        <rect x="50" y="60" width="300" height="200" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="10"/>
+                        <text x="200" y="90" font-size="15" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">LENGUAJE MÁQUINA</text>
+                        <text x="200" y="110" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">(Código Binario)</text>
+
+                        <text x="200" y="145" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">10110000 00000101</text>
+                        <text x="200" y="170" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">10110011 00000011</text>
+                        <text x="200" y="195" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">00000001 11011000</text>
+
+                        <text x="200" y="230" font-size="10" fill="#E74C3C" text-anchor="middle" font-family="Montserrat" font-weight="bold">❌ Imposible de leer</text>
+                        <text x="200" y="245" font-size="10" fill="#E74C3C" text-anchor="middle" font-family="Montserrat">para humanos</text>
+
+                        <!-- Flecha -->
+                        <path d="M 360 160 L 390 160" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowright)" fill="none"/>
+                        <text x="375" y="150" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Ensamblador</text>
+                        <text x="375" y="180" font-size="10" fill="#777777" text-anchor="middle" font-family="Montserrat">traduce a</text>
+
+                        <!-- Lenguaje Ensamblador -->
+                        <rect x="400" y="60" width="300" height="200" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
+                        <text x="550" y="90" font-size="15" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">LENGUAJE ENSAMBLADOR</text>
+                        <text x="550" y="110" font-size="11" fill="#555555" text-anchor="middle" font-family="Montserrat">(Assembly - ASM)</text>
+
+                        <text x="550" y="145" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">MOV AX, 5</text>
+                        <text x="550" y="170" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">MOV BX, 3</text>
+                        <text x="550" y="195" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">ADD AX, BX</text>
+
+                        <text x="550" y="230" font-size="10" fill="#27AE60" text-anchor="middle" font-family="Montserrat" font-weight="bold">✅ Más legible</text>
+                        <text x="550" y="245" font-size="10" fill="#27AE60" text-anchor="middle" font-family="Montserrat">con mnemonics</text>
+
+                        <defs>
+                            <marker id="arrowright" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                                <path d="M0,0 L0,10 L10,5 Z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- CARACTERÍSTICAS -->
+                <h4 class="color-primary">Características del Lenguaje Ensamblador</h4>
+                <div class="comparison-grid">
+                    <div class="advantage-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li><strong>Más legible:</strong> Usa palabras (MOV, ADD)</li>
+                            <li><strong>Control preciso:</strong> Acceso directo al hardware</li>
+                            <li><strong>Eficiente:</strong> Muy rápido al ejecutar</li>
+                        </ul>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li><strong>Difícil de aprender:</strong> Requiere conocer hardware</li>
+                            <li><strong>No portable:</strong> Cada CPU tiene su ASM</li>
+                            <li><strong>Largo y tedioso:</strong> Muchas líneas para poco</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAJA EJEMPLO DE USO REAL -->
+            <div class="highlight-box primary">
+                <p class="title">🛠️ Uso Real:</p>
+                <p class="content">
+                    Ensamblador se usa en <strong>drivers de dispositivos</strong>, <strong>sistemas embebidos</strong> (Arduino), <strong>videojuegos retro</strong>, y partes críticas de <strong>sistemas operativos</strong> donde se necesita máxima velocidad.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: LENGUAJES DE ALTO NIVEL -->
+        <section>
+            <h2>3. Lenguajes de Alto Nivel: Abstracción Total</h2>
+
+            <div>
+                <h3 class="color-secondary">¿Qué son los Lenguajes de Alto Nivel?</h3>
+                <p>
+                    Son lenguajes diseñados para que los <strong>humanos</strong> puedan programar fácilmente, con sintaxis cercana al <strong>lenguaje natural</strong> (inglés). Están muy alejados del hardware y requieren <strong>compilación o interpretación</strong> para convertirse en lenguaje máquina.
+                </p>
+                <p>
+                    Ejemplos: <strong>Python, Java, C++, JavaScript, C#, Ruby, Go</strong>. Son <strong>portables</strong>: el mismo código funciona en Windows, Linux y Mac (con algunas adaptaciones).
+                </p>
+
+                <!-- EJEMPLO DE CÓDIGO ALTO NIVEL -->
+                <div class="highlight-box secondary">
+                    <p class="title">Ejemplo: Sumar dos números (Python)</p>
+                    <div class="code-container">
+                        <pre class="language-python"><code>a = 5
+b = 3
+resultado = a + b
+print(resultado)  # Salida: 8</code></pre>
+                    </div>
+                    <p class="content">
+                        <strong>¡Solo 4 líneas!</strong> Comparado con decenas de líneas en ensamblador o cientos de bits en binario. Extremadamente legible y fácil de entender.
+                    </p>
+                </div>
+
+                <!-- COMPARACIÓN MÚLTIPLES LENGUAJES -->
+                <h4 class="color-secondary">Ejemplos en Diferentes Lenguajes de Alto Nivel</h4>
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🐍 Python</h4>
+                        <div class="code-container">
+                            <pre class="language-python"><code>print("Hola Mundo")</code></pre>
+                        </div>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">☕ Java</h4>
+                        <div class="code-container">
+                            <pre class="language-java"><code>System.out.println("Hola Mundo");</code></pre>
+                        </div>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🌐 JavaScript</h4>
+                        <div class="code-container">
+                            <pre class="language-javascript"><code>console.log("Hola Mundo");</code></pre>
+                        </div>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">⚡ C++</h4>
+                        <div class="code-container">
+                            <pre class="language-cpp"><code>cout << "Hola Mundo";</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARACTERÍSTICAS -->
+                <h4 class="color-secondary">Características de los Lenguajes de Alto Nivel</h4>
+                <div class="comparison-grid">
+                    <div class="advantage-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li><strong>Fácil de aprender:</strong> Sintaxis legible</li>
+                            <li><strong>Portable:</strong> Funciona en múltiples sistemas</li>
+                            <li><strong>Productivo:</strong> Menos código, más funcionalidad</li>
+                            <li><strong>Mantenible:</strong> Fácil de depurar y actualizar</li>
+                        </ul>
+                    </div>
+                    <div class="disadvantage-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li><strong>Más lento:</strong> Necesita compilación/interpretación</li>
+                            <li><strong>Menos control:</strong> No acceso directo al hardware</li>
+                            <li><strong>Overhead:</strong> Consume más memoria</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJEMPLOS DE USO REAL -->
+            <div class="highlight-box secondary">
+                <p class="title">🌍 Uso en el Mundo Real:</p>
+                <ul>
+                    <li><strong>Python:</strong> IA, Data Science, automatización (Google, Netflix)</li>
+                    <li><strong>Java:</strong> Apps empresariales, Android (Amazon, LinkedIn)</li>
+                    <li><strong>JavaScript:</strong> Páginas web interactivas (Facebook, Twitter)</li>
+                    <li><strong>C++:</strong> Videojuegos AAA, software de rendimiento (Unreal Engine)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: COMPARACIÓN DIRECTA -->
+        <section>
+            <h2>Comparación de los Tres Niveles</h2>
+
+            <!-- TABLA COMPARATIVA -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Lenguaje Máquina</th>
+                            <th>Ensamblador</th>
+                            <th>Alto Nivel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Formato</td>
+                            <td style="font-family: 'Courier New', monospace;">0s y 1s (binario)</td>
+                            <td style="font-family: 'Courier New', monospace;">MOV, ADD, JMP</td>
+                            <td style="font-family: 'Courier New', monospace;">print(), if, while</td>
+                        </tr>
+                        <tr>
+                            <td>Legibilidad</td>
+                            <td class="error-cell"><strong>❌ Imposible</strong></td>
+                            <td class="warning-cell"><strong>⚠️ Difícil</strong></td>
+                            <td class="success-cell"><strong>✅ Fácil</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Velocidad</td>
+                            <td class="success-cell"><strong>✅ Máxima</strong></td>
+                            <td class="success-cell"><strong>✅ Muy rápida</strong></td>
+                            <td class="warning-cell"><strong>⚠️ Más lenta</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Portabilidad</td>
+                            <td class="error-cell"><strong>❌ Nula</strong></td>
+                            <td class="error-cell"><strong>❌ Baja</strong></td>
+                            <td class="success-cell"><strong>✅ Alta</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Control Hardware</td>
+                            <td class="success-cell"><strong>✅ Total</strong></td>
+                            <td class="success-cell"><strong>✅ Alto</strong></td>
+                            <td class="error-cell"><strong>❌ Limitado</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Traducción</td>
+                            <td>Ninguna (directo)</td>
+                            <td>Ensamblador</td>
+                            <td>Compilador/Intérprete</td>
+                        </tr>
+                        <tr>
+                            <td>Facilidad Desarrollo</td>
+                            <td class="error-cell"><strong>❌ Muy difícil</strong></td>
+                            <td class="warning-cell"><strong>⚠️ Difícil</strong></td>
+                            <td class="success-cell"><strong>✅ Fácil</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Ejemplo de Uso</td>
+                            <td>Firmware de CPU</td>
+                            <td>Drivers, embebidos</td>
+                            <td>Apps, web, IA</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: EJEMPLO "HOLA MUNDO" EN LOS 3 NIVELES -->
+        <section>
+            <h2 class="text-center">Caso Práctico: "Hola Mundo" en los 3 Niveles</h2>
+            <p style="text-align: center;">
+                Veamos cómo se escribe el programa más famoso del mundo (<strong>"Hola Mundo"</strong>) en cada nivel de lenguaje.
+            </p>
+
+            <!-- NIVEL 1: LENGUAJE MÁQUINA -->
+            <div class="card secondary-bg">
+                <h3 class="color-secondary">🔢 Nivel 1: Lenguaje Máquina (Código Hexadecimal)</h3>
+                <div class="code-container">
+                    <pre class="language-x86asm"><code>B8 21 0A 00 00     ; Mover syscall number (sys_write)
+A3 0C 10 00 00     ; Dirección del mensaje
+BB 0E 00 00 00     ; Longitud del mensaje
+B9 01 00 00 00     ; File descriptor (1 = stdout)
+CD 80              ; Interrupción del kernel
+48 65 6C 6C 6F     ; "Hello" en ASCII
+20 57 6F 72 6C 64  ; " World" en ASCII</code></pre>
+                </div>
+                <p>
+                    <strong>Resultado:</strong> Código extremadamente difícil de entender. Cada byte tiene un significado específico. <span style="color: #E74C3C; font-weight: 700;">Prácticamente imposible para humanos.</span>
+                </p>
+            </div>
+
+            <!-- NIVEL 2: ENSAMBLADOR -->
+            <div class="card primary-bg">
+                <h3 class="color-primary">⚙️ Nivel 2: Lenguaje Ensamblador (x86 Linux)</h3>
+                <div class="code-container">
+                    <pre class="language-x86asm"><code>section .data
+    msg db 'Hola Mundo', 0xA    ; Mensaje con salto de línea
+    len equ $ - msg              ; Calcular longitud
+
+section .text
+    global _start
+
+_start:
+    mov eax, 4          ; syscall: sys_write
+    mov ebx, 1          ; file descriptor: stdout
+    mov ecx, msg        ; puntero al mensaje
+    mov edx, len        ; longitud del mensaje
+    int 0x80            ; llamar al kernel
+
+    mov eax, 1          ; syscall: sys_exit
+    xor ebx, ebx        ; código de salida 0
+    int 0x80            ; terminar programa</code></pre>
+                </div>
+                <p>
+                    <strong>Resultado:</strong> Más legible con mnemonics (MOV, INT), pero aún muy técnico. <span style="color: #F39C12; font-weight: 700;">Requiere conocer la arquitectura del procesador.</span>
+                </p>
+            </div>
+
+            <!-- NIVEL 3: ALTO NIVEL -->
+            <div style="background: #E8F5E9; padding: 1.5rem; border-radius: 1rem; border: 2px solid #27AE60; margin-bottom: 1.5rem;">
+                <h3 style="color: #27AE60;">🚀 Nivel 3: Lenguaje de Alto Nivel (Python)</h3>
+                <div class="code-container">
+                    <pre class="language-python"><code>print("Hola Mundo")</code></pre>
+                </div>
+                <p>
+                    <strong>Resultado:</strong> <span style="color: #27AE60; font-weight: 700;">¡Solo 1 línea!</span> Extremadamente legible y fácil de entender. Cualquiera puede leerlo y saber qué hace.
+                </p>
+            </div>
+
+            <!-- CONCLUSIÓN DEL EJEMPLO -->
+            <div class="challenge-box">
+                <h3>📊 Comparación de Líneas de Código</h3>
+                <p>
+                    <strong class="color-secondary">Lenguaje Máquina:</strong> ~50+ bytes de código hexadecimal<br>
+                    <strong class="color-primary">Ensamblador:</strong> ~15 líneas de código ASM<br>
+                    <strong style="color: #27AE60;">Python:</strong> 1 línea simple y clara
+                </p>
+                <p style="font-style: italic; color: #777777;">
+                    La abstracción reduce drásticamente la complejidad, permitiendo que más personas puedan programar.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: DATO CURIOSO -->
+        <section>
+            <div class="curiosity-box">
+                <h4>💡 Datos Curiosos Históricos</h4>
+
+                <p>
+                    <strong style="color: #E65100;">Los primeros programadores (años 1940s)</strong> escribían código <strong>directamente en lenguaje máquina</strong> usando tarjetas perforadas. Un programa simple podía requerir <strong>miles de tarjetas</strong> y llevar semanas de trabajo.
+                </p>
+                <p>
+                    <strong style="color: #E65100;">Grace Hopper</strong>, pionera de la programación, desarrolló el primer <strong>compilador</strong> en 1952 (A-0 System), que revolucionó la industria al permitir escribir programas en un lenguaje más cercano al inglés.
+                </p>
+                <p>
+                    El <strong>primer videojuego comercial</strong> (Pong, 1972) fue programado <strong>completamente en ensamblador</strong>. Los programadores modernos tardarían semanas en hacer lo mismo que antes llevaba meses.
+                </p>
+
+                <div class="inner-box">
+                    <h5 style="color: #E65100; font-weight: 700; margin-bottom: 0.5rem;">🎮 Dato de la Industria del Videojuego</h5>
+                    <p>
+                        Los videojuegos para <strong>Nintendo 64</strong> (1996) se programaban mayormente en <strong>C y ensamblador</strong>. Juegos como <strong>Super Mario 64</strong> contenían miles de líneas de código ASM para optimizar gráficos y física. Hoy, con <strong>Python y Unity</strong>, un desarrollador indie puede crear un juego completo sin tocar una sola línea de ensamblador.
+                    </p>
+                </div>
+
+                <div style="background: #E8D8F0; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem; border: 2px solid #8A7AAF;">
+                    <p style="text-align: center; font-weight: 600;">
+                        🌍 <strong>Actualidad:</strong> El 99% de los programadores modernos usan lenguajes de <strong>alto nivel</strong> (Python, JavaScript, Java). Solo nichos especializados (drivers, firmware, embebidos) requieren ensamblador o lenguaje máquina.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="../js/prism.js"></script>
+    <script src="../js/prism-python.min.js"></script>
+    <script src="../js/prism-java.min.js"></script>
+    <script src="../js/prism-javascript.min.js"></script>
+    <script src="../js/prism-cpp.min.js"></script>
+    <script src="../js/prism-clike.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

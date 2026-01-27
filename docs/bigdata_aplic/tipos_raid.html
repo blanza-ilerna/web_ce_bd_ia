@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de RAID | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Tipos de RAID</span>
+                </div>
+            </div>
+            <h1 class="text-center">Tipos de RAID</h1>
+            <p class="subtitle text-center">Arquitecturas de Almacenamiento Redundante para Alta Disponibilidad y Rendimiento</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2>¿Qué es RAID?</h2>
+                <p>
+                    <strong>RAID</strong> (Redundant Array of Independent Disks) es una tecnología que combina múltiples discos duros físicos en una única unidad lógica para mejorar el <strong>rendimiento</strong>, la <strong>redundancia de datos</strong>, o ambos. Originalmente significaba "Redundant Array of Inexpensive Disks" cuando fue propuesto por Patterson, Gibson y Katz en 1988.
+                </p>
+                <p>
+                    En entornos de <strong>Big Data</strong> y sistemas empresariales críticos, RAID es fundamental para garantizar la continuidad del negocio, proteger contra fallos de disco y optimizar las operaciones de lectura/escritura en bases de datos masivas.
+                </p>
+
+                <div class="highlight-box">
+                    <p><strong>Ejemplo Real:</strong></p>
+                    <p>Google utiliza configuraciones RAID 6 en sus data centers para almacenar millones de terabytes de datos con doble paridad, garantizando que incluso si fallan dos discos simultáneamente, los datos permanecen accesibles sin interrupciones en el servicio de búsqueda.</p>
+                </div>
+
+                <h3>Conceptos Fundamentales</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>Striping (Distribución)</h4>
+                        <p>Dividir datos en bloques y distribuirlos entre múltiples discos para mejorar el rendimiento de lectura/escritura paralela.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Mirroring (Espejo)</h4>
+                        <p>Duplicar datos idénticos en dos o más discos para proporcionar redundancia completa ante fallos de hardware.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Paridad</h4>
+                        <p>Información de corrección de errores calculada mediante operaciones XOR que permite reconstruir datos tras el fallo de un disco.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Hot Spare</h4>
+                        <p>Disco de reserva que entra automáticamente en operación cuando falla un disco activo, iniciando la reconstrucción.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: RAID 0 - STRIPING -->
+            <section class="section">
+                <h2>RAID 0 - Striping (Distribución)</h2>
+
+                <h3>📊 Arquitectura</h3>
+                <p>
+                    RAID 0 distribuye los datos en bloques (<strong>stripes</strong>) entre dos o más discos sin redundancia. Cada bloque se escribe en un disco diferente secuencialmente, permitiendo operaciones de lectura/escritura paralelas.
+                </p>
+
+                <div class="svg-container">
+                    <svg width="700" height="280" viewBox="0 0 700 280" style="max-width: 100%; height: auto;">
+                        <text x="350" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">RAID 0: Striping (2 discos mínimo)</text>
+
+                        <!-- Archivo original -->
+                        <rect x="50" y="60" width="180" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="140" y="85" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Arial">Archivo (8 bloques)</text>
+                        <text x="140" y="105" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">A1 A2 A3 A4 A5 A6 A7 A8</text>
+
+                        <!-- Flecha -->
+                        <path d="M 140 130 L 140 160" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" fill="none"/>
+
+                        <!-- Disco 1 -->
+                        <rect x="80" y="170" width="120" height="90" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="140" y="190" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 1</text>
+                        <rect x="90" y="200" width="100" height="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1" rx="3"/>
+                        <text x="140" y="213" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A1</text>
+                        <rect x="90" y="225" width="100" height="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1" rx="3"/>
+                        <text x="140" y="238" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A3</text>
+
+                        <!-- Disco 2 -->
+                        <rect x="230" y="170" width="120" height="90" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="290" y="190" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 2</text>
+                        <rect x="240" y="200" width="100" height="20" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="1" rx="3"/>
+                        <text x="290" y="213" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A2</text>
+                        <rect x="240" y="225" width="100" height="20" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="1" rx="3"/>
+                        <text x="290" y="238" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A4</text>
+
+                        <!-- Disco 3 -->
+                        <rect x="380" y="170" width="120" height="90" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="440" y="190" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 3</text>
+                        <rect x="390" y="200" width="100" height="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1" rx="3"/>
+                        <text x="440" y="213" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A5</text>
+                        <rect x="390" y="225" width="100" height="20" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1" rx="3"/>
+                        <text x="440" y="238" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A7</text>
+
+                        <!-- Disco 4 -->
+                        <rect x="530" y="170" width="120" height="90" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="590" y="190" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 4</text>
+                        <rect x="540" y="200" width="100" height="20" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="1" rx="3"/>
+                        <text x="590" y="213" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A6</text>
+                        <rect x="540" y="225" width="100" height="20" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="1" rx="3"/>
+                        <text x="590" y="238" font-size="10" fill="#333333" text-anchor="middle" font-family="Courier New">A8</text>
+
+                        <!-- Marcador de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="two-columns">
+                    <div class="advantages-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li>Máximo rendimiento (N veces más rápido)</li>
+                            <li>100% de capacidad utilizable</li>
+                            <li>Simple y económico</li>
+                            <li>Ideal para edición de video 4K/8K</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantages-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li><strong>CERO redundancia</strong></li>
+                            <li>Fallo de 1 disco = pérdida total</li>
+                            <li>Mayor probabilidad de fallo</li>
+                            <li>No recomendado para datos críticos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <p><strong>Capacidad Total = N × Capacidad de Disco</strong></p>
+                    <p><strong>Rendimiento Lectura/Escritura = N × Rendimiento Individual</strong></p>
+                    <p class="formula-example"><strong>Ejemplo:</strong> 4 discos de 1TB = 4TB totales | 4 × 150MB/s = 600MB/s</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: RAID 1 - MIRRORING -->
+            <section class="section">
+                <h2>RAID 1 - Mirroring (Espejo)</h2>
+
+                <h3>🪞 Arquitectura</h3>
+                <p>
+                    RAID 1 crea una <strong>copia exacta</strong> (espejo) de todos los datos en dos o más discos. Cada escritura se replica simultáneamente en todos los discos del array, proporcionando redundancia completa.
+                </p>
+
+                <div class="svg-container">
+                    <svg width="550" height="300" viewBox="0 0 550 300" style="max-width: 100%; height: auto;">
+                        <text x="275" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">RAID 1: Mirroring (2 discos mínimo)</text>
+
+                        <!-- Archivo original -->
+                        <rect x="185" y="60" width="180" height="60" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="275" y="85" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Arial">Archivo Completo</text>
+                        <text x="275" y="105" font-size="11" fill="#555555" text-anchor="middle" font-family="Arial">Datos: A B C D E F G H</text>
+
+                        <!-- Flechas -->
+                        <path d="M 235 130 L 150 160" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)" fill="none"/>
+                        <path d="M 315 130 L 400 160" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)" fill="none"/>
+
+                        <!-- Disco 1 (Espejo 1) -->
+                        <rect x="50" y="170" width="180" height="110" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="140" y="195" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 1 (Espejo)</text>
+                        <rect x="70" y="205" width="140" height="65" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="140" y="228" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">COPIA COMPLETA</text>
+                        <text x="140" y="245" font-size="10" fill="#555555" text-anchor="middle" font-family="Courier New">A B C D</text>
+                        <text x="140" y="260" font-size="10" fill="#555555" text-anchor="middle" font-family="Courier New">E F G H</text>
+
+                        <!-- Disco 2 (Espejo 2) -->
+                        <rect x="320" y="170" width="180" height="110" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="410" y="195" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 2 (Espejo)</text>
+                        <rect x="340" y="205" width="140" height="65" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="410" y="228" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">COPIA COMPLETA</text>
+                        <text x="410" y="245" font-size="10" fill="#555555" text-anchor="middle" font-family="Courier New">A B C D</text>
+                        <text x="410" y="260" font-size="10" fill="#555555" text-anchor="middle" font-family="Courier New">E F G H</text>
+
+                        <!-- Marcador de flecha morado -->
+                        <defs>
+                            <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="two-columns">
+                    <div class="advantages-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li>Redundancia completa (100%)</li>
+                            <li>Tolerancia a fallo de N-1 discos</li>
+                            <li>Lectura más rápida (paralela)</li>
+                            <li>Recuperación inmediata ante fallo</li>
+                            <li>Ideal para sistemas críticos</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantages-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li>Solo 50% capacidad utilizable</li>
+                            <li>Escritura más lenta (duplicada)</li>
+                            <li>Costoso (requiere doble capacidad)</li>
+                            <li>No mejora rendimiento escritura</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <p><strong>Capacidad Total = Capacidad de 1 Disco</strong></p>
+                    <p><strong>Tolerancia a Fallos = N - 1 discos</strong></p>
+                    <p class="formula-example"><strong>Ejemplo:</strong> 2 discos de 2TB = 2TB utilizables | Lectura: 2× velocidad</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: RAID 5 - PARIDAD DISTRIBUIDA -->
+            <section class="section">
+                <h2>RAID 5 - Paridad Distribuida</h2>
+
+                <h3>⚖️ Arquitectura</h3>
+                <p>
+                    RAID 5 combina <strong>striping</strong> con <strong>paridad distribuida</strong>. Los datos se distribuyen en bloques y la información de paridad (calculada mediante XOR) se distribuye entre todos los discos, permitiendo reconstruir datos si falla un disco.
+                </p>
+
+                <div class="svg-container">
+                    <svg width="750" height="320" viewBox="0 0 750 320" style="max-width: 100%; height: auto;">
+                        <text x="375" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">RAID 5: Paridad Distribuida (3 discos mínimo)</text>
+
+                        <!-- Etiquetas de fila -->
+                        <text x="20" y="90" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 1:</text>
+                        <text x="20" y="150" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 2:</text>
+                        <text x="20" y="210" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 3:</text>
+                        <text x="20" y="270" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 4:</text>
+
+                        <!-- DISCO 1 -->
+                        <text x="145" y="65" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 1</text>
+                        <rect x="85" y="75" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="145" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A1</text>
+                        <rect x="85" y="135" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="145" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A4</text>
+                        <rect x="85" y="195" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="145" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P3</text>
+                        <rect x="85" y="255" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="145" y="280" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A9</text>
+
+                        <!-- DISCO 2 -->
+                        <text x="275" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 2</text>
+                        <rect x="215" y="75" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="275" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A2</text>
+                        <rect x="215" y="135" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="275" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P2</text>
+                        <rect x="215" y="195" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="275" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A7</text>
+                        <rect x="215" y="255" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="275" y="280" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A10</text>
+
+                        <!-- DISCO 3 -->
+                        <text x="405" y="65" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 3</text>
+                        <rect x="345" y="75" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="405" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P1</text>
+                        <rect x="345" y="135" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="405" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A5</text>
+                        <rect x="345" y="195" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="405" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A8</text>
+                        <rect x="345" y="255" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="405" y="280" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P4</text>
+
+                        <!-- DISCO 4 -->
+                        <text x="535" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 4</text>
+                        <rect x="475" y="75" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="535" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A3</text>
+                        <rect x="475" y="135" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="535" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A6</text>
+                        <rect x="475" y="195" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="535" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A9</text>
+                        <rect x="475" y="255" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="535" y="280" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A11</text>
+
+                        <!-- Leyenda -->
+                        <rect x="605" y="80" width="15" height="15" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1"/>
+                        <text x="625" y="92" font-size="11" fill="#555555" font-family="Arial">Datos</text>
+                        <rect x="605" y="105" width="15" height="15" fill="#FFE082" stroke="#FFA726" stroke-width="1"/>
+                        <text x="625" y="117" font-size="11" fill="#555555" font-family="Arial">Paridad</text>
+                    </svg>
+                </div>
+
+                <div class="two-columns">
+                    <div class="advantages-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li>Buen equilibrio rendimiento/redundancia</li>
+                            <li>Tolerancia a fallo de 1 disco</li>
+                            <li>Capacidad = (N-1) × disco</li>
+                            <li>Buena lectura (paralela)</li>
+                            <li>Muy usado en servidores empresariales</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantages-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li>Escritura más lenta (cálculo paridad)</li>
+                            <li>Reconstrucción muy lenta (horas/días)</li>
+                            <li>Vulnerable durante rebuild</li>
+                            <li>Requiere mínimo 3 discos</li>
+                            <li>No tolera 2 fallos simultáneos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <p><strong>Capacidad Total = (N - 1) × Capacidad de Disco</strong></p>
+                    <p><strong>Tolerancia a Fallos = 1 disco</strong></p>
+                    <p class="formula-example"><strong>Ejemplo:</strong> 5 discos de 1TB = 4TB utilizables (80% eficiencia)</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 ¿Cómo funciona la Paridad XOR?</h4>
+                    <p>
+                        La <strong>operación XOR</strong> (OR Exclusivo) permite calcular información de recuperación. Si tenemos datos A1, A2, A3 en tres discos:
+                    </p>
+                    <pre><code>Paridad = A1 XOR A2 XOR A3
+Si falla disco con A2: A2 = A1 XOR A3 XOR Paridad</code></pre>
+                    <p>
+                        Esta operación matemática permite reconstruir cualquier bloque perdido usando los demás bloques y la paridad.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: RAID 6 - DOBLE PARIDAD -->
+            <section class="section">
+                <h2>RAID 6 - Doble Paridad</h2>
+
+                <h3>🛡️ Arquitectura</h3>
+                <p>
+                    RAID 6 extiende RAID 5 con <strong>doble paridad distribuida</strong> (P y Q), utilizando dos algoritmos diferentes. Puede tolerar el <strong>fallo simultáneo de 2 discos</strong> sin pérdida de datos, crucial para arrays grandes donde el riesgo de fallo múltiple es mayor.
+                </p>
+
+                <div class="svg-container">
+                    <svg width="800" height="280" viewBox="0 0 800 280" style="max-width: 100%; height: auto;">
+                        <text x="400" y="30" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">RAID 6: Doble Paridad (4 discos mínimo)</text>
+
+                        <!-- Etiquetas de fila -->
+                        <text x="20" y="90" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 1:</text>
+                        <text x="20" y="150" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 2:</text>
+                        <text x="20" y="210" font-size="12" font-weight="bold" fill="#555555" font-family="Arial">Stripe 3:</text>
+
+                        <!-- DISCO 1 -->
+                        <text x="130" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 1</text>
+                        <rect x="70" y="75" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="130" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A1</text>
+                        <rect x="70" y="135" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="130" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A5</text>
+                        <rect x="70" y="195" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="130" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P3</text>
+
+                        <!-- DISCO 2 -->
+                        <text x="250" y="65" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 2</text>
+                        <rect x="190" y="75" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="250" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A2</text>
+                        <rect x="190" y="135" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="250" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P2</text>
+                        <rect x="190" y="195" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="250" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A8</text>
+
+                        <!-- DISCO 3 -->
+                        <text x="370" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 3</text>
+                        <rect x="310" y="75" width="120" height="40" fill="#FFE082" stroke="#FFA726" stroke-width="2" rx="5"/>
+                        <text x="370" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad P1</text>
+                        <rect x="310" y="135" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="370" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A6</text>
+                        <rect x="310" y="195" width="120" height="40" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="370" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A9</text>
+
+                        <!-- DISCO 4 -->
+                        <text x="490" y="65" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 4</text>
+                        <rect x="430" y="75" width="120" height="40" fill="#FFB74D" stroke="#FF6F00" stroke-width="2" rx="5"/>
+                        <text x="490" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad Q1</text>
+                        <rect x="430" y="135" width="120" height="40" fill="#FFB74D" stroke="#FF6F00" stroke-width="2" rx="5"/>
+                        <text x="490" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad Q2</text>
+                        <rect x="430" y="195" width="120" height="40" fill="#FFB74D" stroke="#FF6F00" stroke-width="2" rx="5"/>
+                        <text x="490" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Paridad Q3</text>
+
+                        <!-- DISCO 5 -->
+                        <text x="610" y="65" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 5</text>
+                        <rect x="550" y="75" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="610" y="100" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A3</text>
+                        <rect x="550" y="135" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="610" y="160" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A7</text>
+                        <rect x="550" y="195" width="120" height="40" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="610" y="220" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">Datos A10</text>
+
+                        <!-- Leyenda -->
+                        <rect x="690" y="80" width="15" height="15" fill="#A3E0EA" stroke="#49B9CE" stroke-width="1"/>
+                        <text x="710" y="92" font-size="11" fill="#555555" font-family="Arial">Datos</text>
+                        <rect x="690" y="105" width="15" height="15" fill="#FFE082" stroke="#FFA726" stroke-width="1"/>
+                        <text x="710" y="117" font-size="11" fill="#555555" font-family="Arial">Paridad P</text>
+                        <rect x="690" y="130" width="15" height="15" fill="#FFB74D" stroke="#FF6F00" stroke-width="1"/>
+                        <text x="710" y="142" font-size="11" fill="#555555" font-family="Arial">Paridad Q</text>
+                    </svg>
+                </div>
+
+                <div class="two-columns">
+                    <div class="advantages-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li><strong>Tolerancia a 2 fallos simultáneos</strong></li>
+                            <li>Mayor seguridad en arrays grandes</li>
+                            <li>Ideal para datos críticos</li>
+                            <li>Capacidad = (N-2) × disco</li>
+                            <li>Usado en data centers empresariales</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantages-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li>Escritura muy lenta (doble paridad)</li>
+                            <li>Requiere mínimo 4 discos</li>
+                            <li>Mayor overhead de cálculo</li>
+                            <li>Reconstrucción extremadamente lenta</li>
+                            <li>Pierde 2 discos de capacidad</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <p><strong>Capacidad Total = (N - 2) × Capacidad de Disco</strong></p>
+                    <p><strong>Tolerancia a Fallos = 2 discos</strong></p>
+                    <p class="formula-example"><strong>Ejemplo:</strong> 6 discos de 2TB = 8TB utilizables (66.6% eficiencia)</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: RAID 10 (1+0) - ANIDADO -->
+            <section class="section">
+                <h2>RAID 10 (1+0) - Mirror + Stripe</h2>
+
+                <h3>🔗 Arquitectura Anidada</h3>
+                <p>
+                    RAID 10 combina <strong>RAID 1 (mirroring)</strong> y <strong>RAID 0 (striping)</strong>. Primero crea espejos (RAID 1) y luego hace striping entre los grupos espejo (RAID 0). Ofrece <strong>alto rendimiento + alta redundancia</strong>.
+                </p>
+
+                <div class="svg-container">
+                    <svg width="700" height="380" viewBox="0 0 700 380" style="max-width: 100%; height: auto;">
+                        <text x="350" y="30" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">RAID 10: Stripe de Mirrors (4 discos mínimo)</text>
+
+                        <!-- Archivo original -->
+                        <rect x="260" y="60" width="180" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="350" y="90" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Arial">Archivo: A1 A2 A3 A4</text>
+
+                        <!-- Flecha central -->
+                        <path d="M 350 120 L 350 150" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue2)" fill="none"/>
+                        <text x="375" y="140" font-size="12" font-weight="bold" fill="#49B9CE" font-family="Arial">STRIPING</text>
+
+                        <!-- Grupo Mirror 1 -->
+                        <rect x="40" y="165" width="270" height="185" fill="#E8F7FA" fill-opacity="0.3" stroke="#49B9CE" stroke-width="2" stroke-dasharray="5,5" rx="10"/>
+                        <text x="175" y="185" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">MIRROR 1 (RAID 1)</text>
+
+                        <text x="100" y="210" font-size="12" fill="#555555" text-anchor="middle" font-family="Arial">Bloques A1, A3</text>
+
+                        <!-- Disco 1 -->
+                        <rect x="50" y="220" width="110" height="115" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="105" y="240" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 1</text>
+                        <rect x="60" y="250" width="90" height="30" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="105" y="270" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A1</text>
+                        <rect x="60" y="290" width="90" height="30" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="105" y="310" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A3</text>
+
+                        <!-- Disco 2 (espejo) -->
+                        <rect x="180" y="220" width="110" height="115" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="235" y="240" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">DISCO 2</text>
+                        <rect x="190" y="250" width="90" height="30" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="235" y="270" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A1</text>
+                        <rect x="190" y="290" width="90" height="30" fill="#A3E0EA" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                        <text x="235" y="310" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A3</text>
+
+                        <!-- Grupo Mirror 2 -->
+                        <rect x="390" y="165" width="270" height="185" fill="#F0EDF5" fill-opacity="0.3" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="5,5" rx="10"/>
+                        <text x="525" y="185" font-size="13" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">MIRROR 2 (RAID 1)</text>
+
+                        <text x="450" y="210" font-size="12" fill="#555555" text-anchor="middle" font-family="Arial">Bloques A2, A4</text>
+
+                        <!-- Disco 3 -->
+                        <rect x="400" y="220" width="110" height="115" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="455" y="240" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 3</text>
+                        <rect x="410" y="250" width="90" height="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="455" y="270" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A2</text>
+                        <rect x="410" y="290" width="90" height="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="455" y="310" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A4</text>
+
+                        <!-- Disco 4 (espejo) -->
+                        <rect x="530" y="220" width="110" height="115" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="585" y="240" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">DISCO 4</text>
+                        <rect x="540" y="250" width="90" height="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="585" y="270" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A2</text>
+                        <rect x="540" y="290" width="90" height="30" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                        <text x="585" y="310" font-size="12" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Courier New">A4</text>
+
+                        <defs>
+                            <marker id="arrowblue2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="two-columns">
+                    <div class="advantages-box">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li><strong>Excelente rendimiento</strong> (striping)</li>
+                            <li><strong>Alta redundancia</strong> (mirroring)</li>
+                            <li>Tolerancia múltiples fallos (1 por grupo)</li>
+                            <li>Reconstrucción rápida</li>
+                            <li>Ideal para bases de datos transaccionales</li>
+                            <li>Usado en servidores de alta demanda</li>
+                        </ul>
+                    </div>
+
+                    <div class="disadvantages-box">
+                        <h4>❌ Desventajas</h4>
+                        <ul>
+                            <li>Solo 50% capacidad utilizable</li>
+                            <li>Alto costo (doble de discos)</li>
+                            <li>Requiere mínimo 4 discos</li>
+                            <li>Pérdida total si fallan 2 del mismo espejo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <p><strong>Capacidad Total = N / 2 × Capacidad de Disco</strong></p>
+                    <p><strong>Rendimiento = (N/2) × Velocidad Individual</strong></p>
+                    <p class="formula-example"><strong>Ejemplo:</strong> 8 discos de 1TB = 4TB utilizables | Velocidad: 4× más rápido</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: OTROS RAIDS -->
+            <section class="section">
+                <h2>Otros Niveles de RAID</h2>
+
+                <h3>📚 RAID Históricos (2, 3, 4)</h3>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>RAID 2</h4>
+                        <p><strong>Striping con código Hamming</strong></p>
+                        <p>Usa códigos de corrección de errores ECC. <strong>Obsoleto</strong> - reemplazado por controladores con ECC integrado. Nunca usado comercialmente.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>RAID 3</h4>
+                        <p><strong>Striping a nivel de byte + paridad dedicada</strong></p>
+                        <p>Distribuye datos byte a byte con 1 disco de paridad dedicado. <strong>Raramente usado</strong> - mala escritura aleatoria. Bueno para video/audio en streaming.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>RAID 4</h4>
+                        <p><strong>Striping a nivel de bloque + paridad dedicada</strong></p>
+                        <p>Similar a RAID 5 pero paridad en 1 solo disco = <strong>cuello de botella</strong>. Superado por RAID 5. NetApp usa variante.</p>
+                    </div>
+                </div>
+
+                <h3>🔀 RAID Anidados Avanzados</h3>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>RAID 01 (0+1)</h4>
+                        <p><strong>Stripe + Mirror</strong></p>
+                        <p>Crea stripes primero, luego los espeja. <strong>Menos tolerante a fallos</strong> que RAID 10. Pérdida de array completo si falla 1 disco de cada stripe.</p>
+                        <p class="warning-text">⚠️ <strong>Menos recomendado</strong> que RAID 10</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>RAID 50 (5+0)</h4>
+                        <p><strong>Stripe de RAID 5</strong></p>
+                        <p>Múltiples arrays RAID 5 en stripe. <strong>Mayor rendimiento</strong> que RAID 5, mejor tolerancia a fallos. Mínimo 6 discos (2 grupos RAID 5 de 3).</p>
+                        <p class="success-text">✅ Bueno para servidores con alta I/O</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>RAID 60 (6+0)</h4>
+                        <p><strong>Stripe de RAID 6</strong></p>
+                        <p>Múltiples arrays RAID 6 en stripe. <strong>Máxima protección + buen rendimiento</strong>. Tolera 2 fallos por grupo. Mínimo 8 discos (2 grupos RAID 6 de 4).</p>
+                        <p class="success-text">✅ Ideal para datos ultra-críticos</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>RAID 100 (10+0)</h4>
+                        <p><strong>Stripe de RAID 10</strong></p>
+                        <p>RAID 0 sobre múltiples RAID 10. <strong>Rendimiento extremo + alta redundancia</strong>. Costoso. Mínimo 8 discos. Usado en sistemas de ultra-alta disponibilidad.</p>
+                        <p class="info-text">💰 Muy costoso, uso especializado</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 ¿Por qué algunos RAID están obsoletos?</h4>
+                    <p>
+                        RAID 2, 3 y 4 fueron diseñados en los años 80-90 cuando los discos duros eran muy diferentes. Los controladores modernos integran muchas de sus funciones (ECC, caché), haciendo que sus arquitecturas específicas sean innecesarias. RAID 5, 6 y 10 han demostrado ser las configuraciones más equilibradas y se han convertido en estándares de la industria.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 8: TABLA COMPARATIVA -->
+            <section class="section">
+                <h2 class="text-center">Tabla Comparativa de RAID</h2>
+
+                <div class="table-responsive">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>RAID</th>
+                                <th>Mín. Discos</th>
+                                <th>Capacidad</th>
+                                <th>Tolerancia Fallos</th>
+                                <th>Rendimiento</th>
+                                <th>Uso Típico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>RAID 0</strong></td>
+                                <td>2</td>
+                                <td>100%</td>
+                                <td class="danger-text">0 discos</td>
+                                <td class="success-text">Excelente</td>
+                                <td>Edición video, render</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 1</strong></td>
+                                <td>2</td>
+                                <td>50%</td>
+                                <td class="success-text">N-1 discos</td>
+                                <td class="info-text">Bueno (lectura)</td>
+                                <td>Sistemas críticos, SO</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 5</strong></td>
+                                <td>3</td>
+                                <td>(N-1)/N</td>
+                                <td class="info-text">1 disco</td>
+                                <td class="info-text">Bueno</td>
+                                <td>Servidores empresariales</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 6</strong></td>
+                                <td>4</td>
+                                <td>(N-2)/N</td>
+                                <td class="success-text">2 discos</td>
+                                <td class="warning-text">Moderado</td>
+                                <td>Data centers críticos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 10</strong></td>
+                                <td>4</td>
+                                <td>50%</td>
+                                <td class="success-text">1 por espejo</td>
+                                <td class="success-text">Excelente</td>
+                                <td>Bases de datos, VMs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 50</strong></td>
+                                <td>6</td>
+                                <td>(N-2)/N</td>
+                                <td class="success-text">1 por grupo</td>
+                                <td class="success-text">Muy bueno</td>
+                                <td>Servidores alta I/O</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAID 60</strong></td>
+                                <td>8</td>
+                                <td>(N-4)/N</td>
+                                <td class="success-text">2 por grupo</td>
+                                <td class="info-text">Bueno</td>
+                                <td>Ultra alta disponibilidad</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <p class="text-center">
+                        <strong class="success-text">Verde</strong> = Excelente |
+                        <strong class="info-text">Azul</strong> = Bueno |
+                        <strong class="warning-text">Naranja</strong> = Moderado |
+                        <strong class="danger-text">Rojo</strong> = Pobre/Nulo
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 9: CASOS DE USO -->
+            <section class="section">
+                <h2>Recomendaciones por Caso de Uso</h2>
+
+                <div class="use-cases-grid">
+                    <div class="use-case-card">
+                        <h3>💻 Estación de Trabajo</h3>
+                        <p><strong>Escenario:</strong> Edición de video 4K/8K, diseño 3D, desarrollo</p>
+                        <p class="recommendation">✅ Recomendado: RAID 0 o RAID 10</p>
+                        <ul>
+                            <li><strong>RAID 0:</strong> Si hay backups externos</li>
+                            <li><strong>RAID 10:</strong> Si necesitas redundancia</li>
+                            <li>Prioridad: Velocidad de lectura/escritura</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>🌐 Servidor Web/Apps</h3>
+                        <p><strong>Escenario:</strong> Apache, Nginx, Node.js, hosting</p>
+                        <p class="recommendation">✅ Recomendado: RAID 1 o RAID 10</p>
+                        <ul>
+                            <li><strong>RAID 1:</strong> Costo/beneficio óptimo</li>
+                            <li><strong>RAID 10:</strong> Alta concurrencia</li>
+                            <li>Prioridad: Disponibilidad + lectura rápida</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>🗄️ Base de Datos</h3>
+                        <p><strong>Escenario:</strong> MySQL, PostgreSQL, Oracle, SQL Server</p>
+                        <p class="recommendation">✅ Recomendado: RAID 10 o RAID 50</p>
+                        <ul>
+                            <li><strong>RAID 10:</strong> Transacciones intensivas</li>
+                            <li><strong>RAID 50:</strong> Grandes volúmenes</li>
+                            <li>Prioridad: I/O mixto + redundancia</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>📦 Almacenamiento Masivo</h3>
+                        <p><strong>Escenario:</strong> NAS, archivos, backups, media server</p>
+                        <p class="recommendation">✅ Recomendado: RAID 5 o RAID 6</p>
+                        <ul>
+                            <li><strong>RAID 5:</strong> Equilibrio capacidad/protección</li>
+                            <li><strong>RAID 6:</strong> Arrays >6 discos</li>
+                            <li>Prioridad: Capacidad + protección</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>☁️ Virtualización</h3>
+                        <p><strong>Escenario:</strong> VMware, Hyper-V, Proxmox, Docker</p>
+                        <p class="recommendation">✅ Recomendado: RAID 10 o RAID 50</p>
+                        <ul>
+                            <li><strong>RAID 10:</strong> Máximo rendimiento VMs</li>
+                            <li><strong>RAID 50:</strong> Muchas VMs concurrentes</li>
+                            <li>Prioridad: IOPS + disponibilidad</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>📊 Big Data / Analytics</h3>
+                        <p><strong>Escenario:</strong> Hadoop, Spark, data lakes, análisis</p>
+                        <p class="recommendation">✅ Recomendado: RAID 6, RAID 50, RAID 60</p>
+                        <ul>
+                            <li><strong>RAID 6:</strong> Grandes arrays (12+ discos)</li>
+                            <li><strong>RAID 60:</strong> Máxima protección</li>
+                            <li>Prioridad: Throughput + doble fallo</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 10: CONCLUSIONES -->
+            <section class="section">
+                <h2 class="text-center">Conclusiones y Mejores Prácticas</h2>
+
+                <div class="two-columns">
+                    <div class="highlight-box">
+                        <h3>🎯 Principios Clave</h3>
+                        <ul>
+                            <li><strong>RAID NO es backup:</strong> Protege contra fallos hardware, no contra borrados, malware o desastres</li>
+                            <li><strong>Monitoreo constante:</strong> Revisar estado de discos diariamente (SMART)</li>
+                            <li><strong>Hot spares:</strong> Tener discos de reserva configurados</li>
+                            <li><strong>Rebuild time:</strong> Con discos grandes (>4TB), considerar RAID 6 o 10</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3>⚖️ Trade-offs</h3>
+                        <ul>
+                            <li><strong>Rendimiento vs Redundancia:</strong> RAID 0 (rápido, sin protección) vs RAID 1 (lento escritura, máxima protección)</li>
+                            <li><strong>Capacidad vs Protección:</strong> RAID 5 (80% capacidad) vs RAID 10 (50% capacidad)</li>
+                            <li><strong>Costo vs Beneficio:</strong> Evaluar según criticidad de datos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h3>📌 Resumen Ejecutivo</h3>
+                    <p>
+                        En 2025, <strong>RAID 5, 6 y 10</strong> dominan el mercado empresarial. RAID 5 ofrece el mejor equilibrio para NAS y servidores generales. RAID 6 es esencial para arrays grandes (10+ discos) donde el riesgo de doble fallo es real. RAID 10 es el estándar oro para bases de datos y virtualización donde el rendimiento es crítico. Los niveles RAID 2, 3, 4 están obsoletos. RAID anidados (50, 60, 100) son para casos especializados de alta disponibilidad.
+                    </p>
+                    <p>
+                        <strong>Regla de oro:</strong> Evalúa tus necesidades reales de rendimiento, capacidad y redundancia antes de elegir. Y recuerda: <strong>RAID + Backup = Tranquilidad</strong> ✅
+                    </p>
+                </div>
+            </section>
+
+            <!-- MERMAID MINDMAP -->
+            <section class="section">
+                <h2 class="text-center">Mapa Mental: Tipos de RAID</h2>
+                <div class="mermaid">
+                    mindmap
+                      root((RAID))
+                        RAID Básicos
+                          RAID 0
+                            Striping
+                            Sin redundancia
+                            100% capacidad
+                            Alto rendimiento
+                          RAID 1
+                            Mirroring
+                            Tolerancia N-1
+                            50% capacidad
+                            Alta fiabilidad
+                          RAID 5
+                            Striping + Paridad
+                            Tolerancia 1 disco
+                            Capacidad N-1
+                            Equilibrado
+                          RAID 6
+                            Doble paridad
+                            Tolerancia 2 discos
+                            Capacidad N-2
+                            Arrays grandes
+                        RAID Avanzados
+                          RAID 10
+                            RAID 1+0
+                            Mirroring + Striping
+                            Máximo rendimiento
+                            50% capacidad
+                          RAID 50
+                            RAID 5+0
+                            Múltiples grupos RAID 5
+                            Alto rendimiento
+                          RAID 60
+                            RAID 6+0
+                            Doble paridad anidada
+                            Máxima protección
+                        Características
+                          Rendimiento
+                            RAID 0 mejor lectura/escritura
+                            RAID 10 alto IOPS
+                            RAID 5/6 mejor lectura
+                          Redundancia
+                            RAID 1 espejo completo
+                            RAID 5 paridad simple
+                            RAID 6 paridad doble
+                          Capacidad
+                            RAID 0 total 100%
+                            RAID 1/10 total 50%
+                            RAID 5 total N-1
+                            RAID 6 total N-2
+                        Casos de Uso
+                          Bases de Datos
+                            RAID 10 recomendado
+                            Alto IOPS crítico
+                          NAS Doméstico
+                            RAID 5 ideal
+                            Buen equilibrio
+                          Data Centers
+                            RAID 6 preferido
+                            Alta disponibilidad
+                          Virtualización
+                            RAID 10 óptimo
+                            Baja latencia
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

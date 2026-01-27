@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Flink vs Spark Streaming | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Apache Flink vs Spark Streaming</span>
+                </div>
+            </div>
+            <h1 class="text-center">Apache Flink vs Spark Streaming</h1>
+            <p class="subtitle text-center">True Streaming vs Micro-Batching en Big Data</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2>Procesamiento de Streams: Dos Filosofías</h2>
+                <p>
+                    En el ecosistema de Big Data, <strong>Apache Flink</strong> y <strong>Spark Streaming</strong> representan dos enfoques fundamentales para procesar datos en tiempo real. <strong>Flink</strong> implementa procesamiento verdadero evento por evento (true streaming), mientras que <strong>Spark Streaming</strong> utiliza micro-batching, agrupando eventos en pequeños lotes.
+                </p>
+                <p>
+                    La elección entre ambos depende de tus requisitos de <strong>latencia</strong>, <strong>complejidad del estado</strong>, y <strong>ecosistema existente</strong>. Flink destaca cuando necesitas latencias de <strong>milisegundos</strong> y procesamiento complejo con estado, mientras que Spark Streaming brilla cuando latencias de <strong>segundos</strong> son aceptables y ya trabajas con el ecosistema Spark.
+                </p>
+
+                <div class="highlight-box">
+                    <p><strong>Ejemplo Real:</strong></p>
+                    <p>Alibaba procesa más de 4.5 mil millones de transacciones diarias durante eventos como Singles' Day usando Apache Flink, logrando detección de fraude en menos de 100 milisegundos.</p>
+                </div>
+
+                <h3>Diferencia Fundamental</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>⚡ Flink: True Streaming</h4>
+                        <p>Procesa cada evento individualmente conforme llega. Latencia: <strong>milisegundos</strong>.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📦 Spark: Micro-Batching</h4>
+                        <p>Agrupa eventos en lotes pequeños y los procesa juntos. Latencia: <strong>segundos</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: APACHE FLINK -->
+            <section class="section">
+                <h2>Apache Flink: Procesamiento Evento por Evento</h2>
+
+                <h3>⚡ Arquitectura True Streaming</h3>
+                <div class="svg-container">
+                    <svg width="900" height="400" viewBox="0 0 900 400" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">Apache Flink - Procesamiento Continuo Evento por Evento</text>
+
+                        <!-- Fuente de eventos -->
+                        <rect x="50" y="80" width="150" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="125" y="110" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Arial">Kafka Source</text>
+
+                        <!-- Eventos individuales llegando -->
+                        <g>
+                            <circle cx="230" cy="90" r="8" fill="#49B9CE"/>
+                            <text x="250" y="95" font-size="11" fill="#333333" font-family="Arial">E1</text>
+
+                            <circle cx="230" cy="105" r="8" fill="#49B9CE"/>
+                            <text x="250" y="110" font-size="11" fill="#333333" font-family="Arial">E2</text>
+
+                            <circle cx="230" cy="120" r="8" fill="#49B9CE"/>
+                            <text x="250" y="125" font-size="11" fill="#333333" font-family="Arial">E3</text>
+
+                            <!-- Flecha indicando flujo continuo -->
+                            <path d="M 200 105 L 220 105" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowblue)" fill="none"/>
+                        </g>
+
+                        <!-- Procesamiento continuo -->
+                        <rect x="300" y="70" width="280" height="80" fill="white" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <rect x="310" y="80" width="260" height="30" fill="#49B9CE" rx="5"/>
+                        <text x="440" y="100" font-size="16" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">FLINK OPERATORS</text>
+
+                        <text x="320" y="125" font-size="12" fill="#333333" font-family="Arial">• Procesa CADA evento inmediatamente</text>
+                        <text x="320" y="142" font-size="12" fill="#333333" font-family="Arial">• Sin esperas ni agrupación</text>
+
+                        <!-- Línea temporal -->
+                        <line x1="300" y1="180" x2="580" y2="180" stroke="#49B9CE" stroke-width="2"/>
+                        <text x="440" y="200" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">Tiempo Continuo →</text>
+
+                        <!-- Eventos procesándose en el tiempo -->
+                        <circle cx="320" cy="180" r="6" fill="#49B9CE"/>
+                        <text x="320" y="165" font-size="10" fill="#333333" text-anchor="middle" font-family="Arial">t=0ms</text>
+
+                        <circle cx="380" cy="180" r="6" fill="#49B9CE"/>
+                        <text x="380" y="165" font-size="10" fill="#333333" text-anchor="middle" font-family="Arial">t=2ms</text>
+
+                        <circle cx="440" cy="180" r="6" fill="#49B9CE"/>
+                        <text x="440" y="165" font-size="10" fill="#333333" text-anchor="middle" font-family="Arial">t=5ms</text>
+
+                        <circle cx="500" cy="180" r="6" fill="#49B9CE"/>
+                        <text x="500" y="165" font-size="10" fill="#333333" text-anchor="middle" font-family="Arial">t=7ms</text>
+
+                        <circle cx="560" cy="180" r="6" fill="#49B9CE"/>
+                        <text x="560" y="165" font-size="10" fill="#333333" text-anchor="middle" font-family="Arial">t=10ms</text>
+
+                        <!-- Estado distribuido -->
+                        <rect x="650" y="70" width="200" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
+                        <text x="750" y="95" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">ESTADO</text>
+                        <text x="750" y="115" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">Mantenido en</text>
+                        <text x="750" y="130" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">memoria distribuida</text>
+                        <text x="750" y="145" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">con checkpoints</text>
+
+                        <path d="M 580 105 L 650 105" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+                        <!-- Salida -->
+                        <rect x="320" y="240" width="240" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="8"/>
+                        <text x="440" y="270" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">Resultado en Tiempo Real</text>
+
+                        <path d="M 440 150 L 440 240" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" fill="none"/>
+
+                        <!-- Ventaja de latencia -->
+                        <rect x="50" y="320" width="800" height="60" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="8"/>
+                        <text x="450" y="345" font-size="15" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Arial">⚡ Latencia Ultra-Baja: Milisegundos (&lt; 100ms típico)</text>
+                        <text x="450" y="365" font-size="13" fill="#555555" text-anchor="middle" font-family="Arial">Ideal para detección de fraude, alertas críticas, IoT en tiempo real</text>
+
+                        <!-- Marcador de flecha -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <p>
+                    Apache Flink es un framework de procesamiento de streams distribuido que se distingue por su capacidad de <strong>procesamiento verdadero evento por evento</strong>, procesando cada registro individualmente conforme llega, sin esperar a acumular lotes. Esta característica lo hace especialmente adecuado para aplicaciones que requieren <strong>latencias de milisegundos</strong> y procesamiento complejo con estado.
+                </p>
+
+                <h3>🎯 Características Clave de Flink</h3>
+
+                <!-- 1. True Streaming -->
+                <div class="highlight-box">
+                    <h4>1. True Streaming (Procesamiento Continuo)</h4>
+                    <p>
+                        Flink procesa <strong>cada evento individualmente conforme llega</strong>, sin esperar a acumular un lote. Esto contrasta con Spark Streaming, que agrupa eventos en ventanas de segundos antes de procesarlos.
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>🔍 ¿Por qué importa?</strong></p>
+                        <p>
+                            Para aplicaciones como <strong>detección de fraude</strong> en transacciones bancarias o <strong>alertas en sistemas críticos</strong>, donde cada milisegundo cuenta, el procesamiento evento por evento de Flink es fundamental. Una transacción sospechosa puede bloquearse en menos de 100ms.
+                        </p>
+                    </div>
+
+                    <p><strong>Ejemplo - Detección de Fraude con Flink:</strong></p>
+                    <pre><code class="language-java">// DataStream API de Flink - Procesamiento continuo
+DataStream&lt;Transaction&gt; transactions = env
+    .addSource(new FlinkKafkaConsumer&lt;&gt;("transactions", ...));
+
+// Procesa CADA transacción inmediatamente
+DataStream&lt;Alert&gt; fraudAlerts = transactions
+    .keyBy(Transaction::getUserId)
+    // Mantiene estado de últimas 100 transacciones por usuario
+    .process(new FraudDetectionFunction())
+    .filter(alert -> alert.getRiskScore() > 0.8);
+
+// Resultado en milisegundos desde el evento original
+fraudAlerts.addSink(new AlertingSink());
+
+// Función con estado
+class FraudDetectionFunction extends KeyedProcessFunction&lt;...&gt; {
+    private ValueState&lt;List&lt;Transaction&gt;&gt; userHistory;
+
+    @Override
+    public void processElement(Transaction tx, Context ctx, ...) {
+        List&lt;Transaction&gt; history = userHistory.value();
+
+        // Analiza INMEDIATAMENTE cada transacción
+        if (isSuspicious(tx, history)) {
+            out.collect(new Alert(tx, calculateRisk(tx, history)));
+        }
+
+        // Actualiza estado
+        history.add(tx);
+        userHistory.update(history);
+    }
+}</code></pre>
+                    <p>⚡ <strong>Latencia típica:</strong> 10-100 milisegundos end-to-end</p>
+                </div>
+
+                <!-- 2. Stateful Processing -->
+                <div class="highlight-box">
+                    <h4>2. Stateful Processing (Procesamiento con Estado)</h4>
+                    <p>
+                        Flink permite mantener <strong>estado entre eventos</strong> de forma distribuida y tolerante a fallos. El estado puede ser simple (un contador) o complejo (ventanas temporales con agregaciones, joins entre múltiples streams).
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>💾 Gestión de Estado:</strong></p>
+                        <ul>
+                            <li><strong>ValueState:</strong> Un único valor por clave (ej: contador de clicks)</li>
+                            <li><strong>ListState:</strong> Lista de elementos (ej: últimas 100 transacciones)</li>
+                            <li><strong>MapState:</strong> Mapa clave-valor (ej: sesiones de usuarios)</li>
+                            <li><strong>Checkpointing:</strong> Snapshots periódicos en almacenamiento distribuido</li>
+                            <li><strong>Recuperación automática:</strong> Restaura estado ante fallos sin pérdida</li>
+                        </ul>
+                    </div>
+
+                    <p><strong>Ejemplo - Agregaciones con Estado:</strong></p>
+                    <pre><code class="language-scala">// Mantener contadores por usuario en estado distribuido
+val userClicks: DataStream[Click] = ...
+
+val clicksPerUser = userClicks
+  .keyBy(_.userId)
+  .map(new RichMapFunction[Click, (String, Long)] {
+    // Estado: contador de clicks por usuario
+    private var clickCount: ValueState[Long] = _
+
+    override def open(parameters: Configuration): Unit = {
+      val descriptor = new ValueStateDescriptor[Long](
+        "click-count", classOf[Long], 0L
+      )
+      clickCount = getRuntimeContext.getState(descriptor)
+    }
+
+    override def map(click: Click): (String, Long) = {
+      // Incrementar contador en estado
+      val current = clickCount.value()
+      val newCount = current + 1
+      clickCount.update(newCount)
+
+      (click.userId, newCount)
+    }
+  })
+
+// Si un nodo falla, Flink restaura automáticamente
+// el estado desde el último checkpoint</code></pre>
+                </div>
+
+                <!-- 3. Event Time Processing -->
+                <div class="highlight-box">
+                    <h4>3. Event Time Processing (Procesamiento por Tiempo de Evento)</h4>
+                    <p>
+                        Flink distingue entre el <strong>momento en que ocurrió un evento</strong> (event time) y el <strong>momento en que lo procesamos</strong> (processing time). En sistemas distribuidos, los eventos pueden llegar desordenados debido a latencias de red o retrasos en la generación.
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>🕐 Ventaja del Event Time:</strong></p>
+                        <p>
+                            Flink ordena eventos según su <strong>timestamp original</strong> (event time) en lugar de su hora de llegada, garantizando <strong>resultados correctos incluso con datos desordenados</strong>. Por ejemplo, si procesamos logs de un sistema móvil que estuvo offline, Flink puede incorporar esos eventos tardíos en las ventanas temporales correctas.
+                        </p>
+                    </div>
+
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <p><strong>Event Time</strong></p>
+                            <p>Cuando ocurrió el evento realmente</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <p><strong>Ingestion Time</strong></p>
+                            <p>Cuando llegó a Flink</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <p><strong>Processing Time</strong></p>
+                            <p>Cuando lo procesó el operador</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Exactly-Once Semantics -->
+                <div class="highlight-box">
+                    <h4>4. Exactly-Once Semantics (Garantías de Procesamiento)</h4>
+                    <p>
+                        Flink garantiza que <strong>cada evento se procesa exactamente una vez</strong>, sin pérdidas ni duplicados, incluso ante fallos. Flink logra esto mediante un mecanismo de <strong>checkpointing distribuido</strong> que coordina snapshots consistentes del estado de toda la aplicación.
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>✅ Importancia Crítica:</strong></p>
+                        <p>
+                            Para aplicaciones <strong>financieras</strong> o de <strong>facturación</strong> donde la precisión es crítica, esta garantía resulta indispensable. No queremos cobrar dos veces ni perder transacciones.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: SPARK STREAMING -->
+            <section class="section">
+                <h2>Spark Streaming: Micro-Batching Pragmático</h2>
+
+                <h3>📦 Arquitectura Micro-Batching</h3>
+                <div class="svg-container">
+                    <svg width="900" height="450" viewBox="0 0 900 450" style="max-width: 100%; height: auto;">
+                        <!-- Título -->
+                        <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">Spark Streaming - Procesamiento por Micro-Lotes</text>
+
+                        <!-- Fuente de eventos -->
+                        <rect x="50" y="80" width="150" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="125" y="110" font-size="16" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Arial">Kafka Source</text>
+
+                        <!-- Eventos llegando continuamente -->
+                        <g>
+                            <circle cx="230" cy="85" r="6" fill="#8A7AAF"/>
+                            <circle cx="245" cy="85" r="6" fill="#8A7AAF"/>
+                            <circle cx="260" cy="85" r="6" fill="#8A7AAF"/>
+                            <circle cx="230" cy="100" r="6" fill="#8A7AAF"/>
+                            <circle cx="245" cy="100" r="6" fill="#8A7AAF"/>
+                            <circle cx="260" cy="100" r="6" fill="#8A7AAF"/>
+                            <circle cx="230" cy="115" r="6" fill="#8A7AAF"/>
+                            <circle cx="245" cy="115" r="6" fill="#8A7AAF"/>
+                            <circle cx="260" cy="115" r="6" fill="#8A7AAF"/>
+                        </g>
+
+                        <!-- Línea temporal con ventanas -->
+                        <line x1="300" y1="100" x2="850" y2="100" stroke="#333333" stroke-width="3"/>
+
+                        <!-- Ventanas de micro-batches -->
+                        <g>
+                            <!-- Batch 1 -->
+                            <rect x="300" y="60" width="130" height="80" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                            <text x="365" y="95" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">Batch 1</text>
+                            <text x="365" y="115" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">t=0-2s</text>
+                            <text x="365" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Arial">(100 eventos)</text>
+
+                            <!-- Batch 2 -->
+                            <rect x="450" y="60" width="130" height="80" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                            <text x="515" y="95" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">Batch 2</text>
+                            <text x="515" y="115" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">t=2-4s</text>
+                            <text x="515" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Arial">(98 eventos)</text>
+
+                            <!-- Batch 3 -->
+                            <rect x="600" y="60" width="130" height="80" fill="#E8D8F0" stroke="#8A7AAF" stroke-width="3" rx="5"/>
+                            <text x="665" y="95" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">Batch 3</text>
+                            <text x="665" y="115" font-size="11" fill="#333333" text-anchor="middle" font-family="Arial">t=4-6s</text>
+                            <text x="665" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Arial">(105 eventos)</text>
+
+                            <!-- Batch siguiente -->
+                            <rect x="750" y="60" width="80" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="5,5" rx="5"/>
+                            <text x="790" y="105" font-size="13" fill="#8A7AAF" text-anchor="middle" font-family="Arial">...</text>
+                        </g>
+
+                        <!-- Indicadores de ventana -->
+                        <text x="365" y="50" font-size="11" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">2 segundos</text>
+                        <path d="M 300 55 L 430 55" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple)" marker-start="url(#arrowpurple2)" fill="none"/>
+
+                        <!-- Motor Spark -->
+                        <rect x="300" y="180" width="430" height="100" fill="white" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <rect x="310" y="190" width="410" height="35" fill="#8A7AAF" rx="5"/>
+                        <text x="515" y="213" font-size="16" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">SPARK ENGINE (Batch + RDD)</text>
+
+                        <text x="320" y="245" font-size="12" fill="#333333" font-family="Arial">• Procesa cada micro-batch como un RDD</text>
+                        <text x="320" y="263" font-size="12" fill="#333333" font-family="Arial">• Usa motor batch tradicional de Spark</text>
+
+                        <!-- Flecha hacia motor -->
+                        <path d="M 515 140 L 515 180" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple3)" fill="none"/>
+
+                        <!-- Salida -->
+                        <rect x="340" y="320" width="350" height="50" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="8"/>
+                        <text x="515" y="350" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Arial">Resultado cada 2 segundos (por batch)</text>
+
+                        <path d="M 515 280 L 515 320" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple3)" fill="none"/>
+
+                        <!-- Ventaja -->
+                        <rect x="50" y="390" width="800" height="50" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
+                        <text x="450" y="412" font-size="15" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Arial">✅ Ventaja: Mismo código que batch + Integración con ecosistema Spark</text>
+                        <text x="450" y="430" font-size="13" fill="#555555" text-anchor="middle" font-family="Arial">Latencia: Segundos (1-10s típico) - Suficiente para muchos casos de uso</text>
+
+                        <!-- Marcadores de flecha -->
+                        <defs>
+                            <marker id="arrowpurple" markerWidth="8" markerHeight="8" refX="7" refY="2.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,5 L7,2.5 z" fill="#8A7AAF"/>
+                            </marker>
+                            <marker id="arrowpurple2" markerWidth="8" markerHeight="8" refX="0" refY="2.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M7,0 L7,5 L0,2.5 z" fill="#8A7AAF"/>
+                            </marker>
+                            <marker id="arrowpurple3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <p>
+                    Spark Streaming es la extensión de Apache Spark para procesamiento de datos en tiempo real. A diferencia del true streaming de Flink, Spark Streaming utiliza un enfoque de <strong>micro-batching</strong>: agrupa eventos que llegan durante pequeñas ventanas de tiempo (típicamente 1-10 segundos) y los procesa como lotes usando el motor batch de Spark.
+                </p>
+
+                <h3>✅ Ventajas del Micro-Batching</h3>
+
+                <div class="highlight-box">
+                    <h4>1. Reutilización de Código y APIs</h4>
+                    <p>
+                        Permite reutilizar el <strong>mismo código y APIs</strong> que usamos para procesamiento batch, facilitando la transición entre ambos modos. Los desarrolladores familiarizados con Spark pueden aplicar inmediatamente sus conocimientos al procesamiento streaming sin aprender un framework completamente nuevo.
+                    </p>
+
+                    <p><strong>Ejemplo - DStreams (API Clásica):</strong></p>
+                    <pre><code class="language-python">from pyspark.streaming import StreamingContext
+
+# Crear contexto con ventanas de 2 segundos
+ssc = StreamingContext(sparkContext, 2)
+
+# Leer stream (agrupa eventos cada 2 segundos)
+lines = ssc.socketTextStream("localhost", 9999)
+
+# Procesar como si fuera batch
+wordCounts = lines \
+    .flatMap(lambda line: line.split(" ")) \
+    .map(lambda word: (word, 1)) \
+    .reduceByKey(lambda a, b: a + b)
+
+# Cada 2 segundos, procesa el micro-batch
+wordCounts.pprint()
+
+ssc.start()
+ssc.awaitTermination()</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>2. Integración Total con Ecosistema Spark</h4>
+                    <p>
+                        La integración con el ecosistema Spark es total: podemos combinar streaming con <strong>Spark SQL</strong> para consultas estructuradas, usar <strong>MLlib</strong> para aplicar modelos de machine learning en tiempo real, o integrarnos con <strong>GraphX</strong> para análisis de grafos.
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>🔗 Ecosistema Unificado:</strong></p>
+                        <ul>
+                            <li><strong>Spark SQL:</strong> Consultas SQL sobre streams</li>
+                            <li><strong>MLlib:</strong> Aplicar modelos predictivos en tiempo real</li>
+                            <li><strong>GraphX:</strong> Análisis de grafos dinámicos</li>
+                            <li><strong>DataFrames/Datasets:</strong> APIs de alto nivel</li>
+                        </ul>
+                    </div>
+
+                    <p><strong>Ejemplo - Structured Streaming (API Moderna):</strong></p>
+                    <pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+
+spark = SparkSession.builder.appName("StructuredStream").getOrCreate()
+
+# Leer stream como DataFrame (¡tabla infinita!)
+streamDF = spark.readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("subscribe", "events") \
+    .load()
+
+# Procesar con SQL y ML
+processedDF = streamDF \
+    .selectExpr("CAST(value AS STRING)") \
+    .select(from_json(col("value"), schema).alias("data")) \
+    .select("data.*") \
+    .withColumn("prediction", ml_model_udf(col("features")))
+
+# Escribir resultados (¡mismo código que batch!)
+query = processedDF.writeStream \
+    .format("console") \
+    .outputMode("append") \
+    .trigger(processingTime="2 seconds") \
+    .start()
+
+query.awaitTermination()</code></pre>
+                    <p>💡 <strong>Structured Streaming:</strong> Trata streams como tablas infinitas, permite usar el mismo código SQL para batch y streaming.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>3. Latencia Aceptable para Muchos Casos</h4>
+                    <p>
+                        El enfoque de micro-batching implica latencias mínimas del orden de <strong>segundos</strong> en lugar de milisegundos. Para muchas aplicaciones (análisis de métricas, agregación de logs, procesamiento de datos de sensores no críticos) esta latencia resulta perfectamente aceptable.
+                    </p>
+
+                    <div class="feature-card">
+                        <p><strong>📊 Casos de uso ideales:</strong></p>
+                        <ul>
+                            <li>Análisis de métricas y dashboards (latencia 1-5s aceptable)</li>
+                            <li>Agregación de logs de aplicaciones</li>
+                            <li>ETL en tiempo "casi real" (near real-time)</li>
+                            <li>Procesamiento de datos IoT no críticos</li>
+                            <li>Recomendaciones y personalización (segundos OK)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: #FFF8DC; border-color: #FFA726;">
+                    <h4>🛡️ Tolerancia a Fallos en Spark Streaming</h4>
+                    <p>
+                        La tolerancia a fallos se implementa mediante el <strong>linaje de RDDs</strong> de Spark: si un nodo falla, Spark puede reconstruir los datos perdidos reprocesando desde la fuente original. Esto garantiza recuperación ante fallos sin necesidad de replicación costosa, aunque puede implicar reprocesamiento de algunos micro-batches en caso de error.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: COMPARACIÓN EXHAUSTIVA -->
+            <section class="section">
+                <h2 class="text-center">Flink vs Spark Streaming: Comparación Completa</h2>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>⚡ Apache Flink</th>
+                                <th>📦 Spark Streaming</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Modelo de procesamiento</strong></td>
+                                <td><strong>True Streaming</strong> (evento por evento)</td>
+                                <td><strong>Micro-Batching</strong> (lotes pequeños)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latencia típica</strong></td>
+                                <td><strong>10-100 milisegundos</strong></td>
+                                <td>1-10 segundos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estado (State)</strong></td>
+                                <td><strong>Excelente</strong> - Diseñado para stateful</td>
+                                <td>Bueno - Con limitaciones</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Event Time</strong></td>
+                                <td><strong>Nativo y robusto</strong> (watermarks)</td>
+                                <td>Soportado en Structured Streaming</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Exactly-Once</strong></td>
+                                <td><strong>Sí</strong> (checkpointing distribuido)</td>
+                                <td><strong>Sí</strong> (con idempotent sinks)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td>Media-Alta (curva aprendizaje)</td>
+                                <td><strong>Baja</strong> (si conoces Spark)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ecosistema</strong></td>
+                                <td>Flink Table API, SQL, CEP</td>
+                                <td><strong>Spark SQL, MLlib, GraphX</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lenguajes</strong></td>
+                                <td>Java, Scala, Python (PyFlink)</td>
+                                <td>Python, Scala, Java, R</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Casos de uso</strong></td>
+                                <td>Fraude, alertas críticas, IoT real-time</td>
+                                <td>Analítica, ETL, dashboards, ML</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Adopción</strong></td>
+                                <td>Alibaba, Uber, Netflix, LinkedIn</td>
+                                <td><strong>Mayoría de empresas Spark</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-center">🎯 Guía de Decisión</h3>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4 class="text-center">Elige Flink si...</h4>
+                        <ul>
+                            <li>Necesitas <strong>latencia ultra-baja</strong> (< 100ms)</li>
+                            <li>Procesamiento <strong>complejo con estado</strong> distribuido</li>
+                            <li><strong>Event time</strong> y datos desordenados son críticos</li>
+                            <li>Aplicaciones <strong>críticas</strong> (fraude, alertas médicas)</li>
+                            <li>Puedes invertir en <strong>aprender una nueva tecnología</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4 class="text-center">Elige Spark Streaming si...</h4>
+                        <ul>
+                            <li>Latencia de <strong>segundos es aceptable</strong></li>
+                            <li>Ya usas <strong>Spark</strong> para batch y quieres unificar</li>
+                            <li>Necesitas <strong>ML en streaming</strong> con MLlib</li>
+                            <li>Tu equipo ya conoce <strong>Spark</strong></li>
+                            <li>Priorizas <strong>simplicidad</strong> sobre latencia extrema</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: CASOS DE USO REALES -->
+            <section class="section">
+                <h2>🌍 Casos de Uso del Mundo Real</h2>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h4>🛒 Alibaba (Flink)</h4>
+                        <p>Procesa 4.5 mil millones de transacciones/día con Flink para detección de fraude en < 100ms durante Singles' Day.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🚗 Uber (Flink)</h4>
+                        <p>Usa Flink para calcular precios dinámicos (surge pricing) con latencias de milisegundos basándose en demanda en tiempo real.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📺 Netflix (Spark)</h4>
+                        <p>Utiliza Spark Streaming para analítica de visualizaciones y recomendaciones near-real-time con latencia de segundos.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🚕 Lyft (Flink)</h4>
+                        <p>Procesamiento de eventos de viajes y matching conductor-pasajero con Flink para minimizar tiempos de espera.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📌 Pinterest (Spark)</h4>
+                        <p>Spark Streaming + MLlib para feeds personalizados y detección de spam con latencia de pocos segundos.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>💼 LinkedIn (Flink)</h4>
+                        <p>Migró de Samza a Flink para mejorar latencia en notificaciones y feeds personalizados con state management.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: DATO CURIOSO -->
+            <section class="section">
+                <div class="highlight-box" style="background: #FFF8DC; border-color: #FFA726;">
+                    <h3>💡 Dato Curioso: El Origen de Flink</h3>
+
+                    <p>
+                        Apache Flink comenzó en 2010 como un <strong>proyecto de investigación académica</strong> en la Universidad Técnica de Berlín bajo el nombre <strong>"Stratosphere"</strong>. Los investigadores querían crear un sistema que superara las limitaciones del modelo MapReduce de Hadoop.
+                    </p>
+
+                    <h4>🎯 ¿Por qué "Flink"?</h4>
+                    <p>
+                        El nombre <strong>"Flink"</strong> es una palabra alemana que significa <strong>"ágil"</strong> o <strong>"rápido"</strong>. También es un juego de palabras con el logo del proyecto: una <strong>ardilla voladora</strong> (flying squirrel), que en alemán se llama "Flughörnchen". La ardilla simboliza la velocidad y agilidad del framework para procesar streams.
+                    </p>
+
+                    <div class="feature-card">
+                        <p class="text-center">
+                            🚀 En 2014, el proyecto se donó a la <strong>Apache Software Foundation</strong> y se convirtió en un Top-Level Project. Hoy es usado por gigantes como Alibaba, Uber y Netflix procesando <strong>trillones de eventos diarios</strong>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MERMAID MINDMAP -->
+            <section class="section">
+                <h2 class="text-center">Mapa Mental: Flink vs Spark Streaming</h2>
+                <div class="mermaid">
+mindmap
+  root((Streaming))
+    Apache Flink
+      True Streaming
+        Evento por evento
+        Latencia milisegundos
+        Procesamiento continuo
+      Estado Avanzado
+        ValueState
+        ListState
+        MapState
+        Checkpointing
+      Event Time
+        Watermarks
+        Datos desordenados
+        Timestamps originales
+      Casos de Uso
+        Detección fraude
+        Alertas críticas
+        IoT tiempo real
+        Alibaba Singles Day
+    Spark Streaming
+      Micro-Batching
+        Lotes pequeños
+        Latencia segundos
+        Motor batch Spark
+      Ecosistema
+        Spark SQL
+        MLlib
+        GraphX
+        DataFrames
+      Ventajas
+        Mismo código batch
+        Curva aprendizaje baja
+        Integración total
+      Casos de Uso
+        Analítica métricas
+        ETL near real-time
+        Dashboards
+        Netflix recomendaciones
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 iLERNA - Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <p>Centro oficial de FP online y presencial | <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a></p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-scala.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+</html>

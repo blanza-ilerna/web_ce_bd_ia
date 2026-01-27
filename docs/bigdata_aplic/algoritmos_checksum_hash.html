@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Algoritmos de suma de verificación (checksum) y funciones hash criptográficas en Big Data.">
+    <title>Algoritmos de Verificación (Checksum vs Hash) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Algoritmos de Verificación</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Algoritmos de Verificación</h1>
+                <p class="subtitle">Checksums y Hashes Criptográficos en Sistemas Distribuidos</p>
+            </div>
+
+            <section class="section">
+                <p>
+                    Los algoritmos de suma de verificación y las funciones hash criptográficas son la base técnica para
+                    garantizar la <strong>integridad de los datos</strong> en sistemas distribuidos. Ambos generan un
+                    valor único (firma) que representa el contenido de un archivo o bloque, pero difieren radicalmente
+                    en su propósito, robustez y coste computacional.
+                </p>
+
+                <div class="highlight-box info">
+                    <p class="title">💡 El concepto fundamental</p>
+                    <p class="content">Si un solo bit cambia en el origen, la firma resultante debe ser diferente. Esta
+                        característica permite detectar corrupciones accidentales o manipulaciones malintencionadas de
+                        forma instantánea.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: CHECKSUMS -->
+            <section class="section">
+                <h2 class="section-title">1. Checksums (Sumas de Control)</h2>
+                <p>
+                    Son sumas de control calculadas mediante operaciones aritméticas simples. Su objetivo primordial es
+                    la
+                    <strong>detección de errores accidentales</strong>, como fallos en la transmisión de red o sectores
+                    defectuosos en el disco.
+                </p>
+
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4>CRC32 (Cyclic Redundancy Check)</h4>
+                        <p>Es el estándar en redes y sistemas de almacenamiento por su alta precisión en la detección de
+                            ráfagas de errores.</p>
+                        <ul class="mb-0">
+                            <li><strong>Uso:</strong> Bloques de HDFS, Ethernet, archivos ZIP.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Adler-32</h4>
+                        <p>Diseñado para ser casi tan fiable como CRC32 pero mucho más rápido de procesar en software.
+                        </p>
+                        <ul class="mb-0">
+                            <li><strong>Uso:</strong> Verificaciones ligeras en compresión (zlib).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="comparison-grid mt-2">
+                    <div class="comparison-card">
+                        <h4>✅ Ventajas</h4>
+                        <ul>
+                            <li>Alta velocidad de cálculo.</li>
+                            <li>Bajísimo consumo de recursos CPU.</li>
+                            <li>Ideal para verificaciones en tiempo real.</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>⚠️ Limitaciones</h4>
+                        <ul>
+                            <li>No resistente a ataques intencionados.</li>
+                            <li>Colisiones posibles en volúmenes masivos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning">
+                    <p class="title">📂 HDFS y CRC32</p>
+                    <p class="content">En un clúster HDFS, cada chunk de 512 bytes dentro de un bloque de 128 MB tiene
+                        un checksum CRC32. Si el DataNode detecta una discrepancia en una lectura, marca el bloque como
+                        corrupto y lo reemplaza automáticamente desde una réplica sana.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: FUNCIONES HASH - HISTORIA Y EVOLUCIÓN -->
+            <section class="section">
+                <h2 class="section-title">2. Funciones Hash: Historia y Evolución</h2>
+                <p>Las funciones hash no han sido estáticas; han evolucionado en una carrera constante entre la
+                    seguridad criptográfica y la capacidad de computación. Lo que ayer era seguro, hoy es vulnerable.
+                </p>
+
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-label"><strong>Era Inicial (MD5):</strong></div>
+                        <div class="step-content">Creado en 1991, fue el estándar de oro por décadas. Hoy se considera
+                            <strong>roto</strong> para seguridad (las colisiones se pueden generar en segundos), aunque
+                            se sigue usando para verificar integridad de archivos no críticos por su gran velocidad.
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>La transición (SHA-1):</strong></div>
+                        <div class="step-content">Diseñado por la NSA, fue el sucesor de MD5. Google anunció la primera
+                            colisión real en 2017, marcando su fin definitivo para firmas digitales y certificados SSL.
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Estándar Actual (SHA-2):</strong></div>
+                        <div class="step-content">Incluye SHA-256 y SHA-512. Es el pilar de la seguridad moderna en Big
+                            Data, Blockchain (Bitcoin usa SHA-256) y autenticación web. Es robusto, aunque vulnerable
+                            teóricamente a ataques de "extensión de longitud".</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>El Futuro: SHA-3 y BLAKE3:</strong></div>
+                        <div class="step-content">
+                            <strong>SHA-3 (Keccak):</strong> Ganador del concurso del NIST en 2012. No reemplaza a SHA-2
+                            por inseguridad, sino por diversidad algorítmica. Su estructura interna es totalmente
+                            distinta, lo que lo hace inmune a los ataques que afectan a sus predecesores.<br>
+                            <strong>BLAKE3:</strong> El "nuevo veloz". Es hasta 10 veces más rápido que SHA-256 y está
+                            diseñado para aprovechar el paralelismo de las CPUs modernas y GPUs. Es el candidato ideal
+                            para verificar PBs de datos en tiempo récord.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box info mt-2">
+                    <p class="title">🌍 Otros Guerreros del Hash</p>
+                    <p class="content">Existen algoritmos especializados como <strong>RIPEMD-160</strong> (usado en
+                        direcciones Bitcoin) o <strong>Whirlpool</strong> (basado en el estándar de cifrado AES), cada
+                        uno buscando el balance perfecto entre seguridad, tamaño de salida y velocidad.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: PROPIEDADES HASH -->
+            <section class="section">
+                <h2 class="section-title">3. Propiedades de las Funciones Hash</h2>
+                <p>Para que una función sea considerada criptográficamente segura y útil en auditorías de Big Data, debe
+                    cumplir con las siguientes propiedades fundamentales:</p>
+
+                <div class="grid-2-cols">
+                    <div class="feature-card primary">
+                        <h4>🔒 Unidireccionalidad (Pre-image Resistance)</h4>
+                        <p>Dado un hash <em>h</em>, debe ser computacionalmente imposible encontrar el mensaje original
+                            <em>m</em> que lo generó. El proceso es de un solo sentido.
+                        </p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🎯 Determinismo</h4>
+                        <p>La función debe devolver siempre el mismo resultado para la misma entrada. Un cambio
+                            infinitesimal generará un hash totalmente diferente.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>📏 Salida de Longitud Fija</h4>
+                        <p>Independientemente de si la entrada es un carácter o un archivo de 1 TB, el hash resultante
+                            siempre tendrá el mismo tamaño (ej. 256 bits en SHA-256).</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🌊 Efecto Avalancha</h4>
+                        <p>Cualquier cambio mínimo en la entrada (un bit) debe producir un cambio drástico en el hash,
+                            de modo que no haya correlación entre entrada y salida.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🛡️ Resistencia a la Segunda Pre-imagen</h4>
+                        <p>Dado un mensaje <em>m</em>, debe ser imposible encontrar un segundo mensaje diferente que
+                            produzca el mismo hash.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🤝 Resistencia a Colisiones</h4>
+                        <p>No debe ser factible encontrar dos mensajes cualesquiera que produzcan el mismo hash.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>⚡ Eficiencia</h4>
+                        <p>El algoritmo debe ser capaz de procesar volúmenes masivos rápidamente sin penalizar el
+                            rendimiento global del sistema.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: SIMULADOR INTERACTIVO -->
+            <section class="section">
+                <h2 class="section-title">4. Laboratorio: Simulador de Funciones Hash</h2>
+                <p>Experimenta en tiempo real cómo funcionan las propiedades de <strong>determinismo</strong> y
+                    <strong>efecto avalancha</strong>. Escribe cualquier texto y observa cómo se genera una firma única
+                    de longitud fija.
+                </p>
+
+                <div class="simulator-box"
+                    style="background: var(--bg-white); padding: 2rem; border-radius: 1rem; border: 2px solid var(--color-primary); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label for="hash-input"
+                            style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-primary);">Entrada
+                            de datos (Input):</label>
+                        <textarea id="hash-input" placeholder="Escribe algo aquí para ver la magia..."
+                            style="width: 100%; padding: 1rem; border-radius: 0.5rem; border: 2px solid #e2e8f0; font-family: 'Montserrat', sans-serif; font-size: 1rem; height: 80px; transition: border-color 0.3s;"></textarea>
+                    </div>
+
+                    <div class="output-group"
+                        style="background: var(--bg-primary-light); padding: 1.5rem; border-radius: 0.75rem; border: 1px dashed var(--color-primary);">
+                        <p style="font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark);">Firma Hash Generada
+                            (Output):</p>
+                        <div id="hash-output"
+                            style="font-family: monospace; font-size: 1.25rem; word-break: break-all; color: var(--color-primary); min-height: 1.5rem; font-weight: 700;">
+                            ---</div>
+                        <div
+                            style="margin-top: 1rem; display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-medium);">
+                            <span>📏 Longitud: <strong id="hash-length">0</strong> bits</span>
+                            <span>⚡ Proceso: <strong id="hash-status">Esperando...</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="visual-indicator"
+                        style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;" id="hash-visual">
+                        <!-- Bits visualizados dinámicamente -->
+                    </div>
+                </div>
+
+                <style>
+                    #hash-input:focus {
+                        border-color: var(--color-primary);
+                        outline: none;
+                    }
+
+                    .bit-dot {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 2px;
+                        background: #cbd5e1;
+                        transition: all 0.2s ease;
+                    }
+
+                    .bit-dot.active {
+                        background: var(--color-primary);
+                        box-shadow: 0 0 8px var(--color-primary);
+                    }
+                </style>
+
+                <script>
+                    const input = document.getElementById('hash-input');
+                    const output = document.getElementById('hash-output');
+                    const lengthDisplay = document.getElementById('hash-length');
+                    const statusDisplay = document.getElementById('hash-status');
+                    const visual = document.getElementById('hash-visual');
+
+                    // Crear 64 puntos visuales para representar los bits
+                    for (let i = 0; i < 64; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'bit-dot';
+                        visual.appendChild(dot);
+                    }
+
+                    const dots = document.querySelectorAll('.bit-dot');
+
+                    // Función simunlada de hash para demostración visual (basada en Jenkins One-at-a-time)
+                    function simpleHash(str) {
+                        let hash = 0;
+                        for (let i = 0; i < str.length; i++) {
+                            hash += str.charCodeAt(i);
+                            hash += (hash << 10);
+                            hash ^= (hash >> 6);
+                        }
+                        hash += (hash << 3);
+                        hash ^= (hash >> 11);
+                        hash += (hash << 15);
+
+                        // Convertir a hexadecimal de 16 caracteres (64 bits simulados)
+                        let hex = (hash >>> 0).toString(16).padStart(8, '0') +
+                            ((hash * 31) >>> 0).toString(16).padStart(8, '0');
+                        return hex.toUpperCase();
+                    }
+
+                    input.addEventListener('input', (e) => {
+                        const val = e.target.value;
+                        if (!val) {
+                            output.innerText = '---';
+                            lengthDisplay.innerText = '0';
+                            statusDisplay.innerText = 'Esperando...';
+                            dots.forEach(d => d.classList.remove('active'));
+                            return;
+                        }
+
+                        statusDisplay.innerText = 'Procesando...';
+                        const hash = simpleHash(val);
+                        output.innerText = hash;
+                        lengthDisplay.innerText = '64';
+
+                        // Efecto de avalancha visual
+                        dots.forEach((dot, index) => {
+                            // Usamos el hash para decidir qué puntos activar
+                            const charCode = hash.charCodeAt(index % hash.length);
+                            if (charCode % 2 === 0) {
+                                dot.classList.add('active');
+                            } else {
+                                dot.classList.remove('active');
+                            }
+                        });
+
+                        setTimeout(() => {
+                            statusDisplay.innerText = 'Completado';
+                        }, 100);
+                    });
+                </script>
+            </section>
+
+            <!-- SECCIÓN: COMPARATIVA -->
+            <section class="section">
+                <h2 class="section-title">5. Comparativa Técnica</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Checksum (CRC32)</th>
+                                <th>Hash Criptográfico (SHA-256)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Objetivo</strong></td>
+                                <td>Errores accidentales.</td>
+                                <td>Alteraciones/Ataques.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Velocidad</strong></td>
+                                <td>Muy alta.</td>
+                                <td>Media / Baja.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td>Baja (Aritmética).</td>
+                                <td>Alta (Transformaciones lógicas).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Colisiones</strong></td>
+                                <td>Posibles en PB.</td>
+                                <td>Extremadamente improbables.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso Típico</strong></td>
+                                <td>Bloques de HDFS / GlusterFS.</td>
+                                <td>Auditorías PCI-DSS / Ceph.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: CASO DE ESTUDIO -->
+            <section class="section">
+                <h2 class="section-title">6. Caso de Estudio: Seguridad Bancaria</h2>
+                <div class="expert-quote">
+                    <p class="quote-text">
+                        "Un banco utiliza un enfoque híbrido para sus 50 TB de transacciones en HDFS. Cada bloque se
+                        valida en tiempo real con <strong>CRC32</strong> para eficiencia operativa, mientras que los
+                        archivos completos se auditan trimestralmente con <strong>SHA-256</strong>. El hash asegura la
+                        integridad legal para normativas como PCI-DSS, mientras el checksum permite que el sistema
+                        reemplace automáticamente bloques corruptos sin latencia para el usuario."
+                    </p>
+                    <span class="quote-author">Departamento de Seguridad de Datos</span>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

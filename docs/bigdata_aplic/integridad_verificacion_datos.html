@@ -5,12 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Integridad de Datos en Big Data: Conceptos, Causas de corrupción, Verificación mediante Checksums y Estrategias de recuperación.">
-    <title>Concepto de Integridad y Verificación de Datos | iLERNA</title>
+        content="Integridad y Verificación de Datos en Sistemas Distribuidos: HDFS, Ceph y GlusterFS.">
+    <title>Integridad y Verificación de Datos | iLERNA</title>
     <link rel="stylesheet" href="../css/lecciones.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 
 <body>
@@ -28,218 +26,228 @@
                 </div>
                 <div class="breadcrumb">
                     <a href="../index.html">Inicio</a> ›
-                    <a href="index.html">Sistemas de Big Data</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
                     <span>Integridad y Verificación</span>
                 </div>
             </div>
-            <h1 class="text-center">Integridad de Datos: El Pilar de la Confianza</h1>
         </header>
 
         <main>
-
             <!-- Hero Section -->
-            <section class="hero-section">
-                <div class="hero-content">
-                    <h2>🛡️ ¿Podemos confiar en nuestros datos?</h2>
-                    <p class="hero-description">
-                        En el mundo del Big Data, donde movemos Petabytes de información a través de redes y discos,
-                        la <strong>integridad de los datos</strong> es la propiedad que garantiza que la información no
-                        ha sido
-                        alterada, dañada o manipulada sin autorización. En sistemas distribuidos, debido a la
-                        fragmentación
-                        y replicación masiva, el riesgo de corrupción es una amenaza constante que debemos gestionar.
-                    </p>
-                </div>
-            </section>
+            <div class="hero">
+                <h1>Comprobación de la Integridad de Datos</h1>
+                <p class="subtitle">Mecanismos de confianza en sistemas de archivos distribuidos</p>
+            </div>
 
-            <!-- Table of Contents -->
-            <nav class="toc-container">
-                <h3>📑 Contenido de la Lección</h3>
-                <ul class="toc-list">
-                    <li><a href="#introduccion">1. ¿Qué es la Integridad de Datos?</a></li>
-                    <li><a href="#causas">2. Causas de Pérdida de Integridad</a></li>
-                    <li><a href="#verificacion">3. Mecanismos de Verificación</a></li>
-                    <li><a href="#objetivos">4. Objetivos de la Verificación</a></li>
-                    <li><a href="#casos">5. Ejemplos y Casos de Estudio</a></li>
-                </ul>
-            </nav>
-
-            <!-- Sección 1: Introducción -->
-            <section id="introduccion" class="content-section">
-                <h2>1. ¿Qué es la Integridad de Datos?</h2>
-
+            <section class="section">
                 <p>
-                    La integridad se define como la certeza de que los datos almacenados o transmitidos mantienen su
-                    estructura
-                    y contenido original, sin modificaciones no autorizadas. En un sistema de archivos distribuido (como
-                    HDFS o Ceph),
-                    los datos se dividen en bloques y se replican en múltiples nodos. Esta arquitectura aumenta la
-                    disponibilidad,
-                    pero también multiplica los puntos de fallo potenciales donde puede ocurrir corrupción o
-                    inconsistencia.
+                    En los entornos Big Data modernos, los sistemas de archivos distribuidos como <strong>HDFS</strong>,
+                    <strong>Ceph</strong> y <strong>GlusterFS</strong> son pilares fundamentales para gestionar
+                    petabytes de información fragmentada y replicada entre cientos de nodos.
                 </p>
-
-                <div class="highlight-box info">
-                    <h4>💡 El Concepto de Checksum</h4>
-                    <p>
-                        Un <strong>checksum</strong> (suma de verificación) es una huella digital matemática de un
-                        conjunto de datos.
-                        Cualquier cambio, incluso de <strong>un solo bit</strong>, modifica radicalmente este valor.
-                        Esto nos permite
-                        detectar corrupciones tanto en el almacenamiento como en la transmisión de manera eficiente.
-                    </p>
+                <div class="highlight-box warning">
+                    <p class="title">⚠️ Desafíos de la Arquitectura Distribuida</p>
+                    <p class="content">La enorme complejidad de estas infraestructuras multiplica los riesgos de fallos
+                        de hardware, corrupción de bloques individuales, errores en la transmisión de red o
+                        manipulaciones externas que pueden comprometer la validez de los datos.</p>
                 </div>
-            </section>
-
-            <!-- Sección 2: Causas -->
-            <section id="causas" class="content-section">
-                <h2>2. Causas de Pérdida de Integridad</h2>
-                <p>Los datos pueden corromperse por múltiples razones, desde fallos físicos hasta errores lógicos.</p>
-
-                <div class="grid-features">
-                    <div class="feature-card">
-                        <h4>💾 Errores Físicos</h4>
-                        <p>Fallos en discos duros, corrupción de sectores magnéticos, desgaste de celdas en SSDs o
-                            errores en los controladores de almacenamiento.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <h4>🌐 Fallos de Red</h4>
-                        <p>Pérdida de paquetes, interferencias o alteraciones durante la transmisión de datos entre los
-                            nodos del clúster.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <h4>🐛 Bugs de Software</h4>
-                        <p>Errores en el código del sistema operativo, el sistema de archivos (File System) o las
-                            aplicaciones de procesamiento que escriben datos incorrectos.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <h4>🔓 Manipulación Maliciosa</h4>
-                        <p>Accesos no autorizados (hackeos) o ataques internos que modifican los datos
-                            intencionadamente.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <h4>🧟 Degradación Silenciosa (Bit Rot)</h4>
-                        <p>Cambios graduales y espontáneos en los bits almacenados debido a fenómenos físicos, difíciles
-                            de detectar sin escaneos activos.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sección 3: Verificación -->
-            <section id="verificacion" class="content-section">
-                <h2>3. Verificación de Integridad</h2>
                 <p>
-                    La verificación consiste en comparar los datos actuales con una "verdad base" o representación
-                    original.
-                    Esto se logra principalmente mediante algoritmos de hashing o checksums (como CRC32, MD5, SHA-256).
-                    Cada bloque de datos tiene una firma única generada al escribirse; al leerse, se recalcula la firma
-                    y se compara.
-                </p>
-                <p class="text-center">
-                    <em>Si <code>Checksum(Datos_Leídos) != Checksum_Original</code>, entonces los datos están
-                        corruptos.</em>
+                    Por ello, la verificación proactiva no es una opción, sino un proceso crítico para garantizar que la
+                    información que llega a los modelos analíticos sea fiable y esté siempre disponible.
                 </p>
             </section>
 
-            <!-- Sección 4: Objetivos -->
-            <section id="objetivos" class="content-section">
-                <h2>4. Objetivos de la Verificación</h2>
-                <p>Implementar mecanismos de integridad persigue cuatro metas fundamentales:</p>
-
-                <div class="grid-features" style="grid-template-columns: 1fr 1fr;">
-                    <div class="feature-card">
-                        <h4>🔍 Detección Temprana</h4>
-                        <p>Identificar bloques corruptos <strong>antes</strong> de que sean utilizados por procesos
-                            analíticos críticos o usuarios finales.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4>🔄 Recuperación Automática</h4>
-                        <p>Restaurar datos válidos usando réplicas sanas o códigos de corrección de errores (Erasure
-                            Coding) sin intervención humana.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4>📜 Auditoría y Trazabilidad</h4>
-                        <p>Registrar cada evento de fallo y reparación para cumplir normativas y mantener la gobernanza
-                            del dato.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4>👻 Transparencia</h4>
-                        <p>Ejecutar procesos de verificación en segundo plano (background scrubbing) asegurando la
-                            continuidad del servicio.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sección 5: Casos prácticos -->
-            <section id="casos" class="content-section">
-                <h2>5. Ejemplos y Casos de Estudio</h2>
-
-                <h3>Ejemplo Práctico en HDFS</h3>
+            <!-- CONCEPTO DE INTEGRIDAD -->
+            <section class="section">
+                <h2 class="section-title">Concepto de Integridad y Verificación</h2>
                 <p>
-                    Imagina un clúster HDFS almacenando <strong>1 PB de logs</strong>.
+                    La integridad se define como la propiedad que asegura que los datos almacenados o transmitidos
+                    <strong>no han sufrido alteraciones</strong>, daños o manipulaciones no autorizadas.
                 </p>
-                <div class="highlight-box success">
-                    <h4>✅ El Proceso Automático</h4>
-                    <p>
-                        Cada bloque de 128 MB tiene asociado un checksum <strong>CRC32</strong>. Cuando un cliente lee
-                        un bloque:
-                    </p>
-                    <ol>
-                        <li>HDFS calcula el checksum de los datos leídos.</li>
-                        <li>Lo compara con el checksum almacenado.</li>
-                        <li>Si hay discrepancia, HDFS marca el nodo/bloque como <strong>corrupto</strong>.</li>
-                        <li>Automáticamente redirige la lectura a una <strong>réplica válida</strong> en otro nodo.</li>
-                        <li>En segundo plano, crea una nueva réplica sana para mantener el factor de replicación (ej.
-                            x3).</li>
-                    </ol>
-                    <p>Todo esto ocurre <strong>sin que el usuario note interrupción</strong>.</p>
-                </div>
 
-                <h3>Caso de Estudio: Empresa de Streaming</h3>
-                <div class="feature-card" style="border-left: 5px solid #663399;">
-                    <h4>🎬 Integridad en 10 PB de Vídeo</h4>
-                    <p><strong>Contexto:</strong> Una plataforma de streaming utiliza <strong>Ceph</strong> para
-                        almacenar 10 PB de contenido multimedia.</p>
-                    <p><strong>Incidente:</strong> Durante un proceso de <em>Deep Scrub</em> (escaneo profundo
-                        programado), Ceph detecta que el hash de una réplica de una película no coincide, debido a un
-                        sector defectuoso en un disco.</p>
-                    <p><strong>Solución:</strong></p>
-                    <ul>
-                        <li>El sistema identifica la corrupción proactivamente.</li>
-                        <li>Restaura el objeto corrupto copiándolo desde otra réplica sana en <strong>menos de 5
-                                minutos</strong>.</li>
-                        <li>Registra el evento en los logs de auditoría para trazabilidad compliance (GDPR).</li>
-                    </ul>
-                    <p><strong>Resultado:</strong> Disponibilidad del <strong>99.999%</strong> mantenida y cero impacto
-                        en la experiencia de visualización del usuario.</p>
+                <div class="grid-2-cols">
+                    <div class="feature-card primary">
+                        <h4>Fragmentación y Riesgo</h4>
+                        <p>En sistemas distribuidos, esta propiedad es crítica: la fragmentación en bloques u objetos
+                            dispersos por el clúster y su replicación masiva introducen riesgos adicionales de
+                            corrupción o inconsistencia.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>Verificación Matemática</h4>
+                        <p>Consiste en comparar los datos actuales con una representación original (firma única) para
+                            confirmar que no han sido modificados, generalmente mediante sumas de verificación o hashes.
+                        </p>
+                    </div>
                 </div>
-
             </section>
 
+            <!-- SECCIÓN: CAUSAS EXTENDIDA -->
+            <section class="section">
+                <h2 class="section-title">Causas de Pérdida de Integridad</h2>
+                <p>La corrupción de datos no es un evento único, sino el resultado de diversos factores que pueden
+                    clasificarse según su origen físico, lógico o humano:</p>
+
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4>💾 Fallos de Hardware y Medios</h4>
+                        <p>Los dispositivos de almacenamiento físico tienen una vida útil limitada y son susceptibles a
+                            errores microscópicos:</p>
+                        <ul>
+                            <li><strong>Sectores defectuosos (Bad Blocks):</strong> Desgaste físico en la superficie de
+                                los platos magnéticos o en las celdas de memoria NAND de los SSD, lo que impide la
+                                lectura correcta del bit.</li>
+                            <li><strong>Degradación del soporte:</strong> Pérdida de carga eléctrica en memorias flash
+                                (SSD) o desmagnetización en discos tradicionales tras largos periodos de inactividad.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🌐 Errores de Red y Transmisión</h4>
+                        <p>En clústeres donde los datos viajan constantemente entre nodos, la red es un punto crítico:
+                        </p>
+                        <ul>
+                            <li><strong>Ruido e Interferencias:</strong> Alteración de las señales eléctricas o de fibra
+                                óptica que transforman un '0' en un '1' durante la transferencia.</li>
+                            <li><strong>Pérdida de paquetes parcial:</strong> Aunque los protocolos como TCP tienen
+                                corrección de errores, en volúmenes masivos (PB) pueden ocurrir fallos infinitesimales
+                                que eluden las capas de transporte.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🐛 Bugs de Software y Lógica</h4>
+                        <p>El código que gestiona los datos puede ser el propio causante de la corrupción:</p>
+                        <ul>
+                            <li><strong>Errores en el File System:</strong> Fallos en la lógica de escritura de HDFS o
+                                Ceph que escriben metadatos inconsistentes o bloques incompletos.</li>
+                            <li><strong>Punteros y Memoria:</strong> Corrupción de memoria RAM en el servidor que
+                                provoca que se escriban datos "basura" en el disco antes de que el proceso sea
+                                consciente del error.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🧟 Bit Rot y Manipulación</h4>
+                        <p>Existen amenazas silenciosas y externas que requieren vigilancia constante:</p>
+                        <ul>
+                            <li><strong>Bit Rot (Degradación Silenciosa):</strong> Cambios espontáneos de bits debidos a
+                                rayos cósmicos o radiación electromagnética ambiental, imperceptibles hasta que se
+                                intenta leer el archivo.</li>
+                            <li><strong>Manipulación Maliciosa:</strong> Intrusiones que modifican datos críticos (como
+                                registros financieros o de salud) para alterar resultados analíticos o cometer fraude.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: OBJETIVOS -->
+            <section class="section">
+                <h2 class="section-title">Objetivos de la Verificación</h2>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-label"><strong>Detección temprana:</strong></div>
+                        <div class="step-content">Identificar bloques o archivos dañados antes de que afecten a los
+                            usuarios finales o procesos analíticos.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Recuperación automática:</strong></div>
+                        <div class="step-content">Restaurar datos válidos desde réplicas sanas o fragmentos redundantes
+                            sin intervención manual.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Auditoría y trazabilidad:</strong></div>
+                        <div class="step-content">Registrar eventos de verificación y reparación para cumplir con
+                            normativas (como GDPR) y garantizar la gobernanza.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Transparencia:</strong></div>
+                        <div class="step-content">Ejecutar los procesos de mantenimiento en segundo plano (background
+                            scrubbing), manteniendo la continuidad del servicio.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: CASO DE ESTUDIO -->
+            <section class="section">
+                <h2 class="section-title">Caso de Estudio: Streaming Masivo</h2>
+                <div class="feature-card secondary">
+                    <p>Una empresa de streaming utiliza <strong>Ceph</strong> para gestionar <strong>10 PB</strong> de
+                        contenido multimedia. Durante un proceso de <em>deep scrub</em> (escaneo profundo), el sistema
+                        identifica una réplica corrupta debido a un fallo de disco.</p>
+                    <p><strong>Solución:</strong> El sistema restaura el objeto desde otra réplica en <strong>menos de 5
+                            minutos</strong>, registrando el evento automáticamente. Este proceso asegura una
+                        disponibilidad del <strong>99.999%</strong> y cumple con los requisitos estratégicos de
+                        trazabilidad de datos.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: COMPARATIVA -->
+            <section class="section">
+                <h2 class="section-title">Checksum vs Hash Criptográfico</h2>
+                <p>Aunque ambos generan firmas únicas, sus objetivos y rendimientos difieren significativamente:</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Checksum</th>
+                                <th>Hash Criptográfico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Objetivo</strong></td>
+                                <td>Detección de errores accidentales.</td>
+                                <td>Detección de alteraciones o ataques.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ejemplos</strong></td>
+                                <td>CRC32, Adler-32</td>
+                                <td>SHA-256, SHA-512</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Velocidad</strong></td>
+                                <td>Muy alta</td>
+                                <td>Media / Baja</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Colisiones</strong></td>
+                                <td>Posibles</td>
+                                <td>Muy raras</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso en Big Data</strong></td>
+                                <td>HDFS, GlusterFS</td>
+                                <td>Auditorías, cifrado, Ceph</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN FINAL -->
+            <section class="section">
+                <h2 class="section-title">Resiliencia de Datos</h2>
+                <div class="expert-quote">
+                    <p class="quote-text">
+                        "En sistemas a escala de Petabytes, la integridad no es opcional. Reside en la capacidad del
+                        sistema para detectar y corregir errores de forma transparente para el usuario."
+                    </p>
+                    <span class="quote-author">Manual de Operaciones Big Data iLERNA</span>
+                </div>
+            </section>
         </main>
 
         <footer>
-            <div class="footer-container">
-                <div class="footer-links">
-                    <a href="#">Aviso Legal</a>
-                    <a href="#">Privacidad</a>
-                    <a href="#">Cookies</a>
-                </div>
-                <div class="footer-copy">
-                    &copy; 2025 iLERNA. Todos los derechos reservados.
-                </div>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial.</p>
+            <div class="penguin">
+                <span>🐧</span>
             </div>
         </footer>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="../js/lecciones.js"></script>
 </body>
 

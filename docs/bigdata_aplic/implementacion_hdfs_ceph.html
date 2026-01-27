@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementación en HDFS y Ceph | iLERNA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Implementación HDFS y Ceph</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Implementación Práctica en HDFS y Ceph</h1>
+                <p class="subtitle">Mecanismos reales de verificación de integridad en sistemas distribuidos</p>
+            </div>
+            <!-- SECCIÓN: HDFS -->
+            <section class="section">
+                <h2 class="section-title">1. HDFS (Hadoop Distributed File System)</h2>
+                <p>HDFS garantiza la integridad de los datos mediante <strong>sumas de verificación (checksums)</strong>
+                    a nivel de bloque, integradas nativamente en su arquitectura maestro-esclavo.</p>
+
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-label"><strong>Escritura:</strong></div>
+                        <div class="step-content">Cada bloque de 128 MB se divide en pequeños <em>chunks</em> de 512
+                            bytes. Para cada chunk se genera un checksum <strong>CRC32</strong>, que se almacena en un
+                            archivo de metadatos separado y oculto.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Lectura:</strong></div>
+                        <div class="step-content">Cuando un cliente o DataNode lee datos, recalcula el checksum del
+                            chunk y lo compara con el valor almacenado. Si hay discrepancias, se lanza una excepción
+                            <code>ChecksumException</code>.
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Reparación:</strong></div>
+                        <div class="step-content">El NameNode (maestro) detecta el fallo, marca el bloque como corrupto
+                            y solicita una copia válida desde otra réplica en el clúster, restaurando el factor de
+                            replicación original (usualmente 3).</div>
+                    </div>
+                </div>
+
+                <div class="grid-2-cols mt-2">
+                    <div class="feature-card primary">
+                        <h4>✅ Ventajas</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>• Detección 100% transparente y automática.</li>
+                            <li>• Reparación sin intervención humana.</li>
+                            <li>• Sobrecarga mínima (< 0.1% del espacio).</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>⚠️ Limitaciones</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>• Dependencia crítica del NameNode.</li>
+                            <li>• Menor eficiencia en escrituras muy pequeñas debido a la gestión de metadatos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="expert-quote mt-2">
+                    <p class="quote-text">
+                        "Ejemplo práctico: En un clúster HDFS de 100 nodos, si una lectura en el nodo <code>dn1</code>
+                        detecta un bloque corrupto, el cliente informa al NameNode. Este redirige inmediatamente la
+                        solicitud a <code>dn2</code> (que tiene una copia sana) y ordena a <code>dn3</code> replicar ese
+                        bloque para reemplazar al dañado. Todo ocurre en segundos."
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: CEPH -->
+            <section class="section">
+                <h2 class="section-title">2. Ceph (Object Storage)</h2>
+                <p>Ceph, un sistema de almacenamiento unificado y sin punto único de fallo, utiliza el algoritmo
+                    <strong>CRUSH</strong> para la distribución de datos y mecanismos avanzados de <em>Scrubbing</em>
+                    para la integridad.
+                </p>
+
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-label"><strong>Verificación por Objeto:</strong></div>
+                        <div class="step-content">Cada objeto almacenado tiene un hash asociado (configurables,
+                            típicamente <strong>CRC32C</strong> para rendimiento o algoritmos más fuertes) que se
+                            verifica en cada operación de lectura.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Light Scrub:</strong></div>
+                        <div class="step-content">Proceso diario/semanal que verifica la consistencia de los metadatos y
+                            tamaños de los objetos sin leer la data completa, con bajo impacto en el rendimiento.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-label"><strong>Deep Scrub:</strong></div>
+                        <div class="step-content">Proceso mensual intensivo que lee <strong>bit a bit</strong> todas las
+                            réplicas de los datos y compara sus hashes para detectar "bit rot" (corrupción silenciosa en
+                            disco).</div>
+                    </div>
+                </div>
+
+                <div class="grid-2-cols mt-2">
+                    <div class="feature-card primary">
+                        <h4>✅ Ventajas</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>• Autogestión total sin nodo maestro central.</li>
+                            <li>• Detección proactiva de corrupción silenciosa (Deep Scrub).</li>
+                            <li>• Auditoría detallada desde los nodos Monitor (MON).</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>⚠️ Limitaciones</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>• El Deep Scrub consume mucho I/O y puede afectar el rendimiento si no se programa bien
+                                (ej. de noche).</li>
+                            <li>• Configuración inicial compleja.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box info mt-2">
+                    <p class="title">🔍 Caso Real: Genómica</p>
+                    <p class="content">Durante un <em>deep scrub</em> nocturno en un clúster Ceph de 200 OSDs, el
+                        sistema detecta que el hash de un objeto de datos genómicos en el disco 45 no coincide con sus
+                        réplicas. Ceph marca el OSD como sospechoso y restaura el objeto desde otra réplica válida en 5
+                        minutos, garantizando que el análisis científico no se base en datos corruptos.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: COMPARATIVA -->
+            <section class="section">
+                <h2 class="section-title">3. Comparativa: HDFS vs Ceph</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>HDFS</th>
+                                <th>Ceph</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Arquitectura</strong></td>
+                                <td>Maestro-Esclavo (NameNode central)</td>
+                                <td>Distribuida (CRUSH, P2P)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Algoritmo Base</strong></td>
+                                <td>CRC32 (por chunks de 512B)</td>
+                                <td>CRC32C / SHA-1 (por objeto)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Verificación Proactiva</strong></td>
+                                <td>Manual (comando <code>hdfs fsck</code>) o en lectura</td>
+                                <td>Automática (Light & Deep Scrubbing)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mecanismo de Reparación</strong></td>
+                                <td>Re-replicación dirigida por NameNode</td>
+                                <td>Auto-heal distribuido entre OSDs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Caso de Uso Ideal</strong></td>
+                                <td>Big Data Analítico (Batch, Spark, Hive)</td>
+                                <td>Cloud, Block Storage, Objetos, Kubernetes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

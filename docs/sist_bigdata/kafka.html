@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Apache Kafka en Big Data: Plataforma de streaming distribuido para procesamiento de datos en tiempo real">
-    <meta name="keywords" content="Apache Kafka, streaming, Big Data, procesamiento tiempo real, mensajería distribuida, topics, particiones">
+    <meta name="description"
+        content="Apache Kafka en Big Data: Plataforma de streaming distribuido para procesamiento de datos en tiempo real">
+    <meta name="keywords"
+        content="Apache Kafka, streaming, Big Data, procesamiento tiempo real, mensajería distribuida, topics, particiones">
     <meta name="author" content="Bjlanza">
     <meta name="organization" content="ILERNA">
     <title>Apache Kafka en Big Data | iLERNA</title>
     <link rel="stylesheet" href="../css/lecciones.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -60,16 +65,24 @@
             <h2>¿Qué es Apache Kafka?</h2>
 
             <p>
-                <strong>Apache Kafka</strong> es una plataforma de streaming distribuido de código abierto creada originalmente por LinkedIn en 2011 y posteriormente donada a la Apache Software Foundation. Kafka está diseñado para manejar <strong>flujos de datos en tiempo real</strong> a escala masiva, procesando millones de eventos por segundo con baja latencia.
+                <strong>Apache Kafka</strong> es una plataforma de streaming distribuido de código abierto creada
+                originalmente por LinkedIn en 2011 y posteriormente donada a la Apache Software Foundation. Kafka está
+                diseñado para manejar <strong>flujos de datos en tiempo real</strong> a escala masiva, procesando
+                millones de eventos por segundo con baja latencia.
             </p>
 
             <p>
-                En arquitecturas de Big Data, Kafka actúa como un <strong>sistema nervioso central</strong> que permite la comunicación entre múltiples aplicaciones, microservicios y sistemas de procesamiento de datos, garantizando la entrega fiable de mensajes con alta disponibilidad y tolerancia a fallos.
+                En arquitecturas de Big Data, Kafka actúa como un <strong>sistema nervioso central</strong> que permite
+                la comunicación entre múltiples aplicaciones, microservicios y sistemas de procesamiento de datos,
+                garantizando la entrega fiable de mensajes con alta disponibilidad y tolerancia a fallos.
             </p>
 
             <div class="highlight-box secondary">
                 <p class="title">Ejemplo Real: LinkedIn</p>
-                <p class="content">LinkedIn procesa más de <strong>7 billones de mensajes diarios</strong> a través de Kafka, gestionando actividades de usuarios, recomendaciones, análisis en tiempo real y sincronización de datos entre más de 100 sistemas diferentes con una latencia promedio de menos de 10 milisegundos.</p>
+                <p class="content">LinkedIn procesa más de <strong>7 billones de mensajes diarios</strong> a través de
+                    Kafka, gestionando actividades de usuarios, recomendaciones, análisis en tiempo real y
+                    sincronización de datos entre más de 100 sistemas diferentes con una latencia promedio de menos de
+                    10 milisegundos.</p>
             </div>
 
             <h3>Capacidades Principales</h3>
@@ -106,151 +119,242 @@
             <div class="svg-container">
                 <svg width="900" height="550" viewBox="0 0 900 550" style="max-width: 100%;">
                     <!-- Título -->
-                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Arquitectura Completa de Apache Kafka</text>
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Arquitectura Completa de Apache Kafka</text>
 
                     <!-- PRODUCTORES -->
-                    <rect x="50" y="80" width="180" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
-                    <text x="140" y="110" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">PRODUCTORES</text>
-                    <text x="140" y="130" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Aplicaciones que</text>
-                    <text x="140" y="145" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">publican mensajes</text>
+                    <rect x="50" y="80" width="180" height="80" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="140" y="110" font-size="16" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">PRODUCTORES</text>
+                    <text x="140" y="130" font-size="12" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Aplicaciones que</text>
+                    <text x="140" y="145" font-size="12" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">publican mensajes</text>
 
                     <!-- Apps productoras -->
-                    <circle cx="80" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
-                    <text x="80" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App1</text>
+                    <circle cx="80" cy="100" r="12" fill="#49B9CE" opacity="0.7" />
+                    <text x="80" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">App1</text>
 
-                    <circle cx="140" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
-                    <text x="140" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App2</text>
+                    <circle cx="140" cy="100" r="12" fill="#49B9CE" opacity="0.7" />
+                    <text x="140" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">App2</text>
 
-                    <circle cx="200" cy="100" r="12" fill="#49B9CE" opacity="0.7"/>
-                    <text x="200" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">App3</text>
+                    <circle cx="200" cy="100" r="12" fill="#49B9CE" opacity="0.7" />
+                    <text x="200" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">App3</text>
 
                     <!-- CLUSTER KAFKA (Centro) -->
-                    <rect x="280" y="60" width="340" height="350" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="4" rx="15"/>
-                    <text x="450" y="90" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">KAFKA CLUSTER</text>
+                    <rect x="280" y="60" width="340" height="350" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="4"
+                        rx="15" />
+                    <text x="450" y="90" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">KAFKA CLUSTER</text>
 
                     <!-- ZooKeeper -->
-                    <rect x="300" y="110" width="140" height="50" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2" rx="8"/>
-                    <text x="370" y="130" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">ZooKeeper</text>
-                    <text x="370" y="148" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Coordinación cluster</text>
+                    <rect x="300" y="110" width="140" height="50" fill="#C5B9D8" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="370" y="130" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">ZooKeeper</text>
+                    <text x="370" y="148" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Coordinación cluster</text>
 
                     <!-- Brokers -->
-                    <text x="450" y="190" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">BROKERS (Servidores Kafka)</text>
+                    <text x="450" y="190" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">BROKERS (Servidores Kafka)</text>
 
                     <!-- Broker 1 -->
-                    <rect x="300" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="345" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 1</text>
+                    <rect x="300" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="345" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Broker 1</text>
 
-                    <rect x="310" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="345" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic A</text>
-                    <text x="345" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0,1</text>
+                    <rect x="310" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="345" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic A</text>
+                    <text x="345" y="260" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 0,1</text>
 
-                    <rect x="310" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="345" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic B</text>
-                    <text x="345" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0</text>
+                    <rect x="310" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="345" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic B</text>
+                    <text x="345" y="305" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 0</text>
 
-                    <rect x="310" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
-                    <text x="345" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
-                    <text x="345" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P2</text>
-                    <text x="345" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic B-P1</text>
+                    <rect x="310" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1"
+                        rx="5" />
+                    <text x="345" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Réplicas</text>
+                    <text x="345" y="352" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic A-P2</text>
+                    <text x="345" y="362" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic B-P1</text>
 
                     <!-- Broker 2 -->
-                    <rect x="405" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="450" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 2</text>
+                    <rect x="405" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="450" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Broker 2</text>
 
-                    <rect x="415" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="450" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic A</text>
-                    <text x="450" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 2</text>
+                    <rect x="415" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="450" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic A</text>
+                    <text x="450" y="260" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 2</text>
 
-                    <rect x="415" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="450" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic C</text>
-                    <text x="450" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0</text>
+                    <rect x="415" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="450" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic C</text>
+                    <text x="450" y="305" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 0</text>
 
-                    <rect x="415" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
-                    <text x="450" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
-                    <text x="450" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P0</text>
-                    <text x="450" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic B-P0</text>
+                    <rect x="415" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1"
+                        rx="5" />
+                    <text x="450" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Réplicas</text>
+                    <text x="450" y="352" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic A-P0</text>
+                    <text x="450" y="362" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic B-P0</text>
 
                     <!-- Broker 3 -->
-                    <rect x="510" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="555" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Broker 3</text>
+                    <rect x="510" y="200" width="90" height="180" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="555" y="220" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Broker 3</text>
 
-                    <rect x="520" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="555" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic B</text>
-                    <text x="555" y="260" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 1</text>
+                    <rect x="520" y="235" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="555" y="248" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic B</text>
+                    <text x="555" y="260" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 1</text>
 
-                    <rect x="520" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1" rx="5"/>
-                    <text x="555" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Topic C</text>
-                    <text x="555" y="305" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 1</text>
+                    <rect x="520" y="280" width="70" height="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="1"
+                        rx="5" />
+                    <text x="555" y="293" font-size="10" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Topic C</text>
+                    <text x="555" y="305" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 1</text>
 
-                    <rect x="520" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1" rx="5"/>
-                    <text x="555" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Réplicas</text>
-                    <text x="555" y="352" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic A-P1</text>
-                    <text x="555" y="362" font-size="8" fill="#555555" text-anchor="middle" font-family="Montserrat">Topic C-P0</text>
+                    <rect x="520" y="325" width="70" height="45" fill="#FFF8DC" stroke="#FFA726" stroke-width="1"
+                        rx="5" />
+                    <text x="555" y="340" font-size="9" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Réplicas</text>
+                    <text x="555" y="352" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic A-P1</text>
+                    <text x="555" y="362" font-size="8" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Topic C-P0</text>
 
                     <!-- CONSUMIDORES -->
-                    <rect x="670" y="80" width="180" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="10"/>
-                    <text x="760" y="110" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">CONSUMIDORES</text>
-                    <text x="760" y="130" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">Aplicaciones que</text>
-                    <text x="760" y="145" font-size="12" fill="#555555" text-anchor="middle" font-family="Montserrat">leen mensajes</text>
+                    <rect x="670" y="80" width="180" height="80" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="760" y="110" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">CONSUMIDORES</text>
+                    <text x="760" y="130" font-size="12" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Aplicaciones que</text>
+                    <text x="760" y="145" font-size="12" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">leen mensajes</text>
 
                     <!-- Apps consumidoras -->
-                    <circle cx="700" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
-                    <text x="700" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C1</text>
+                    <circle cx="700" cy="100" r="12" fill="#8A7AAF" opacity="0.7" />
+                    <text x="700" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">C1</text>
 
-                    <circle cx="760" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
-                    <text x="760" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C2</text>
+                    <circle cx="760" cy="100" r="12" fill="#8A7AAF" opacity="0.7" />
+                    <text x="760" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">C2</text>
 
-                    <circle cx="820" cy="100" r="12" fill="#8A7AAF" opacity="0.7"/>
-                    <text x="820" y="105" font-size="10" fill="white" text-anchor="middle" font-family="Montserrat">C3</text>
+                    <circle cx="820" cy="100" r="12" fill="#8A7AAF" opacity="0.7" />
+                    <text x="820" y="105" font-size="10" fill="white" text-anchor="middle"
+                        font-family="Montserrat">C3</text>
 
                     <!-- CONSUMER GROUPS -->
-                    <rect x="670" y="200" width="180" height="100" fill="white" stroke="#8A7AAF" stroke-width="2" rx="10"/>
-                    <text x="760" y="225" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group 1</text>
+                    <rect x="670" y="200" width="180" height="100" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="10" />
+                    <text x="760" y="225" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer Group 1</text>
 
-                    <rect x="680" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1" rx="5"/>
-                    <text x="715" y="255" font-size="10" fill="#333333" text-anchor="middle" font-family="Montserrat">Consumer A</text>
-                    <text x="715" y="270" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 0,1</text>
+                    <rect x="680" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1"
+                        rx="5" />
+                    <text x="715" y="255" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Consumer A</text>
+                    <text x="715" y="270" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 0,1</text>
 
-                    <rect x="760" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1" rx="5"/>
-                    <text x="795" y="255" font-size="10" fill="#333333" text-anchor="middle" font-family="Montserrat">Consumer B</text>
-                    <text x="795" y="270" font-size="9" fill="#555555" text-anchor="middle" font-family="Montserrat">Part 2</text>
+                    <rect x="760" y="240" width="70" height="45" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="1"
+                        rx="5" />
+                    <text x="795" y="255" font-size="10" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Consumer B</text>
+                    <text x="795" y="270" font-size="9" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Part 2</text>
 
-                    <rect x="670" y="320" width="180" height="60" fill="white" stroke="#8A7AAF" stroke-width="2" rx="10"/>
-                    <text x="760" y="345" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group 2</text>
-                    <text x="760" y="365" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Lee todos los mensajes</text>
+                    <rect x="670" y="320" width="180" height="60" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="10" />
+                    <text x="760" y="345" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer Group 2</text>
+                    <text x="760" y="365" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Lee todos los mensajes</text>
 
                     <!-- Flechas Productores -> Cluster -->
-                    <path d="M 230 120 L 280 180" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)" fill="none"/>
-                    <text x="250" y="145" font-size="11" fill="#49B9CE" font-weight="bold" font-family="Montserrat">Publish</text>
+                    <path d="M 230 120 L 280 180" stroke="#49B9CE" stroke-width="3" marker-end="url(#arrowblue)"
+                        fill="none" />
+                    <text x="250" y="145" font-size="11" fill="#49B9CE" font-weight="bold"
+                        font-family="Montserrat">Publish</text>
 
                     <!-- Flechas Cluster -> Consumidores -->
-                    <path d="M 620 180 L 670 120" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)" fill="none"/>
-                    <text x="640" y="145" font-size="11" fill="#8A7AAF" font-weight="bold" font-family="Montserrat">Subscribe</text>
+                    <path d="M 620 180 L 670 120" stroke="#8A7AAF" stroke-width="3" marker-end="url(#arrowpurple)"
+                        fill="none" />
+                    <text x="640" y="145" font-size="11" fill="#8A7AAF" font-weight="bold"
+                        font-family="Montserrat">Subscribe</text>
 
                     <!-- ZooKeeper conectado a Brokers -->
-                    <line x1="370" y1="160" x2="345" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
-                    <line x1="370" y1="160" x2="450" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
-                    <line x1="440" y1="160" x2="555" y2="200" stroke="#8A7AAF" stroke-width="2" stroke-dasharray="3,3"/>
+                    <line x1="370" y1="160" x2="345" y2="200" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="3,3" />
+                    <line x1="370" y1="160" x2="450" y2="200" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="3,3" />
+                    <line x1="440" y1="160" x2="555" y2="200" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="3,3" />
 
                     <!-- Marcadores de flecha -->
                     <defs>
-                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
                         </marker>
-                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
                         </marker>
                     </defs>
 
                     <!-- Leyenda -->
-                    <rect x="50" y="440" width="800" height="90" fill="#fafafa" stroke="#e5e5e5" stroke-width="2" rx="8"/>
-                    <text x="450" y="465" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle" font-family="Montserrat">Conceptos Clave de la Arquitectura</text>
+                    <rect x="50" y="440" width="800" height="90" fill="#fafafa" stroke="#e5e5e5" stroke-width="2"
+                        rx="8" />
+                    <text x="450" y="465" font-size="14" font-weight="bold" fill="#333333" text-anchor="middle"
+                        font-family="Montserrat">Conceptos Clave de la Arquitectura</text>
 
-                    <text x="70" y="490" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#49B9CE">Productores:</tspan> Publican mensajes a topics específicos</text>
-                    <text x="70" y="508" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#8A7AAF">Brokers:</tspan> Servidores que almacenan y sirven mensajes</text>
+                    <text x="70" y="490" font-size="11" fill="#333333" font-family="Montserrat">
+                        <tspan font-weight="bold" fill="#49B9CE">Productores:</tspan> Publican mensajes a topics
+                        específicos
+                    </text>
+                    <text x="70" y="508" font-size="11" fill="#333333" font-family="Montserrat">
+                        <tspan font-weight="bold" fill="#8A7AAF">Brokers:</tspan> Servidores que almacenan y sirven
+                        mensajes
+                    </text>
 
-                    <text x="470" y="490" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#49B9CE">Particiones:</tspan> División de topics para paralelismo</text>
-                    <text x="470" y="508" font-size="11" fill="#333333" font-family="Montserrat"><tspan font-weight="bold" fill="#8A7AAF">Consumer Groups:</tspan> Procesamiento paralelo coordinado</text>
+                    <text x="470" y="490" font-size="11" fill="#333333" font-family="Montserrat">
+                        <tspan font-weight="bold" fill="#49B9CE">Particiones:</tspan> División de topics para
+                        paralelismo
+                    </text>
+                    <text x="470" y="508" font-size="11" fill="#333333" font-family="Montserrat">
+                        <tspan font-weight="bold" fill="#8A7AAF">Consumer Groups:</tspan> Procesamiento paralelo
+                        coordinado
+                    </text>
                 </svg>
             </div>
 
@@ -314,7 +418,9 @@
             <h2>Productores: Publicando Mensajes</h2>
 
             <p>
-                Los <strong>productores</strong> son aplicaciones que publican datos a topics de Kafka. Un productor puede enviar mensajes de forma síncrona o asíncrona, y Kafka garantiza su entrega ordenada dentro de cada partición.
+                Los <strong>productores</strong> son aplicaciones que publican datos a topics de Kafka. Un productor
+                puede enviar mensajes de forma síncrona o asíncrona, y Kafka garantiza su entrega ordenada dentro de
+                cada partición.
             </p>
 
             <h3 class="color-primary">Ejemplo: Productor en Python</h3>
@@ -446,7 +552,9 @@ public class KafkaProducerExample {
             <h2>Consumidores y Consumer Groups</h2>
 
             <p>
-                Los <strong>consumidores</strong> leen mensajes de topics. Kafka organiza consumidores en <strong>Consumer Groups</strong> para procesamiento paralelo: cada partición es procesada por un solo consumidor del grupo, permitiendo escalabilidad horizontal.
+                Los <strong>consumidores</strong> leen mensajes de topics. Kafka organiza consumidores en
+                <strong>Consumer Groups</strong> para procesamiento paralelo: cada partición es procesada por un solo
+                consumidor del grupo, permitiendo escalabilidad horizontal.
             </p>
 
             <h3 class="color-secondary">Ejemplo: Consumidor en Python</h3>
@@ -531,64 +639,101 @@ if __name__ == '__main__':
 
             <div class="svg-container mt-2">
                 <svg width="700" height="300" viewBox="0 0 700 300" style="max-width: 100%;">
-                    <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Distribución de Particiones entre Consumidores</text>
+                    <text x="350" y="25" font-size="16" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Distribución de Particiones entre Consumidores</text>
 
                     <!-- Topic con 3 particiones -->
-                    <text x="100" y="70" font-size="14" font-weight="bold" fill="#333333" font-family="Montserrat">Topic: pedidos</text>
+                    <text x="100" y="70" font-size="14" font-weight="bold" fill="#333333"
+                        font-family="Montserrat">Topic: pedidos</text>
 
-                    <rect x="50" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="100" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 0</text>
-                    <text x="100" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-1000</text>
+                    <rect x="50" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="100" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Partición 0</text>
+                    <text x="100" y="130" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Offsets: 0-1000</text>
 
-                    <rect x="170" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="220" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 1</text>
-                    <text x="220" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-2000</text>
+                    <rect x="170" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="220" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Partición 1</text>
+                    <text x="220" y="130" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Offsets: 0-2000</text>
 
-                    <rect x="290" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" rx="8"/>
-                    <text x="340" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle" font-family="Montserrat">Partición 2</text>
-                    <text x="340" y="130" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Offsets: 0-1500</text>
+                    <rect x="290" y="85" width="100" height="60" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2"
+                        rx="8" />
+                    <text x="340" y="110" font-size="13" font-weight="bold" fill="#49B9CE" text-anchor="middle"
+                        font-family="Montserrat">Partición 2</text>
+                    <text x="340" y="130" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Offsets: 0-1500</text>
 
                     <!-- Consumer Group -->
-                    <text x="220" y="185" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer Group: procesador-paralelo</text>
+                    <text x="220" y="185" font-size="14" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer Group: procesador-paralelo</text>
 
-                    <rect x="50" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
-                    <text x="100" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 1</text>
-                    <text x="100" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
-                    <text x="100" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 0</text>
+                    <rect x="50" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="100" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer 1</text>
+                    <text x="100" y="243" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Asignado:</text>
+                    <text x="100" y="258" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Partición 0</text>
 
-                    <rect x="170" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
-                    <text x="220" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 2</text>
-                    <text x="220" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
-                    <text x="220" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 1</text>
+                    <rect x="170" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="220" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer 2</text>
+                    <text x="220" y="243" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Asignado:</text>
+                    <text x="220" y="258" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Partición 1</text>
 
-                    <rect x="290" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" rx="8"/>
-                    <text x="340" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle" font-family="Montserrat">Consumer 3</text>
-                    <text x="340" y="243" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Asignado:</text>
-                    <text x="340" y="258" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Partición 2</text>
+                    <rect x="290" y="200" width="100" height="70" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        rx="8" />
+                    <text x="340" y="225" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle"
+                        font-family="Montserrat">Consumer 3</text>
+                    <text x="340" y="243" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Asignado:</text>
+                    <text x="340" y="258" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">Partición 2</text>
 
                     <!-- Flechas de asignación -->
-                    <path d="M 100 145 L 100 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
-                    <path d="M 220 145 L 220 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
-                    <path d="M 340 145 L 340 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)" fill="none"/>
+                    <path d="M 100 145 L 100 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                        fill="none" />
+                    <path d="M 220 145 L 220 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                        fill="none" />
+                    <path d="M 340 145 L 340 200" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowpurple2)"
+                        fill="none" />
 
                     <defs>
-                        <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        <marker id="arrowpurple2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
                         </marker>
                     </defs>
 
                     <!-- Nota explicativa -->
-                    <rect x="450" y="80" width="220" height="190" fill="#FFF8DC" stroke="#FFA726" stroke-width="2" rx="8"/>
-                    <text x="560" y="105" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle" font-family="Montserrat">Ventajas</text>
+                    <rect x="450" y="80" width="220" height="190" fill="#FFF8DC" stroke="#FFA726" stroke-width="2"
+                        rx="8" />
+                    <text x="560" y="105" font-size="13" font-weight="bold" fill="#E65100" text-anchor="middle"
+                        font-family="Montserrat">Ventajas</text>
 
-                    <text x="465" y="130" font-size="11" fill="#333333" font-family="Montserrat">• Procesamiento paralelo</text>
-                    <text x="465" y="150" font-size="11" fill="#333333" font-family="Montserrat">• Escalabilidad horizontal</text>
-                    <text x="465" y="170" font-size="11" fill="#333333" font-family="Montserrat">• Alta disponibilidad</text>
-                    <text x="465" y="190" font-size="11" fill="#333333" font-family="Montserrat">• Rebalanceo automático</text>
+                    <text x="465" y="130" font-size="11" fill="#333333" font-family="Montserrat">• Procesamiento
+                        paralelo</text>
+                    <text x="465" y="150" font-size="11" fill="#333333" font-family="Montserrat">• Escalabilidad
+                        horizontal</text>
+                    <text x="465" y="170" font-size="11" fill="#333333" font-family="Montserrat">• Alta
+                        disponibilidad</text>
+                    <text x="465" y="190" font-size="11" fill="#333333" font-family="Montserrat">• Rebalanceo
+                        automático</text>
 
-                    <text x="560" y="220" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Si un consumidor falla,</text>
-                    <text x="560" y="235" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">sus particiones se</text>
-                    <text x="560" y="250" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">reasignan automáticamente</text>
+                    <text x="560" y="220" font-size="10" fill="#555555" text-anchor="middle" font-family="Montserrat">Si
+                        un consumidor falla,</text>
+                    <text x="560" y="235" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">sus particiones se</text>
+                    <text x="560" y="250" font-size="10" fill="#555555" text-anchor="middle"
+                        font-family="Montserrat">reasignan automáticamente</text>
                 </svg>
             </div>
         </section>
@@ -598,7 +743,9 @@ if __name__ == '__main__':
             <h2>Casos de Uso en Big Data</h2>
 
             <p>
-                Kafka es fundamental en arquitecturas de Big Data modernas, donde se requiere procesamiento de datos en tiempo real a gran escala. Las empresas más importantes del mundo confían en Kafka para sus infraestructuras críticas.
+                Kafka es fundamental en arquitecturas de Big Data modernas, donde se requiere procesamiento de datos en
+                tiempo real a gran escala. Las empresas más importantes del mundo confían en Kafka para sus
+                infraestructuras críticas.
             </p>
 
             <div class="grid-comparison">
@@ -681,7 +828,9 @@ if __name__ == '__main__':
             <h2>Procesamiento de Streams con Kafka Streams y ksqlDB</h2>
 
             <p>
-                <strong>Kafka Streams</strong> es una librería cliente para construir aplicaciones de procesamiento de streams en tiempo real. <strong>ksqlDB</strong> permite consultas SQL sobre streams de Kafka sin escribir código.
+                <strong>Kafka Streams</strong> es una librería cliente para construir aplicaciones de procesamiento de
+                streams en tiempo real. <strong>ksqlDB</strong> permite consultas SQL sobre streams de Kafka sin
+                escribir código.
             </p>
 
             <h3 class="color-primary">Ejemplo: Kafka Streams en Java</h3>
@@ -1119,10 +1268,16 @@ auto.create.topics.enable=false</code></pre>
                 </div>
             </div>
 
-            <div class="challenge-box mt-2">
-                <h3>Apache Kafka en el Futuro del Big Data</h3>
+            <div class="highlight-box"
+                style="text-align: center; border-left: 4px solid var(--color-primary); margin-top: 2rem;">
+                <h3 style="color: var(--color-primary);">Apache Kafka en el Futuro del Big Data</h3>
                 <p>
-                    Apache Kafka se ha consolidado como la <strong>columna vertebral de las arquitecturas modernas de datos</strong>, siendo adoptado por miles de empresas globalmente. Su capacidad para manejar streaming en tiempo real a escala masiva lo convierte en una pieza fundamental para aplicaciones de <strong>IoT, Machine Learning en tiempo real, arquitecturas event-driven</strong> y pipelines de <strong>Big Data</strong>. Con el crecimiento exponencial de datos y la demanda de procesamiento en tiempo real, Kafka continuará siendo una tecnología esencial en los próximos años.
+                    Apache Kafka se ha consolidado como la <strong>columna vertebral de las arquitecturas modernas de
+                        datos</strong>, siendo adoptado por miles de empresas globalmente. Su capacidad para manejar
+                    streaming en tiempo real a escala masiva lo convierte en una pieza fundamental para aplicaciones de
+                    <strong>IoT, Machine Learning en tiempo real, arquitecturas event-driven</strong> y pipelines de
+                    <strong>Big Data</strong>. Con el crecimiento exponencial de datos y la demanda de procesamiento en
+                    tiempo real, Kafka continuará siendo una tecnología esencial en los próximos años.
                 </p>
             </div>
         </section>
@@ -1149,6 +1304,8 @@ auto.create.topics.enable=false</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="../js/copy-code.js"></script>
     <script>hljs.highlightAll();</script>
 </body>
+
 </html>

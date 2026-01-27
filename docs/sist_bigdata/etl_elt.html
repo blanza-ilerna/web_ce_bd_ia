@@ -42,20 +42,30 @@
             <p class="subtitle">Procesos de Integración de Datos en Arquitecturas Modernas</p>
         </div>
 
-<!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
         <section class="section">
             <h2>¿Qué son ETL y ELT?</h2>
             <p>
-                En el mundo del Big Data y la Inteligencia Artificial, la <strong>integración de datos</strong> es fundamental. Cada día, las organizaciones manejan millones de registros provenientes de múltiples fuentes: bases de datos relacionales, APIs, logs de aplicaciones, sensores IoT, redes sociales, etc. Para convertir estos datos dispersos en información útil, necesitamos procesos sistemáticos de integración.
+                En el mundo del Big Data y la Inteligencia Artificial, la <strong>integración de datos</strong> es
+                fundamental. Cada día, las organizaciones manejan millones de registros provenientes de múltiples
+                fuentes: bases de datos relacionales, APIs, logs de aplicaciones, sensores IoT, redes sociales, etc.
+                Para convertir estos datos dispersos en información útil, necesitamos procesos sistemáticos de
+                integración.
             </p>
             <p>
-                <strong>ETL</strong> (Extract, Transform, Load) y <strong>ELT</strong> (Extract, Load, Transform) son dos paradigmas complementarios que definen <strong>cómo, cuándo y dónde</strong> transformamos los datos antes de su almacenamiento y análisis. La elección entre uno u otro depende de factores como el volumen de datos, la infraestructura disponible, los requisitos de latencia y el caso de uso específico.
+                <strong>ETL</strong> (Extract, Transform, Load) y <strong>ELT</strong> (Extract, Load, Transform) son
+                dos paradigmas complementarios que definen <strong>cómo, cuándo y dónde</strong> transformamos los datos
+                antes de su almacenamiento y análisis. La elección entre uno u otro depende de factores como el volumen
+                de datos, la infraestructura disponible, los requisitos de latencia y el caso de uso específico.
             </p>
-            
+
             <!-- CAJA DE EJEMPLO -->
             <div class="highlight-box primary">
                 <p>Ejemplo Real - Netflix:</p>
-                <p>Netflix procesa diariamente más de 15 petabytes de datos de streaming usando pipelines ELT con Apache Spark en AWS. Los datos se cargan primero en S3 (data lake) y luego se transforman según las necesidades analíticas específicas de cada equipo: recomendaciones, calidad de video, detección de fraude, etc.</p>
+                <p>Netflix procesa diariamente más de 15 petabytes de datos de streaming usando pipelines ELT con Apache
+                    Spark en AWS. Los datos se cargan primero en S3 (data lake) y luego se transforman según las
+                    necesidades analíticas específicas de cada equipo: recomendaciones, calidad de video, detección de
+                    fraude, etc.</p>
             </div>
 
             <!-- CONCEPTOS EN GRID -->
@@ -64,22 +74,26 @@
                 <!-- TARJETA AZUL -->
                 <div class="card primary">
                     <h4 class="color-primary">Pipeline de Datos</h4>
-                    <p>Flujo automatizado que mueve datos desde fuentes origen hacia destinos, aplicando transformaciones en el camino.</p>
+                    <p>Flujo automatizado que mueve datos desde fuentes origen hacia destinos, aplicando
+                        transformaciones en el camino.</p>
                 </div>
                 <!-- TARJETA MORADA -->
                 <div class="card secondary">
                     <h4 class="color-secondary">Data Warehouse</h4>
-                    <p>Repositorio central optimizado para consultas analíticas, con datos estructurados y organizados por schemas.</p>
+                    <p>Repositorio central optimizado para consultas analíticas, con datos estructurados y organizados
+                        por schemas.</p>
                 </div>
                 <!-- TARJETA AZUL -->
                 <div class="card primary">
                     <h4 class="color-primary">Data Lake</h4>
-                    <p>Almacenamiento masivo de datos en formato raw (sin procesar), soportando datos estructurados, semi-estructurados y no estructurados.</p>
+                    <p>Almacenamiento masivo de datos en formato raw (sin procesar), soportando datos estructurados,
+                        semi-estructurados y no estructurados.</p>
                 </div>
                 <!-- TARJETA MORADA -->
                 <div class="card secondary">
                     <h4 class="color-secondary">Transformación</h4>
-                    <p>Proceso de limpieza, enriquecimiento, agregación y estructuración de datos para análisis o entrenamiento de modelos.</p>
+                    <p>Proceso de limpieza, enriquecimiento, agregación y estructuración de datos para análisis o
+                        entrenamiento de modelos.</p>
                 </div>
             </div>
         </section>
@@ -88,7 +102,9 @@
         <section class="section">
             <h2>ETL: Extract, Transform, Load</h2>
             <p>
-                <strong>ETL</strong> es el paradigma tradicional donde los datos se transforman <strong>antes</strong> de ser cargados en el destino final. Este enfoque surgió en la época de los data warehouses clásicos, donde el almacenamiento era costoso y la capacidad de procesamiento limitada.
+                <strong>ETL</strong> es el paradigma tradicional donde los datos se transforman <strong>antes</strong>
+                de ser cargados en el destino final. Este enfoque surgió en la época de los data warehouses clásicos,
+                donde el almacenamiento era costoso y la capacidad de procesamiento limitada.
             </p>
 
             <!-- DIAGRAMA ETL -->
@@ -96,80 +112,113 @@
                 <h3 class="color-primary">📊 Flujo del Proceso ETL</h3>
                 <svg width="900" height="400" viewBox="0 0 900 400">
                     <!-- Título -->
-                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle">Pipeline ETL: Extract → Transform → Load</text>
-                    
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#49B9CE" text-anchor="middle">Pipeline
+                        ETL: Extract → Transform → Load</text>
+
                     <!-- EXTRACT -->
-                    <rect x="50" y="80" width="200" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
-                    <text x="150" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">1. EXTRACT</text>
+                    <rect x="50" y="80" width="200" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="150" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">1.
+                        EXTRACT</text>
                     <text x="150" y="135" font-size="12" fill="#333333" text-anchor="middle">Extracción de datos</text>
-                    
+
                     <!-- Fuentes de datos -->
-                    <rect x="70" y="160" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="150" y="182" font-size="11" fill="#555555" text-anchor="middle">🗄️ Base de Datos MySQL</text>
-                    
-                    <rect x="70" y="205" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <rect x="70" y="160" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="150" y="182" font-size="11" fill="#555555" text-anchor="middle">🗄️ Base de Datos
+                        MySQL</text>
+
+                    <rect x="70" y="205" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="227" font-size="11" fill="#555555" text-anchor="middle">📡 APIs REST</text>
-                    
-                    <rect x="70" y="250" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+
+                    <rect x="70" y="250" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="272" font-size="11" fill="#555555" text-anchor="middle">📄 Archivos CSV/JSON</text>
-                    
-                    <rect x="70" y="295" width="160" height="25" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+
+                    <rect x="70" y="295" width="160" height="25" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="312" font-size="10" fill="#555555" text-anchor="middle">☁️ Cloud Storage</text>
-                    
+
                     <!-- Flecha a TRANSFORM -->
-                    <path d="M 250 200 L 320 200" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue)" fill="none"/>
-                    <text x="285" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">datos raw</text>
-                    
+                    <path d="M 250 200 L 320 200" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue)"
+                        fill="none" />
+                    <text x="285" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">datos
+                        raw</text>
+
                     <!-- TRANSFORM -->
-                    <rect x="320" y="80" width="230" height="250" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="10"/>
-                    <text x="435" y="110" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle">2. TRANSFORM</text>
-                    <text x="435" y="135" font-size="12" fill="#333333" text-anchor="middle">Procesamiento intensivo</text>
-                    
+                    <rect x="320" y="80" width="230" height="250" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="435" y="110" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle">2.
+                        TRANSFORM</text>
+                    <text x="435" y="135" font-size="12" fill="#333333" text-anchor="middle">Procesamiento
+                        intensivo</text>
+
                     <!-- Operaciones de transformación -->
-                    <rect x="340" y="155" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
-                    <text x="435" y="175" font-size="10" fill="#555555" text-anchor="middle">✨ Limpieza: nulls, duplicados</text>
-                    
-                    <rect x="340" y="195" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
-                    <text x="435" y="215" font-size="10" fill="#555555" text-anchor="middle">🔄 Normalización y estandarización</text>
-                    
-                    <rect x="340" y="235" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
-                    <text x="435" y="255" font-size="10" fill="#555555" text-anchor="middle">📊 Agregaciones y cálculos</text>
-                    
-                    <rect x="340" y="275" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
-                    <text x="435" y="295" font-size="10" fill="#555555" text-anchor="middle">🔗 Joins y enriquecimiento</text>
-                    
+                    <rect x="340" y="155" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="175" font-size="10" fill="#555555" text-anchor="middle">✨ Limpieza: nulls,
+                        duplicados</text>
+
+                    <rect x="340" y="195" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="215" font-size="10" fill="#555555" text-anchor="middle">🔄 Normalización y
+                        estandarización</text>
+
+                    <rect x="340" y="235" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="255" font-size="10" fill="#555555" text-anchor="middle">📊 Agregaciones y
+                        cálculos</text>
+
+                    <rect x="340" y="275" width="190" height="30" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="295" font-size="10" fill="#555555" text-anchor="middle">🔗 Joins y
+                        enriquecimiento</text>
+
                     <!-- Flecha a LOAD -->
-                    <path d="M 550 200 L 620 200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrowpurple)" fill="none"/>
-                    <text x="585" y="190" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle">datos limpios</text>
-                    
+                    <path d="M 550 200 L 620 200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrowpurple)"
+                        fill="none" />
+                    <text x="585" y="190" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle">datos
+                        limpios</text>
+
                     <!-- LOAD -->
-                    <rect x="620" y="80" width="230" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
-                    <text x="735" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">3. LOAD</text>
+                    <rect x="620" y="80" width="230" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="735" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">3.
+                        LOAD</text>
                     <text x="735" y="135" font-size="12" fill="#333333" text-anchor="middle">Carga optimizada</text>
-                    
+
                     <!-- Destinos -->
-                    <rect x="640" y="165" width="190" height="40" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="735" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏢 Data Warehouse</text>
-                    
-                    <rect x="640" y="220" width="190" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="735" y="243" font-size="11" fill="#555555" text-anchor="middle">Snowflake, Redshift, BigQuery</text>
-                    
-                    <rect x="640" y="270" width="190" height="30" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="735" y="290" font-size="10" fill="#555555" text-anchor="middle">✅ Datos listos para análisis</text>
-                    
+                    <rect x="640" y="165" width="190" height="40" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="735" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏢 Data
+                        Warehouse</text>
+
+                    <rect x="640" y="220" width="190" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="735" y="243" font-size="11" fill="#555555" text-anchor="middle">Snowflake, Redshift,
+                        BigQuery</text>
+
+                    <rect x="640" y="270" width="190" height="30" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="735" y="290" font-size="10" fill="#555555" text-anchor="middle">✅ Datos listos para
+                        análisis</text>
+
                     <!-- Línea temporal inferior -->
-                    <line x1="50" y1="360" x2="850" y2="360" stroke="#333333" stroke-width="2"/>
+                    <line x1="50" y1="360" x2="850" y2="360" stroke="#333333" stroke-width="2" />
                     <text x="150" y="380" font-size="11" fill="#333333" text-anchor="middle">Fuentes origen</text>
                     <text x="435" y="380" font-size="11" fill="#333333" text-anchor="middle">Servidor ETL</text>
                     <text x="735" y="380" font-size="11" fill="#333333" text-anchor="middle">Sistema destino</text>
-                    
+
                     <!-- Marcadores de flecha -->
                     <defs>
-                        <marker id="arrowblue" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        <marker id="arrowblue" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
                         </marker>
-                        <marker id="arrowpurple" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        <marker id="arrowpurple" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
                         </marker>
                     </defs>
                 </svg>
@@ -180,14 +229,15 @@
             <div class="grid-2-cols">
                 <div class="card primary">
                     <h4 class="color-primary">⚡ Transformación antes de carga</h4>
-                    <p>Los datos se procesan en un servidor ETL antes de llegar al destino, reduciendo la carga en el warehouse.</p>
+                    <p>Los datos se procesan en un servidor ETL antes de llegar al destino, reduciendo la carga en el
+                        warehouse.</p>
                 </div>
-                
+
                 <div class="card primary">
                     <h4 class="color-primary">🔒 Datos estructurados</h4>
                     <p>Solo se cargan datos ya procesados y conformes al schema del warehouse, garantizando calidad.</p>
                 </div>
-                
+
                 <div class="card primary">
                     <h4 class="color-primary">💰 Optimización de costos</h4>
                     <p>Ideal cuando el almacenamiento es caro: solo se guarda información ya procesada y relevante.</p>
@@ -205,7 +255,7 @@
                         <li><strong>Compatibilidad:</strong> Funciona con sistemas legacy</li>
                     </ul>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">⚠️ Desventajas ETL</h4>
                     <ul>
@@ -222,7 +272,10 @@
         <section class="section">
             <h2>ELT: Extract, Load, Transform</h2>
             <p>
-                <strong>ELT</strong> es el paradigma moderno impulsado por la computación en la nube y el Big Data. Los datos se cargan primero en su forma raw (sin procesar) en un data lake o warehouse con capacidad de procesamiento masivo, y <strong>luego</strong> se transforman según sea necesario. Este enfoque aprovecha la potencia de sistemas distribuidos como Spark, Snowflake o BigQuery.
+                <strong>ELT</strong> es el paradigma moderno impulsado por la computación en la nube y el Big Data. Los
+                datos se cargan primero en su forma raw (sin procesar) en un data lake o warehouse con capacidad de
+                procesamiento masivo, y <strong>luego</strong> se transforman según sea necesario. Este enfoque
+                aprovecha la potencia de sistemas distribuidos como Spark, Snowflake o BigQuery.
             </p>
 
             <!-- DIAGRAMA ELT -->
@@ -230,81 +283,110 @@
                 <h3 class="color-secondary">📊 Flujo del Proceso ELT</h3>
                 <svg width="900" height="400" viewBox="0 0 900 400">
                     <!-- Título -->
-                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Pipeline ELT: Extract → Load → Transform</text>
-                    
+                    <text x="450" y="30" font-size="20" font-weight="bold" fill="#8A7AAF" text-anchor="middle">Pipeline
+                        ELT: Extract → Load → Transform</text>
+
                     <!-- EXTRACT -->
-                    <rect x="50" y="80" width="200" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
-                    <text x="150" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">1. EXTRACT</text>
+                    <rect x="50" y="80" width="200" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="150" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">1.
+                        EXTRACT</text>
                     <text x="150" y="135" font-size="12" fill="#333333" text-anchor="middle">Extracción rápida</text>
-                    
+
                     <!-- Fuentes -->
-                    <rect x="70" y="160" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+                    <rect x="70" y="160" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="182" font-size="11" fill="#555555" text-anchor="middle">📱 Apps móviles</text>
-                    
-                    <rect x="70" y="205" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+
+                    <rect x="70" y="205" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="227" font-size="11" fill="#555555" text-anchor="middle">🌐 Eventos web</text>
-                    
-                    <rect x="70" y="250" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+
+                    <rect x="70" y="250" width="160" height="35" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="272" font-size="11" fill="#555555" text-anchor="middle">🤖 IoT Sensors</text>
-                    
-                    <rect x="70" y="295" width="160" height="25" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
+
+                    <rect x="70" y="295" width="160" height="25" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
                     <text x="150" y="312" font-size="10" fill="#555555" text-anchor="middle">📊 Streaming data</text>
-                    
+
                     <!-- Flecha a LOAD -->
-                    <path d="M 250 200 L 320 200" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue2)" fill="none"/>
-                    <text x="285" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">sin procesar</text>
-                    
+                    <path d="M 250 200 L 320 200" stroke="#49B9CE" stroke-width="4" marker-end="url(#arrowblue2)"
+                        fill="none" />
+                    <text x="285" y="190" font-size="12" font-weight="bold" fill="#49B9CE" text-anchor="middle">sin
+                        procesar</text>
+
                     <!-- LOAD -->
-                    <rect x="320" y="80" width="230" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3" rx="10"/>
-                    <text x="435" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">2. LOAD</text>
-                    <text x="435" y="135" font-size="12" fill="#333333" text-anchor="middle">Carga directa y rápida</text>
-                    
+                    <rect x="320" y="80" width="230" height="250" fill="#E8F7FA" stroke="#49B9CE" stroke-width="3"
+                        rx="10" />
+                    <text x="435" y="110" font-size="18" font-weight="bold" fill="#49B9CE" text-anchor="middle">2.
+                        LOAD</text>
+                    <text x="435" y="135" font-size="12" fill="#333333" text-anchor="middle">Carga directa y
+                        rápida</text>
+
                     <!-- Data Lake/Warehouse -->
-                    <rect x="340" y="160" width="190" height="60" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="435" y="185" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏞️ Data Lake</text>
+                    <rect x="340" y="160" width="190" height="60" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="185" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏞️ Data
+                        Lake</text>
                     <text x="435" y="205" font-size="11" fill="#555555" text-anchor="middle">S3, Azure Blob, GCS</text>
-                    
+
                     <text x="435" y="240" font-size="11" fill="#333333" text-anchor="middle">o</text>
-                    
-                    <rect x="340" y="255" width="190" height="60" fill="white" stroke="#49B9CE" stroke-width="2" rx="5"/>
-                    <text x="435" y="280" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏢 Cloud Warehouse</text>
+
+                    <rect x="340" y="255" width="190" height="60" fill="white" stroke="#49B9CE" stroke-width="2"
+                        rx="5" />
+                    <text x="435" y="280" font-size="14" font-weight="bold" fill="#49B9CE" text-anchor="middle">🏢 Cloud
+                        Warehouse</text>
                     <text x="435" y="300" font-size="11" fill="#555555" text-anchor="middle">Snowflake, BigQuery</text>
-                    
+
                     <!-- Flecha a TRANSFORM -->
-                    <path d="M 550 200 L 620 200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrowpurple2)" fill="none"/>
-                    <text x="585" y="190" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle">bajo demanda</text>
-                    
+                    <path d="M 550 200 L 620 200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrowpurple2)"
+                        fill="none" />
+                    <text x="585" y="190" font-size="12" font-weight="bold" fill="#8A7AAF" text-anchor="middle">bajo
+                        demanda</text>
+
                     <!-- TRANSFORM -->
-                    <rect x="620" y="80" width="230" height="250" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3" rx="10"/>
-                    <text x="735" y="110" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle">3. TRANSFORM</text>
-                    <text x="735" y="135" font-size="12" fill="#333333" text-anchor="middle">Procesamiento distribuido</text>
-                    
+                    <rect x="620" y="80" width="230" height="250" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="3"
+                        rx="10" />
+                    <text x="735" y="110" font-size="18" font-weight="bold" fill="#8A7AAF" text-anchor="middle">3.
+                        TRANSFORM</text>
+                    <text x="735" y="135" font-size="12" fill="#333333" text-anchor="middle">Procesamiento
+                        distribuido</text>
+
                     <!-- Herramientas -->
-                    <rect x="640" y="160" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+                    <rect x="640" y="160" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
                     <text x="735" y="182" font-size="11" fill="#555555" text-anchor="middle">⚡ Apache Spark</text>
-                    
-                    <rect x="640" y="205" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+
+                    <rect x="640" y="205" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
                     <text x="735" y="227" font-size="11" fill="#555555" text-anchor="middle">❄️ Snowflake SQL</text>
-                    
-                    <rect x="640" y="250" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
+
+                    <rect x="640" y="250" width="190" height="35" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
                     <text x="735" y="272" font-size="11" fill="#555555" text-anchor="middle">🔺 BigQuery SQL</text>
-                    
-                    <rect x="640" y="295" width="190" height="25" fill="white" stroke="#8A7AAF" stroke-width="2" rx="5"/>
-                    <text x="735" y="312" font-size="10" fill="#555555" text-anchor="middle">🔧 DBT (Data Build Tool)</text>
-                    
+
+                    <rect x="640" y="295" width="190" height="25" fill="white" stroke="#8A7AAF" stroke-width="2"
+                        rx="5" />
+                    <text x="735" y="312" font-size="10" fill="#555555" text-anchor="middle">🔧 DBT (Data Build
+                        Tool)</text>
+
                     <!-- Línea temporal inferior -->
-                    <line x1="50" y1="360" x2="850" y2="360" stroke="#333333" stroke-width="2"/>
+                    <line x1="50" y1="360" x2="850" y2="360" stroke="#333333" stroke-width="2" />
                     <text x="150" y="380" font-size="11" fill="#333333" text-anchor="middle">Fuentes origen</text>
                     <text x="435" y="380" font-size="11" fill="#333333" text-anchor="middle">Almacenamiento cloud</text>
-                    <text x="735" y="380" font-size="11" fill="#333333" text-anchor="middle">Motor de procesamiento</text>
-                    
+                    <text x="735" y="380" font-size="11" fill="#333333" text-anchor="middle">Motor de
+                        procesamiento</text>
+
                     <!-- Marcadores -->
                     <defs>
-                        <marker id="arrowblue2" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE"/>
+                        <marker id="arrowblue2" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#49B9CE" />
                         </marker>
-                        <marker id="arrowpurple2" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF"/>
+                        <marker id="arrowpurple2" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
                         </marker>
                     </defs>
                 </svg>
@@ -315,14 +397,15 @@
             <div class="grid-2-cols">
                 <div class="card secondary">
                     <h4 class="color-secondary">🚀 Carga primero</h4>
-                    <p>Los datos raw se cargan directamente en el destino, aprovechando su capacidad de procesamiento masivo.</p>
+                    <p>Los datos raw se cargan directamente en el destino, aprovechando su capacidad de procesamiento
+                        masivo.</p>
                 </div>
-                
+
                 <div class="card secondary">
                     <h4 class="color-secondary">📦 Datos raw preservados</h4>
                     <p>Se conservan los datos originales completos, permitiendo re-procesamiento con nuevas lógicas.</p>
                 </div>
-                
+
                 <div class="card secondary">
                     <h4 class="color-secondary">⚡ Escalabilidad infinita</h4>
                     <p>Procesamiento distribuido en clusters elásticos que escalan según la carga de trabajo.</p>
@@ -341,11 +424,12 @@
                         <li><strong>Costo-eficiente:</strong> Storage barato en la nube</li>
                     </ul>
                 </div>
-                
+
                 <div class="card primary-bg">
                     <h4 class="color-primary">⚠️ Desventajas ELT</h4>
                     <ul>
-                        <li><strong>Requiere infraestructura potente:</strong> Data warehouse con capacidad de procesamiento</li>
+                        <li><strong>Requiere infraestructura potente:</strong> Data warehouse con capacidad de
+                            procesamiento</li>
                         <li><strong>Calidad no garantizada:</strong> Datos raw pueden contener errores</li>
                         <li><strong>Seguridad:</strong> Datos sensibles almacenados sin transformar</li>
                         <li><strong>Complejidad:</strong> Gestión de múltiples transformaciones</li>
@@ -357,7 +441,7 @@
         <!-- SECCIÓN 4: COMPARACIÓN ETL VS ELT -->
         <section class="section">
             <h2>⚖️ ETL vs ELT: Comparación Detallada</h2>
-            
+
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -440,7 +524,7 @@
                         <li>Transformaciones complejas y estables</li>
                     </ul>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">Usar ELT cuando:</h4>
                     <ul>
@@ -457,25 +541,26 @@
         <!-- SECCIÓN 5: HERRAMIENTAS Y TECNOLOGÍAS -->
         <section class="section">
             <h2>🛠️ Herramientas y Tecnologías</h2>
-            
+
             <!-- ORQUESTACIÓN -->
             <div class="card primary-bg">
                 <h3 class="color-primary">🎼 Orquestación de Pipelines</h3>
                 <p>
-                    Las herramientas de orquestación gestionan el flujo de trabajo completo, programan ejecuciones, manejan dependencias y monitorean el estado de los pipelines.
+                    Las herramientas de orquestación gestionan el flujo de trabajo completo, programan ejecuciones,
+                    manejan dependencias y monitorean el estado de los pipelines.
                 </p>
-                
+
                 <div class="grid-2-cols">
                     <div class="info-box">
                         <p>Apache Airflow</p>
                         <p>Python-based. DAGs programáticos. Usado por Airbnb, Spotify, Twitter.</p>
                     </div>
-                    
+
                     <div class="info-box">
                         <p>Prefect</p>
                         <p>Alternativa moderna a Airflow. Más intuitivo y con mejor manejo de errores.</p>
                     </div>
-                    
+
                     <div class="info-box">
                         <p>Luigi</p>
                         <p>Desarrollado por Spotify. Ideal para pipelines batch complejos.</p>
@@ -486,26 +571,30 @@
             <!-- HERRAMIENTAS ETL -->
             <div class="card secondary-bg">
                 <h3 class="color-secondary">🔧 Herramientas ETL Tradicionales</h3>
-                
+
                 <div class="grid-2-cols">
                     <div class="card secondary">
                         <h4 class="color-secondary">Informatica PowerCenter</h4>
-                        <p><strong>Líder del mercado ETL.</strong> Interfaz gráfica potente, integración empresarial completa. Usado por bancos y grandes corporaciones.</p>
+                        <p><strong>Líder del mercado ETL.</strong> Interfaz gráfica potente, integración empresarial
+                            completa. Usado por bancos y grandes corporaciones.</p>
                     </div>
-                    
+
                     <div class="card secondary">
                         <h4 class="color-secondary">Talend Open Studio</h4>
-                        <p><strong>Open-source.</strong> Interfaz drag-and-drop, genera código Java. Gran comunidad y documentación.</p>
+                        <p><strong>Open-source.</strong> Interfaz drag-and-drop, genera código Java. Gran comunidad y
+                            documentación.</p>
                     </div>
-                    
+
                     <div class="card secondary">
                         <h4 class="color-secondary">Microsoft SSIS</h4>
-                        <p><strong>SQL Server Integration Services.</strong> Ideal para ecosistema Microsoft. Integrado con Azure Data Factory.</p>
+                        <p><strong>SQL Server Integration Services.</strong> Ideal para ecosistema Microsoft. Integrado
+                            con Azure Data Factory.</p>
                     </div>
-                    
+
                     <div class="card secondary">
                         <h4 class="color-secondary">Apache NiFi</h4>
-                        <p><strong>Open-source de la NSA.</strong> Flujos visuales, procesamiento en tiempo real, trazabilidad completa de datos.</p>
+                        <p><strong>Open-source de la NSA.</strong> Flujos visuales, procesamiento en tiempo real,
+                            trazabilidad completa de datos.</p>
                     </div>
                 </div>
             </div>
@@ -513,21 +602,24 @@
             <!-- PLATAFORMAS CLOUD -->
             <div>
                 <h3>☁️ Plataformas Cloud (ELT Nativas)</h3>
-                
+
                 <div class="grid-2-cols">
                     <div class="card primary">
                         <h4 class="color-primary">⚡ AWS Glue</h4>
-                        <p>Servicio ETL/ELT serverless de Amazon. Catálogo de datos automático, crawlers inteligentes, Spark integrado.</p>
+                        <p>Servicio ETL/ELT serverless de Amazon. Catálogo de datos automático, crawlers inteligentes,
+                            Spark integrado.</p>
                     </div>
-                    
+
                     <div class="card secondary">
                         <h4 class="color-secondary">🔷 Azure Data Factory</h4>
-                        <p>Orquestación visual en Azure. Conectores a 100+ fuentes, integración con Azure Synapse y Databricks.</p>
+                        <p>Orquestación visual en Azure. Conectores a 100+ fuentes, integración con Azure Synapse y
+                            Databricks.</p>
                     </div>
-                    
+
                     <div class="card primary">
                         <h4 class="color-primary">🔺 Google Cloud Dataflow</h4>
-                        <p>Basado en Apache Beam. Streaming y batch unificados. Auto-scaling inteligente, integrado con BigQuery.</p>
+                        <p>Basado en Apache Beam. Streaming y batch unificados. Auto-scaling inteligente, integrado con
+                            BigQuery.</p>
                     </div>
                 </div>
             </div>
@@ -535,21 +627,24 @@
             <!-- TRANSFORMACIÓN MODERNA -->
             <div class="card primary-bg">
                 <h3 class="color-primary">🔧 Herramientas de Transformación Moderna</h3>
-                
+
                 <div class="grid-2-cols">
                     <div class="card primary">
                         <h4 class="color-primary">DBT (Data Build Tool)</h4>
-                        <p><strong>El estándar ELT moderno.</strong> SQL-based transformations, versionado con Git, testing integrado, documentación automática.</p>
+                        <p><strong>El estándar ELT moderno.</strong> SQL-based transformations, versionado con Git,
+                            testing integrado, documentación automática.</p>
                     </div>
-                    
+
                     <div class="card primary">
                         <h4 class="color-primary">Apache Spark</h4>
-                        <p><strong>Motor de procesamiento distribuido.</strong> Batch y streaming. APIs en Python, Scala, Java, R. Usado por Netflix, Uber.</p>
+                        <p><strong>Motor de procesamiento distribuido.</strong> Batch y streaming. APIs en Python,
+                            Scala, Java, R. Usado por Netflix, Uber.</p>
                     </div>
-                    
+
                     <div class="card primary">
                         <h4 class="color-primary">Dataform</h4>
-                        <p><strong>Google.</strong> Similar a DBT pero integrado en GCP. SQLX para lógica compleja, orquestación nativa.</p>
+                        <p><strong>Google.</strong> Similar a DBT pero integrado en GCP. SQLX para lógica compleja,
+                            orquestación nativa.</p>
                     </div>
                 </div>
             </div>
@@ -558,12 +653,13 @@
         <!-- SECCIÓN 6: CASOS PRÁCTICOS DEL MUNDO REAL -->
         <section class="section">
             <h2>🌍 Casos Prácticos del Mundo Real</h2>
-            
+
             <!-- NETFLIX -->
             <div class="card primary-bg">
                 <h3 class="color-primary">🎬 Netflix: ELT Masivo con Spark</h3>
                 <p>
-                    <strong>Desafío:</strong> Procesar 15+ petabytes diarios de datos de streaming, eventos de usuario, métricas de video, logs de aplicaciones.
+                    <strong>Desafío:</strong> Procesar 15+ petabytes diarios de datos de streaming, eventos de usuario,
+                    métricas de video, logs de aplicaciones.
                 </p>
                 <p>
                     <strong>Solución ELT:</strong>
@@ -580,7 +676,8 @@
                     </li>
                 </ul>
                 <p>
-                    Resultado: Escalabilidad infinita, flexibilidad para nuevos análisis, time-to-insight reducido de días a minutos.
+                    Resultado: Escalabilidad infinita, flexibilidad para nuevos análisis, time-to-insight reducido de
+                    días a minutos.
                 </p>
             </div>
 
@@ -588,7 +685,8 @@
             <div class="card secondary-bg">
                 <h3 class="color-secondary">🎵 Spotify: Híbrido ETL/ELT con Luigi + BigQuery</h3>
                 <p>
-                    <strong>Desafío:</strong> Gestionar 500+ millones de usuarios, 100 millones de canciones, millones de eventos por segundo.
+                    <strong>Desafío:</strong> Gestionar 500+ millones de usuarios, 100 millones de canciones, millones
+                    de eventos por segundo.
                 </p>
                 <p>
                     <strong>Arquitectura híbrida:</strong>
@@ -598,7 +696,7 @@
                         <p>ETL para agregaciones</p>
                         <p>Métricas diarias pre-calculadas (top canciones, artists trending) con Luigi pipelines.</p>
                     </div>
-                    
+
                     <div class="info-box">
                         <p>ELT para exploración</p>
                         <p>Datos raw de eventos en BigQuery para análisis ad-hoc de data scientists.</p>
@@ -613,7 +711,8 @@
             <div class="card primary-bg">
                 <h3 class="color-primary">🚗 Uber: Real-time ELT con Kafka + Flink</h3>
                 <p>
-                    <strong>Desafío:</strong> Procesar eventos de ubicación GPS en tiempo real de millones de conductores y usuarios simultáneos.
+                    <strong>Desafío:</strong> Procesar eventos de ubicación GPS en tiempo real de millones de
+                    conductores y usuarios simultáneos.
                 </p>
                 <p>
                     <strong>Pipeline streaming ELT:</strong>
@@ -639,7 +738,8 @@
             <div class="card secondary-bg">
                 <h3 class="color-secondary">👥 Meta (Facebook): Data Warehouse Custom + Presto</h3>
                 <p>
-                    <strong>Desafío:</strong> Analizar comportamiento de 3 mil millones de usuarios activos, almacenar exabytes de datos.
+                    <strong>Desafío:</strong> Analizar comportamiento de 3 mil millones de usuarios activos, almacenar
+                    exabytes de datos.
                 </p>
                 <p>
                     <strong>Arquitectura ELT personalizada:</strong>
@@ -647,11 +747,14 @@
                 <ul>
                     <li><strong>Scribe:</strong> Sistema interno de streaming para extraer eventos</li>
                     <li><strong>Hive:</strong> Data warehouse construido sobre HDFS para almacenar petabytes</li>
-                    <li><strong>Presto:</strong> Motor SQL distribuido desarrollado por Meta para queries interactivas sobre Hive</li>
-                    <li><strong>Transform:</strong> Pipelines Spark para ML (recomendaciones, feed ranking, detección de contenido dañino)</li>
+                    <li><strong>Presto:</strong> Motor SQL distribuido desarrollado por Meta para queries interactivas
+                        sobre Hive</li>
+                    <li><strong>Transform:</strong> Pipelines Spark para ML (recomendaciones, feed ranking, detección de
+                        contenido dañino)</li>
                 </ul>
                 <p>
-                    Resultado: Capacidad de ejecutar millones de queries diarias, entrenamiento de modelos con trillones de ejemplos.
+                    Resultado: Capacidad de ejecutar millones de queries diarias, entrenamiento de modelos con trillones
+                    de ejemplos.
                 </p>
             </div>
         </section>
@@ -659,46 +762,54 @@
         <!-- SECCIÓN 7: MEJORES PRÁCTICAS -->
         <section class="section">
             <h2>✨ Mejores Prácticas y Recomendaciones</h2>
-            
+
             <div class="grid-2-cols">
                 <div class="card primary-bg">
                     <h4 class="color-primary">🔄 Idempotencia</h4>
-                    <p>Los pipelines deben producir el mismo resultado al ejecutarse múltiples veces. Crucial para reintento de fallos.</p>
+                    <p>Los pipelines deben producir el mismo resultado al ejecutarse múltiples veces. Crucial para
+                        reintento de fallos.</p>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">📊 Monitoreo proactivo</h4>
-                    <p>Implementar alertas sobre SLAs, calidad de datos, tiempo de ejecución. Herramientas: Datadog, Grafana, Great Expectations.</p>
+                    <p>Implementar alertas sobre SLAs, calidad de datos, tiempo de ejecución. Herramientas: Datadog,
+                        Grafana, Great Expectations.</p>
                 </div>
-                
+
                 <div class="card primary-bg">
                     <h4 class="color-primary">🔐 Seguridad por diseño</h4>
-                    <p>Encriptar datos sensibles en tránsito y reposo. Implementar RBAC (control de acceso basado en roles). Cumplir GDPR/CCPA.</p>
+                    <p>Encriptar datos sensibles en tránsito y reposo. Implementar RBAC (control de acceso basado en
+                        roles). Cumplir GDPR/CCPA.</p>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">📝 Documentación automática</h4>
-                    <p>Usar herramientas como DBT Docs para generar catálogos de datos, linaje (data lineage), y tests automáticamente.</p>
+                    <p>Usar herramientas como DBT Docs para generar catálogos de datos, linaje (data lineage), y tests
+                        automáticamente.</p>
                 </div>
-                
+
                 <div class="card primary-bg">
                     <h4 class="color-primary">🧪 Testing riguroso</h4>
-                    <p>Tests unitarios de transformaciones, tests de schema, tests de volumen. Prevenir regresiones en producción.</p>
+                    <p>Tests unitarios de transformaciones, tests de schema, tests de volumen. Prevenir regresiones en
+                        producción.</p>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">🔄 Versionado con Git</h4>
-                    <p>Tratar pipelines como código. Version control, code reviews, CI/CD. Facilita rollbacks y colaboración.</p>
+                    <p>Tratar pipelines como código. Version control, code reviews, CI/CD. Facilita rollbacks y
+                        colaboración.</p>
                 </div>
-                
+
                 <div class="card primary-bg">
                     <h4 class="color-primary">📦 Particionamiento inteligente</h4>
-                    <p>Particionar datos por fecha/región para optimizar queries. Reduce costos de escaneo en BigQuery/Athena.</p>
+                    <p>Particionar datos por fecha/región para optimizar queries. Reduce costos de escaneo en
+                        BigQuery/Athena.</p>
                 </div>
-                
+
                 <div class="card secondary-bg">
                     <h4 class="color-secondary">⚡ Optimización incremental</h4>
-                    <p>Procesar solo datos nuevos/modificados. Evitar full refresh. Usar técnicas CDC (Change Data Capture).</p>
+                    <p>Procesar solo datos nuevos/modificados. Evitar full refresh. Usar técnicas CDC (Change Data
+                        Capture).</p>
                 </div>
             </div>
 
@@ -706,25 +817,29 @@
             <div>
                 <h3>🏗️ Arquitectura Lambda: Combinando Batch y Streaming</h3>
                 <p>
-                    La <strong>arquitectura Lambda</strong> es un patrón que combina procesamiento batch (histórico) y streaming (tiempo real) para obtener una vista completa y actualizada de los datos.
+                    La <strong>arquitectura Lambda</strong> es un patrón que combina procesamiento batch (histórico) y
+                    streaming (tiempo real) para obtener una vista completa y actualizada de los datos.
                 </p>
-                
+
                 <div class="grid-2-cols">
                     <div class="card primary">
                         <h4 class="color-primary">Batch Layer</h4>
-                        <p><strong>ETL tradicional nocturno.</strong> Procesa todo el histórico para generar vistas maestras precisas.</p>
+                        <p><strong>ETL tradicional nocturno.</strong> Procesa todo el histórico para generar vistas
+                            maestras precisas.</p>
                         <p>Herramientas: Spark, Hive</p>
                     </div>
-                    
+
                     <div class="card secondary">
                         <h4 class="color-secondary">Speed Layer</h4>
-                        <p><strong>Streaming real-time.</strong> Procesa solo datos nuevos con baja latencia para actualizaciones inmediatas.</p>
+                        <p><strong>Streaming real-time.</strong> Procesa solo datos nuevos con baja latencia para
+                            actualizaciones inmediatas.</p>
                         <p>Herramientas: Flink, Kafka Streams</p>
                     </div>
-                    
-                    <div>
-                        <h4>Serving Layer</h4>
-                        <p><strong>Vista unificada.</strong> Merge de batch y speed para consultas. Combina precisión histórica + datos recientes.</p>
+
+                    <div class="card primary">
+                        <h4 class="color-primary">Serving Layer</h4>
+                        <p><strong>Vista unificada.</strong> Merge de batch y speed para consultas. Combina precisión
+                            histórica + datos recientes.</p>
                         <p>Herramientas: Druid, Cassandra</p>
                     </div>
                 </div>
@@ -736,7 +851,8 @@
         <h3>iLERNA</h3>
         <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
         <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
-        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
         <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
 
         <div class="penguin">
