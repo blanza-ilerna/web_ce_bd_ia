@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Buenas prácticas y errores frecuentes al trabajar con módulos predefinidos en Inteligencia Artificial.">
+    <meta name="keywords"
+        content="IA, Machine Learning, Deep Learning, Mantenimiento, Errores Comunes, Buenas Prácticas, Fine-tuning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Buenas Prácticas y Errores Frecuentes | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>Buenas Prácticas y Errores</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Buenas Prácticas y Errores Frecuentes</h1>
+            <p class="subtitle">Guía de supervivencia para el desarrollo profesional con módulos de IA</p>
+        </div>
+
+        <!-- SECCIÓN 1: BUENAS PRÁCTICAS -->
+        <section class="section">
+            <h2>1. Estrategias de Éxito: Buenas Prácticas</h2>
+            <p>La diferencia entre un prototipo frágil y un sistema de IA robusto reside en la rigurosidad del proceso
+                de entrenamiento.</p>
+
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <h4 class="color-primary">1.1. Congelado y Descongelado Progresivo</h4>
+                <p>Al iniciar el entrenamiento con un modelo preentrenado, es vital <strong>congelar la base</strong>
+                    (backbone) y entrenar únicamente la nueva cabeza. Esto protege el conocimiento previo. Si la
+                    validación se estanca, podemos "descongelar" capas progresivamente (fine-tuning) para que el modelo
+                    se adapte mejor a los matices de nuestro dataset.</p>
+            </div>
+
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <div class="content">
+                    <h4 class="color-primary">1.2. Consistencia en Datos y Aumentación</h4>
+                    <p>En visión, usa <strong>data augmentation realista</strong> (no gires una radiografía si la
+                        posición es clave). En NLP, asegúrate de que la <strong>tokenización sea idéntica</strong> a
+                        la usada en el preentrenamiento del modelo. Cualquier discrepancia aquí degradará el
+                        rendimiento de forma silenciosa pero crítica.</p>
+                </div>
+            </div>
+
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <h4 class="color-primary">1.3. Registro de Experimentos</h4>
+                <p>No confíes en tu memoria. Lleva un <strong>registro detallado</strong> de cada prueba: configuración
+                    de hiperparámetros, semilla aleatoria (seed) para reproducibilidad, métricas obtenidas y los
+                    artefactos (pesos) generados. Herramientas como WandB o TensorBoard son esenciales en este punto.
+                </p>
+            </div>
+
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <div class="content">
+                    <h4 class="color-primary">1.4. Calibración de Probabilidades</h4>
+                    <p>¿Qué significa un 0.9 de confianza? Evalúa la <strong>calibración del modelo</strong> para
+                        asegurar que las probabilidades predichas se correspondan con la realidad. Un modelo bien
+                        calibrado es mucho más fiable en entornos de toma de decisiones críticas (salud, finanzas).
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card primary" style="margin-bottom: 2rem;">
+                <h4 class="color-primary">1.5. Preparación para la Exportación</h4>
+                <p>Diseña pensando en el despliegue final desde el primer día. Verifica que el modelo sea compatible con
+                    formatos de alto rendimiento como <strong>ONNX</strong>, <strong>TensorRT</strong> o
+                    <strong>TorchScript</strong>. Esto te evitará sorpresas desagradables cuando intentes llevar tu red
+                    a producción.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ERRORES FRECUENTES -->
+        <section class="section">
+            <h2>2. Obstáculos Comunes: Lo que debemos evitar</h2>
+            <p>Identificar estos fallos a tiempo te ahorrará horas de depuración estéril.</p>
+
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <h4 class="color-secondary">2.1. Mismatch de Preprocesado</h4>
+                <p>Es el error número uno: usar una <strong>normalización o escalado distinto</strong> en entrenamiento
+                    e inferencia. Si entrenas con valores [0, 1] pero despliegas con [0, 255], el modelo recibirá datos
+                    que no comprende absolutamente nada, arrojando predicciones aleatorias.</p>
+            </div>
+
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <div class="content">
+                    <h4 class="color-secondary">2.2. Pérdidas y Activaciones Incompatibles</h4>
+                    <p>Ten mucho cuidado con las capas finales. Un error común es aplicar una función
+                        <strong>Softmax</strong> manualmente y luego usar una pérdida como <span
+                            class="code-badge">CrossEntropyLoss</span> que ya la incluye internamente. Esto
+                        "aplasta" los gradientes y hace que el modelo no aprenda nada.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <h4 class="color-secondary">2.3. Ignorar el Desbalanceo de Clases</h4>
+                <p>Si tu dataset tiene un 95% de ejemplos "A" y un 5% de "B", el modelo aprenderá que siempre decir "A"
+                    es una buena estrategia. Usa <strong>Class Weights</strong> (pesos en la pérdida) o <strong>Focal
+                        Loss</strong> para dar más importancia a la clase minoritaria.</p>
+            </div>
+
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <div class="content">
+                    <h4 class="color-secondary">2.4. Sobreajuste por Exceso de Épocas</h4>
+                    <p>No entrenes "a ciegas". Entrenar demasiadas épocas sin un <strong>Early Stopping</strong>
+                        monitorizando el conjunto de validación hará que el modelo memorice el ruido del
+                        entrenamiento, perdiendo su capacidad de generalizar a nuevos datos.</p>
+                </div>
+            </div>
+
+            <div class="feature-card secondary" style="margin-bottom: 2rem;">
+                <h4 class="color-secondary">2.5. Olvidar la Latencia y Memoria Goal</h4>
+                <p>Un modelo que tarda 5 segundos en responder es inútil para una aplicación de cámara en tiempo real.
+                    Valida siempre que los <strong>requisitos de memoria y el tiempo de inferencia</strong> encajen en
+                    el hardware objetivo (edge computing, smartphone o servidor).</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: RECOMENDACIÓN FINAL -->
+        <section class="section">
+            <div class="scenario-box primary">
+                <div class="scenario-item">
+                    <div class="content" style="font-size: 1.125rem;">
+                        <h4>🛠️ Un flujo de trabajo profesional</h4>
+                        <p>El desarrollo con módulos predefinidos debe ser iterativo. Empieza con la base más simple,
+                            valida que el preprocesado es correcto, monitoriza métricas de negocio (no solo pérdida) y
+                            solo añade complejidad (como el descongelado de capas) cuando tengas una base sólida y
+                            reproducible.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

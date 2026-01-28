@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Componentes auxiliares predefinidos para el entrenamiento de modelos de IA: pérdida, optimizadores y más.">
+    <meta name="keywords" content="IA, Entrenamiento, Loss Function, Optimizer, Scheduler, Callbacks, Deep Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Componentes Auxiliares de Entrenamiento | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>Componentes Auxiliares</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Componentes Auxiliares de Entrenamiento</h1>
+            <p class="subtitle">Herramientas críticas para orquestar el aprendizaje profundo</p>
+        </div>
+
+        <!-- SECCIÓN 1: FUNCIONES DE PÉRDIDA -->
+        <section class="section">
+            <h2>1. Funciones de Pérdida (Loss Functions)</h2>
+            <p>La función de pérdida es la brújula del modelo. Mide numéricamente la distancia entre la predicción
+                realizada por la red y el valor real esperado. Sin una función de pérdida bien definida, el optimizador
+                no sabría en qué dirección ajustar los pesos para mejorar el rendimiento.</p>
+            <p>Es vital alinear la pérdida con la naturaleza de la tarea. Por ejemplo, en tareas de clasificación,
+                buscamos minimizar la divergencia entre distribuciones de probabilidad, mientras que en tareas de
+                regresión nos enfocamos en reducir el error cuadrático o absoluto.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">CrossEntropy y BCE</h4>
+                    <p>La <span class="code-badge">CrossEntropyLoss</span> es el estándar para la clasificación
+                        multiclase. Calcula la entropía cruzada entre la salida del modelo y el objetivo. Es fundamental
+                        entender que, por defecto, muchas implementaciones (como en PyTorch) esperan
+                        <strong>logits</strong> (valores crudos sin normalizar) en lugar de probabilidades, aplicando
+                        internamente una función LogSoftmax para mayor estabilidad numérica.
+                    </p>
+                    <p>Para casos binarios, utilizamos <span class="code-badge">BCE</span> (Binary Cross Entropy). Una
+                        variante recomendada es <span class="code-badge">BCEWithLogits</span>, que integra la función
+                        sigmoide dentro de la pérdida. Esto evita problemas de precisión matemática que ocurren cuando
+                        calculamos la sigmoide y el logaritmo por separado, resultando en un entrenamiento mucho más
+                        estable frente a valores extremos.</p>
+                </div>
+
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">MSE y CTC</h4>
+                    <p>El <span class="code-badge">MSE</span> (Mean Squared Error) es el núcleo de los problemas de
+                        regresión. Penaliza de forma cuadrática los errores grandes, lo que obliga al modelo a prestar
+                        mucha atención a los <em>outliers</em>. Si buscamos una mayor robustez frente a datos ruidosos,
+                        podemos optar por el error absoluto (MAE) o la pérdida Huber, que combina lo mejor de ambos
+                        mundos.</p>
+                    <p>La pérdida <span class="code-badge">CTC</span> (Connectionist Temporal Classification) es una
+                        joya en el procesamiento de secuencias como el habla (ASR) o el reconocimiento de texto (OCR).
+                        Permite entrenar modelos cuando no conocemos la alineación exacta entre la entrada (audio o
+                        imagen) y la salida (texto), resolviendo el problema de secuencias de longitudes variables de
+                        forma elegante.</p>
+                </div>
+
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Dice y Focal Loss</h4>
+                    <p>En la segmentación de imágenes, la pérdida <strong>Dice</strong> es esencial para combatir el
+                        desequilibrio de clases. Se basa en el coeficiente de solapamiento entre la máscara predicha y
+                        la real, siendo mucho más efectiva que la entropía cruzada cuando el objeto que queremos
+                        segmentar ocupa una parte minúscula de la imagen total.</p>
+                    <p>La <strong>Focal Loss</strong> es una evolución diseñada para tareas de detección de objetos.
+                        Añade un factor multiplicador a la pérdida que reduce la importancia de los ejemplos fáciles (el
+                        fondo) y obliga al modelo a centrarse en los "ejemplos difíciles" que suele fallar. Es la clave
+                        detrás del éxito de detectores en una sola etapa como RetinaNet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: OPTIMIZADORES -->
+        <section class="section">
+            <h2>2. Optimizadores: El Motor del Cambio</h2>
+            <p>Si la pérdida es la brújula, el optimizador es el motor que mueve los pesos del modelo. Su función es
+                utilizar el gradiente calculado por la retropropagación para determinar cuánto y en qué dirección deben
+                cambiar los millones de parámetros de la red.</p>
+            <p>La elección del optimizador y el ajuste de la tasa de aprendizaje (learning rate) son, posiblemente, los
+                factores que más influyen en que un modelo converja rápidamente o se pierda en un mínimo local o en
+                oscilaciones infinitas.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">SGD con Momentum</h4>
+                    <p>El <span class="code-badge">SGD</span> (Stochastic Gradient Descent) es el abuelo de todos los
+                        optimizadores. Aunque simple, sigue siendo extremadamente potente cuando se combina con
+                        <strong>momentum</strong>. El momentum actúa como una bola de nieve cayendo por una colina:
+                        acumula inercia en las direcciones constantes, lo que ayuda a atravesar zonas planas (saddle
+                        points) y a amortiguar las oscilaciones en valles estrechos.
+                    </p>
+                </div>
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">Adam y AdamW</h4>
+                    <p><span class="code-badge">Adam</span> es el optimizador "por defecto" para la mayoría de los
+                        investigadores. Adapta la tasa de aprendizaje para cada peso de forma individual basándose en la
+                        media y la varianza de los gradientes. Sin embargo, tiene un fallo conocido: no gestiona bien el
+                        <strong>weight decay</strong> (L2 regularization). Por ello nació <span
+                            class="code-badge">AdamW</span>, que separa la penalización de los pesos de la actualización
+                        de los gradientes, resultando en modelos con mejor capacidad de generalización.
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box accent">
+                <p class="title">⚠️ Hiperparámetros Críticos</p>
+                <p class="content" style="font-size: 1.125rem;">No olvides ajustar el <strong>Learning Rate</strong>
+                    (LR). Un valor muy alto
+                    provocará que el modelo "explote" y la pérdida se vuelva infinita. Un valor muy bajo hará que el
+                    aprendizaje sea agónicamente lento. Además, el uso de <strong>Weight Decay</strong> es fundamental
+                    para evitar que los pesos crezcan desmesuradamente, lo cual causaría un sobreajuste severo.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: PLANIFICADORES DE LR -->
+        <section class="section">
+            <h2>3. Planificadores de LR (Schedulers)</h2>
+            <p>Entrenar con una tasa de aprendizaje constante es como conducir a la misma velocidad por toda la ciudad.
+                Al principio necesitamos ir rápido para explorar el terreno, pero al acercarnos al destino (el mínimo de
+                la función de pérdida), necesitamos reducir la velocidad para aparcar con precisión.</p>
+            <p>Los schedulers automatizan la reducción de la tasa de aprendizaje conforme avanza el entrenamiento,
+                permitiendo una convergencia más fina y estable en las fases finales.</p>
+
+            <div class="scenario-box">
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>StepLR y ExponentialLR</h4>
+                        <p>Son los más sencillos de entender. Reducen el LR en un factor determinado (p. ej., dividen
+                            por 10) cada cierto número de épocas. Es una estrategia discreta que funciona bien si
+                            conocemos aproximadamente cuánto tarda el modelo en estabilizarse, permitiendo dar "saltos"
+                            hacia una mayor precisión una vez que la meseta de pérdida es evidente.</p>
+                    </div>
+                </div>
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>CosineAnnealing y OneCycle</h4>
+                        <p>El <span class="code-badge">CosineAnnealing</span> reduce el LR siguiendo una curva de
+                            coseno, lo que proporciona un descenso suave y continuo que suele dar excelentes resultados
+                            en visión artificial. Por otro lado, la política <span class="code-badge">OneCycle</span>
+                            eleva el LR rápidamente al inicio para "calentar" el modelo y luego lo reduce drásticamente.
+                            Esta técnica, popularizada por fast.ai, permite alcanzar precisiones de estado del arte en
+                            mucho menos tiempo (super-convergence).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CALLBACKS -->
+        <section class="section">
+            <h2>4. Callbacks: Automatización y Monitorización</h2>
+            <p>Los callbacks son funciones que se ejecutan automáticamente en puntos específicos del entrenamiento (al
+                final de cada batch o de cada época). Son herramientas de gestión que nos ahorran tiempo y protegen
+                nuestro trabajo frente a fallos de hardware o humanos.</p>
+            <p>Un flujo de entrenamiento moderno no se entiende sin una monitorización en tiempo real y una gestión
+                inteligente de los pesos del modelo.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card" style="margin-bottom: 1.5rem;">
+                    <h4>Early Stopping y Checkpointing</h4>
+                    <p>El <strong>Early Stopping</strong> es el detector de humos del entrenamiento. Vigila la métrica
+                        de validación y, si deja de mejorar durante un número de épocas (patience), detiene el
+                        entrenamiento de forma segura. Esto no solo ahorra energía y tiempo, sino que es una excelente
+                        forma de evitar el sobreajuste (overfitting).</p>
+                    <p>El <strong>Model Checkpointing</strong> es nuestro sistema de "guardado rápido". Guarda los pesos
+                        del modelo automáticamente cada vez que se alcanza un nuevo récord de precisión. Esto es vital
+                        en entrenamientos largos: si el ordenador se apaga o el sistema falla, podemos retomar el
+                        trabajo desde el último punto de control sin perder horas de cómputo.</p>
+                </div>
+                <div class="feature-card" style="margin-bottom: 1.5rem;">
+                    <h4>TensorBoard y Weights & Biases (WandB)</h4>
+                    <p>Entrenar a ciegas es peligroso. Herramientas como <strong>TensorBoard</strong> nos permiten
+                        visualizar curvas de pérdida, gradientes e incluso imágenes de depuración en tiempo real a
+                        través del navegador. Es la herramienta estándar para entender qué está pasando dentro de la
+                        "caja negra".</p>
+                    <p><strong>Weights & Biases</strong> lleva esto al siguiente nivel. Es un servicio en la nube (SaaS)
+                        que almacena todos tus experimentos, permite comparar diferentes ejecuciones con gráficas
+                        interactivas y guarda incluso el código y la configuración utilizada. Es el cuaderno de bitácora
+                        definitivo para cualquier ingeniero de IA que trabaje profesionalmente.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

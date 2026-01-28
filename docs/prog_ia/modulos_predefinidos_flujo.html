@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Flujo de trabajo típico con módulos predefinidos en el desarrollo de aplicaciones de IA.">
+    <meta name="keywords"
+        content="IA, Machine Learning, Workflow, Módulos Predefinidos, Entrenamiento, Evaluación, Despliegue">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Flujo de Trabajo con Módulos Predefinidos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>Flujo de Trabajo</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Flujo de Trabajo Típico</h1>
+            <p class="subtitle">Metodología paso a paso para el desarrollo con módulos predefinidos</p>
+        </div>
+
+        <!-- FASE 1: DEFINICIÓN -->
+        <section class="section">
+            <h2>1. Definición del Problema y Gestión de Datos</h2>
+            <p>Antes de escribir una sola línea de código, es imperativo entender qué queremos resolver y con qué
+                materia prima contamos.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Identificación de la Tarea</h4>
+                    <p>Debemos clasificar el problema en una categoría estándar:</p>
+                    <ul>
+                        <li><strong>Clasificación:</strong> Asignar etiquetas (p. ej., ¿es un gato o un perro?).</li>
+                        <li><strong>Detección:</strong> Localizar objetos en un espacio (p. ej., encontrar peatones en
+                            una imagen).</li>
+                        <li><strong>Generación:</strong> Crear nuevo contenido (p. ej., sintetizar voz o texto).</li>
+                        <li><strong>Regresión:</strong> Predecir un valor continuo (p. ej., precio de una vivienda).
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Estrategia de Datos</h4>
+                    <p>El dataset debe ser representativo y estar correctamente particionado:</p>
+                    <ul>
+                        <li><strong>Train:</strong> Para ajustar los pesos del modelo.</li>
+                        <li><strong>Validation:</strong> Para ajustar hiperparámetros y evitar el overfitting.</li>
+                        <li><strong>Test:</strong> evaluación final "ciega" para medir el rendimiento real.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box accent">
+                <p class="title">⚠️ Regla de Oro: Calidad sobre Cantidad</p>
+                <p class="content" style="font-size: 1.125rem;">Garantizar el <strong>equilibrio</strong> (mismo número
+                    de ejemplos por clase) y la
+                    <strong>limpieza</strong> (sin etiquetas erróneas) es más útil que tener millones de datos ruidosos.
+                    Un modelo entrenado con datos sesgados producirá resultados injustos o erróneos.
+                </p>
+            </div>
+        </section>
+
+        <!-- FASE 2: ARQUITECTURA -->
+        <section class="section">
+            <h2>2. Selección de la Arquitectura Base</h2>
+            <p>Aprovechamos el conocimiento existente eligiendo un modelo preentrenado que ya "entienda" el dominio del
+                problema.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Elección del Modelo</h4>
+                    <p>Dependiendo del tipo de dato, elegiremos arquitecturas de referencia:</p>
+                    <ul>
+                        <li><strong>Imágenes:</strong> <span class="code-badge">ResNet</span>, <span
+                                class="code-badge">EfficientNet</span> o <span class="code-badge">ViT</span> (Vision
+                            Transformer).</li>
+                        <li><strong>Texto:</strong> <span class="code-badge">BERT</span>, <span
+                                class="code-badge">RoBERTa</span> o <span class="code-badge">GPT</span>.</li>
+                        <li><strong>Audio:</strong> <span class="code-badge">Wav2Vec</span> o <span
+                                class="code-badge">Whisper</span>.</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">Feature Extraction vs Fine-tuning</h4>
+                    <p>Una decisión crítica es determinar qué partes de la red "abriremos" al aprendizaje. No siempre es
+                        necesario (ni recomendable) entrenar todo el modelo desde cero:</p>
+                    <ul>
+                        <li><strong>Feature Extraction (Extracción de Características):</strong> El modelo preentrenado
+                            actúa como un componente estático. "Congelamos" los pesos del backbone para que no cambien y
+                            solo entrenamos la nueva cabeza final. Esta técnica es extremadamente eficiente y rápida; es
+                            la mejor opción cuando nuestro dataset es pequeño o muy similar al original, ya que
+                            aprovecha los filtros ya aprendidos sin riesgo de degradarlos.</li>
+                        <li><strong>Fine-tuning (Ajuste Fino):</strong> En este caso, permitimos que algunos de los
+                            pesos preentrenados se actualicen mediante retropropagación. Suele aplicarse a las capas
+                            superiores (las más cercanas a la salida), que son las que aprenden conceptos más
+                            específicos del dominio. Requiere más datos y el uso de tasas de aprendizaje muy bajas para
+                            evitar el <em>catastrophic forgetting</em> (borrar el conocimiento general previo). Es ideal
+                            para tareas muy especializadas donde el modelo base necesita "refinar" su visión.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE 3: CONSTRUCCIÓN -->
+        <section class="section">
+            <h2>3. Construcción y Adaptación del Modelo</h2>
+            <p>Es el momento de "ensamblar" las piezas. Un modelo moderno no es un bloque monolítico, sino una cadena de
+                módulos.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Cabeza de Tarea (Task Head)</h4>
+                    <p>Sustituimos la última capa del modelo original por una nueva adaptada a nuestro número de clases
+                        o tipo de salida. Por ejemplo, si el modelo original clasificaba 1000 objetos y nosotros solo
+                        queremos 3, añadimos una capa densa de 3 neuronas con activación <span
+                            class="code-badge">Softmax</span>.</p>
+                </div>
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Capas de Soporte</h4>
+                    <p>Añadimos capas de <strong>Normalización</strong> (para estabilizar el gradiente) e introducir
+                        <strong>Regularización</strong> (como Dropout) para asegurar que el modelo sea robusto y no
+                        dependa de patrones espurios o ruido en el entrenamiento.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE 4: ENTRENAMIENTO -->
+        <section class="section">
+            <h2>4. Protocolo de Entrenamiento</h2>
+            <p>Aquí definimos cómo va a aprender el modelo a través de los errores detectados.</p>
+
+            <div class="scenario-box">
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>Optimización y Pérdida</h4>
+                        <p>Definimos el "árbitro" y el "motor" del aprendizaje:</p>
+                        <ul>
+                            <li><strong>Función de Pérdida:</strong> <span class="code-badge">CrossEntropy</span> o
+                                <span class="code-badge">MSE</span>.
+                            </li>
+                            <li><strong>Optimizador:</strong> <span class="code-badge">AdamW</span> para eficiencia o
+                                <span class="code-badge">SGD</span> para estabilidad.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>Técnicas de Mejora</h4>
+                        <p>Estrategias para maximizar el rendimiento:</p>
+                        <ul>
+                            <li><strong>Data Augmentation:</strong> Generación sintética de variabilidad.</li>
+                            <li><strong>Early Stopping:</strong> Frenado automático ante el sobreajuste.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE 5: EVALUACIÓN -->
+        <section class="section">
+            <h2>5. Evaluación y Análisis de Errores</h2>
+            <p>No basta con tener una precisión alta; hay que entender dónde falla el modelo y por qué.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">Métricas Robustas</h4>
+                    <p>Más allá de la precisión básica, evaluamos la fiabilidad mediante la <strong>Matriz de
+                            Confusión</strong>, el <strong>Recall</strong> y la <strong>Precision</strong>,
+                        especialmente críticos cuando las clases están desbalanceadas.</p>
+                </div>
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">Inspección Cualitativa</h4>
+                    <p>Realizamos un análisis forense de los errores: examinamos los casos donde el modelo falla con
+                        mayor seguridad para identificar posibles sesgos algorítmicos o fallos estructurales en la toma
+                        de datos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE 6: DESPLIEGUE -->
+        <section class="section">
+            <h2>6. Exportación y Despliegue</h2>
+            <p>El final del camino: llevar el modelo a un entorno donde pueda ser útil.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Formatos de Producción</h4>
+                    <p>Convertimos el modelo a formatos de alto rendimiento como <span class="code-badge">ONNX</span>,
+                        <span class="code-badge">TorchScript</span> o <span class="code-badge">TFLite</span> para
+                        garantizar la interoperabilidad y velocidad en servidores o dispositivos finales.
+                    </p>
+                </div>
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Validación en Destino</h4>
+                    <p>Garantizamos la viabilidad del despliegue verificando la <strong>latencia de respuesta</strong>,
+                        el <strong>consumo de memoria</strong> y que la precisión no se haya degradado tras procesos de
+                        optimización como la cuantización.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

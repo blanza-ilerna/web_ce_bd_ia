@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Guía práctica sobre cuándo utilizar cada tipo de módulo predefinido en proyectos de IA.">
+    <meta name="keywords" content="IA, ResNet, BERT, YOLO, Transformers, MobileNet, Machine Learning, Deep Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>¿Cuándo usar cada tipo de Módulo? | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    Curso de Especialización
+                    <span>Inteligencia Artificial y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> →
+                <a href="index.html">Programación IA</a> →
+                <span>¿Cuándo usar cada Módulo?</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>¿Cuándo usar cada tipo de Módulo?</h1>
+            <p class="subtitle">Guía de selección de arquitecturas según el problema y los recursos</p>
+        </div>
+
+        <!-- SECCIÓN 1: VISIÓN ARTIFICIAL -->
+        <section class="section">
+            <h2>1. Visión Artificial: De la Clasificación al Análisis Espacial</h2>
+            <p>La visión por computador es uno de los campos donde los módulos predefinidos brillan con más fuerza.
+                Dependiendo de si nuestra meta es identificar una categoría global o localizar elementos precisos, la
+                elección cambiará drásticamente.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Clasificación con Pocos Datos</h4>
+                    <p>Cuando trabajamos con datasets pequeños (pocas cientos o miles de imágenes), la mejor estrategia
+                        es usar <strong>ResNet</strong> o <strong>EfficientNet</strong> preentrenados en ImageNet. Estos
+                        modelos ya han aprendido a reconocer bordes, texturas y formas generales.</p>
+                    <p>Simplemente "congelamos" la base (extractor de características) y añadimos una <strong>cabeza
+                            densa</strong> personalizada (capas Fully Connected) al final. Estas capas actúan como el
+                        "cerebro" que toma los patrones complejos extraídos por el modelo base y los traduce a tus
+                        categorías específicas. Al ser solo estas capas finales las que se entrenan, evitamos destruir
+                        el conocimiento previo del modelo (backbone) y logramos resultados excelentes en tiempos récord.
+                    </p>
+                </div>
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Detección y Segmentación</h4>
+                    <p>Si necesitas saber <em>dónde</em> están los objetos, optamos por <strong>YOLO</strong> (You Only
+                        Look Once) si priorizamos la velocidad en tiempo real, o por <strong>Mask R-CNN</strong> si
+                        requerimos una precisión extrema delimitando el contorno exacto de cada objeto (segmentación de
+                        instancias).</p>
+                    <p>En casos donde el objetivo es clasificar cada píxel de la imagen (<strong>segmentación
+                            semántica</strong>), la arquitectura <strong>U-Net</strong> es el estándar. A diferencia de
+                        la detección simple, la segmentación semántica no dibuja cajas, sino que crea una "capa de
+                        color" o máscara que cubre exactamente la silueta del objeto. Es como si el modelo estuviera
+                        coloreando la imagen, asignando a cada punto (píxel) una etiqueta específica (p. ej.,
+                        "carretera", "tumor" o "edificio"), lo cual es vital para el autoguiado o diagnósticos médicos
+                        precisos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: PROCESAMIENTO DE LENGUAJE NATURAL (NLP) -->
+        <section class="section">
+            <h2>2. NLP: Entendimiento y Generación de Texto</h2>
+            <p>El lenguaje natural requiere capturar el contexto y la semántica. Aquí, los modelos basados en
+                Transformers han desplazado casi por completo a las redes recurrentes tradicionales.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">NLP Clásico (Comprensión)</h4>
+                    <p>Para tareas de clasificación de sentimientos, reconocimiento de entidades (NER) o sistemas de
+                        preguntas y respuestas (QA), la familia <strong>BERT</strong> o su versión optimizada
+                        <strong>RoBERTa</strong> son los reyes. Estos modelos son "bidireccionales", lo que significa
+                        que entienden el significado de una palabra mirando tanto lo que viene antes como lo que viene
+                        después.
+                    </p>
+                    <p>Es fundamental utilizar siempre el <strong>tokenizador oficial</strong> del modelo elegido (p.
+                        ej., WordPiece para BERT), ya que garantiza que el texto se divida exactamente de la misma forma
+                        que durante su entrenamiento original, evitando errores semánticos graves.</p>
+                </div>
+                <div class="feature-card secondary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-secondary">Generación de Texto</h4>
+                    <p>Si el objetivo es crear contenido, resumir documentos o traducir, los modelos
+                        <strong>GPT-like</strong> (solo decodificador) o <strong>T5</strong> (codificador-decodificador)
+                        son los adecuados. Estos modelos están diseñados para predecir la siguiente palabra de forma
+                        coherente.
+                    </p>
+                    <p>Podemos utilizarlos mediante <strong>prompting</strong> (instrucciones en lenguaje natural) para
+                        tareas rápidas, o mediante un <strong>fine-tuning</strong> instruccional si necesitamos que el
+                        modelo adopte un tono, formato o base de conocimientos muy específicos y corporativos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: DATOS SECUENCIALES Y TIEMPO -->
+        <section class="section">
+            <h2>3. Series Temporales y Datos Tabulares</h2>
+            <p>No todo en la IA es imagen o texto. Los datos financieros, de sensores o de ventas requieren un enfoque
+                en la dependencia temporal.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Series Temporales Simples</h4>
+                    <p>Para predecir valores basados en un histórico corto, a veces un simple <strong>MLP</strong>
+                        (Perceptrón Multicapa) o una <strong>1D-Conv</strong> (Convolución unidimensional) son
+                        suficientes y mucho más rápidos. Si la secuencia tiene una memoria clara a corto plazo, los
+                        módulos <strong>GRU</strong> ofrecen un excelente equilibrio entre potencia y velocidad
+                        computacional en comparación con las pesadas LSTM.</p>
+                </div>
+                <div class="feature-card primary" style="margin-bottom: 1.5rem;">
+                    <h4 class="color-primary">Patrones Complejos y Largo Plazo</h4>
+                    <p>Cuando los datos presentan estacionalidades largas o dependencias entre puntos muy alejados en el
+                        tiempo (p. ej., clima o mercados globales), debemos evaluar <strong>Transformers</strong>
+                        específicos para series temporales (como Informer o Autoformer). Estos modelos utilizan
+                        mecanismos de atención para decidir qué momentos del pasado son realmente relevantes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: OPTIMIZACIÓN EN RECURSOS LIMITADOS -->
+        <section class="section">
+            <h2>4. Recursos Limitados: IA en el Borde (Edge Computing)</h2>
+            <p>A veces el reto no es la precisión, sino el hardware. Si el modelo debe correr en un teléfono móvil, una
+                Raspberry Pi o un dispositivo IoT, debemos priorizar la eficiencia.</p>
+
+            <div class="scenario-box secondary">
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>Arquitecturas Ligeras</h4>
+                        <p>En lugar de los gigantes convencionales, usamos <strong>MobileNet</strong> o
+                            <strong>EfficientNet-lite</strong>. Estos módulos utilizan convoluciones inteligentes
+                            (depthwise separable) que reducen el número de cálculos por imagen en más de un 80%,
+                            manteniendo una precisión muy respetable en dispositivos móviles.</p>
+                    </div>
+                </div>
+                <div class="scenario-item">
+                    <div class="content">
+                        <h4>Cuantización y Pruning</h4>
+                        <p>Además de elegir el módulo correcto, aplicamos optimizaciones críticas: la
+                            <strong>cuantización</strong> reduce el peso del modelo (de 32 a 8 bits) y el
+                            <strong>pruning</strong> elimina conexiones redundantes, permitiendo que la IA sea veloz en
+                            procesadores de muy bajo consumo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>5. Resumen de Selección</h2>
+            <div class="highlight-box accent">
+                <p class="title">💡 Recomendación Final</p>
+                <p class="content" style="font-size: 1.125rem;">Antes de elegir, hazte tres preguntas: <strong>¿Qué tipo
+                        de dato tengo?</strong> (imagen, texto, serie temporal), <strong>¿Cuántos datos tengo?</strong>
+                    (más datos permiten más fine-tuning) y <strong>¿Dónde va a correr?</strong> (servidor potente o
+                    móvil). Empieza siempre por el módulo más sencillo que resuelva el problema y solo escala a
+                    arquitecturas complejas si el rendimiento no es suficiente.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
