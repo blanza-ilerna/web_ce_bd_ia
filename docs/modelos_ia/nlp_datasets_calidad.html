@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calidad y Diversidad de Datasets en NLP | iLERNA</title>
+    <meta name="description"
+        content="Analiza la importancia de la calidad y diversidad de los datos en el entrenamiento de modelos NLP. Problemas, soluciones y niveles de control del input.">
+    <meta name="keywords"
+        content="Calidad de datos, Datasets NLP, Sesgos en IA, Curación de datos, Auditoría lingüística, Prompt engineering, Diversidad de datos">
+    <meta name="author" content="Antigravity">
+    <meta name="organization" content="ilerNA">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Calidad y Diversidad de Datasets</span>
+                </div>
+            </div>
+            <h1 class="text-center">Calidad y Diversidad de los Datasets</h1>
+            <p class="subtitle text-center">"Garbage In, Garbage Out": El cimiento de un NLP preciso y ético</p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: EL PRINCIPIO FUNDAMENTAL -->
+            <section class="section">
+                <h2 class="section-title">El Modelo es el Reflejo de sus Datos</h2>
+                <p>
+                    Como se ha insistido anteriormente en diversos módulos, un modelo de inteligencia artificial
+                    <strong>solo es tan bueno como los datos con los que se entrena</strong>. En el caso del
+                    Procesamiento del Lenguaje Natural (NLP), donde los datos son textos humanos llenos de matices, esta
+                    afirmación cobra una relevancia crítica.
+                </p>
+                <p>
+                    La calidad de los <i>inputs</i> determina directamente la precisión, la coherencia y la ausencia de
+                    errores en las respuestas generadas o en las clasificaciones realizadas por el modelo.
+                </p>
+
+                <div class="highlight-box primary mt-2">
+                    <p class="title">📋 Regla de Oro del Dato</p>
+                    <p class="content" style="font-size: 1.125rem;">No importa cuán avanzada sea la arquitectura de un
+                        Transformer; si el dataset de entrenamiento está corrupto, sesgado o es pobre en calidad, el
+                        modelo resultante será ineficaz o, peor aún, peligroso en entornos de producción.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: PROBLEMAS Y SOLUCIONES -->
+            <section class="section">
+                <h2 class="section-title">Desafíos en los Datos de Internet</h2>
+                <p>La mayoría de los LLM actuales se entrenan utilizando grandes porciones de contenido extraído
+                    directamente de la web (Common Crawl). Esto presenta retos significativos:</p>
+
+                <div class="layout-grid-responsive mt-2">
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">❌ El Problema</h4>
+                        <ul>
+                            <li><strong>Errores y baja calidad:</strong> Información falsa, mala gramática y lenguaje
+                                tóxico.</li>
+                            <li><strong>Sesgos arraigados:</strong> Estereotipos culturales, de género o raciales
+                                presentes en el texto histórico.</li>
+                            <li><strong>Duplicidades:</strong> Millones de copias del mismo contenido que "engañan" al
+                                modelo sobre la importancia de ciertos temas.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">✅ La Solución</h4>
+                        <ul>
+                            <li><strong>Curación de datos:</strong> Selección manual de fuentes de alta confianza
+                                (libros, artículos científicos).</li>
+                            <li><strong>Filtrado semántico:</strong> Algoritmos que eliminan texto de baja calidad o que
+                                no aporta información relevante.</li>
+                            <li><strong>Auditorías lingüísticas:</strong> Revisiones expertas para asegurar la
+                                diversidad dialectal y la neutralidad del contenido.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: NIVELES DE CONTROL -->
+            <section class="section">
+                <h2 class="section-title">Control de Calidad del Input</h2>
+                <p>En un entorno profesional, debemos distinguir entre los datos que podemos controlar totalmente y
+                    aquellos que dependen de factores externos.</p>
+
+                <div class="step-list mt-2">
+                    <div class="step-item">
+                        <div class="step-number">🏗️</div>
+                        <div class="step-content">
+                            <p class="title">Alta Controlabilidad: Datos Internos</p>
+                            <p>Podemos y debemos asegurar que la documentación que lee un LLM (vía RAG o Fine-tuning)
+                                esté <strong>ordenada, actualizada y depurada</strong>. Esto incluye cuidar la calidad
+                                de las imágenes que se le pasan para análisis multimodal.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">🙋</div>
+                        <div class="step-content">
+                            <p class="title">Baja Controlabilidad: El Usuario (Prompt)</p>
+                            <p>La calidad de las preguntas que hacen los usuarios finales es mucho menos predecible. Un
+                                prompt ambiguo o gramaticalmente incorrecto llevará a una respuesta deficiente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualización SVG Control -->
+                <div style="margin: 3rem 0;">
+                    <svg width="800" height="200" viewBox="0 0 800 200"
+                        style="display: block; margin: 0 auto; background: #fafafa; border-radius: 12px; border: 1px solid #e5e5e5;">
+                        <!-- Controlled -->
+                        <rect x="50" y="50" width="300" height="100" rx="10" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="2" />
+                        <text x="200" y="40" text-anchor="middle" font-size="14" font-weight="bold"
+                            fill="#333">CONTROLABLE (Expertos)</text>
+                        <text x="200" y="90" text-anchor="middle" font-size="12" fill="#555">Archivos, Bases de
+                            Conocimiento,</text>
+                        <text x="200" y="110" text-anchor="middle" font-size="12" fill="#555">Datasets Curados</text>
+                        <text x="200" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#43A047">🛡️
+                            Acciones: Auditoría y Limpieza</text>
+
+                        <!-- Uncontrolled -->
+                        <rect x="450" y="50" width="300" height="100" rx="10" fill="#FFF3CD" stroke="#FFA726"
+                            stroke-width="2" />
+                        <text x="600" y="40" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">DIFÍCIL
+                            DE CONTROLAR (Usuarios)</text>
+                        <text x="600" y="100" text-anchor="middle" font-size="12" fill="#555">Prompts externos, lenguaje
+                            coloquial,</text>
+                        <text x="600" y="120" text-anchor="middle" font-size="12" fill="#555">emociones del
+                            usuario</text>
+                        <text x="600" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#E65100">📢
+                            Acciones: Educación y Divulgación</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: EDUCACIÓN Y DIVULGACIÓN -->
+            <section class="section">
+                <h2 class="section-title">El Factor Humano en el Input</h2>
+                <p>Dado que no podemos controlar los prompts de todos los usuarios mediante algoritmos de limpieza (sin
+                    riesgo de censura o pérdida de intención), la estrategia debe ser social:</p>
+                <div class="layout-grid-stack">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">Educación en Prompt Engineering</h4>
+                        <p>Enseñar a los usuarios a estructurar sus peticiones, proporcionar contexto y evitar
+                            ambigüedades es clave para obtener el máximo valor del NLP.</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">Divulgación de Limitaciones</h4>
+                        <p>Los usuarios deben saber que el modelo puede "perderse" si los datos de entrada son
+                            incongruentes, fomentando una cultura de verificación y pensamiento crítico.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESUMEN ESTRATÉGICO -->
+            <div class="highlight-box primary">
+                <p class="title">💡 Resumen Estratégico</p>
+                <p class="content" style="font-size: 1.125rem;">La calidad del dataset es el activo más valioso de
+                    cualquier proyecto de IA. Mientras que los algoritmos se están volviendo <i>commodities</i>, los
+                    datos limpios, diversos y bien estructurados son el verdadero diferenciador competitivo que asegura
+                    la precisión técnica y la integridad ética.</p>
+            </div>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
