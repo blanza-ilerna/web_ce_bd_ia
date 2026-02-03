@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Código de ejemplo para un flujo de transferencia HDFS a S3 en Apache NiFi con validación de integridad SHA-256.">
+  <meta name="author" content="iLERNA">
+  <meta name="organization" content="ILERNA">
+  <title>Código: Transferencia HDFS a S3 en NiFi | iLERNA</title>
+  <link rel="stylesheet" href="../css/lecciones.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Prism.js para resaltado de código -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="header-container">
+        <div class="logo-container">
+          <a href="../index.html">
+            <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+          </a>
+          <div class="logo-text">
+            iLERNA
+            <span>Curso de Especialización en IA y Big Data</span>
+          </div>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html">Inicio</a> ›
+          <a href="index.html">Big Data Aplicado</a> ›
+          <span>Código: Transferencia en NiFi</span>
+        </div>
+      </div>
+      <h1 class="text-center">Transferencia en Apache NiFi</h1>
+      <p class="subtitle text-center">Configuración XML para un flujo resiliente de HDFS a Amazon S3</p>
+    </header>
+
+    <!-- SECCIÓN 1: ¿QUÉ ES NIFI? -->
+    <section class="section" id="que-es-nifi">
+      <h2 class="section-title">1. ¿Qué es Apache NiFi?</h2>
+      <p>
+        <strong>Apache NiFi</strong> es una plataforma de software diseñada para automatizar y gestionar el flujo de
+        datos entre sistemas de forma robusta, segura y escalable. Creado originalmente por la NSA y ahora parte de la
+        Apache Software Foundation, NiFi se ha convertido en la herramienta de referencia para la <strong>orquestación
+          de datos</strong> en ecosistemas Big Data.
+      </p>
+      <p>
+        A diferencia de las herramientas ETL tradicionales que se ejecutan en lotes pesados, NiFi trabaja con el
+        concepto de <strong>Dataflow</strong>: un flujo continuo donde los datos se mueven, transforman y enrutan en
+        tiempo real a través de una interfaz visual intuitiva.
+      </p>
+      <div class="highlight-box info">
+        <p>NiFi no solo mueve datos; garantiza que lleguen a su destino con total seguridad, permitiendo cambios en el
+          flujo en caliente (sin detener el sistema) y resolviendo problemas de incompatibilidad entre cientos de
+          tecnologías distintas.</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: VENTAJAS -->
+    <section class="section" id="ventajas-nifi">
+      <h2 class="section-title">2. Ventajas y Capacidades Clave</h2>
+      <div class="grid-features">
+        <div class="feature-card">
+          <h4>🔍 Trazabilidad (Data Provenance)</h4>
+          <p>Registra el historial completo de cada dato: desde dónde entró hasta qué transformaciones sufrió y quién
+            fue el responsable de cada cambio.</p>
+        </div>
+        <div class="feature-card secondary">
+          <h4>🛡️ Entrega Garantizada</h4>
+          <p>Utiliza un sistema de persistencia en disco que asegura que ningún dato se pierda en caso de fallo de red o
+            apagón del servidor.</p>
+        </div>
+        <div class="feature-card">
+          <h4>⚖️ Gestión de Back-Pressure</h4>
+          <p>Controla automáticamente la velocidad de los datos si el sistema de destino está saturado, evitando fallos
+            por sobrecarga.</p>
+        </div>
+        <div class="feature-card secondary">
+          <h4>🧩 Alta Extensibilidad</h4>
+          <p>Cuenta con más de 300 procesadores integrados para conectar con HDFS, S3, Kafka, bases de datos SQL/NoSQL y
+            APIs externas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRODUCCIÓN AL CÓDIGO -->
+    <section class="section">
+      <p>
+        Para aterrizar estos conceptos, analizaremos un script XML que constituye la "receta" de un flujo profesional en
+        <strong>Apache NiFi</strong>. Este diseño permite mover datos desde un clúster <strong>HDFS</strong>
+        on-premise hacia <strong>Amazon S3</strong>, incorporando los pasos críticos de validación que hemos estudiado.
+      </p>
+    </section>
+
+    <!-- CÓDIGO XML -->
+    <section class="section" id="configuracion-xml">
+      <h2 class="section-title">3. Configuración del Flujo (Template XML)</h2>
+      <div class="scenario-box white">
+        <strong>Archivo: <code>hdfs_to_s3_flow.xml</code></strong>
+        <pre class="language-xml"><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;flowController encoding-version="1.0"&gt;
+  &lt;rootGroup&gt;
+    &lt;id&gt;123e4567-e89b-12d3-a456-426614174000&lt;/id&gt;
+    &lt;name&gt;Data_Migration_HDFS_to_S3&lt;/name&gt;
+    &lt;processors&gt;
+      &lt;!-- Procesador para leer desde HDFS --&gt;
+      &lt;processor&gt;
+        &lt;id&gt;234e5678-f90c-12d3-a456-426614174001&lt;/id&gt;
+        &lt;name&gt;GetHDFS&lt;/name&gt;
+        &lt;type&gt;org.apache.nifi.processors.hadoop.GetHDFS&lt;/type&gt;
+        &lt;properties&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Hadoop Configuration Resources&lt;/key&gt;
+            &lt;value&gt;/etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml&lt;/value&gt;
+          &lt;/entry&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Directory&lt;/key&gt;
+            &lt;value&gt;/data/ventas&lt;/value&gt;
+          &lt;/entry&gt;
+        &lt;/properties&gt;
+      &lt;/processor&gt;
+
+      &lt;!-- Procesador para verificar integridad con SHA-256 --&gt;
+      &lt;processor&gt;
+        &lt;id&gt;345e6789-f90c-12d3-a456-426614174002&lt;/id&gt;
+        &lt;name&gt;HashContent&lt;/name&gt;
+        &lt;type&gt;org.apache.nifi.processors.standard.HashContent&lt;/type&gt;
+        &lt;properties&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Hash Algorithm&lt;/key&gt;
+            &lt;value&gt;SHA256&lt;/value&gt;
+          &lt;/entry&gt;
+        &lt;/properties&gt;
+      &lt;/processor&gt;
+
+      &lt;!-- Procesador para escribir a S3 --&gt;
+      &lt;processor&gt;
+        &lt;id&gt;456e7890-f90c-12d3-a456-426614174003&lt;/id&gt;
+        &lt;name&gt;PutS3Object&lt;/name&gt;
+        &lt;type&gt;org.apache.nifi.processors.aws.s3.PutS3Object&lt;/type&gt;
+        &lt;properties&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Bucket&lt;/key&gt;
+            &lt;value&gt;my-s3-bucket&lt;/value&gt;
+          &lt;/entry&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Access Key&lt;/key&gt;
+            &lt;value&gt;${aws_access_key}&lt;/value&gt;
+          &lt;/entry&gt;
+          &lt;entry&gt;
+            &lt;key&gt;Secret Key&lt;/key&gt;
+            &lt;value&gt;${aws_secret_key}&lt;/value&gt;
+          &lt;/entry&gt;
+        &lt;/properties&gt;
+      &lt;/processor&gt;
+    &lt;/processors&gt;
+
+    &lt;connections&gt;
+      &lt;!-- Conectar GetHDFS a HashContent --&gt;
+      &lt;connection&gt;
+        &lt;id&gt;567e8901-f90c-12d3-a456-426614174004&lt;/id&gt;
+        &lt;sourceId&gt;234e5678-f90c-12d3-a456-426614174001&lt;/sourceId&gt;
+        &lt;destinationId&gt;345e6789-f90c-12d3-a456-426614174002&lt;/destinationId&gt;
+        &lt;relationships&gt;
+          &lt;relationship&gt;success&lt;/relationship&gt;
+        &lt;/relationships&gt;
+      &lt;/connection&gt;
+
+      &lt;!-- Conectar HashContent a PutS3Object --&gt;
+      &lt;connection&gt;
+        &lt;id&gt;678e9012-f90c-12d3-a456-426614174005&lt;/id&gt;
+        &lt;sourceId&gt;345e6789-f90c-12d3-a456-426614174002&lt;/sourceId&gt;
+        &lt;destinationId&gt;456e7890-f90c-12d3-a456-426614174003&lt;/destinationId&gt;
+        &lt;relationships&gt;
+          &lt;relationship&gt;success&lt;/relationship&gt;
+        &lt;/relationships&gt;
+      &lt;/connection&gt;
+    &lt;/connections&gt;
+  &lt;/rootGroup&gt;
+&lt;/flowController&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- EXPLICACIÓN DEL FLUJO -->
+    <section class="section" id="desglose-proceso">
+      <h2 class="section-title">4. Desglose del Proceso</h2>
+      <div class="grid-3">
+        <div class="feature-card">
+          <h4>📥 Ingesta (GetHDFS)</h4>
+          <p>Se conecta al clúster de origen utilizando los archivos de configuración
+            <code>core-site.xml</code> y <code>hdfs-site.xml</code>. Monitoriza el directorio de ventas
+            para extraer archivos nuevos de forma continua.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h4>🛡️ Validación (HashContent)</h4>
+          <p>Calcula una huella digital digital del contenido del archivo. Si el dato se corrompiera en
+            pasos posteriores, el hash SHA-256 no coincidiría, permitiendo detectar el error de
+            inmediato.</p>
+        </div>
+        <div class="feature-card">
+          <h4>☁️ Destino (PutS3Object)</h4>
+          <p>Carga el dato verificado en Amazon S3. Utiliza variables de entorno para las credenciales,
+            siguiendo las mejores prácticas de seguridad para no exponer claves en el código.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRÓXIMOS PASOS -->
+    <section class="section" id="proximos-pasos">
+      <h2 class="section-title">5. Próximos Pasos</h2>
+      <div class="highlight-box secondary">
+        <h3 class="color-secondary">🚀 Hacia la Operación Continua</h3>
+        <p>
+          Una vez garantizada la integridad de los datos y su correcta replicación entre clústeres, el
+          siguiente paso es asegurar que el sistema funcione de forma estable y eficiente mediante
+          mecanismos de <strong>monitorización continua</strong>. En el próximo tema exploraremos cómo
+          configurar alertas y dashboards para estas infraestructuras migradas.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONCLUSIÓN ESTRATÉGICA -->
+    <section class="section" id="conclusion">
+      <div class="highlight-box primary"
+        style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+        <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 6. Conclusión</h3>
+        <p
+          style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+          La automatización del movimiento de datos no solo ahorra tiempo, sino que elimina el error
+          humano. Convertir un proceso de migración en un <strong>pipeline orquestado y auditable</strong>
+          es la marca distintiva de un Senior Big Data Engineer.
+        </p>
+      </div>
+    </section>
+    </main>
+
+    <footer>
+      <h3>iLERNA</h3>
+      <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+      <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+      <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+        Superior.</p>
+      <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+      <div class="penguin">
+        <span>🐧</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

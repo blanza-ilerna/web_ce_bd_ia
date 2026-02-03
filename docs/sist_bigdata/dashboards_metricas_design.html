@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Diseño e Implementación de Métricas en Big Data - Estrategias Técnicas y Capas de Procesamiento">
+    <meta name="keywords" content="Diseño de Métricas, Big Data, SQL, Spark, Flink, Catálogo de Datos, Implementación">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Diseño e Implementación de Métricas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    <h1>iLERNA</h1>
+                    <p>Centro de Formación Profesional Online</p>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a>
+                <span>›</span>
+                <a href="index.html">Sistemas Big Data</a>
+                <span>›</span>
+                <span>Diseño e Implementación</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Diseño e Implementación de Métricas</h1>
+            <p class="subtitle">Arquitectura Tecnológica y Rigor Metodológico en Sistemas Distribuidos</p>
+        </div>
+
+        <!-- TOC -->
+        <nav class="toc-container">
+            <h3>📑 Contenido de la Lección</h3>
+            <ul class="toc-list">
+                <li><a href="#metodologia">1. Decisiones Metodológicas y Fuentes</a></li>
+                <li><a href="#capas">2. Capas de Cálculo y Procesamiento</a></li>
+                <li><a href="#temporalidad">3. Gestión del Tiempo y Periodicidad</a></li>
+                <li><a href="#coherencia">4. Coherencia en Sistemas Distribuidos</a></li>
+                <li><a href="#validacion">5. El Filtro de Validación Crítica</a></li>
+            </ul>
+        </nav>
+
+        <!-- SECCIÓN 1: METODOLOGÍA -->
+        <section id="metodologia" class="section">
+            <h2>1. Decisiones Metodológicas y Fuentes</h2>
+            <p>
+                El desarrollo de métricas en entornos de Big Data no es un proceso puramente técnico; requiere un
+                enfoque metodológico que garantice que los resultados sean precisos y, sobre todo, confiables.
+            </p>
+            <div class="grid-2-cols">
+                <div class="card primary">
+                    <h4 class="color-primary">🔍 Selección de la Fuente</h4>
+                    <p>
+                        Se debe identificar el origen exacto del dato (Single Source of Truth). Utilizar sistemas
+                        confiables y actualizados evita que la métrica nazca con errores de base.
+                    </p>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">📜 Reglas de Cálculo</h4>
+                    <p>
+                        Es imperativo documentar cada fórmula y transformación aplicada. Sin una documentación clara,
+                        diferentes departamentos podrían calcular "el mismo" indicador de formas distintas, creando
+                        discrepancias graves.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CAPAS -->
+        <section id="capas" class="section">
+            <h2>2. Capas de Cálculo y Procesamiento</h2>
+            <p>
+                En una arquitectura moderna, tenemos múltiples lugares donde podemos ejecutar la lógica de nuestras
+                métricas. La elección depende del volumen de datos y los requisitos de latencia.
+            </p>
+            <div class="grid-3">
+                <div class="feature-card ani">
+                    <h4>🗄️ Capa de Base de Datos</h4>
+                    <p>Cálculo mediante consultas <strong>SQL</strong> directamente en el almacén de datos. Ideal para
+                        datos estructurados y reportes estándar.</p>
+                </div>
+                <div class="feature-card agi">
+                    <h4>⚙️ Capa de Procesamiento</h4>
+                    <p>Uso de frameworks como <strong>Spark o Flink</strong>. Necesario para procesar volúmenes masivos
+                        o flujos de datos en tiempo real (Streaming).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>📊 Herramienta de Visualización</h4>
+                    <p>Cálculo al vuelo en herramientas como Power BI o Tableau. Aporta flexibilidad pero puede
+                        penalizar el rendimiento del cuadro de mando.</p>
+                </div>
+            </div>
+
+            <!-- SVG CAPAS DE CÁLCULO -->
+            <!-- SVG CAPAS DE CÁLCULO (HORIZONTAL FLOW) -->
+            <div class="visualization-container" style="text-align: center; margin: 3rem 0;">
+                <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+                    <!-- Layer 1: Fuentes (Left) -->
+                    <rect x="30" y="65" width="220" height="120" rx="12" fill="#f8fafc" stroke="var(--color-primary)"
+                        stroke-width="1.2" />
+                    <text x="140" y="110" text-anchor="middle" fill="var(--color-primary)" font-weight="bold"
+                        font-size="28">📂</text>
+                    <text x="140" y="140" text-anchor="middle" fill="var(--color-primary)" font-weight="bold"
+                        font-size="16">Fuentes Raw</text>
+                    <text x="140" y="158" text-anchor="middle" fill="#64748b" font-size="11">Logs, Sensores, DBs</text>
+
+                    <!-- Arrow 1 to 2 -->
+                    <path d="M260 125 L310 125" stroke="#cbd5e0" stroke-width="2" marker-end="url(#arrowhead)" />
+                    <text x="285" y="112" text-anchor="middle" fill="#94a3b8" font-size="10"
+                        font-weight="bold">INGESTIÓN</text>
+
+                    <!-- Layer 2: Procesamiento (Middle) -->
+                    <rect x="340" y="65" width="240" height="120" rx="12" fill="var(--color-primary)" />
+                    <text x="460" y="105" text-anchor="middle" fill="white" font-size="28">⚙️</text>
+                    <text x="460" y="135" text-anchor="middle" fill="white" font-weight="bold"
+                        font-size="16">Procesamiento</text>
+                    <text x="460" y="155" text-anchor="middle" fill="white" font-size="12" opacity="0.9">Spark, Flink,
+                        SQL</text>
+
+                    <!-- Arrow 2 to 3 -->
+                    <path d="M590 125 L640 125" stroke="#cbd5e0" stroke-width="2" marker-end="url(#arrowhead)" />
+                    <text x="615" y="112" text-anchor="middle" fill="#94a3b8" font-size="10"
+                        font-weight="bold">ENTREGA</text>
+
+                    <!-- Layer 3: Visualización (Right) -->
+                    <rect x="670" y="65" width="220" height="120" rx="12" fill="var(--color-secondary)" />
+                    <text x="780" y="110" text-anchor="middle" fill="white" font-size="28">🎨</text>
+                    <text x="780" y="140" text-anchor="middle" fill="white" font-weight="bold"
+                        font-size="16">Dashboard</text>
+                    <text x="780" y="158" text-anchor="middle" fill="white" font-size="12" opacity="0.9">Power BI,
+                        Tableau</text>
+
+                    <!-- Arrowhead definition (Smaller/Refined) -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                            <polygon points="0 0, 6 2, 0 4" fill="#cbd5e0" />
+                        </marker>
+                    </defs>
+                </svg>
+                <div class="highlight-box info">
+                    <p>🚀 <strong>Ciclo de Vida de la Métrica:</strong> Los datos se originan en la capa de fuentes (Raw
+                        Data), son ingeridos y transformados masivamente en la capa de procesamiento (donde reside la
+                        inteligencia del cálculo) y finalmente se entregan de forma visual para que el usuario pueda
+                        interpretarlos y actuar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TEMPORALIDAD -->
+        <section id="temporalidad" class="section">
+            <h2>3. Gestión del Tiempo y Periodicidad</h2>
+            <p>
+                Definir correctamente el horizonte temporal es vital para evitar interpretaciones erróneas que lleven a
+                decisiones equivocadas.
+            </p>
+            <div class="grid-2-cols">
+                <div class="card primary-bg">
+                    <h4 class="color-primary">⚡ Métricas Instantáneas</h4>
+                    <p>
+                        Capturan una "foto" del momento actual. Por ejemplo: número de usuarios conectados
+                        simultáneamente o carga actual de un servidor.
+                    </p>
+                </div>
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">📅 Métricas Acumulativas</h4>
+                    <p>
+                        Agregan datos sobre un periodo definido. Por ejemplo: total de ventas mensuales o tasa de error
+                        semanal. La comparación siempre debe hacerse entre periodos equivalentes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: COHERENCIA -->
+        <section id="coherencia" class="section">
+            <h2>4. Coherencia en Sistemas Distribuidos</h2>
+            <p>
+                En el Big Data, los datos suelen provenir de fuentes heterogéneas. Mantener la coherencia requiere
+                herramientas de gobernanza avanzadas.
+            </p>
+            <div class="scenario-box primary">
+                <h4>Repositorios y Catálogos de Métricas</h4>
+                <p>
+                    Las plataformas modernas incorporan catálogos donde se centraliza la "verdad" de cada métrica. Estos
+                    repositorios documentan de forma estandarizada:
+                </p>
+                <div class="grid-2-cols" style="margin-top: 1rem;">
+                    <ul style="margin: 0; margin-left: 1.5rem;">
+                        <li><strong>Origen del dato:</strong> Sistema fuente original.</li>
+                        <li><strong>Definición técnica:</strong> Algoritmo o código aplicado.</li>
+                    </ul>
+                    <ul style="margin: 0; margin-left: 1.5rem;">
+                        <li><strong>Unidad de medida:</strong> €, %, ms, etc.</li>
+                        <li><strong>Periodicidad:</strong> Frecuencia de actualización.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: VALIDACIÓN -->
+        <section id="validacion" class="section">
+            <h2>5. El Filtro de Validación Crítica</h2>
+            <p>
+                Antes de saturar un cuadro de mando con una nueva métrica, debe someterse a un riguroso examen de valor.
+            </p>
+
+            <div class="highlight-box warning">
+                <h4>⚠️ El Triple Test de la Métrica</h4>
+                <p>Si la respuesta a alguna de estas preguntas es <strong>NO</strong>, reconsidere su inclusión:</p>
+                <ol>
+                    <li><strong>¿Relevancia?</strong> ¿Representa realmente un aspecto crítico del negocio u operación?
+                    </li>
+                    <li><strong>¿Objetividad?</strong> ¿Puede medirse de forma objetiva, repetible y automatizada?</li>
+                    <li><strong>¿Accionabilidad?</strong> ¿Está asociada a una acción o decisión concreta si el valor se
+                        desvía?</li>
+                </ol>
+            </div>
+
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "La mejor métrica no es la más compleja técnicamente, sino la que obliga a actuar cuando su valor
+                    cambia."
+                </p>
+                <span class="quote-author">— Arquitecto de Soluciones Big Data</span>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

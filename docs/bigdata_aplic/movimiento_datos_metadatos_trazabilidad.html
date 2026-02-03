@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Rol de los metadatos en la trazabilidad de datos. Tipos de metadatos, linaje, gobernanza y herramientas en Big Data.">
+    <title>Metadatos y Trazabilidad de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Metadatos y Trazabilidad</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Rol de los Metadatos en la Trazabilidad</h1>
+                <p class="subtitle">El pasaporte digital que garantiza la confianza y la gobernanza del dato</p>
+            </div>
+
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. ¿Qué son los Metadatos?</a></li>
+                    <li><a href="#tipos">2. Tipos de Metadatos</a></li>
+                    <li><a href="#funciones">3. Funciones en la Trazabilidad</a></li>
+                    <li><a href="#herramientas">4. Herramientas de Gestión</a></li>
+                    <li><a href="#ejemplo">5. Ejemplo Práctico: Apache Atlas</a></li>
+                    <li><a href="#caso-estudio">6. Caso de Estudio: Farmacéutica</a></li>
+                </ul>
+            </nav>
+
+            <!-- INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <p>
+                    En entornos de Big Data, movemos volúmenes masivos de información a gran velocidad. Sin un registro
+                    detallado,
+                    estos datos se convertirían en un "pantano de datos" (data swamp). Aquí es donde entran los
+                    <strong>metadatos</strong>.
+                </p>
+                <div class="highlight-box primary">
+                    <p class="content">
+                        Los metadatos son <strong>"datos sobre los datos"</strong>. Describen la estructura, el
+                        significado y
+                        todas las operaciones realizadas sobre la información, siendo el pilar fundamental para el
+                        linaje completo
+                        del dato, clave para auditorías, gobernanza y cumplimiento normativo.
+                    </p>
+                </div>
+            </section>
+
+            <!-- TIPOS DE METADATOS -->
+            <section class="section" id="tipos">
+                <h2 class="section-title">2. Dimensiones Detalladas de los Metadatos</h2>
+                <p>Para gestionar el ciclo de vida del dato de forma profesional, no basta con una descripción
+                    superficial. Debemos profundizar en tres dimensiones que se apilan para formar el "pasaporte" de
+                    confianza del dato:</p>
+
+                <div class="vertical-stack">
+                    <!-- Metadatos Técnicos -->
+                    <div class="card primary" style="margin-bottom: 2rem;">
+                        <h4 class="color-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.5rem;">⚙️</span> Metadatos Técnicos: La Estructura Física
+                        </h4>
+                        <p>Definen <strong>cómo</strong> está almacenado el dato. Son consumidos principalmente
+                            por sistemas y arquitectos de datos para optimizar el rendimiento y asegurar la
+                            compatibilidad.</p>
+                        <ul class="list-disc-padded">
+                            <li><strong>Esquema y Tipado:</strong> Nombres de columnas, tipos de datos (String,
+                                Integer, Decimal) y restricción de nulos.</li>
+                            <li><strong>Almacenamiento:</strong> Ruta en el sistema de archivos (HDFS/S3),
+                                formato (Parquet, Avro, ORC) y método de compresión (Snappy, Gzip).</li>
+                            <li><strong>Particionado:</strong> Estrategia de división de datos (por fecha,
+                                región, etc.) para acelerar las consultas.</li>
+                        </ul>
+                        <div class="scenario-box white" style="margin-top: 1.5rem;">
+                            <strong>Ficha Técnica de Ejemplo:</strong>
+                            <pre
+                                style="background: #2d2d2d; color: #f8f8f2; padding: 1.25rem; margin-top: 0.75rem; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; line-height: 1.5; overflow-x: auto;">Format: Parquet
+Compression: Snappy
+Partition: region='EU', year=2024
+Schema: {
+  id: LONG,
+  price: DOUBLE,
+  ts: TIMESTAMP
+}</pre>
+                        </div>
+                    </div>
+
+                    <!-- Metadatos de Negocio -->
+                    <div class="card secondary" style="margin-bottom: 2rem;">
+                        <h4 class="color-secondary" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.5rem;">💼</span> Metadatos de Negocio: El Significado Semántico
+                        </h4>
+                        <p>Traducen los bits en <strong>conceptos empresariales</strong>. Permiten que los
+                            analistas y usuarios de negocio encuentren y confíen en la información disponible.
+                        </p>
+                        <ul class="list-disc-padded">
+                            <li><strong>Glosario de Términos:</strong> Definición oficial de qué es un "cliente
+                                activo" o cómo se calcula el "margen neto".</li>
+                            <li><strong>Clasificación de Sensibilidad:</strong> Etiquetas PII (Información
+                                Personal), Datos Médicos, o Nivel de Confidencialidad.</li>
+                            <li><strong>Ownership:</strong> Identificación del responsable del dato (Data Owner)
+                                y del experto técnico (Data Steward).</li>
+                        </ul>
+                        <div class="scenario-box white" style="margin-top: 1.5rem;">
+                            <strong>Diccionario de Negocio:</strong>
+                            <pre
+                                style="background: #f8f9fa; color: #333; padding: 1.25rem; margin-top: 0.75rem; border-radius: 8px; border: 1px solid #e1e4e8; font-family: inherit; font-size: 0.95rem; line-height: 1.6;"><strong>Campo:</strong> churn_rate
+<strong>Definición:</strong> Porcentaje de abonados que cancelan su suscripción en el mes natural.
+<strong>Cálculo:</strong> (Bajas mes / Usuarios inicio mes) * 100
+<strong>Sensibilidad:</strong> Interno / PII No</pre>
+                        </div>
+                    </div>
+
+                    <!-- Metadatos Operacionales -->
+                    <div class="card primary" style="margin-bottom: 2rem;">
+                        <h4 class="color-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.5rem;">🛠️</span> Metadatos Operacionales: El Historial de
+                            Ejecución
+                        </h4>
+                        <p>Registran el <strong>cuándo, quién y cómo</strong> del movimiento. Son vitales para el
+                            linaje del dato y el diagnóstico de errores en producción.</p>
+                        <ul class="list-disc-padded">
+                            <li><strong>Logs de Auditoría:</strong> Registro de accesos, modificaciones y
+                                eliminaciones por parte de usuarios o procesos.</li>
+                            <li><strong>Métricas de Ejecución:</strong> Duración del job, número de filas
+                                procesadas, consumo de memoria y CPU.</li>
+                            <li><strong>Resultados de Calidad:</strong> Score de completitud, número de registros
+                                duplicados detectados y alertas disparadas.</li>
+                        </ul>
+                        <div class="scenario-box white" style="margin-top: 1.5rem;">
+                            <strong>Log de Linaje Operacional:</strong>
+                            <pre
+                                style="background: #2d2d2d; color: #a6e22e; padding: 1.25rem; margin-top: 0.75rem; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; line-height: 1.5; overflow-x: auto;">[2025-10-14 09:30:22] - Job ID: SPARK_ETL_098
+[Status]: SUCCESS
+[Input]: sales_raw_csv (1.5 GB)
+[Output]: sales_aggregated_parquet (1.2M rows)
+[Compute]: 4 Nodes / 16 Cores / Duration: 124s</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FUNCIONES EN TRAZABILIDAD -->
+            <section class="section" id="funciones">
+                <h2 class="section-title">3. Funciones en la Trazabilidad</h2>
+                <p>La trazabilidad (data lineage) permite reconstruir la historia de un dato desde su origen hasta su
+                    consumo final:</p>
+
+                <div class="grid-2-cols">
+                    <div class="card primary">
+                        <h4 class="color-primary">📜 Registro del Linaje</h4>
+                        <p>Rastrea el origen, las transformaciones y el destino. Permite saber, por ejemplo, que
+                            <code>ventas_agregadas</code> proviene de <code>ventas_raw</code> tras una agregación Spark.
+                        </p>
+                    </div>
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🔄 Control de Versiones</h4>
+                        <p>Registra cambios en datasets o modelos. Es vital para volver a estados anteriores o auditar
+                            cuándo cambió un esquema en una tabla Hive.</p>
+                    </div>
+                    <div class="card secondary">
+                        <h4 class="color-secondary">⚖️ Cumplimiento Normativo</h4>
+                        <p>Facilita auditorías (GDPR, ISO 27001). Sin metadatos, es imposible demostrar quién accedió a
+                            datos sensibles o cómo se procesaron.</p>
+                    </div>
+                    <div class="card primary">
+                        <h4 class="color-primary">🔗 Gestión de Dependencias</h4>
+                        <p>Identifica relaciones entre datasets y pipelines. Si una tabla falla, los metadatos indican
+                            qué procesos de Airflow se verán afectados.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HERRAMIENTAS -->
+            <section class="section" id="herramientas">
+                <h2 class="section-title">4. Herramientas para Gestión de Metadatos</h2>
+                <p>El mercado ofrece soluciones robustas para automatizar la captura y visualización de metadatos:</p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4 class="color-primary">🛡️ Apache Atlas</h4>
+                        <p>Framework de gobernanza abierto para entornos Hadoop. Excelente para visualizar linaje,
+                            clasificación y políticas de acceso dinámicas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-secondary">☁️ Cloud Data Catalogs</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>AWS Glue:</strong> Descubre, cataloga y etiqueta automáticamente datasets en el
+                                ecosistema AWS.</li>
+                            <li><strong>Azure Purview:</strong> Proporciona linaje y gobernanza unificada en entornos
+                                híbridos y multi-nube.</li>
+                            <li><strong>Google Data Catalog:</strong> Servicio de gestión de metadatos totalmente
+                                gestionado y escalable en GCP.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-secondary">🔑 Apache Ranger</h4>
+                        <p>Gestiona accesos y auditorías de forma centralizada. Complementa la trazabilidad asegurando
+                            que solo los perfiles autorizados interactúen con el dato.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <section class="section" id="ejemplo">
+                <h2 class="section-title">5. Ejemplo Práctico: El Flujo en un Data Lake</h2>
+                <div class="scenario-box primary">
+                    <p>
+                        En un <strong>Data Lake Hadoop</strong> corporativo, la gestión se orquestaría así:
+                    </p>
+                    <ol class="list-disc-padded">
+                        <li><strong>Ingesta:</strong> Los datos crudos entran a <code>ventas_raw</code>.</li>
+                        <li><strong>Procesamiento:</strong> Un pipeline de <strong>Spark</strong> orquestado por
+                            <strong>Airflow</strong> transforma los datos.
+                        </li>
+                        <li><strong>Registro:</strong> <strong>Apache Atlas</strong> registra automáticamente que la
+                            tabla <code>ventas_agregadas</code> se generó a partir de la cruda.</li>
+                        <li><strong>Valor:</strong> Los auditores pueden verificar el cumplimiento de normativas en
+                            segundos y los analistas entienden de dónde viene cada cifra.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- CASO DE ESTUDIO -->
+            <section class="section" id="caso-estudio">
+                <h2 class="section-title">6. Caso de Estudio: Industria Farmacéutica</h2>
+                <div class="expert-quote">
+                    <p class="quote-text">
+                        "Utilizamos <strong>Azure Purview</strong> para gestionar metadatos de 100 TB de datos clínicos.
+                        El sistema rastrea el linaje desde fuentes CSV hasta tablas analíticas Parquet, documentando
+                        cada transformación."
+                    </p>
+                    <div class="grid-2-cols" style="margin-top: 1rem; border-top: 1px solid #ddd; padding-top: 1rem;">
+                        <div>
+                            <p><strong>Auditoría GDPR:</strong> Gracias a los metadatos, la empresa pudo demostrar la
+                                trazabilidad total en <strong>menos de 2 horas</strong>.</p>
+                        </div>
+                        <div>
+                            <p><strong>Eficiencia:</strong> Se redujeron los costes de cumplimiento normativo en un
+                                <strong>50%</strong>.
+                            </p>
+                        </div>
+                    </div>
+                    <span class="quote-author">— Directora de Calidad y Gobernanza de Datos</span>
+                </div>
+            </section>
+
+            <!-- CONCLUSIÓN -->
+            <section class="section">
+                <div class="highlight-box primary"
+                    style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión
+                    </h3>
+                    <p
+                        style="font-size: 1.25rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                        Los metadatos no son solo etiquetas; son el <strong>activo estratégico</strong> que transforma
+                        un pantano de datos en una fuente de verdad confiable y auditable.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span
+                                style="display: block; font-weight: 700; color: var(--color-primary);">Gobernanza</span>
+                            <small>Control del Ciclo de Vida</small>
+                        </div>
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span
+                                style="display: block; font-weight: 700; color: var(--color-primary);">Confianza</span>
+                            <small>Datos con Pedigrí</small>
+                        </div>
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span style="display: block; font-weight: 700; color: var(--color-primary);">Agilidad</span>
+                            <small>Auditorías en Tiempo Récord</small>
+                        </div>
+                    </div>
+                    <p style="margin-top: 2rem; font-size: 1rem; color: var(--text-medium);">
+                        Sin un linaje completo basado en metadatos, el Big Data carece de contexto. Dominar herramientas
+                        como <strong>Apache Atlas</strong> o <strong>Azure Purview</strong> es esencial para cualquier
+                        experto en IA y Datos.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

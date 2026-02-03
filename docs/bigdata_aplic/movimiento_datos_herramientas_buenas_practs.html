@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Herramientas y buenas prácticas para migraciones seguras en Big Data. Apache NiFi, DistCp, integridad de datos y estrategias de rollback.">
+    <title>Herramientas y Buenas Prácticas de Migración | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Herramientas y Buenas Prácticas</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Migraciones Seguras y Eficientes</h1>
+                <p class="subtitle">Herramientas de élite y metodologías para el movimiento masivo de datos</p>
+            </div>
+
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. El Desafío de la Migración</a></li>
+                    <li><a href="#herramientas">2. Catálogo de Herramientas Especializadas</a></li>
+                    <li><a href="#buenas-practicas">3. Buenas Prácticas Estratégicas</a></li>
+                    <li><a href="#ejemplo">4. Ejemplo Práctico: Sector Farmacéutico</a></li>
+                    <li><a href="#resumen-tabla">5. Resumen de Buenas Prácticas</a></li>
+                    <li><a href="#conclusion">6. Conclusión</a></li>
+                </ul>
+            </nav>
+
+            <!-- INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <p>
+                    La migración de datos a gran escala no es simplemente un proceso de "copiar y pegar". Requiere una
+                    orquestación precisa de herramientas especializadas y una planificación rigurosa para garantizar
+                    tres pilares fundamentales: <strong>seguridad</strong>, <strong>integridad</strong> y
+                    <strong>eficiencia</strong>.
+                </p>
+                <div class="highlight-box info">
+                    <p>Mover petabytes de información implica gestionar latencias de red, fallos de hardware y riesgos
+                        de corrupción de datos que harían fallar a las herramientas convencionales.</p>
+                </div>
+            </section>
+
+            <!-- HERRAMIENTAS -->
+            <section class="section" id="herramientas">
+                <h2 class="section-title">2. Catálogo de Herramientas Especializadas</h2>
+                <div class="vertical-stack">
+                    <!-- Apache NiFi -->
+                    <div class="card primary" style="margin-bottom: 2rem;">
+                        <h4 class="color-primary">🌊 Apache NiFi</h4>
+                        <p>El estándar para el movimiento visual de datos entre sistemas heterogéneos.</p>
+                        <ul class="list-disc-padded">
+                            <li><strong>Capacidades:</strong> Cifrado TLS de extremo a extremo, auditoría completa y
+                                monitoreo de back-pressure en tiempo real.</li>
+                            <li><strong>Escenario:</strong> Transferencia de 50 TB desde HDFS a S3 con validación
+                                automática de cada fragmento.</li>
+                        </ul>
+                    </div>
+
+                    <!-- DistCp -->
+                    <div class="card secondary" style="margin-bottom: 2rem;">
+                        <h4 class="color-secondary">📦 Hadoop DistCp</h4>
+                        <p>Utilidad nativa para copias distribuidas masivas dentro de ecosistemas Hadoop.</p>
+                        <ul class="list-disc-padded">
+                            <li><strong>Capacidades:</strong> Usa MapReduce para paralelizar la carga en todo el
+                                clúster, ofreciendo una alta tolerancia a fallos.</li>
+                            <li><strong>Escenario:</strong> Sincronización de un Data Lake de 200 TB entre dos centros
+                                de datos en tan solo 5 horas.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Cloud Native -->
+                    <div class="card primary" style="margin-bottom: 2rem;">
+                        <h4 class="color-primary">☁️ Soluciones Cloud-Native</h4>
+                        <div class="grid-3">
+                            <div class="scenario-box white">
+                                <strong>AWS DataSync:</strong> Automatiza el movimiento a AWS con verificación de
+                                integridad granular.
+                            </div>
+                            <div class="scenario-box white">
+                                <strong>Azure Data Factory:</strong> Orquestación de pipelines ETL/ELT hacia Azure Data
+                                Lake.
+                            </div>
+                            <div class="scenario-box white">
+                                <strong>Google Transfer:</strong> Servicio gestionado para migrar datos a Cloud Storage
+                                de forma segura.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Otros -->
+                    <div class="card secondary" style="margin-bottom: 2rem;">
+                        <h4 class="color-secondary">🛠️ Herramientas de Interoperabilidad y ETL</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Rclone / S3DistCp:</strong> Ideales para sistemas heterogéneos (Ceph, S3, Azure
+                                Blob). Ejemplo: Sincronización con SHA-256 entre nubes distintas.</li>
+                            <li><strong>Talend / Informatica / Fivetran:</strong> Soluciones empresariales con
+                                interfaces de "arrastrar y soltar" y monitoreo avanzado de metadatos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BUENAS PRÁCTICAS -->
+            <section class="section" id="buenas-practicas">
+                <h2 class="section-title">3. Buenas Prácticas para el Éxito</h2>
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4>📋 Planificación e Inventario</h4>
+                        <p>No se puede migrar lo que no se conoce. Es vital inventariar datasets, dependencias y
+                            usuarios, priorizando los datos críticos (financieros, clínicos) para las fases iniciales.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🛡️ Verificación de Integridad</h4>
+                        <p>Uso obligatorio de checksums (SHA-256). Se deben comparar los hashes antes y después de cada
+                            transferencia para detectar corrupciones silenciosas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Estrategia Incremental</h4>
+                        <p>Evitar los "Big Bang". Migrar por particiones o lotes (e.g., de 10 TB en 10 TB) y validar
+                            cada uno antes de proceder al siguiente.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🧪 Pruebas de Compatibilidad</h4>
+                        <p>Ejecutar jobs de prueba en el entorno destino para validar esquemas, APIs y rendimiento antes
+                            de desconectar el origen.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔐 Seguridad Máxima</h4>
+                        <p>Cifrado HTTPS/TLS en tránsito y AES-256 en reposo. Implementar controles de acceso estrictos
+                            (IAM, Kerberos) durante todo el proceso.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔙 Plan de Rollback</h4>
+                        <p>Mantener una copia "espejo" en el origen durante un periodo de seguridad (e.g., 30 días)
+                            hasta confirmar la estabilidad total en el nuevo entorno.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <section class="section" id="ejemplo">
+                <h2 class="section-title">4. Ejemplo Práctico: El Salto a la Nube</h2>
+                <div class="scenario-box primary">
+                    <p>Una empresa farmacéutica internacional decidió migrar <strong>500 TB</strong> de datos genómicos
+                        desde su clúster on-premise HDFS a <strong>Google Cloud Storage</strong>.</p>
+                    <div class="grid-2-cols" style="margin-top: 1rem;">
+                        <div>
+                            <h5>Metodología:</h5>
+                            <ul class="list-disc-padded">
+                                <li>Uso de <strong>Apache NiFi</strong> para la captura y cifrado.</li>
+                                <li><strong>SHA-256</strong> para validación de integridad por lote.</li>
+                                <li>Orquestación con <strong>Airflow</strong> para transferencias incrementales.</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px;">
+                            <h5 style="margin-top:0;">Resultado:</h5>
+                            <p><strong>10 Días de ejecución</strong></p>
+                            <p><strong>0 Errores de integridad</strong></p>
+                            <p>Cero pérdida de datos y validación regulatoria superada.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESUMEN TABLA -->
+            <section class="section" id="resumen-tabla">
+                <h2 class="section-title">5. Resumen de Buenas Prácticas Esenciales</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoría</th>
+                                <th>Buena práctica</th>
+                                <th>Beneficio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Planificación</strong></td>
+                                <td>Inventariar <em>datasets</em> y dependencias.</td>
+                                <td>Evita omisiones críticas.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Integridad</strong></td>
+                                <td>Validar <em>checksums</em> antes y después.</td>
+                                <td>Detecta corrupción temprana.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Incrementalidad</strong></td>
+                                <td>Migrar en lotes pequeños.</td>
+                                <td>Facilita control y <em>rollback</em>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Seguridad</strong></td>
+                                <td>Cifrado TLS + AES-256.</td>
+                                <td>Protección en tránsito y reposo.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Monitoreo</strong></td>
+                                <td><em>Dashboards</em> post-migración.</td>
+                                <td>Supervisión continua.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rollback</strong></td>
+                                <td>Mantener entorno original temporalmente.</td>
+                                <td>Permite recuperación rápida.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CONCLUSIÓN ESTRATÉGICA -->
+            <section class="section" id="conclusion">
+                <div class="highlight-box primary"
+                    style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 6. Conclusión
+                    </h3>
+                    <p
+                        style="font-size: 1.25rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                        Una migración segura no es el resultado del azar, sino de la combinación de <strong>herramientas
+                            de alto rendimiento</strong> y <strong>procesos de validación incansables</strong>.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span
+                                style="display: block; font-weight: 700; color: var(--color-primary);">Integridad</span>
+                            <small>Checksums SHA-256</small>
+                        </div>
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span style="display: block; font-weight: 700; color: var(--color-primary);">Control</span>
+                            <small>Monitoreo en Tiempo Real</small>
+                        </div>
+                        <div
+                            style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                            <span
+                                style="display: block; font-weight: 700; color: var(--color-primary);">Seguridad</span>
+                            <small>Rollback de 30 días</small>
+                        </div>
+                    </div>
+                    <p style="margin-top: 2rem; font-size: 1rem; color: var(--text-medium);">
+                        Dominar herramientas como <strong>DistCp</strong> o <strong>Azure Data Factory</strong>
+                        garantiza que la transición hacia arquitecturas modernas sea un éxito libre de riesgos
+                        operativos.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

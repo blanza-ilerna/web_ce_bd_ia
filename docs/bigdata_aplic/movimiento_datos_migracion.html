@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Migración de entornos y compatibilidad en Big Data. Tipos de migración, desafíos y casos de éxito.">
+    <title>Migración de Entornos y Compatibilidad | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Migración de Entornos</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Migración de Entornos y Compatibilidad</h1>
+                <p class="subtitle">Garantizando la continuidad y la integridad en la evolución tecnológica</p>
+            </div>
+
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. Concepto de Migración</a></li>
+                    <li><a href="#tipos">2. Tipos de Migración</a></li>
+                    <li><a href="#desafios">3. Desafíos Principales</a></li>
+                    <li><a href="#ejemplo-practico">4. Ejemplo Práctico: Blue-Green</a></li>
+                    <li><a href="#caso-estudio">5. Caso de Estudio: Sector Bancario</a></li>
+                    <li><a href="#resumen">6. Tabla Resumen de Migración</a></li>
+                    <li><a href="#herramientas">7. Catálogo de Herramientas</a></li>
+                </ul>
+            </nav>
+
+            <!-- INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <p>
+                    La migración de datos y entornos implica trasladar información, configuraciones y metadatos entre
+                    infraestructuras, ya sea por renovación de hardware, actualización de software o adopción de la
+                    nube.
+                </p>
+                <div class="highlight-box primary">
+                    <p class="content">
+                        Este proceso es una necesidad crítica en el ciclo de vida de cualquier sistema Big Data, ya que
+                        las
+                        tecnologías evolucionan más rápido que la vida útil de los datos. El éxito de una migración
+                        depende de
+                        garantizar tres pilares: <strong>integridad</strong>, <strong>compatibilidad</strong> y
+                        <strong>continuidad del servicio</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- TIPOS DE MIGRACIÓN -->
+            <section class="section" id="tipos">
+                <h2 class="section-title">2. Tipos de Migración</h2>
+                <p>Dependiendo del objetivo y el destino, las migraciones se clasifican en cuatro grandes categorías:
+                </p>
+
+                <div class="grid-2-cols">
+                    <!-- Entre versiones -->
+                    <div class="card primary">
+                        <h4 class="color-primary">🔄 Entre versiones (Upgrade)</h4>
+                        <p><strong>Descripción:</strong> Actualización a una nueva versión del mismo sistema (ej. Hadoop
+                            2.x a 3.x).</p>
+                        <p><strong>Requerimientos:</strong> Compatibilidad con formatos de bloques, metadatos y APIs;
+                            validación de jobs existentes.</p>
+                        <div class="scenario-box white" style="margin-top: 1rem; padding: 1rem;">
+                            <small><strong>Ejemplo:</strong> Una empresa migra de Hadoop 2.7 a 3.3, ejecutando pruebas
+                                paralelas para validar jobs Spark antes de desactivar el clúster antiguo.</small>
+                        </div>
+                    </div>
+
+                    <!-- Heterogéneas -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🔌 Plataformas Heterogéneas</h4>
+                        <p><strong>Descripción:</strong> Transferencia de datos entre sistemas diferentes (ej. HDFS a
+                            Amazon S3).</p>
+                        <p><strong>Herramientas:</strong> Apache NiFi, Talend, S3DistCp.</p>
+                        <div class="scenario-box white" style="margin-top: 1rem; padding: 1rem;">
+                            <small><strong>Ejemplo:</strong> Una organización transfiere datos de ventas desde HDFS a
+                                Azure Data Lake, utilizando NiFi para transformar formatos en el proceso.</small>
+                        </div>
+                    </div>
+
+                    <!-- Cloud/Híbridos -->
+                    <div class="card secondary">
+                        <h4 class="color-secondary">☁️ Entornos Cloud o Híbridos</h4>
+                        <p><strong>Descripción:</strong> Traslado de datos on-premise a la nube o entre proveedores
+                            cloud.</p>
+                        <p><strong>Herramientas:</strong> AWS DataSync, Azure Data Factory, Google Transfer Service.</p>
+                        <div class="scenario-box white" style="margin-top: 1rem; padding: 1rem;">
+                            <small><strong>Ejemplo:</strong> Una empresa migra 1 PB de datos a AWS S3 utilizando
+                                DataSync, con cifrado AES-256 y verificación de integridad.</small>
+                        </div>
+                    </div>
+
+                    <!-- Workloads -->
+                    <div class="card primary">
+                        <h4 class="color-primary">⚙️ Migración de Workloads</h4>
+                        <p><strong>Descripción:</strong> Transferencia de datos, scripts y dependencias analíticas.</p>
+                        <p><strong>Requerimientos:</strong> Validación de compatibilidad con frameworks (Spark, Hive,
+                            Flink).</p>
+                        <div class="scenario-box white" style="margin-top: 1rem; padding: 1rem;">
+                            <small><strong>Ejemplo:</strong> Migrar un pipeline Airflow con jobs Spark desde un clúster
+                                local a Google Cloud Dataproc.</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DESAFÍOS -->
+            <section class="section" id="desafios">
+                <h2 class="section-title">3. Desafíos Principales</h2>
+                <p>Las migraciones a gran escala enfrentan retos técnicos que pueden comprometer la calidad del dato:
+                </p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🧩 Formatos y Codificación</h4>
+                        <p>Diferencias en estructuras de datos o codificaciones entre sistemas (ej. Avro vs Parquet, o
+                            cambios en el esquema de compresión).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🚫 Incompatibilidades</h4>
+                        <p>Versiones de software o APIs no compatibles que pueden romper los procesos analíticos
+                            existentes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏷️ Pérdida de Metadatos</h4>
+                        <p>Riesgo de perder información crítica sobre linaje, permisos (ACLs) o etiquetas de gobernanza
+                            durante el traslado.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚖️ Consistencia</h4>
+                        <p>Garantizar que los datos en el destino son idénticos a los del origen mediante verificaciones
+                            bit a bit.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning">
+                    <p><strong>Atención:</strong> Ignorar la validación de la consistencia puede llevar a "datos
+                        fantasma" o "corrupción silenciosa", donde el sistema no reporta errores pero los informes
+                        financieros o analíticos devuelven valores incorrectos.</p>
+                </div>
+            </section>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <section class="section" id="ejemplo-practico">
+                <h2 class="section-title">4. Ejemplo Práctico: Amazon EMR</h2>
+                <div class="scenario-box primary">
+                    <p>Una empresa migra un clúster Hadoop on-premise a <strong>Amazon EMR</strong> utilizando una
+                        estrategia <strong>blue-green deployment</strong>.</p>
+                    <ul class="list-disc-padded">
+                        <li><strong>Proceso:</strong> Ambos entornos permanecen activos, ejecutando jobs Spark en
+                            paralelo para validar resultados.</li>
+                        <li><strong>Métrica:</strong> La migración de 500 TB se completa en 15 días.</li>
+                        <li><strong>Resultado:</strong> Cero interrupciones de servicio y validación del 100% de los
+                            pipelines críticos.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- CASO DE ESTUDIO -->
+            <section class="section" id="caso-estudio">
+                <h2 class="section-title">5. Caso de Estudio: Sector Bancario</h2>
+                <div class="expert-quote">
+                    <p class="quote-text">
+                        "Un banco migró 1 PB de datos financieros desde un clúster HDFS on-premise a <strong>Azure Data
+                            Lake Storage Gen2</strong>.
+                        Se utilizó <strong>Azure Data Factory</strong> para transferencias incrementales, validando cada
+                        lote con checksums SHA-256."
+                    </p>
+                    <div class="grid-2-cols" style="margin-top: 1rem; border-top: 1px solid #ddd; padding-top: 1rem;">
+                        <div>
+                            <p><strong>Gobernanza:</strong> Los metadatos se gestionaron con <strong>Azure
+                                    Purview</strong>, asegurando la trazabilidad completa.</p>
+                        </div>
+                        <div>
+                            <p><strong>Impacto:</strong> El proceso, ejecutado en 20 días, cumplió con normativas GDPR y
+                                mejoró el rendimiento analítico en un 40%.</p>
+                        </div>
+                    </div>
+                    <span class="quote-author">— Arquitecto de Infraestructura Financiera</span>
+                </div>
+            </section>
+
+            <!-- TABLA RESUMEN -->
+            <section class="section" id="resumen">
+                <h2 class="section-title">6. Resumen de Estrategias de Migración</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Migración</th>
+                                <th>Descripción Operativa</th>
+                                <th>Herramientas Típicas</th>
+                                <th>Ejemplo Real</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🔄 Entre versiones</strong></td>
+                                <td>Actualización de software (Hadoop 2.x → 3.x) sin pérdida de historial.</td>
+                                <td>Rolling upgrade, DistCp.</td>
+                                <td>Validación paralela de jobs Spark antes del corte.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🔌 Entre plataformas</strong></td>
+                                <td>Movimiento de datos entre sistemas distintos (HDFS → S3/Azure).</td>
+                                <td>NiFi, Talend, S3DistCp.</td>
+                                <td>Migración de almacén de ventas a Azure Data Lake.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>☁️ A la nube (Lift & Shift)</strong></td>
+                                <td>Traslado masivo de on-premise a infraestructura Cloud.</td>
+                                <td>AWS DataSync, Azure Factory.</td>
+                                <td>Transferencia de 1 PB con cifrado AES-256 a AWS.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>⚙️ De workloads</strong></td>
+                                <td>Migración de la lógica: scripts, pipelines y dependencias.</td>
+                                <td>Airflow, Dataproc.</td>
+                                <td>Despliegue de pipelines Spark en Google Dataproc.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- HERRAMIENTAS -->
+            <section class="section" id="herramientas">
+                <h2 class="section-title">7. Catálogo de Herramientas de Migración</h2>
+                <p>Para ejecutar con éxito las estrategias anteriores, los ingenieros de Big Data se apoyan en un
+                    ecosistema de herramientas especializadas según el origen y destino del dato:</p>
+
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4 class="color-primary">📦 Herramientas Nativas</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>DistCp:</strong> Copia distribuida para Hadoop que aprovecha MapReduce para
+                                paralelizar el movimiento entre clústeres HDFS.</li>
+                            <li><strong>S3DistCp:</strong> Variante optimizada para mover datos entre HDFS y Amazon S3,
+                                permitiendo agregación de archivos pequeños.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-secondary">🔄 Orquestadores de Datos</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Apache NiFi:</strong> El "cuchillo suizo" de la migración; permite procesar y
+                                transformar datos en tiempo real mientras se mueven entre sistemas heterogéneos.</li>
+                            <li><strong>Apache Airflow:</strong> Vital para la migración de workloads, gestionando las
+                                dependencias y el reintento de jobs durante la transición.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-secondary">☁️ Servicios Cloud de Transferencia</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>AWS DataSync:</strong> Servicio online para simplificar y acelerar el movimiento
+                                de datos entre sistemas on-premise y servicios AWS.</li>
+                            <li><strong>Azure Data Factory:</strong> Servicio de integración de datos para crear,
+                                programar y orquestar flujos de trabajo ETL/ELT a escala.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="color-primary">🏗️ Plataformas Gestionadas</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Google Colab / Dataproc:</strong> Facilita la migración de workloads de Spark y
+                                Hadoop al ecosistema de Google Cloud con mínima reconfiguración.</li>
+                            <li><strong>Talend:</strong> Solución de grado empresarial para integración de metadatos
+                                complejos y limpieza de datos durante la migración.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

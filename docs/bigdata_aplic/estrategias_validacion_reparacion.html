@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Estrategias de validación y reparación automática en sistemas de almacenamiento distribuidos.">
+    <title>Validación y Reparación Automática | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Validación y Reparación</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Validación y Reparación Automática</h1>
+                <p class="subtitle">Estrategias resilientes en sistemas de almacenamiento distribuidos</p>
+            </div>
+
+            <section class="section">
+                <p>
+                    Los sistemas de almacenamiento distribuidos implementan estrategias automatizadas para validar y
+                    reparar datos, minimizando la intervención manual y garantizando la alta disponibilidad de la
+                    información ante fallos inminentes.
+                </p>
+                <div class="highlight-box primary">
+                    <p class="content">
+                        A diferencia de los sistemas tradicionales, donde un fallo de disco requiere intervención
+                        humana,
+                        en un clúster Big Data el sistema es capaz de detectar la corrupción y restaurar la integridad
+                        de forma totalmente transparente para las aplicaciones.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ESTRATEGIAS DE VALIDACIÓN -->
+            <section class="section">
+                <h2 class="section-title">1. Estrategias de Validación</h2>
+                <p>
+                    Para mantener la integridad, el sistema no puede limitarse a esperar a que se lea un dato para saber
+                    si es válido. Debe implementar métodos proactivos de chequeo.
+                </p>
+
+                <div class="grid-3">
+                    <div class="feature-card primary">
+                        <h4>🔍 Verificación Periódica</h4>
+                        <p>Revisión programada de bloques mediante checksums. El sistema detecta "Bit rot" antes de que
+                            se requiera el dato.</p>
+                        <p><strong>Detalle en sección siguiente.</strong></p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>⚡ Chequeo en Lectura</h4>
+                        <p>Cada vez que un cliente solicita un dato, el sistema recalcula el hash en tiempo real. Si no
+                            coincide, detiene la lectura y redirige a una réplica sana.</p>
+                        <p><strong>Detección inmediata en caliente.</strong></p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>📝 Auditorías Distribuidas</h4>
+                        <p>Herramientas externas o scripts programados que generan reportes de salud profundos sobre la
+                            integridad lógica del dataset.</p>
+                        <div class="code-badge">Pipelines Spark</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCRUBBING PROFUNDO -->
+            <section class="section">
+                <h2 class="section-title">🔍 Verificación Periódica (Scrubbing)</h2>
+                <p>
+                    El <strong>scrubbing</strong> (o limpieza) es el proceso más robusto para combatir la degradación
+                    silenciosa (bit rot).
+                    A diferencia del chequeo en lectura, el scrubbing recorre activamente el almacenamiento buscando
+                    errores en datos que
+                    nadie ha solicitado en mucho tiempo.
+                </p>
+                <div class="grid-2-cols">
+                    <div class="card primary">
+                        <h4 class="color-primary">🌱 Scrub Ligero (Light)</h4>
+                        <p>Verifica que los metadatos del objeto sean consistentes y que el tamaño del archivo coincida.
+                            Es rápido y consume pocos recursos.</p>
+                        <div class="code-badge">HDFS fsck</div>
+                    </div>
+                    <div class="card secondary">
+                        <h4 class="color-secondary">🌳 Scrub Profundo (Deep)</h4>
+                        <p>Lee cada bit del bloque y recalcula el checksum completo. Es la única forma de detectar
+                            corrupciones físicas en el disco.</p>
+                        <div class="code-badge">Ceph Scrubs</div>
+                    </div>
+                </div>
+                <div class="highlight-box warning">
+                    <p class="title">⚠️ Impacto en el Rendimiento</p>
+                    <p class="content">
+                        Debido a que el <em>Deep Scrub</em> lee todos los datos, suele programarse en horas de baja
+                        carga (noches o fines de semana)
+                        o configurarse con límites de I/O para no impactar la latencia de las aplicaciones de
+                        producción.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ESTRATEGIAS DE REPARACIÓN -->
+            <section class="section">
+                <h2 class="section-title">2. Estrategias de Reparación</h2>
+                <p>Una vez detectada una corrupción, el sistema activa protocolos de auto-curación (self-healing) para
+                    volver al estado deseado.</p>
+
+                <div class="grid-2-cols">
+                    <div class="card primary-bg">
+                        <h4 class="color-primary">🔄 Reparación por Replicación</h4>
+                        <p>Es la técnica más sencilla: el sistema identifica qué réplica está dañada y copia el bloque
+                            completo desde una de las réplicas válidas.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li><strong>Velocidad:</strong> En HDFS, un bloque corrupto suele restaurarse en menos de 10
+                                segundos.</li>
+                            <li><strong>Consumo:</strong> Requiere transferir el 100% del tamaño del bloque por la red.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card secondary-bg">
+                        <h4 class="color-secondary">🧱 Codificación de Borrado (Erasure Coding)</h4>
+                        <p>Divide los datos en fragmentos y genera bloques de paridad. Si se pierde un fragmento, se
+                            reconstruye matemáticamente usando el resto más la paridad.</p>
+                        <div class="highlight-box" style="background: white; margin-top: 1rem; padding: 1rem;">
+                            <p style="font-size: 1.125rem; margin-bottom: 0;"><strong>Hadoop 3.0 [RS(6,3)]:</strong>
+                                Permite
+                                reconstruir datos perdidos con un <strong>50% menos</strong> de almacenamiento que la
+                                replicación tradicional.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2-cols" style="margin-top: 2rem;">
+                    <div class="feature-card primary">
+                        <h4>🛡️ Reparación Preventiva</h4>
+                        <p>Monitoriza métricas de hardware mediante sistemas como SMART. Si un disco muestra signos de
+                            fatiga (alta tasa de errores), el sistema migra los datos a un disco nuevo
+                            <strong>antes</strong> de que el primero falle.
+                        </p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🚧 Cuarentena y Revalidación</h4>
+                        <p>Si el sistema detecta un bloque sospechoso pero no está seguro de la causa, lo mueve a una
+                            zona aislada (ej: carpeta <code>/quarantine</code>) para evitar que procesos analíticos lean
+                            basura mientras un administrador lo revisa.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EJEMPLO PRÁCTICO -->
+            <section class="section">
+                <h2 class="section-title">Ejemplo Práctico: Resiliencia en Streaming</h2>
+                <div class="scenario-box">
+                    <p>En un clúster <strong>Ceph de 500 nodos</strong>, un proceso de <strong>Scrub Profundo (Deep
+                            Scrub)</strong> detecta una
+                        réplica corrupta de un archivo de video 4K crítico para el servicio.</p>
+                    <div class="card white" style="margin-top: 1rem;">
+                        <p style="margin-bottom: 0;">
+                            <strong>Resultado:</strong> Ceph localiza el objeto sano en otra OSD (Object Storage
+                            Device), restaura la réplica dañada, actualiza los metadatos y limpia el error de los logs.
+                            Todo ocurre en <strong>menos de 5 minutos</strong>, sin que los usuarios que están viendo el
+                            video noten ninguna interrupción ni pérdida de calidad.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CASO DE ESTUDIO -->
+            <section class="section">
+                <h2 class="section-title">Caso de Estudio: Bioinformática y HDFS</h2>
+                <div class="expert-quote">
+                    <p class="quote-text">
+                        "Una empresa de bioinformática almacena 100 TB de datos genómicos en HDFS. Un script
+                        programado (HDFS fsck) detectó un bloque corrupto en un DataNode. El sistema lo reemplazó
+                        automáticamente desde una réplica sana mientras un pipeline Spark validaba la integridad total
+                        del dataset usando SHA-256."
+                    </p>
+                    <p style="margin-top: 1rem; font-size: 1.125rem;">
+                        Este flujo, orquestado mediante <strong>Apache Airflow</strong>, completó la reparación en solo
+                        15 minutos,
+                        garantizando resultados científicos fiables y el cumplimiento de normativas de protección de
+                        datos críticos.
+                    </p>
+                    <span class="quote-author">Departamento de Infraestructura Big Data</span>
+                </div>
+            </section>
+
+            <!-- CONCLUSIÓN FINAL -->
+            <section class="section">
+                <div class="highlight-box"
+                    style="text-align: center; border-left: none; border: 2px solid var(--color-primary); background: linear-gradient(135deg, white 0%, var(--bg-primary-light) 100%);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1rem;">🎯 Conclusión</h3>
+                    <p style="font-size: 1.125rem; color: var(--text-dark); max-width: 800px; margin: 0 auto;">
+                        La automatización de la validación y reparación convierte al clúster en un organismo capaz de
+                        auto-regenerarse. Esta resiliencia es lo que permite que las organizaciones escalen sus
+                        operaciones a Petabytes sin que la tasa inevitable de fallos de hardware detenga el negocio.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

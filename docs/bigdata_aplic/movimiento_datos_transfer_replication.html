@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Transferencia y replicación de datos entre clústeres: herramientas, métodos y casos prácticos.">
+    <title>Transferencia y Replicación entre Clústeres | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Transferencia y Replicación</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>Transferencia y Replicación</h1>
+                <p class="subtitle">Continuidad operativa y redundancia geográfica en sistemas distribuidos</p>
+            </div>
+
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. Introducción a la Disponibilidad</a></li>
+                    <li><a href="#distcp">2. DistCp (Hadoop Native)</a></li>
+                    <li><a href="#multiplatform">3. Herramientas Multi-Plataforma</a></li>
+                    <li><a href="#ceph">4. Ceph RADOS Gateway Sync</a></li>
+                    <li><a href="#kafka">5. Kafka MirrorMaker (Real-time)</a></li>
+                    <li><a href="#estudio">6. Caso de Estudio: Logística Global</a></li>
+                </ul>
+            </nav>
+
+            <section class="section" id="introduccion">
+                <p>
+                    La transferencia y replicación de datos entre clústeres es el pilar de la <strong>alta
+                        disponibilidad</strong> y la <strong>redundancia geográfica</strong>. Sin estos mecanismos, los
+                    sistemas Big Data serían vulnerables a fallos regionales y carecerían de la flexibilidad necesaria
+                    para operar en entornos híbridos.
+                </p>
+                <div class="highlight-box secondary">
+                    <p class="content">
+                        Como vimos en secciones anteriores, la elección entre replicación síncrona, asíncrona o
+                        geográfica depende estrictamente del equilibrio deseado entre consistencia y latencia.
+                    </p>
+                </div>
+            </section>
+
+    </div>
+    </section>
+    <!-- DISTCP -->
+    <section class="section" id="distcp">
+        <h2 class="section-title">1. DistCp (Distributed Copy)</h2>
+        <p>Es la herramienta nativa por excelencia del ecosistema <strong>Hadoop</strong>. Su potencia reside en
+            que no realiza una copia secuencial, sino que lanza un trabajo MapReduce paralelo para distribuir la
+            carga de transferencia entre los nodos del clúster.</p>
+
+        <div class="grid-2-cols">
+            <div class="feature-card primary">
+                <h4>⚙️ Funcionamiento</h4>
+                <p>Divide la lista de archivos a copiar en múltiples tareas <em>Map</em>, permitiendo usar todo
+                    el ancho de banda disponible del clúster.</p>
+                <div class="code-badge">Hadoop MapReduce</div>
+            </div>
+            <div class="feature-card white" style="border: 2px solid var(--color-primary);">
+                <h4>✅ Ventajas Clave</h4>
+                <ul>
+                    <li><strong>Paralelismo masivo:</strong> Copia gigabytes por segundo.</li>
+                    <li><strong>Resiliencia:</strong> Si una tarea falla, se reinicia automáticamente.</li>
+                    <li><strong>Sincronización:</strong> Permite copiar solo los archivos nuevos o modificados.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example-box example-orange">
+            <h4>💻 Comando de uso común</h4>
+            <pre><code class="language-bash">hadoop distcp hdfs://clusterA/datos hdfs://clusterB/Backup</code></pre>
+            <p style="margin-top: 1rem;"><strong>Caso:</strong> Transferencia de 100 TB de logs desde Producción
+                a Desarrollo en solo 4 horas utilizando 50 tareas paralelas.</p>
+        </div>
+
+        <!-- EJEMPLO PRÁCTICO DISTCP -->
+        <div class="expert-quote" style="margin-top: 2rem;">
+            <p class="quote-text">
+                "Una multinacional con sedes en Madrid y São Paulo utiliza <strong>DistCp</strong> para
+                sincronizar 50 TB de datos analíticos cada noche. El proceso se ejecuta sobre YARN con 100
+                tareas paralelas, completando la transferencia en solo 2.5 horas sin afectar al rendimiento del
+                clúster de producción gracias al control de ancho de banda."
+            </p>
+            <span class="quote-author">Director de Infraestructura Cloud</span>
+        </div>
+    </section>
+
+    <!-- RSYNC / S3DISTCP / RCLONE -->
+    <section class="section" id="multiplatform">
+        <h2 class="section-title">2. Herramientas Multi-Plataforma</h2>
+        <p>Cuando el origen y el destino no comparten la misma tecnología (sistemas heterogéneos), se requiere
+            flexibilidad para conectar nubes y centros de datos locales.</p>
+
+        <div class="grid-3">
+            <div class="card secondary">
+                <h4 class="color-secondary">📦 S3DistCp</h4>
+                <p>Diseñada para optimizar el movimiento de datos entre sistemas HDFS locales y el
+                    almacenamiento de objetos de Amazon (S3).</p>
+            </div>
+            <div class="card secondary">
+                <h4 class="color-secondary">🔄 Rclone</h4>
+                <p>La "navaja suiza" de la sincronización. Soporta más de 40 proveedores de nube y verifica la
+                    integridad mediante <strong>SHA-256</strong>.</p>
+            </div>
+            <div class="card secondary">
+                <h4 class="color-secondary">📡 Rsync</h4>
+                <p>Ideal para sincronización incremental a nivel de archivo entre servidores Linux tradicionales
+                    y entornos Big Data pequeños.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box warning">
+            <p class="content">Estas herramientas son vitales en <strong>estrategias multi-nube</strong>,
+                permitiendo sincronizar, por ejemplo, un Data Lake en HDFS con un bucket en Google Cloud Storage
+                de forma segura.</p>
+        </div>
+    </section>
+
+    <!-- CEPH RADOS GATEWAY SYNC -->
+    <section class="section" id="ceph">
+        <h2 class="section-title">3. Ceph RADOS Gateway Sync</h2>
+        <p>En el almacenamiento de objetos, Ceph permite una replicación geográfica nativa y totalmente
+            autogestionada entre diferentes regiones del mundo.</p>
+
+        <div class="grid-2-cols">
+            <div class="card primary">
+                <h4 class="color-primary">🌉 Integración Híbrida</h4>
+                <p>Permite mantener clústeres sincronizados entre Asia y Europa con consistencia eventual,
+                    garantizando que los datos estén cerca del usuario final.</p>
+            </div>
+            <div class="card secondary">
+                <h4 class="color-secondary">🛡️ Seguridad y Control</h4>
+                <p>Utiliza cifrado <strong>TLS</strong> para proteger los datos en tránsito y permite configurar
+                    políticas granulares de replicación por <em>bucket</em>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- KAFKA MIRRORMAKER -->
+    <section class="section" id="kafka">
+        <h2 class="section-title">5. Kafka MirrorMaker</h2>
+        <p>No todo el movimiento es de archivos estáticos. En el mundo del <strong>tiempo real</strong>, los
+            flujos de eventos también deben replicarse globalmente para garantizar la baja latencia y el
+            respaldo de datos críticos.</p>
+
+        <p>
+            <strong>MirrorMaker 2.0 (MM2)</strong> es la evolución de esta herramienta, diseñada para superar
+            las limitaciones de la primera versión. A diferencia de un simple consumidor-productor, MM2 es capaz
+            de detectar nuevos temas, sincronizar configuraciones de <em>topics</em> y gestionar de forma
+            automática los desplazamientos (offsets) entre los clústeres de origen y destino.
+        </p>
+
+        <p>
+            Esta herramienta opera sobre el framework de <strong>Kafka Connect</strong>, lo que le otorga una
+            alta escalabilidad y tolerancia a fallos. Permite arquitecturas complejas como
+            <em>Active-Active</em> (ambos clústeres reciben datos) o configuraciones de agregación
+            (Hub-and-Spoke), donde múltiples clústeres regionales vuelcan su información en un clúster central
+            para análisis global.
+        </p>
+
+        <!-- ARQUITECTURA MIRRORMAKER SVG -->
+        <div class="svg-container"
+            style="background: white; padding: 2rem; border-radius: 1rem; margin: 2rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                <!-- Clúster Origen (Madrid) -->
+                <rect x="50" y="50" width="200" height="200" rx="10" fill="var(--bg-primary-light)"
+                    stroke="var(--color-primary)" stroke-width="2" />
+                <text x="150" y="40" font-family="Montserrat" font-weight="bold" fill="var(--color-primary)"
+                    text-anchor="middle">Clúster A (Origen)</text>
+                <rect x="70" y="80" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="150" y="105" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Topic:
+                    ventas_europa</text>
+                <rect x="70" y="130" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="150" y="155" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Topic:
+                    logs_system</text>
+                <rect x="70" y="180" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="150" y="205" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Offsets &
+                    Config</text>
+
+                <!-- MirrorMaker 2.0 -->
+                <rect x="325" y="100" width="150" height="100" rx="10" fill="var(--color-secondary)" stroke="#fff"
+                    stroke-width="2" />
+                <text x="400" y="90" font-family="Montserrat" font-weight="bold" fill="var(--color-secondary)"
+                    text-anchor="middle">Kafka MirrorMaker 2 (MM2)</text>
+                <text x="400" y="145" font-family="Montserrat" font-weight="bold" fill="white"
+                    text-anchor="middle">Kafka Connect</text>
+                <text x="400" y="170" font-family="Montserrat" font-size="12" fill="white"
+                    text-anchor="middle">(Replicación Asíncrona)</text>
+
+                <!-- Clúster Destino (Backup/Global) -->
+                <rect x="550" y="50" width="200" height="200" rx="10" fill="#f4f4f4" stroke="#666" stroke-width="2" />
+                <text x="650" y="40" font-family="Montserrat" font-weight="bold" fill="#333"
+                    text-anchor="middle">Clúster B (Destino)</text>
+                <rect x="570" y="80" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="650" y="105" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Topic:
+                    A.ventas_europa</text>
+                <rect x="570" y="130" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="650" y="155" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Topic:
+                    A.logs_system</text>
+                <rect x="570" y="180" width="160" height="40" rx="5" fill="white" stroke="#ccc" />
+                <text x="650" y="205" font-family="Montserrat" font-size="12" fill="#666" text-anchor="middle">Sync
+                    Offsets</text>
+
+                <!-- Conectores -->
+                <path d="M 250 150 L 325 150" stroke="var(--color-primary)" stroke-width="3" fill="none"
+                    marker-end="url(#arrowhead)" />
+                <path d="M 475 150 L 550 150" stroke="var(--color-secondary)" stroke-width="3" fill="none"
+                    marker-end="url(#arrowhead)" />
+
+                <!-- Marcador de flecha -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+
+        <div class="highlight-box warning">
+            <p class="title">💡 Escenario de Uso</p>
+            <p class="content">Una plataforma de vídeo bajo demanda utiliza MirrorMaker para replicar los
+                eventos de reproducción de sus usuarios en todo el mundo, permitiendo análisis en tiempo real
+                independientemente de dónde se encuentre el espectador.</p>
+        </div>
+    </section>
+
+
+    <!-- CASO DE ESTUDIO -->
+    <section class="section" id="estudio">
+        <h2 class="section-title">6. Caso de Estudio: Logística Global</h2>
+        <div class="scenario-box"
+            style="background: var(--bg-secondary-light); border-left: 4px solid var(--color-secondary);">
+            <p>Una empresa de logística implementó <strong>Ceph RADOS Gateway Sync</strong> para replicar 200 TB
+                de datos de seguimiento entre Norteamérica y Asia.</p>
+            <ul class="list-disc-padded">
+                <li><strong>Reto:</strong> El tiempo de sincronización era de 12 horas, demasiado lento para el
+                    seguimiento en tiempo real.</li>
+                <li><strong>Solución:</strong> Replicación asíncrona con verificación de integridad SHA-1.</li>
+                <li><strong>Resultado:</strong> Tiempo reducido a 4 horas (+30% disponibilidad de datos
+                    frescos).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CONCLUSIÓN -->
+    <section class="section">
+        <div class="highlight-box primary"
+            style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+            <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión</h3>
+            <p
+                style="font-size: 1.25rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                La transferencia y replicación entre clústeres no es solo una medida de seguridad; es el motor que
+                habilita la
+                <strong>escalabilidad global</strong> y la <strong>resiliencia</strong> en el Big Data moderno.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                <div
+                    style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                    <span style="display: block; font-weight: 700; color: var(--color-primary);">Continuidad</span>
+                    <small>Zero Downtime</small>
+                </div>
+                <div
+                    style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                    <span style="display: block; font-weight: 700; color: var(--color-primary);">Ubicuidad</span>
+                    <small>Datos en todo el mundo</small>
+                </div>
+                <div
+                    style="background: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--bg-primary-light);">
+                    <span style="display: block; font-weight: 700; color: var(--color-primary);">Confianza</span>
+                    <small>Integridad Garantizada</small>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; font-size: 1rem; color: var(--text-medium);">
+                Elegir entre <strong>DistCp</strong> para Hadoop o <strong>Kafka MirrorMaker</strong> para streaming es
+                la decisión técnica que define la agilidad de una arquitectura líder en datos.
+            </p>
+        </div>
+    </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Métodos principales en la minería de datos - Clasificación, Regresión, Clustering y más">
+    <meta name="keywords"
+        content="Minería de Datos, Clasificación, Regresión, Clustering, Asociación, Anomalías, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Métodos Principales en Minería de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    <h1>iLERNA</h1>
+                    <p>Centro de Formación Profesional Online</p>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a>
+                <span>›</span>
+                <a href="index.html">Sistemas Big Data</a>
+                <span>›</span>
+                <span>Métodos de Minería</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">⚙️ Métodos de la Minería de Datos</h1>
+            <p class="subtitle">Herramientas y algoritmos para transformar datos en conocimiento</p>
+        </div>
+
+        <!-- TOC -->
+        <nav class="toc-container">
+            <h3>📑 Contenido de la Lección</h3>
+            <ul class="toc-list">
+                <li><a href="#clasificacion">1. Clasificación: Asignación de Etiquetas</a></li>
+                <li><a href="#regresion">2. Regresión: Estimación de Valores Continuos</a></li>
+                <li><a href="#clustering">3. Agrupamiento (Clustering): Grupos Naturales</a></li>
+                <li><a href="#asociacion">4. Asociación y Detección de Anomalías</a></li>
+                <li><a href="#dimension">5. Reducción de Dimensionalidad</a></li>
+                <li><a href="#paradigma">6. Supervisado vs No Supervisado</a></li>
+            </ul>
+        </nav>
+
+        <!-- SECCIÓN 1: CLASIFICACIÓN -->
+        <section id="clasificacion" class="section">
+            <h2>1. Clasificación: Asignación de Etiquetas</h2>
+            <p>
+                La clasificación consiste en asignar una <strong>etiqueta o categoría discreta</strong> a cada elemento
+                de un conjunto de datos basándose en sus características previas. Es uno de los métodos más utilizados
+                en la analítica de negocio.
+            </p>
+
+            <div class="grid-2-cols" style="margin-top: 2rem;">
+                <div class="card primary">
+                    <h4 class="color-primary">🎯 Aplicaciones Típicas</h4>
+                    <ul class="custom-list">
+                        <li><strong>Detección de fraude:</strong> ¿Es una transacción legítima o sospechosa?</li>
+                        <li><strong>Diagnóstico médico:</strong> ¿Presenta el paciente una patología específica?</li>
+                        <li><strong>Segmentación:</strong> ¿Este cliente pertenece al grupo de "Alta fidelidad"?</li>
+                    </ul>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">🧱 Algoritmos Comunes</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                        <span class="code-badge">Árboles de Decisión</span>
+                        <span class="code-badge">SVM</span>
+                        <span class="code-badge">KNN</span>
+                        <span class="code-badge">Redes Neuronales (ANN)</span>
+                    </div>
+                    <p style="font-size: 0.95rem; margin-top: 1rem; color: var(--text-light);">
+                        <em>Ejemplo: Un modelo analiza la edad e ingresos para predecir si un cliente tiene "Riesgo de
+                            abandono".</em>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: REGRESIÓN -->
+        <section id="regresion" class="section">
+            <h2>2. Regresión: Estimación de Valores Continuos</h2>
+            <p>
+                A diferencia de la clasificación, en la regresión el objetivo es predecir un <strong>valor numérico
+                    continuo</strong>. Se utiliza cuando necesitamos saber "cuánto" de algo va a suceder.
+            </p>
+
+            <div class="highlight-box secondary">
+                <p><strong>Uso principal:</strong> Estimación de precios, predicción de ingresos trimestrales o cálculo
+                    de niveles de demanda futura.</p>
+            </div>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4>📉 Regresión Lineal</h4>
+                    <p>Relaciona variables para predecir un valor numérico simple.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>🌳 Random Forest</h4>
+                    <p>Combina múltiples árboles para mejorar la precisión y evitar el sobreajuste.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>🚀 Gradient Boosting</h4>
+                    <p>Técnica iterativa que corrige errores de modelos anteriores para máxima precisión.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CLUSTERING -->
+        <section id="clustering" class="section">
+            <h2>3. Agrupamiento (Clustering): Grupos Naturales</h2>
+            <p>
+                El agrupamiento busca identificar grupos de elementos similares <strong>sin que exista una etiqueta
+                    previa</strong>. Es el sistema el que "descubre" la estructura oculta de los datos.
+            </p>
+
+            <div class="scenario-box primary" style="margin-top: 2rem;">
+                <h4 class="mb-1">Técnicas de Agrupamiento</h4>
+                <p style="font-size: 1.125rem;">
+                    <strong>K-Means</strong> es el algoritmo más popular, pero existen variantes como
+                    <strong>DBSCAN</strong> (ideal para grupos con formas irregulares) o <strong>Hierarchical
+                        Clustering</strong> (para estructuras de árbol).
+                </p>
+            </div>
+
+            <div class="expert-quote" style="margin-top: 2rem;">
+                <p class="quote-text">
+                    "El clustering es fundamental para la segmentación de clientes donde no sabemos de antemano cuántos
+                    perfiles diferentes existen en nuestra base de datos."
+                </p>
+                <span class="quote-author">— Data Architect</span>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: ASOCIACIÓN Y ANOMALÍAS -->
+        <section id="asociacion" class="section">
+            <h2>4. Asociación y Detección de Anomalías</h2>
+            <div class="grid-2-cols" style="margin-top: 1rem;">
+                <div class="card primary-bg">
+                    <h4 class="color-primary">🛒 Reglas de Asociación</h4>
+                    <p style="font-size: 1.125rem;">
+                        Identifica relaciones frecuentes entre variables. Es el famoso <strong>análisis de la cesta de
+                            la compra</strong>.
+                    </p>
+                    <div class="highlight-box"
+                        style="background: white; border: 1px dashed var(--color-primary); margin-top: 1rem;">
+                        <p style="font-style: italic; font-size: 1.125rem; margin-bottom: 0.5rem;"><strong>Ejemplos de
+                                Reglas:</strong></p>
+                        <ul style="font-size: 1.125rem; margin-bottom: 0;">
+                            <li>"Si compra <strong>Pan</strong> y <strong>Mantequilla</strong> → 70% de probabilidad de
+                                comprar <strong>Leche</strong>."</li>
+                            <li>"Si reserva <strong>Vuelo</strong> y <strong>Hotel</strong> → 45% de probabilidad de
+                                contratar <strong>Seguro de Viaje</strong>."</li>
+                            <li>"Si adquiere <strong>Smartphone</strong> → 80% de probabilidad de comprar <strong>Funda
+                                    Protectora</strong> en la misma transacción."</li>
+                            <li>"En streaming: Si ve <strong>Documental de Naturaleza</strong> → 60% de probabilidad de
+                                ver <strong>Serie de Ciencia Ficción</strong>."</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">🚨 Detección de Anomalías</h4>
+                    <p style="font-size: 1.125rem;">
+                        Identifica observaciones que se desvían drásticamente de la norma. Es crítico para la
+                        <strong>ciberseguridad</strong>, la detección de intrusiones y el fraude bancario.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                        <div class="card white" style="padding: 1.25rem; margin-bottom: 0;">
+                            <h4 class="color-secondary">🌲 Isolation Forest</h4>
+                            <p style="font-size: 1.125rem; margin-bottom: 0;">En lugar de modelar lo "normal", este
+                                algoritmo <strong>aísla</strong> las anomalías. Dado que los valores atípicos son pocos
+                                y diferentes, se "separan" de la masa de datos mucho más rápido en un árbol de decisión,
+                                requiriendo menos particiones aleatorias para ser correctamente identificados por el
+                                modelo.</p>
+                        </div>
+                        <div class="card white" style="padding: 1.25rem; margin-bottom: 0;">
+                            <h4 class="color-secondary">🧠 Autoencoders</h4>
+                            <p style="font-size: 1.125rem; margin-bottom: 0;">Son redes neuronales que aprenden a
+                                comprimir y reconstruir los datos. Cuando se les presenta una anomalía, la red no sabe
+                                cómo reconstruirla correctamente, generando un <strong>error de reconstrucción</strong>
+                                significativamente alto que delata de inmediato la irregularidad del patrón.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: DIMENSIONALIDAD -->
+        <section id="dimension" class="section">
+            <h2>5. Reducción de Dimensionalidad</h2>
+            <p>
+                En Big Data es común trabajar con cientos de variables. Las técnicas de reducción permiten simplificar
+                esta complejidad manteniendo la información esencial.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
+                <div class="feature-card primary">
+                    <h4 class="color-primary" style="font-size: 1.5rem;">📐 PCA (Análisis de Componentes Principales)
+                    </h4>
+                    <p>Es el método estándar de reducción lineal de la dimensionalidad. Su funcionamiento se basa en
+                        encontrar nuevas variables, llamadas componentes principales, que son combinaciones lineales de
+                        las originales y que capturan la máxima varianza de los datos.</p>
+                    <p>Al proyectar los datos en estas nuevas componentes, podemos permitirnos descartar aquellas que
+                        contienen poca información o ruido. Esto simplifica drásticamente la complejidad computacional
+                        de los modelos posteriores sin sacrificar la esencia predictiva del conjunto de datos original.
+                    </p>
+                    <p>Desde una perspectiva práctica, PCA es ideal para eliminar la <strong>multicolinealidad</strong>
+                        (variables altamente correlacionadas que confunden al modelo) y para acelerar el entrenamiento
+                        de algoritmos en datasets con miles de columnas, como ocurre en el análisis genómico o
+                        financiero.</p>
+                    <p>Además, al reducir la cantidad de variables, PCA ayuda a mitigar el fenómeno conocido como "la
+                        maldición de la dimensionalidad", donde los modelos pierden capacidad de generalización debido a
+                        un exceso de ruido innecesario en los datos de entrada.</p>
+
+                    <!-- SVG PCA (Al final, más ancho) -->
+                    <div
+                        style="background: white; border-radius: 0.5rem; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--bg-primary-light); text-align: center;">
+                        <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg"
+                            style="max-width: 500px; margin: 0 auto; display: block; width: 100%;">
+                            <line x1="50" y1="180" x2="450" y2="180" stroke="#ccc" stroke-width="1" />
+                            <line x1="50" y1="20" x2="50" y2="180" stroke="#ccc" stroke-width="1" />
+                            <circle cx="100" cy="150" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="120" cy="130" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="150" cy="120" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="180" cy="100" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="210" cy="80" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="240" cy="70" r="3" fill="#49B9CE" opacity="0.6" />
+                            <circle cx="270" cy="50" r="3" fill="#49B9CE" opacity="0.6" />
+                            <line x1="70" y1="170" x2="350" y2="25" stroke="var(--color-primary)" stroke-width="4"
+                                stroke-linecap="round" />
+                            <text x="360" y="25" fill="var(--color-primary)" font-size="14" font-weight="800">PC1
+                                (Máxima Varianza)</text>
+                            <line x1="160" y1="40" x2="220" y2="140" stroke="var(--color-secondary)" stroke-width="2"
+                                stroke-dasharray="4,2" />
+                            <text x="210" y="155" fill="var(--color-secondary)" font-size="12">PC2</text>
+                        </svg>
+                        <p style="font-size: 1.125rem; color: var(--text-medium); margin-top: 0.75rem;"><strong>Concepto
+                                PCA:</strong> Transformación de ejes para alinear la mayor dispersión de datos con la
+                            primera componente.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary" style="font-size: 1.5rem;">🎨 t-SNE (t-Distributed Stochastic Neighbor
+                        Embedding)</h4>
+                    <p>A diferencia de PCA, t-SNE es un algoritmo <strong>no lineal</strong> diseñado específicamente
+                        para la visualización de datos extremadamente complejos. Su objetivo principal es preservar la
+                        estructura local, asegurando que los puntos que son vecinos cercanos en el espacio de alta
+                        dimensión sigan estando juntos en una representación de 2D o 3D.</p>
+                    <p>Funciona convirtiendo las distancias en probabilidades y minimizando la divergencia entre estas
+                        probabilidades en el espacio original y el de baja dimensión. Esto lo convierte en una
+                        herramienta sumamente potente para detectar clústeres visuales que otros métodos lineales
+                        pasarían por alto por completo.</p>
+                    <p>Sin embargo, t-SNE es computacionalmente costoso y sus resultados pueden variar según los
+                        parámetros (como la perplejidad). Se usa masivamente en la exploración inicial de datos para
+                        entender si existen agrupaciones naturales antes de proceder a aplicar modelos de aprendizaje
+                        supervisado más complejos.</p>
+
+                    <!-- SVG t-SNE (Al final, más ancho) -->
+                    <div
+                        style="background: white; border-radius: 0.5rem; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--bg-secondary-light); text-align: center;">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"
+                            style="max-width: 500px; margin: 0 auto; display: block; width: 100%;">
+                            <circle cx="80" cy="60" r="35" fill="var(--color-primary)" opacity="0.1" />
+                            <circle cx="70" cy="50" r="4" fill="var(--color-primary)" />
+                            <circle cx="90" cy="70" r="4" fill="var(--color-primary)" />
+                            <circle cx="85" cy="45" r="4" fill="var(--color-primary)" />
+                            <circle cx="65" cy="75" r="4" fill="var(--color-primary)" />
+
+                            <circle cx="320" cy="140" r="35" fill="var(--color-secondary)" opacity="0.1" />
+                            <circle cx="310" cy="130" r="4" fill="var(--color-secondary)" />
+                            <circle cx="335" cy="150" r="4" fill="var(--color-secondary)" />
+                            <circle cx="325" cy="120" r="4" fill="var(--color-secondary)" />
+                            <circle cx="305" cy="155" r="4" fill="var(--color-secondary)" />
+
+                            <path d="M 120 70 C 180 120, 220 50, 280 120" stroke="#ddd" fill="transparent"
+                                stroke-dasharray="6,4" />
+                            <text x="200" y="180" text-anchor="middle" fill="var(--color-secondary)" font-size="13"
+                                font-weight="600">Preservación de topología local (vecindad)</text>
+                        </svg>
+                        <p style="font-size: 1.125rem; color: var(--text-medium); margin-top: 0.75rem;"><strong>Concepto
+                                t-SNE:</strong> Agrupación de elementos similares en "islas" visuales ignorando
+                            distancias globales.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card neutral" style="border: 2px solid var(--text-dark);">
+                    <h4 class="text-dark" style="font-size: 1.5rem;">🚀 UMAP (Uniform Manifold Approximation and
+                        Projection)</h4>
+                    <p>UMAP es el estándar moderno que ha superado a t-SNE en muchos escenarios de Big Data debido a su
+                        eficiencia superior. Se basa en fundamentos matemáticos de la topología algebraica para
+                        proyectar los datos manteniendo un equilibrio ideal entre la estructura local (vecinos cercanos)
+                        y la <strong>estructura global</strong> del dataset original.</p>
+                    <p>Una de sus grandes ventajas competitivas es su velocidad y escalabilidad. Mientras que t-SNE
+                        puede tardar horas en procesar millones de registros, UMAP lo hace en una fracción de ese
+                        tiempo, lo que permite una iteración mucho más ágil durante todo el ciclo de vida de la minería
+                        de datos.</p>
+                    <p>Es la herramienta preferida en campos como el procesamiento de lenguaje natural (NLP) para
+                        visualizar embeddings de palabras o en bioinformática para el análisis de secuenciación de
+                        células únicas, debido a su capacidad para preservar las relaciones jerárquicas complejas entre
+                        los diferentes grupos de datos.</p>
+
+                    <!-- SVG UMAP (Al final, más ancho) -->
+                    <div
+                        style="background: white; border-radius: 0.5rem; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--text-dark); text-align: center;">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"
+                            style="max-width: 500px; margin: 0 auto; display: block; width: 100%;">
+                            <!-- Representación de Manifold -->
+                            <path d="M 50 150 Q 150 50 350 150" stroke="#eee" fill="none" stroke-width="20"
+                                opacity="0.5" stroke-linecap="round" />
+                            <!-- Puntos sobre el manifold -->
+                            <circle cx="80" cy="135" r="5" fill="var(--color-primary)" />
+                            <circle cx="120" cy="100" r="5" fill="var(--color-primary)" />
+                            <circle cx="200" cy="85" r="5" fill="var(--color-secondary)" />
+                            <circle cx="280" cy="110" r="5" fill="var(--color-secondary)" />
+                            <circle cx="330" cy="140" r="5" fill="#48bb78" />
+                            <!-- Conexiones topológicas -->
+                            <path d="M 80 135 L 120 100" stroke="var(--color-primary)" stroke-width="1.5"
+                                stroke-linecap="round" />
+                            <path d="M 120 100 L 200 85" stroke="#ccc" stroke-width="1" stroke-dasharray="2,2" />
+                            <path d="M 200 85 L 280 110" stroke="var(--color-secondary)" stroke-width="1.5"
+                                stroke-linecap="round" />
+                            <path d="M 280 110 L 330 140" stroke="#ccc" stroke-width="1" stroke-dasharray="2,2" />
+                            <text x="200" y="40" text-anchor="middle" fill="var(--text-dark)" font-size="14"
+                                font-weight="800">Aproximación Topológica Global (Manifold)</text>
+                        </svg>
+                        <p style="font-size: 1.125rem; color: var(--text-medium); margin-top: 0.75rem;"><strong>Concepto
+                                UMAP:</strong> Modelado de la estructura de los datos como una superficie continua
+                            compleja, preservando vecindades globales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: PARADIGMAS -->
+        <section id="paradigma" class="section">
+            <h2>6. Supervisado vs No Supervisado</h2>
+            <p>
+                La gran división en el Machine Learning se define por la presencia o ausencia de un "maestro" o
+                etiquetas que guíen el aprendizaje durante el proceso de entrenamiento.
+            </p>
+
+            <div class="table-container" style="margin-top: 2rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>✅ Supervisado</th>
+                            <th>❓ No Supervisado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Datos de Entrada</strong></td>
+                            <td>Etiquetados (Entrada + Respuesta)</td>
+                            <td>No etiquetados (Solo entrada)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Objetivo</strong></td>
+                            <td>Predecir resultados o clasificar</td>
+                            <td>Descubrir estructuras ocultas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retroalimentación</strong></td>
+                            <td>Directa (Error vs Etiqueta real)</td>
+                            <td>Ninguna (Se basa en similitudes)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Métodos principales</strong></td>
+                            <td>Clasificación y Regresión</td>
+                            <td>Clustering y Asociación</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid-2-cols" style="margin-top: 2rem;">
+                <div class="card primary-bg">
+                    <h4 class="color-primary">🎯 Cuándo usar Supervisado</h4>
+                    <p>Cuando tienes datos históricos donde ya conoces el resultado y quieres automatizar esa decisión
+                        para el futuro (ej: aprobar un crédito basado en impagos anteriores o clasificar correos
+                        electrónicos).</p>
+                </div>
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">🔭 Cuándo usar No Supervisado</h4>
+                    <p>Cuando te enfrentas a un dataset totalmente nuevo y quieres explorar qué grupos de comportamiento
+                        existen sin imponer categorías previas (ej: descubrir nuevos segmentos de mercado o detectar
+                        patrones anómalos de red).</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

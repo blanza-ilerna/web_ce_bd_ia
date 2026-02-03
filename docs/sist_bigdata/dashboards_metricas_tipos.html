@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tipos de Métricas en Big Data - Técnicas, Calidad, Negocio y Predictivas">
+    <meta name="keywords"
+        content="Métricas, Big Data, Rendimiento, Calidad de Datos, KPIs de Negocio, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Tipos de Métricas en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    <h1>iLERNA</h1>
+                    <p>Centro de Formación Profesional Online</p>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a>
+                <span>›</span>
+                <a href="index.html">Sistemas Big Data</a>
+                <span>›</span>
+                <span>Tipos de Métricas</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Tipos de Métricas en Big Data</h1>
+            <p class="subtitle">Clasificación según Propósito y Alcance del Análisis</p>
+        </div>
+
+        <!-- TOC -->
+        <nav class="toc-container">
+            <h3>📑 Contenido de la Lección</h3>
+            <ul class="toc-list">
+                <li><a href="#intro">1. Diversidad de Métricas en Sistemas Masivos</a></li>
+                <li><a href="#tecnicas">2. Métricas de Rendimiento Técnico</a></li>
+                <li><a href="#calidad">3. Métricas de Calidad de Datos</a></li>
+                <li><a href="#negocio">4. Métricas de Negocio y Operativas</a></li>
+                <li><a href="#predictivas">5. Métricas Predictivas y Avanzadas (ML)</a></li>
+            </ul>
+        </nav>
+
+        <section id="intro" class="section">
+            <h2>1. Diversidad de Métricas en Sistemas Masivos</h2>
+            <p>
+                En los sistemas de Big Data, no todos los indicadores miden lo mismo ni tienen el mismo destinatario.
+                Mientras que un ingeniero se preocupa por la latencia de un nodo, un director comercial se enfoca en el
+                margen de beneficio. Clasificar las métricas es vital para diseñar cuadros de mando que hablen el
+                lenguaje de cada usuario.
+            </p>
+            <div class="highlight-box info">
+                <p>Una arquitectura de Big Data saludable equilibra indicadores de infraestructura con resultados de
+                    negocio.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: RENDIMIENTO TÉCNICO -->
+        <section id="tecnicas" class="section">
+            <h2>2. Métricas de Rendimiento Técnico</h2>
+            <p>
+                Evalúan la salud de la infraestructura y garantizan que el entorno de Big Data opere con eficiencia y
+                escalabilidad. Estas métricas son el dominio de los ingenieros de datos y administradores de sistemas,
+                quienes deben asegurar que los pipelines no se conviertan en cuellos de botella.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card ani">
+                    <h4 class="color-primary">⏱️ Latencia</h4>
+                    <p>
+                        Mide el tiempo de respuesta total desde que un evento entra en el sistema hasta que está
+                        disponible para su consulta. Una latencia alta en Big Data puede invalidar casos de uso críticos
+                        como la detección de fraude en tiempo real.
+                    </p>
+                </div>
+                <div class="feature-card agi">
+                    <h4 class="color-secondary">🚀 Throughput</h4>
+                    <p>
+                        Representa el volumen masivo de datos procesados por unidad de tiempo (ej. registros por
+                        segundo). Es la métrica reina para medir la capacidad de ingestión y la potencia bruta de los
+                        clústeres distribuidos.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📉 Consumo de Recursos</h4>
+                    <p>
+                        Monitoriza el uso de CPU, RAM, ancho de banda y espacio en disco. En la nube, optimizar esta
+                        métrica tiene un impacto directo en la reducción de costes operativos (FinOps).
+                    </p>
+                </div>
+            </div>
+
+            <div class="scenario-box secondary">
+                <h4>Caso Operativo: Monitorización en Apache Kafka</h4>
+                <p>
+                    En un sistema de mensajería como Kafka, el <strong>Consumer Lag</strong> es una métrica técnica
+                    vital. Indica cuántos mensajes están esperando a ser procesados. Si el lag aumenta, significa que la
+                    velocidad de consumo es menor que la de producción, lo que alerta sobre la necesidad de escalar los
+                    consumidores para evitar la pérdida de mensajes o retrasos inaceptables.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CALIDAD DE DATOS -->
+        <section id="calidad" class="section">
+            <h2>3. Métricas de Calidad de Datos</h2>
+            <p>
+                La fiabilidad de los análisis depende directamente de la "higiene" de los datos. Sin un control estricto
+                sobre la calidad, corremos el riesgo de tomar decisiones basadas en información sesgada o errónea —el
+                famoso concepto de <em>Garbage In, Garbage Out</em>—.
+            </p>
+            <div class="grid-2-cols">
+                <div class="card primary-bg">
+                    <h4 class="color-primary">✅ Dimensiones de Calidad</h4>
+                    <p>
+                        Se centran en asegurar que la información sea apta para el uso analítico:
+                    </p>
+                    <ul>
+                        <li><strong>Completitud:</strong> Mide si tenemos todos los datos necesarios para una variable
+                            (ej. campos de ID o fechas obligatorios).</li>
+                        <li><strong>Consistencia:</strong> Verifica que el mismo dato no sea contradictorio entre
+                            diferentes tablas o silos.</li>
+                        <li><strong>Exactitud:</strong> Grado en el que los valores reflejan la realidad sin errores de
+                            sensor o de entrada manual.</li>
+                    </ul>
+                </div>
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">Gobernanza y Umbrales</h4>
+                    <p>
+                        Los sistemas de Data Governance definen políticas operativas mediante estas métricas. Por
+                        ejemplo, un pipeline de ingestión puede detenerse automáticamente si detecta que más del 5% de
+                        los registros entrantes tienen el campo de "Precio" nulo, protegiendo así la integridad de los
+                        informes financieros.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: NEGOCIO -->
+        <section id="negocio" class="section">
+            <h2>4. Métricas de Negocio y Operativas</h2>
+            <p>
+                Estas métricas hablan el lenguaje de la alta dirección. Transforman las operaciones de Big Data en
+                valor monetario o estratégico, permitiendo justificar la inversión en la plataforma.
+            </p>
+            <div class="grid-features">
+                <div class="feature-card ani">
+                    <h4>💰 Rendimiento Financiero</h4>
+                    <p>
+                        Se centran en el balance directo. Si el Big Data ayuda a reducir el <strong>Coste por
+                            Adquisición (CPA)</strong> mediante una segmentación mejorada, la empresa es más rentable.
+                        El <strong>ROI</strong> mide cuánto ganamos por cada euro invertido en la infraestructura
+                        analítica.
+                    </p>
+                </div>
+                <div class="feature-card agi">
+                    <h4>🤝 Fidelización y Conversión</h4>
+                    <p>
+                        Miden la relación con el mercado. El <strong>NPS</strong> refleja la salud de la marca, mientras
+                        que la <strong>Tasa de Abandono (Churn Rate)</strong> es crítica en servicios de suscripción
+                        para predecir cuándo estamos perdiendo usuarios.
+                    </p>
+                </div>
+            </div>
+            <div class="highlight-box secondary">
+                <p><strong>Clave estratégica:</strong> Un dashboard de negocio debe ser capaz de mostrar cómo una mejora
+                    en una métrica técnica (ej. recomendación más rápida) impacta directamente en una métrica de negocio
+                    (ej. aumento del ticket medio).</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: ML / PREDICTIVAS -->
+        <section id="predictivas" class="section">
+            <h2>5. Métricas Predictivas y Avanzadas (ML)</h2>
+            <p>
+                A diferencia de las métricas clásicas que miran al pasado (qué pasó), las métricas de Machine Learning
+                evalúan la capacidad del sistema para "adivinar" el futuro o clasificar patrones complejos.
+            </p>
+            <div class="grid-2-cols">
+                <div class="card primary">
+                    <h4 class="color-primary">🧠 Modelos de Validación</h4>
+                    <p>
+                        No basta con que un modelo dé un resultado; hay que medir su error:
+                    </p>
+                    <ul>
+                        <li><strong>Accuracy:</strong> Es el porcentaje de aciertos totales sobre el total de casos.
+                        </li>
+                        <li><strong>Precision vs Recall:</strong> Crucial para entender si el modelo es demasiado
+                            precavido o demasiado "atrevido" capturando casos (ej. falsos positivos vs falsos
+                            negativos).</li>
+                        <li><strong>F1-Score:</strong> La media armónica que equilibra los dos anteriores en un solo
+                            número.</li>
+                    </ul>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">Áreas de Aplicación</h4>
+                    <p>
+                        Estas métricas validan sistemas que toman decisiones autónomas. En logística, miden la precisión
+                        de la demanda para evitar roturas de stock; en salud, evalúan la capacidad de un modelo para
+                        detectar patologías en imágenes médicas antes que un ojo humano.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scenario-box primary">
+                <h4>⚠️ El Vínculo Crítico</h4>
+                <p>
+                    En proyectos de IA, se recomienda siempre <strong>acompañar las métricas de precisión con métricas
+                        de negocio</strong>. En detección de fraude, no basta con saber el % de aciertos; es vital
+                    calcular
+                    el impacto económico de los fraudes no detectados (falsos negativos).
+                </p>
+            </div>
+
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "Las métricas técnicas te dicen si el motor funciona; las de negocio te dicen si vas en la dirección
+                    correcta."
+                </p>
+                <span class="quote-author">— Estratega de Datos</span>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

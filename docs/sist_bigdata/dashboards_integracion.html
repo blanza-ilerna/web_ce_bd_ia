@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Integración del Cuadro de Mando en Sistemas de Big Data - Arquitecturas y Optimización">
+    <meta name="keywords" content="Big Data, Dashboard, Lambda, Kappa, OLAP, Data Warehouse, Visualización">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Integración del Cuadro de Mando en Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    <h1>iLERNA</h1>
+                    <p>Centro de Formación Profesional Online</p>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a>
+                <span>›</span>
+                <a href="index.html">Sistemas Big Data</a>
+                <span>›</span>
+                <span>Integración de Dashboards</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Integración del Cuadro de Mando</h1>
+            <p class="subtitle">Arquitecturas Distribuidas y Visualización en Tiempo Real</p>
+        </div>
+
+        <section class="section">
+            <h2>El Puente entre el Dato y la Decisión</h2>
+            <p>
+                En entornos de Big Data, la información representada en los cuadros de mando proviene de múltiples
+                fuentes
+                y se actualiza con una frecuencia que puede llegar a ser de segundos. Por ello, la arquitectura técnica
+                detrás de un dashboard debe garantizar <strong>rendimiento</strong>, <strong>escalabilidad</strong> y
+                <strong>consistencia</strong> de los datos.
+            </p>
+            <p>
+                No se trata solo de conectar una herramienta de BI a una base de datos; se trata de diseñar un pipeline
+                robusto que soporte el volumen masivo sin degradar la experiencia del usuario final.
+            </p>
+        </section>
+
+        <!-- TOC -->
+        <nav class="toc-container">
+            <h3>📑 Contenido de la Lección</h3>
+            <ul class="toc-list">
+                <li><a href="#arquitectura">1. Arquitecturas Lambda y Kappa</a></li>
+                <li><a href="#flujo">2. El Pipeline de Datos Visuales</a></li>
+                <li><a href="#capas">3. Capa Analítica vs. Capa de Visualización</a></li>
+                <li><a href="#consistencia">4. Sincronización y Consistencia</a></li>
+                <li><a href="#optimizacion">5. Estrategias de Optimización</a></li>
+                <li><a href="#olap-fundamentos">6. ¿Qué es OLAP? Conceptos Fundamentales</a></li>
+                <li><a href="#olap-motores">7. Motores de Consulta OLAP</a></li>
+                <li><a href="#herramientas">8. Conectividad y Herramientas</a></li>
+            </ul>
+        </nav>
+
+        <!-- SECCIÓN 1: ARQUITECTURAS -->
+        <section id="arquitectura" class="section">
+            <h2>1. Arquitecturas de Integración: Lambda y Kappa</h2>
+            <p>
+                Los sistemas modernos suelen apoyarse en arquitecturas especializadas para combinar el procesamiento
+                en tiempo real con el procesamiento por lotes (batch).
+            </p>
+
+            <div class="grid-2-cols">
+                <div class="card primary">
+                    <h4 class="color-primary">🏗️ Arquitectura Lambda</h4>
+                    <p>
+                        Divide el procesamiento en:
+                    </p>
+                    <ul>
+                        <li><strong>Batch Layer:</strong> Máxima precisión sobre datos históricos.</li>
+                        <li><strong>Speed Layer:</strong> Resultados inmediatos para datos recientes.</li>
+                    </ul>
+                    <p>El dashboard combina ambas fuentes para ofrecer la "Imagen Total".</p>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">⚡ Arquitectura Kappa</h4>
+                    <p>
+                        Todo es un <strong>stream</strong>. No hay capa batch. Un único motor procesa tanto el historial
+                        como el tiempo real, simplificando enormemente la integración con el cuadro de mando.
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box warning">
+                <p><strong>Dato clave:</strong> La mayoría de cuadros de mando operativos hoy en día tienden hacia Kappa
+                    para reducir la complejidad del pipeline visual.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: EL PIPELINE -->
+        <section id="flujo" class="section">
+            <h2>2. El Pipeline de Datos Visuales</h2>
+            <p>
+                Los datos fluyen desde las fuentes —bases transaccionales, APIs, sensores IoT o sistemas de streaming—
+                hacia un <strong>data lake</strong> o <strong>data warehouse</strong>, donde se agregan y transforman
+                mediante procesos <strong>ETL o ELT</strong>.
+            </p>
+
+            <div class="svg-container">
+                <style>
+                    .mermaid {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 10px;
+                    }
+                </style>
+                <div class="mermaid">
+                    graph LR
+                    subgraph Fuentes
+                    A(Transaccional)
+                    B(Sensores IoT)
+                    C(Streaming)
+                    end
+
+                    subgraph Almacenamiento
+                    D[Data Lake / Warehouse]
+                    end
+
+                    subgraph Analitica
+                    E{Transformación<br />ETL/ELT}
+                    F[Capa Semántica]
+                    end
+
+                    subgraph Visualizacion
+                    G[Cuadro de Mando]
+                    end
+
+                    Fuentes --> D
+                    D --> E
+                    E --> F
+                    F --> G
+
+                    style G fill:#49B9CE,color:#fff,stroke:#333
+                    style D fill:#f9f9f9,stroke:#333
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CAPA ANALÍTICA VS VISUALIZACIÓN -->
+        <section id="capas" class="section">
+            <h2>3. Capa Analítica vs. Capa de Visualización</h2>
+            <p>
+                Una integración robusta separa claramente la <strong>lógica del dato</strong> de la
+                <strong>lógica de presentación</strong>. Esta separación se materializa en dos capas fundamentales:
+            </p>
+
+            <div class="grid-2-cols">
+                <div class="card primary">
+                    <h4 class="color-primary">🧠 Capa Analítica (Backend)</h4>
+                    <p>
+                        Es el cerebro del sistema. Se encarga de la computación pesada, el modelado de datos
+                        y la gobernanza.
+                    </p>
+                    <ul>
+                        <li><strong>Modelado semántico:</strong> Definición de KPIs y métricas de negocio.</li>
+                        <li><strong>Seguridad:</strong> Control de acceso a nivel de fila y columna (RLS/CLS).</li>
+                        <li><strong>Transformación:</strong> Agregaciones y cálculos complejos (ej. cálculos YTD,
+                            promedios móviles).</li>
+                        <li><strong>Persistencia:</strong> Gestión de vistas materializadas y cubos.</li>
+                    </ul>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">🎨 Capa de Visualización (Frontend)</h4>
+                    <p>
+                        Es la interfaz con el usuario. Se centra en la usabilidad, la interactividad y la
+                        narrativa visual.
+                    </p>
+                    <ul>
+                        <li><strong>Interactividad:</strong> Filtros dinámicos, drill-down y acciones cruzadas.</li>
+                        <li><strong>Renderizado:</strong> Dibujo de gráficos optimizado para el navegador.</li>
+                        <li><strong>Layout:</strong> Organización visual siguiendo patrones de lectura (Patrón F).</li>
+                        <li><strong>Experiencia:</strong> Tiempos de respuesta rápidos para selecciones del usuario.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box info">
+                <h4>🎯 El "Fat Backend, Thin Frontend"</h4>
+                <p>
+                    En Big Data, la mejor práctica es delegar la mayor cantidad de cálculos a la
+                    <strong>capa analítica</strong> para que la <strong>capa de visualización</strong> sea
+                    ligera y fluida. Un dashboard que intenta procesar millones de filas en el cliente
+                    está condenado al fracaso.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CONSISTENCIA -->
+        <section id="consistencia" class="section">
+            <h2>4. Sincronización y Consistencia</h2>
+            <p>
+                Si los datos se actualizan en el almacén cada hora, pero el cuadro de mando muestra información al
+                segundo,
+                se producirán <strong>inconsistencias</strong>. Es necesario definir políticas claras de:
+            </p>
+
+            <div class="grid-2-cols">
+                <div class="feature-card">
+                    <h4>🔄 Actualización (Refresh)</h4>
+                    <p>Determinar si el dashboard solicita datos (Pull) o si el sistema los envía (Push/WebSockets).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💾 Cacheado (Caching)</h4>
+                    <p>Almacenar resultados temporales para no saturar el clúster de Big Data con consultas idénticas.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h4>✅ Validación</h4>
+                    <p>Asegurar que los datos mostrados son íntegros antes de su publicación visual.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: OPTIMIZACIÓN -->
+        <section id="optimizacion" class="section">
+            <h2>5. Estrategias de Optimización del Rendimiento</h2>
+            <p>
+                En sistemas distribuidos, los cuadros de mando deben manejar volúmenes masivos de datos sin perder
+                rendimiento.
+                Esto se logra mediante:
+            </p>
+
+            <div class="grid-2-cols">
+                <div class="card primary">
+                    <h4 class="color-primary">📊 Agregaciones Previas</h4>
+                    <p>Cálculo de sumas, promedios y métricas complejas en tablas de resumen para evitar el escaneo
+                        total de billones de filas.</p>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">🚀 In-Memory Processing</h4>
+                    <p>Almacenamiento en memoria RAM de los datos más consultados para una respuesta casi instantánea.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scenario-box primary">
+                <h4>Motores de Consulta Optimizados</h4>
+                <p>
+                    Uso de tecnologías diseñadas para analítica masiva tipo OLAP:
+                    <span class="code-badge">BigQuery</span>, <span class="code-badge">ClickHouse</span>,
+                    <span class="code-badge">Druid</span> o <span class="code-badge">Snowflake</span>.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: ¿QUÉ ES OLAP? -->
+        <section id="olap-fundamentos" class="section">
+            <h2>6. ¿Qué es OLAP? Conceptos Fundamentales</h2>
+            <p>
+                <strong>OLAP (Online Analytical Processing)</strong> es una categoría de software que permite a los
+                usuarios
+                analizar información de múltiples sistemas de bases de datos de forma simultánea. Mientras que las bases
+                de datos tradicionales están optimizadas para transacciones, OLAP está diseñado para realizar
+                <strong>consultas complejas y análisis multidimensional</strong>.
+            </p>
+
+            <div class="grid-2-cols">
+                <div class="card primary-bg">
+                    <h4 class="color-primary">📦 El Cubo OLAP</h4>
+                    <p>
+                        Es el concepto central. Los datos no se ven como tablas planas, sino como un cubo de varias
+                        dimensiones
+                        (ej: Tiempo, Geografía, Producto). Esto permite realizar operaciones como:
+                    </p>
+                    <ul>
+                        <li><strong>Slicing:</strong> Filtrar por una dimensión (ej. Ventas solo de 2023).</li>
+                        <li><strong>Dicing:</strong> Seleccionar un sub-cubo (ej. Ventas de Electrónica en Madrid en el
+                            Q1).</li>
+                        <li><strong>Drill-down:</strong> Pasar de datos resumidos a detallados (ej. de Año → Mes → Día).
+                        </li>
+                    </ul>
+                </div>
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">📊 OLTP vs OLAP</h4>
+                    <p>Es vital entender la diferencia para no usar la herramienta equivocada:</p>
+                    <ul>
+                        <li><strong>OLTP (Transaccional):</strong> Optimizado para insertar/actualizar registros rápidos
+                            (ej. una venta en caja). Usa almacenamiento por filas.</li>
+                        <li><strong>OLAP (Analítico):</strong> Optimizado para leer millones de filas y calcular
+                            agregados (ej. ventas totales por año). Usa almacenamiento por columnas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Tipos de Sistemas OLAP</h3>
+            <div class="grid-3">
+                <div class="card primary">
+                    <h4 class="color-primary">MOLAP</h4>
+                    <p><strong>Multidimensional:</strong> Datos pre-calculados y guardados en cubos propietarios.
+                        Respuesta ultra-rápida pero menos flexible.</p>
+                </div>
+                <div class="card secondary">
+                    <h4 class="color-secondary">ROLAP</h4>
+                    <p><strong>Relational:</strong> Accede directamente a bases relacionales. Más escalable con Big Data
+                        pero requiere motores potentes.</p>
+                </div>
+                <div class="card primary">
+                    <h4 class="color-primary">HOLAP</h4>
+                    <p><strong>Hybrid:</strong> Combina ambos. Usa MOLAP para datos resumidos y ROLAP para el detalle
+                        fino.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: MOTORES OLAP -->
+        <section id="olap-motores" class="section">
+            <h2>7. Motores de Consulta OLAP</h2>
+            <p>
+                Los sistemas <strong>OLAP (Online Analytical Processing)</strong> distribuidos son el motor
+                que permite que los cuadros de mando sean interactivos sobre petabytes de datos. A diferencia
+                de las bases de datos transaccionales, estas soluciones utilizan <strong>almacenamiento en
+                    columnas</strong>
+                y ejecución paralela masiva.
+            </p>
+
+            <div class="grid-2-cols">
+                <!-- BigQuery -->
+                <div class="card primary">
+                    <h4 class="color-primary">☁️ Google BigQuery</h4>
+                    <p>
+                        Solución <strong>serverless</strong> y multicloud de escala masiva.
+                    </p>
+                    <ul>
+                        <li><strong>Uso:</strong> Ideal para empresas que no quieren gestionar infraestructura. Soporta
+                            SQL estándar.</li>
+                        <li><strong>Fortaleza:</strong> Escalabilidad casi infinita y capacidad de procesar trillones de
+                            filas en segundos.</li>
+                        <li><strong>Ideal para:</strong> Dashboards de inteligencia de negocio sobre datos históricos
+                            inmensos.</li>
+                    </ul>
+                </div>
+
+                <!-- ClickHouse -->
+                <div class="card secondary">
+                    <h4 class="color-secondary">🚀 ClickHouse</h4>
+                    <p>
+                        Base de datos columnar orientada a la <strong>máxima velocidad</strong>.
+                    </p>
+                    <ul>
+                        <li><strong>Uso:</strong> Análisis de logs, eventos web y monitorización en tiempo real.</li>
+                        <li><strong>Fortaleza:</strong> Rendimiento de lectura asombroso y compresión de datos muy
+                            eficiente.</li>
+                        <li><strong>Ideal para:</strong> Dashboards operativos que requieren refresco en milisegundos.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Apache Druid -->
+                <div class="card primary">
+                    <h4 class="color-primary">📡 Apache Druid</h4>
+                    <p>
+                        Motor analítico diseñado para <strong>ingesta de streaming</strong> rápida.
+                    </p>
+                    <ul>
+                        <li><strong>Uso:</strong> Análisis de clickstream, monitorización de red y sensores IoT.</li>
+                        <li><strong>Fortaleza:</strong> Combina indexación rápida (ingesta) con latencia de consulta
+                            ultra-baja.</li>
+                        <li><strong>Ideal para:</strong> Dashboards de monitorización en tiempo real con gran volumen de
+                            eventos.</li>
+                    </ul>
+                </div>
+
+                <!-- Snowflake -->
+                <div class="card secondary">
+                    <h4 class="color-secondary">❄️ Snowflake</h4>
+                    <p>
+                        Plataforma de datos como servicio con <strong>separación de cómputo y storage</strong>.
+                    </p>
+                    <ul>
+                        <li><strong>Uso:</strong> Almacén de datos empresarial y compartición de datos segura.</li>
+                        <li><strong>Fortaleza:</strong> Permite escalar el cómputo de forma aislada para diferentes
+                            departamentos.</li>
+                        <li><strong>Ideal para:</strong> Entornos corporativos con múltiples usuarios concurrentes
+                            consultando dashboards complejos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scenario-box primary">
+                <h4>Comparativa de Selección OLAP</h4>
+                <p>
+                    ¿Cuál elegir? Si buscas <strong>facilidad</strong> → BigQuery. Si buscas
+                    <strong>velocidad bruta</strong> → ClickHouse. Si vienes de un entorno
+                    <strong>Enterprise</strong> → Snowflake. Si analizas <strong>streaming puro</strong> → Druid.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: HERRAMIENTAS -->
+        <section id="herramientas" class="section">
+            <h2>8. Conectividad y Herramientas</h2>
+            <p>
+                Finalmente, las herramientas de visualización se conectan a estos repositorios mediante diversos
+                métodos.
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Herramienta</th>
+                            <th>Tipo de Conexión</th>
+                            <th>Escenario Ideal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Power BI / Tableau</td>
+                            <td>Live Connection / Direct Query</td>
+                            <td>Datos que residen y se procesan en el Warehouse Cloud.</td>
+                        </tr>
+                        <tr>
+                            <td>Grafana</td>
+                            <td>Push / Streaming Connectors</td>
+                            <td>Monitorización IT y sensores IoT en tiempo real.</td>
+                        </tr>
+                        <tr>
+                            <td>Custom (D3.js)</td>
+                            <td>Rest APIs / WebSockets</td>
+                            <td>Visualizaciones a medida altamente complejas y personalizadas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "La integración exitosa de un dashboard no se mide por lo bonitos que sean sus gráficos,
+                    sino por la velocidad con la que un usuario puede obtener una respuesta veraz de un mar de
+                    petabytes."
+                </p>
+                <span class="quote-author">— Arquitecto de Soluciones Big Data</span>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
