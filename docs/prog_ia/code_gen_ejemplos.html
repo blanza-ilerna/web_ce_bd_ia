@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Configuración y ejemplos prácticos de integración con la API de OpenAI: obtención de la API Key, variables de entorno y gestión de costes.">
+    <meta name="author" content="iLERNA">
+    <meta name="organization" content="iLERNA">
+    <title>Configuración de la API Key de OpenAI | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación de IA</a> ›
+                    <span>API Key y Ejemplos</span>
+                </div>
+            </div>
+            <h1 class="text-center">Preparación de Entorno y API Key</h1>
+            <p class="subtitle text-center">Configuración de credenciales para la integración de modelos de IA
+                generativa</p>
+        </header>
+
+        <main>
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#introduccion">1. Requerimientos de Autenticación</a></li>
+                    <li><a href="#atencion">2. Advertencias Importantes</a></li>
+                    <li><a href="#pasos">3. Pasos para obtener una OPENAI_API_KEY</a></li>
+                    <li><a href="#uso-entorno">4. Configuración en el Entorno de Desarrollo</a></li>
+                </ul>
+            </nav>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section" id="introduccion">
+                <h2 class="section-title">1. Requerimientos de Autenticación</h2>
+                <p>
+                    En todos los ejemplos prácticos de este bloque (especialmente aquellos que utilizan la OpenAI API,
+                    LangChain o LlamaIndex), es necesario disponer de una clave de API denominada
+                    <code>OPENAI_API_KEY</code>.
+                </p>
+                <div class="highlight-box primary">
+                    <p>
+                        Esta clave funciona como una credencial personal y privada que identifica al usuario ante los
+                        servidores de OpenAI y permite autorizar las peticiones a los modelos más avanzados como
+                        <strong>GPT-4, GPT-4o o Whisper</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ATENCIÓN/WARNING -->
+            <section class="section" id="atencion">
+                <div class="warning-box">
+                    <h4>⚠️ ATENCIÓN: Consideraciones de Uso</h4>
+                    <ul class="list-disc-padded">
+                        <li><strong>Costes Económicos:</strong> El uso de esta clave genera costes según el número de
+                            peticiones y el volumen de datos procesados (tokens).</li>
+                        <li><strong>Propósito Educativo:</strong> Estas demostraciones tienen un fin puramente formativo
+                            para mostrar la integración técnica en aplicaciones reales.</li>
+                        <li><strong>No Obligatoriedad:</strong> No es obligatorio ejecutar el código. Se recomienda
+                            hacerlo solo si se dispone de una cuenta configurada con límites de uso y control de gastos
+                            activados.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: PASOS -->
+            <section class="section" id="pasos">
+                <h2 class="section-title">3. Pasos para obtener una OPENAI_API_KEY</h2>
+                <div class="vertical-stack">
+                    <div class="card secondary">
+                        <h5>1. Crea una cuenta en OpenAI</h5>
+                        <p>Accede a <a href="https://platform.openai.com/" target="_blank">platform.openai.com</a> y
+                            regístrate con tu correo o cuenta de Google/Microsoft.</p>
+                    </div>
+                    <div class="card primary">
+                        <h5>2. Accede al panel de API Keys</h5>
+                        <p>Una vez dentro, haz clic en el apartado "API Keys" en el menú lateral o visita <a
+                                href="https://platform.openai.com/api-keys"
+                                target="_blank">platform.openai.com/api-keys</a>.</p>
+                    </div>
+                    <div class="card secondary">
+                        <h5>3. Genera una nueva clave</h5>
+                        <p>Pulsa en <strong>"Create new secret key"</strong>. El sistema generará una cadena
+                            alfanumérica (ej: <code>sk-xxxxxxxx...</code>).</p>
+                        <p class="small">* Es vital copiarla y guardarla en un lugar seguro (un gestor de contraseñas),
+                            ya que OpenAI no la volverá a mostrar completa por seguridad.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CONFIGURACIÓN -->
+            <section class="section" id="uso-entorno">
+                <h2 class="section-title">4. Configuración en el Entorno de Desarrollo</h2>
+                <p>Para que tu código utilice esta clave automáticamente sin escribirla directamente en el script (lo
+                    cual es una mala práctica de seguridad), puedes configurarla en tu sistema:</p>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h4>🐧 Unix / macOS</h4>
+                        <p>Guárdala temporalmente en la terminal:</p>
+                        <div
+                            style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-family: monospace; margin-top: 0.5rem;">
+                            export OPENAI_API_KEY="sk-xxx"
+                        </div>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4>🪟 Windows (PowerShell)</h4>
+                        <p>Establece la variable de entorno:</p>
+                        <div
+                            style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-family: monospace; margin-top: 0.5rem;">
+                            setx OPENAI_API_KEY "sk-xxx"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card primary-bg" style="margin-top: 2rem;">
+                    <h5>📂 Uso de archivos .env</h5>
+                    <p>En proyectos con frameworks como <strong>FastAPI, LangChain o Flask</strong>, es común definirla
+                        en un archivo oculto llamado <code>.env</code>:</p>
+                    <div
+                        style="background: #ffffff; padding: 0.75rem; border-radius: 4px; font-family: monospace; border-left: 4px solid var(--color-primary);">
+                        OPENAI_API_KEY=sk-tu_clave_aqui
+                    </div>
+                </div>
+
+                <p style="margin-top: 1.5rem;">
+                    A partir de ese momento, cualquier código en Python que invoque la API (como
+                    <code>client = OpenAI()</code>) usará automáticamente esa clave para autenticarse de forma
+                    transparente.
+                </p>
+            </section>
+
+            <!-- CONCLUSIÓN -->
+            <section class="section" id="conclusion">
+                <div class="highlight-box primary"
+                    style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Recomendación
+                        Final</h3>
+                    <p
+                        style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                        Nunca subas tu archivo <code>.env</code> o tu clave directamente a repositorios públicos como
+                        GitHub. Usa siempre archivos <code>.gitignore</code> para proteger tus credenciales.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

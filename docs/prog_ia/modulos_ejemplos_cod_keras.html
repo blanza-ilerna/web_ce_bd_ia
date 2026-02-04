@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejemplo práctico de Transfer Learning con Keras y ResNet50 para clasificación de imágenes.">
+    <meta name="author" content="iLERNA">
+    <meta name="organization" content="ILERNA">
+    <title>Transfer Learning con ResNet50 | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación de IA</a> ›
+                    <span>Transfer Learning con ResNet50</span>
+                </div>
+            </div>
+            <h1 class="text-center">Keras: Transfer Learning con ResNet50</h1>
+            <p class="subtitle text-center">Clasificación de imágenes eficiente mediante modelos preentrenados</p>
+        </header>
+
+        <main>
+            <!-- TOC -->
+            <nav class="toc-container">
+                <h3>📑 Contenido de la Lección</h3>
+                <ul class="toc-list">
+                    <li><a href="#objetivo">1. Objetivo del Proyecto</a></li>
+                    <li><a href="#que-es-transfer-learning">2. ¿Qué es Transfer Learning?</a></li>
+                    <li><a href="#ejemplo-codigo">3. Ejemplo de Código en Keras</a></li>
+                    <li><a href="#desglose-tecnico">4. Desglose Técnico del Proceso</a></li>
+                    <li><a href="#preparacion-datos">5. Preparación de Datos</a></li>
+                    <li><a href="#buenas-practicas">6. Buenas Prácticas y Errores Comunes</a></li>
+                    <li><a href="#conclusion">7. Conclusión</a></li>
+                </ul>
+            </nav>
+
+            <!-- SECCIÓN 1: OBJETIVO -->
+            <section class="section" id="objetivo">
+                <h2 class="section-title">1. ¿Qué se quiere conseguir?</h2>
+                <p>
+                    El objetivo principal es construir un <strong>clasificador de imágenes</strong> robusto capaz de
+                    identificar categorías específicas (por ejemplo: "gato", "perro", "pájaro") a partir de imágenes de
+                    <strong>224×224 píxeles RGB</strong>.
+                </p>
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4>🚀 Eficiencia</h4>
+                        <p>Lograr resultados competitivos de forma rápida y con un conjunto de datos reducido.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🧠 Reutilización</h4>
+                        <p>Aprovechar el conocimiento de <strong>ResNet50</strong>, un modelo preentrenado en millones
+                            de imágenes (ImageNet).</p>
+                    </div>
+                </div>
+                <div class="highlight-box warning">
+                    <p><strong>Atención:</strong> En lugar de entrenar desde cero, reutilizamos la capacidad de la red
+                        para "ver" patrones básicos (bordes, texturas) y solo entrenamos la parte final para nuestra
+                        tarea específica.</p>
+                </div>
+
+                <div class="highlight-box secondary">
+                    <h4 class="color-secondary">⚠️ Antipatrones a evitar</h4>
+                    <p>Para asegurar la validez científica de tu modelo, evita estos errores críticos:</p>
+                    <ul class="list-disc-padded">
+                        <li><strong>Fuga de datos (Data Leakage):</strong> No ajustes hiperparámetros usando el conjunto
+                            de test; usa siempre el de validación.</li>
+                        <li><strong>Inconsistencia de Pipeline:</strong> Aplicar un preprocesado diferente entre el
+                            entrenamiento y la inferencia real.</li>
+                        <li><strong>Inestabilidad:</strong> Ignorar el control de semillas (random state) para
+                            reproducir resultados.</li>
+                        <li><strong>Visión sesgada:</strong> Evaluar solo el <em>accuracy</em> global sin desglosar
+                            métricas por cada clase.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: DEFINICIÓN -->
+            <section class="section" id="que-es-transfer-learning">
+                <h2 class="section-title">2. ¿Qué es "Transfer Learning" y por qué se usa?</h2>
+                <p>
+                    Consiste en transferir el conocimiento de un modelo grande y general a un problema concreto. Es el
+                    equivalente a no tener que aprender a leer desde cero cada vez que abres un libro nuevo.
+                </p>
+                <div class="vertical-stack">
+                    <div class="card primary">
+                        <h4>Ventajas Clave</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Menos datos:</strong> No necesitas millones de fotos para empezar.</li>
+                            <li><strong>Menos cómputo:</strong> Se ahorran horas (o días) de entrenamiento en GPU.</li>
+                            <li><strong>Mejores resultados:</strong> Los modelos preentrenados suelen generalizar mejor
+                                desde el inicio.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CÓDIGO -->
+            <section class="section" id="ejemplo-codigo">
+                <h2 class="section-title">3. Ejemplo de Código</h2>
+                <div class="scenario-box white">
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras.applications import ResNet50
+from tensorflow.keras.applications.resnet50 import preprocess_input
+from tensorflow.keras import layers, models
+
+# 1) Base preentrenada (congelada)
+# Weights="imagenet" carga los pesos aprendidos de millones de imágenes
+# include_top=False elimina las capas finales de clasificación originales
+base = ResNet50(weights="imagenet", include_top=False, input_shape=(224,224,3))
+base.trainable = False # Importante: congelar al inicio
+
+# 2) Cabeza final adaptada a nuestro problema
+inputs = tf.keras.Input(shape=(224,224,3))
+# El preprocesado es CRÍTICO para que el modelo entienda los datos
+x = preprocess_input(inputs)
+x = base(x, training=False)
+x = layers.GlobalAveragePooling2D()(x) # Resume mapas de activación
+x = layers.Dropout(0.2)(x) # Evita el sobreajuste
+outputs = layers.Dense(3, activation="softmax")(x) # 3 clases de ejemplo
+
+model = models.Model(inputs, outputs)
+
+# 3) Compilación del modelo
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(1e-3),
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
+
+# 4) Entrenamiento (suponiendo train_ds y val_ds preparados)
+model.fit(train_ds, validation_data=val_ds, epochs=5)
+
+# 5) Opcional: Fine-tuning parcial
+base.trainable = True
+for layer in base.layers[:-20]: # Congelamos todo menos las últimas 20 capas
+    layer.trainable = False
+
+model.compile(optimizer=tf.keras.optimizers.Adam(1e-4), 
+              loss="sparse_categorical_crossentropy", 
+              metrics=["accuracy"])
+model.fit(train_ds, validation_data=val_ds, epochs=5)</code></pre>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: DESGLOSE -->
+            <section class="section" id="desglose-tecnico">
+                <h2 class="section-title">4. ¿Qué hace cada parte del ejemplo?</h2>
+                <div class="vertical-stack">
+                    <div class="card secondary">
+                        <h4 class="color-secondary">1. Cargar la base preentrenada</h4>
+                        <p>Al usar <code>include_top=False</code>, eliminamos el "cerebro" final del modelo y nos
+                            quedamos con los "ojos" (el extractor de características). Congelar la base impide que el
+                            entrenamiento inicial destruya lo que el modelo ya sabe.</p>
+                    </div>
+                    <div class="card primary">
+                        <h4 class="color-primary">2. Preprocesado propio</h4>
+                        <p>Cada arquitectura necesita que los datos lleguen en un formato específico (escalado de 0 a 1,
+                            o de -1 a 1, centrado de colores). <code>preprocess_input</code> asegura que estemos
+                            hablando el "idioma" de ResNet50.</p>
+                    </div>
+                    <div class="card secondary">
+                        <h4 class="color-secondary">3. Añadir la "Cabeza"</h4>
+                        <p>Conectamos una capa de <code>GlobalAveragePooling2D</code> para convertir los mapas de
+                            características espaciales en un vector que una capa <code>Dense</code> final pueda
+                            clasificar.</p>
+                    </div>
+                    <div class="card primary">
+                        <h4 class="color-primary">4. Fine-tuning (Ajuste fino)</h4>
+                        <p>Una vez que la cabeza nueva está estabilizada, podemos "descongelar" las últimas capas de la
+                            base para que se adapten con extrema precisión a nuestro dataset.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: DATOS -->
+            <section class="section" id="preparacion-datos">
+                <h2 class="section-title">5. ¿Qué datos hacen falta y cómo se preparan?</h2>
+                <div class="grid-2-cols">
+                    <div class="feature-card">
+                        <h4>📂 Estructura de Carpetas</h4>
+                        <div
+                            style="background: var(--bg-code); color: #f8f8f2; padding: 1rem; border-radius: 8px; font-family: monospace; border-left: 4px solid var(--color-primary); margin-top: 0.5rem;">
+                            <pre
+                                style="margin: 0; padding: 0; background: transparent; color: inherit; font-size: 1.125rem;">data/
+  train/
+    clase_A/
+    clase_B/
+  val/
+    clase_A/
+    clase_B/</pre>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Data Augmentation</h4>
+                        <p>Rotar, recortar y cambiar el brillo de las imágenes durante el entrenamiento ayuda al modelo
+                            a ser más robusto ante imprevistos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: BUENAS PRÁCTICAS -->
+            <section class="section" id="buenas-practicas">
+                <h2 class="section-title">6. Buenas Prácticas y Errores Comunes</h2>
+                <div class="grid-2-cols">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">✅ Buenas Prácticas</h4>
+                        <ul class="list-disc-padded">
+                            <li>Usar el mismo preprocesado en entrenamiento e inferencia.</li>
+                            <li>Empezar siempre con la base congelada.</li>
+                            <li>Utilizar una tasa de aprendizaje (LR) muy baja para el fine-tuning.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">❌ Errores Comunes</h4>
+                        <ul class="list-disc-padded">
+                            <li>Olvidar el <code>preprocess_input</code> específico de la arquitectura.</li>
+                            <li>Descongelar toda la base demasiado pronto (explota el gradiente).</li>
+                            <li>No usar un conjunto de validación para monitorizar el sobreajuste.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONCLUSIÓN -->
+            <section class="section" id="conclusion">
+                <div class="highlight-box primary"
+                    style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-primary); background: linear-gradient(135deg, var(--bg-primary-light) 0%, #ffffff 100%);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión
+                    </h3>
+                    <p
+                        style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                        Gracias al <strong>Transfer Learning</strong>, podemos lograr rendimientos de vanguardia en
+                        visión artificial sin necesidad de infraestructuras masivas ni millones de datos. Es la técnica
+                        que democratiza el acceso a la IA profunda para cualquier proyecto.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
