@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control PID y Control Adaptativo - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Fundamentos del control PID y sistemas de control adaptativo en robótica.">
+    <meta name="keywords" content="Control PID, Robótica, Control Adaptativo, Algoritmos de Control, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+
+    <style>
+        .math-container {
+            background-color: var(--bg-table);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-light);
+            margin: 1.5rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.8;
+            color: var(--text-dark);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .math-line {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .math-result {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--color-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .subscript {
+            font-size: 0.8em;
+            vertical-align: sub;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-2">Modelado y Control</a> ›
+                    <span>Control PID y Adaptativo</span>
+                </div>
+            </div>
+            <h1 class="text-center">Control PID y Adaptativo</h1>
+            <p class="subtitle text-center">Estrategias de regulación para el movimiento preciso</p>
+        </header>
+
+        <!-- SECCIÓN 1: CONTROL PID -->
+        <section>
+            <h2>El Control PID</h2>
+            <p>
+                El <strong>control PID</strong> (Proporcional-Integral-Derivativo) es el algoritmo de control más
+                utilizado en la industria por su simplicidad y eficacia. Su objetivo es minimizar la diferencia entre el
+                valor deseado (<em>setpoint</em>) y el valor real (<em>actual</em>).
+            </p>
+
+            <div class="math-container">
+                <span class="math-line">error = setpoint − actual</span>
+                <span class="math-line">integral += error · Δt</span>
+                <span class="math-line">derivative = (error − prev_error) / Δt</span>
+
+                <div class="math-result">
+                    output = K<span class="subscript">p</span> · error + K<span class="subscript">i</span> · integral +
+                    K<span class="subscript">d</span> · derivative
+                </div>
+
+                <span class="math-line" style="margin-top: 1rem;">prev_error = error</span>
+            </div>
+
+            <p class="text-small text-center color-primary">
+                Donde <strong>K<sub>p</sub></strong>, <strong>K<sub>i</sub></strong> y <strong>K<sub>d</sub></strong>
+                son las constantes de ajuste.
+            </p>
+
+            <div class="grid-3 mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">P (Proporcional)</h4>
+                    <p>Reacciona al <strong>error actual</strong>. A mayor error, mayor es la fuerza de corrección
+                        aplicada.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">I (Integral)</h4>
+                    <p>Reacciona al <strong>error acumulado</strong>. Elimina el error residual que el proporcional no
+                        puede corregir.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">D (Derivativo)</h4>
+                    <p>Reacciona a la <strong>tendencia del error</strong>. Actúa como un amortiguador para evitar
+                        sobreoscilaciones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CONTROL ADAPTATIVO -->
+        <section>
+            <h2>Control Adaptativo e Inteligente</h2>
+            <p>
+                Mientras que un PID estándar utiliza constantes fijas, el <strong>control adaptativo</strong> es capaz
+                de
+                modificar esos parámetros en tiempo real para ajustarse a cambios en el entorno o en el propio robot.
+            </p>
+
+            <div class="expert-quote">
+                <p>
+                    "Más recientemente, se emplean técnicas de aprendizaje por refuerzo o redes neuronales para
+                    optimizar
+                    el control de movimiento, permitiendo que el sistema aprenda las constantes óptimas de forma
+                    autónoma."
+                </p>
+                <div class="quote-author">
+                    Russell y Norvig (2021)
+                </div>
+            </div>
+
+            <div class="highlight-box secondary mt-2">
+                <h3 class="color-secondary">¿Por qué usar Control Adaptativo?</h3>
+                <p class="content">
+                    En entornos dinámicos (como un robot cargando pesos variables o operando sobre superficies con
+                    distinto
+                    rozamiento), un PID estático puede volverse inestable. El control adaptativo garantiza que el robot
+                    mantenga su precisión sin importar las condiciones externas.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo: Brazo Robótico con Bucle Cerrado - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Ejemplo práctico de un brazo robótico operando bajo un sistema de control en bucle cerrado.">
+    <meta name="keywords" content="Brazo Robótico, Bucle Cerrado, Feedback, PID, Control Robótico, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-2">Modelado y Control</a> ›
+                    <span>Ejemplo: Brazo Robótico</span>
+                </div>
+            </div>
+            <h1 class="text-center">Ejemplo: Brazo Robótico en Bucle Cerrado</h1>
+            <p class="subtitle text-center">Un caso práctico de retroalimentación y precisión</p>
+        </header>
+
+        <!-- SECCIÓN 1: EL ESCENARIO -->
+        <section>
+            <h2>El Escenario: Posicionamiento de Precisión</h2>
+            <p>
+                Para comprender cómo interactúan todos los elementos de control vistos anteriormente, analicemos el
+                funcionamiento de un <strong>brazo robótico con tres articulaciones</strong> (3 grados de libertad) que
+                tiene como misión recoger un objeto y colocarlo en una posición exacta del espacio.
+            </p>
+
+            <div class="scenario-box primary mt-2">
+                <h4 class="color-primary">📍 El Objetivo</h4>
+                <p>
+                    El robot debe alcanzar sus coordenadas de destino (X, Y, Z). Para ello, el sistema no solo "se
+                    mueve",
+                    sino que <strong>mide continuamente</strong> su posición actual mediante codificadores (encoders) en
+                    sus motores y calcula el error respecto al objetivo.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: EL PROCESO DE CONTROL -->
+        <section>
+            <h2>El Ciclo de Retroalimentación</h2>
+            <p>
+                Este sistema no funciona de forma "ciega" (bucle abierto), sino que utiliza la información sensorial
+                para
+                ajustarse en tiempo real.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📏 Medición del Error</h4>
+                    <p>
+                        A cada milisegundo, los sensores informan de la posición real. El software resta esta posición
+                        del
+                        objetivo deseado, obteniendo el <strong>error instantáneo</strong>.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚙️ Acción del PID</h4>
+                    <p>
+                        El controlador <strong>PID</strong> procesa ese error. Genera señales de voltaje hacia los
+                        motores
+                        para que se muevan más rápido si el error es grande, o frenen suavemente si se están acercando
+                        al
+                        punto final.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🎯 Estabilidad</h4>
+                    <p>
+                        A medida que la pinza se acerca al objetivo, el error disminuye. Las correcciones se vuelven más
+                        pequeñas hasta que el <strong>error tiende a cero</strong> y el robot se detiene exactamente
+                        donde
+                        debe.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CONCLUSIÓN CONCEPTUAL -->
+        <section>
+            <h2>¿Por qué es un Bucle Cerrado?</h2>
+            <div class="highlight-box success">
+                <h3 class="color-success">La Importancia del Feedback</h3>
+                <p class="content">
+                    Este proceso constituye un <strong>bucle cerrado de retroalimentación</strong> (feedback). Si un
+                    factor
+                    externo (como un obstáculo o una carga más pesada de lo previsto) intentara desviar el brazo, los
+                    sensores detectarían el nuevo error de inmediato y el controlador aumentaría la potencia para
+                    compensar
+                    la desviación, manteniendo el <strong>control estable y preciso</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
