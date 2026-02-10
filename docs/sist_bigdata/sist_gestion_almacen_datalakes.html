@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Lakes: Flexibilidad y Escala - iLERNA</title>
+    <meta name="description"
+        content="Explora el concepto de Data Lake, el principio schema-on-read, el ecosistema Hadoop y las zonas lógicas de procesamiento de datos.">
+    <meta name="keywords" content="Data Lake, Schema-on-read, Hadoop, HDFS, S3, Data Swamp, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Data Lakes</span>
+                </div>
+            </div>
+            <h1 class="text-center">Data Lakes</h1>
+            <p class="subtitle text-center">El paradigma de la flexibilidad, la escala y el almacenamiento "Raw"</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Almacenamiento sin Restricciones</h2>
+            <p>
+                El <strong>Data Lake</strong> es un repositorio centralizado que permite almacenar todos los tipos de
+                datos, en cualquier formato y sin necesidad de definir un esquema previo. Es la materialización del
+                principio <strong>schema-on-read</strong>: a diferencia de las bases de datos tradicionales, el esquema
+                se aplica en el momento de la lectura, no en el de la escritura.
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">Múltiples Formatos</h4>
+                    <p>Permite integrar fuentes diversas: logs de servidores, sensores IoT, imágenes, documentos, redes
+                        sociales y registros transaccionales en un mismo entorno.</p>
+                </div>
+                <div class="card primary-bg">
+                    <h4 class="color-primary">Integridad Original</h4>
+                    <p>Se preserva el dato tal como fue generado. Las transformaciones o modelos semánticos se aplican
+                        posteriormente según la necesidad analítica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Infraestructura y Sistemas -->
+        <section>
+            <h2 class="color-secondary">Infraestructura Distribuida</h2>
+            <p>Los data lakes se implementan sobre sistemas de almacenamiento distribuido y de bajo coste que garantizan
+                redundancia y alta disponibilidad:</p>
+
+            <div class="grid-3 mt-1">
+                <div class="info-box">
+                    <p><strong>HDFS</strong></p>
+                    <p class="description">Hadoop Distributed File System. El pionero en almacenamiento distribuido
+                        nativo.</p>
+                </div>
+                <div class="info-box">
+                    <p><strong>Cloud Object Storage</strong></p>
+                    <p class="description">Amazon S3, Azure Data Lake Storage o Google Cloud Storage.</p>
+                </div>
+                <div class="info-box">
+                    <p><strong>Escalabilidad</strong></p>
+                    <p class="description">Capacidad para crecer dividiendo datos en bloques repartidos en múltiples
+                        nodos.</p>
+                </div>
+            </div>
+
+            <!-- SVG Schema on Read vs Write -->
+            <div class="svg-container"
+                style="max-width: 700px; margin: 2rem auto; border-radius: 12px; background: white; padding: 1.5rem; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Schema on Write (Data Warehouse) -->
+                    <text x="140" y="30" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="var(--color-primary)">Schema-on-Write (Warehouse)</text>
+                    <path d="M 40 80 H 120 V 160 H 40 Z" fill="#eee" stroke="#ccc" />
+                    <text x="80" y="125" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="#666">ESTRUCTURA RIGIDA</text>
+                    <line x1="120" y1="120" x2="200" y2="120" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="160" y="110" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-primary)">Transformar</text>
+
+                    <!-- Schema on Read (Data Lake) -->
+                    <text x="460" y="30" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="var(--color-secondary)">Schema-on-Read (Lake)</text>
+                    <circle cx="460" cy="120" r="50" fill="var(--bg-secondary-light)" stroke="var(--color-secondary)"
+                        stroke-dasharray="4" />
+                    <text x="460" y="120" text-anchor="middle" font-family="Montserrat" font-size="9" font-weight="bold"
+                        fill="var(--color-secondary)">DATO RAW</text>
+                    <line x1="510" y1="120" x2="570" y2="120" stroke="var(--color-secondary)" stroke-width="2" />
+                    <text x="540" y="140" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-secondary)">Estructura en Lectura</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Ecosistema Hadoop -->
+        <section>
+            <h2 class="color-primary">Ecosistema y Herramientas</h2>
+            <p>El ecosistema Hadoop popularizó herramientas críticas que hoy conviven con alternativas de nube donde
+                cómputo y almacenamiento se desacoplan:</p>
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow">
+                    <h4 class="color-primary">Herramientas Hadoop</h4>
+                    <ul class="custom-list">
+                        <li><strong>Hive:</strong> Consultas SQL sobre datos distribuidos.</li>
+                        <li><strong>HBase:</strong> Base de datos NoSQL de baja latencia.</li>
+                        <li><strong>Spark:</strong> Procesamiento en memoria ultra-rápido.</li>
+                        <li><strong>Oozie:</strong> Orquestación de flujos de trabajo.</li>
+                    </ul>
+                </div>
+                <div class="card primary-bg">
+                    <h4 class="color-primary">Paradigma de Nube</h4>
+                    <p>Interoperabilidad total a través de conectores y APIs. Almacenamiento (S3/ADLS) y Cómputo
+                        (Databricks, EMR, Athena) funcionan de forma independiente pero integrada.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="color-secondary">Zonas Lógicas de Procesamiento</h2>
+            <p>Para evitar el caos y garantizar la eficiencia, un data lake se organiza en capas que reflejan el grado
+                de madurez y refinamiento de los activos de datos:</p>
+            <div class="grid-3 mt-1">
+                <div class="card white shadow" style="border-top: 4px solid #DD6B20;">
+                    <h4 style="color: #DD6B20;">1. Raw / Landing</h4>
+                    <p class="small">Es el punto de entrada principal donde los datos se depositan en su <strong>forma
+                            original e inalterada</strong>. No se aplican limpiezas ni cambios de formato para asegurar
+                        que el linaje del dato comience desde su estado más puro.</p>
+                    <p class="small mt-1">Esta zona actúa como un histórico inmutable. Al conservar el "raw data", la
+                        organización siempre puede volver atrás y re-procesar la información si las reglas de negocio o
+                        los algoritmos cambian en el futuro.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid #3182CE;">
+                    <h4 style="color: #3182CE;">2. Staging / Standardized</h4>
+                    <p class="small">En esta capa intermedia, los datos se someten a procesos de <strong>limpieza y
+                            normalización</strong>. Se homogeneizan unidades de medida, se validan esquemas básicos y se
+                        convierten archivos pesados o ineficientes (como CSV o JSON) a formatos optimizados para Big
+                        Data como Apache Parquet o Avro.</p>
+                    <p class="small mt-1">El objetivo es crear un entorno de datos "limpios" pero todavía granulares,
+                        permitiendo que diferentes equipos trabajen sobre una base común sin tener que repetir las
+                        tareas de limpieza individualmente.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid #319795;">
+                    <h4 style="color: #319795;">3. Curated / Trusted</h4>
+                    <p class="small">Aquí reside la información <strong>verificada, agregada y estructurada</strong>.
+                        Los datos han pasado por reglas de calidad estrictas y están listos para ser consumidos
+                        directamente por herramientas de Business Intelligence, modelos de Machine Learning o analistas
+                        de negocio.</p>
+                    <p class="small mt-1">Esta zona es equivalente en calidad a un Data Warehouse, pero mantiene la
+                        escalabilidad del lago. Es la cara visible de la plataforma de datos hacia el resto de la
+                        empresa, garantizando resultados fiables y rápidos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="warning-box">
+                <h4 class="color-primary">⚠️ El Riesgo del "Data Swamp" (Pantano de Datos)</h4>
+                <p>
+                    A pesar de su potencia, la falta de control de calidad y de una gobernanza centralizada puede
+                    convertir rápidamente un lago en un pantano. Un <strong>Data Swamp</strong> ocurre cuando el
+                    repositorio se llena de archivos sin metadatos, sin dueños claros y sin documentación, haciendo que
+                    la información sea imposible de encontrar o validar.
+                </p>
+                <p class="mt-1">
+                    Este fenómeno genera una desconfianza profunda en los resultados analíticos. Si los científicos de
+                    datos pasan el 80% de su tiempo tratando de entender qué hay en el lago en lugar de analizarlo, el
+                    sistema pierde su valor económico. Además, un pantano de datos supone un riesgo legal, ya que puede
+                    ocultar información sensible o personal que incumpla normativas como el RGPD.
+                </p>
+                <p class="mt-1">
+                    Para evitarlo, es fundamental implementar **catálogos de datos automáticos**, diccionarios de datos
+                    y políticas de retención. La tecnología por sí sola no garantiza el éxito; el Data Lake requiere una
+                    disciplina de gestión que asegure que el flujo de datos sea transparente, auditable y, sobre todo,
+                    útil para el usuario final.
+                </p>
+            </div>
+        </section>
+
+        <!-- Regla de Oro -->
+        <section>
+            <div class="card secondary-bg" style="border-left: 5px solid var(--color-secondary);">
+                <h4 class="color-secondary">ℹ️ Para más info: Regla de Oro</h4>
+                <p>
+                    Nunca sobrescribas el dato original. En su lugar, se crean nuevas versiones o capas derivadas. Esto
+                    garantiza la <strong>trazabilidad completa</strong> y la posibilidad de reproducir cualquier
+                    resultado histórico.
+                </p>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "El Data Lake es el primer lugar donde el dato descansa tras su nacimiento, manteniendo toda su
+                    riqueza original para los descubrimientos del futuro."
+                </p>
+                <span class="quote-author">— Data Engineer Senior</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

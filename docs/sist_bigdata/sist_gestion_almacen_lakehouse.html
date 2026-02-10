@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakehouse: Flexibilidad y Gobernanza - iLERNA</title>
+    <meta name="description"
+        content="Descubre el concepto de Lakehouse: la evolución que une la escalabilidad de los Data Lakes con la gobernanza de los Data Warehouses.">
+    <meta name="keywords"
+        content="Lakehouse, Delta Lake, Apache Iceberg, Apache Hudi, Propiedades ACID, Time Travel, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Lakehouse</span>
+                </div>
+            </div>
+            <h1 class="text-center">Data Lakehouse</h1>
+            <p class="subtitle text-center">Lo mejor de los dos mundos: Escalabilidad masiva y estructura transaccional
+            </p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">El Mejor de los Dos Mundos</h2>
+            <p>
+                El concepto de <strong>Lakehouse</strong> surge para resolver la brecha entre el Data Lake y el Data
+                Warehouse. Combina la escalabilidad y bajo coste del primero con la estructura, integridad y gobernanza
+                del segundo.
+            </p>
+            <div class="highlight-box info mt-1">
+                <p>Esta arquitectura se basa en el uso de <strong>formatos de tabla transaccional</strong> que
+                    incorporan las propiedades <strong>ACID</strong> (Atomicidad, Consistencia, Aislamiento y
+                    Durabilidad) sobre sistemas de almacenamiento distribuido como S3 o ADLS.</p>
+            </div>
+        </section>
+
+        <!-- Tecnologías Clave -->
+        <section>
+            <h2 class="color-secondary">Motores Transaccionales</h2>
+            <p>Para que un Lakehouse funcione, necesita una capa de metadatos robusta que gestione las transacciones
+                sobre los archivos (Parquet/Avro):</p>
+
+            <div class="grid-3 mt-1">
+                <div class="card white shadow" style="border-top: 4px solid var(--color-primary);">
+                    <h4 class="color-primary">Apache Iceberg</h4>
+                    <p class="small">Formato de tabla abierto para grandes conjuntos de datos analíticos, diseñado para
+                        alto rendimiento y fiabilidad en nubes públicas.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid var(--color-secondary);">
+                    <h4 class="color-secondary">Delta Lake</h4>
+                    <p class="small">Capa de almacenamiento de código abierto que aporta transacciones ACID a Apache
+                        Spark y grandes cargas de trabajo de Big Data.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid var(--color-primary);">
+                    <h4 class="color-primary">Apache Hudi</h4>
+                    <p class="small">Especializado en flujos de datos incrementales, permitiendo actualizaciones y
+                        eliminaciones eficientes sobre el almacenamiento de objetos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualización Lakehouse SVG -->
+        <section>
+            <h2 class="color-primary">Evolución de la Arquitectura</h2>
+            <div class="svg-container"
+                style="max-width: 800px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 15px; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Storage Layer -->
+                    <rect x="50" y="180" width="700" height="40" rx="5" fill="#f8f9fa" stroke="#dee2e6"
+                        stroke-width="1" />
+                    <text x="400" y="205" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        fill="#adb5bd">ALMACENAMIENTO DE OBJETOS (S3, ADLS, GCS, HDFS)</text>
+
+                    <!-- Lakehouse Layer -->
+                    <rect x="150" y="100" width="500" height="60" rx="10" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="400" y="135" text-anchor="middle" font-family="Montserrat" font-size="16"
+                        font-weight="bold" fill="var(--color-primary)">CAPA LAKEHOUSE (METADATOS & ACID)</text>
+                    <text x="400" y="150" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-primary)">Delta Lake / Iceberg / Hudi</text>
+
+                    <!-- Connections Top -->
+                    <line x1="250" y1="100" x2="250" y2="60" stroke="var(--color-secondary)" stroke-width="2"
+                        stroke-dasharray="4" />
+                    <circle cx="250" cy="40" r="25" fill="var(--bg-secondary-light)" stroke="var(--color-secondary)" />
+                    <text x="250" y="43" text-anchor="middle" font-family="Montserrat" font-size="8" font-weight="bold"
+                        fill="var(--color-secondary)">DATA SCI.</text>
+
+                    <line x1="400" y1="100" x2="400" y2="60" stroke="var(--color-secondary)" stroke-width="2"
+                        stroke-dasharray="4" />
+                    <circle cx="400" cy="40" r="25" fill="var(--bg-secondary-light)" stroke="var(--color-secondary)" />
+                    <text x="400" y="43" text-anchor="middle" font-family="Montserrat" font-size="8" font-weight="bold"
+                        fill="var(--color-secondary)">ANALISTAS</text>
+
+                    <line x1="550" y1="100" x2="550" y2="60" stroke="var(--color-secondary)" stroke-width="2"
+                        stroke-dasharray="4" />
+                    <circle cx="550" cy="40" r="25" fill="var(--bg-secondary-light)" stroke="var(--color-secondary)" />
+                    <text x="550" y="43" text-anchor="middle" font-family="Montserrat" font-size="8" font-weight="bold"
+                        fill="var(--color-secondary)">INGENIEROS</text>
+                </svg>
+            </div>
+            <p class="small text-center">Un entorno unificado donde perfiles técnicos y de negocio colaboran sobre la
+                misma infraestructura sin silos ni duplicidades.</p>
+        </section>
+
+        <!-- Ventajas Funcionales -->
+        <section>
+            <h2 class="color-secondary">Funcionalidades Avanzadas</h2>
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow">
+                    <h4 class="color-primary">🕰️ Time Travel (Viaje en el tiempo)</h4>
+                    <p>Permite consultar el estado de los datos en un punto temporal anterior. Esencial para auditorías,
+                        recuperación de errores y reproducibilidad de experimentos de IA.</p>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-primary">🔍 SQL sobre Datos Raw</h4>
+                    <p>Habilita la ejecución de consultas complejas directamente sobre el lago de datos con garantías de
+                        consistencia, eliminando la necesidad de mover datos a un Warehouse externo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coexistencia y Ejemplo -->
+        <section>
+            <h2 class="color-primary">Coexistencia y Caso Práctico</h2>
+            <p>El lakehouse no sustituye siempre al warehouse, sino que difumina las fronteras. En muchas organizaciones
+                coexisten: el <strong>Warehouse</strong> para información crítica consolidada y el
+                <strong>Lakehouse</strong> como laboratorio analítico flexible.</p>
+
+            <div class="card white shadow mt-2" style="border-left: 5px solid var(--color-secondary);">
+                <h4 class="color-secondary">Ejemplo: Sector Energético e IoT</h4>
+                <p>Una empresa almacena miles de millones de registros de sensores en un Data Lake sobre S3:</p>
+                <ul class="custom-list mt-1">
+                    <li><strong>Acción:</strong> Implementan <strong>Delta Lake</strong> para añadir transaccionalidad.
+                    </li>
+                    <li><strong>Resultado Analistas:</strong> Consultan datos con SQL sin riesgo de corrupción por
+                        escrituras simultáneas.</li>
+                    <li><strong>Resultado Científicos:</strong> Entrenan modelos de predicción sobre la misma base,
+                        reduciendo tiempos de preparación.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "El Lakehouse es la respuesta a la redundancia de datos. No necesitamos dos sistemas diferentes para
+                    BI e IA; necesitamos una arquitectura inteligente que sirva a ambos."
+                </p>
+                <span class="quote-author">— Chief Data Officer</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

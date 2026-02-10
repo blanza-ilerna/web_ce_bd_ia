@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación del Razonamiento en Sistemas Expertos - iLERNA</title>
+    <meta name="description"
+        content="Aprende cómo los sistemas expertos simulan el razonamiento humano mediante árboles de decisión y encadenamiento lógico.">
+    <meta name="keywords"
+        content="Árboles de Decisión, Encadenamiento Lógico, Simulación Razonamiento, Sistemas Expertos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Simulación del Razonamiento</span>
+                </div>
+            </div>
+            <h1 class="text-center">Simulación del Razonamiento</h1>
+            <p class="subtitle text-center">Mecanismos para replicar el pensamiento experto</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Validando la Lógica</h2>
+            <p>
+                Para comprobar si un sistema experto reproduce correctamente el razonamiento humano de manera fiable, se
+                suelen emplear dos mecanismos principales que permiten estructurar y ejecutar la lógica de decisión.
+            </p>
+        </section>
+
+        <!-- 1. Árboles de decisión -->
+        <section>
+            <h2 class="color-secondary">1. Árboles de Decisión 🌳</h2>
+            <p>
+                Son representaciones gráficas donde cada <strong>nodo</strong> corresponde a una pregunta o condición
+                específica, y cada <strong>rama</strong> representa una de las posibles respuestas o caminos. Permiten
+                visualizar con claridad la secuencia completa de decisiones que el sistema toma.
+            </p>
+
+            <div class="card warning-bg"
+                style="background-color: var(--bg-warning-lighter); border: 2px solid var(--color-warning-medium);">
+                <h4 class="color-warning" style="margin-bottom: 1.5rem;">Ejemplo simplificado:</h4>
+
+                <div class="svg-container"
+                    style="max-width: 600px; margin: 0 auto; background: white; padding: 1rem; border-radius: 10px;">
+                    <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-medium)" />
+                            </marker>
+                        </defs>
+
+                        <!-- Pregunta 1: Fiebre -->
+                        <rect x="150" y="20" width="200" height="50" rx="8" fill="var(--bg-primary-light)"
+                            stroke="var(--color-primary)" stroke-width="2" />
+                        <text x="250" y="52" text-anchor="middle" font-family="Montserrat" font-size="14"
+                            font-weight="bold" fill="var(--text-dark)">¿Fiebre > 38 °C?</text>
+
+                        <!-- Flecha 1 -->
+                        <line x1="250" y1="70" x2="250" y2="100" stroke="var(--text-medium)" stroke-width="2"
+                            marker-end="url(#arrow)" />
+
+                        <!-- Pregunta 2: Tos -->
+                        <rect x="150" y="110" width="200" height="50" rx="8" fill="var(--bg-primary-light)"
+                            stroke="var(--color-primary)" stroke-width="2" />
+                        <text x="250" y="142" text-anchor="middle" font-family="Montserrat" font-size="14"
+                            font-weight="bold" fill="var(--text-dark)">¿Tos persistente?</text>
+
+                        <!-- Caminos Sí / No -->
+                        <path d="M 180 160 Q 150 180 120 200" fill="none" stroke="var(--text-medium)" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="110" y="185" font-family="Montserrat" font-size="14" font-weight="bold"
+                            fill="var(--color-error)">Sí</text>
+
+                        <path d="M 320 160 Q 350 180 380 200" fill="none" stroke="var(--text-medium)" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <text x="370" y="185" font-family="Montserrat" font-size="14" font-weight="bold"
+                            fill="var(--color-primary)">No</text>
+
+                        <!-- Resultado Sí: Sospecha -->
+                        <rect x="20" y="210" width="200" height="60" rx="8" fill="var(--bg-white)"
+                            stroke="var(--color-error)" stroke-width="2" />
+                        <text x="120" y="235" text-anchor="middle" font-family="Montserrat" font-size="12"
+                            font-weight="bold" fill="var(--text-dark)">Sospechar infección</text>
+                        <text x="120" y="255" text-anchor="middle" font-family="Montserrat" font-size="12"
+                            font-weight="bold" fill="var(--text-dark)">respiratoria</text>
+
+                        <!-- Resultado No: Buscar otra causa -->
+                        <rect x="280" y="210" width="200" height="40" rx="8" fill="var(--bg-white)"
+                            stroke="var(--color-success-light)" stroke-width="2" />
+                        <text x="380" y="235" text-anchor="middle" font-family="Montserrat" font-size="12"
+                            font-weight="bold" fill="var(--text-dark)">Buscar otra causa</text>
+
+                        <!-- Flecha No -> Fin -->
+                        <line x1="380" y1="250" x2="380" y2="280" stroke="var(--text-medium)" stroke-width="2"
+                            marker-end="url(#arrow)" />
+
+                        <!-- Resultado Final No -->
+                        <rect x="300" y="290" width="160" height="40" rx="8" fill="var(--bg-gray-light)"
+                            stroke="var(--text-light)" stroke-width="2" />
+                        <text x="380" y="315" text-anchor="middle" font-family="Montserrat" font-size="12"
+                            font-weight="bold" fill="var(--text-dark)">No hay infección</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Encadenamiento lógico -->
+        <section>
+            <h2 class="color-primary">2. Encadenamiento Lógico ⛓️</h2>
+            <p>
+                Es el método operativo que utiliza el motor de inferencia para aplicar las reglas de la base de
+                conocimientos. Como hemos visto anteriormente, puede ejecutarse en dos sentidos:
+            </p>
+            <ul class="mb-2">
+                <li><strong>Hacia adelante (Forward Chaining):</strong> Parte de los datos o hechos reales para deducir
+                    nuevas conclusiones de forma progresiva.</li>
+                <li><strong>Hacia atrás (Backward Chaining):</strong> Parte de una meta o hipótesis y busca "hacia
+                    atrás" los hechos que permitan confirmarla.</li>
+            </ul>
+
+            <div class="card primary-bg">
+                <h4 class="color-primary">Ejemplo Práctico de Razonamiento:</h4>
+                <div class="grid-2-cols">
+                    <div>
+                        <p><strong>Hechos del caso:</strong></p>
+                        <ul>
+                            <li>Fiebre alta</li>
+                            <li>Tos persistente</li>
+                            <li>Radiografía con infiltrado</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p><strong>Reglas aplicadas:</strong></p>
+                        <ol>
+                            <li>Si <em>fiebre alta</em> y <em>tos</em> ⮕ Sospecha de infección.</li>
+                            <li>Si <em>infección</em> y <em>radiografía = infiltrado</em> ⮕ Confirmar neumonía.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="highlight-box success mt-1" style="margin-bottom: 0;">
+                    <p class="title">Resultado Final:</p>
+                    <p class="content">Diagnóstico sugerido: <strong>Neumonía</strong>.</p>
+                </div>
+            </div>
+
+            <p class="mt-2 text-center" style="font-style: italic;">
+                En ambos casos, el sistema simula el razonamiento humano paso a paso, pero con una <strong>consistencia
+                    total y sin fatiga</strong>, garantizando que el mismo conjunto de datos siempre lleve a la misma
+                conclusión lógica.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

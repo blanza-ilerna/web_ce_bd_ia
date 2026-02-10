@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración con Herramientas Externas - iLERNA</title>
+    <meta name="description"
+        content="Explora la integración de Big Data con herramientas externas de observabilidad como Prometheus, Grafana, ELK, Datadog y orquestadores.">
+    <meta name="keywords"
+        content="Monitorización Externa, Prometheus, Grafana, ELK, Datadog, Airflow, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Integración de Herramientas</span>
+                </div>
+            </div>
+            <h1 class="text-center">Integración con Herramientas Externas</h1>
+            <p class="subtitle text-center">Observabilidad unificada y arquitecturas de monitorización avanzada</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Más allá de las Interfaces Nativas</h2>
+            <p>
+                En los ecosistemas Big Data modernos, la monitorización no puede limitarse a las interfaces nativas de
+                Hadoop o Spark. La creciente complejidad de las arquitecturas distribuidas y la coexistencia de
+                servicios heterogéneos (HDFS, Kafka, Flink, NoSQL, contenedores) exigen el uso de plataformas externas
+                que unifiquen la supervisión en un único punto de control.
+            </p>
+        </section>
+
+        <!-- Prometheus y Grafana -->
+        <section>
+            <h2 class="color-secondary">Métricas en Tiempo Real: Prometheus y Grafana</h2>
+            <p>
+                <strong>Prometheus</strong> recolecta datos mediante un modelo "pull" desde <em>exporters</em> (Node
+                Exporter para hardware, JMX Exporter para aplicaciones Java). <strong>Grafana</strong> actúa como la
+                capa de visualización interactiva.
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card white shadow">
+                    <h4 class="color-primary">Ventajas Clave</h4>
+                    <ul class="custom-list small">
+                        <li>Métricas homogéneas para HDFS, YARN, Spark, Hive y Kafka.</li>
+                        <li>Umbrales dinámicos y alertas visuales configurables.</li>
+                        <li>Correlación entre recursos físicos y rendimiento de jobs.</li>
+                    </ul>
+                </div>
+                <div class="card secondary-bg">
+                    <p class="small"><strong>Caso Práctico:</strong> Un tablero de Grafana unifica latencia de escritura
+                        en HDFS, estado de contenedores YARN y jobs fallidos. El equipo de operaciones detecta un
+                        aumento de latencia de red y aisla el nodo afectado antes del impacto en producción.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Elastic Stack (ELK) -->
+        <section>
+            <h2 class="color-primary">Logs Centralizados: Elastic Stack (ELK)</h2>
+            <p>El estándar para la centralización y análisis de registros históricos y forenses.</p>
+            <div class="grid-3 mt-1">
+                <div class="info-box">
+                    <h4 class="color-primary">Logstash</h4>
+                    <p class="small">Recopila registros de todo el clúster (Hadoop, Spark, Kafka, Ceph).</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-primary">Elasticsearch</h4>
+                    <p class="small">Indexa y almacena logs permitiendo búsquedas complejas en milisegundos.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-primary">Kibana</h4>
+                    <p class="small">Visualiza patrones, tendencias y anomalías en tiempo real.</p>
+                </div>
+            </div>
+            <div class="highlight-box info mt-2">
+                <p><strong>Ejemplo:</strong> Ante un error <em>BlockMissingException</em>, Kibana permite visualizar su
+                    frecuencia y distribución geográfica por nodo, identificando grupos de discos defectuosos.</p>
+            </div>
+        </section>
+
+        <!-- Soluciones Comerciales -->
+        <section>
+            <h2 class="color-secondary">Plataformas SaaS: Datadog y Splunk</h2>
+            <p>Soluciones de observabilidad empresarial con capacidades de IA aplicada a operaciones (AIOps).</p>
+
+            <div class="card white shadow mt-1">
+                <p class="small"><strong>📍 Ejemplo Datadog:</strong> Una empresa financiera integra Datadog con Spark
+                    en AWS EMR. El sistema detecta automáticamente tareas con <em>GC overhead</em> excesivo y recomienda
+                    optimizar el <code>executor memory</code>, reduciendo un 18% el tiempo de ejecución ETL.</p>
+            </div>
+        </section>
+
+        <!-- Orquestadores y Automatización -->
+        <section>
+            <h2 class="color-primary">Orquestación: Airflow y Kubernetes</h2>
+            <p>Enlaza la supervisión con la ejecución automática de flujos de trabajo.</p>
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow">
+                    <h4 class="color-secondary">Apache Airflow</h4>
+                    <p class="small">Orquesta tareas y reacciona ante fallos mediante notificaciones o reintentos
+                        automáticos basados en métricas de éxito.</p>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-secondary">Infrastructure as Code</h4>
+                    <p class="small"><strong>Ansible</strong> y <strong>Terraform</strong> automatizan la creación de
+                        alertas y dashboards junto con el despliegue del clúster.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beneficios Globales -->
+        <section>
+            <h2 class="color-secondary">Beneficios de la Integración Global</h2>
+            <div class="table-container mt-1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Beneficio</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold">Visibilidad unificada</td>
+                            <td>Consolida métricas de múltiples herramientas en un solo panel.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Detección proactiva</td>
+                            <td>Correlación de eventos en tiempo real para anticiparse a incidentes.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Automatización de respuestas</td>
+                            <td>Activación de scripts o workflows ante alertas específicas.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Análisis predictivo</td>
+                            <td>Aplicación de IA para prever saturación o degradación de servicios.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Escalabilidad operativa</td>
+                            <td>Monitorización homogénea de infraestructuras híbridas o multi-nube.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Arquitectura Típica -->
+        <section>
+            <div class="card secondary-bg">
+                <h4 class="color-secondary text-center">Ejemplo de Arquitectura Integrada</h4>
+                <div class="svg-container"
+                    style="max-width: 600px; margin: 1rem auto; background: white; padding: 1rem; border-radius: 10px;">
+                    <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="70" width="80" height="60" rx="5" fill="#edf2f7" stroke="#4a5568" />
+                        <text x="50" y="105" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold">CLÚSTER</text>
+
+                        <line x1="90" y1="100" x2="140" y2="70" stroke="#4a5568" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+                        <line x1="90" y1="100" x2="140" y2="130" stroke="#4a5568" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+
+                        <!-- Metrics branch -->
+                        <rect x="140" y="40" width="100" height="40" rx="5" fill="#ebf8ff" stroke="#3182ce" />
+                        <text x="190" y="65" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold" fill="#3182ce">PROMETHEUS</text>
+
+                        <line x1="240" y1="60" x2="290" y2="60" stroke="#3182ce" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+
+                        <rect x="290" y="40" width="100" height="40" rx="5" fill="#f0fff4" stroke="#38a169" />
+                        <text x="340" y="65" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold" fill="#38a169">GRAFANA</text>
+
+                        <!-- Logs branch -->
+                        <rect x="140" y="110" width="100" height="40" rx="5" fill="#fff5f5" stroke="#e53e3e" />
+                        <text x="190" y="135" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold" fill="#e53e3e">LOGSTASH</text>
+
+                        <line x1="240" y1="130" x2="290" y2="130" stroke="#e53e3e" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+
+                        <rect x="290" y="110" width="100" height="40" rx="5" fill="#fffaf0" stroke="#dd6b20" />
+                        <text x="340" y="135" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold" fill="#dd6b20">ELASTICSEARCH</text>
+
+                        <!-- Final Visualizer -->
+                        <line x1="390" y1="60" x2="430" y2="100" stroke="#4a5568" stroke-dasharray="2" />
+                        <line x1="390" y1="130" x2="430" y2="100" stroke="#4a5568" stroke-dasharray="2" />
+
+                        <circle cx="450" cy="100" r="25" fill="#2d3748" />
+                        <text x="450" y="105" text-anchor="middle" font-family="Montserrat" font-size="8"
+                            font-weight="bold" fill="white">KIBANA</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "La integración de herramientas externas transforma la gestión Big Data en un proceso inteligente,
+                    automatizado y predictivo. Ya no solo reaccionamos ante fallos, sino que optimizamos recursos
+                    basándonos en una visión global."
+                </p>
+                <span class="quote-author">— Solutions Architect</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

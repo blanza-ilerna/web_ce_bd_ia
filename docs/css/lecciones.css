@@ -779,20 +779,7 @@ svg {
     border-radius: 1rem;
     border-left: 5px solid var(--color-primary);
     margin-top: 1.5rem;
-    position: relative;
     box-shadow: 0 4px 12px rgba(73, 185, 206, 0.15);
-}
-
-.expert-quote::before {
-    content: '🗣️';
-    position: absolute;
-    top: -15px;
-    left: 20px;
-    font-size: 2.5rem;
-    background: white;
-    padding: 0.5rem;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(73, 185, 206, 0.2);
 }
 
 .expert-quote .quote-text {
@@ -800,7 +787,6 @@ svg {
     font-style: italic;
     color: var(--text-dark);
     margin-bottom: 1rem;
-    margin-top: 1rem;
     font-family: 'Montserrat', sans-serif;
     line-height: 1.8;
 }
@@ -2413,6 +2399,57 @@ ul.no-style {
 }
 
 /* ===============================================
+   ENLACES EXTERNOS Y BOTONES
+   =============================================== */
+.external-link-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-external {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-white);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-external:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(73, 185, 206, 0.2);
+}
+
+.btn-external i,
+.btn-external::before {
+    content: "🔗";
+    font-size: 1rem;
+}
+
+.btn-external.secondary {
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+.btn-external.secondary:hover {
+    background: var(--color-secondary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(138, 122, 175, 0.2);
+}
+
+
+/* ===============================================
    UTILIDADES MARGIN
    =============================================== */
 .mt-2 {
@@ -2548,4 +2585,38 @@ ul.no-style {
 /* Smooth scroll behavior */
 html {
     scroll-behavior: smooth;
+}
+
+/* ===============================================
+   BIOGRAFÍAS Y RETRATOS
+   =============================================== */
+.biography-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.biography-img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.8rem;
+    filter: grayscale(10%) contrast(105%);
+    transition: opacity 0.3s ease;
+}
+
+.biography-img:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 850px) {
+    .biography-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .biography-img {
+        max-width: 250px;
+        margin: 0 auto;
+    }
 }

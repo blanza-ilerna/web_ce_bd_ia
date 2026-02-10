@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Publicador en ROS - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Ejemplo práctico del modelo Publish/Subscribe en ROS y su aplicación en sistemas distribuidos.">
+    <meta name="keywords" content="ROS, Pub/Sub, Robótica, Programación, Middleware, Sistemas Distribuidos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-3">Programación</a> ›
+                    <span>Publicador en ROS</span>
+                </div>
+            </div>
+            <h1 class="text-center">Ejemplo de Publicador en ROS</h1>
+            <p class="subtitle text-center">Comunicación distribuida mediante el modelo Publish/Subscribe</p>
+        </header>
+
+        <!-- SECCIÓN 1: EL MODELO PUB/SUB -->
+        <section>
+            <h2>El Modelo de Comunicación de ROS</h2>
+            <p>
+                En los sistemas robotizados modernos, la complejidad de las tareas requiere que distintos módulos de
+                software (nodos)
+                se comuniquen entre sí de forma eficiente. ROS (Robot Operating System) soluciona esto empleando un
+                modelo de
+                <strong>publicadores y suscriptores</strong> (<em>publish/subscribe</em>), comúnmente conocido como
+                <strong>Pub/Sub</strong>.
+            </p>
+
+            <div class="highlight-box primary mb-6">
+                <h3 class="color-primary">🔄 ¿Cómo funciona?</h3>
+                <p class="content">
+                    Este paradigma permite una comunicación distribuida y desacoplada:
+                </p>
+                <ul class="list-disc-padded">
+                    <li><strong>Nodo Publicador:</strong> Envía información de forma continua sobre un tema específico
+                        (tópico).</li>
+                    <li><strong>Tópico:</strong> Es el canal o "buzón" donde se depositan los mensajes.</li>
+                    <li><strong>Nodo Suscriptor:</strong> Escucha activamente un tópico para recibir la información y
+                        procesarla.</li>
+                </ul>
+                <p class="content mt-1">
+                    Este enfoque <strong>reduce la dependencia directa</strong> entre procesos: el sensor láser no
+                    necesita saber
+                    quién leerá sus
+                    datos, simplemente los publica. Esto permite crear arquitecturas modulares extremadamente flexibles.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: EJEMPLO DE CÓDIGO (SIMULACIÓN) -->
+        <section>
+            <h2>Caso Práctico: Simulación de Tópico en Python</h2>
+            <p>
+                A continuación, se muestra un ejemplo simple que simula el comportamiento de ROS. El nodo llamado
+                <strong>talker</strong>
+                envía periódicamente mensajes con un texto, simulando la comunicación de un robot con otros componentes
+                del sistema.
+            </p>
+
+            <div class="code-container">
+                <pre><code class="language-python">import queue
+import time
+
+# Simulación de un "tópico" como cola de mensajes
+chatter = queue.Queue()
+
+def publicador():
+    for i in range(5):
+        mensaje = f"Mensaje {i}: Hola desde el robot"
+        chatter.put(mensaje)
+        print(f"[Publicador] {mensaje}")
+        time.sleep(0.5)
+
+def suscriptor():
+    while not chatter.empty():
+        mensaje = chatter.get()
+        print(f"[Suscriptor] Recibido -> {mensaje}")
+
+# Ejecución del flujo
+publicador()
+suscriptor()</code></pre>
+            </div>
+
+            <div class="warning-box" style="background: #1e1e1e; border-left: 4px solid var(--color-secondary);">
+                <h4 class="color-secondary">📟 Salida del Sistema</h4>
+                <p class="content"
+                    style="font-family: 'Courier New', Courier, monospace; color: #d4d4d4; font-size: 0.95rem;">
+                    [Publicador] Mensaje 0: Hola desde el robot<br>
+                    [Publicador] Mensaje 1: Hola desde el robot<br>
+                    [Publicador] Mensaje 2: Hola desde el robot<br>
+                    [Publicador] Mensaje 3: Hola desde el robot<br>
+                    [Publicador] Mensaje 4: Hola desde el robot<br>
+                    [Suscriptor] Recibido -> Mensaje 0: Hola desde el robot<br>
+                    [Suscriptor] Recibido -> Mensaje 1: Hola desde el robot<br>
+                    [Suscriptor] Recibido -> Mensaje 2: Hola desde el robot<br>
+                    [Suscriptor] Recibido -> Mensaje 3: Hola desde el robot<br>
+                    [Suscriptor] Recibido -> Mensaje 4: Hola desde el robot
+                </p>
+            </div>
+
+            <p class="mt-2">
+                Este ejemplo muestra cómo un nodo envía información de manera continua, que luego puede ser recogida por
+                otros nodos
+                suscriptores. Aunque se trata de una simulación simplificada, el principio es <strong>idéntico</strong>
+                al que
+                emplean los sistemas
+                reales de robótica o automatización industrial.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 3: ESTÁNDAR DE LA INDUSTRIA -->
+        <section>
+            <h2>Más allá de ROS: Un Estándar Global</h2>
+            <p>
+                El modelo <em>publish/subscribe</em> es tan potente que se ha convertido en el estándar de comunicación
+                moderna,
+                extendiéndose mucho más allá del ámbito de la robótica local.
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🌐 Cloud Pub/Sub</h4>
+                    <p>Plataformas como <strong>Google Cloud Pub/Sub</strong> o <strong>AWS SNS/SQS</strong> utilizan
+                        este paradigma
+                        para gestionar flujos de datos masivos entre servidores en la nube en tiempo real.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📦 Apache Kafka</h4>
+                    <p>Un sistema de mensajería altamente escalable que permite integrar cientos de sensores IoT o
+                        sincronizar
+                        varios robots y dispositivos conectados a nivel global.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box warning"
+                style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-warning-medium); background: linear-gradient(135deg, var(--bg-warning-light) 0%, #ffffff 100%);">
+                <h3 style="color: var(--color-warning); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión</h3>
+                <p
+                    style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                    Tanto en robots colaborativos que trabajan en la misma fábrica como en arquitecturas distribuidas a
+                    nivel mundial, el modelo Pub/Sub garantiza una comunicación <strong>segura, escalable y
+                        modular</strong>,
+                    permitiendo que la IA y el hardware trabajen en perfecta armonía.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

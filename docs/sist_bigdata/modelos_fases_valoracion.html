@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase de Valoración del Modelo - iLERNA</title>
+    <meta name="description"
+        content="Aprende a evaluar la calidad de los modelos de minería de datos mediante métricas de rendimiento, validación cruzada y alineación de negocio.">
+    <meta name="keywords"
+        content="Valoración de Modelos, Métricas, Accuracy, Recall, RMSE, Overfitting, Validación Cruzada, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Fase de Valoración del Modelo</span>
+                </div>
+            </div>
+            <h1 class="text-center">Fase de Valoración del Modelo</h1>
+            <p class="subtitle text-center">Midiendo el rendimiento, la robustez y la capacidad de generalización</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Control de Calidad Analítico</h2>
+            <p>
+                La fase de valoración tiene como objetivo determinar si el modelo cumple con los <strong>estándares de
+                    calidad</strong> definidos durante su desarrollo. Evaluar un modelo significa medir su rendimiento
+                y, sobre todo, su capacidad de <strong>generalización</strong>: su habilidad para producir resultados
+                correctos cuando se enfrenta a datos nuevos o desconocidos.
+            </p>
+            <div class="highlight-box success">
+                <p>
+                    🌟 <strong>¿Por qué valoramos?</strong> Un modelo que predice perfectamente los datos que ya conoce
+                    pero falla con los nuevos no es una herramienta de conocimiento, es un simple "memorizador" sin
+                    utilidad práctica.
+                </p>
+            </div>
+        </section>
+
+        <!-- Métricas Dinámicas -->
+        <section>
+            <h2 class="color-secondary">Métricas Cuantitativas de Rendimiento</h2>
+            <p>Los indicadores varían drásticamente según la naturaleza del problema que el modelo intenta resolver:</p>
+
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="card primary-bg" style="margin-bottom: 0;">
+                    <h4 class="color-primary">🎯 Modelos de Clasificación</h4>
+                    <p>Utilizados para predecir categorías o etiquetas (ej. ¿Es una transacción fraudulenta?).</p>
+                    <div class="grid-2-cols mt-1">
+                        <ul class="custom-list">
+                            <li><strong>Precisión (Accuracy):</strong> Proporción total de aciertos sobre el total.</li>
+                            <li><strong>Sensibilidad (Recall):</strong> Capacidad de detectar todos los casos positivos
+                                reales.</li>
+                        </ul>
+                        <ul class="custom-list">
+                            <li><strong>Especificidad:</strong> Capacidad de identificar correctamente los casos
+                                negativos.</li>
+                            <li><strong>Puntuación F1:</strong> Promedio armónico que equilibra precisión y
+                                sensibilidad.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card secondary-bg" style="margin-bottom: 0;">
+                    <h4 class="color-secondary">📈 Modelos de Regresión</h4>
+                    <p>Utilizados para predecir valores numéricos continuos (ej. Ingresos mensuales proyectados).</p>
+                    <div class="grid-2-cols mt-1">
+                        <div class="info-box">
+                            <p><strong>RMSE (Root Mean Squared Error)</strong></p>
+                            <p class="description">Raíz del error cuadrático medio. Penaliza los errores grandes.</p>
+                        </div>
+                        <div class="info-box">
+                            <p><strong>MAE (Mean Absolute Error)</strong></p>
+                            <p class="description">Error absoluto medio. Proporciona una visión lineal del error
+                                promedio.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Validación Cruzada SVG -->
+        <section>
+            <h2 class="color-primary">Garantizando la Robustez: Validación Cruzada</h2>
+            <p>
+                La <strong>validación cruzada (cross-validation)</strong> es una técnica que divide el conjunto de datos
+                en pliegues (folds) para entrenar y probar el modelo repetidas veces. Esto garantiza que el éxito no
+                dependa de una muestra específica de datos.
+            </p>
+
+            <div class="svg-container"
+                style="max-width: 700px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 15px; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Folds Labels -->
+                    <text x="30" y="45" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-primary)">Iteración 1</text>
+                    <text x="30" y="95" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-primary)">Iteración 2</text>
+                    <text x="30" y="145" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-primary)">Iteración 3</text>
+
+                    <!-- Row 1 -->
+                    <rect x="120" y="30" width="80" height="30" rx="4" fill="var(--color-secondary)" />
+                    <text x="160" y="50" text-anchor="middle" font-family="Montserrat" font-size="9" fill="white"
+                        font-weight="bold">TEST</text>
+                    <rect x="210" y="30" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="300" y="30" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="390" y="30" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <text x="340" y="50" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-primary)" font-weight="bold">ENTRENAMIENTO</text>
+
+                    <!-- Row 2 -->
+                    <rect x="120" y="80" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="210" y="80" width="80" height="30" rx="4" fill="var(--color-secondary)" />
+                    <text x="250" y="100" text-anchor="middle" font-family="Montserrat" font-size="9" fill="white"
+                        font-weight="bold">TEST</text>
+                    <rect x="300" y="80" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="390" y="80" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+
+                    <!-- Row 3 -->
+                    <rect x="120" y="130" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="210" y="130" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <rect x="300" y="130" width="80" height="30" rx="4" fill="var(--color-secondary)" />
+                    <text x="340" y="150" text-anchor="middle" font-family="Montserrat" font-size="9" fill="white"
+                        font-weight="bold">TEST</text>
+                    <rect x="390" y="130" width="80" height="30" rx="4" fill="var(--color-primary-light)"
+                        stroke="var(--color-primary)" />
+
+                    <!-- Annotation -->
+                    <line x1="120" y1="185" x2="470" y2="185" stroke="var(--text-light)" stroke-width="1"
+                        stroke-dasharray="4,4" />
+                    <text x="295" y="205" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="var(--text-light)" font-style="italic">Evita el Overfitting al probar el modelo en datos
+                        que no han sido usados para entrenarlo.</text>
+                </svg>
+            </div>
+
+            <div class="card warning-box">
+                <h4 class="color-primary">⚠️ El Riesgo del Sobreajuste (Overfitting)</h4>
+                <p>Ocurre cuando el modelo "memoriza" los detalles y ruidos del conjunto de entrenamiento en lugar de
+                    aprender el patrón general. Como resultado, funciona excelentemente en el laboratorio pero falla
+                    estrepitosamente en el mundo real.</p>
+            </div>
+        </section>
+
+        <!-- Big Data Context -->
+        <section>
+            <h2 class="color-primary">Valoración en Entornos Big Data</h2>
+            <p>En sistemas con volúmenes masivos de información, la precisión matemática no lo es todo. Debemos valorar
+                también el <strong>rendimiento operativo</strong>:</p>
+            <div class="grid-3 mt-1">
+                <div class="card secondary-bg" style="margin-bottom: 0;">
+                    <p><strong>Latencia</strong></p>
+                    <p class="description">¿Cuánto tarda el modelo en generar una predicción?</p>
+                </div>
+                <div class="card primary-bg" style="margin-bottom: 0;">
+                    <p><strong>Escalabilidad</strong></p>
+                    <p class="description">¿Responde igual de bien en un clúster distribuido?</p>
+                </div>
+                <div class="card secondary-bg" style="margin-bottom: 0;">
+                    <p><strong>Eficiencia</strong></p>
+                    <p class="description">¿Consume recursos de memoria o CPU excesivos?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Alignment -->
+        <section>
+            <h2 class="color-primary">Consistencia con el Negocio</h2>
+            <p>Un modelo puede ser cien por cien exacto matemáticamente pero <strong>inútil estratégicamente</strong>.
+                La valoración debe incluir criterios de impacto real:</p>
+            <div class="card primary-bg" style="border-left: 5px solid var(--color-primary);">
+                <ul class="custom-list">
+                    <li><strong>Coherencia Estratégica:</strong> ¿Responde a las preguntas clave del negocio?</li>
+                    <li><strong>Impacto Económico:</strong> ¿Reduce costes o mejora significativamente el servicio al
+                        cliente?</li>
+                    <li><strong>Segmentación Útil:</strong> ¿Los resultados permiten tomar acciones comerciales
+                        concretas (ej. por regiones o tipos de cliente)?</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Caso de Uso -->
+        <section>
+            <div class="card white shadow" style="border-top: 4px solid var(--color-secondary);">
+                <h4 class="color-secondary">📘 Caso Real: Telecomunicaciones</h4>
+                <p>
+                    Una operadora desarrolla un modelo para anticipar la pérdida de clientes (churn). Durante la
+                    valoración, alcanza una <strong>precisión del 91%</strong> en el laboratorio. Sin embargo, al
+                    probarlo con datos reales recientes, el rendimiento cae al <strong>78%</strong>.
+                </p>
+                <p class="mt-1" style="font-style: italic;">
+                    <strong>Conclusión:</strong> Esta caída revela un sobreajuste. El equipo debió reajustar los
+                    parámetros y aumentar la diversidad del conjunto de entrenamiento para mejorar la capacidad de
+                    generalización.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

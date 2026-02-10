@@ -152,8 +152,8 @@ function initCodeHighlighting() {
  */
 function initCopyButtons() {
     document.querySelectorAll('pre').forEach(pre => {
-        // Verificar si ya tiene botón
-        if (pre.querySelector('.copy-btn')) return;
+        // Verificar si ya tiene botón (evitar duplicidad con copy-code.js u otros)
+        if (pre.querySelector('.copy-btn') || pre.querySelector('.copy-code-btn') || pre.closest('.code-copy-container')) return;
 
         // Crear contenedor relativo si no lo es
         if (getComputedStyle(pre).position === 'static') {

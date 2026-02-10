@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaces Web de Hadoop: JobTracker y NameNode - iLERNA</title>
+    <meta name="description"
+        content="Explora las interfaces web nativas de Hadoop para la monitorización de trabajos (JobTracker/ResourceManager) y del sistema de archivos (NameNode).">
+    <meta name="keywords"
+        content="Hadoop Web UI, JobTracker, NameNode, ResourceManager, HDFS, Monitorización, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Interfaces Web Nativas</span>
+                </div>
+            </div>
+            <h1 class="text-center">Interfaces Web Nativas</h1>
+            <p class="subtitle text-center">Diagnóstico y supervisión en tiempo real del ecosistema Hadoop</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Vigilancia Directa: Web UIs</h2>
+            <p>
+                Los sistemas Hadoop y sus derivados ofrecen interfaces web nativas que permiten a los administradores
+                visualizar en tiempo real el estado de los trabajos y del sistema de archivos distribuido. Estas
+                interfaces son esenciales para el <strong>diagnóstico rápido</strong> y la supervisión del clúster sin
+                necesidad de herramientas externas complejas.
+            </p>
+        </section>
+
+        <!-- Interfaz del JobTracker / ResourceManager -->
+        <section>
+            <h2 class="color-secondary">JobTracker / YARN ResourceManager</h2>
+            <p>
+                El <strong>JobTracker</strong> (Hadoop v1) y su sucesor, el <strong>ResourceManager</strong> (v2+ con
+                YARN), proporcionan una interfaz web (usualmente en el puerto 8088) con información detallada sobre los
+                trabajos MapReduce o Spark.
+            </p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="card white shadow">
+                    <h4 class="color-primary">📊 Gestión de Jobs</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Estado:</strong> Lista de trabajos en ejecución, completados o fallidos con su
+                            porcentaje de progreso.</li>
+                        <li><strong>Tiempos:</strong> Duración total de fases Map/Reduce y latencias por nodo.</li>
+                    </ul>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-primary">🔌 Recursos e Historial</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Asignación:</strong> Distribución de CPU, memoria y slots de tareas entre los nodos.
+                        </li>
+                        <li><strong>Histórico:</strong> Registro de ejecuciones anteriores para identificar patrones de
+                            error.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box info mt-2">
+                <p><strong>Ejemplo práctico:</strong> En un clúster de 50 nodos, un administrador accede al
+                    ResourceManager UI para inspeccionar un job lento. Al revisar los <em>Task Attempts</em>, detecta
+                    que un nodo específico tiene una tasa de fallos muy superior, sugiriendo un fallo de hardware o
+                    congestión local.</p>
+            </div>
+        </section>
+
+        <!-- Interfaz del NameNode -->
+        <section>
+            <h2 class="color-primary">Interfaz del NameNode</h2>
+            <p>
+                La Web UI del <strong>NameNode</strong> (puerto 9870) es la ventana al estado de salud del sistema de
+                archivos HDFS. Permite identificar desequilibrios en la replicación y fallos de almacenamiento de forma
+                inmediata.
+            </p>
+
+            <div class="grid-3 mt-1">
+                <div class="info-box">
+                    <h4 class="color-secondary">📦 Almacenamiento</h4>
+                    <p class="small">Capacidad total, espacio utilizado y disponibilidad global y por DataNode.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-secondary">🩹 Integridad</h4>
+                    <p class="small">Detección de bloques corruptos, faltantes o bajo el factor de replicación.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-secondary">🩺 Salud DataNodes</h4>
+                    <p class="small">Estado activo/inactivo, latencia de respuesta y bloques gestionados.</p>
+                </div>
+            </div>
+
+            <!-- SVG Dashboard Mockup -->
+            <div class="svg-container"
+                style="max-width: 700px; margin: 2rem auto; border-radius: 12px; background: #2d3748; padding: 1.5rem; border: 1px solid #4a5568;">
+                <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title Bar -->
+                    <rect x="0" y="0" width="600" height="30" fill="#4a5568" rx="5" />
+                    <text x="20" y="20" font-family="Montserrat" font-size="10" fill="white">Hadoop Cluster - NameNode
+                        Status Overview</text>
+
+                    <!-- Stats Cards -->
+                    <rect x="20" y="50" width="170" height="80" rx="8" fill="#1a202c" stroke="#3182ce" />
+                    <text x="35" y="75" font-family="Montserrat" font-size="9" font-weight="bold" fill="#3182ce">STORAGE
+                        CAPACITY</text>
+                    <text x="35" y="105" font-family="Montserrat" font-size="16" font-weight="bold" fill="white">4.2 PB
+                        / 10 PB</text>
+                    <rect x="35" y="115" width="140" height="6" fill="#2d3748" rx="3" />
+                    <rect x="35" y="115" width="60" height="6" fill="#3182ce" rx="3" />
+
+                    <rect x="215" y="50" width="170" height="80" rx="8" fill="#1a202c" stroke="#38a169" />
+                    <text x="230" y="75" font-family="Montserrat" font-size="9" font-weight="bold"
+                        fill="#38a169">DATANODES LIVE</text>
+                    <text x="230" y="105" font-family="Montserrat" font-size="20" font-weight="bold" fill="white">498 /
+                        500</text>
+
+                    <rect x="410" y="50" width="170" height="80" rx="8" fill="#1a202c" stroke="#e53e3e" />
+                    <text x="425" y="75" font-family="Montserrat" font-size="9" font-weight="bold"
+                        fill="#e53e3e">CORRUPT BLOCKS</text>
+                    <text x="425" y="105" font-family="Montserrat" font-size="20" font-weight="bold"
+                        fill="white">0</text>
+
+                    <!-- Nodes Table Mockup -->
+                    <rect x="20" y="150" width="560" height="70" rx="5" fill="#1a202c" />
+                    <text x="35" y="170" font-family="Montserrat" font-size="8" fill="#718096">NODE ID | STATUS |
+                        CAPACITY | BLOCKS</text>
+                    <line x1="20" y1="175" x2="580" y2="175" stroke="#2d3748" />
+                    <text x="35" y="190" font-family="Montserrat" font-size="8" fill="#a0aec0">dn-node-01 | In service |
+                        20 TB | 14,203</text>
+                    <text x="35" y="205" font-family="Montserrat" font-size="8" fill="#a0aec0">dn-node-02 | In service |
+                        20 TB | 13,892</text>
+                </svg>
+            </div>
+
+            <div class="card white shadow mt-2" style="border-left: 5px solid var(--color-secondary);">
+                <p><strong>Ejemplo práctico:</strong> Durante una verificación, el administrador detecta bloques
+                    corruptos. Gracias al factor de replicación (3), el sistema regenera automáticamente las copias
+                    desde otros nodos sanos, manteniendo la integridad del HDFS sin intervención manual.</p>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "Las Web UIs de Hadoop son la primera línea de defensa. Antes de abrir la consola, el administrador
+                    ya sabe dónde está el fallo mirando el panel del NameNode."
+                </p>
+                <span class="quote-author">— Cluster Admin Lead</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciclo de Vida de un Sistema Robotizado - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Conoce las fases esenciales en el desarrollo de sistemas robóticos inteligentes, desde el análisis de requisitos hasta el mantenimiento.">
+    <meta name="keywords" content="Robótica, Ciclo de Vida, IA, Simulación, Despliegue, Ingeniería de Software">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-4">Sistemas Robotizados</a> ›
+                    <span>Ciclo de Vida</span>
+                </div>
+            </div>
+            <h1 class="text-center">Ciclo de Vida de un Sistema Robotizado</h1>
+            <p class="subtitle text-center">Metodología y fases para el desarrollo de soluciones robóticas de éxito</p>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN Y DIAGRAMA -->
+        <section>
+            <h2>Desarrollando Inteligencia Física</h2>
+            <p>
+                El desarrollo de un sistema robotizado no es simplemente escribir código; es un proceso
+                multidisciplinar
+                que fusiona la ingeniería mecánica, la electrónica y la IA. Al igual que los sistemas de
+                software
+                convencionales, la robótica sigue un <strong>ciclo de vida estructurado</strong> que garantiza
+                que la
+                máquina sea segura, eficiente y capaz de cumplir su propósito en el mundo real.
+            </p>
+
+            <div class="svg-container mb-2">
+                <svg viewBox="-100 0 600 400" xmlns="http://www.w3.org/2000/svg"
+                    style="max-width: 700px; margin: 0 auto;">
+                    <!-- Definiciones de gradientes, filtros y marcadores -->
+                    <defs>
+                        <linearGradient id="gradPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3a9bb0;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradSecondary" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#76659a;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="shadow">
+                            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.2" />
+                        </filter>
+                        <!-- Punta de flecha -->
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#49B9CE" />
+                        </marker>
+                    </defs>
+
+                    <!-- Flecha circular de fondo (Iteración) -->
+                    <path d="M 200,80 A 120,120 0 1,1 199.9,80" fill="none" stroke="rgba(73, 185, 206, 0.05)"
+                        stroke-width="40" stroke-linecap="round" />
+
+                    <!-- Líneas de conexión (Capa inferior) -->
+                    <g stroke="#49B9CE" fill="none" stroke-width="2" stroke-linecap="round"
+                        marker-end="url(#arrowhead)">
+                        <path d="M 230,85 Q 280,100 295,120" opacity="0.6" />
+                        <path d="M 325,165 Q 335,200 325,235" opacity="0.6" />
+                        <path d="M 295,280 Q 280,300 230,315" opacity="0.6" />
+                        <path d="M 170,315 Q 120,300 105,280" opacity="0.6" />
+                        <path d="M 75,235 Q 65,200 75,165" opacity="0.6" />
+                        <path d="M 105,120 Q 120,100 170,85" opacity="0.6" />
+                    </g>
+
+                    <!-- Círculo central (Core) -->
+                    <circle cx="200" cy="200" r="45" fill="white" stroke="#49B9CE" stroke-width="2"
+                        filter="url(#shadow)" />
+                    <text x="200" y="195" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="12" fill="#1C3D5A">CICLO</text>
+                    <text x="200" y="210" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="10" fill="#49B9CE">ROBÓTICO</text>
+
+                    <!-- Puntos del ciclo -->
+                    <!-- 1. Requisitos -->
+                    <g transform="translate(200, 70)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradPrimary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">1</text>
+                        <text y="45" text-anchor="middle" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">REQUISITOS</text>
+                    </g>
+
+                    <!-- 2. Modelado -->
+                    <g transform="translate(315, 135)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradSecondary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">2</text>
+                        <text x="45" y="5" text-anchor="start" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">MODELADO</text>
+                    </g>
+
+                    <!-- 3. Simulación -->
+                    <g transform="translate(315, 265)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradPrimary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">3</text>
+                        <text x="45" y="5" text-anchor="start" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">SIMULACIÓN</text>
+                    </g>
+
+                    <!-- 4. Control -->
+                    <g transform="translate(200, 330)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradSecondary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">4</text>
+                        <text y="45" text-anchor="middle" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">CONTROL</text>
+                    </g>
+
+                    <!-- 5. Despliegue -->
+                    <g transform="translate(85, 265)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradPrimary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">5</text>
+                        <text x="-45" y="5" text-anchor="end" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">DESPLIEGUE</text>
+                    </g>
+
+                    <!-- 6. Mantenimiento -->
+                    <g transform="translate(85, 135)" filter="url(#shadow)">
+                        <circle r="30" fill="url(#gradSecondary)" />
+                        <text y="5" text-anchor="middle" fill="white" font-family="Montserrat" font-weight="bold"
+                            font-size="14">6</text>
+                        <text x="-45" y="5" text-anchor="end" fill="#333" font-family="Montserrat" font-weight="bold"
+                            font-size="10">MANTENIMIENTO</text>
+                    </g>
+
+                    <!-- Partícula de luz que recorre el ciclo -->
+                    <circle r="4" fill="#49B9CE">
+                        <animateMotion dur="6s" repeatCount="indefinite" path="M 200,70 A 130,130 0 1,1 199.9,70" />
+                        <animate attributeName="opacity" values="0;1;1;0" dur="6s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+
+            <div class="highlight-box primary mb-0">
+                <p class="content" style="font-size: 1rem; text-align: center;">
+                    <strong>Nota Crítica:</strong> A diferencia de una aplicación web, un error en la lógica robótica
+                    puede causar daños reales, por lo que la fase de validación virtual es obligatoria.
+                </p>
+            </div>
+        </section>
+
+        <!-- FASES DEL CICLO DE VIDA -->
+        <section>
+            <h2>Las 6 Fases Esenciales</h2>
+            <p>
+                El desarrollo de sistemas robotizados modernos sigue un camino iterativo dividido en seis grandes
+                bloques:
+            </p>
+
+            <div class="step-list mt-2">
+                <!-- Fase 1 -->
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Análisis de Requisitos</h4>
+                        <p>
+                            Es el cimiento del proyecto. Aquí se identifican las <strong>tareas específicas</strong> que
+                            el robot debe realizar, el <strong>entorno</strong> donde operará (interior, exterior, zona
+                            peligrosa), el grado de <strong>autonomía</strong> necesario y, sobre todo, los protocolos
+                            de <strong>seguridad</strong> (ISO 10218, etc.) para la interacción con humanos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Modelado y Diseño</h4>
+                        <p>
+                            Se define la "anatomía" del sistema. Esto incluye la <strong>estructura mecánica</strong>
+                            (cinemática), la selección de <strong>sensores</strong> (LIDAR, cámaras, ultrasonidos) y la
+                            definición de la <strong>lógica de control</strong>. En esta fase se decide si el cerebro
+                            del
+                            robot será centralizado o distribuido (como en ROS).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Simulación y Validación Virtual</h4>
+                        <p>
+                            Antes de tocar el hardware real, se utiliza software de simulación (como
+                            <strong>Gazebo</strong>
+                            o <strong>Isaac Sim</strong>). Esto permite verificar el comportamiento en entornos
+                            virtuales, detectar fallos de colisión y entrenar algoritmos de IA sin riesgo de dañar
+                            componentes
+                            costosos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fase 4 -->
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Control y Programación</h4>
+                        <p>
+                            Es el momento de implementar y ajustar los algoritmos. Se desarrolla el software que
+                            gestiona
+                            el procesamiento sensorial, la toma de decisiones y el envío de señales a los actuadores. La
+                            IA se integra
+                            aquí para tareas como el reconocimiento de objetos o la navegación autónoma.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fase 5 -->
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Despliegue e Integración</h4>
+                        <p>
+                            El robot sale del laboratorio. Se integra en el <strong>entorno real</strong>, se realizan
+                            pruebas de campo y se calibran los sistemas finales. Es la fase donde se comprueba si la
+                            teoría y la simulación se corresponden con la impredecible realidad física.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fase 6 -->
+                <div class="step-item">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h4>Mantenimiento y Evolución</h4>
+                        <p>
+                            Un robot operativo requiere una <strong>calibración continua</strong> de sus sensores y
+                            actuadores. Además, se aplican actualizaciones de software y se realiza un <strong>análisis
+                                predictivo</strong> para evitar paradas por fallos mecánicos antes de que estos ocurran.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="highlight-box warning"
+                style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-warning-medium); background: linear-gradient(135deg, var(--bg-warning-light) 0%, #ffffff 100%);">
+                <h3 style="color: var(--color-warning); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión</h3>
+                <p
+                    style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                    Entender el ciclo de vida es fundamental para transformar una idea en un robot funcional. Al aplicar
+                    este rigor metodológico, logramos que la tecnología sea no solo inteligente, sino también
+                    <strong>fiable
+                        y escalable</strong> en entornos industriales y cotidianos.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

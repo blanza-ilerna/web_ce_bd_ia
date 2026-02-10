@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Arquitectura del Almacenamiento en Big Data - iLERNA</title>
+    <meta name="description"
+        content="Explora la arquitectura del almacenamiento en Big Data: sistemas OLTP, OLAP y las zonas de datos (Landing, Transformation, Curated).">
+    <meta name="keywords" content="Arquitectura Big Data, OLTP, OLAP, Data Lake, Landing Zone, Curated Zone, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Arquitectura del Almacenamiento</span>
+                </div>
+            </div>
+            <h1 class="text-center">Arquitectura del Almacenamiento</h1>
+            <p class="subtitle text-center">Diseñando el ecosistema de datos: de la ingestión a la explotación</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Un Ecosistema Diversificado</h2>
+            <p>
+                En un entorno de Big Data, los datos no residen en un único sistema. La arquitectura se compone de un
+                <strong>ecosistema de almacenamiento</strong> con múltiples capas y tecnologías complementarias. Esta
+                diversificación responde a la <strong>optimización por función</strong>: cada tecnología se emplea donde
+                ofrece el mejor equilibrio entre coste, rendimiento y flexibilidad.
+            </p>
+        </section>
+
+        <!-- Tipos de Sistemas -->
+        <section>
+            <h2 class="color-secondary">Las Tres Grandes Capas Tecnológicas</h2>
+            <p>Podemos distinguir tres grandes tipos de almacenamiento dentro de una arquitectura moderna:</p>
+
+            <div class="grid-3 mt-1">
+                <div class="card white shadow" style="border-top: 4px solid var(--color-primary);">
+                    <h4 class="color-primary">1. Sistemas OLTP</h4>
+                    <p class="small"><em>Transaccionales</em></p>
+                    <p>Gestión del día a día (ventas, altas). Predominan las bases de datos <strong>SQL</strong> que
+                        garantizan integridad.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid var(--color-secondary);">
+                    <h4 class="color-secondary">2. Sistemas OLAP</h4>
+                    <p class="small"><em>Analíticos</em></p>
+                    <p>Consultas complejas sobre datos históricos. Base para informes y <strong>Business
+                            Intelligence</strong>.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid var(--color-primary);">
+                    <h4 class="color-primary">3. Masivos y Flexibles</h4>
+                    <p class="small"><em>Data Lakes / Lakehouses</em></p>
+                    <p>Alojan datos raw sin procesar. Combinan <strong>escalabilidad</strong> con gobernanza moderna.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zonas de la Arquitectura SVG -->
+        <section>
+            <h2 class="color-primary">Zonas de Datos y Explotación</h2>
+            <p>Los datos fluyen a través de pipelines estructurados en tres zonas principales:</p>
+
+            <div class="svg-container"
+                style="max-width: 800px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 15px; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-primary)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Zona Landing -->
+                    <rect x="25" y="40" width="180" height="100" rx="8" fill="#FEEBC8" stroke="#DD6B20"
+                        stroke-width="2" />
+                    <text x="115" y="85" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="#7B341E">LANDING / RAW</text>
+                    <text x="115" y="105" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="#7B341E">Datos en bruto</text>
+
+                    <line x1="205" y1="90" x2="245" y2="90" stroke="#DD6B20" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <!-- Zona Processing -->
+                    <rect x="255" y="40" width="220" height="100" rx="8" fill="#EBF8FF" stroke="#3182CE"
+                        stroke-width="2" />
+                    <text x="365" y="85" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="#2B6CB0">PROCESSING / TRANSF.</text>
+                    <text x="365" y="105" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="#2B6CB0">Limpieza y Estandarización</text>
+
+                    <line x1="475" y1="90" x2="515" y2="90" stroke="#3182CE" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <!-- Zona Explotación -->
+                    <rect x="525" y="40" width="220" height="100" rx="8" fill="#E6FFFA" stroke="#319795"
+                        stroke-width="2" />
+                    <text x="635" y="80" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="#234E52">CURATED / EXPLOTACIÓN</text>
+                    <text x="635" y="100" text-anchor="middle" font-family="Montserrat" font-size="9" fill="#234E52">BI,
+                        Dashboards, IA</text>
+                </svg>
+            </div>
+            <div class="card secondary-bg">
+                <p>Esta división permite que cada equipo acceda al nivel de madurez del dato que necesita, garantizando
+                    la <strong>trazabilidad</strong> del ciclo de vida de la información.</p>
+            </div>
+        </section>
+
+        <!-- Nota Técnica -->
+        <section>
+            <div class="warning-box">
+                <h4 class="color-primary">💡 Arquitectura de Datos Empresarial</h4>
+                <p>
+                    La integración de estas capas a través de <strong>pipelines</strong> configura la arquitectura de
+                    datos. No se trata solo de almacenar, sino de asegurar que el flujo entre la captura (raw) y la
+                    decisión (curated) sea eficiente, seguro y escalable.
+                </p>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "Una arquitectura bien diseñada es invisible para el usuario final: solo ven datos listos para usar,
+                    pero debajo hay una orquestación perfecta de zonas y tecnologías especializadas."
+                </p>
+                <span class="quote-author">— Senior Cloud Architect</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Representación del Conocimiento en Sistemas Expertos - iLERNA</title>
+    <meta name="description"
+        content="Explora las diversas formas de representar el conocimiento en sistemas expertos: frames, redes semánticas y ontologías, más allá del uso de reglas simples.">
+    <meta name="keywords"
+        content="Representación del Conocimiento, Frames, Marcos, Redes Semánticas, Ontologías, IA Simbólica, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Representación del Conocimiento en SE</span>
+                </div>
+            </div>
+            <h1 class="text-center">Representación del Conocimiento</h1>
+            <p class="subtitle text-center">Más allá de las reglas: estructuras lógicas avanzadas</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Estructurando el Saber Experto</h2>
+            <p>
+                Aunque las reglas son fundamentales, el conocimiento humano es rico y complejo, y a menudo requiere
+                estructuras más sofisticadas para ser capturado de forma eficiente. En los sistemas expertos, el
+                conocimiento puede organizarse mediante plantillas jerárquicas, redes de conceptos o marcos formales
+                compartidos.
+            </p>
+            <div class="highlight-box success">
+                <p class="title">💡 Idea Clave</p>
+                <p class="content">
+                    La clave de un buen sistema experto no es solo cuánto sabe, sino <strong>cómo organiza lo que
+                        sabe</strong> para que el motor de inferencia pueda procesarlo rápidamente y sin ambigüedades.
+                </p>
+            </div>
+        </section>
+
+        <!-- 1. Frames (Marcos) -->
+        <section id="frames">
+            <h2 class="color-secondary">1. Frames (Marcos) 🗃️</h2>
+            <div class="grid-2-cols">
+                <div>
+                    <p>
+                        Los <strong>frames</strong> o marcos son estructuras de datos tipo plantilla diseñadas para
+                        representar situaciones o conceptos estereotipados. Propuestos originalmente por Marvin Minsky,
+                        estos marcos permiten almacenar el conocimiento de forma jerárquica y organizada.
+                    </p>
+                    <p>
+                        A diferencia de una simple base de datos, los frames permiten la <strong>herencia</strong>: un
+                        marco hijo puede heredar atributos de un marco padre automáticamente, lo que reduce la
+                        redundancia y facilita la actualización del conocimiento.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p class="title">🧩 Componentes del Frame</p>
+                        <ul class="content">
+                            <li><strong>Slots (Ranuras):</strong> Atributos opcionales (ej: edad, peso).</li>
+                            <li><strong>Facets (Facetas):</strong> Restricciones o valores por defecto.</li>
+                            <li><strong>Procedimientos:</strong> Acciones automáticas ("if-needed" o "if-added").</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card primary-bg">
+                    <h4 class="color-primary">Estructuras de Ejemplo</h4>
+                    <p>Múltiples dominios representados mediante marcos:</p>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                        <pre
+                            style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border-light); font-size: 0.85rem; margin: 0;">
+MARCO: Vehículo_Eléctrico
+  Slot: Tipo_Bateria (Valor: Litio)
+  Slot: Autonomia (Restricción: > 200km)
+  Slot: Carga (Default: 80%)
+                        </pre>
+                        <pre
+                            style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border-light); font-size: 0.85rem; margin: 0;">
+MARCO: Sensor_Presión
+  Slot: Ubicación (Valor: Tubería_A1)
+  Slot: Rango (0-100 Bar)
+  Slot: Alarma (If-Added: Si Val > 90 -> Disparar)
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Redes Semánticas -->
+        <section id="redes-semanticas">
+            <h2 class="color-primary">2. Redes Semánticas 🕸️</h2>
+            <p>
+                Este modelo visualiza el conocimiento como un grafo dirigido. Los <strong>nodos</strong> representan
+                objetos o conceptos, mientras que los <strong>arcos</strong> (flechas) definen las relaciones
+                gramaticales o lógicas entre ellos.
+            </p>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Tipos de Arcos Comunes</h4>
+                    <ul>
+                        <li><strong>ISA (es-un):</strong> Define una jerarquía de clases (Ej: Águila ISA Ave).</li>
+                        <li><strong>HAS-A (tiene-un):</strong> Define pertenencia o composición (Ej: Ave HAS-A Alas).
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Razonamiento Asociativo</h4>
+                    <p>
+                        La gran ventaja de este modelo es que permite <strong>razonar por asociación</strong>. Si
+                        sabemos que un gato es un mamífero, heredamos instantáneamente todas las propiedades de los
+                        mamíferos (sangre caliente, amamantan, etc.) sin tener que definirlas para cada animal.
+                    </p>
+                </div>
+            </div>
+            <div class="svg-container" style="max-width: 600px; margin: 1.5rem auto;">
+                <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Flecha Def -->
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                    <!-- Nodos -->
+                    <circle cx="80" cy="100" r="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <text x="80" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold">Gato</text>
+
+                    <circle cx="250" cy="100" r="35" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                    <text x="250" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold">Mamífero</text>
+
+                    <circle cx="420" cy="100" r="35" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <text x="420" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold">Animal</text>
+
+                    <!-- Líneas -->
+                    <path d="M 115 100 L 205 100" fill="none" stroke="#8A7AAF" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="160" y="90" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="#777">es_un</text>
+
+                    <path d="M 285 100 L 375 100" fill="none" stroke="#8A7AAF" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="330" y="90" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="#777">es_un</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- 3. Ontologías -->
+        <section id="ontologias">
+            <h2 class="color-secondary">3. Ontologías 🌐</h2>
+            <p>
+                Las <strong>ontologías</strong> representan el nivel más alto de rigor en la ingeniería del
+                conocimiento. No se limitan a conectar conceptos, sino que detallan formalmente un dominio para que sea
+                procesable por una máquina sin ambigüedad alguna.
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">Interoperabilidad y Estándares</h4>
+                    <p>
+                        Para que las ontologías sean universales, el consorcio <strong>W3C</strong> ha definido
+                        lenguajes estándares como <strong>OWL</strong> (Web Ontology Language) y <strong>RDF</strong>
+                        (Resource Description Framework).
+                    </p>
+                    <p>
+                        Esto permite que un sistema experto médico en España y otro en Japón compartan datos clínicos
+                        sabiendo exactamente que ambos se refieren a la misma patología, independientemente de la
+                        tecnología que utilicen.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="color-primary">Componentes Técnicos Avanzados</h4>
+                    <ul>
+                        <li><strong>Conceptos (Clases):</strong> Categorías generales (ej: Enfermedad, Síntoma).</li>
+                        <li><strong>Relaciones (Propiedades):</strong> Vínculos con restricciones lógicas (ej:
+                            "afecta_a" vincula Síntoma con Órgano).</li>
+                        <li><strong>Axiomas:</strong> Reglas universales que el sistema usa para verificar la
+                            consistencia (ej: "Un Virus no puede ser una Bacteria").</li>
+                        <li><strong>Inferencia:</strong> Los razonadores (como Pellets o HermiT) deducen conocimiento
+                            implícito que no ha sido escrito explícitamente.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="important-note" style="margin-bottom: 2.5rem;">
+                🌟 Las ontologías son la base de la <strong>Web Semántica</strong>, transformando internet de una red
+                de documentos a una red de datos con significado real para las máquinas.
+            </div>
+
+            <!-- Estándares del W3C -->
+            <div class="grid-2-cols mt-3">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Estándares del W3C: RDF y OWL 📝</h4>
+                    <p>
+                        Para que la información sea procesable por cualquier máquina en el mundo, se utilizan lenguajes
+                        universales:
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>RDF (Resource Description Framework):</strong> Es el modelo básico de "tripletas"
+                            (Sujeto-Predicado-Objeto). Por ejemplo: <em>(Gripe) - [es_un] - (Virus)</em>.</li>
+                        <li><strong>OWL (Web Ontology Language):</strong> Es un lenguaje mucho más potente que añade
+                            lógica matemática. Permite definir que dos conceptos son idénticos, que son excluyentes o
+                            que una propiedad es transitiva.</li>
+                    </ul>
+                </div>
+                <!-- Razonadores -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Razonadores: El Cerebro Lógico ⚙️</h4>
+                    <p>
+                        Software especializado como <strong>Pellet</strong> o <strong>HermiT</strong> actúan como el
+                        "motor" de una ontología. Sus funciones principales son:
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Verificación de Consistencia:</strong> Comprueban que no haya contradicciones (ej:
+                            que un paciente no esté "sano" y "enfermo" al mismo tiempo si la ontología dice que son
+                            excluyentes).</li>
+                        <li><strong>Inferencia Automática:</strong> Deducen hechos nuevos. Si sabemos que <em>A es padre
+                                de B</em> y <em>B es padre de C</em>, el razonador deduce automáticamente que <em>A es
+                                abuelo de C</em> sin que nadie lo haya escrito.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparativa Visual -->
+        <section>
+            <h2 class="color-primary">Semejanzas y Propósitos</h2>
+            <p>
+                Dependiendo de la complejidad del dominio, utilizaremos una técnica u otra:
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Técnica</th>
+                            <th>Unidad Básica</th>
+                            <th>Fortaleza Principal</th>
+                            <th>Uso Ideal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Frames</strong></td>
+                            <td>Plantilla / Atributos</td>
+                            <td>Organización jerárquica</td>
+                            <td>Clasificación de objetos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Redes Semánticas</strong></td>
+                            <td>Nodos / Vínculos</td>
+                            <td>Razonamiento asociativo</td>
+                            <td>Diccionarios y jerarquías</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ontologías</strong></td>
+                            <td>Clases / Relaciones / Axiomas</td>
+                            <td>Interoperabilidad y rigor</td>
+                            <td>Bases de conocimiento globales</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase de Despliegue del Modelo - iLERNA</title>
+    <meta name="description"
+        content="Aprende sobre la fase de despliegue e implementación de modelos de minería de datos, sus modalidades y el mantenimiento continuo.">
+    <meta name="keywords"
+        content="Despliegue de Modelos, MLOps, Model Drift, APIs, Cloud AI, Sistemas de Producción, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Fase de Despliegue del Modelo</span>
+                </div>
+            </div>
+            <h1 class="text-center">Fase de Despliegue del Modelo</h1>
+            <p class="subtitle text-center">De la teoría a la práctica: Integración y operativización del conocimiento
+            </p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">La Implementación en el Mundo Real</h2>
+            <p>
+                La última etapa del ciclo de vida de un modelo de minería de datos es el <strong>despliegue</strong>,
+                también denominado implementación. En esta fase, el modelo abandona el entorno de experimentación para
+                integrarse en el <strong>entorno productivo</strong> de la organización.
+            </p>
+            <p>
+                El despliegue no consiste únicamente en ejecutar el modelo una vez; se trata de convertirlo en una
+                herramienta operativa que interactúe con datos reales, se alimente de nuevas entradas y produzca
+                resultados de forma continua.
+            </p>
+        </section>
+
+        <!-- Modalidades de Despliegue -->
+        <section>
+            <h2 class="color-secondary">Modalidades de Despliegue</h2>
+            <p>Dependiendo del ecosistema tecnológico y las necesidades de negocio, existen tres caminos principales:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Sistemas de Producción</h4>
+                    <p>Integración directa en aplicaciones corporativas. Por ejemplo, un recomendador que sugiere
+                        compras en tiempo real en un e-commerce.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Cuadros de Mando</h4>
+                    <p>Alimenta visualizaciones dinámicas. Un dashboard de ventas que muestra no solo el pasado, sino
+                        proyecciones futuras predictivas.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">APIs y Cloud Services</h4>
+                    <p>Publicación como servicios REST accesibles por cualquier equipo. Plataformas como Azure ML, AWS
+                        SageMaker o Google Vertex AI.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ciclo de Vida en Producción SVG -->
+        <section>
+            <h2 class="color-primary">Ciclo de Operativización (MLOps)</h2>
+            <div class="svg-container"
+                style="max-width: 800px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 15px; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-primary)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Pasos -->
+                    <rect x="20" y="60" width="130" height="60" rx="8" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="85" y="90" text-anchor="middle" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-primary)">PRUEBAS</text>
+                    <text x="85" y="105" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-primary)">(Fase Piloto)</text>
+
+                    <line x1="150" y1="90" x2="175" y2="90" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <rect x="185" y="60" width="130" height="60" rx="8" fill="var(--bg-secondary-light)"
+                        stroke="var(--color-secondary)" stroke-width="2" />
+                    <text x="250" y="90" text-anchor="middle" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-secondary)">DESPLIEGUE</text>
+                    <text x="250" y="105" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-secondary)">(Producción)</text>
+
+                    <line x1="315" y1="90" x2="340" y2="90" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <rect x="350" y="60" width="130" height="60" rx="8" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="415" y="90" text-anchor="middle" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="var(--color-primary)">MONITOREO</text>
+                    <text x="415" y="105" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="var(--color-primary)">(En tiempo real)</text>
+
+                    <line x1="480" y1="90" x2="505" y2="90" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <rect x="515" y="60" width="130" height="60" rx="8" fill="#E8F5E9" stroke="#4CAF50"
+                        stroke-width="2" />
+                    <text x="580" y="90" text-anchor="middle" font-family="Montserrat" font-size="11" font-weight="bold"
+                        fill="#2E7D32">MANTENIMIENTO</text>
+                    <text x="580" y="105" text-anchor="middle" font-family="Montserrat" font-size="9"
+                        fill="#2E7D32">(Recalibración)</text>
+
+                    <!-- Feedback Loop -->
+                    <path d="M 580 60 Q 332 -20 85 60" fill="none" stroke="var(--text-light)" stroke-width="1.5"
+                        stroke-dasharray="4" marker-end="url(#arrow)" />
+                    <text x="332" y="25" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="var(--text-light)" font-style="italic">Detección de Model Drift</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Fase Piloto y Monitoreo -->
+        <section>
+            <h2 class="color-secondary">Plan de Pruebas y Monitoreo</h2>
+            <div class="card white shadow" style="border-left: 5px solid var(--color-primary);">
+                <p>
+                    Antes del despliegue masivo, se realiza una <strong>fase piloto</strong>. Esta monitorización
+                    permite identificar errores de rendimiento o degradación bajo estrés real.
+                </p>
+                <div class="warning-box mt-1">
+                    <h4 class="color-primary">⚠️ El Fenómeno del Model Drift (Deriva del Modelo)</h4>
+                    <p>
+                        Los modelos no son estáticos. Con el tiempo, los comportamientos de los usuarios cambian y las
+                        tendencias evolucionan. Si el modelo no se recalibra o reentrena con datos frescos, perderá
+                        precisión y dejará de ser útil para el negocio.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cuadro de Atención -->
+        <section>
+            <div class="card secondary-bg" style="border-top: 5px solid var(--color-secondary);">
+                <h4 class="color-secondary">💡 Atención: La Vigencia del Modelo</h4>
+                <p>
+                    El valor de un modelo no reside en lo complejo que sea su algoritmo, sino en su capacidad de
+                    <strong>mantenerse útil a lo largo del tiempo</strong>. Los modelos deben revisarse periódicamente
+                    para garantizar su adaptabilidad a los cambios del entorno.
+                </p>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "Un modelo fuera de producción es solo un experimento científico. El despliegue es el puente que
+                    convierte el código en impacto económico real."
+                </p>
+                <span class="quote-author">— MLOps Engineer Senior</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

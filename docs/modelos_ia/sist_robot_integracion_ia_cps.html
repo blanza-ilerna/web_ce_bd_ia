@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración con IA y CPS - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Descubre cómo la IA y los Sistemas Ciberfísicos (CPS) transforman la robótica moderna.">
+    <meta name="keywords" content="IA, Robótica, CPS, Sistemas Ciberfísicos, Cloud Robotics, Edge Computing">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-4">Sistemas Robotizados</a> ›
+                    <span>Integración con IA y CPS</span>
+                </div>
+            </div>
+            <h1 class="text-center">Integración con IA y CPS</h1>
+            <p class="subtitle text-center">La fusión del mundo físico y la inteligencia digital</p>
+        </header>
+
+        <!-- INTRODUCCIÓN Y ORIGEN -->
+        <section>
+            <h2>El Origen: De la Cibernética a los CPS</h2>
+            <p>
+                La base de la robótica moderna no nació en un taller, sino en la teoría. En 1948, el matemático
+                <strong>Norbert Wiener</strong> acuñó el término <strong>Cibernética</strong> para describir el
+                estudio del control y la comunicación en animales y máquinas, basándose en la idea del
+                <em>feedback</em> (retroalimentación).
+            </p>
+            <p>
+                Evolucionando esta idea, el término <strong>Sistema Ciberfísico (CPS)</strong> surge para
+                describir la integración total: el <strong>"Ciber"</strong> (kernel computacional, algoritmos,
+                red) y el <strong>"Físico"</strong> (procesos mecánicos, leyes de la física). En un CPS, el
+                software no solo controla el hardware, sino que está intrínsecamente ligado a su comportamiento
+                temporal y espacial.
+            </p>
+
+            <!-- DIAGRAMA CPS REDISEÑADO -->
+            <div class="svg-container mb-2 mt-2">
+                <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"
+                    style="max-width: 600px; margin: 0 auto; display: block;">
+                    <defs>
+                        <linearGradient id="gradCiber" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#76659a;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradFisico" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3a9bb0;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Núcleo de Integración -->
+                    <circle cx="300" cy="175" r="140" fill="none" stroke="#eee" stroke-width="1"
+                        stroke-dasharray="10,5" />
+
+                    <!-- Lado Ciber -->
+                    <path d="M 300,35 A 140,140 0 0,0 300,315" fill="url(#gradCiber)" opacity="0.15" />
+                    <g transform="translate(120, 175)">
+                        <rect x="-60" y="-80" width="120" height="160" rx="15" fill="white" stroke="#8A7AAF"
+                            stroke-width="2" />
+                        <text y="-50" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="14"
+                            fill="#8A7AAF">CIBER</text>
+                        <circle cx="0" cy="3" r="30" fill="#8A7AAF" opacity="0.1" />
+                        <text y="-12" text-anchor="middle" font-family="Montserrat" font-size="10" fill="#333">Modelos
+                            IA</text>
+                        <text y="3" text-anchor="middle" font-family="Montserrat" font-size="10" fill="#333">Control
+                            Red</text>
+                        <text y="18" text-anchor="middle" font-family="Montserrat" font-size="10"
+                            fill="#333">Algoritmos</text>
+                    </g>
+
+                    <!-- Lado Físico -->
+                    <path d="M 300,35 A 140,140 0 0,1 300,315" fill="url(#gradFisico)" opacity="0.15" />
+                    <g transform="translate(480, 175)">
+                        <rect x="-60" y="-80" width="120" height="160" rx="15" fill="white" stroke="#49B9CE"
+                            stroke-width="2" />
+                        <text y="-50" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="14"
+                            fill="#49B9CE">FÍSICO</text>
+                        <circle cx="0" cy="3" r="30" fill="#49B9CE" opacity="0.1" />
+                        <text y="-12" text-anchor="middle" font-family="Montserrat" font-size="10"
+                            fill="#333">Cinemática</text>
+                        <text y="3" text-anchor="middle" font-family="Montserrat" font-size="10"
+                            fill="#333">Sensores</text>
+                        <text y="18" text-anchor="middle" font-family="Montserrat" font-size="10"
+                            fill="#333">Actuadores</text>
+                    </g>
+
+                    <!-- Flechas de Bucle Infinito (Feedback) -->
+                    <path d="M 190,130 Q 300,50 410,130" fill="none" stroke="#1C3D5A" stroke-width="3"
+                        stroke-dasharray="10,5" marker-end="url(#arrowBlue)" />
+                    <path d="M 410,220 Q 300,300 190,220" fill="none" stroke="#1C3D5A" stroke-width="3"
+                        stroke-dasharray="10,5" marker-end="url(#arrowBlue)" />
+
+                    <text x="300" y="80" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="12"
+                        fill="#1C3D5A">ACCIÓN</text>
+                    <text x="300" y="285" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="12" fill="#1C3D5A">RETROALIMENTACIÓN</text>
+
+                    <!-- Marcador de flecha -->
+                    <marker id="arrowBlue" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                        <polygon points="0 0, 6 2, 0 4" fill="#1C3D5A" />
+                    </marker>
+
+                    <!-- Centro: CPS -->
+                    <rect x="250" y="150" width="100" height="50" rx="10" fill="#1C3D5A" filter="url(#glow)" />
+                    <text x="300" y="180" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="18" fill="white">CPS</text>
+                </svg>
+            </div>
+
+            <div class="highlight-box primary mb-0 mt-2">
+                <p class="content" style="font-size: 1rem;">
+                    <strong>Dato Histórico:</strong> Wiener definió la cibernética como "ciencia del control y la
+                    comunicación en el animal y en la máquina", centrada en cómo los sistemas usan la información
+                    para corregir su acción hacia una meta.
+                </p>
+            </div>
+        </section>
+
+        <!-- EL IMPACTO DE LA IA -->
+        <section>
+            <h2>El Cerebro de la Robótica 4.0</h2>
+            <p>La IA no es solo una "mejora", es el motor que permite la autonomía real. Se integra en tres áreas
+                vitales:</p>
+
+            <div class="step-list">
+                <!-- Adaptabilidad -->
+                <div class="step-item">
+                    <div class="icon-circle"
+                        style="background: var(--color-primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem;">
+                        ⚙️</div>
+                    <div class="step-content">
+                        <h4 class="color-primary">Adaptabilidad Dinámica</h4>
+                        <p>A diferencia de la robótica industrial clásica (rígida y repetitiva), la integración con IA
+                            permite al robot reaccionar ante cambios imprevistos en su entorno, como obstáculos móviles
+                            o piezas mal posicionadas.</p>
+                    </div>
+                </div>
+
+                <!-- Aprendizaje -->
+                <div class="step-item"
+                    style="background: var(--bg-secondary-light); border-left-color: var(--color-secondary);">
+                    <div class="icon-circle"
+                        style="background: var(--color-secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem;">
+                        📈</div>
+                    <div class="step-content">
+                        <h4 class="color-secondary">Aprendizaje por Refuerzo (RL)</h4>
+                        <p>Los robots pueden aprender tareas complejas mediante la experimentación en simuladores
+                            (Gemelos Digitales) y luego transferir ese conocimiento al mundo real (Sim-to-Real),
+                            reduciendo costes de programación manual.</p>
+                    </div>
+                </div>
+
+                <!-- Colaboración -->
+                <div class="step-item" style="background: rgba(28, 61, 90, 0.05); border-left-color: #1C3D5A;">
+                    <div class="icon-circle"
+                        style="background: #1C3D5A; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem;">
+                        🤝</div>
+                    <div class="step-content">
+                        <h4 style="color: #1C3D5A;">Interacción Humano-Robot</h4>
+                        <p>Mediante el Procesamiento de Lenguaje Natural (NLP) y la Visión Artificial, los robots pueden
+                            entender gestos y comandos verbales de operarios humanos, facilitando el trabajo en cobots
+                            (robots colaborativos).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NIVELES DE INTELIGENCIA DISTRIBUIDA -->
+        <section>
+            <div class="highlight-box primary">
+                <h3 class="color-primary">📍 Niveles de Inteligencia Distribuida</h3>
+                <p>Para optimizar la respuesta de un robot, la computación se divide en capas según su cercanía al
+                    proceso físico:</p>
+
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <!-- NIVEL 1 & 2 -->
+                    <div>
+                        <div class="mb-2">
+                            <h4 style="color: var(--color-modelos);">1. Mist Computing (La Niebla Extrema)</h4>
+                            <p style="font-size: 0.95rem;">Se da en los sensores y microcontroladores. Decisiones
+                                instantáneas de bajísimo consumo (lectura de límites, filtros básicos de ruido).</p>
+                        </div>
+                        <div class="mb-2">
+                            <h4 class="color-primary">2. Edge Computing (El Robot)</h4>
+                            <p style="font-size: 0.95rem;">Procesamiento local en el controlador del robot. Vital para
+                                la seguridad (frenado, equilibrio) y tareas que requieren latencia cero.</p>
+                        </div>
+                    </div>
+                    <!-- NIVEL 3 & 4 -->
+                    <div>
+                        <div class="mb-2">
+                            <h4 class="color-secondary">3. Fog Computing (La Infraestructura)</h4>
+                            <p style="font-size: 0.95rem;">Nodos locales en la fábrica (gateways). Orquesta a varios
+                                robots y gestiona datos locales antes de enviarlos a la nube.</p>
+                        </div>
+                        <div class="mb-2">
+                            <h4 style="color: #1C3D5A;">4. Cloud Computing (El Cerebro Global)</h4>
+                            <p style="font-size: 0.95rem;">Servidores remotos con potencia masiva. Se usa para
+                                entrenamiento de modelos, Big Data e inteligencia compartida entre flotas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIAGRAMA JERÁRQUICO -->
+                <div class="svg-container mt-2">
+                    <svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg"
+                        style="max-width: 700px; margin: 0 auto; display: block;">
+                        <!-- Capas Jerárquicas -->
+                        <g font-family="Montserrat" font-weight="bold" font-size="12" text-anchor="middle">
+                            <!-- Cloud -->
+                            <rect x="150" y="20" width="500" height="40" rx="20" fill="#1C3D5A" />
+                            <text x="400" y="45" fill="white">☁️ CLOUD (Cerebro Global)</text>
+
+                            <!-- Fog -->
+                            <rect x="175" y="80" width="450" height="40" rx="20" fill="#8A7AAF" />
+                            <text x="400" y="105" fill="white">🌫️ FOG (Infraestructura Local)</text>
+
+                            <!-- Edge -->
+                            <rect x="200" y="140" width="400" height="40" rx="20" fill="#49B9CE" />
+                            <text x="400" y="165" fill="white">🤖 EDGE (El Robot)</text>
+
+                            <!-- Mist -->
+                            <rect x="225" y="200" width="350" height="40" rx="20" fill="rgba(67, 160, 71, 0.1)"
+                                stroke="var(--color-modelos)" stroke-width="1" />
+                            <text x="400" y="225" fill="var(--color-modelos)">💧 MIST (Sensores y Dispositivos)</text>
+                        </g>
+
+                        <!-- Conectores -->
+                        <g stroke="#ccc" stroke-width="2" marker-end="url(#arrowGray)">
+                            <path d="M 400,75 L 400,65" />
+                            <path d="M 400,135 L 400,125" />
+                            <path d="M 400,195 L 400,185" />
+                        </g>
+                        <text x="660" y="105" text-anchor="start" font-family="Montserrat" font-size="10" fill="#999"
+                            font-weight="bold">⬆️ POTENCIA / LATENCIA</text>
+                        <text x="660" y="165" text-anchor="start" font-family="Montserrat" font-size="10" fill="#999"
+                            font-weight="bold">⬇️ VELOCIDAD LOCAL</text>
+
+                        <marker id="arrowGray" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                            <polygon points="0 0, 6 2, 0 4" fill="#ccc" />
+                        </marker>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="highlight-box warning"
+                style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-warning-medium); background: linear-gradient(135deg, var(--bg-warning-light) 0%, #ffffff 100%);">
+                <h3 style="color: var(--color-warning); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión</h3>
+                <p
+                    style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                    La integración de la IA en los sistemas ciberfísicos marca el fin de los robots como herramientas
+                    estáticas. Ahora son <strong>agentes inteligentes interconectados</strong> que aprenden, evolucionan
+                    y colaboran como parte fundamental de la transformación digital de la industria.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <div class="penguin"><span>🐧</span></div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

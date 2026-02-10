@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métricas de Rendimiento y Latencia - iLERNA</title>
+    <meta name="description"
+        content="Aprende sobre las métricas críticas de rendimiento y latencia en Big Data: CPU, memoria, disco, red y KPIs recomendados.">
+    <meta name="keywords" content="Métricas Big Data, Latencia, KPIs, Rendimiento, HDFS, Spark, Grafana, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Métricas de Rendimiento</span>
+                </div>
+            </div>
+            <h1 class="text-center">Métricas de Rendimiento y Latencia</h1>
+            <p class="subtitle text-center">Evaluación de la eficiencia y diagnóstico de cuellos de botella</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">La Importancia de Medir</h2>
+            <p>
+                La observación sistemática de métricas de rendimiento es esencial para evaluar la eficiencia del clúster
+                y detectar posibles degradaciones antes de que impacten en la disponibilidad. Estas métricas abarcan
+                tanto los <strong>recursos físicos</strong> (hardware) como los <strong>procesos lógicos</strong> del
+                ecosistema Big Data.
+            </p>
+        </section>
+
+        <!-- Tabla de Métricas -->
+        <section>
+            <h2 class="color-secondary">Principales Métricas Monitorizadas</h2>
+            <div class="table-container mt-1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Métrica</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold">CPU y Memoria</td>
+                            <td>Uso de CPU, heap, garbage collection</td>
+                            <td>Identifican sobrecarga o fugas de memoria en tareas prolongadas.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Disco</td>
+                            <td>Latencia de lectura/escritura, IOPS, espacio libre</td>
+                            <td>Detectan discos lentos o próximos al fallo.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Red</td>
+                            <td>Ancho de banda, paquetes perdidos, latencia entre nodos</td>
+                            <td>Evalúan el rendimiento de la transferencia entre DataNodes.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Jobs MapReduce/Spark</td>
+                            <td>Tiempo medio de tarea, tasa de éxito, fallos por nodo</td>
+                            <td>Miden la eficiencia de procesamiento distribuido.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">HDFS</td>
+                            <td>Bloques corruptos, réplicas pendientes, throughput</td>
+                            <td>Garantizan la disponibilidad y fiabilidad del almacenamiento.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Visualización y Análisis -->
+        <section>
+            <h2 class="color-primary">Visualización y Análisis de Métricas</h2>
+            <p>
+                Las métricas recolectadas se almacenan en sistemas de series temporales (como
+                <strong>Prometheus</strong> o <strong>InfluxDB</strong>) y se visualizan mediante dashboards dinámicos
+                en <strong>Grafana</strong> o <strong>Cloudera Manager</strong>.
+            </p>
+            <div class="card white shadow mt-2" style="border-left: 5px solid var(--color-primary);">
+                <p>
+                    Esto permite identificar tendencias y correlaciones críticas, como por ejemplo, detectar que el
+                    aumento de la latencia de disco coincide exactamente con el crecimiento del tamaño de los datasets o
+                    con picos de carga específicos.
+                </p>
+            </div>
+        </section>
+
+        <!-- Ejemplo Práctico -->
+        <section>
+            <div class="card secondary-bg">
+                <h4 class="color-secondary">📍 Ejemplo Práctico: Caída de Throughput</h4>
+                <p>
+                    Un panel de Grafana muestra que el <strong>throughput de escritura</strong> en HDFS ha caído un 25%
+                    durante las horas pico. Tras analizar la métrica de <strong>IOPS por nodo</strong>, el administrador
+                    identifica que dos discos SSD presentan latencias inusualmente altas (>100ms).
+                </p>
+                <p class="mt-1">
+                    <strong>Acción:</strong> Se programa el reemplazo preventivo de las unidades.
+                    <br>
+                    <strong>Resultado:</strong> El rendimiento del clúster se estabiliza de inmediato en los niveles
+                    normales.
+                </p>
+            </div>
+        </section>
+
+        <!-- KPIs y Umbrales -->
+        <section>
+            <h2 class="color-secondary">Umbrales y KPIs Recomendados</h2>
+            <p>El seguimiento continuo de estos indicadores permite anticipar fallos operativos:</p>
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow">
+                    <ul class="custom-list small">
+                        <li><strong>Latencia lectura HDFS:</strong>
+                            < 20 ms</li>
+                        <li><strong>Uso CPU promedio:</strong>
+                            < 70 %</li>
+                        <li><strong>Bloques corruptos:</strong> = 0</li>
+                    </ul>
+                </div>
+                <div class="card white shadow">
+                    <ul class="custom-list small">
+                        <li><strong>Tasa de éxito de jobs:</strong> > 98 %</li>
+                        <li><strong>Espacio disco por nodo:</strong>
+                            < 85 %</li>
+                        <li><strong>Latencia entre nodos:</strong>
+                            < 1 ms (LAN)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warning-box mt-2">
+                <p>Superar el umbral del 85% en disco es crítico en sistemas distribuidos, ya que reduce la capacidad
+                    del sistema para reequilibrar datos en caso de fallo de un nodo.</p>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "En Big Data, las métricas no son solo números; son los signos vitales que nos indican si nuestra
+                    infraestructura está sana o si necesita intervención quirúrgica inmediata."
+                </p>
+                <span class="quote-author">— Platform Reliability Engineer</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

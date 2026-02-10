@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas y Registros de Eventos - iLERNA</title>
+    <meta name="description"
+        content="Aprende sobre sistemas de alertas automatizadas y gestión centralizada de logs para la detección temprana de fallos en Big Data.">
+    <meta name="keywords" content="Alertas Big Data, Logs, ELK, Alertmanager, Prometheus, Monitorización, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Alertas y Eventos</span>
+                </div>
+            </div>
+            <h1 class="text-center">Alertas y Registros de Eventos</h1>
+            <p class="subtitle text-center">Detección proactiva y análisis forense en infraestructuras distribuidas</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Detección Temprana de Anomalías</h2>
+            <p>
+                La detección temprana de problemas en un clúster de Big Data se basa en dos pilares: un sistema de
+                <strong>alertas automatizadas</strong> para la respuesta inmediata y un <strong>análisis sistemático de
+                    logs</strong> para entender la causa raíz de los eventos.
+            </p>
+        </section>
+
+        <!-- Sistemas de Alertas -->
+        <section>
+            <h2 class="color-secondary">Sistemas de Alertas Proactivas</h2>
+            <p>
+                Permiten configurar disparadores automáticos cuando las métricas exceden los umbrales de salud. Las
+                notificaciones suelen integrarse con canales de comunicación del equipo (Slack, Correo, PagerDuty).
+            </p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="card white shadow">
+                    <h4 class="color-primary">🚨 Alertas Críticas Comunes</h4>
+                    <ul class="custom-list small">
+                        <li>Fallo en un DataNode o NameNode.</li>
+                        <li>Existencia de bloques faltantes (Loss of data).</li>
+                        <li>Espacio en disco por debajo del 10%.</li>
+                        <li>Jobs con tiempos de ejecución anómalos.</li>
+                    </ul>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-primary">🛠️ Herramientas de Gestión</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Prometheus + Alertmanager:</strong> Reglas personalizadas complejas.</li>
+                        <li><strong>Ambari / Cloudera Manager:</strong> Alertas nativas del clúster.</li>
+                        <li><strong>Zabbix / Nagios:</strong> Enfoque en hardware y red.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Logs -->
+        <section>
+            <h2 class="color-primary">Gestión y Análisis de Logs</h2>
+            <p>Cada componente (Spark, HDFS, YARN, Oozie) genera registros detallados. Dada la naturaleza distribuida,
+                la gestión de logs requiere estrategias específicas:</p>
+
+            <div class="grid-3 mt-1">
+                <div class="info-box">
+                    <h4 class="color-secondary">📥 Centralización</h4>
+                    <p class="small">Uso del <strong>Elastic Stack (ELK)</strong> o Splunk para reunir logs de todos los
+                        nodos en un solo lugar.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-secondary">⏱️ Correlación</h4>
+                    <p class="small">Sincronización mediante <strong>NTP</strong> para asegurar que los eventos
+                        coincidan temporalmente entre nodos.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-secondary">🤖 Automatización</h4>
+                    <p class="small">Aplicación de Machine Learning para detectar anomalías en los patrones de registro
+                        históricos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Elastic Stack (ELK) -->
+        <section>
+            <h2 class="color-primary">Elastic Stack (ELK): El Estándar en Gestión de Logs</h2>
+            <p>
+                El stack <strong>ELK</strong> es la solución líder para la centralización y análisis forense de
+                registros en entornos distribuidos. Se compone de tres herramientas (más una cuarta opcional) que
+                trabajan en cadena:
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card white shadow" style="border-top: 4px solid #005571;">
+                    <h4 style="color: #005571;">🔍 Elasticsearch</h4>
+                    <p class="small">Es el <strong>motor de búsqueda y analítica</strong> distribuido. Almacena todos
+                        los logs de forma indexada, permitiendo realizar búsquedas complejas en milisegundos sobre
+                        petabytes de datos. Es el corazón del sistema.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid #F04E30;">
+                    <h4 style="color: #F04E30;">📥 Logstash</h4>
+                    <p class="small">Funciona como el <strong>pipeline de procesamiento</strong>. Recibe logs de
+                        múltiples fuentes, los limpia, los transforma (por ejemplo, extrayendo la IP o la fecha) y los
+                        envía a Elasticsearch ya estructurados.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid #FCC02C;">
+                    <h4 style="color: #FCC02C;">📊 Kibana</h4>
+                    <p class="small">Es la <strong>capa de visualización</strong>. Proporciona una interfaz web
+                        intuitiva para que los administradores creen dashboards en tiempo real, realicen búsquedas
+                        directas y visualicen la salud de todo el clúster.</p>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid #00A9E0;">
+                    <h4 style="color: #00A9E0;">🚛 Beats (El cuarto elemento)</h4>
+                    <p class="small">Son agentes ligeros (como <em>Filebeat</em> o <em>Metricbeat</em>) que se instalan
+                        en cada nodo del clúster para recolectar los archivos de log y enviarlos de forma eficiente a
+                        Logstash o Elasticsearch.</p>
+                </div>
+            </div>
+            <div class="highlight-box success mt-2">
+                <p><strong>El flujo de trabajo:</strong> Los <strong>Beats</strong> recolectan el dato en el nodo →
+                    <strong>Logstash</strong> lo formatea → <strong>Elasticsearch</strong> lo indexa/almacena →
+                    <strong>Kibana</strong> permite al analista visualizarlo.</p>
+            </div>
+        </section>
+
+        <!-- Importancia de NTP y Correlación -->
+        <section>
+            <h2 class="color-secondary">NTP y la Sincronización Temporal</h2>
+            <p>
+                En sistemas distribuidos, la sincronización de relojes mediante el protocolo <strong>NTP (Network Time
+                    Protocol)</strong> no es opcional, sino un requisito crítico para la observabilidad.
+            </p>
+            <div class="grid-2-cols mt-1">
+                <div class="card secondary-bg">
+                    <h4 class="color-secondary">¿Por qué es vital?</h4>
+                    <p class="small">Cuando un evento ocurre en el Nodo A y su consecuencia se registra en el Nodo B,
+                        solo una sincronización perfecta permite unir ambos puntos. Sin NTP, un error que ocurrió a las
+                        10:00:01 en un servidor podría parecer posterior a su solución registrada a las 10:00:05 en
+                        otro, imposibilitando el análisis de causa raíz.</p>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-primary">Consecuencias de la desincronización</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Inconsistencia en Logs:</strong> Imposibilidad de reconstruir la secuencia exacta de
+                            fallos.</li>
+                        <li><strong>Fallos de Seguridad:</strong> Los tokens de autenticación y protocolos como Kerberos
+                            fallan si hay un desfase temporal excesivo (skew).</li>
+                        <li><strong>Errores de Suscripción:</strong> Problemas en el orden de mensajes en sistemas como
+                            Kafka.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejemplo Práctico -->
+        <section>
+            <div class="card primary-bg">
+                <h4 class="color-primary">📍 Caso Real: Correlación de Errores</h4>
+                <p>
+                    Un administrador observa múltiples excepciones <strong>ContainerLaunchFailedException</strong> en
+                    los logs del ResourceManager.
+                </p>
+                <p class="mt-1">
+                    <strong>Investigación:</strong> Al correlacionar temporalmente estos logs con los del NodeManager,
+                    descubre que ciertos nodos tienen el directorio <code>/tmp</code> saturado.
+                    <br>
+                    <strong>Solución:</strong> El ajuste de la política de limpieza de YARN y el aumento de cuota en
+                    <code>/tmp</code> normaliza la ejecución de los jobs de inmediato.
+                </p>
+            </div>
+        </section>
+
+        <!-- Buenas Prácticas -->
+        <section>
+            <h2 class="color-secondary">Buenas Prácticas en Logs</h2>
+            <p>Administrar grandes volúmenes de logs requiere disciplina técnica:</p>
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow" style="border-top: 4px solid var(--color-primary);">
+                    <h4 class="color-primary">Mantenimiento</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Log Rotation:</strong> Evita que los archivos de texto saturen el disco.</li>
+                        <li><strong>Retención:</strong> Mantener al menos 30 días para auditoría y análisis de
+                            tendencias.</li>
+                    </ul>
+                </div>
+                <div class="card white shadow" style="border-top: 4px solid var(--color-secondary);">
+                    <h4 class="color-secondary">Seguridad y Orden</h4>
+                    <ul class="custom-list small">
+                        <li><strong>Severidad:</strong> Clasificación estricta (INFO, WARN, ERROR, CRITICAL).</li>
+                        <li><strong>Privacidad:</strong> Enmascarar datos sensibles que puedan aparecer en los
+                            registros.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "Las alertas te dicen que algo está mal; los logs te dicen por qué. Un sistema de monitorización sin
+                    logs centralizados es como tener una alarma de incendios pero no saber en qué habitación está el
+                    fuego."
+                </p>
+                <span class="quote-author">— Reliability Engineer</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

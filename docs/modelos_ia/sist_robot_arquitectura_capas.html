@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura en Capas - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende cómo se organizan los sistemas robotizados modernos en capas de Percepción, Decisión y Acción.">
+    <meta name="keywords"
+        content="Robótica, Arquitectura en Capas, IA, Percepción, Decisión, Acción, Sistemas Modulares">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <a href="index.html#seccion-4-4">Sistemas Robotizados</a> ›
+                    <span>Arquitectura en Capas</span>
+                </div>
+            </div>
+            <h1 class="text-center">Arquitectura en Capas</h1>
+            <p class="subtitle text-center">Organización modular para la inteligencia robótica moderna</p>
+        </header>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <h2>El Clásico Modelo Funcional</h2>
+            <p>
+                Para que un robot pueda operar de manera inteligente en un entorno complejo, su sistema de control no
+                puede ser un bloque monolítico. Los sistemas modernos adoptan una <strong>arquitectura modular
+                    organizada en niveles</strong>, donde cada capa tiene una responsabilidad clara y se comunica con
+                las demás mediante interfaces estándar.
+            </p>
+
+            <!-- DIAGRAMA DE ARQUITECTURA -->
+            <div class="svg-container mb-2 mt-2">
+                <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"
+                    style="max-width: 600px; margin: 0 auto; display: block;">
+                    <defs>
+                        <linearGradient id="gradP" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3a9bb0;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradD" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#76659a;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradA" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1C3D5A;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#142d42;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="shadow">
+                            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.2" />
+                        </filter>
+                        <!-- Marcadores de flecha pequeños y coloreados -->
+                        <marker id="arrowPrimary" markerWidth="4" markerHeight="3" refX="3" refY="1.5" orient="auto">
+                            <polygon points="0 0, 4 1.5, 0 3" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrowSecondary" markerWidth="4" markerHeight="3" refX="3" refY="1.5" orient="auto">
+                            <polygon points="0 0, 4 1.5, 0 3" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+
+                    <!-- CAPA 1: PERCEPCIÓN -->
+                    <rect x="50" y="50" width="500" height="60" rx="10" fill="url(#gradP)" filter="url(#shadow)" />
+                    <text x="300" y="87" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="16"
+                        fill="white">1. CAPA DE PERCEPCIÓN</text>
+
+                    <!-- Flecha 1 -> 2 -->
+                    <path d="M 300,110 L 300,140" stroke="#49B9CE" stroke-width="2" marker-end="url(#arrowPrimary)" />
+                    <text x="315" y="130" font-family="Montserrat" font-size="10" fill="#49B9CE"
+                        font-weight="bold">DATOS PROCESADOS</text>
+
+                    <!-- CAPA 2: DECISIÓN -->
+                    <rect x="50" y="150" width="500" height="60" rx="10" fill="url(#gradD)" filter="url(#shadow)" />
+                    <text x="300" y="187" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="16" fill="white">2. CAPA DE DECISIÓN (IA)</text>
+
+                    <!-- Flecha 2 -> 3 -->
+                    <path d="M 300,210 L 300,240" stroke="#8A7AAF" stroke-width="2" marker-end="url(#arrowSecondary)" />
+                    <text x="315" y="230" font-family="Montserrat" font-size="10" fill="#8A7AAF"
+                        font-weight="bold">ÓRDENES DE ACCIÓN</text>
+
+                    <!-- CAPA 3: ACCIÓN -->
+                    <rect x="50" y="250" width="500" height="60" rx="10" fill="url(#gradA)" filter="url(#shadow)" />
+                    <text x="300" y="287" text-anchor="middle" font-family="Montserrat" font-weight="bold"
+                        font-size="16" fill="white">3. CAPA DE ACCIÓN</text>
+
+                    <!-- Decoraciones laterales -->
+                    <text x="60" y="40" font-family="Montserrat" font-size="10" fill="#49B9CE"
+                        font-weight="bold">ENTRADA: SENSORES</text>
+                    <text x="440" y="330" font-family="Montserrat" font-size="10" fill="#1C3D5A"
+                        font-weight="bold">SALIDA: ACTUADORES</text>
+                </svg>
+            </div>
+
+            <p class="text-center mt-2" style="font-size: 0.9rem; color: var(--text-medium);">
+                <em>Diagrama conceptual de la arquitectura funcional Perception-Decision-Action (PDA).</em>
+            </p>
+        </section>
+
+        <!-- DESGLOSE DE CAPAS -->
+        <section>
+            <h2>Los Tres Pilares de la Operación</h2>
+            <div class="step-list">
+                <!-- Percepción -->
+                <div class="step-item">
+                    <div class="icon-circle"
+                        style="background: var(--color-primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem; box-shadow: 0 2px 8px rgba(73, 185, 206, 0.3);">
+                        👁️</div>
+                    <div class="step-content">
+                        <h4 class="color-primary">1. Percepción</h4>
+                        <p>Es la ventana del robot hacia el mundo exterior. Se encarga de la <strong>adquisición y
+                                procesamiento</strong> de datos sensoriales (LIDAR, visión por computador, IMU). No solo
+                            captura el dato, sino que lo filtra y lo transforma en información útil, como una nube de
+                            puntos
+                            o un objeto identificado.</p>
+                    </div>
+                </div>
+
+                <!-- Decisión -->
+                <div class="step-item"
+                    style="background: var(--bg-secondary-light); border-left-color: var(--color-secondary);">
+                    <div class="icon-circle"
+                        style="background: var(--color-secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem; box-shadow: 0 2px 8px rgba(138, 122, 175, 0.3);">
+                        🧠</div>
+                    <div class="step-content">
+                        <h4 class="color-secondary">2. Decisión</h4>
+                        <p>Es el "cerebro" donde reside la lógica y la IA. Aquí se realiza la <strong>planificación y
+                                selección de acciones</strong> basándose en los datos de la capa anterior y las metas
+                            del
+                            robot. Es el nivel donde se ejecutan los algoritmos de navegación, evasión de obstáculos y
+                            razonamiento.</p>
+                    </div>
+                </div>
+
+                <!-- Acción -->
+                <div class="step-item" style="background: rgba(28, 61, 90, 0.05); border-left-color: #1C3D5A;">
+                    <div class="icon-circle"
+                        style="background: #1C3D5A; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem; box-shadow: 0 2px 8px rgba(28, 61, 90, 0.3);">
+                        🦾</div>
+                    <div class="step-content">
+                        <h4 style="color: #1C3D5A;">3. Acción</h4>
+                        <p>Constituye el sistema motor. Transforma las decisiones de alto nivel en señales eléctricas
+                            para
+                            los <strong>actuadores</strong> (motores, pinzas, leds). Se ocupa de la ejecución física de
+                            las
+                            órdenes y de los bucles de control de bajo nivel para asegurar movimientos precisos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTAJAS -->
+        <section>
+            <div class="highlight-box primary">
+                <h3 class="color-primary">💡 ¿Por qué usar capas?</h3>
+                <p class="content">
+                    Esta estructura modular no es aleatoria; ofrece beneficios críticos para el desarrollo industrial:
+                </p>
+                <ul class="content-list">
+                    <li><strong>Integración de IA:</strong> Permite actualizar los modelos de IA en la capa de decisión
+                        sin afectar al hardware o al procesamiento de bajo nivel.</li>
+                    <li><strong>Mantenimiento:</strong> Facilita la detección de errores. Si el robot no se mueve, sabes
+                        si el fallo está en el cálculo (Decisión) o en el motor (Acción).</li>
+                    <li><strong>Escalabilidad:</strong> Se pueden añadir nuevos sensores a la capa de percepción de
+                        forma independiente, enriqueciendo la visión del robot sin reescribir todo el sistema.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="highlight-box warning"
+                style="padding: 2.5rem; border-radius: 1.5rem; text-align: center; border: 2px solid var(--color-warning-medium); background: linear-gradient(135deg, var(--bg-warning-light) 0%, #ffffff 100%);">
+                <h3 style="color: var(--color-warning); margin-bottom: 1.5rem; font-size: 1.75rem;">🎯 Conclusión</h3>
+                <p
+                    style="font-size: 1.125rem; color: var(--text-dark); max-width: 850px; margin: 0 auto; line-height: 1.6; font-weight: 500;">
+                    La organización en capas de Percepción, Decisión y Acción es el estándar que permite que los
+                    sistemas robotizados pasen de ser máquinas reactivas a ser <strong>entidades inteligentes y
+                        autónomas</strong> capaces de interactuar productivamente en entornos humanos.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

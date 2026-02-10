@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategias de Inferencia en Sistemas Expertos - iLERNA</title>
+    <meta name="description"
+        content="Aprende sobre las dos estrategias principales del motor de inferencia: encadenamiento hacia adelante y hacia atrás. Cómo razonan los sistemas expertos.">
+    <meta name="keywords"
+        content="Motor de Inferencia, Encadenamiento hacia adelante, Encadenamiento hacia atrás, Razonamiento IA, Sistemas Expertos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Estrategias de Inferencia</span>
+                </div>
+            </div>
+            <h1 class="text-center">Estrategias de Inferencia</h1>
+            <p class="subtitle text-center">Cómo "piensa" el motor de un sistema experto</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">El Ciclo del Razonamiento</h2>
+            <p>
+                El motor de inferencia es el componente que dota de "inteligencia" al sistema experto. Su función es
+                procesar las reglas y los hechos para generar nuevas conclusiones o validar hipótesis. Dependiendo de si
+                partimos de los datos disponibles o de la meta que queremos alcanzar, utilizaremos una de las dos
+                estrategias fundamentales del razonamiento simbólico.
+            </p>
+        </section>
+
+        <!-- Estrategias de Razonamiento -->
+        <section>
+            <h2 class="color-secondary">Los Dos Caminos de la Lógica</h2>
+
+            <div class="grid-features">
+                <!-- 1. Encadenamiento hacia adelante -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">1. Encadenamiento hacia adelante ➡️</h4>
+                    <p class="small text-muted mb-1"><em>(Forward Chaining)</em></p>
+                    <p>
+                        Esta estrategia es <strong>guiada por los datos</strong>. El sistema examina los hechos
+                        conocidos y busca qué reglas pueden aplicarse para derivar nuevos hechos, repitiendo el proceso
+                        hasta que no se encuentran más conclusiones.
+                    </p>
+                    <p class="mt-1">Es ideal para tareas de <strong>diagnóstico preventivo o monitorización</strong>
+                        constante en tiempo real.</p>
+                    <div class="example-item mt-1">
+                        <p class="title">Ejemplo de Flujo:</p>
+                        <p class="description">Fiebre + Tos <span class="color-primary">→</span> Sospecha de Infección
+                            <span class="color-primary">→</span> Confirmar Neumonía.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Encadenamiento hacia atrás -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">2. Encadenamiento hacia atrás ⬅️</h4>
+                    <p class="small text-muted mb-1"><em>(Backward Chaining)</em></p>
+                    <p>
+                        Esta estrategia es <strong>guiada por el objetivo</strong>. El sistema parte de una hipótesis
+                        final (meta) y desanda el camino buscando qué reglas y qué hechos serían necesarios para
+                        demostrar que esa meta es verdadera.
+                    </p>
+                    <p class="mt-1">Se utiliza cuando queremos <strong>validar o refutar una sospecha</strong> concreta
+                        de manera eficiente.</p>
+                    <div class="example-item mt-1">
+                        <p class="title">Ejemplo de Flujo:</p>
+                        <p class="description">Meta = Neumonía <span class="color-secondary">→</span> Buscar reglas de
+                            soporte <span class="color-secondary">→</span> Verificar hechos disponibles.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparativa Visual -->
+        <section>
+            <h2 class="color-primary">Comparativa de Estrategias</h2>
+            <p>
+                En la práctica, muchos sistemas expertos modernos utilizan <strong>sistemas híbridos</strong> que
+                combinan ambos métodos para equilibrar la rapidez en la detección con la profundidad en la validación.
+            </p>
+
+            <div class="svg-container" style="max-width: 800px; margin: 2rem auto;">
+                <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#49B9CE" />
+                        </marker>
+                        <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+
+                    <!-- Carril Superior: Adelante -->
+                    <rect x="50" y="40" width="700" height="100" rx="15" fill="#E8F7FA" stroke="#49B9CE"
+                        stroke-width="1" stroke-dasharray="5,5" />
+                    <text x="70" y="65" font-family="Montserrat" font-size="14" font-weight="bold" fill="#333">Hacia
+                        Adelante: De Datos a Resultados</text>
+
+                    <text x="100" y="105" font-family="Montserrat" font-size="12" fill="#777">DATO 1</text>
+                    <text x="200" y="105" font-family="Montserrat" font-size="12" fill="#777">DATO 2</text>
+                    <line x1="300" y1="100" x2="600" y2="100" stroke="#49B9CE" stroke-width="3"
+                        marker-end="url(#arrow-blue)" />
+                    <text x="630" y="105" font-family="Montserrat" font-size="14" font-weight="bold"
+                        fill="#49B9CE">CONCLUSIÓN</text>
+
+                    <!-- Carril Inferior: Atrás -->
+                    <rect x="50" y="160" width="700" height="100" rx="15" fill="#F0EDF5" stroke="#8A7AAF"
+                        stroke-width="1" stroke-dasharray="5,5" />
+                    <text x="70" y="185" font-family="Montserrat" font-size="14" font-weight="bold" fill="#333">Hacia
+                        Atrás: De la Meta a los Requisitos</text>
+
+                    <text x="100" y="225" font-family="Montserrat" font-size="14" font-weight="bold"
+                        fill="#8A7AAF">META</text>
+                    <line x1="600" y1="220" x2="200" y2="220" stroke="#8A7AAF" stroke-width="3"
+                        marker-end="url(#arrow-purple)" />
+                    <text x="630" y="225" font-family="Montserrat" font-size="14" font-weight="bold"
+                        fill="#777">REQUISITOS</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

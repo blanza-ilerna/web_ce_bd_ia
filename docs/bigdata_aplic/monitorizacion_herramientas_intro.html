@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas de Monitorización - iLERNA</title>
+    <meta name="description"
+        content="Introducción a las herramientas de monitorización en Big Data: instrumentación, almacenamiento de series temporales y plataformas de visualización.">
+    <meta name="keywords"
+        content="Monitorización Big Data, Herramientas, JobTracker, NameNode, Grafana, Prometheus, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Herramientas de Monitorización</span>
+                </div>
+            </div>
+            <h1 class="text-center">Herramientas de Monitorización</h1>
+            <p class="subtitle text-center">Estrategias de instrumentación y ecosistemas de observabilidad</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">El Trípode de la Observabilidad</h2>
+            <p>
+                La monitorización de sistemas Big Data no es una tarea aislada, sino una combinación de tres pilares
+                técnicos fundamentales que permiten entender el estado real de la infraestructura:
+            </p>
+            <div class="grid-3 mt-2">
+                <div class="info-box">
+                    <h4 class="color-primary">⚙️ Instrumentación</h4>
+                    <p class="small">Técnicas para capturar métricas de rendimiento directamente desde el código o el
+                        hardware.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-primary">💾 Almacenamiento</h4>
+                    <p class="small">Uso de bases de datos de series temporales (TSDB) para registrar eventos
+                        cronológicos inalterables.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="color-primary">📊 Visualización</h4>
+                    <p class="small">Representación gráfica del estado del sistema mediante paneles accesibles para la
+                        toma de decisiones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objetivo: Control de Componentes -->
+        <section>
+            <h2 class="color-secondary">Propósito y Componentes Críticos</h2>
+            <p>El propósito principal es garantizar que los diferentes servicios vitales del ecosistema Big Data
+                funcionen bajo los niveles de rendimiento esperados:</p>
+
+            <div class="card secondary-bg">
+                <ul class="custom-list">
+                    <li><strong>JobTracker:</strong> Supervisión de la asignación y progreso de tareas MapReduce.</li>
+                    <li><strong>NameNode:</strong> Vigilancia del estado del sistema de archivos y metadatos del
+                        clúster.</li>
+                    <li><strong>DataNodes:</strong> Control de la salud de los bloques de datos y capacidad de
+                        almacenamiento.</li>
+                    <li><strong>ResourceManagers (YARN):</strong> Gestión eficiente de los recursos de computación
+                        (CPU/RAM).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Ecosistema Tecnológico -->
+        <section>
+            <h2 class="color-primary">Panorámica de Herramientas</h2>
+            <p>En entornos empresariales, solemos encontrar una arquitectura híbrida que combina herramientas nativas
+                con plataformas externas especializadas:</p>
+
+            <div class="grid-2-cols mt-1">
+                <div class="card white shadow">
+                    <h4 class="color-primary">Herramientas Nativas</h4>
+                    <p class="small">Interfaces web integradas por defecto en el ecosistema Hadoop (JobTracker Web UI,
+                        NameNode UI). Proporcionan una visión técnica directa y sin latencia.</p>
+                </div>
+                <div class="card white shadow">
+                    <h4 class="color-primary">Plataformas Externas</h4>
+                    <p class="small">Sistemas de observabilidad centralizados como <strong>Ganglia, Prometheus,
+                            Grafana</strong> o <strong>Cloudera Manager</strong>, que permiten correlacionar métricas de
+                        múltiples fuentes en un solo panel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SVG Monitoring Workflow -->
+        <section>
+            <h2 class="color-secondary">Flujo de Monitorización</h2>
+            <div class="svg-container"
+                style="max-width: 650px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 15px; border: 1px solid var(--border-light);">
+                <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Source -->
+                    <rect x="20" y="70" width="100" height="60" rx="5" fill="#e2e8f0" stroke="#64748b" />
+                    <text x="70" y="105" text-anchor="middle" font-family="Montserrat" font-size="10" font-weight="bold"
+                        fill="#475569">MÉTRICAS</text>
+
+                    <line x1="120" y1="100" x2="180" y2="100" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <!-- Collect/Instrument -->
+                    <rect x="180" y="70" width="120" height="60" rx="5" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" />
+                    <text x="240" y="100" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        font-weight="bold" fill="var(--color-primary)">INSTRUMENTAR</text>
+                    <text x="240" y="115" text-anchor="middle" font-family="Montserrat" font-size="8"
+                        fill="var(--color-primary)">(Prometheus)</text>
+
+                    <line x1="300" y1="100" x2="360" y2="100" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <!-- Store/Visualize -->
+                    <rect x="360" y="70" width="120" height="60" rx="5" fill="var(--bg-secondary-light)"
+                        stroke="var(--color-secondary)" />
+                    <text x="420" y="100" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        font-weight="bold" fill="var(--color-secondary)">VISUALIZAR</text>
+                    <text x="420" y="115" text-anchor="middle" font-family="Montserrat" font-size="8"
+                        fill="var(--color-secondary)">(Grafana)</text>
+
+                    <line x1="480" y1="100" x2="540" y2="100" stroke="var(--color-secondary)" stroke-width="2"
+                        marker-end="url(#arrow)" />
+
+                    <!-- Insight -->
+                    <circle cx="560" cy="100" r="20" fill="#fff" stroke="#333" />
+                    <text x="560" y="105" text-anchor="middle" font-family="Montserrat" font-size="12">💡</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Resumen final -->
+        <section>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    "La monitorización efectiva no se trata de tener mil gráficos, sino de tener los tres gráficos que
+                    te dicen por qué el sistema se va a detener mañana."
+                </p>
+                <span class="quote-author">— Systems Architect</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
