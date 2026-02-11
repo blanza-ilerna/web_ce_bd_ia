@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="RTP (Real-Time Transport Protocol): Transporte de audio y vídeo en tiempo real - iLERNA">
+    <meta name="keywords" content="RTP, Real-Time Transport Protocol, Jitter, Latencia, VoIP, Multimedia, Buffering">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>RTP: Transporte en Tiempo Real | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Importar Prism.js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Protocolo RTP</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">RTP (Real-Time Transport Protocol)</h1>
+            <p class="subtitle">La clave para la entrega fluida de audio y vídeo en tiempo real.</p>
+        </div>
+
+        <!-- SECCIÓN 1: DEFINICIÓN -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es el Protocolo RTP?</h2>
+            <div class="card primary">
+                <p>
+                    El <strong>Real-Time Transport Protocol (RTP)</strong> es el estándar encargado de transportar
+                    flujos de audio y vídeo a través de redes IP con requisitos críticos de tiempo. A diferencia de
+                    otros protocolos de transferencia de archivos, RTP está diseñado para que el receptor pueda
+                    reconstruir los datos multimedia conforme llegan, manteniendo la coherencia temporal.
+                </p>
+                <p class="mt-4">
+                    Es la pieza fundamental en aplicaciones de videoconferencia, streaming en directo y telefonía IP,
+                    donde cualquier retraso o desorden arruinaría la experiencia del usuario.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: FUNCIONES PRINCIPALES -->
+        <section class="section">
+            <h2 class="color-secondary">Funciones principales de RTP</h2>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Ordenación de Paquetes</h4>
+                    <p>Aunque los paquetes IP lleguen desordenados, RTP utiliza números de secuencia para que el
+                        receptor pueda colocarlos en el orden correcto.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Sincronización Lip-Sync</h4>
+                    <p>Gestiona los flujos de audio y vídeo para que coincidan perfectamente (ejemplo: que el audio
+                        coincida con los labios en un vídeo).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Marcas de Tiempo</h4>
+                    <p>Incluye <em>timestamps</em> para garantizar que el contenido se reproduzca con la fluidez y el
+                        ritmo originales.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Baja Latencia (UDP)</h4>
+                    <p>Se apoya en UDP para evitar la sobrecarga de las retransmisiones, priorizando la inmediatez sobre
+                        la recuperación de datos perdidos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EL PROBLEMA DEL JITTER -->
+        <section class="section">
+            <h2 class="color-secondary">Desafíos Técnicos: El Jitter</h2>
+            <div class="card secondary">
+                <p>
+                    El <strong>Jitter</strong> es la variación en el tiempo de llegada de los paquetes. En una red
+                    ideal, los paquetes llegan a intervalos constantes; en una red real, unos pueden tardar 20ms y otros
+                    200ms debido a la congestión.
+                </p>
+                <div class="highlight-box secondary mt-4">
+                    <p>
+                        Para compensar este fenómeno, RTP utiliza técnicas de <strong>"buffering"</strong>: crea un
+                        pequeño almacenamiento temporal que suaviza las variaciones de llegada y evita cortes bruscos en
+                        el audio o vídeo.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EJEMPLO PRÁCTICO -->
+        <section class="section">
+            <h2 class="color-primary">Sinergia Tecnológica</h2>
+            <div class="expert-quote">
+                <div class="quote-text">
+                    <strong>💡 Ejemplo:</strong> Una llamada mediante <strong>Google Meet, Zoom o WebRTC</strong>
+                    utiliza RTP para enviar audio y vídeo comprimido. Si la red sufre micro-cortes, es el protocolo RTP
+                    el que decide cómo sincronizar los paquetes que faltan para que la conversación no se detenga.
+                </div>
+                <div class="quote-author">Comunicación en Tiempo Real</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

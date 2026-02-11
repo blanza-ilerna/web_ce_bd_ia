@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cómo se digitalizan los servicios tradicionales (Voz, TV, Radio) - iLERNA">
+    <meta name="keywords" content="Digitalización, VoIP, IPTV, OTT, Streaming, Podcast, Telecomunicaciones">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Digitalización de Servicios Tradicionales | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Importar Prism.js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Digitalización de Servicios</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Cómo se digitalizan los servicios tradicionales</h1>
+            <p class="subtitle">La transformación de señales analógicas en paquetes de datos IP</p>
+        </div>
+
+        <!-- SECCIÓN 1: TELEFONÍA -->
+        <section class="section">
+            <h2 class="color-primary">☎️ Telefonía → VoIP (Voice over IP)</h2>
+            <div class="card primary">
+                <p>
+                    La voz analógica se convierte en datos digitales mediante un proceso de muestreo
+                    <strong>(PCM)</strong>, se comprime
+                    usando <strong>códecs</strong> especializados (como Opus o G.711) y se encapsula dentro de paquetes
+                    <strong>IP</strong>.
+                </p>
+                <div class="highlight-box primary mt-4">
+                    <p class="mb-2"><strong>Ventajas Clave:</strong></p>
+                    <ul>
+                        <li>Reducción drástica de costes de infraestructura.</li>
+                        <li>Integración total con otros servicios: videollamadas, mensajería y registro centralizado.
+                        </li>
+                        <li>Habilitación de <strong>IA</strong> para transcripción en tiempo real o traducción
+                            automática.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE MUESTREO (PCM) -->
+        <section class="section">
+            <h2 class="color-secondary">El Proceso de Muestreo (PCM)</h2>
+            <div class="card secondary">
+                <p>
+                    El <strong>Pulse Code Modulation (PCM)</strong> es la técnica fundamental para transformar el sonido
+                    analógico en una representación digital comercial o técnica bajo redes IP. Este proceso se basa en
+                    capturar instantáneas de la señal eléctrica y convertirlas en una secuencia de números que una
+                    computadora puede procesar.
+                </p>
+                <p>
+                    En primer lugar, se realiza el <strong>muestreo</strong>, que consiste en tomar medidas de la
+                    amplitud de la onda a intervalos de tiempo fijos. Según el Teorema de Nyquist-Shannon, para
+                    reconstruir fielmente una señal, debemos muestrear al menos al doble de su frecuencia máxima. Por
+                    ello, el estándar de audio CD utiliza <strong>44.100 muestras por segundo</strong>, cubriendo el
+                    rango audible humano.
+                </p>
+                <p>
+                    Tras el muestreo, ocurre la <strong>cuantización</strong>: cada muestra se ajusta al nivel más
+                    cercano dentro de una escala finita definida por la profundidad de bits (ej: 16 o 24 bits). Cuantos
+                    más bits usemos, menor será el "error de cuantización" y más dinámico y limpio será el sonido
+                    resultante. Finalmente, estos valores se codifican en <strong>código binario</strong> para su
+                    transporte sobre tramas de datos digitales.
+                </p>
+            </div>
+
+            <div class="svg-container">
+                <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="800" height="350" fill="#fcfcfc" rx="15" />
+
+                    <!-- Rejilla de Cuantización -->
+                    <g stroke="#eee" stroke-width="1">
+                        <line x1="60" y1="100" x2="740" y2="100" />
+                        <line x1="60" y1="150" x2="740" y2="150" />
+                        <line x1="60" y1="200" x2="740" y2="200" />
+                        <line x1="60" y1="250" x2="740" y2="250" />
+                    </g>
+
+                    <!-- Ejes -->
+                    <line x1="60" y1="50" x2="60" y2="300" stroke="#333" stroke-width="2" />
+                    <line x1="60" y1="300" x2="760" y2="300" stroke="#333" stroke-width="2" />
+                    <text x="30" y="175" transform="rotate(-90, 30, 175)" font-size="12" font-weight="bold"
+                        fill="#666">Nivel (Bits)</text>
+                    <text x="400" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">Tiempo
+                        (Muestreo)</text>
+
+                    <!-- Onda Analógica -->
+                    <path d="M 60 175 C 130 50, 200 50, 270 175 S 410 300, 480 175 S 620 50, 690 175 T 760 175"
+                        fill="none" stroke="#49B9CE" stroke-width="3" stroke-dasharray="10,5" opacity="0.6" />
+
+                    <!-- Muestras PCM Animadas -->
+                    <g fill="#8A7AAF">
+                        <rect x="100" y="100" width="12" height="200">
+                            <animate attributeName="height" from="0" to="200" dur="0.8s" begin="0.1s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="100" dur="0.8s" begin="0.1s" fill="freeze" />
+                        </rect>
+                        <rect x="160" y="70" width="12" height="230">
+                            <animate attributeName="height" from="0" to="230" dur="0.8s" begin="0.3s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="70" dur="0.8s" begin="0.3s" fill="freeze" />
+                        </rect>
+                        <rect x="220" y="90" width="12" height="210">
+                            <animate attributeName="height" from="0" to="210" dur="0.8s" begin="0.5s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="90" dur="0.8s" begin="0.5s" fill="freeze" />
+                        </rect>
+                        <rect x="280" y="180" width="12" height="120">
+                            <animate attributeName="height" from="0" to="120" dur="0.8s" begin="0.7s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="180" dur="0.8s" begin="0.7s" fill="freeze" />
+                        </rect>
+                        <rect x="340" y="240" width="12" height="60">
+                            <animate attributeName="height" from="0" to="60" dur="0.8s" begin="0.9s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="240" dur="0.8s" begin="0.9s" fill="freeze" />
+                        </rect>
+                        <rect x="400" y="255" width="12" height="45">
+                            <animate attributeName="height" from="0" to="45" dur="0.8s" begin="1.1s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="255" dur="0.8s" begin="1.1s" fill="freeze" />
+                        </rect>
+                        <rect x="460" y="210" width="12" height="90">
+                            <animate attributeName="height" from="0" to="90" dur="0.8s" begin="1.3s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="210" dur="0.8s" begin="1.3s" fill="freeze" />
+                        </rect>
+                        <rect x="520" y="140" width="12" height="160">
+                            <animate attributeName="height" from="0" to="160" dur="0.8s" begin="1.5s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="140" dur="0.8s" begin="1.5s" fill="freeze" />
+                        </rect>
+                        <rect x="580" y="80" width="12" height="220">
+                            <animate attributeName="height" from="0" to="220" dur="0.8s" begin="1.7s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="80" dur="0.8s" begin="1.7s" fill="freeze" />
+                        </rect>
+                        <rect x="640" y="110" width="12" height="190">
+                            <animate attributeName="height" from="0" to="190" dur="0.8s" begin="1.9s" fill="freeze" />
+                            <animate attributeName="y" from="300" to="110" dur="0.8s" begin="1.9s" fill="freeze" />
+                        </rect>
+                    </g>
+
+                    <!-- Leyenda -->
+                    <circle cx="610" cy="40" r="5" fill="#49B9CE" opacity="0.6" />
+                    <text x="625" y="45" font-size="11" fill="#444">Señal Analógica</text>
+                    <rect x="605" y="55" width="10" height="10" fill="#8A7AAF" />
+                    <text x="625" y="65" font-size="11" fill="#444">Muestras Binarias</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TELEVISIÓN -->
+        <section class="section">
+            <h2 class="color-primary">📺 Televisión → IPTV y OTT</h2>
+            <div class="card primary">
+                <p>
+                    La televisión deja de ser un flujo analógico continuo y pasa a ser <strong>vídeo digital
+                        comprimido</strong> bajo estándares como H.264, H.265 o AV1. El contenido se distribuye mediante
+                    redes gestionadas <strong>(IPTV)</strong> o a través del Internet abierto <strong>(OTT)</strong>.
+                </p>
+                <div class="highlight-box primary mt-4">
+                    <p class="mb-2"><strong>Ventajas Clave:</strong></p>
+                    <ul>
+                        <li>Máxima calidad (4K/8K) y control total por parte del usuario.</li>
+                        <li>Personalización extrema del contenido mediante algoritmos de <strong>IA</strong> de
+                            recomendación.</li>
+                        <li>Funcionalidades avanzadas: pausar el directo, retroceder y multidispositivo.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: ¿QUÉ ES OTT? -->
+        <section class="section">
+            <h2 class="color-secondary">Entendiendo el modelo OTT</h2>
+            <div class="card secondary">
+                <p>
+                    El término <strong>Over-the-Top (OTT)</strong> se refiere a la entrega de contenidos de audio, vídeo
+                    y otros medios a través de Internet, sin la implicación directa de los operadores de red
+                    tradicionales (como las compañías de cable o satélite).
+                </p>
+                <p class="mt-4">
+                    Se denomina "por encima" porque el servicio se monta sobre la conexión de datos que ya tiene el
+                    usuario. Plataformas como <strong>Netflix, Disney+, YouTube o Spotify</strong> son líderes en este
+                    modelo, permitiendo un acceso global e inmediato desde cualquier dispositivo conectado.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: RADIO -->
+        <section class="section">
+            <h2 class="color-primary">📻 Radio → Streaming y Podcast</h2>
+            <div class="card primary">
+                <p>
+                    La radio se transforma en <strong>audio digital</strong> distribuido mediante flujos de datos
+                    constantes (streaming) o archivos descargables. La audiencia ya no sintoniza frecuencias aéreas,
+                    sino que accede directamente a un servidor.
+                </p>
+                <div class="highlight-box primary mt-4">
+                    <p class="mb-2"><strong>Ventajas Clave:</strong></p>
+                    <ul>
+                        <li>Calidad de sonido estable, sin las interferencias típicas de las bandas AM/FM.</li>
+                        <li>Disponibilidad global inmediata desde cualquier punto con conexión a Internet.</li>
+                        <li>Nuevos formatos adaptables: radio a la carta, programas personalizados y podcasts.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

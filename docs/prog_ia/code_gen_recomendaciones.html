@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Seguridad y Control de Costes en IA Generativa - iLERNA">
+    <meta name="keywords" content="OpenAI API, Seguridad, Costes, Azure OpenAI, Vision, Voz, Python">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Seguridad y Control de Costes | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Importar Prism.js para colorear código -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Seguridad y Costes</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Seguridad y Control de Costes</h1>
+            <p class="subtitle">Buenas prácticas y optimización en servicios de IA</p>
+        </div>
+
+        <!-- SECCIÓN 1: RECOMENDACIONES FUNDAMENTALES -->
+        <section class="section">
+            <h2 class="color-dark">Recomendaciones de Seguridad y Control</h2>
+            <p class="mb-4">
+                El uso de APIs de Inteligencia Artificial generativa conlleva responsabilidades tanto de seguridad como
+                financieras. A continuación, se detallan las pautas esenciales para una gestión profesional:
+            </p>
+
+            <div class="grid-features mb-6">
+                <div class="feature-card primary">
+                    <h4>Claves Privadas</h4>
+                    <p>Nunca compartas tu <code>OPENAI_API_KEY</code> en repositorios públicos (GitHub, Google Drive,
+                        etc.). Si otros la usan, los costes se cargarán a tu cuenta.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Variables de Entorno</h4>
+                    <p>Usa variables de entorno (<code>.env</code>) y no escribas la clave directamente en el código
+                        fuente.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4>Límites de Uso</h4>
+                    <p>Define límites de gasto (Hard/Soft limits) en tu panel de control para evitar cargos inesperados.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4>Modelos Ligeros</h4>
+                    <p>Optimiza tus prompts y usa modelos como <code>gpt-4o-mini</code> cuando la tarea no requiera
+                        razonamiento complejo.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box warning">
+                <p>
+                    <strong>La Importancia de la Gestión:</strong> La <code>OPENAI_API_KEY</code> es el pase de acceso a
+                    los servicios de IA. Sin ella, el código no podrá comunicarse con los modelos. Sin embargo, su uso
+                    implica un coste económico por consumo, por lo que es fundamental gestionarla de forma responsable y
+                    segura.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ESTRACCIÓN ESTRUCTURADA -->
+        <section class="section">
+            <h2 class="color-dark">Texto: Asistente y Extracción Estructurada</h2>
+            <p class="mb-4">
+                Una de las capacidades más potentes es convertir lenguaje natural en datos estructurados (JSON), ideales
+                para procesar en backends o microservicios.
+            </p>
+
+            <div class="card primary">
+                <h3 class="color-primary">Ejemplo: Pedido a JSON</h3>
+                <pre class="line-numbers"><code class="language-python"># pip install openai
+from openai import OpenAI
+client = OpenAI()
+
+prompt = "Crea un pedido con 2 camisetas talla M y 1 sudadera talla L, envío urgente a Madrid."
+
+schema = {
+  "type":"object",
+  "properties":{
+    "items":{"type":"array","items":{
+      "type":"object",
+      "properties":{"producto":{"type":"string"},"cantidad":{"type":"integer"}, "talla":{"type":"string"}},
+      "required":["producto","cantidad","talla"]
+    }},
+    "envio":{"type":"string"},
+    "ciudad":{"type":"string"}
+  },
+  "required":["items","envio","ciudad"]
+}
+
+resp = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role":"user","content":prompt}],
+    response_format={"type":"json_schema","json_schema":{"name":"Pedido","schema":schema}}
+)
+
+print(resp.choices[0].message.content) # -> JSON listo para tu API</code></pre>
+            </div>
+
+            <div class="highlight-box primary mt-4">
+                <p><strong>Qué resuelve:</strong> Interfaces naturales para clientes y datos limpios para servicios
+                    digitales.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: AZURE OPENAI -->
+        <section class="section">
+            <h2 class="color-dark">Azure OpenAI: Entorno Corporativo</h2>
+            <p class="mb-4">
+                Para empresas que requieren mayor cumplimiento (compliance), seguridad en redes privadas y auditoría,
+                Azure OpenAI es la opción preferida.
+            </p>
+
+            <div class="card secondary">
+                <pre class="line-numbers"><code class="language-python"># pip install azure-ai-openai
+from azure.ai.openai import OpenAIClient
+from azure.core.credentials import AzureKeyCredential
+
+client = OpenAIClient(
+    endpoint="https://&lt;tu-endpoint&gt;.openai.azure.com/",
+    credential=AzureKeyCredential("&lt;AZURE_OPENAI_KEY&gt;")
+)
+
+resp = client.chat_completions.create(
+    model="&lt;tu-deployment-gpt-4o-mini&gt;",
+    messages=[{"role":"user","content":"Resume en 5 viñetas estas políticas internas..."}]
+)
+
+print(resp.choices[0].message.content)</code></pre>
+            </div>
+
+            <div class="highlight-box secondary mt-4">
+                <p><strong>Qué resuelve:</strong> Integración con redes privadas, auditoría, claves rotadas y RBAC de
+                    Azure.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: VISIÓN -->
+        <section class="section">
+            <h2 class="color-dark">Visión: Análisis de Imágenes</h2>
+            <p class="mb-4">
+                Podemos usar modelos de <span class="code-badge">Hugging Face</span> para describir imágenes o
+                clasificarlas sin necesidad de entrenar modelos propios (zero-shot).
+            </p>
+
+            <div class="card primary">
+                <pre class="line-numbers"><code class="language-python"># pip install transformers pillow torch
+from transformers import pipeline
+from PIL import Image
+
+# Ejemplo 1: Generación de subtítulos (Captions)
+img = Image.open("almacen.jpg")
+captioner = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
+print(captioner(img)[0]["generated_text"]) # "Shelves with blue boxes, barcode..."
+
+# Ejemplo 2: Clasificación Zero-shot con CLIP
+classifier = pipeline("zero-shot-image-classification", model="openai/clip-vit-base-patch32")
+labels = ["caja dañada", "estantería vacía", "producto fuera de lugar"]
+print(classifier(img, candidate_labels=labels))</code></pre>
+            </div>
+
+            <div class="highlight-box primary mt-4">
+                <p><strong>Qué resuelve:</strong> Inventario visual, control de calidad y alertas operativas sin
+                    etiquetar
+                    miles de imágenes.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: VOZ -->
+        <section class="section">
+            <h2 class="color-dark">Voz: STT y TTS</h2>
+            <p class="mb-4">
+                La interacción por voz se divide en dos fases: <strong>Speech-to-Text (STT)</strong> para transcribir y
+                <strong>Text-to-Speech (TTS)</strong> para responder verbalmente.
+            </p>
+
+            <div class="grid-2-cols mb-4">
+                <div class="card secondary">
+                    <h4 class="mb-2">STT con Whisper</h4>
+                    <pre class="line-numbers"><code class="language-python">from openai import OpenAI
+client = OpenAI()
+
+audio_file = open("llamada.mp3", "rb")
+trans = client.audio.transcriptions.create(
+    model="whisper-1",
+    file=audio_file
+)
+texto = trans.text</code></pre>
+                </div>
+                <div class="card secondary">
+                    <h4 class="mb-2">TTS con Azure</h4>
+                    <pre class="line-numbers"><code class="language-python"># pip install azure-cognitiveservices-speech
+import azure.cognitiveservices.speech as speechsdk
+
+respuesta = "Pedido actualizado. Llega el jueves."
+cfg = speechsdk.SpeechConfig(
+    subscription="&lt;KEY&gt;", 
+    region="&lt;REGION&gt;")
+synthesizer = speechsdk.SpeechSynthesizer(cfg)
+synthesizer.speak_text_async(respuesta).get()</code></pre>
+                </div>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p><strong>Qué resuelve:</strong> Asistentes por voz (Call Centers), accesibilidad para personas con
+                    discapacidad y operaciones "hands-free" en logística.</p>
+            </div>
+            <!-- SECCIÓN 6: LANGCHAIN (RAG) -->
+            <section class="section">
+                <h2 class="color-dark">RAG: "Pregunta a tus documentos" con LangChain</h2>
+                <p class="mb-4">
+                    El <strong>RAG (Retrieval Augmented Generation)</strong> permite que los modelos de IA consulten
+                    fuentes externas (PDFs, wikis, bases de datos) para responder con información actualizada y veraz.
+                </p>
+
+                <div class="card primary">
+                    <pre class="line-numbers"><code class="language-python"># pip install langchain openai faiss-cpu pypdf tiktoken
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+
+# 1) Ingesta y troceo del documento
+docs = PyPDFLoader("politica_privacidad.pdf").load()
+chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100).split_documents(docs)
+
+# 2) Indexado vectorial (Creación de la base de conocimientos)
+emb = OpenAIEmbeddings(model="text-embedding-3-large")
+vs = FAISS.from_documents(chunks, emb)
+
+# 3) Cadena de QA con retrieval (Búsqueda y Respuesta)
+llm = ChatOpenAI(model="gpt-4o-mini")
+qa = RetrievalQA.from_chain_type(llm=llm, retriever=vs.as_retriever())
+
+print(qa.invoke("¿Qué datos personales almacenamos y por cuánto tiempo?"))</code></pre>
+                </div>
+
+                <div class="highlight-box primary mt-4">
+                    <p><strong>Qué resuelve:</strong> Consultas precisas con citación de pasajes originales, evitando
+                        "alucinaciones" de la IA.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 7: LLAMAINDEX (CONECTORES) -->
+            <section class="section">
+                <h2 class="color-dark">RAG y conectores con LlamaIndex</h2>
+                <p class="mb-4">
+                    LlamaIndex destaca por su capacidad para conectar datos de múltiples fuentes (Google Drive, Notion,
+                    SQL) de forma sencilla y eficiente.
+                </p>
+
+                <div class="card secondary">
+                    <pre class="line-numbers"><code class="language-python"># pip install llama-index llama-index-readers-file llama-index-llms-openai
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms.openai import OpenAI
+
+llm = OpenAI(model="gpt-4o-mini")
+
+# Carga masiva de documentos (.pdf, .md, .txt) desde una carpeta
+docs = SimpleDirectoryReader("docs/").load_data()
+
+# Creación del índice
+index = VectorStoreIndex.from_documents(docs)
+
+# Motor de consulta inteligente
+query_engine = index.as_query_engine(llm=llm)
+print(query_engine.query("Dame un resumen con puntos clave de las políticas de devolución."))</code></pre>
+                </div>
+
+                <div class="highlight-box secondary mt-4">
+                    <p><strong>Qué resuelve:</strong> Creación de "knowledge bots" corporativos en minutos con una
+                        mantenibilidad excelente.</p>
+                </div>
+            </section>
+
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts para Prism.js -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+
+</html>
