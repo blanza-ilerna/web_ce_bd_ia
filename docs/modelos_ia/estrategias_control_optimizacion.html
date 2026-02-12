@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimización del Control en Sistemas Expertos - iLERNA</title>
+    <meta name="description"
+        content="ILERNA - Curso de Especialización de Big Data e Inteligencia Artificial. Aprende las técnicas de optimización del control para mejorar el rendimiento del razonamiento artificial.">
+    <meta name="keywords"
+        content="Optimización del Control, Heurísticas de Control, Prioridades de Metas, Pesos de Confianza, Poda de Reglas, Sistemas Expertos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <meta property="og:title" content="Optimización del Control en Sistemas Expertos - iLERNA">
+    <meta property="og:description"
+        content="Explora cómo las heurísticas de control permiten que los sistemas expertos razonen de forma más eficiente y rápida.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.ilerna.es/">
+    <meta property="article:author" content="Bjlanza">
+    <meta property="article:publisher" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Modelos de IA</a> ›
+                    <span>Optimización del Control</span>
+                </div>
+            </div>
+            <h1 class="text-center">Optimización del Control</h1>
+            <p class="subtitle text-center">Mejorando la eficiencia del razonamiento artificial</p>
+        </header>
+
+        <!-- Sección: Necesidad de Optimización -->
+        <section>
+            <h2 class="color-primary">¿Por qué optimizar el control?</h2>
+            <p>
+                En sistemas con bases de conocimientos extensas, el motor de inferencia puede verse abrumado por la
+                cantidad de reglas activables. La <strong>optimización del control</strong> busca aplicar métodos
+                inteligentes para que el sistema encuentre la solución de la forma más rápida y directa posible.
+            </p>
+            <div class="highlight-box primary">
+                <p>
+                    Estas técnicas permiten que el sistema <strong>razone más rápido sin perder rigor</strong> técnico
+                    ni
+                    fiabilidad en sus conclusiones.
+                </p>
+            </div>
+        </section>
+
+        <!-- Sección: Heurísticas de Control -->
+        <section>
+            <h2 class="color-secondary">Heurísticas de Control</h2>
+            <p>
+                Para mejorar el rendimiento, los sistemas expertos emplean diversas heurísticas que dirigen el proceso
+                deductivo:
+            </p>
+
+            <div class="svg-container" style="max-width: 800px; margin: 2rem auto;">
+                <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Definición de filtros y flechas -->
+                    <defs>
+                        <!-- Marcador púrpura pequeño -->
+                        <marker id="arrowhead-purple" markerWidth="6" markerHeight="4" refX="0" refY="2"
+                            orientation="auto">
+                            <polygon points="0 0, 6 2, 0 4" fill="#8A7AAF" />
+                        </marker>
+                        <!-- Marcador verde pequeño -->
+                        <marker id="arrowhead-green" markerWidth="6" markerHeight="4" refX="0" refY="2"
+                            orientation="auto">
+                            <polygon points="0 0, 6 2, 0 4" fill="#7FC562" />
+                        </marker>
+                    </defs>
+
+                    <!-- Etiquetas de etapa -->
+                    <text x="100" y="30" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14"
+                        font-weight="bold" fill="#333">Base de Conocimientos</text>
+                    <text x="400" y="30" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14"
+                        font-weight="bold" fill="#333">Heurísticas de Control</text>
+                    <text x="700" y="30" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14"
+                        font-weight="bold" fill="#333">Acción Directa</text>
+
+                    <!-- Panel Izquierdo: Muchas Reglas -->
+                    <g opacity="0.6">
+                        <rect x="30" y="60" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="110" y="60" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="30" y="100" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="110" y="100" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="30" y="140" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="110" y="140" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                        <rect x="70" y="180" width="60" height="25" rx="4" fill="#E8F7FA" stroke="#49B9CE"
+                            stroke-width="1" />
+                    </g>
+
+                    <!-- Flechas de entrada -->
+                    <path d="M 210 120 L 290 120" stroke="#8A7AAF" stroke-width="3" fill="none"
+                        marker-end="url(#arrowhead-purple)" />
+
+                    <!-- Embudo / Capa de Optimización -->
+                    <path d="M 300 60 L 500 60 L 460 180 L 340 180 Z" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2"
+                        stroke-dasharray="8,4" />
+
+                    <!-- Textos dentro del embudo -->
+                    <text x="400" y="95" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11"
+                        font-weight="bold" fill="#8A7AAF">PRIORIDAD</text>
+                    <text x="400" y="125" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11"
+                        font-weight="bold" fill="#8A7AAF">CONFIANZA</text>
+                    <text x="400" y="155" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11"
+                        font-weight="bold" fill="#8A7AAF">PODA</text>
+
+                    <!-- Flecha de salida optimizada -->
+                    <path d="M 510 120 L 600 120" stroke="#7FC562" stroke-width="4" fill="none"
+                        marker-end="url(#arrowhead-green)" />
+
+                    <!-- Resultado: Bloque Destacado -->
+                    <rect x="620" y="95" width="160" height="50" rx="10" fill="#EEF9E8" stroke="#7FC562"
+                        stroke-width="2" />
+                    <text x="700" y="120" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12"
+                        font-weight="bold" fill="#2E7D32">SOLUCIÓN</text>
+                    <text x="700" y="135" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9"
+                        fill="#2E7D32">Rendimiento Máximo</text>
+                </svg>
+            </div>
+
+            <div class="grid-features">
+                <!-- Prioridades de Metas -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎯 Prioridades de Metas</h4>
+                    <p>El motor no evalúa todas las reglas por igual, sino que se centra primero en los
+                        <strong>objetivos más relevantes</strong> o urgentes para el problema planteado.
+                    </p>
+                </div>
+
+                <!-- Pesos de Confianza -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚖️ Pesos de Confianza</h4>
+                    <p>Se ejecutan con prioridad las reglas que cuentan con una <strong>mayor fiabilidad</strong>,
+                        certeza o respaldo estadístico, acelerando el camino hacia una solución segura.</p>
+                </div>
+
+                <!-- Poda de Reglas -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">✂️ Poda de Reglas</h4>
+                    <p>Consiste en <strong>eliminar temporalmente</strong> aquellas reglas que, por el contexto actual
+                        del problema, se sabe que no aportarán información útil, reduciendo el espacio de búsqueda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Conclusión -->
+        <section>
+            <h2 class="color-primary">Velocidad y Rigor</h2>
+            <p>
+                La aplicación de estas técnicas no busca solo la velocidad, sino la <strong>eficiencia
+                    cognitiva</strong>.
+                Al igual que un experto humano ignora instintivamente datos irrelevantes, un sistema optimizado filtra
+                el ruido para centrarse en lo que realmente importa para dar una respuesta precisa.
+            </p>
+            <div class="info-module-card mt-2">
+                <p>
+                    <strong>Dato Clave:</strong> Un motor de inferencia optimizado puede reducir el tiempo de respuesta
+                    en órdenes de magnitud, haciendo viable su uso en sistemas de tiempo real o entornos de misión
+                    crítica.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

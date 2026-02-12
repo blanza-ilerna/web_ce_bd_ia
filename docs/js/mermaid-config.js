@@ -71,7 +71,8 @@ mermaid.initialize({
 
     // Configuración específica para mindmaps
     mindmap: {
-        padding: 20,
+        padding: 25,
+        maxNodeWidth: 180,
         useMaxWidth: true
     },
 
@@ -112,4 +113,42 @@ mermaid.initialize({
         axisFormat: '%Y-%m-%d',
         useMaxWidth: true
     }
+});
+
+// Estilo personalizado para el nodo central del mindmap
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(() => {
+        const svg = document.querySelector('.mermaid svg');
+        if (svg) {
+            const rootNode = svg.querySelector('[id*="mindmap-root"]');
+            if (rootNode) {
+                const circle = rootNode.querySelector('circle');
+                if (circle) {
+                    circle.style.fill = 'url(#ilerna-gradient)';
+                    circle.style.stroke = '#49B9CE';
+                    circle.style.strokeWidth = '3px';
+                }
+
+                const defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg', 'defs'), svg.firstChild);
+                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                gradient.setAttribute('id', 'ilerna-gradient');
+                gradient.setAttribute('x1', '0%');
+                gradient.setAttribute('y1', '0%');
+                gradient.setAttribute('x2', '100%');
+                gradient.setAttribute('y2', '100%');
+
+                const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop1.setAttribute('offset', '0%');
+                stop1.style.stopColor = '#49B9CE';
+
+                const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop2.setAttribute('offset', '100%');
+                stop2.style.stopColor = '#8A7AAF';
+
+                gradient.appendChild(stop1);
+                gradient.appendChild(stop2);
+                defs.appendChild(gradient);
+            }
+        }
+    }, 1000);
 });

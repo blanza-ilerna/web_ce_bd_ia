@@ -43,39 +43,32 @@
       <p>Visualización interactiva del módulo 5073</p>
     </div>
 
-    <!-- Leyenda -->
+
+    <!-- Mapa Mental de Prueba -->
     <section class="section">
-      <div class="legend">
-        <h3>📌 Leyenda del Mapa Mental</h3>
-        <div class="legend-items">
-          <div class="legend-item">
-            <div class="legend-color"
-              style="background: linear-gradient(135deg, #49B9CE, #8A7AAF); border-color: #49B9CE;"></div>
-            <span class="legend-label">Módulo Central</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: #E8F7FA; border-color: #49B9CE;"></div>
-            <span class="legend-label">Resultados de Aprendizaje (RA)</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: #F0EDF5; border-color: #8A7AAF;"></div>
-            <span class="legend-label">Contenidos Básicos</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: #FFF3E0; border-color: #FF6F00;"></div>
-            <span class="legend-label">Criterios de Evaluación</span>
-          </div>
-        </div>
+      <h3>Prueba Simple</h3>
+      <div class="mindmap-container">
+        <pre class="mermaid">
+mindmap
+  root((Test))
+    A
+      A1
+      A2
+    B
+      B1
+      B2
+        </pre>
       </div>
     </section>
 
     <!-- Mapa Mental -->
     <section class="section">
+      <h3>Mapa Mental Completo</h3>
       <div class="mindmap-container">
         <pre class="mermaid">
 mindmap
   root((Programacion IA))
-    RA1[Lenguajes Programacion]
+    RA1_Lenguajes
       Estructura
         Programa
         Etapas
@@ -84,7 +77,7 @@ mindmap
         Rendimiento
         Herramientas
         Soporte
-      Lenguajes IA
+      Lenguajes_IA
         Python
         R
         Java
@@ -97,18 +90,18 @@ mindmap
       Idoneidad
         Evaluacion
         Seleccion
-    RA2[Desarrollo Apps IA]
+    RA2_Desarrollo
       Plataformas
         Azure
         AWS
         Watson
         Alexa
         Google
-      Entornos Modelado
+      Entornos_Modelado
         Herramientas
         Librerias
         Algoritmos
-      Redes Neuronales
+      Redes_Neuronales
         TensorFlow
         Modulos
       Datos
@@ -120,7 +113,7 @@ mindmap
       Evaluacion
         Resultados
         Validacion
-    RA3[Convergencia Tech]
+    RA3_Convergencia
       Conexion
         Voz
         Datos
@@ -134,35 +127,35 @@ mindmap
         IoT
         Cloud
       Caracteristicas
-        Blockchain Tech
-        Internet Things
-        Cloud Computing
+        Blockchain_Tech
+        Internet_Things
+        Cloud_Computing
       Seguridad
         Proteccion
         Confianza
       Decisiones
         Estrategicas
         Negocio
-    RA4[Automatizacion]
+    RA4_Automatizacion
       Estrategias
         Corporativas
         Tendencias
-      Modelos Negocio
+      Modelos_Negocio
         Innovacion
         Transformacion
-      Relacion Cliente
+      Relacion_Cliente
         Empresas
         Gestion
-      Activos Recursos
+      Activos_Recursos
         Organizacion
         Optimizacion
-      Automatizacion Industrial
+      Automatizacion_Industrial
         Requerimientos
         Modelos
       Resultados
         Evaluacion
         Conveniencia
-                </pre>
+        </pre>
       </div>
     </section>
 
@@ -182,72 +175,6 @@ mindmap
   </footer>
 
   <script src="../js/lecciones.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#49B9CE',
-        primaryTextColor: '#FFFFFF',
-        primaryBorderColor: '#49B9CE',
-        secondaryColor: '#8A7AAF',
-        secondaryTextColor: '#FFFFFF',
-        secondaryBorderColor: '#8A7AAF',
-        tertiaryColor: '#E8F7FA',
-        tertiaryTextColor: '#333333',
-        tertiaryBorderColor: '#49B9CE',
-        lineColor: '#8A7AAF',
-        textColor: '#333333',
-        mainBkg: '#FFFFFF',
-        nodeBorder: '#49B9CE',
-        clusterBkg: '#F0EDF5',
-        fontSize: '14px',
-        fontFamily: 'Montserrat, sans-serif'
-      },
-      mindmap: {
-        padding: 25,
-        maxNodeWidth: 180
-      }
-    });
-
-    // Estilo personalizado para el nodo central del mindmap
-    document.addEventListener('DOMContentLoaded', function () {
-      setTimeout(() => {
-        const svg = document.querySelector('.mermaid svg');
-        if (svg) {
-          const rootNode = svg.querySelector('[id*="mindmap-root"]');
-          if (rootNode) {
-            const circle = rootNode.querySelector('circle');
-            if (circle) {
-              circle.style.fill = 'url(#ilerna-gradient)';
-              circle.style.stroke = '#49B9CE';
-              circle.style.strokeWidth = '3px';
-            }
-
-            const defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg', 'defs'), svg.firstChild);
-            const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-            gradient.setAttribute('id', 'ilerna-gradient');
-            gradient.setAttribute('x1', '0%');
-            gradient.setAttribute('y1', '0%');
-            gradient.setAttribute('x2', '100%');
-            gradient.setAttribute('y2', '100%');
-
-            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop1.setAttribute('offset', '0%');
-            stop1.style.stopColor = '#49B9CE';
-
-            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop2.setAttribute('offset', '100%');
-            stop2.style.stopColor = '#8A7AAF';
-
-            gradient.appendChild(stop1);
-            gradient.appendChild(stop2);
-            defs.appendChild(gradient);
-          }
-        }
-      }, 1000);
-    });
-  </script>
 </body>
 
 </html>
