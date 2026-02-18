@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cómo funciona el streaming técnicamente: Pasos, protocolos y buffering - iLERNA">
+    <meta name="keywords" content="Streaming, HLS, MPEG-DASH, WebRTC, Buffering, Protocolos Streaming">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Funcionamiento Técnico del Streaming | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Funcionamiento del Streaming</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Cómo funciona el streaming técnicamente</h1>
+            <p class="subtitle">El viaje de los datos desde la captura hasta tu pantalla.</p>
+        </div>
+
+        <!-- SECCIÓN 1: EL PROCESO PASO A PASO -->
+        <section class="section">
+            <h2 class="color-primary">La Cadena de Transmisión</h2>
+            <div class="card bg-white">
+                <p>Para que puedas ver un vídeo en alta definición sin interrupciones, los datos deben recorrer un
+                    camino complejo y altamente optimizado en cuestión de milisegundos:</p>
+                <!-- Lista de Pasos con Estilo Oficial -->
+                <div class="step-list mt-4">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Captura</h4>
+                            <p>El contenido se graba o genera mediante una cámara, micrófono o se lee desde un archivo
+                                preexistente.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Digitalización</h4>
+                            <p>La señal analógica se convierte en datos binarios procesables por ordenadores.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Compresión</h4>
+                            <p>Se utiliza un <strong>códec</strong> (como H.264 o AAC) para reducir el tamaño de los
+                                datos eliminando información redundante.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Segmentación</h4>
+                            <p>El archivo se divide en "trozos" o fragmentos muy pequeños de 2 a 10 segundos cada uno.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Distribución</h4>
+                            <p>Los fragmentos se envían a través de la red usando protocolos específicos.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Buffering</h4>
+                            <p>El dispositivo del usuario almacena un pequeño margen de datos por adelantado para
+                                prevenir cortes.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <h4>Reproducción</h4>
+                            <p>El contenido se visualiza mientras el siguiente fragmento sigue descargándose en segundo
+                                plano.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: DIAGRAMA TÉCNICO -->
+        <section class="section">
+            <h2 class="color-secondary">Visualización del Flujo Técnico</h2>
+            <div class="card bg-light text-center" style="padding: 2rem;">
+                <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+                    <!-- Definiciones -->
+                    <defs>
+                        <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6" />
+                        </marker>
+                    </defs>
+
+                    <!-- Origen -->
+                    <g transform="translate(30, 100)">
+                        <rect x="0" y="0" width="120" height="100" rx="10" fill="#f8f9fa" stroke="#e74c3c"
+                            stroke-width="2" />
+                        <text x="60" y="45" text-anchor="middle" font-weight="bold" fill="#e74c3c">CAPTURA</text>
+                        <circle cx="60" cy="75" r="15" fill="#e74c3c" />
+                    </g>
+
+                    <line x1="150" y1="150" x2="180" y2="150" stroke="#95a5a6" stroke-width="2"
+                        marker-end="url(#arrow-gray)" />
+
+                    <!-- Procesamiento -->
+                    <g transform="translate(190, 80)">
+                        <rect x="0" y="0" width="180" height="140" rx="15" fill="#3498db" />
+                        <text x="90" y="35" text-anchor="middle" font-weight="bold" fill="white">PROCESAMIENTO</text>
+                        <rect x="20" y="55" width="140" height="30" rx="5" fill="#2980b9" />
+                        <text x="90" y="75" text-anchor="middle" fill="white" font-size="12">Codificación</text>
+                        <rect x="20" y="95" width="140" height="30" rx="5" fill="#2980b9" />
+                        <text x="90" y="115" text-anchor="middle" fill="white" font-size="12">Segmentación</text>
+                    </g>
+
+                    <line x1="370" y1="150" x2="400" y2="150" stroke="#95a5a6" stroke-width="2"
+                        marker-end="url(#arrow-gray)" />
+
+                    <!-- Red / Protocolos (Mejorado con Nubes y Flujo) -->
+                    <g transform="translate(410, 50)">
+                        <!-- Nube de Red -->
+                        <path
+                            d="M 40 80 Q 20 80 20 60 Q 20 30 50 30 Q 60 10 90 10 Q 120 10 130 30 Q 160 30 160 60 Q 160 80 140 80 Z"
+                            fill="#f0f3f5" stroke="#2c3e50" stroke-width="2" />
+                        <text x="90" y="50" text-anchor="middle" fill="#2c3e50" font-weight="bold" font-size="14">RED
+                            IP</text>
+
+                        <!-- Flujo de Datos Curvo -->
+                        <path d="M -30 100 Q 80 150 190 100" fill="none" stroke="#3498db" stroke-width="3"
+                            stroke-dasharray="10,5" opacity="0.6" />
+
+                        <!-- Protocolos -->
+                        <g transform="translate(0, 100)">
+                            <rect x="20" y="0" width="140" height="40" rx="10" fill="#2c3e50" />
+                            <text x="90" y="25" text-anchor="middle" fill="white" font-weight="bold" font-size="12">HLS
+                                / DASH</text>
+                        </g>
+                    </g>
+
+                    <line x1="580" y1="150" x2="610" y2="150" stroke="#95a5a6" stroke-width="2"
+                        marker-end="url(#arrow-gray)" />
+
+                    <!-- Usuario / Buffer -->
+                    <g transform="translate(620, 80)">
+                        <rect x="0" y="0" width="150" height="140" rx="15" fill="#2c3e50" />
+                        <text x="75" y="30" text-anchor="middle" font-weight="bold" fill="white">USUARIO</text>
+                        <!-- Buffer Bar -->
+                        <rect x="20" y="50" width="110" height="20" rx="5" fill="#34495e" />
+                        <rect x="20" y="50" width="70" height="20" rx="5" fill="#27ae60" />
+                        <text x="75" y="85" text-anchor="middle" fill="#27ae60" font-weight="bold"
+                            font-size="10">BUFFERING</text>
+                        <!-- Pantalla -->
+                        <polygon points="65,100 65,125 90,112.5" fill="white" />
+                    </g>
+
+                    <text x="400" y="320" text-anchor="middle" fill="#7f8c8d" font-size="12" font-style="italic">Cada
+                        fragmento de vídeo es una pieza de un puzle que se monta en tu pantalla en tiempo real.</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: PROTOCOLOS -->
+        <section class="section">
+            <h2 class="color-primary">Protocolos de Entrega</h2>
+            <div class="grid-features">
+                <div class="feature-card primary mb-4 card bg-light">
+                    <h4 class="color-primary">HTTP / HTTPS</h4>
+                    <p>Es la base de la navegación web comercial. Se utiliza para el streaming porque es compatible con
+                        todos los firewalls y servidores del mundo.</p>
+                </div>
+                <div class="feature-card secondary mb-4 card bg-light">
+                    <h4 class="color-secondary">HLS (Apple)</h4>
+                    <p>Creado por Apple, es el protocolo más usado hoy día. Funciona sobre HTTP y permite el streaming
+                        adaptativo de forma nativa en móviles.</p>
+                </div>
+                <div class="feature-card primary mb-4 card bg-light">
+                    <h4 class="color-primary">MPEG-DASH</h4>
+                    <p>El estándar abierto e independiente de cualquier fabricante. Muy robusto y utilizado por grandes
+                        plataformas para unificar la experiencia.</p>
+                </div>
+                <div class="feature-card secondary mb-4 card bg-light">
+                    <h4 class="color-secondary">WebRTC</h4>
+                    <p>Diseñado para la comunicación en <strong>tiempo real</strong>. Es el protocolo que usan Zoom y
+                        Google Meet para que no haya retraso en las conversaciones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EL CONCEPTO DE BUFFERING -->
+        <section class="section">
+            <h2 class="color-secondary">El Buffering: El colchón de seguridad</h2>
+
+            <div class="card secondary-bg mb-4">
+                <p>
+                    El <strong>Buffering</strong> es un pequeño espacio de almacenamiento temporal en la memoria (RAM)
+                    de tu dispositivo que guarda unos segundos de vídeo antes de que los veas. Su función principal es
+                    actuar como un "colchón" de seguridad frente a las variaciones intermitentes de la velocidad de
+                    Internet.
+                </p>
+            </div>
+
+            <!-- SVG Buffering Detallado -->
+            <div class="card bg-white mt-4 text-center" style="padding: 2.5rem 1rem;">
+                <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+                    <!-- Definiciones de filtros -->
+                    <defs>
+                        <linearGradient id="bufferGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#27ae60;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2ecc71;stop-opacity:1" />
+                        </linearGradient>
+                        <marker id="arrow-small" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"
+                            markerUnits="userSpaceOnUse">
+                            <polygon points="0 0, 8 3, 0 6" fill="#bdc3c7" />
+                        </marker>
+                    </defs>
+
+                    <!-- Carril de Red (Entrada) -->
+                    <rect x="50" y="80" width="200" height="140" rx="15" fill="#f8f9fa" stroke="#3498db"
+                        stroke-width="2" />
+                    <text x="150" y="115" text-anchor="middle" fill="#3498db" font-weight="bold" font-size="14">INTERNET
+                        (ENTRADA)</text>
+                    <rect x="80" y="140" width="30" height="30" fill="#3498db" rx="4" opacity="0.6" />
+                    <rect x="135" y="140" width="30" height="30" fill="#3498db" rx="4" opacity="0.8" />
+                    <rect x="190" y="140" width="30" height="30" fill="#3498db" rx="4" />
+
+                    <!-- Flecha de entrada (Ajustada para evitar solape) -->
+                    <path d="M 260 150 L 290 150" stroke="#bdc3c7" stroke-width="2" fill="none"
+                        marker-end="url(#arrow-small)" />
+
+                    <!-- El Buffer (Almacén) -->
+                    <g transform="translate(320, 60)">
+                        <rect x="0" y="0" width="220" height="180" rx="20" fill="#2c3e50" />
+                        <text x="110" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="16">MEMORIA
+                            (BUFFER)</text>
+
+                        <!-- Representación de llenado -->
+                        <rect x="30" y="60" width="160" height="40" rx="5" fill="#34495e" />
+                        <rect x="30" y="60" width="120" height="40" rx="5" fill="url(#bufferGrad)" />
+                        <text x="110" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="12">75%
+                            LLENO</text>
+
+                        <!-- Bloques acumulados -->
+                        <rect x="30" y="120" width="40" height="30" fill="#2ecc71" rx="4" />
+                        <rect x="85" y="120" width="40" height="30" fill="#2ecc71" rx="4" />
+                        <rect x="140" y="120" width="40" height="30" fill="#2ecc71" rx="4" />
+                    </g>
+
+                    <!-- Flecha de salida (Ajustada para evitar solape) -->
+                    <path d="M 550 150 L 580 150" stroke="#bdc3c7" stroke-width="2" fill="none"
+                        marker-end="url(#arrow-small)" />
+
+                    <!-- Reproducción (Salida) -->
+                    <rect x="600" y="80" width="150" height="140" rx="15" fill="#f8f9fa" stroke="#2c3e50"
+                        stroke-width="2" />
+                    <text x="675" y="115" text-anchor="middle" fill="#2c3e50" font-weight="bold"
+                        font-size="14">PANTALLA</text>
+                    <polygon points="660,140 660,190 705,165" fill="#2c3e50" />
+
+                    <text x="400" y="275" text-anchor="middle" fill="#7f8c8d" font-style="italic"
+                        font-size="12">Mientras tú miras el segundo 10, el buffer ya está descargando el segundo
+                        25.</text>
+                </svg>
+            </div>
+
+            <div class="curiosity-box mb-4">
+                <h4>💡 ¿Por qué se congela la imagen?</h4>
+                <p>
+                    Sin el buffer, cualquier pequeña caída en la intensidad de tu señal Wi-Fi o un pico de tráfico en la
+                    red de tu operador provocaría que la imagen se congelase al instante. Gracias a este almacenamiento
+                    previo, el reproductor tiene tiempo de esperar a que lleguen nuevos fragmentos mientras sigue
+                    "gastando" los que ya tiene guardados.
+                </p>
+                <div class="inner-box">
+                    <p><strong>Dato Técnico:</strong> Se estima que el buffering óptimo en plataformas como Netflix
+                        oscila entre los 30 y 60 segundos de contenido adelantado.</p>
+                </div>
+            </div>
+
+            <div class="expert-quote">
+                <div class="quote-text">
+                    En sistemas de Big Data e IA, la gestión del buffer es crítica. Los algoritmos predictivos intentan
+                    anticipar cuánto buffer se necesita en cada segundo, equilibrando la inmediatez (poca espera al
+                    empezar) con la estabilidad (que no haya cortes).
+                </div>
+                <div class="quote-author">Optimización de Redes IA</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

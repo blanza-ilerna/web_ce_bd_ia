@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rol esencial de los códecs: Compresión, bitrate y transcodificación - iLERNA">
+    <meta name="keywords" content="Códec, Compresión, Bitrate, Transcodificación, MP3, H.264, Streaming">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Los Códecs en la Digitalización | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación IA</a> ›
+                <span>Rol de los Códecs</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Rol esencial de los códecs en la digitalización</h1>
+            <p class="subtitle">Mecanismos de compresión para un mundo en streaming.</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <div class="card primary">
+                <p>
+                    Una vez digitalizados, los contenidos multimedia requieren mecanismos de <strong>compresión</strong>
+                    para reducir su tamaño. Esto es imprescindible para permitir el <strong>streaming</strong>, ya que
+                    los archivos sin comprimir serían demasiado grandes para transmitirse en tiempo real a través de las
+                    redes actuales.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ¿QUÉ ES UN CÓDEC? -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es un códec?</h2>
+            <div class="card bg-white">
+                <p>
+                    Un <strong>códec</strong> (acrónimo de codificador/decodificador) es un algoritmo o hardware que
+                    transforma datos multimedia en una versión comprimida y lista para la transmisión, y posteriormente
+                    los recupera para su visualización o escucha.
+                </p>
+
+                <!-- SVG DIAGRAM: Cómo funciona un códec -->
+                <div class="mt-4" style="text-align: center; padding: 1rem;">
+                    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg"
+                        style="max-width: 100%; height: auto;">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#3498db" />
+                            </marker>
+                        </defs>
+
+                        <!-- Bloque RAW -->
+                        <rect x="20" y="80" width="160" height="80" rx="10" fill="#f8f9fa" stroke="#3498db"
+                            stroke-width="2" />
+                        <text x="100" y="125" text-anchor="middle" font-weight="bold" fill="#2c3e50">DATOS RAW</text>
+                        <text x="100" y="145" text-anchor="middle" font-size="12" fill="#7f8c8d">(Pesados, sin
+                            comprimir)</text>
+
+                        <!-- Encoder -->
+                        <path d="M 230 40 L 370 40 L 380 120 L 370 200 L 230 200 L 220 120 Z" fill="#3498db" />
+                        <text x="300" y="115" text-anchor="middle" font-weight="bold" fill="white">CODIFICADOR</text>
+                        <text x="300" y="135" text-anchor="middle" font-size="12" fill="white">(Compresión)</text>
+
+                        <!-- Bloque Comprimido -->
+                        <rect x="420" y="95" width="140" height="50" rx="25" fill="#e67e22" />
+                        <text x="490" y="125" text-anchor="middle" font-weight="bold" fill="white">STREAMING</text>
+
+                        <!-- Decoder -->
+                        <path d="M 600 40 L 740 40 L 750 120 L 740 200 L 600 200 L 590 120 Z" fill="#2c3e50" />
+                        <text x="670" y="115" text-anchor="middle" font-weight="bold" fill="white">DECODIFICADOR</text>
+                        <text x="670" y="135" text-anchor="middle" font-size="12" fill="white">(Reproducción)</text>
+
+                        <!-- Flechas de conexión -->
+                        <line x1="180" y1="120" x2="210" y2="120" stroke="#3498db" stroke-width="3"
+                            marker-end="url(#arrow)" />
+                        <line x1="380" y1="120" x2="410" y2="120" stroke="#3498db" stroke-width="3"
+                            marker-end="url(#arrow)" />
+                        <line x1="560" y1="120" x2="580" y2="120" stroke="#3498db" stroke-width="3"
+                            marker-end="url(#arrow)" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CONCEPTOS CLAVE -->
+        <section class="section">
+            <h2 class="color-secondary">Conceptos Fundamentales</h2>
+            <div class="grid-features">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Bitrate</h4>
+                    <p>Es la cantidad de bits por segundo usados en la transmisión. Controla directamente la
+                        <strong>calidad</strong> del contenido y el <strong>ancho de banda</strong> necesario. A mayor
+                        bitrate, mejor imagen/sonido, pero mayor consumo de datos.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Transcodificación</h4>
+                    <p>Proceso que consiste en convertir un vídeo o canal de un códec a otro (o cambiar su
+                        resolución/bitrate) para ajustarlo al dispositivo del usuario o a la velocidad de red disponible
+                        en ese momento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: TIPOS DE CÓDECS SEGÚN SU USO -->
+        <section class="section">
+            <h2 class="color-primary">Principales Códecs por Categoría</h2>
+            <p class="mb-4">Para que la convergencia tecnológica funcione, existen estándares específicos según el tipo
+                de contenido que estemos procesando:</p>
+
+            <!-- AUDIO -->
+            <div class="card-group mt-4">
+                <h2 class="color-primary">🎵 Códecs de Audio</h2>
+                <div class="feature-card primary mb-4">
+                    <strong>MP3 y AAC (Advanced Audio Coding)</strong>
+                    <p class="mt-2">El MP3 fue el pionero que revolucionó la música digital, logrando reducir el peso de
+                        las canciones eliminando frecuencias inaudibles para el oído humano. Sin embargo, con el tiempo
+                        ha sido superado por el <strong>AAC</strong>.</p>
+                    <p class="mt-1">AAC es el estándar actual utilizado por plataformas como YouTube, Spotify y Apple
+                        Music. Ofrece una calidad de sonido significativamente superior al MP3 utilizando el mismo ancho
+                        de banda, lo que lo hace mucho más eficiente para el streaming masivo.</p>
+                </div>
+                <div class="feature-card primary card bg-light">
+                    <strong>Opus</strong>
+                    <p class="mt-2">Es actualmente el códec más versátil y potente para la comunicación en tiempo real.
+                        Fue diseñado para adaptarse dinámicamente: si la conexión es mala, baja la calidad para no
+                        cortar la llamada; si es buena, ofrece alta fidelidad.</p>
+                    <p class="mt-1">Es el responsable de que aplicaciones como WhatsApp, Discord o Telegram puedan
+                        transmitir notas de voz y llamadas con una claridad asombrosa incluso bajo redes móviles
+                        inestables (4G/5G).</p>
+                </div>
+            </div>
+
+            <!-- VÍDEO -->
+            <div class="card-group mt-5">
+                <h2 class="color-secondary">🎥 Códecs de Vídeo</h2>
+                <div class="feature-card secondary card bg-light mb-4">
+                    <strong>H.264 (AVC) y H.265 (HEVC)</strong>
+                    <p class="mt-2">El códec <strong>H.264</strong> es el "idioma universal" del vídeo en Internet,
+                        compatible con casi cualquier móvil, tele o navegador del mundo. Ha sido la base de la
+                        revolución del vídeo en alta definición (HD).</p>
+                    <p class="mt-2">Su sucesor, <strong>H.265</strong>, es el estándar para la era del 4K. Utiliza
+                        algoritmos de predicción mucho más inteligentes que le permiten comprimir el vídeo un 50% más
+                        que su antecesor sin perder calidad. Sin él, ver películas en ultra alta definición por Internet
+                        sería casi imposible por el enorme consumo de datos.</p>
+                </div>
+                <div class="feature-card secondary card bg-light">
+                    <strong>VP9 y AV1</strong>
+                    <p class="mt-2">Promovidos por gigantes como Google, Netflix y Amazon, estos códecs son abiertos y
+                        libres de regalías. El <strong>VP9</strong> es el motor oculto que permite que YouTube funcione
+                        de forma fluida.</p>
+                    <p class="mt-1">El nuevo <strong>AV1</strong> es el futuro del streaming. Es un 30% más eficiente
+                        que el H.265, lo que significa que en el futuro podremos ver vídeo de máxima calidad consumiendo
+                        menos batería y menos datos móviles.</p>
+                </div>
+            </div>
+
+            <!-- IMAGEN -->
+            <div class="card-group mt-5">
+                <h2 class="color-primary">🖼️ Códecs de Imagen</h2>
+                <div class="feature-card primary card bg-light mb-4">
+                    <strong>JPEG y PNG</strong>
+                    <p class="mt-2">El <strong>JPEG</strong> es el formato rey de la fotografía; sacrifica pequeños
+                        detalles visuales que el ojo no nota para que las fotos ocupen muy poco espacio. Por otro lado,
+                        el <strong>PNG</strong> se usa cuando no queremos perder ni un ápice de calidad, siendo ideal
+                        para logotipos y gráficos que necesitan fondos transparentes.</p>
+                </div>
+                <div class="feature-card primary card bg-light">
+                    <strong>WebP</strong>
+                    <p class="mt-2">Es el formato moderno desarrollado por Google que busca sustituir tanto a JPEG como
+                        a PNG. Logra imágenes con transparencias y alta calidad, pero con un peso hasta un 30% menor, lo
+                        que acelera drásticamente la carga de las páginas web.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLA RESUMEN -->
+        <section class="section">
+            <h2 class="color-secondary">Resumen de Aplicaciones</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Códec Representativo</th>
+                            <th>Uso Típico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Audio</strong></td>
+                            <td>MP3, AAC, Opus</td>
+                            <td>Música, voz, videollamadas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vídeo</strong></td>
+                            <td>H.264, H.265, VP9, AV1</td>
+                            <td>Streaming de vídeo, IPTV, YouTube</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Imagen</strong></td>
+                            <td>JPEG, PNG, WebP</td>
+                            <td>Fotografías, gráficos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+  <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
