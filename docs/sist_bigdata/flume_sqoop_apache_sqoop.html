@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Sqoop: Transferencia de Datos Estructurados - iLERNA</title>
+    <meta name="description"
+        content="Descubre Apache Sqoop, la herramienta esencial para transferir datos masivos entre bases de datos relacionales y el ecosistema Hadoop de forma eficiente.">
+    <meta name="keywords"
+        content="Apache Sqoop, SQL, Hadoop, HDFS, Big Data, Importación de Datos, Incremental, System of Record, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Apache Sqoop</span>
+                </div>
+            </div>
+            <h1 class="text-center">Apache Sqoop</h1>
+            <p class="subtitle text-center">Puente eficiente entre el mundo relacional y el analítico</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">SQL + Hadoop = Sqoop</h2>
+            <p>
+                Mientras que herramientas como Flume se encargan del streaming de eventos, <strong>Apache Sqoop</strong>
+                nace con una misión distinta: la transferencia masiva de datos estructurados. Su nombre, un acrónimo de
+                "SQL" y "Hadoop", define su propósito principal: automatizar el movimiento de información entre sistemas
+                de gestión de bases de datos relacionales (RDBMS) y el ecosistema Hadoop.
+            </p>
+            <div class="highlight-box warning">
+                <div class="title">🎯 El Reto del Legacy</div>
+                <div class="content">
+                    Gran parte de los datos operativos de las empresas siguen residiendo en bases de datos tradicionales
+                    como <strong>Oracle</strong>, <strong>MySQL</strong> o <strong>PostgreSQL</strong>. Sqoop permite
+                    que estos activos digitales se integren
+                    en el lago de datos sin necesidad de complejas extracciones manuales.
+                </div>
+            </div>
+        </section>
+
+        <!-- Potencia y Paralelismo -->
+        <section>
+            <h2 class="color-secondary">Fortalezas: Paralelismo y Sincronización</h2>
+            <p>
+                La eficiencia de Sqoop no reside en una simple copia, sino en su capacidad para aprovechar la potencia
+                distribuida del clúster mediante dos mecanismos clave:
+            </p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🚀 Procesamiento por Mappers</h4>
+                    <p>
+                        Sqoop divide las tablas origen en fragmentos basados en una clave de partición. Lanza múltiples
+                        tareas (mappers) en paralelo, permitiendo transferir millones de registros simultáneamente en
+                        lugar de uno a uno.
+                    </p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔄 Carga Incremental</h4>
+                    <p>
+                        Permite actualizar el destino detectando solo las filas nuevas o modificadas desde la última
+                        ejecución (usando marcas de tiempo o IDs). Esto minimiza el tráfico de red y la carga en los
+                        sistemas transaccionales.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Concepto Expandido: System of Record -->
+        <section>
+            <h2 class="color-primary">El Concepto de System of Record (SoR)</h2>
+            <p>
+                Para entender el papel de Sqoop, es vital comprender qué es un <strong>System of Record</strong>
+                (Sistema
+                de Registro). En una arquitectura empresarial, el SoR es el lugar donde nace la verdad sobre un dato.
+            </p>
+            <div class="card shadow" style="border-left: 5px solid var(--color-warning);">
+                <p>
+                    <strong>Definición:</strong> Es la fuente autorizada y definitiva de un dato específico. Por
+                    ejemplo, si un cliente cambia su dirección, el sistema de facturación o el CRM es el SoR que
+                    garantiza que esa información es la correcta y actual.
+                </p>
+                <p class="small">
+                    En Big Data, solemos copiar los datos desde el SoR (normalmente una base SQL) hacia el HDFS para el
+                    análisis. Sqoop es la herramienta que asegura que esa "copia analítica" sea fiel al "sistema de
+                    registro" original sin interferir en las operaciones críticas del negocio.
+                </p>
+            </div>
+        </section>
+
+        <!-- Flujo de Trabajo y Exportación -->
+        <section>
+            <h2 class="color-secondary">Bidireccionalidad y Workflow</h2>
+            <p>
+                Sqoop no es solo una vía de entrada. También soporta la <strong>exportación inversa</strong>: mover
+                datos
+                ya procesados y refinados en Hadoop de vuelta a bases de datos relacionales para que aplicaciones del
+                mundo real o cuadros de mando tradicionales los consuman.
+            </p>
+
+            <div class="highlight-box mt-2">
+                <div class="title">⚙️ El flujo típico de Sqoop</div>
+                <div class="content">
+                    <ol class="custom-list" style="text-align: left;">
+                        <li><strong>Conexión:</strong> Definición de credenciales y driver JDBC.</li>
+                        <li><strong>Configuración:</strong> Selección de tabla o consulta SQL específica.</li>
+                        <li><strong>Ejecución:</strong> Generación de código MapReduce automático que distribuye la
+                            carga.</li>
+                        <li><strong>Almacenamiento:</strong> Escritura en formato Parquet, Avro o Texto en HDFS/Hive.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caso Práctico -->
+        <section>
+            <h2 class="color-primary">Caso Práctico: Distribución Minorista</h2>
+            <div class="card primary shadow">
+                <div class="grid-2-cols">
+                    <div>
+                        <h4 class="color-primary">El Escenario</h4>
+                        <p>
+                            Una multinacional utiliza una base de datos <strong>Oracle</strong> para registrar ventas
+                            diarias.
+                            Cada noche, Sqoop realiza una importación incremental de las transacciones del día basándose
+                            en la columna <code>fecha_venta</code>.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="color-primary">El Resultado</h4>
+                        <p>
+                            Los datos aterrizan en <strong>HDFS</strong> en formato <strong>Parquet</strong>,
+                            integrándose
+                            automáticamente en <strong>Hive</strong>. Esto permite que los analistas realicen informes
+                            complejos sin afectar el rendimiento de la tienda online.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desafíos y Futuro -->
+        <section>
+            <h2 class="color-secondary">Desafíos y el Panorama Actual</h2>
+            <p>
+                A pesar de su robustez, Sqoop requiere una gestión cuidadosa: la elección de una clave de partición
+                incorrecta puede causar desequilibrios de carga (data skew) o saturar las conexiones de los servidores
+                fuente.
+            </p>
+            <div class="grid-features mt-1">
+                <div class="feature-card secondary">
+                    <p>⚠️ <strong>Límites de Conexión:</strong> Riesgo de degradar el rendimiento del SoR si se usan
+                        demasiados mappers simultáneos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <p>🌐 <strong>Nuevas Alternativas:</strong> Herramientas modernas como <strong>Kafka
+                            Connect</strong>, <strong>Apache
+                            NiFi</strong>
+                        o <strong>Debezium</strong> permiten hoy capturar cambios en tiempo real (CDC) de forma más
+                        ágil.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-warning">🎓 Conclusión</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    Apache Sqoop sigue siendo una pieza angular para las organizaciones que necesitan un método fiable y
+                    altamente escalable para transferir datos por lotes (batch). Su capacidad para unir la rigidez de
+                    las
+                    bases relacionales con la flexibilidad de Hadoop lo convierte en una herramienta insustituible en
+                    procesos de migración masiva.
+                </p>
+                <span class="quote-author">— Arquitecto de Datos Senior</span>
+            </div>
+            <p class="mt-2">
+                Dominar Sqoop es fundamental para cualquier ingeniero de datos, ya que permite democratizar el acceso a
+                la información corporativa que, de otro modo, quedaría atrapada en silos transaccionales.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

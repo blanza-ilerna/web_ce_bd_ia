@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Flume: Ingestión de Eventos - iLERNA</title>
+    <meta name="description"
+        content="Aprende sobre Apache Flume, su arquitectura de agentes (Source, Channel, Sink) y cómo permite la ingestión continua de flujos de eventos en Big Data.">
+    <meta name="keywords"
+        content="Apache Flume, Ingestión de Datos, HDFS, Big Data, Agentes Flume, Source, Channel, Sink, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Apache Flume</span>
+                </div>
+            </div>
+            <h1 class="text-center">Apache Flume</h1>
+            <p class="subtitle text-center">Ingestión continua de flujos de eventos a gran escala</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">¿Qué es Apache Flume?</h2>
+            <p>
+                <strong>Apache Flume</strong> es un servicio distribuido, fiable y altamente disponible diseñado para
+                reunir, agregar y movilizar grandes volúmenes de datos de eventos. Su arquitectura modular está ideada
+                específicamente para gestionar el crecimiento explosivo de información, como registros de servidores,
+                archivos de log de aplicaciones corporativas o flujos masivos procedentes de redes de sensores (IoT).
+            </p>
+            <div class="highlight-box success">
+                <div class="title">🚀 Propósito Principal</div>
+                <div class="content">
+                    Actuar como un sistema de transporte robusto que conecta múltiples fuentes de datos distribuidas con
+                    destinos centralizados como <strong>HDFS</strong>, <strong>HBase</strong> o <strong>Kafka</strong>,
+                    garantizando que ningún evento se pierda en el trayecto.
+                </div>
+            </div>
+        </section>
+
+        <!-- Arquitectura de Agentes -->
+        <section>
+            <h2 class="color-secondary">Arquitectura de Agentes</h2>
+            <p>
+                La unidad fundamental de despliegue en Flume es el <strong>Agente</strong>. Un agente es un proceso JVM
+                independiente que aloja los tres componentes básicos a través de los cuales fluyen los eventos:
+            </p>
+
+            <div class="grid-3 mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">1. Source (Origen)</h4>
+                    <p>Es la puerta de entrada. Escucha y recibe eventos de fuentes externas, los encapsula y los envía
+                        al canal.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary text-center">2. Channel (Canal)</h4>
+                    <p>Funciona como un búfer o almacén intermedio. Mantiene el evento hasta que el Sink lo consume,
+                        actuando como seguro ante fallos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">3. Sink (Destino)</h4>
+                    <p>Extrae los eventos del canal y los entrega al destino final o al siguiente agente de la cadena.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Diagrama SVG de Arquitectura -->
+            <div class="svg-container mt-2" style="max-width: 600px; margin: 2rem auto;">
+                <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Agent Background -->
+                    <rect x="20" y="40" width="460" height="120" rx="15" fill="none" stroke="var(--color-primary)"
+                        stroke-width="2" stroke-dasharray="5,5" />
+                    <text x="35" y="30" font-family="Montserrat" font-size="14" font-weight="bold"
+                        fill="var(--color-primary)">Agente Flume</text>
+
+                    <!-- Source -->
+                    <rect x="50" y="70" width="100" height="60" rx="8" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="100" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold" fill="var(--color-primary)">SOURCE</text>
+
+                    <!-- Channel (Storage/Bucket icon style) -->
+                    <path d="M210,70 L290,70 L290,130 L210,130 Z" fill="var(--bg-secondary-light)"
+                        stroke="var(--color-secondary)" stroke-width="2" />
+                    <text x="250" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold" fill="var(--color-secondary)">CHANNEL</text>
+
+                    <!-- Sink -->
+                    <rect x="350" y="70" width="100" height="60" rx="8" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="400" y="105" text-anchor="middle" font-family="Montserrat" font-size="12"
+                        font-weight="bold" fill="var(--color-primary)">SINK</text>
+
+                    <!-- Arrows -->
+                    <line x1="150" y1="100" x2="210" y2="100" stroke="#777" stroke-width="2" marker-end="url(#arrow)" />
+                    <line x1="290" y1="100" x2="350" y2="100" stroke="#777" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- Markers -->
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                            markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#777" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Funcionamiento y Topologías -->
+        <section>
+            <h2 class="color-primary">Dinámica de Trabajo y Topologías</h2>
+            <p>
+                La flexibilidad de Flume radica en que sus agentes pueden conectarse entre sí para formar
+                <strong>cadenas
+                    o topologías complejas</strong>. Esta independencia permite que un flujo de datos pueda ser
+                rebalanceado o replicado según sea necesario:
+            </p>
+            <div class="card secondary shadow">
+                <ul>
+                    <li><strong>Persistencia:</strong> Si el destino final falla, los eventos permanecen seguros en el
+                        <em>channel</em> (especialmente si es de tipo disco) hasta que se restaure la conexión.
+                    </li>
+                    <li><strong>Multiplexación:</strong> Un <em>source</em> puede enviar eventos a múltiples
+                        <em>channels</em> de forma selectiva basándose en el contenido de los encabezados.
+                    </li>
+                    <li><strong>Failover:</strong> Se pueden definir rutas de respaldo para asegurar que el flujo nunca
+                        se detenga ante la caída de un nodo intermedio.</li>
+                </ul>
+            </div>
+            <p class="mt-1">
+                Su gran capacidad de <strong>escalado horizontal</strong> permite añadir agentes en nuevos servidores a
+                medida que el volumen de datos aumenta, manteniendo una latencia baja incluso bajo cargas extremas.
+            </p>
+        </section>
+
+        <!-- Interceptores y Enriquecimiento -->
+        <section>
+            <h2 class="color-secondary">Interceptores: Procesamiento en Tránsito</h2>
+            <p>
+                A diferencia de otros sistemas de transporte puros, Flume permite realizar pequeñas transformaciones
+                mediante los <strong>Interceptores</strong>. Estos componentes actúan sobre los eventos mientras cruzan
+                el <em>source</em> hacia el <em>channel</em>.
+            </p>
+            <div class="grid-2-cols mt-1">
+                <div class="info-box">
+                    <p>🏷️ <strong>Etiquetado y Metadatos</strong></p>
+                    <p class="small">Añade información crucial como marcas temporales (timestamps), direcciones IP del
+                        servidor de origen o etiquetas de criticidad.</p>
+                </div>
+                <div class="info-box">
+                    <p>✂️ <strong>Filtrado y Limpieza</strong></p>
+                    <p class="small">Permite descartar eventos innecesarios antes de que ocupen espacio en el
+                        almacenamiento definitivo, optimizando recursos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos Prácticos -->
+        <section>
+            <h2 class="color-primary">Escenarios en el Mundo Real</h2>
+            <div class="grid-2-cols">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🏢 Telecomunicaciones e IA</h4>
+                    <p>
+                        Empresas del sector capturan interacciones en tiempo real de millones de usuarios. Flume
+                        canaliza estos eventos hacia <strong>HDFS</strong>, donde herramientas como
+                        <strong>Spark</strong>
+                        detectan patrones de uso o problemas de servicio antes de que el cliente los reporte.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🏦 Banca y Prevención de Fraude</h4>
+                    <p>
+                        Una entidad financiera utiliza Flume para monitorizar accesos a su banca online. Los
+                        interceptores añaden el ID del servidor y la hora exacta. Al llegar al clúster, procesos
+                        analíticos detectan comportamientos anómalos que podrían indicar un ataque en curso.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-warning">🎓 Conclusión</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    Apache Flume es el estándar de facto para la ingestión de logs en el ecosistema Hadoop. Su diseño
+                    basado en agentes independientes y su garantía de durabilidad mediante canales persistentes lo hacen
+                    indispensable para cualquier arquitectura que maneje flujos de datos no estructurados en tiempo
+                    real.
+                </p>
+                <span class="quote-author">— Arquitecto de Pipelines de Big Data</span>
+            </div>
+            <p class="mt-2">
+                Con la capacidad de escalar horizontalmente y enriquecer datos en vuelo, Flume no solo transporta
+                información; la prepara para que sea útil desde el primer momento en que aterriza en nuestro sistema de
+                almacenamiento masivo.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

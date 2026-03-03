@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración Híbrida: Flume y Sqoop - iLERNA</title>
+    <meta name="description"
+        content="Aprende cómo Apache Flume y Apache Sqoop se complementan en arquitecturas de Big Data para construir flujos de datos híbridos que integran eventos en tiempo real con datos transaccionales.">
+    <meta name="keywords"
+        content="Big Data, Ingestión Híbrida, Apache Flume, Apache Sqoop, Kafka, Hadoop, Pipelines de Datos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Integración de Flume y Sqoop</span>
+                </div>
+            </div>
+            <h1 class="text-center">Ecosistemas de Ingestión Híbrida</h1>
+            <p class="subtitle text-center">Sincronizando el tiempo real con el mundo transaccional</p>
+        </header>
+
+        <!-- Introducción: El Poder de la Complementariedad -->
+        <section>
+            <h2 class="color-primary">Más allá de la Competencia: Complementariedad</h2>
+            <p>
+                En una arquitectura de Big Data de nivel empresarial, la elección entre <strong>Apache Flume</strong> y
+                <strong>Apache Sqoop</strong> no es una decisión excluyente. Al contrario, el éxito de un pipeline de
+                datos de alto rendimiento reside en la capacidad de orquestar ambas herramientas para que trabajen en
+                armonía.
+            </p>
+            <p>
+                Mientras que Flume se especializa en la captura incansable de eventos y logs en streaming, Sqoop aporta
+                la solidez necesaria para migrar grandes volúmenes de datos históricos y estructurados. Juntos, forman
+                el
+                sistema circulatorio de los <strong>flujos de datos híbridos</strong>.
+            </p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">📡 Flume (El Pulso)</h4>
+                    <p>Gestiona los flujos continuos de actividad operativa, clics y logs. Es el ojo que ve lo que
+                        ocurre
+                        justo ahora.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary text-center">💾 Sqoop (La Memoria)</h4>
+                    <p>Se encarga de las cargas periódicas de las bases de datos transaccionales. Es el registro de las
+                        concreciones de negocio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diagrama de Flujo Híbrido -->
+        <section>
+            <h2 class="color-secondary">Visualización de un Pipeline Híbrido</h2>
+            <p>
+                La integración de ambas fuentes permite a los analistas cruzar el comportamiento de navegación con los
+                resultados reales de ventas, obteniendo una visión de 360 grados del negocio.
+            </p>
+
+            <div class="svg-container" style="max-width: 800px; margin: 2rem auto;">
+                <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Fuentes Externas -->
+                    <rect x="20" y="50" width="120" height="80" rx="10" fill="var(--bg-primary-light)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+                    <text x="80" y="85" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="var(--color-primary)">Servidores Web</text>
+                    <text x="80" y="105" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="var(--text-medium)">(Logs/Eventos)</text>
+
+                    <rect x="20" y="180" width="120" height="80" rx="10" fill="var(--bg-secondary-light)"
+                        stroke="var(--color-secondary)" stroke-width="2" />
+                    <text x="80" y="215" text-anchor="middle" font-family="Montserrat" font-size="12" font-weight="bold"
+                        fill="var(--color-secondary)">BBDD SQL</text>
+                    <text x="80" y="235" text-anchor="middle" font-family="Montserrat" font-size="10"
+                        fill="var(--text-medium)">(Transacciones)</text>
+
+                    <!-- Herramientas de Ingestión -->
+                    <rect x="260" y="50" width="100" height="80" rx="8" fill="var(--color-primary)" stroke="#fff"
+                        stroke-width="2" />
+                    <text x="310" y="95" text-anchor="middle" font-family="Montserrat" font-size="14" font-weight="bold"
+                        fill="white">FLUME</text>
+
+                    <rect x="260" y="180" width="100" height="80" rx="8" fill="var(--color-secondary)" stroke="#fff"
+                        stroke-width="2" />
+                    <text x="310" y="225" text-anchor="middle" font-family="Montserrat" font-size="14"
+                        font-weight="bold" fill="white">SQOOP</text>
+
+                    <!-- Destino Común -->
+                    <ellipse cx="650" cy="155" rx="100" ry="80" fill="#f9f9f9" stroke="#777" stroke-width="2"
+                        stroke-dasharray="5,5" />
+                    <text x="650" y="145" text-anchor="middle" font-family="Montserrat" font-size="16"
+                        font-weight="bold" fill="#333">HADOOP</text>
+                    <text x="650" y="170" text-anchor="middle" font-family="Montserrat" font-size="12" fill="#555">Data
+                        Lakehouse</text>
+
+                    <!-- Conexiones -->
+                    <line x1="140" y1="90" x2="260" y2="90" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow-primary)" />
+                    <line x1="140" y1="220" x2="260" y2="220" stroke="var(--color-secondary)" stroke-width="2"
+                        marker-end="url(#arrow-secondary)" />
+
+                    <path d="M360,90 Q480,90 550,130" fill="none" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#arrow-primary)" />
+                    <path d="M360,220 Q480,220 550,180" fill="none" stroke="var(--color-secondary)" stroke-width="2"
+                        marker-end="url(#arrow-secondary)" />
+
+                    <!-- Markers -->
+                    <defs>
+                        <marker id="arrow-primary" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="var(--color-primary)" />
+                        </marker>
+                        <marker id="arrow-secondary" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="var(--color-secondary)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Caso Práctico: Marketing 360 -->
+        <section>
+            <h2 class="color-primary">Escenario: Optimización de Campañas en Tiempo Real</h2>
+            <p>
+                Imagina una compañía de comercio electrónico que quiere medir la rentabilidad de sus anuncios de forma
+                instantánea. Para lograrlo, diseña un pipeline híbrido con la siguiente estructura:
+            </p>
+            <div class="card shadow">
+                <div class="grid-2-cols">
+                    <div style="border-left: 5px solid var(--color-primary); padding-left: 1.2rem;">
+                        <h4 class="color-primary">1. El rastro del usuario</h4>
+                        <p>
+                            <strong>Flume</strong> recolecta en milisegundos cada clic, visita a producto y tiempo de
+                            permanencia desde el servidor web, enviándolos a un clúster de <strong>Kafka</strong>. Esto
+                            permite saber
+                            qué productos están generando interés "ahora mismo".
+                        </p>
+                    </div>
+                    <div style="border-left: 5px solid var(--color-secondary); padding-left: 1.2rem;">
+                        <h4 class="color-secondary">2. El cierre de la venta</h4>
+                        <p>
+                            <strong>Sqoop</strong> importa cada hora (batch) los registros de transacciones exitosas
+                            desde la base de datos comercial SQL. Esto nos da la confirmación final de la compra y el
+                            monto facturado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="highlight-box success mt-2">
+                <div class="title">✅ El Resultado Analítico</div>
+                <div class="content">
+                    Al cruzar en <strong>Hive</strong> o <strong>Spark</strong> los clics (Flume) con las ventas reales
+                    (Sqoop), el equipo de marketing puede detectar que un anuncio tiene muchos clics pero pocas ventas,
+                    permitiendo ajustar la inversión en marketing en tiempo real para maximizar el ROI.
+                </div>
+            </div>
+        </section>
+
+        <!-- Orquestación y Gobernanza -->
+        <section>
+            <h2 class="color-secondary">Orquestación: El Director de Orquesta</h2>
+            <p>
+                En los entornos modernos, estos procesos no vuelan bajo el radar. Se gestionan mediante herramientas de
+                <strong>orquestación</strong> (como Airflow u Oozie) y sistemas de <strong>observabilidad</strong>.
+            </p>
+            <div class="grid-features mt-1">
+                <div class="feature-card">
+                    <p>🛠️ <strong>Automatización:</strong> Los trabajos de Sqoop y los agentes de Flume se programan y
+                        monitorizan para que reaccionen ante fallos automáticamente.</p>
+                </div>
+                <div class="feature-card">
+                    <p>🛡️ <strong>Gobernanza:</strong> Se valida que el dato que entra sea íntegro y que el linaje (de
+                        dónde viene y a dónde va) esté perfectamente documentado en el catálogo de datos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-warning">🎓 Conclusión</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    La clave de una infraestructura de Big Data resiliente no está en elegir la herramienta más potente,
+                    sino en saber integrar el carácter efímero del evento en streaming con la solidez del sistema de
+                    registro transaccional. Flume y Sqoop son las dos caras de una misma moneda analítica.
+                </p>
+                <span class="quote-author">— Arquitecto de Soluciones Cloud</span>
+            </div>
+            <p class="mt-2">
+                Entender cómo fluyen estos datos en arquitecturas híbridas permite a las organizaciones transformar el
+                caos de la información en una ventaja competitiva real, uniendo la inmediatez con el histórico de
+                negocio.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

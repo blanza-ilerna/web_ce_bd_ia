@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buenas Prácticas en Ingestión de Datos - iLERNA</title>
+    <meta name="description"
+        content="Guía de buenas prácticas para la importación de datos en Big Data: idempotencia, validación, seguridad y gobernanza para pipelines robustos.">
+    <meta name="keywords"
+        content="Big Data, Buenas Prácticas, Idempotencia, Validación de Datos, Seguridad, Gobernanza, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Buenas Prácticas de Importación</span>
+                </div>
+            </div>
+            <h1 class="text-center">Excelencia en la Ingestión</h1>
+            <p class="subtitle text-center">Principios fundamentales para pipelines de datos profesionales</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Hacia una Ingestión Robusta</h2>
+            <p>
+                En el ecosistema de Big Data, mover datos masivos no es suficiente; debemos asegurar que el proceso sea
+                <strong>fiable, seguro y auditable</strong>. La aplicación de buenas prácticas durante la fase de
+                importación es lo que diferencia a un sistema caótico (data swamp) de un activo estratégico capaz de
+                generar valor de forma sostenida.
+            </p>
+            <div class="highlight-box warning">
+                <div class="title">🎯 El Objetivo de la Calidad</div>
+                <div class="content">
+                    Establecer estándares técnicos y operativos que minimicen el riesgo de pérdida de información,
+                    eviten la duplicidad y garanticen que solo el dato confiable alimente las capas analíticas.
+                </div>
+            </div>
+        </section>
+
+        <!-- Principio de Idempotencia -->
+        <section>
+            <h2 class="color-secondary">1. El Pilar de la Idempotencia</h2>
+            <p>
+                La <strong>idempotencia</strong> es la capacidad de un proceso de ejecutarse múltiples veces produciendo
+                el mismo resultado sin efectos secundarios indeseados (como duplicados).
+            </p>
+
+            <div class="card shadow" style="border-left: 5px solid var(--color-secondary);">
+                <p>
+                    En Big Data, las interrupciones de red o fallos de hardware son inevitables. Un pipeline bien
+                    diseñado debe ser capaz de <strong>reejecutarse desde el inicio o desde un punto de control</strong>
+                    sin generar registros repetidos en el destino.
+                </p>
+            </div>
+
+            <div class="highlight-box success mt-2">
+                <div class="title">🎯 Estrategia Común</div>
+                <div class="content">
+                    Uso de técnicas como <strong>Upsert</strong> (Update + Insert) o escritura en directorios temporales
+                    que sobrescriben el destino final sólo tras una validación exitosa.
+                </div>
+            </div>
+        </section>
+
+        <!-- Validación y Calidad -->
+        <section>
+            <h2 class="color-primary">2. Validación Post-Carga: El Control de Aduanas</h2>
+            <p>
+                Un flujo de importación no termina cuando los datos aterrizan. Es imperativo habilitar mecanismos de
+                <strong>verificación inmediata</strong> para confirmar la integridad del lote transferido.
+            </p>
+            <div class="grid-3 mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">📊 Recuento de Registros</h4>
+                    <p>Comparar el número de filas extraídas del origen con las insertadas en Hadoop.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary text-center">🔑 Claves Únicas</h4>
+                    <p>Verificar que no existen duplicados en las columnas identificadoras (Primary Keys).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">📐 Tipos de Datos</h4>
+                    <p>Asegurar que los formatos (fechas, decimales, strings) se han mantenido coherentes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seguridad en el Tránsito -->
+        <section>
+            <h2 class="color-secondary">3. Seguridad Integral en el Tránsito</h2>
+            <p>
+                Durante el proceso de ingestión, los datos recorren redes que pueden estar expuestas. La seguridad debe
+                estar presente en cada nodo del camino:
+            </p>
+            <div class="grid-2-cols mt-1">
+                <div class="info-box">
+                    <p>🔒 <strong>Cifrado y Autenticación</strong></p>
+                    <p class="small">Uso obligatorio de protocolos <strong>TLS/SSL</strong> para la transferencia y
+                        sistemas de autenticación robustos para acceder a las fuentes originales.</p>
+                </div>
+                <div class="info-box" style="border-left-color: var(--color-secondary);">
+                    <p>🎭 <strong>Anonimización</strong></p>
+                    <p class="small">Aplicación de técnicas de <strong>mascarado o tokenización</strong> para proteger
+                        datos sensibles (PII) antes de que lleguen a entornos analíticos menos restringidos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gobernanza y Catálogo -->
+        <section>
+            <h2 class="color-primary">4. Gobernanza y Documentación</h2>
+            <p>
+                Cada canal de importación debe ser una pieza registrada del ecosistema. Un dato sin contexto es un dato
+                inservible para la empresa a largo plazo.
+            </p>
+            <div class="highlight-box warning">
+                <p><strong>El Registro del Catálogo de Datos debe incluir:</strong></p>
+                <ul class="custom-list">
+                    <li><strong>Origen:</strong> ¿De qué base de datos o API proviene?</li>
+                    <li><strong>Frecuencia:</strong> ¿Es un streaming continuo o un batch nocturno?</li>
+                    <li><strong>Responsable:</strong> ¿Quién es el dueño del proceso (Owner)?</li>
+                    <li><strong>Linaje:</strong> ¿Qué transformaciones se han aplicado en el camino?</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-warning">🎓 Conclusión</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    La maestría en Big Data no se mide por la cantidad de datos ingeridos, sino por la <strong>calidad y
+                        confianza</strong> que esos datos inspiran en el negocio. Seguir estas buenas prácticas
+                    transforma un
+                    pipeline en una infraestructura de grado bancario.
+                </p>
+                <span class="quote-author">— Arquitecto de Gobierno de Datos</span>
+            </div>
+            <p class="mt-2 text-center">
+                Implementar <strong>idempotencia, validación y seguridad</strong> desde el diseño inicial ahorra cientos
+                de horas de depuración y evita decisiones empresariales erróneas basadas en datos corruptos.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

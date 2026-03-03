@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identificación de Cuellos de Botella - iLERNA</title>
+    <meta name="description"
+        content="Aprende a identificar y resolver cuellos de botella en infraestructuras Big Data: diagnóstico de CPU, RAM, red y almacenamiento para maximizar el rendimiento.">
+    <meta name="keywords"
+        content="Bottlenecks, Cuellos de Botella, Big Data, Optimización, YARN, HDFS, Spark Tuning, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Cuellos de Botella</span>
+                </div>
+            </div>
+            <h1 class="text-center">Cuellos de Botella: Maximizando el Flujo de Datos</h1>
+            <p class="subtitle text-center">Diagnóstico y resolución de restricciones en sistemas distribuidos</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">¿Qué es un Bottleneck en Big Data?</h2>
+            <p>
+                Se define como <strong>cuello de botella</strong> o <em>bottleneck</em> a cualquier recurso (hardware o
+                software) que actúa como limitador del rendimiento global de un clúster. En entornos donde los trabajos
+                se fragmentan en miles de tareas, una sola restricción en la red o un disco saturado puede degradar la
+                ejecución de todo un pipeline masivo.
+            </p>
+            <div class="card shadow mt-2" style="border-left: 5px solid var(--color-primary);">
+                <div class="content p-2">
+                    <p>
+                        La identificación retrospectiva de estas limitaciones a través del análisis de históricos es la
+                        única forma de garantizar que la infraestructura escale de forma eficiente y económica.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla de Categorías -->
+        <section>
+            <h2 class="color-secondary">Anatomía de las Restricciones</h2>
+            <p>Los cuellos de botella suelen agruparse en categorías técnicas con síntomas y soluciones específicas:</p>
+
+            <div class="table-container mt-2">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Causa Probable</th>
+                            <th>Síntoma en el Histórico</th>
+                            <th>Solución Sugerida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>CPU / Memoria</strong></td>
+                            <td>Sobrecarga de tareas, <em>heap</em> insuficiente o GC excesivo.</td>
+                            <td>Jobs lentos, errores <em>OutOfMemory</em> y esperas de CPU.</td>
+                            <td>Ajustar <code>spark.executor.memory</code>; usar memoria <em>off-heap</em>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Disco / E-S</strong></td>
+                            <td>Saturación en shuffles, fragmentación o falta de SSDs.</td>
+                            <td>Alta latencia de lectura/escritura y bloqueos en DataNodes.</td>
+                            <td>Implementar NVMe; usar compresión Snappy en escrituras.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Red</strong></td>
+                            <td>Ancho de banda saturado por transferencias masivas.</td>
+                            <td>Retrasos críticos en <em>shuffle</em> y <em>timeouts</em> de conexión.</td>
+                            <td>Segmentar red; activar el servicio de shuffle externo.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YARN</strong></td>
+                            <td>Scheduling ineficiente o mala asignación de contenedores.</td>
+                            <td>Jobs en cola con utilización del clúster baja (&lt;70%).</td>
+                            <td>Configurar <em>Fair Scheduling</em> y ajustar máximos de reserva.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HDFS</strong></td>
+                            <td>Desbalanceo de bloques o replicación lenta.</td>
+                            <td>Caída de <em>throughput</em> y errores frecuentes de checksum.</td>
+                            <td>Ejecutar <em>HDFS Balancer</em> periódicamente; usar <code>fsck</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aplicación</strong></td>
+                            <td>Joins ineficientes o particionamiento mal diseñado.</td>
+                            <td>Escalado no lineal al aumentar el volumen de datos.</td>
+                            <td>Migrar a Spark SQL; particionar tablas por claves de negocio.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Métodos de Detección -->
+        <section>
+            <h2 class="color-primary">Estrategias de Detección Retroactiva</h2>
+            <p>Para localizar un cuello de botella, el administrador debe cruzar diferentes fuentes de información:</p>
+            <div class="grid-2 mt-2">
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">📈 Correlación Temporal</h4>
+                    <p>Comparar picos de uso de recursos en Grafana con logs de eventos de ELK para identificar causas
+                        raíz.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">⚖️ Análisis Comparativo</h4>
+                    <p>Evaluar el rendimiento de jobs idénticos en diferentes días para detectar degradaciones
+                        silenciosas.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">🐘 Dr. Elephant</h4>
+                    <p>Herramienta que analiza automáticamente jobs Hadoop/Spark y sugiere mejoras de configuración.</p>
+                </div>
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">🔎 Profiling Avanzado</h4>
+                    <p>Uso de <strong>Prometheus</strong> para calcular tasas de CPU (<code>rate</code>) y predecir
+                        saturaciones futuras.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos Prácticos -->
+        <section>
+            <h2 class="color-primary">🚀 Casos de Uso: De la Teoría a la Práctica</h2>
+
+            <!-- Ejemplo Práctico -->
+            <div class="card shadow mt-2"
+                style="border-top: 5px solid var(--color-primary); background-color: rgba(var(--color-primary-rgb), 0.05);">
+                <div class="content p-2">
+                    <h3 class="color-primary">📉 Ejemplo: La Incompatibilidad Horaria</h3>
+                    <p>
+                        En un clúster de 100 nodos, se observa que los modelos de ML tardan el doble de lo habitual los
+                        fines de semana.
+                    </p>
+                    <p><strong>El Diagnóstico:</strong> Al analizar el YARN Timeline Server, se descubre que los
+                        <strong>backups masivos</strong> coinciden con el entrenamiento de los modelos, saturando el
+                        ancho de banda de disco.
+                    </p>
+                    <p><strong>La Solución:</strong> Reprogramar las ventanas de mantenimiento y migrar el spill de
+                        datos a SSDs, reduciendo el tiempo de ejecución en un <strong>50%</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Caso de Estudio -->
+            <div class="card shadow mt-3"
+                style="border-top: 5px solid var(--color-primary); background-color: rgba(var(--color-primary-rgb), 0.05);">
+                <div class="content p-2">
+                    <h3 class="color-primary">🛍️ Caso de Estudio: Black Friday en E-commerce</h3>
+                    <p>
+                        Una plataforma procesando 200 TB/semana en AWS EMR sufría bloqueos durante picos de venta.
+                    </p>
+                    <div class="highlight-box info mt-2">
+                        <div class="title">🔍 Resolución mediante AQE</div>
+                        <div class="content">
+                            Usando el historial de Spark UI, el equipo activó el <strong>Adaptive Query Execution
+                                (AQE)</strong> para gestionar particiones dinámicamente según el volumen real del
+                            tráfico.
+                        </div>
+                    </div>
+                    <p class="mt-2"><strong>Resultado:</strong> Incremento del 35% en el <em>throughput</em> y una
+                        reducción del 25% en costos de nube debido a la mayor rapidez de los procesos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-primary">🎓 Visión del Experto</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    Identificar un cuello de botella no es encontrar un culpable, sino descubrir una oportunidad de
+                    eficiencia oculta. Un sistema bien balanceado es el que genera mayor valor por cada céntimo
+                    invertido en hardware.
+                </p>
+                <span class="quote-author">— Platform Reliability Engineer</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

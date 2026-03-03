@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración en Tiempo Real y Streaming - iLERNA</title>
+    <meta name="description"
+        content="Explora el paradigma de la integración en tiempo real: procesamiento en streaming, frameworks como Kafka y Flink, y el diseño de pipelines vivos y reactivos.">
+    <meta name="keywords"
+        content="Streaming, Real-time Integration, Kafka, Apache Flink, Spark Streaming, Idempotencia, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Integración en Tiempo Real</span>
+                </div>
+            </div>
+            <h1 class="text-center">Integración en Tiempo Real: Datos en Movimiento</h1>
+            <p class="subtitle text-center">De los procesos por lotes a la toma de decisiones instantánea</p>
+        </header>
+
+        <!-- El Salto al Streaming -->
+        <section>
+            <h2 class="color-primary">Más Allá del Lote: La Era del Procesamiento Continuo</h2>
+            <p>
+                En el ecosistema Big Data moderno, la integración tradicional por lotes (<em>batch</em>) ya no es
+                suficiente para sectores críticos. Sectores como el <strong>comercio electrónico, las telecomunicaciones
+                    o la banca</strong> requieren que el ciclo de vida del dato —desde su generación hasta su análisis—
+                se complete en cuestión de segundos o milisegundos.
+            </p>
+            <div class="card shadow mt-2" style="border-left: 5px solid var(--color-primary);">
+                <p>
+                    El <strong>procesamiento en streaming</strong> permite tratar los datos a medida que se producen,
+                    transformando el almacén de datos de un archivo histórico en un <strong>sistema vivo y
+                        reactivo</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Tecnologías y Frameworks -->
+        <section>
+            <h2 class="color-secondary">Frameworks para Datos en Movimiento</h2>
+            <p>
+                Para implementar flujos de integración continua, utilizamos motores diseñados específicamente para
+                manejar eventos individuales con latencias mínimas:
+            </p>
+            <div class="grid-3 mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">📡 Apache Kafka</h4>
+                    <p>Referente en la ingesta y distribución de eventos. Ofrece una base sólida para que otros motores
+                        procesen el flujo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary text-center">⚡ Flink & Storm</h4>
+                    <p>Frameworks de procesamiento nativo en streaming, ideales para transformaciones complejas en
+                        tiempo real.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">🏗️ Spark Streaming</h4>
+                    <p>Permite reutilizar la lógica de procesos batch para manejar flujos de datos mediante micro-lotes
+                        continuos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caso de Uso: Detección de Fraude -->
+        <section>
+            <div class="highlight-box info">
+                <div class="title">🏦 Ejemplo: Seguridad Bancaria en Tiempo Real</div>
+                <div class="content">
+                    Imaginen una entidad financiera que recibe miles de transacciones por segundo. Un pipeline de
+                    integración en streaming recibe cada operación, la enriquece con el perfil del usuario y la compara
+                    instantáneamente con patrones de comportamiento sospechosos. Si se detecta una anomalía, el sistema
+                    puede <strong>bloquear la tarjeta antes de que el fraude se consume</strong>, algo imposible con
+                    procesos de carga nocturnos.
+                </div>
+            </div>
+        </section>
+
+        <!-- Desafíos Técnicos y Fiabilidad -->
+        <section>
+            <h2 class="color-warning">Los Retos de la Fiabilidad: Logrando la Consistencia</h2>
+            <p>
+                A diferencia de los procesos por lotes, donde un error permite simplemente reiniciar la carga completa,
+                los sistemas de streaming operan de forma ininterrumpida. Esto introduce desafíos técnicos monumentales
+                donde la precisión no es negociable, especialmente en arquitecturas distribuidas donde los fallos de red
+                son comunes.
+            </p>
+
+            <div class="grid-1 mt-2">
+                <!-- Idempotencia y Semántica Exactly-once -->
+                <div class="card shadow mb-2" style="border-left: 5px solid var(--color-primary);">
+                    <h3 class="color-primary">🔄 Idempotencia y el Ideal "Exactly-once"</h3>
+                    <p>
+                        La <strong>idempotencia</strong> es la propiedad de una operación que permite que esta sea
+                        ejecutada múltiples veces sin cambiar el resultado más allá de la aplicación inicial. En el
+                        contexto del streaming, esto significa que si un mensaje se envía dos veces debido a un
+                        reintento de red, el sistema debe ser capaz de reconocer el duplicado y asegurar que el estado
+                        final sea idéntico a si se hubiese procesado una sola vez. Sin mecanismos de idempotencia,
+                        corremos el riesgo de duplicar cargos bancarios o distorsionar métricas críticas.
+                    </p>
+                    <p>
+                        Para alcanzar este nivel de precisión, los frameworks modernos aspiran a la semántica
+                        <strong>Exactly-once</strong> (exactamente una vez). Lograr esto requiere coordinar el
+                        almacenamiento de los datos con el registro del progreso (<em>offsets</em>) en una única
+                        transacción atómica. De este modo, si el sistema falla tras procesar un evento pero antes de
+                        confirmar que lo ha hecho, al reiniciarse sabrá exactamente dónde se quedó, evitando tanto la
+                        pérdida de información como la repetición innecesaria de procesos.
+                    </p>
+                    <p>
+                        Este enfoque se contrapone a semánticas más simples como <em>At-least-once</em> (al menos una
+                        vez), donde se prioriza que ningún dato se pierda aun a costa de tener duplicados, o
+                        <em>At-most-once</em> (como mucho una vez), donde se evita el duplicado pero se acepta el riesgo
+                        de pérdida. El "Exactly-once" es el estándar de oro para aplicaciones donde la integridad
+                        financiera es sagrada.
+                    </p>
+                </div>
+
+                <!-- Tolerancia a Fallos y Estado -->
+                <div class="card shadow mb-2" style="border-left: 5px solid var(--color-secondary);">
+                    <h3 class="color-secondary">🛡️ Tolerancia a Fallos y Gestión del Estado</h3>
+                    <p>
+                        La <strong>tolerancia a fallos</strong> en streaming no se limita a que el sistema no se
+                        detenga, sino a que pueda recuperarse manteniendo la coherencia de sus cálculos. Dado que muchas
+                        transformaciones dependen del historial (por ejemplo, calcular la media de ventas de la última
+                        hora), el sistema debe gestionar un <strong>estado interno</strong>. Si un nodo del clúster
+                        falla, el framework debe redirigir el flujo a otro nodo y reconstruir ese estado histórico de
+                        forma instantánea sin interrumpir el servicio.
+                    </p>
+                    <p>
+                        Para lograrlo, tecnologías como Flink o Spark utilizan mecanismos de
+                        <strong>Checkpointing</strong>. Estos son "fotografías" del estado del sistema que se guardan
+                        periódicamente en un almacenamiento persistente. Ante un error, el sistema "rebobina" hasta el
+                        último checkpoint exitoso y reanuda el procesamiento. La clave del éxito aquí reside en la
+                        velocidad de recuperación y en asegurar que este proceso de guardado no introduzca latencias que
+                        afecten al rendimiento.
+                    </p>
+                    <p>
+                        Finalmente, la tolerancia a fallos debe considerar el <strong>manejo del tiempo</strong>. En
+                        streaming, distinguimos entre el momento en que ocurre un evento (<em>event time</em>) y el
+                        momento en que el sistema lo procesa. Un sistema robusto debe ser capaz de manejar datos que
+                        llegan tarde debido a latencias de red, integrándolos correctamente en las ventanas temporales
+                        que ya habían cerrado, garantizando que el resultado final sea siempre exacto independientemente
+                        de la infraestructura.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2 class="color-warning">🎓 Conclusión Final</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    El éxito de la integración en tiempo real no reside solo en elegir la herramienta más rápida, sino
+                    en un <strong>diseño disciplinado</strong> que asegure la fiabilidad y la consistencia del dato
+                    frente a cualquier imprevisto técnico.
+                </p>
+                <span class="quote-author">— Arquitecto de Sistemas de Streaming</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

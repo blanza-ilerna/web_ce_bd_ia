@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código PySpark: Análisis de Logs - iLERNA</title>
+    <meta name="description"
+        content="Implementación práctica de un pipeline de análisis de logs con PySpark para la detección de cuellos de botella y patrones de fallo en clústeres Big Data.">
+    <meta name="keywords" content="PySpark, Análisis de Logs, Big Data, Spark SQL, HDFS, Optimización, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        .code-window {
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 2rem 0;
+        }
+
+        .code-header {
+            background: #323232;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ff5f56;
+        }
+
+        .yellow {
+            background: #ffbd2e;
+        }
+
+        .green {
+            background: #27c93f;
+        }
+
+        .code-content {
+            padding: 20px;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Código: Análisis de Logs</span>
+                </div>
+            </div>
+            <h1 class="text-center">Pipeline de Análisis de Logs con PySpark</h1>
+            <p class="subtitle text-center">Procesamiento distribuido para la observabilidad del clúster</p>
+        </header>
+
+        <!-- Contexto -->
+        <section>
+            <h3 class="color-primary">Objetivo del Script</h3>
+            <p>
+                Este ejemplo práctico muestra cómo utilizar <strong>PySpark</strong> para ingerir miles de registros
+                históricos almacenados en HDFS (en formato JSON), parsear los eventos complejos y extraer métricas
+                críticas sobre <strong>bottlenecks</strong> y <strong>patrones de fallo</strong> recurrentes.
+            </p>
+        </section>
+
+        <!-- Bloque de Código Grande -->
+        <section>
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span
+                        style="color: #888; font-size: 12px; margin-left: 10px; font-family: sans-serif;">log_analyzer.py</span>
+                    <button class="copy-btn" onclick="copyCode('pyspark-code')"
+                        style="margin-left: auto; background: #444; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;">📋
+                        Copiar</button>
+                </div>
+                <div class="code-content" id="pyspark-code">
+                    <span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession<br>
+                    <span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> col,
+                    explode, from_json<br>
+                    <span class="keyword">import</span> json<br><br>
+
+                    spark = SparkSession.builder.<span class="function">appName</span>(<span
+                        class="string">"LogAnalysis"</span>).<span class="function">getOrCreate</span>()<br><br>
+
+                    <span class="comment"># Cargar logs de YARN/Spark desde HDFS (formato JSON)</span><br>
+                    logs_df = spark.read.<span class="function">json</span>(<span
+                        class="string">"hdfs://namenode:8020/logs/yarn-history/*.json"</span>)<br><br>
+
+                    <span class="comment"># Parsear eventos de jobs</span><br>
+                    events = logs_df.<span class="function">select</span>(<span class="string">"events"</span>).<span
+                        class="function">withColumn</span>(<span class="string">"event"</span>, <span
+                        class="function">explode</span>(<span class="function">col</span>(<span
+                        class="string">"events"</span>)))<br>
+                    parsed_events = events.<span class="function">select</span>(<span
+                        class="string">"event.time"</span>, <span class="string">"event.type"</span>, <span
+                        class="string">"event.status"</span>, <span class="string">"event.error"</span>)<br><br>
+
+                    <span class="comment"># Análisis de bottlenecks: Filtrar jobs con shuffle > 50% tiempo</span><br>
+                    bottlenecks = parsed_events.<span class="function">filter</span>((<span
+                        class="function">col</span>(<span class="string">"type"</span>) == <span
+                        class="string">'shuffle'</span>) & (<span class="function">col</span>(<span
+                        class="string">"status"</span>) == <span class="string">"slow"</span>)) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;.<span class="function">groupBy</span>(<span
+                        class="string">"time"</span>).<span class="function">count</span>().<span
+                        class="function">orderBy</span>(<span class="function">col</span>(<span
+                        class="string">"count"</span>).<span class="function">desc</span>())<br><br>
+
+                    bottlenecks.<span class="function">show</span>(<span class="number">20</span>)<br><br>
+
+                    <span class="comment"># Detección de patrones de fallo: Conteo de errores recurrentes</span><br>
+                    failures = parsed_events.<span class="function">filter</span>(<span
+                        class="function">col</span>(<span class="string">"status"</span>) == <span
+                        class="string">"failed"</span>) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;.<span class="function">groupBy</span>(<span
+                        class="string">"error"</span>).<span class="function">count</span>().<span
+                        class="function">orderBy</span>(<span class="function">col</span>(<span
+                        class="string">"count"</span>).<span class="function">desc</span>())<br>
+                    failures.<span class="function">show</span>(<span class="number">10</span>)<br><br>
+
+                    <span class="comment"># Guardar resultados para dashboard</span><br>
+                    bottlenecks.write.<span class="function">mode</span>(<span class="string">"overwrite"</span>).<span
+                        class="function">parquet</span>(<span
+                        class="string">"hdfs://namenode:8020/analysis/bottlenecks/"</span>)<br>
+                    failures.write.<span class="function">mode</span>(<span class="string">"overwrite"</span>).<span
+                        class="function">parquet</span>(<span
+                        class="string">"hdfs://namenode:8020/analysis/failures/"</span>)<br><br>
+
+                    spark.<span class="function">stop</span>()
+                </div>
+            </div>
+        </section>
+
+        <!-- Desglose Paso a Paso -->
+        <section>
+            <h3 class="color-secondary">Desglose del Proceso</h3>
+            <div class="grid-2 mt-2">
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">1. Ingesta Masiva</h4>
+                    <p>Utilizamos <code>spark.read.json</code> con wildcards (*) para leer miles de archivos históricos
+                        de forma paralela directamente desde el almacenamiento distribuido HDFS.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">2. Aplanado de Datos</h4>
+                    <p>La función <code>explode</code> transforma arrays de eventos anidados en filas individuales,
+                        permitiendo filtrar cada evento por tipo (shuffle, task, stage) de forma granular.</p>
+                </div>
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">3. Detección de Fallos</h4>
+                    <p>Agrupamos por el campo <code>error</code> para identificar cuáles son los fallos más frecuentes,
+                        permitiendo priorizar el mantenimiento del hardware o el tuning de software.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">4. Persistencia en Parquet</h4>
+                    <p>Guardamos los resultados filtrados en formato <strong>Parquet</strong>, ideal para ser consumido
+                        posteriormente por herramientas de visualización como Grafana o Tableau.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resultado Visual -->
+        <section>
+            <div class="highlight-box info mt-2">
+                <div class="title">📈 Impacto en la Operación</div>
+                <div class="content">
+                    Al automatizar este script, el tiempo de diagnóstico forense se reduce de horas a
+                    <strong>minutos</strong>. El administrador recibe un informe diario con los 10 nodos más inestables
+                    y los tipos de cuellos de botella más comunes en las últimas 24 horas.
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros y Trazas de Ejecución - iLERNA</title>
+    <meta name="description"
+        content="Profundiza en la base de la observabilidad Big Data: gestión de logs, reconstrucción mediante trazas y herramientas clave para el diagnóstico forense.">
+    <meta name="keywords"
+        content="Logs, Trazas de Ejecución, Spark History Server, ELK Stack, YARN Timeline, Observabilidad, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Registros y Trazas</span>
+                </div>
+            </div>
+            <h1 class="text-center">Registros y Trazas: Los Cimientos de la Visibilidad</h1>
+            <p class="subtitle text-center">Navegando por el mar de datos operacionales para diagnósticos precisos</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">La Base del Análisis Forense en Big Data</h2>
+            <p>
+                Cualquier estrategia de optimización o resolución de problemas nace de los <strong>registros de
+                    ejecución</strong> (<em>logs</em>) y las <strong>trazas de sistema</strong>. Estos datos "raw"
+                capturan el latido del clúster: desde la petición inicial de un usuario hasta el cierre de la última
+                tarea distribuida, pasando por picos de latencia, fallos de red y asignaciones de memoria.
+            </p>
+            <div class="highlight-box info mt-2">
+                <div class="title">📋 Multicapa por Naturaleza</div>
+                <div class="content">
+                    En un entorno profesional, los registros no son uniformes. Se generan en múltiples niveles: desde la
+                    lógica de la aplicación (Spark) hasta el hardware subyacente (discos en DataNodes). Entender de
+                    dónde proviene cada dato es vital para no perderse en la inmensidad del sistema.
+                </div>
+            </div>
+        </section>
+
+        <!-- Origen de los Datos (Tabla) -->
+        <section>
+            <h2 class="color-secondary">Fuentes Principales de Registros</h2>
+            <p>Cada componente del ecosistema aporta una pieza única al rompecabezas operativo:</p>
+
+            <div class="table-container mt-2">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Tipo de Registro</th>
+                            <th>Contenido Principal</th>
+                            <th>Ejemplo Analítico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>YARN / RM</strong></td>
+                            <td>Ejecución de apps</td>
+                            <td>Inicio/fin de jobs, gestión de contenedores y métricas de planificación.</td>
+                            <td>Detectar colas saturadas o fallos en asignación de RAM.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NodeManager</strong></td>
+                            <td>Tareas locales</td>
+                            <td>Salud del nodo (CPU/Memoria/E/S), errores de contenedor y heartbeats.</td>
+                            <td>Identificar nodos con sobrecarga recurrente de disco.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HDFS</strong></td>
+                            <td>Almacenamiento</td>
+                            <td>Lectura/escritura de bloques, sumas de verificación (<em>checksums</em>) y balanceo.
+                            </td>
+                            <td>Analizar ineficiencias en replicación o corrupción de bloques.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Spark</strong></td>
+                            <td>Eventos y métricas</td>
+                            <td>Tiempos de stages, pausas de GC y métricas de <em>shuffle read/write</em>.</td>
+                            <td>Visualizar cuellos de botella en shuffle mediante timelines.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hive / Oozie</strong></td>
+                            <td>Queries y flujos</td>
+                            <td>Duración de consultas SQL, dependencias entre tareas y estados de workflow.</td>
+                            <td>Rastrear errores en joins complejos o dependencias rotas.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kafka / Flume</strong></td>
+                            <td>Ingesta masiva</td>
+                            <td>Tasa de mensajes por segundo, lag de consumidores y backlogs.</td>
+                            <td>Monitorizar picos de carga que causan retrasos en la ingesta.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-2 text-center">
+                <em>* Aunque residen inicialmente en <strong>/var/log/hadoop</strong>, se suelen centralizar en nubes
+                    (CloudWatch) o stacks como <strong>ELK</strong>.</em>
+            </p>
+        </section>
+
+        <!-- Trazas de Ejecución -->
+        <section>
+            <h2 class="color-primary">Trazas: Reconstruyendo el Hilo de Ariadna</h2>
+            <p>
+                Mientras que el log es una foto fija de un evento, la <strong>traza de ejecución</strong> captura la
+                secuencia temporal y causal. Permiten reconstruir el viaje completo de una petición a través del
+                sistema.
+            </p>
+            <div class="card shadow mt-2" style="border-left: 5px solid var(--color-primary);">
+                <div class="content p-2">
+                    <h3 class="color-primary">¿Qué nos dice una traza?</h3>
+                    <p>
+                        No solo indica que un job falló. Nos revela, por ejemplo, que el <strong>Stage 0</strong> se
+                        inició con éxito, pero la escritura en HDFS falló a los 14 segundos debido a un error de
+                        latencia de red de 500ms durante el <em>shuffle</em>. Esta granularidad es la que separa un
+                        administrador básico de un arquitecto experto.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ecosistema de Herramientas -->
+        <section>
+            <h2 class="color-secondary">Herramientas de Visibilidad</h2>
+            <p>Nadie lee logs en bruto hoy en día. Nos apoyamos en interfaces especializadas:</p>
+            <div class="grid-2 mt-2">
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">📊 Spark History Server</h4>
+                    <p>Monitoriza ejecuciones pasadas con timelines visuales detallados por tarea y uso de memoria.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">🏗️ YARN Timeline Server</h4>
+                    <p>Almacena metadatos de aplicaciones para consultas retrospectivas e integraciones con Grafana.</p>
+                </div>
+                <div class="feature-card secondary mb-2">
+                    <h4 class="color-secondary">🔍 ELK / Prometheus</h4>
+                    <p>Fusión de logs (Elastic) y métricas (Prometheus) para un control completo de tendencias a largo
+                        plazo.</p>
+                </div>
+                <div class="feature-card primary mb-2">
+                    <h4 class="color-primary">🔗 Zipkin / Jaeger</h4>
+                    <p>Sistemas de trazas distribuidas para correlacionar eventos entre servicios (Kafka → Spark →
+                        HDFS).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Escenarios Reales -->
+        <section>
+            <h2 class="color-primary">🚀 Casos de Uso: De la Teoría a la Práctica</h2>
+
+            <!-- Ejemplo Práctico -->
+            <div class="card shadow mt-2"
+                style="border-top: 5px solid var(--color-primary); background-color: rgba(var(--color-primary-rgb), 0.05);">
+                <div class="content p-2">
+                    <h3 class="color-primary">📉 Ejemplo: El Enigma de los Joins lentos</h3>
+                    <p>
+                        En un entorno con workloads mixtos, el 60% de los procesos Hive tardaban más de lo previsto. Al
+                        cruzar las trazas del <strong>Spark History Server</strong> con los logs de los
+                        <strong>DataNodes</strong>, el equipo detectó que el 80% del retraso ocurría en el
+                        <em>shuffle</em> debido a latencias de red.
+                    </p>
+                    <p><strong>La Solución:</strong> Ajustar la partición del shuffle de 200 a 1000, reduciendo el
+                        tiempo de ejecución en un <strong>40%</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Caso de Estudio -->
+            <div class="card shadow mt-3"
+                style="border-top: 5px solid var(--color-primary); background-color: rgba(var(--color-primary-rgb), 0.05);">
+                <div class="content p-2">
+                    <h3 class="color-primary">📶 Caso de Estudio: Gigante de Telecomunicaciones</h3>
+                    <p>
+                        Una operadora procesaba 100 TB diarios de logs. Mediante un stack <strong>ELK</strong>,
+                        detectaron que los fallos de checksum en HDFS se disparaban durante las horas pico de ingesta de
+                        <strong>Flume</strong>.
+                    </p>
+                    <div class="p-1 mt-1" style="background: white; border-radius: 8px;">
+                        <p><strong>Hallazgo Clave:</strong> El 70% de la corrupción ocurría en nodos con discos HDD
+                            antiguos incapaces de seguir el ritmo.</p>
+                        <p><strong>Resultado:</strong> Migración a SSD y automatización de procesos <em>scrub</em>. La
+                            tasa de error bajó un <strong>85%</strong> y los costes operativos se redujeron un
+                            <strong>20%</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-primary">🎓 Conclusión Estratégica</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    Dominar los registros y las trazas no es solo saber dónde falló algo, sino entender el porqué
+                    sistémico que lo motivó. Es la diferencia entre arreglar un problema y prevenir una arquitectura
+                    fallida.
+                </p>
+                <span class="quote-author">— Senior Data Platform Engineer</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelos y Patrones de Integración - iLERNA</title>
+    <meta name="description"
+        content="Explora los modelos arquitectónicos de integración de datos: el enfoque dimensional de Kimball, el normalizado de Inmon y los patrones modernos como Data Vault y Data Mesh.">
+    <meta name="keywords"
+        content="Modelos de Integración, Ralph Kimball, Bill Inmon, Modelo Dimensional, Big Data, Data Vault, Data Mesh, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Sistemas Big Data</a> ›
+                    <span>Modelos y Patrones</span>
+                </div>
+            </div>
+            <h1 class="text-center">Arquitecturas de Integración</h1>
+            <p class="subtitle text-center">Diseñando la estructura del conocimiento organizado</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Estructurando el Ecosistema</h2>
+            <p>
+                La forma en que organizamos la información integrada determina la agilidad con la que el negocio puede
+                obtener respuestas. No se trata solo de guardar datos, sino de definir <strong>modelos
+                    arquitectónicos</strong> que establezcan cómo se relacionan las entidades y cómo fluye la lógica
+                analítica.
+            </p>
+            <p>
+                En el diseño de sistemas de información, dos grandes paradigmas han dominado el panorama durante
+                décadas, convergiendo hoy en las potentes infraestructuras de Big Data.
+            </p>
+        </section>
+
+        <!-- Ralph Kimball y el Modelo Dimensional -->
+        <section>
+            <h2 class="color-secondary">Ralph Kimball: El Enfoque Dimensional</h2>
+            <p>
+                Este modelo es el estándar de oro para los sistemas orientados al análisis (OLAP) y cuadros de mando. Su
+                prioridad es la <strong>simplicidad y la velocidad de consulta</strong> para el usuario final.
+            </p>
+
+            <div class="card shadow" style="border-left: 5px solid var(--color-secondary);">
+                <h4 class="color-secondary">El Concepto de Esquema en Estrella (Star Schema)</h4>
+                <p>
+                    El corazón del modelo dimensional es el <strong>Esquema en Estrella</strong>. Se llama así porque su
+                    estructura visual recuerda a una estrella: una tabla central de hechos rodeada de tablas de
+                    dimensiones que actúan como satélites.
+                </p>
+
+                <!-- SVG Diagram: Star Schema -->
+                <div class="text-center mt-2 mb-2">
+                    <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"
+                        style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 10px; background: #fff; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <!-- Fact Table -->
+                        <rect x="225" y="125" width="150" height="100" rx="5" fill="#eef2ff"
+                            stroke="var(--color-secondary)" stroke-width="2" />
+                        <text x="300" y="155" text-anchor="middle" font-weight="bold" fill="var(--color-secondary)"
+                            font-size="16">Tabla de HECHOS</text>
+                        <text x="300" y="175" text-anchor="middle" font-size="12" fill="#555">(Ventas /
+                            Siniestros)</text>
+                        <text x="300" y="195" text-anchor="middle" font-size="11" fill="#777">Claves y Medidas</text>
+
+                        <!-- Dimension 1: Tiempo -->
+                        <rect x="50" y="30" width="120" height="60" rx="5" fill="#f8f9fa" stroke="#6c757d"
+                            stroke-width="2" />
+                        <text x="110" y="65" text-anchor="middle" font-weight="bold" font-size="14">📅 Tiempo</text>
+
+                        <!-- Dimension 2: Producto -->
+                        <rect x="430" y="30" width="120" height="60" rx="5" fill="#f8f9fa" stroke="#6c757d"
+                            stroke-width="2" />
+                        <text x="490" y="65" text-anchor="middle" font-weight="bold" font-size="14">📦 Producto</text>
+
+                        <!-- Dimension 3: Cliente -->
+                        <rect x="50" y="260" width="120" height="60" rx="5" fill="#f8f9fa" stroke="#6c757d"
+                            stroke-width="2" />
+                        <text x="110" y="295" text-anchor="middle" font-weight="bold" font-size="14">🧑 Cliente</text>
+
+                        <!-- Dimension 4: Tienda -->
+                        <rect x="430" y="260" width="120" height="60" rx="5" fill="#f8f9fa" stroke="#6c757d"
+                            stroke-width="2" />
+                        <text x="490" y="295" text-anchor="middle" font-weight="bold" font-size="14">🏪
+                            Canal/Tienda</text>
+
+                        <!-- Connection Lines -->
+                        <line x1="170" y1="80" x2="225" y2="135" stroke="#adb5bd" stroke-width="2"
+                            stroke-dasharray="4" />
+                        <line x1="430" y1="80" x2="375" y2="135" stroke="#adb5bd" stroke-width="2"
+                            stroke-dasharray="4" />
+                        <line x1="170" y1="270" x2="225" y2="215" stroke="#adb5bd" stroke-width="2"
+                            stroke-dasharray="4" />
+                        <line x1="430" y1="270" x2="375" y2="215" stroke="#adb5bd" stroke-width="2"
+                            stroke-dasharray="4" />
+                    </svg>
+                    <p class="small text-muted mt-1">Esquema en Estrella: La tabla de hechos conecta directamente con
+                        todas sus dimensiones, facilitando la exploración de datos.</p>
+                </div>
+
+                <ul class="custom-list">
+                    <li><strong>Granularidad (Grain):</strong> Es la decisión técnica más crítica. Define qué representa
+                        exactamente una fila en la tabla de hechos (ej. una transacción individual vs el total diario).
+                    </li>
+                    <li><strong>Claves Subrogadas (Surrogate Keys):</strong> Claves numéricas artificiales que
+                        desacoplan el almacén de datos de los cambios en los sistemas origen.</li>
+                    <li><strong>Dimensiones que cambian lentamiente (SCD):</strong> Técnicas para rastrear la historia
+                        (ej. cuando un cliente cambia de dirección pero queremos ver sus ventas viejas en la región
+                        anterior).</li>
+                </ul>
+                <p class="mt-1">
+                    Este diseño favorece la <strong>desnormalización controlada</strong>, permitiendo que las
+                    herramientas analíticas realicen agregaciones masivas sin necesidad de complejas uniones de tablas.
+                </p>
+            </div>
+
+            <div class="highlight-box success mt-2">
+                <div class="title">🧔 El Autor: Ralph Kimball</div>
+                <div class="content">
+                    Kimball es el autor del influyente <em>The Data Warehouse Toolkit</em>. Su enfoque es
+                    <strong>"Bottom-up"</strong> y pragmático: argumenta que el valor del Big Data reside en su
+                    capacidad para que los usuarios de negocio encuentren respuestas rápidamente, construyendo "Data
+                    Marts" incrementales que luego se integran.
+                </div>
+            </div>
+        </section>
+
+        <!-- Bill Inmon y el Modelo Normalizado -->
+        <section>
+            <h2 class="color-primary">Bill Inmon: El Enfoque Corporativo</h2>
+            <p>
+                Conocido como el "Padre del Data Warehouse", Inmon propone una visión estrictamente <strong>centralizada
+                    y rigurosa</strong>, priorizando la integridad del dato sobre la facilidad de consulta inmediata.
+            </p>
+
+            <div class="card shadow" style="border-left: 5px solid var(--color-primary);">
+                <h4 class="color-primary">Inmon y la Normalización (3NF)</h4>
+                <p>
+                    Este modelo organiza los datos siguiendo la <strong>Tercera Forma Normal (3NF)</strong>. Su objetivo
+                    es que cada dato sea atómico y aparezca una única vez en todo el sistema.
+                </p>
+                <ul class="custom-list">
+                    <li><strong>Eliminación de Redundancia:</strong> Se reduce el riesgo de inconsistencias al
+                        actualizar datos.</li>
+                    <li><strong>Atomicidad:</strong> Los datos se guardan al nivel más bajo de detalle posible,
+                        permitiendo cualquier análisis futuro.</li>
+                    <li><strong>Robustez:</strong> Es muy resistente a los cambios en las reglas de negocio, ya que la
+                        estructura refleja la arquitectura lógica de la empresa, no una consulta específica.</li>
+                </ul>
+            </div>
+
+            <div class="card shadow mt-2" style="border-left: 5px solid var(--color-primary);">
+                <h4 class="color-primary">Las Reglas de Oro: 1NF, 2NF y 3NF</h4>
+                <p>
+                    Para alcanzar el estado de pureza del dato que Inmon defiende, un sistema debe cumplir
+                    secuencialmente con estas normas formales:
+                </p>
+                <div class="grid-3 mt-2">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary text-center">1NF</h4>
+                        <p class="small"><strong>Atomicidad:</strong> Cada celda contiene un único valor. Se eliminan
+                            grupos repetidos y los datos se vuelven "planos".</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary text-center">2NF</h4>
+                        <p class="small"><strong>Dependencia Total:</strong> Debe cumplir 1NF y asegurar que todos los
+                            atributos dependan de la <strong>clave primaria completa</strong>, no de una parte.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary text-center">3NF</h4>
+                        <p class="small"><strong>Dependencia No Transitiva:</strong> Debe cumplir 2NF y garantizar que
+                            no haya atributos que dependan de otros que no sean la clave primaria.</p>
+                    </div>
+                </div>
+                <p class="mt-2 small text-center italic">
+                    Cumplir estas fases garantiza que el modelo refleje la arquitectura lógica de negocio, no solo una
+                    necesidad de visualización.
+                </p>
+            </div>
+
+            <div class="highlight-box info mt-2">
+                <div class="title">📈 El Autor: Bill Inmon</div>
+                <div class="content">
+                    Inmon es el creador del concepto <strong>Corporate Information Factory (CIF)</strong>. Defiende un
+                    enfoque <strong>"Top-down"</strong>: primero se crea un gran Data Warehouse centralizado con datos
+                    atómicos y normalizados, del cual se extraen después los "Data Marts" específicos para cada
+                    departamento. Para Inmon, el Data Warehouse debe ser una representación fiel y única de toda la
+                    verdad corporativa.
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualización de la Normalización -->
+        <section>
+            <h2 class="color-primary">Visualización: El Rigor de la Normalización</h2>
+            <div class="card shadow" style="border-left: 5px solid var(--color-primary);">
+                <h4 class="color-primary">Esquema de Normalización (3NF)</h4>
+                <p>
+                    En el modelo de Inmon, la información se descompone en tablas atómicas vinculadas por claves. Esto
+                    evita que, por ejemplo, el nombre de un cliente se repita en cada una de sus facturas.
+                </p>
+
+                <!-- SVG Diagram: Normalized Schema Shortened -->
+                <div class="text-center mt-2 mb-2">
+                    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg"
+                        style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 10px; background: #fff; padding: 10px;">
+                        <!-- Table: Clientes -->
+                        <rect x="50" y="50" width="140" height="120" rx="5" fill="#f8f9fa" stroke="var(--color-primary)"
+                            stroke-width="2" />
+                        <text x="120" y="75" text-anchor="middle" font-weight="bold" fill="var(--color-primary)">📦
+                            CLIENTES</text>
+                        <text x="65" y="100" font-size="12" fill="#555">PK: ID_Cliente</text>
+                        <text x="65" y="120" font-size="12" fill="#555">Nombre</text>
+                        <text x="65" y="140" font-size="12" fill="#555">Dirección</text>
+                        <text x="65" y="160" font-size="12" fill="#555">Teléfono</text>
+
+                        <!-- Table: Pedidos -->
+                        <rect x="230" y="50" width="140" height="120" rx="5" fill="#f8f9fa"
+                            stroke="var(--color-primary)" stroke-width="2" />
+                        <text x="300" y="75" text-anchor="middle" font-weight="bold" fill="var(--color-primary)">📝
+                            PEDIDOS</text>
+                        <text x="245" y="100" font-size="12" fill="#555">PK: ID_Pedido</text>
+                        <text x="245" y="120" font-size="12" fill="#555">FK: ID_Cliente</text>
+                        <text x="245" y="140" font-size="12" fill="#555">Fecha</text>
+                        <text x="245" y="160" font-size="12" fill="#555">Total</text>
+
+                        <!-- Table: Productos -->
+                        <rect x="410" y="50" width="140" height="120" rx="5" fill="#f8f9fa"
+                            stroke="var(--color-primary)" stroke-width="2" />
+                        <text x="480" y="75" text-anchor="middle" font-weight="bold" fill="var(--color-primary)">🛒
+                            PRODUCTOS</text>
+                        <text x="425" y="100" font-size="12" fill="#555">PK: ID_Prod</text>
+                        <text x="425" y="120" font-size="12" fill="#555">Nombre</text>
+                        <text x="425" y="140" font-size="12" fill="#555">Precio</text>
+                        <text x="425" y="160" font-size="12" fill="#555">Stock</text>
+
+                        <!-- Relationships Shortened -->
+                        <line x1="190" y1="110" x2="228" y2="110" stroke="#666" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+                        <line x1="370" y1="110" x2="408" y2="110" stroke="#666" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
+                        <!-- Marker definition -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p class="small text-muted mt-1">Estructura Relacional Normalizada: Los datos se dividen para
+                        mantener la integridad absoluta.</p>
+                </div>
+
+                <div class="example-item">
+                    <p class="title">Caso de Ejemplo: Evitando el Caos</p>
+                    <p class="description">
+                        Sin normalizar, si un cliente cambia de teléfono, tendríamos que actualizarlo en <strong>cada
+                            pedido</strong> histórico. Con Inmon, solo se cambia en la tabla <em>CLIENTES</em> una única
+                        vez. El sistema de Big Data hereda así una base limpia sin el riesgo de tener dos teléfonos
+                        distintos para el mismo usuario.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Big Data Moderno: Convergencia Híbrida -->
+        <section>
+            <h2 class="color-secondary">Convergencia en el Big Data</h2>
+            <p>
+                Hoy en día, las arquitecturas modernas no eligen un bando, sino que combinan lo mejor de ambos mundos en
+                capas diferenciadas:
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card shadow" style="border-left: 5px solid var(--color-secondary);">
+                    <h4 class="color-secondary">Capa de Staging (Normalizada)</h4>
+                    <p>Se utilizan modelos tipo <strong>Inmon</strong> para limpiar, desduplicar y guardar el dato con
+                        máxima fidelidad y sin redundancia.</p>
+                </div>
+                <div class="card shadow" style="border-left: 5px solid var(--color-primary);">
+                    <h4 class="color-primary">Capa de Explotación (Dimensional)</h4>
+                    <p>Se publican modelos tipo <strong>Kimball</strong>, optimizados para lectura, que el usuario final
+                        y los algoritmos de IA pueden consumir rápidamente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejemplo Práctico -->
+        <section>
+            <h2 class="color-secondary">Escenario: Integración en Seguros</h2>
+            <p>
+                Imaginemos una aseguradora que combina tres fuentes críticas: <strong>Siniestros</strong>,
+                <strong>Pólizas</strong> y <strong>Cobros</strong>.
+            </p>
+            <div class="highlight-box warning">
+                <p><strong>El Resultado del Modelo:</strong></p>
+                <ul class="custom-list">
+                    <li><strong>Hechos:</strong> Se define una tabla de "Siniestro" que captura el coste de reparación,
+                        días de resolución e indemnización pagada.</li>
+                    <li><strong>Dimensiones:</strong> Se vinculan tablas como "Cliente" (perfil de riesgo), "Producto"
+                        (tipo de póliza) y "Canal de Venta" (agente o web).</li>
+                </ul>
+                <p class="mt-1">
+                    Esto permite al negocio detectar instantáneamente, por ejemplo, qué tipos de seguros están sufriendo
+                    mayor siniestralidad en regiones específicas, manteniendo siempre la trazabilidad con los recibos
+                    cobrados.
+                </p>
+            </div>
+        </section>
+
+        <!-- Nuevos Paradigmas -->
+        <section>
+            <h2 class="color-primary">Patrones de Vanguardia</h2>
+            <p>
+                Más allá de la estructura de tablas, han surgido nuevos paradigmas que gestionan la complejidad del Big
+                Data a gran escala:
+            </p>
+            <div class="grid-2-cols mt-2">
+                <div class="card shadow" style="border-left: 5px solid var(--color-secondary);">
+                    <h4 class="color-secondary">Data Vault</h4>
+                    <p>Estructura los datos en <strong>Hubs</strong> (claves de negocio), <strong>Links</strong>
+                        (relaciones) y <strong>Satélites</strong> (contexto). Permite una trazabilidad total y es
+                        extremadamente escalable para cambios históricos.</p>
+                </div>
+                <div class="card shadow" style="border-left: 5px solid var(--color-primary);">
+                    <h4 class="color-primary">Data Mesh</h4>
+                    <p>Propone la <strong>descentralización</strong>. Cada dominio de negocio (Ventas, RRHH) gestiona
+                        sus datos como un producto independiente, bajo estándares de interoperabilidad globales,
+                        evitando el cuello de botella central.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section>
+            <h2 class="color-warning">🎓 Conclusión</h2>
+            <div class="expert-quote">
+                <p class="quote-text">
+                    La elección del modelo de integración no es un debate filosófico, sino técnico y estratégico.
+                    Kimball nos da la agilidad para responder preguntas hoy; Inmon nos da la solidez para que las
+                    respuestas sigan siendo ciertas mañana.
+                </p>
+                <span class="quote-author">— Arquitecto Senior de Datos</span>
+            </div>
+            <p class="mt-2 text-center">
+                Dominar estos patrones permite transformar una montaña de datos desordenada en una
+                <strong>infraestructura de conocimiento</strong> capaz de evolucionar al ritmo de la tecnología.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
