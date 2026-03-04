@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Lección sobre Kubernetes: orquestación de contenedores a gran escala, escalado automático, alta disponibilidad y gestión de microservicios de IA.">
+    <meta name="keywords"
+        content="Kubernetes, K8s, orquestación, contenedores, Pod, Deployment, escalabilidad, alta disponibilidad, microservicios">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Kubernetes: Orquestación a Gran Escala | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        Curso de Especialización
+                        <span>Inteligencia Artificial y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> →
+                    <a href="index.html">Programación IA</a> →
+                    <span>Kubernetes</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>Kubernetes (k8s)</h1>
+                <p class="subtitle">Orquestación inteligente para ecosistemas de contenedores masivos ☸️</p>
+            </div>
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN -->
+            <section class="section">
+                <h2 class="color-primary">¿Por qué necesitamos Orquestación?</h2>
+                <p>
+                    Cuando una infraestructura digital crece y pasa de gestionar unos pocos contenedores a manejar
+                    decenas o cientos de ellos, el control manual se vuelve imposible. Surge la necesidad de una
+                    herramienta que automatice decisiones críticas:
+                </p>
+
+                <div class="grid-4 mt-2 mb-8">
+                    <div class="feature-card primary">
+                        <h4>📍 Planificación</h4>
+                        <p>Decide en qué máquinas físicas debe ejecutarse cada contenedor basándose en la carga.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🩹 Auto-curación</h4>
+                        <p>Detecta contenedores caídos y los vuelve a levantar automáticamente.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>⚖️ Balanceo</h4>
+                        <p>Reparte el tráfico de forma equitativa entre varias réplicas de un mismo servicio.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4>🔄 Actualización</h4>
+                        <p>Gestiona despliegues de nuevas versiones sin interrumpir el servicio al usuario.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary">
+                    <h3 class="highlight-title color-primary">Definición de Kubernetes</h3>
+                    <p class="content">
+                        <strong>Kubernetes ☸️</strong> es una plataforma de código abierto diseñada para automatizar el
+                        despliegue, el escalado y la gestión de aplicaciones en contenedores. Se ha convertido en el
+                        estándar de facto para la orquestación en entornos Cloud Native.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ELEMENTOS CLAVE -->
+            <section class="section">
+                <h2 class="color-secondary">Elementos Clave del Ecosistema</h2>
+                <p>Para entender cómo funciona Kubernetes, debemos conocer sus unidades fundamentales de organización:
+                </p>
+
+                <div class="mt-2">
+                    <div class="feature-card secondary mb-2">
+                        <h4>🌐 Cluster de Kubernetes</h4>
+                        <p>Es el conjunto total de recursos: una agrupación de máquinas (nodos) que trabajan como una
+                            sola unidad.</p>
+                    </div>
+                    <div class="feature-card secondary mb-2">
+                        <h4>🖥️ Nodo</h4>
+                        <p>Cada una de las máquinas (físicas o virtuales) que forman el cluster y ejecutan los
+                            contenedores.</p>
+                    </div>
+                    <div class="feature-card secondary mb-2">
+                        <h4>📦 Pod</h4>
+                        <p>La unidad mínima de despliegue. Puede contener uno o varios contenedores muy relacionados que
+                            comparten red y almacenamiento.</p>
+                    </div>
+                    <div class="feature-card secondary mb-2">
+                        <h4>📜 Deployment</h4>
+                        <p>Define el estado deseado: cuántas réplicas de un Pod deben existir y cómo deben actualizarse.
+                        </p>
+                    </div>
+                    <div class="feature-card secondary mb-2">
+                        <h4>🔌 Service</h4>
+                        <p>Proporciona un punto de acceso estable (IP virtual o nombre DNS) que reparte el tráfico entre
+                            los Pods dinámicos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EJEMPLO IA -->
+            <section class="section">
+                <h2 class="color-primary">Ejemplo: Sistema Distribuido de IA</h2>
+                <p>Imaginemos una aplicación de recomendaciones personalizadas compuesta por tres microservicios:</p>
+
+                <div class="layout-grid-stack mt-2 mb-4">
+                    <div class="advantage-box">
+                        <ul class="list-disc-padded">
+                            <li><strong>API Gateway (Contenedor A):</strong> Recibe las peticiones de los usuarios. En
+                                Kubernetes se define como un <em>Deployment</em> con varias réplicas para soportar picos
+                                de tráfico.</li>
+                            <li><strong>Modelo IA (Contenedor B):</strong> Ejecuta el algoritmo de recomendación.
+                                Kubernetes aplica reglas de <em>Autoscaling</em> para añadir réplicas si la CPU sube
+                                demasiado.</li>
+                            <li><strong>Base de Datos (Contenedor C):</strong> Almacena preferencias de usuario.
+                                Kubernetes asegura que el servicio sea accesible de forma persistente para los otros
+                                microservicios.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DIAGRAMA SVG DEL EJEMPLO -->
+                <div class="svg-container mt-4 mb-8"
+                    style="text-align: center; background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <svg width="100%" height="auto" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#6d28d9" />
+                            </marker>
+                        </defs>
+                        <!-- Cluster -->
+                        <rect x="10" y="10" width="480" height="280" rx="15" fill="#fdfaff" stroke="#6d28d9"
+                            stroke-width="2" stroke-dasharray="8 4" />
+                        <text x="250" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold"
+                            fill="#6d28d9">Cluster de Kubernetes ☸️</text>
+
+                        <!-- Nodes -->
+                        <rect x="40" y="60" width="190" height="200" rx="10" fill="#ffffff" stroke="#9333ea"
+                            stroke-width="2" />
+                        <text x="135" y="85" text-anchor="middle" font-size="14" font-family="Arial, sans-serif"
+                            font-weight="bold" fill="#9333ea">Nodo 1</text>
+
+                        <rect x="270" y="60" width="190" height="200" rx="10" fill="#ffffff" stroke="#9333ea"
+                            stroke-width="2" />
+                        <text x="365" y="85" text-anchor="middle" font-size="14" font-family="Arial, sans-serif"
+                            font-weight="bold" fill="#9333ea">Nodo 2</text>
+
+                        <!-- Pods Node 1 -->
+                        <rect x="60" y="100" width="150" height="40" rx="5" fill="#f5f3ff" stroke="#6d28d9"
+                            stroke-width="1" />
+                        <circle cx="75" cy="120" r="12" fill="#6d28d9" fill-opacity="0.2" />
+                        <text x="140" y="125" text-anchor="middle" font-size="12" font-family="Arial, sans-serif"
+                            fill="#4c1d95">Pod A: API Gateway</text>
+
+                        <rect x="60" y="150" width="150" height="40" rx="5" fill="#ecfdf5" stroke="#10b981"
+                            stroke-width="1" />
+                        <circle cx="75" cy="170" r="12" fill="#10b981" fill-opacity="0.2" />
+                        <text x="140" y="175" text-anchor="middle" font-size="12" font-family="Arial, sans-serif"
+                            fill="#065f46">Pod B: Modelo IA</text>
+
+                        <!-- Pods Node 2 -->
+                        <rect x="290" y="100" width="150" height="40" rx="5" fill="#f5f3ff" stroke="#6d28d9"
+                            stroke-width="1" />
+                        <circle cx="305" cy="120" r="12" fill="#6d28d9" fill-opacity="0.2" />
+                        <text x="370" y="125" text-anchor="middle" font-size="12" font-family="Arial, sans-serif"
+                            fill="#4c1d95">Pod A: API (Réplica)</text>
+
+                        <rect x="290" y="150" width="150" height="40" rx="5" fill="#eff6ff" stroke="#3b82f6"
+                            stroke-width="1" />
+                        <circle cx="305" cy="170" r="12" fill="#3b82f6" fill-opacity="0.2" />
+                        <text x="370" y="175" text-anchor="middle" font-size="12" font-family="Arial, sans-serif"
+                            fill="#1e3a8a">Pod C: Base de Datos</text>
+
+                        <!-- Auto-recovery arrow -->
+                        <path d="M 230 220 Q 250 250 270 220" fill="none" stroke="#6d28d9" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+                        <text x="250" y="275" text-anchor="middle" font-size="11" font-family="Arial, sans-serif"
+                            fill="#6d28d9" font-style="italic">Re-programación automática</text>
+                    </svg>
+                </div>
+                <div class="highlight-box bg-primary-light">
+                    <p class="content italic">
+                        Si un nodo del hardware falla, Kubernetes reprograma los Pods de la API y el Modelo IA en otro
+                        nodo sano de forma transparente, manteniendo la aplicación siempre activa.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: DOCKER VS KUBERNETES -->
+            <section class="section">
+                <h2 class="color-secondary">Papel de Docker y Kubernetes</h2>
+                <p>Es común confundirlos, pero trabajan en capas distintas de la infraestructura:</p>
+                <div class="table-container mt-2">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Capa</th>
+                                <th>Herramienta</th>
+                                <th>Función principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Contenedor</strong></td>
+                                <td><strong>Docker</strong></td>
+                                <td>Construir y ejecutar imágenes de contenedor de forma aislada.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Orquestación</strong></td>
+                                <td><strong>Kubernetes</strong></td>
+                                <td>Gestionar y coordinar miles de contenedores en múltiples nodos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: RESUMEN Y ATENCIÓN -->
+            <section class="section">
+                <div class="highlight-box bg-secondary-light">
+                    <h3 class="highlight-title color-secondary">Puntos Clave</h3>
+                    <ul class="list-disc-padded">
+                        <li>Fomenta la orquestación automatizada de contenedores.</li>
+                        <li>Utiliza conceptos de Cluster, Nodo, Pod, Deployment y Servicio.</li>
+                        <li>Las funciones vitales son el escalado automático y la auto-recuperación.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box warning mt-2">
+                    <h3 class="highlight-title color-warning">Atención: Curva de Aprendizaje</h3>
+                    <p class="content">
+                        Kubernetes introduce una gran complejidad técnica. Solo tiene sentido cuando el volumen de
+                        servicios es elevado o se requiere una alta disponibilidad crítica. Para proyectos pequeños o
+                        aplicaciones monolíticas, su uso puede resultar excesivo y costoso de mantener.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 6: RECURSOS ADICIALES -->
+            <section class="section">
+                <h2 class="color-secondary">📚 Profundiza en el Tema</h2>
+                <div class="resources-grid">
+                    <div class="resource-card read-resource">
+                        <span class="resource-icon">📖</span>
+                        <h4>Conceptos de Kubernetes</h4>
+                        <p>Documentación oficial sobre la visión general y los conceptos fundamentales que rigen el
+                            orquestador.</p>
+                        <a href="https://kubernetes.io/docs/concepts/overview/" target="_blank" class="resource-btn">
+                            <span>Leer artículo</span> ➔
+                        </a>
+                    </div>
+                    <div class="resource-card video-resource">
+                        <span class="resource-icon">🎬</span>
+                        <h4>Video: k8s en 15 minutos</h4>
+                        <p>Un resumen visual excelente para entender cómo Kubernetes gestiona contenedores a escala.</p>
+                        <a href="https://www.youtube.com/watch?v=VnvRFRk_51k" target="_blank" class="resource-btn">
+                            <span>Ver en YouTube</span> ➔
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

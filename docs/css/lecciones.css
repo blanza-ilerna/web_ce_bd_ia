@@ -377,6 +377,13 @@ section p {
     line-height: 1.7;
 }
 
+.highlight-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
 /* ===============================================
    TARJETAS (FEATURE CARDS)
    =============================================== */
@@ -1092,7 +1099,14 @@ svg {
 }
 
 /* ===============================================
-   CÓDIGO CON PRISM
+   ESTILOS DE BLOQUES DE CÓDIGO (ESTÁNDAR)
+   =============================================== 
+   Utilizado para snippets integrados en el texto.
+   Estructura recomendada:
+   <div class="code-container">
+       <button class="copy-button">📋 Copiar</button>
+       <pre><code class="language-xxxx">...</code></pre>
+   </div>
    =============================================== */
 .code-container {
     position: relative;
@@ -2588,6 +2602,105 @@ html {
 }
 
 /* ===============================================
+   BLOQUES DE RECURSOS EXTERNOS (PROFUNDIZA)
+   =============================================== */
+.resources-grid {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.resource-card {
+    flex: 1;
+    min-width: 300px;
+    background: var(--bg-white);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.resource-card.video-resource {
+    border-color: #ff000022;
+}
+
+.resource-card.video-resource:hover {
+    border-color: #ff0000;
+}
+
+.resource-card.read-resource {
+    border-color: var(--bg-primary-light);
+}
+
+.resource-card.read-resource:hover {
+    border-color: var(--color-primary);
+}
+
+.resource-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.resource-card h4 {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.resource-card p {
+    font-size: 1rem;
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.resource-btn {
+    align-self: flex-start;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resource-card.video-resource .resource-btn {
+    background: #ff0000;
+    color: white;
+}
+
+.resource-card.read-resource .resource-btn {
+    background: var(--color-primary);
+    color: white;
+}
+
+.resource-btn:hover {
+    filter: brightness(1.1);
+    gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .resources-grid {
+        flex-direction: column;
+    }
+}
+
+/* ===============================================
    BIOGRAFÍAS Y RETRATOS
    =============================================== */
 .biography-grid {
@@ -2619,4 +2732,116 @@ html {
         max-width: 250px;
         margin: 0 auto;
     }
+}
+
+/* ===============================================
+   BLOQUES DE CÓDIGO PREMIUM (CODE WINDOW)
+   =============================================== 
+   Utilizado para ejemplos destacados con estética de editor.
+   Estructura recomendada:
+   <div class="code-window">
+       <div class="code-header">
+           <div class="dot red"></div>
+           <div class="dot yellow"></div>
+           <div class="dot green"></div>
+           <span>nombre_archivo.py</span>
+           <button class="copy-btn" onclick="copyCode('id_unico')">📋 Copiar</button>
+       </div>
+       <pre id="id_unico" class="code-content"><code class="language-python">...</code></pre>
+   </div>
+   =============================================== */
+.code-window {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin: 2rem 0;
+}
+
+.code-header {
+    background: #323232;
+    padding: 10px 15px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.code-header .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.code-header .dot.red {
+    background: #ff5f56;
+}
+
+.code-header .dot.yellow {
+    background: #ffbd2e;
+}
+
+.code-header .dot.green {
+    background: #27c93f;
+}
+
+.code-header span {
+    color: #888;
+    font-size: 12px;
+    margin-left: 10px;
+    font-family: sans-serif;
+}
+
+.code-content {
+    padding: 20px;
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+.code-content .keyword {
+    color: #569cd6;
+}
+
+.code-content .string {
+    color: #ce9178;
+}
+
+.code-content .comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.code-content .function {
+    color: #dcdcaa;
+}
+
+.code-content .number {
+    color: #b5cea8;
+}
+
+/* Botón de Copiar */
+.copy-btn {
+    margin-left: auto;
+    background: #444;
+    color: #fff !important;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: sans-serif;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.copy-btn:hover {
+    background: #555;
+}
+
+.copy-btn.copied {
+    background: #27c93f;
 }

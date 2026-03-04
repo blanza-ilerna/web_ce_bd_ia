@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explora el concepto de escalabilidad en la convergencia tecnológica: diferencias entre métodos tradicionales y el modelo elástico del Cloud, incluyendo escalado vertical y horizontal con visualizaciones.">
+    <meta name="keywords"
+        content="escalabilidad, escalado vertical, escalado horizontal, cloud computing, convergencia tecnológica, elasticidad, SVG animation">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>¿Qué significa Mayor Escalabilidad? | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <style>
+        /* Estilos EXPLICATIVOS para las animaciones de escalado */
+        .visual-container {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 280px;
+            border: 2px solid #eef2f7;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .scaling-svg {
+            width: 220px;
+            height: 180px;
+        }
+
+        /* ESCALADO VERTICAL: El servidor crece hacia arriba */
+        @keyframes vertical-grow {
+
+            0%,
+            15% {
+                height: 40px;
+                y: 110px;
+            }
+
+            45%,
+            75% {
+                height: 100px;
+                y: 50px;
+            }
+
+            95%,
+            100% {
+                height: 40px;
+                y: 110px;
+            }
+        }
+
+        @keyframes arrow-bounce {
+
+            0%,
+            15% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            45%,
+            75% {
+                opacity: 1;
+                transform: translateY(-40px);
+            }
+
+            95%,
+            100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        .growth-box {
+            animation: vertical-grow 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .arrow-indicator {
+            animation: arrow-bounce 4s ease-in-out infinite;
+        }
+
+        /* ESCALADO HORIZONTAL: Se añaden y quitan servidores en orden inverso (LIFO) */
+        @keyframes node-2-logic {
+
+            0%,
+            15% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+
+            25%,
+            85% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            95%,
+            100% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+        }
+
+        @keyframes node-3-logic {
+
+            0%,
+            30% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+
+            40%,
+            65% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            75%,
+            100% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+        }
+
+        .node-2,
+        .plus-2 {
+            animation: node-2-logic 6s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .node-3,
+        .plus-3 {
+            animation: node-3-logic 6s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .horizontal-section {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 950px) {
+            .horizontal-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .visual-container {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        Curso de Especialización
+                        <span>Inteligencia Artificial y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> →
+                    <a href="index.html">Programación IA</a> →
+                    <span>¿Qué es la Escalabilidad?</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>¿Qué significa Mayor Escalabilidad?</h1>
+                <p class="subtitle">Capacidad de adaptación elástica ante demandas variables</p>
+            </div>
+
+            <!-- SECCIÓN 1: COMPARATIVA TRADICIONAL VS CLOUD -->
+            <section class="section">
+                <h2 class="color-primary">Evolución del Crecimiento Técnico</h2>
+                <p>
+                    Históricamente, aumentar la capacidad de un sistema era un proceso lento, costoso y eminentemente
+                    físico. La convergencia tecnológica, apoyada en el modelo **Cloud**, ha convertido este proceso en
+                    una operación lógica e instantánea.
+                </p>
+
+                <div class="layout-grid-stack mt-2">
+                    <div class="disadvantage-box">
+                        <h4>❌ Entorno Tradicional (Hardware Estático)</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Inversión Física:</strong> Era necesario comprar y recibir nuevos servidores
+                                físicos.</li>
+                            <li><strong>Instalación Manual:</strong> Configuración física de cableado y racks de red.
+                            </li>
+                            <li><strong>Tiempos de Parada:</strong> Muchas ampliaciones exigían detener el servicio
+                                temporalmente.</li>
+                            <li><strong>Sobredimensionamiento:</strong> Se solía comprar más de lo necesario para prever
+                                picos futuros, desperdiciando recursos.</li>
+                        </ul>
+                    </div>
+                    <div class="advantage-box">
+                        <h4>✅ Convergencia Cloud (Elasticidad Lógica)</h4>
+                        <ul class="list-disc-padded">
+                            <li><strong>Crecimiento Lógico:</strong> No se requiere desplegar hardware adicional
+                                físicamente; se asignan recursos virtuales.</li>
+                            <li><strong>Pago por Uso:</strong> Se paga únicamente por la capacidad consumida en cada
+                                momento.</li>
+                            <li><strong>Inmediatez:</strong> Los recursos pueden aumentar en cuestión de segundos o
+                                minutos.</li>
+                            <li><strong>Automatización:</strong> El sistema puede crecer o reducirse solo según la carga
+                                real (Auto-scaling).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: MODALIDADES DE ESCALADO -->
+            <section class="section">
+                <h2 class="color-secondary">📦 Modalidades de Escalabilidad</h2>
+                <p>
+                    Para comprender cómo la escalabilidad deja de ser un problema físico, es esencial diferenciar entre
+                    las dos formas principales de ampliar un sistema:
+                </p>
+
+                <div class="mt-2">
+                    <!-- ESCALADO VERTICAL -->
+                    <div class="highlight-box primary mb-8">
+                        <div class="horizontal-section">
+                            <div style="flex: 1;">
+                                <h3 class="highlight-title color-primary">⬆️ Escalado Vertical (Scaling Up)</h3>
+                                <p class="content">
+                                    Consiste en aumentar la potencia de una <strong>única instancia o máquina</strong>.
+                                    Significa dotarla de más CPU, más memoria RAM o mayor velocidad de disco. Es ideal
+                                    para aplicaciones monolíticas que requieren alta potencia de proceso concentrada en
+                                    un solo punto.
+                                </p>
+                            </div>
+                            <div class="visual-container">
+                                <svg class="scaling-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="gradPrimary" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#63D1E6;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#49B9CE;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Base Fixed Part -->
+                                    <rect x="60" y="140" width="80" height="20" fill="#2C3E50" rx="2" />
+                                    <!-- Growing Part -->
+                                    <rect class="growth-box" x="60" y="120" width="80" height="40"
+                                        fill="url(#gradPrimary)" rx="4" />
+                                    <!-- CPU/RAM Icon -->
+                                    <path d="M90 100h20v20h-20z" fill="white" opacity="0.3" />
+                                    <!-- Arrow Indicators -->
+                                    <g class="arrow-indicator" fill="#49B9CE">
+                                        <path d="M100 40 L110 55 L90 55 Z" />
+                                        <rect x="97" y="55" width="6" height="20" />
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ESCALADO HORIZONTAL -->
+                    <div class="highlight-box secondary">
+                        <div class="horizontal-section">
+                            <div style="flex: 1;">
+                                <h3 class="highlight-title color-secondary">➡️ Escalado Horizontal (Scaling Out)</h3>
+                                <p class="content">
+                                    Consiste en añadir <strong>más máquinas o instancias</strong> al ecosistema para
+                                    repartir la carga de trabajo entre ellas. Es la base de los microservicios y las
+                                    arquitecturas de alta disponibilidad; si una máquina falla, las demás siguen
+                                    operando sin interrupción.
+                                </p>
+                            </div>
+                            <div class="visual-container">
+                                <svg class="scaling-svg" viewBox="0 0 250 160" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#A296C5;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#8A7AAF;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Node 1 (Always there) -->
+                                    <g>
+                                        <rect x="10" y="50" width="60" height="70" fill="url(#nodeGrad)" rx="5" />
+                                        <rect x="18" y="65" width="44" height="6" fill="white" opacity="0.2" />
+                                        <rect x="18" y="80" width="44" height="6" fill="white" opacity="0.2" />
+                                    </g>
+
+                                    <!-- Plus Signs -->
+                                    <text class="plus-2" x="72" y="95" fill="#8A7AAF" font-size="28"
+                                        font-weight="bold">+</text>
+                                    <text class="plus-3" x="152" y="95" fill="#8A7AAF" font-size="28"
+                                        font-weight="bold">+</text>
+
+                                    <!-- Node 2 -->
+                                    <g class="node-2">
+                                        <rect x="90" y="50" width="60" height="70" fill="url(#nodeGrad)" rx="5" />
+                                        <rect x="98" y="65" width="44" height="6" fill="white" opacity="0.2" />
+                                        <rect x="98" y="80" width="44" height="6" fill="white" opacity="0.2" />
+                                    </g>
+
+                                    <!-- Node 3 -->
+                                    <g class="node-3">
+                                        <rect x="170" y="50" width="60" height="70" fill="url(#nodeGrad)" rx="5" />
+                                        <rect x="178" y="65" width="44" height="6" fill="white" opacity="0.2" />
+                                        <rect x="178" y="80" width="44" height="6" fill="white" opacity="0.2" />
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CONCLUSIÓN ESTRATÉGICA -->
+            <section class="section">
+                <h2 class="color-primary">🚀 Impacto Estratégico</h2>
+                <div class="challenge-box">
+                    <p>
+                        La escalabilidad moderna permite que aplicaciones críticas (como sistemas de análisis masivo de
+                        datos o agentes de IA) respondan a picos de demanda inesperados sin degradar la experiencia del
+                        usuario. Al dejar de depender de componentes físicos específicos, la escalabilidad se convierte
+                        en una <strong>ventaja competitiva</strong> basada en la eficiencia de costes y la agilidad
+                        operativa.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

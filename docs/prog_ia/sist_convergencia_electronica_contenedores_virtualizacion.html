@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Lección sobre virtualización de hardware: funcionamiento de hipervisores y máquinas virtuales como base de la infraestructura cloud.">
+    <meta name="keywords" content="virtualización, VM, hipervisor, VMM, bare metal, infraestructura IT, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Virtualización: Máquinas Lógicas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        Curso de Especialización
+                        <span>Inteligencia Artificial y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> →
+                    <a href="index.html">Programación IA</a> →
+                    <span>Virtualización</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>Virtualización de Hardware</h1>
+                <p class="subtitle">La capacidad de ejecutar múltiples mundos lógicos sobre una única realidad física
+                </p>
+            </div>
+
+            <!-- SECCIÓN 1: DEFINICIÓN -->
+            <section class="section">
+                <h2 class="color-primary">¿Qué es la Virtualización?</h2>
+                <p>
+                    La <strong>virtualización</strong> es la técnica que permite fragmentar un ordenador físico en
+                    varias "máquinas lógicas". Cada una de estas entidades, denominadas <strong>Máquinas Virtuales
+                        (VM)</strong>, opera de forma totalmente independiente, disponiendo de su propio sistema
+                    operativo, asignación de memoria y aplicaciones específicas.
+                </p>
+
+                <div class="highlight-box primary mt-2">
+                    <h3 class="highlight-title color-primary">El Motor: El Hipervisor</h3>
+                    <p class="content">
+                        El componente clave de este sistema es el <strong>Hipervisor</strong> (Virtual Machine Monitor o
+                        VMM). Su función principal es actuar como un árbitro que reparte dinámicamente los recursos
+                        físicos del hardware (CPU, RAM, disco y red) entre las distintas VMs que se ejecutan sobre él.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: TIPOS DE HIPERVISOR -->
+            <section class="section">
+                <h2 class="color-secondary">Tipos de Hipervisores</h2>
+                <p>Dependiendo de dónde se instale la capa de gestión, distinguimos dos arquitecturas principales:</p>
+
+                <div class="mt-2">
+                    <div class="feature-card secondary mb-2">
+                        <h4>🛠️ Tipo 1 (Bare Metal)</h4>
+                        <p>Se instala directamente sobre el hardware físico del servidor. Es la opción más eficiente
+                            para centros de datos.</p>
+                        <p class="mt-1"><strong>Ejemplos:</strong> VMware ESXi, Microsoft Hyper-V Server, Xen.</p>
+                    </div>
+                    <div class="feature-card secondary mb-2">
+                        <h4>🖥️ Tipo 2 (Hosted)</h4>
+                        <p>Se ejecuta como una aplicación sobre un sistema operativo ya instalado (Windows, Linux,
+                            macOS).</p>
+                        <p class="mt-1"><strong>Ejemplos:</strong> VirtualBox, VMware Workstation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: EJEMPLO PRÁCTICO -->
+            <section class="section">
+                <h2 class="color-primary">Virtualización en el Centro de Datos</h2>
+                <div class="highlight-box bg-primary-light">
+                    <p class="content">
+                        Imagine un servidor físico de gran potencia. Mediante virtualización, podemos aprovecharlo para
+                        tareas críticas aisladas:
+                    </p>
+                    <ul class="list-disc-padded">
+                        <li><strong>VM Clientes:</strong> Para la base de datos de administración.</li>
+                        <li><strong>VM Web:</strong> Para alojar el servidor público de la empresa.</li>
+                        <li><strong>VM Laboratorio IA:</strong> Para testear modelos de Inteligencia Artificial sin
+                            afectar a los otros servicios.</li>
+                    </ul>
+                    <p class="content mt-1">Aunque comparten el mismo silicio, <strong>están aisladas</strong>: si una
+                        VM falla, las demás siguen operando con normalidad.</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: COMPARATIVA -->
+            <section class="section">
+                <h2 class="color-secondary">Servidores Físicos vs Virtualización</h2>
+                <div class="table-container mt-2">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>Servidor físico tradicional</th>
+                                <th>Servidor virtualizado (VMs)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Uso del hardware</strong></td>
+                                <td>Suele infrautilizarse</td>
+                                <td>Aprovechamiento óptimo con varias VMs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aislamiento</strong></td>
+                                <td>Depende del sistema operativo</td>
+                                <td>Alto: cada servicio en su propia VM</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Flexibilidad</strong></td>
+                                <td>Baja (alterar hardware es costoso)</td>
+                                <td>Alta (mover o clonar VMs es rápido)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Puesta en marcha</strong></td>
+                                <td>Lenta (instalación de cero)</td>
+                                <td>Rápida (despliegue mediante plantillas)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: RESUMEN Y ATENCIÓN -->
+            <section class="section">
+                <div class="highlight-box bg-secondary-light">
+                    <h3 class="highlight-title color-secondary">Conceptos Clave</h3>
+                    <ul class="list-disc-padded">
+                        <li>La virtualización optimiza el hardware compartiéndolo entre máquinas lógicas.</li>
+                        <li>El hipervisor es la capa de software que gestiona los recursos.</li>
+                        <li>La VM es un entorno completo con su propio sistema operativo.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box warning mt-2">
+                    <h3 class="highlight-title color-warning">Atención: El Coste de la Abstracción</h3>
+                    <p class="content">
+                        La virtualización introduce <strong>sobrecarga</strong> (overhead). Como cada VM requiere
+                        ejecutar un sistema operativo completo, consume una parte importante de memoria y CPU solo para
+                        mantenerse activa. Por este motivo, la virtualización no es siempre la opción más ligera para
+                        desplegar cientos de microservicios.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
