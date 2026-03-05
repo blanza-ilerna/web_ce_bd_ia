@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Identificación y tratamiento de valores atípicos (outliers). Aprende a detectar anomalías univariadas y multivariadas usando el método IQR para mejorar tus modelos.">
+    <meta name="keywords"
+        content="Outliers, Valores atípicos, IQR, Rango intercuartílico, Preprocesamiento, Machine Learning, Análisis de datos">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Valores Atípicos (Outliers) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Valores Atípicos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Valores Atípicos (Outliers)</h1>
+            <p class="subtitle">Detección y gestión de anomalías para garantizar la robustez estadística.</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué son los Outliers?</h2>
+            <p>
+                Los <strong>valores atípicos</strong> o <em>outliers</em> son observaciones en un conjunto de datos que
+                se encuentran anormalmente lejos del resto de valores. Se desvían significativamente del patrón general,
+                lo que los convierte en puntos de interés crítico: pueden ser errores de medición o hallazgos
+                científicos excepcionales.
+            </p>
+            <div class="card secondary-bg mb-4">
+                <p>
+                    Si no se tratan adecuadamente, los outliers pueden <strong>distorsionar las estadísticas</strong> y
+                    afectar negativamente al rendimiento de los modelos sensibles a la media o la escala, como la
+                    regresión lineal.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: TIPOS DE OUTLIERS -->
+        <section class="section">
+            <h2 class="color-secondary">Categorías de Anomalías</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Univariados</h4>
+                    <p>Anómalos en una sola característica. Ejemplo: Una persona de <strong>2,25 metros</strong> en un
+                        estudio de población estándar.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Multivariados</h4>
+                    <p>Inusuales por su <strong>combinación de variables</strong>. Ejemplo: Un coche de 80 CV circulando
+                        a 190 km/h (ambos datos por separado son normales).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: DETECCIÓN MEDIANTE IQR -->
+        <section class="section">
+            <h2 class="color-primary">Detección: Método IQR</h2>
+            <p>
+                El enfoque más extendido es el <strong>Rango Intercuartílico (IQR)</strong>, que mide la dispersión del
+                50% central de los datos (entre el primer cuartil Q1 y el tercero Q3).
+            </p>
+
+            <div class="card bg-light"
+                style="padding: 2rem; border: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <div
+                    style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--color-primary);">
+                    IQR = Q3 - Q1
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; width: 100%;">
+                    <div class="feature-card primary" style="text-align: center;">
+                        <h4 class="color-primary">Límite Superior</h4>
+                        <code>Q3 + 1.5 * IQR</code>
+                    </div>
+                    <div class="feature-card primary" style="text-align: center;">
+                        <h4 class="color-primary">Límite Inferior</h4>
+                        <code>Q1 - 1.5 * IQR</code>
+                    </div>
+                </div>
+                <p class="mt-3 text-center">Cualquier punto fuera de estos límites se clasifica estadísticamente como
+                    <strong>outlier</strong>.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: ESTRATEGIAS DE TRATAMIENTO -->
+        <section class="section">
+            <h2 class="color-secondary">Estrategias de Gestión</h2>
+            <p>Una vez detectados, el tratamiento depende de la <strong>causa probable</strong>:</p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">E</div>
+                    <div class="step-content">
+                        <h4>Fruto de un Error (Limpieza)</h4>
+                        <ul class="list-custom">
+                            <li><strong>Eliminación:</strong> Si el error es claro e irreparable.</li>
+                            <li><strong>Corrección:</strong> Si podemos verificar el dato real en la fuente.</li>
+                            <li><strong>Imputación:</strong> Sustituirlos por la mediana (que es robusta a extremos).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="step-item"
+                    style="border-left-color: var(--color-secondary); background: var(--bg-secondary-light);">
+                    <div class="step-number" style="background: var(--color-secondary);">R</div>
+                    <div class="step-content">
+                        <h4 class="color-secondary">Valores Reales (Mitigación)</h4>
+                        <ul class="list-custom">
+                            <li><strong>Estadística Robusta:</strong> Usar la mediana en lugar de la media.</li>
+                            <li><strong>Transformación:</strong> Aplicar escalas logarítmicas para comprimir extremos.
+                            </li>
+                            <li><strong>Modelos Robustos:</strong> Usar algoritmos no sensibles a distancias (como
+                                árboles).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CONCLUSIÓN -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">⚠️ Salud Global vs Muestra Individual</h4>
+                <p>
+                    Priorizaremos la salud del conjunto de datos sobre las muestras individuales. Es vital entender el
+                    <strong>"por qué"</strong> del outlier, pero el objetivo final es siempre construir un dataset de
+                    máxima calidad y representatividad.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Limpieza y depuración de datos en Machine Learning. Aprende por qué la calidad del dato es el factor más crítico para el éxito de tus modelos de IA.">
+    <meta name="keywords"
+        content="Limpieza de Datos, Depuración de Datos, Quality Data, GIGO, Machine Learning, Ciencia de Datos, Data Cleaning, Errores de Formato, Valores Atípicos">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Limpieza y Depuración de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Limpieza y Depuración</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Limpieza y Depuración de Datos</h1>
+            <p class="subtitle">Garantizando la integridad para modelos de alta precisión.</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="color-primary">El primer paso del éxito</h2>
+            <p>
+                La <strong>limpieza y depuración de datos</strong> constituye el pilar sobre el cual se
+                sostiene cualquier análisis riguroso. Su finalidad principal es garantizar la
+                <strong>calidad, coherencia y fiabilidad</strong> del dataset antes de someterlo a procesos
+                de entrenamiento.
+            </p>
+            <p>
+                En el mundo real, los datos nunca son perfectos. Aquellos que se recogen de sensores,
+                formularios web o bases de datos antiguas suelen llegar con inconsistencias que, si no
+                se tratan, pueden llevar a conclusiones erróneas.
+            </p>
+
+            <div class="card primary mt-4">
+                <h4 class="color-primary">El principio GIGO (Garbage In, Garbage Out)</h4>
+                <p>
+                    En computación e IA, este principio establece que si los datos de entrada son
+                    deficientes ("basura"), los resultados de salida serán igualmente deficientes, sin importar cuán
+                    avanzado sea el algoritmo utilizado.
+                </p>
+            </div>
+
+            <!-- SVG Diagrama Animado -->
+            <div
+                style="display: flex; justify-content: center; align-items: center; margin-top: 3rem; background: var(--bg-gray-light); padding: 2.5rem; border-radius: 1.5rem; border: 1px solid var(--border-light);">
+                <svg width="600" height="300" viewBox="0 0 600 300" style="max-width: 100%; height: auto;">
+                    <defs>
+                        <style>
+                            @keyframes flow-valid {
+                                0% {
+                                    transform: translateX(0);
+                                    opacity: 0;
+                                    fill: var(--color-secondary);
+                                }
+
+                                10% {
+                                    opacity: 1;
+                                }
+
+                                45% {
+                                    fill: var(--color-secondary);
+                                }
+
+                                50% {
+                                    fill: var(--color-primary);
+                                }
+
+                                90% {
+                                    opacity: 1;
+                                }
+
+                                100% {
+                                    transform: translateX(450px);
+                                    opacity: 0;
+                                    fill: var(--color-primary);
+                                }
+                            }
+
+                            @keyframes flow-error {
+                                0% {
+                                    transform: translateX(0);
+                                    opacity: 0;
+                                }
+
+                                10% {
+                                    opacity: 1;
+                                }
+
+                                48% {
+                                    opacity: 1;
+                                }
+
+                                50% {
+                                    opacity: 0;
+                                    transform: translateX(225px);
+                                }
+
+                                100% {
+                                    opacity: 0;
+                                    transform: translateX(225px);
+                                }
+                            }
+
+                            .p-valid {
+                                animation: flow-valid 4s linear infinite;
+                            }
+
+                            .p-error {
+                                animation: flow-error 4s linear infinite;
+                            }
+
+                            .p-delay-1 {
+                                animation-delay: -1s;
+                            }
+
+                            .p-delay-2 {
+                                animation-delay: -2s;
+                            }
+
+                            .p-delay-3 {
+                                animation-delay: -3s;
+                            }
+
+                            @keyframes pulse-filter {
+
+                                0%,
+                                100% {
+                                    transform: scale(1);
+                                    opacity: 0.8;
+                                }
+
+                                50% {
+                                    transform: scale(1.1);
+                                    opacity: 1;
+                                }
+                            }
+
+                            .filter-core {
+                                animation: pulse-filter 2s ease-in-out infinite;
+                                transform-origin: center;
+                            }
+                        </style>
+                        <linearGradient id="grad-dirty" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--color-secondary);stop-opacity:0.2" />
+                            <stop offset="100%" style="stop-color:var(--color-secondary);stop-opacity:0.6" />
+                        </linearGradient>
+                        <linearGradient id="grad-clean" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--color-primary);stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:var(--color-primary);stop-opacity:0.9" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Contenedores -->
+                    <text x="100" y="40" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="var(--color-secondary)" text-anchor="middle">DATOS BRUTOS</text>
+                    <rect x="25" y="60" width="150" height="180" rx="15" fill="url(#grad-dirty)"
+                        stroke="var(--color-secondary)" stroke-width="2" stroke-dasharray="5,5" />
+
+                    <text x="500" y="40" font-family="Montserrat" font-size="14" font-weight="700"
+                        fill="var(--color-primary)" text-anchor="middle">DATOS CURADOS</text>
+                    <rect x="425" y="60" width="150" height="180" rx="15" fill="url(#grad-clean)"
+                        stroke="var(--color-primary)" stroke-width="2" />
+
+                    <!-- Partículas -->
+                    <circle cx="75" cy="110" r="6" class="p-valid" />
+                    <rect x="70" y="150" width="10" height="10" rx="2" class="p-valid p-delay-2" />
+                    <circle cx="75" cy="190" r="5" class="p-valid p-delay-1" />
+                    <circle cx="75" cy="130" r="5" fill="#f44336" class="p-error p-delay-1" />
+                    <rect x="70" y="170" width="12" height="12" rx="2" fill="#f44336" class="p-error p-delay-2" />
+
+                    <!-- Filtro -->
+                    <g transform="translate(300, 150)">
+                        <circle r="45" fill="var(--bg-white)" stroke="var(--color-primary)" stroke-width="3"
+                            class="filter-core" />
+                        <text y="5" font-family="Montserrat" font-size="10" font-weight="800"
+                            fill="var(--color-primary)" text-anchor="middle">LIMPIEZA</text>
+                    </g>
+
+                    <circle cx="300" cy="150" r="45" fill="none" stroke="var(--color-primary)" opacity="0.3">
+                        <animate attributeName="r" from="45" to="70" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.3" to="0" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: MOTIVACIÓN -->
+        <section class="section">
+            <h2 class="color-secondary">¿Por qué depurar los datos?</h2>
+            <p>
+                Si alimentamos un algoritmo con registros inconsistentes, este aprenderá de esos errores, comprometiendo
+                la validez del sistema:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Sesgos Predictivos</h4>
+                    <p>Errores sistemáticos causados por desequilibrios o errores de etiquetado en el origen.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Baja Generalización</h4>
+                    <p>Modelos que "memorizan" el ruido y fallan con datos reales del mundo real.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Overfitting</h4>
+                    <p>El aprendizaje de patrones inexistentes derivados de errores técnicos en el dataset.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ETAPAS -->
+        <section class="section">
+            <h2 class="color-primary">Etapas Críticas de la Depuración</h2>
+            <p>Este proceso requiere una intervención estructurada sobre las variables del dataset:</p>
+
+            <div class="card bg-light" style="padding: 1.5rem;">
+                <!-- Nulos -->
+                <div class="feature-card primary mb-4" style="width: 100%;">
+                    <h4 class="color-primary">1. Tratamiento de Valores Nulos</h4>
+                    <p>Gestión de celdas vacías mediante eliminación lógica o técnicas de imputación (sustitución
+                        estadística).</p>
+                </div>
+
+                <!-- Outliers -->
+                <div class="feature-card secondary mb-4" style="width: 100%;">
+                    <h4 class="color-secondary">2. Identificación de Outliers</h4>
+                    <p>Detección de puntos que se alejan drásticamente del comportamiento normal y pueden distorsionar
+                        el modelo.</p>
+                </div>
+
+                <!-- Inconsistencias -->
+                <div class="feature-card primary" style="width: 100%;">
+                    <h4 class="color-primary">3. Corrección de Inconsistencias</h4>
+                    <p>Estandarización de formatos, unidades y eliminación de registros duplicados que sesgan el peso
+                        estadístico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CONCLUSIÓN -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">🏁 El Valor de la Curaduría</h4>
+                <p>
+                    La depuración no es solo una tarea de limpieza, es una fase de curaduría. La integridad del dato es
+                    lo que separa un experimento académico de un sistema de producción robusto.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Técnicas de imputación de valores en Machine Learning. Aprende a sustituir datos faltantes mediante imputación simple, por grupos o modelos predictivos como KNN.">
+    <meta name="keywords"
+        content="Imputación de datos, fillna, KNNImputer, media, mediana, moda, preprocesamiento, pandas, scikit-learn, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Imputación de Valores | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Imputación de Valores</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Imputación de Valores</h1>
+            <p class="subtitle">Sustitución inteligente de datos ausentes para preservar la integridad del dataset.</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es la Imputación?</h2>
+            <p>
+                La <strong>imputación de valores</strong> es la técnica mediante la cual sustituimos los valores
+                faltantes por estimaciones de los mismos. A diferencia de la eliminación, esta táctica nos permite
+                <strong>conservar el tamaño total del dataset</strong>, evitando la pérdida de observaciones que podrían
+                contener información valiosa en otras variables.
+            </p>
+            <div class="highlight-box secondary">
+                <p>
+                    La elección de la técnica de imputación no es arbitraria; depende críticamente de la naturaleza del
+                    problema y, sobre todo, del tipo de valor nulo (MCAR, MAR o MNAR) al que nos enfrentemos.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: IMPUTACIÓN SIMPLE (MCAR) -->
+        <section class="section">
+            <h2 class="color-secondary">1. Imputación Simple (Datos MCAR)</h2>
+            <p>
+                Cuando los datos faltan completamente al azar, podemos recurrir a estadísticos descriptivos básicos de
+                la propia columna para rellenar los huecos:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">La Media</h4>
+                    <p>Ideal para variables numéricas con una <strong>distribución normal</strong> (campana de Gauss).
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">La Mediana</h4>
+                    <p>Más robusta que la media. Recomendada si existen <strong>outliers</strong> o distribuciones
+                        sesgadas.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">La Moda</h4>
+                    <p>Sustitución por el valor más frecuente. Es la opción estándar para <strong>variables
+                            categóricas</strong>.</p>
+                </div>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>imputacion_simple.py</span>
+                    <button class="copy-btn" onclick="copyCode('simple-code')">📋 Copiar</button>
+                </div>
+                <div class="code-content" id="simple-code">
+                    <span class="comment"># Definimos la columna a tratar</span><br>
+                    col = <span class="string">'nombre_columna'</span><br><br>
+                    <span class="comment"># Opción A: Imputación con la media</span><br>
+                    df[col] = df[col].<span class="function">fillna</span>(df[col].<span
+                        class="function">mean</span>())<br><br>
+                    <span class="comment"># Opción B: Imputación con la mediana</span><br>
+                    df[col] = df[col].<span class="function">fillna</span>(df[col].<span
+                        class="function">median</span>())<br><br>
+                    <span class="comment"># Opción C: Imputación con la moda (primer valor de la serie)</span><br>
+                    df[col] = df[col].<span class="function">fillna</span>(df[col].<span
+                        class="function">mode</span>()[<span class="number">0</span>])
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: IMPUTACIÓN POR SUBGRUPOS (MAR) -->
+        <section class="section">
+            <h2 class="color-primary">2. Imputación Condicional (Datos MAR)</h2>
+            <p>
+                Si la ausencia de datos se explica por otra variable capturada, debemos "sofisticar" la técnica para no
+                introducir sesgos que invisibilicen a los subgrupos.
+            </p>
+            <div class="card primary">
+                <p>
+                    <strong>La solución:</strong> Calcular los estadísticos (media, mediana) sobre grupos específicos.
+                    Por ejemplo, si falta la "Renta", imputamos usando la media de su "Profesión" específica en lugar de
+                    la media global de toda la población.
+                </p>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>imputacion_grupos.py</span>
+                    <button class="copy-btn" onclick="copyCode('group-code')">📋 Copiar</button>
+                </div>
+                <div class="code-content" id="group-code">
+                    <span class="comment"># Imputación condicionada por una columna de subgrupo</span><br>
+                    col_target = <span class="string">'renta'</span><br>
+                    col_group = <span class="string">'ocupacion'</span><br><br>
+                    <span class="comment"># Calculamos la media de la renta para cada ocupación</span><br>
+                    medias_grupo = df.<span class="function">groupby</span>(col_group)[col_target].<span
+                        class="function">transform</span>(<span class="string">'mean'</span>)<br><br>
+                    <span class="comment"># Rellenamos los nulos usando el mapa de medias generado</span><br>
+                    df[col_target] = df[col_target].<span class="function">fillna</span>(medias_grupo)
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MODELOS PREDICTIVOS (MNAR/COMPLEJOS) -->
+        <section class="section">
+            <h2 class="color-secondary">3. Imputación mediante Modelos</h2>
+            <p>
+                Para relaciones complejas entre múltiples variables, utilizamos algoritmos de aprendizaje que "estiman"
+                el valor ausente basándose en todo el contexto del registro:
+            </p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Imputación KNN (Vecinos Cercanos)</h4>
+                        <p>Identifica los <strong>K registros más similares</strong> al incompleto y estima el valor
+                            faltante como el promedio de esos vecinos.</p>
+                    </div>
+                </div>
+                <div class="step-item"
+                    style="border-left-color: var(--color-secondary); background: var(--bg-secondary-light);">
+                    <div class="step-number" style="background: var(--color-secondary);">2</div>
+                    <div class="step-content">
+                        <h4 class="color-secondary">Modelos Regresivos</h4>
+                        <p>Trata la variable con nulos como el "target" y entrena un bosque aleatorio o regresión lineal
+                            para predecir sus huecos.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Imputación Iterativa</h4>
+                        <p>Es la más robusta. Modela cada columna con nulos de forma cíclica hasta que las estimaciones
+                            convergen y se estabilizan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>knn_imputer.py</span>
+                    <button class="copy-btn" onclick="copyCode('knn-code')">📋 Copiar</button>
+                </div>
+                <div class="code-content" id="knn-code">
+                    <span class="keyword">from</span> sklearn.impute <span class="keyword">import</span>
+                    KNNImputer<br><br>
+                    <span class="comment"># Inicializamos el imputador con 5 vecinos</span><br>
+                    imputer = <span class="function">KNNImputer</span>(n_neighbors=<span
+                        class="number">5</span>)<br><br>
+                    <span class="comment"># El modelo aprende las relaciones y transforma el dataset</span><br>
+                    df_imputado = imputer.<span class="function">fit_transform</span>(df)<br><br>
+                    <span class="comment"># Convertimos el array resultante de nuevo a DataFrame</span><br>
+                    df_final = pd.<span class="function">DataFrame</span>(df_imputado, columns=df.columns)
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CONCLUSIÓN -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">🏁 El factor humano en la imputación</h4>
+                <p>
+                    No existe un método automático universal. Para detectar qué tipo de nulo tenemos y qué solución
+                    aplicar, es <strong>imprescindible empaparse del contexto del problema</strong>. La máquina calcula,
+                    pero el científico de datos decide qué estadístico tiene sentido lógico para el negocio.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Tratamiento de valores nulos y perdidos en Machine Learning. Aprende a clasificar y gestionar datos ausentes (MCAR, MAR, MNAR) para evitar sesgos en tus modelos.">
+    <meta name="keywords"
+        content="Valores Nulos, Datos Faltantes, MCAR, MAR, MNAR, Imputación de Datos, Preprocesamiento, Machine Learning, Calidad del Dato">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Tratamiento de Valores Nulos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Valores Nulos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Tratamiento de Valores Nulos</h1>
+            <p class="subtitle">Estrategias para gestionar la ausencia de información en tus conjuntos de datos.</p>
+        </div>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section class="section">
+            <h2 class="color-primary">El Desafío de los Datos Incompletos</h2>
+            <p>
+                En el mundo real, los conjuntos de datos rara vez son perfectos. Es extremadamente común
+                encontrarse con "huecos" o información faltante, conocidos técnicamente como
+                <strong>valores nulos, perdidos o ausentes</strong> (NaN o Null).
+            </p>
+            <p>
+                Ignorar estos valores no es una opción; la mayoría de los algoritmos de Machine Learning
+                fallarán o producirán resultados sesgados si no se gestionan adecuadamente las ausencias
+                sistemáticas.
+            </p>
+
+            <div class="card primary mt-4">
+                <h4 class="color-primary">¿Por qué faltan datos?</h4>
+                <p>La ausencia de información puede deberse a múltiples factores, desde errores de registro hasta
+                    limitaciones técnicas:</p>
+                <ul class="list-custom">
+                    <li><strong>Errores Humanos:</strong> Campos olvidados en cuestionarios o formularios.</li>
+                    <li><strong>Fallos Técnicos:</strong> Sensores que se desconectan o pierden señal temporalmente.
+                    </li>
+                    <li><strong>Incompatibilidad:</strong> Uniones de tablas donde no hay correspondencia exacta.</li>
+                    <li><strong>Privacidad:</strong> Usuarios que deciden no revelar información sensible.</li>
+                </ul>
+            </div>
+
+            <!-- SVG Animado: Datos rotos -->
+            <div
+                style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; background: var(--bg-gray-light); padding: 2rem; border-radius: 1rem;">
+                <svg width="280" height="280" viewBox="0 0 300 300" style="max-width: 100%; height: auto;">
+                    <defs>
+                        <style>
+                            @keyframes flicker {
+
+                                0%,
+                                100% {
+                                    opacity: 0.3;
+                                }
+
+                                50% {
+                                    opacity: 0.8;
+                                }
+                            }
+
+                            .null-slot {
+                                animation: flicker 2s infinite;
+                            }
+                        </style>
+                    </defs>
+                    <!-- Tabla de datos -->
+                    <rect x="50" y="50" width="200" height="200" rx="10" fill="var(--bg-white)"
+                        stroke="var(--border-light)" stroke-width="2" />
+                    <line x1="50" y1="100" x2="250" y2="100" stroke="var(--border-light)" stroke-width="1" />
+                    <line x1="50" y1="150" x2="250" y2="150" stroke="var(--border-light)" stroke-width="1" />
+                    <line x1="50" y1="200" x2="250" y2="200" stroke="var(--border-light)" stroke-width="1" />
+                    <line x1="116" y1="50" x2="116" y2="250" stroke="var(--border-light)" stroke-width="1" />
+                    <line x1="182" y1="50" x2="182" y2="250" stroke="var(--border-light)" stroke-width="1" />
+
+                    <!-- Datos presentes -->
+                    <rect x="65" y="65" width="35" height="20" rx="4" fill="var(--color-primary)" opacity="0.6" />
+                    <rect x="131" y="65" width="35" height="20" rx="4" fill="var(--color-primary)" opacity="0.6" />
+                    <rect x="65" y="115" width="35" height="20" rx="4" fill="var(--color-primary)" opacity="0.6" />
+                    <rect x="197" y="165" width="35" height="20" rx="4" fill="var(--color-primary)" opacity="0.6" />
+                    <rect x="131" y="215" width="35" height="20" rx="4" fill="var(--color-primary)" opacity="0.6" />
+
+                    <!-- Valores Nulos (Animados) -->
+                    <rect x="197" y="65" width="35" height="20" rx="4" fill="#ff4444" class="null-slot" />
+                    <text x="215" y="80" font-family="Montserrat" font-size="10" font-weight="700" fill="white"
+                        text-anchor="middle">NULL</text>
+
+                    <rect x="131" y="115" width="35" height="20" rx="4" fill="#ff4444" class="null-slot"
+                        style="animation-delay: 0.5s;" />
+                    <text x="148" y="130" font-family="Montserrat" font-size="10" font-weight="700" fill="white"
+                        text-anchor="middle">?</text>
+
+                    <rect x="65" y="215" width="35" height="20" rx="4" fill="#ff4444" class="null-slot"
+                        style="animation-delay: 1s;" />
+                    <text x="82" y="230" font-family="Montserrat" font-size="10" font-weight="700" fill="white"
+                        text-anchor="middle">NaN</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CLASIFICACIÓN -->
+        <section class="section">
+            <h2 class="color-secondary">Naturaleza de la Ausencia</h2>
+            <p>
+                No todos los datos faltantes deben tratarse igual. La estadística los clasifica en tres categorías
+                fundamentales según su causa:
+            </p>
+
+            <div class="card bg-light" style="padding: 1.5rem;">
+                <!-- MCAR -->
+                <div class="feature-card primary mb-4" style="width: 100%;">
+                    <h4 class="color-primary">1. MCAR (Missing Completely At Random)</h4>
+                    <p><strong>Faltante completamente al azar:</strong> La probabilidad de que falte no tiene relación
+                        con ninguna variable. Es puro azar.</p>
+                    <p class="mt-2" style="font-size: 0.95rem; color: var(--text-medium);"><em>Ejemplo: Un encuestado se
+                            salta una pregunta por distracción.</em></p>
+                </div>
+
+                <!-- MAR -->
+                <div class="feature-card secondary mb-4" style="width: 100%;">
+                    <h4 class="color-secondary">2. MAR (Missing At Random)</h4>
+                    <p><strong>Faltante al azar:</strong> La ausencia se explica mediante otras variables observadas en
+                        el dataset.</p>
+                    <p class="mt-2" style="font-size: 0.95rem; color: var(--text-medium);"><em>Ejemplo: Los jóvenes son
+                            más propensos a no contestar sobre política (la edad explica el nulo).</em></p>
+                </div>
+
+                <!-- MNAR -->
+                <div class="feature-card primary" style="width: 100%;">
+                    <h4 class="color-primary">3. MNAR (Missing Not At Random)</h4>
+                    <p><strong>Faltante no al azar:</strong> La ausencia depende directamente del valor real oculto.
+                        Introduce sesgos peligrosos.</p>
+                    <p class="mt-2" style="font-size: 0.95rem; color: var(--text-medium);"><em>Ejemplo: Personas con
+                            ingresos muy altos que omiten declarar su renta por privacidad.</em></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ESTRATEGIAS -->
+        <section class="section">
+            <h2 class="color-primary">Estrategias de Manejo</h2>
+            <p>
+                Una vez identificado el patrón, el científico de datos dispone de dos grandes familias de técnicas:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🗑️ Eliminación</h4>
+                    <p>Borrar los registros incompletos. Útil si la cantidad de nulos es despreciable y aleatoria
+                        (MCAR).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🧬 Imputación</h4>
+                    <p>Sustituir huecos por valores estimados (media, mediana o modelos KNN). Preserva el tamaño del
+                        dataset.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CONCLUSIÓN -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">🏁 Conclusión</h4>
+                <p>
+                    No existe una solución única. Antes de actuar, analiza la <strong>magnitud</strong> de la pérdida;
+                    si una variable tiene más del 50% de nulos, quizás sea mejor descartarla por completo.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

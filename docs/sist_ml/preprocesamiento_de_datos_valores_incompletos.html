@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Eliminación de registros incompletos en el preprocesamiento de datos. Aprende cuándo es adecuado borrar filas con nulos y los riesgos asociados.">
+    <meta name="keywords"
+        content="Eliminación de nulos, dropna, MCAR, limpieza de datos, preprocesamiento, pandas, machine learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Eliminación de Registros Incompletos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Eliminación de Registros</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Eliminación de Registros Incompletos</h1>
+            <p class="subtitle">La solución más directa para el tratamiento de datos faltantes.</p>
+        </div>
+
+        <!-- SECCIÓN 1: CONCEPTO Y CRITERIOS -->
+        <section class="section">
+            <h2 class="color-primary">¿En qué consiste este método?</h2>
+            <p>
+                La eliminación de registros incompletos consiste en borrar aquellas observaciones que contienen valores
+                ausentes en una o más variables relevantes. Se trata del método más simple y directo para tratar los
+                datos faltantes.
+            </p>
+
+            <div class="card secondary-bg mb-4">
+                <p>
+                    Su uso tiene que estar bien pensado, ya que es un método que nos lleva inevitablemente a la
+                    <strong>destrucción y pérdida de información</strong> relevante para el modelo.
+                </p>
+            </div>
+
+            <h3 class="color-secondary mt-4">¿Cuándo es apropiado usarlo?</h3>
+            <p>Este enfoque es adecuado únicamente bajo ciertas condiciones estrictas:</p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Proporción Reducida</h4>
+                    <p>Cuando la proporción de datos ausentes es muy baja (por ejemplo, <strong>inferior al
+                            5–10%</strong> del total).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Muestreo MCAR</h4>
+                    <p>Cuando los valores perdidos son <strong>completamente al azar</strong> (MCAR) y no dependen de
+                        otras variables.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: RIESGOS Y SESGOS -->
+        <section class="section">
+            <h2 class="color-secondary">Riesgos de la Eliminación Masiva</h2>
+            <p>
+                Si las ausencias están asociadas con el valor de otras variables o con el fenómeno que se estudia (MAR o
+                MNAR), eliminar registros puede provocar una distorsión grave.
+            </p>
+
+            <div class="card primary">
+                <ul class="list-custom">
+                    <li><strong>Distorsión de resultados:</strong> Se altera la distribución estadística original.</li>
+                    <li><strong>Pérdida de representatividad:</strong> El modelo puede ignorar patrones de grupos
+                        específicos.</li>
+                    <li><strong>Baja generalización:</strong> El sistema fallará al enfrentarse a datos reales con
+                        ausencias similares.</li>
+                </ul>
+            </div>
+            <p class="mt-3">
+                Por tanto, este método debe considerarse una <strong>solución práctica</strong>, pero no necesariamente
+                óptima, especialmente si la pérdida de información es sustancial.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 3: IMPLEMENTACIÓN -->
+        <section class="section">
+            <h2 class="color-primary">Implementación con Python y Pandas</h2>
+            <p>
+                En entornos de producción, solemos utilizar la librería <code>pandas</code> para identificar y descartar
+                rápidamente estas filas:
+            </p>
+
+            <!-- Code Window -->
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>limpieza_nulos.py</span>
+                    <button class="copy-btn" onclick="copyCode('clean-code')">📋 Copiar</button>
+                </div>
+                <div class="code-content" id="clean-code">
+                    <span class="comment"># Identificamos el volumen de nulos por columna</span><br>
+                    <span class="function">print</span>(<span class="string">"Valores ausentes:"</span>)<br>
+                    <span class="function">print</span>(df_masked.<span class="function">isna</span>().<span
+                        class="function">sum</span>())<br><br>
+                    <span class="comment"># Eliminamos los registros incompletos (todas las filas con NaN)</span><br>
+                    df_clean = df_masked.<span class="function">dropna</span>()<br><br>
+                    <span class="function">print</span>(<span class="string">f"Filas resultantes: </span>{<span
+                        class="function">len</span>(df_clean)}<span class="string">"</span>)
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CONCLUSIÓN -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">🏁 Conclusión Directa</h4>
+                <p>
+                    Borrar es fácil, pero caro en términos de información. Antes de aplicar un <code>.dropna()</code>,
+                    asegúrate de que el "hueco" que dejas no es más valioso que la simplicidad que ganas.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
