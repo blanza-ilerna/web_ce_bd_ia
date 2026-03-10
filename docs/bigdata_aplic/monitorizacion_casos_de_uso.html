@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Uso en Monitorización Big Data - iLERNA</title>
+    <meta name="description"
+        content="Casos prácticos de éxito en la implementación de sistemas de monitorización para clústeres Hadoop, Spark y Ceph en entornos productivos.">
+    <meta name="keywords" content="Casos de Uso, Monitorización, Big Data, Hadoop, Spark, Nagios, Prometheus, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Casos de Uso de Monitorización</span>
+                </div>
+            </div>
+            <h1 class="text-center">Casos de Uso en Producción</h1>
+            <p class="subtitle text-center">Aplicaciones reales y beneficios de la observabilidad avanzada</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Valor Operativo de la Vigilancia</h2>
+            <p>
+                Una estrategia de monitorización bien ejecutada trasciende la mera detección de fallos. Su
+                implementación en entornos reales permite no solo garantizar la continuidad del servicio, sino también
+                optimizar significativamente los costes operativos y mejorar el rendimiento de las aplicaciones
+                distribuidas.
+            </p>
+            <div class="card secondary-bg" style="border-left: 5px solid var(--color-secondary);">
+                <p>
+                    A continuación, se exploran diversos escenarios donde herramientas como Ganglia, Prometheus, Nagios
+                    y Grafana han transformado la gestión de infraestructuras críticas.
+                </p>
+            </div>
+        </section>
+
+        <!-- Casos de Éxito -->
+        <section>
+            <h2 class="color-secondary">Escenarios de Aplicación Real</h2>
+
+            <!-- Caso 1 -->
+            <div class="card white shadow mt-2" style="border-left: 4px solid var(--color-primary);">
+                <h4 class="color-primary">1. Detección Preventiva en Nodos Hadoop</h4>
+                <p><strong>Contexto:</strong> Una operadora de telecomunicaciones con un clúster de 150 nodos y 100 TB
+                    de logs.</p>
+                <ul class="custom-list">
+                    <li><strong>Acción:</strong> Ganglia detectó picos de carga anómalos en la CPU correlacionados con
+                        latencias de red en el stack ELK.</li>
+                    <li><strong>Impacto:</strong> Se identificó una tarjeta de red degradada, procediendo a su cambio en
+                        menos de 2 horas.</li>
+                    <li><strong>Resultado:</strong> Se evitó la caída masiva de la ingesta de datos, manteniendo un SLA
+                        de disponibilidad superior al 99.9%.</li>
+                </ul>
+            </div>
+
+            <!-- Caso 2 -->
+            <div class="card white shadow mt-2" style="border-left: 4px solid var(--color-secondary);">
+                <h4 class="color-secondary">2. Optimización de Memoria en Spark</h4>
+                <p><strong>Contexto:</strong> Una entidad bancaria procesando 500 TB de transacciones bancarias en 400
+                    nodos.</p>
+                <ul class="custom-list">
+                    <li><strong>Acción:</strong> Mediante Prometheus y Grafana, se observó que los ejecutores consumían
+                        el 95% de la memoria durante las fases de transferencia de datos (shuffles).</li>
+                    <li><strong>Impacto:</strong> Se redimensionó la memoria de los ejecutores y se aumentó el número de
+                        particiones Spark.</li>
+                    <li><strong>Resultado:</strong> El tiempo de procesamiento se redujo de 40 a 22 minutos, optimizando
+                        la capacidad del clúster en un 30%.</li>
+                </ul>
+            </div>
+
+            <!-- Caso 3 -->
+            <div class="card white shadow mt-2" style="border-left: 4px solid var(--color-primary);">
+                <h4 class="color-primary">3. Respuesta Automatizada con Nagios</h4>
+                <p><strong>Contexto:</strong> Logística global gestionando un Petabyte (1 PB) de datos sobre Ceph y
+                    Hadoop.</p>
+                <ul class="custom-list">
+                    <li><strong>Acción:</strong> Plugins personalizados de Nagios detectaron fallos en discos OSD de
+                        Ceph.</li>
+                    <li><strong>Impacto:</strong> El sistema disparó automáticamente la reequilibración de datos y
+                        notificó al equipo vía Slack.</li>
+                    <li><strong>Resultado:</strong> El tiempo medio de respuesta (MTTR) bajó de 20 a solo 5 minutos,
+                        garantizando la resiliencia del almacenamiento.</li>
+                </ul>
+            </div>
+
+            <!-- Caso 4 -->
+            <div class="card white shadow mt-2" style="border-left: 4px solid var(--color-secondary);">
+                <h4 class="color-secondary">4. Monitorización Unificada en la Nube</h4>
+                <p><strong>Contexto:</strong> Migración de 200 nodos físicos on-premise a instancias EMR en AWS.</p>
+                <ul class="custom-list">
+                    <li><strong>Acción:</strong> Integración de métricas de CloudWatch con logs locales centralizados en
+                        Grafana.</li>
+                    <li><strong>Impacto:</strong> Se ajustó el escalado automático basado en la demanda real detectada
+                        en los paneles.</li>
+                    <li><strong>Resultado:</strong> Ahorro del 25% en costes de nube y mejora del rendimiento bruto en
+                        un 40%.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Beneficios Operativos -->
+        <section>
+            <h2 class="color-primary">Beneficios Operativos de la Observabilidad</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Beneficios Alcanzados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Disponibilidad</strong></td>
+                            <td>Gestión proactiva que reduce drásticamente los tiempos de inactividad (downtime).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eficiencia</strong></td>
+                            <td>Ajuste fino de parámetros técnicos que maximiza el rendimiento del hardware existente.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escalabilidad</strong></td>
+                            <td>Capacidad para gestionar de forma centralizada miles de métricas en infraestructuras
+                                masivas.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trazabilidad</strong></td>
+                            <td>Visibilidad completa del flujo de datos, facilitando la correlación entre hardware y
+                                aplicaciones.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capacidad Predictiva</strong></td>
+                            <td>Anticipación a la degradación de componentes críticos mediante el análisis de
+                                tendencias.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganglia, Nagios y Prometheus - iLERNA</title>
+    <meta name="description"
+        content="Estudio detallado de las tres herramientas líderes en monitorización de clústeres Big Data: Ganglia, Nagios y Prometheus.">
+    <meta name="keywords" content="Ganglia, Nagios, Prometheus, Big Data, Monitorización de Clústeres, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Ganglia, Nagios y Prometheus</span>
+                </div>
+            </div>
+            <h1 class="text-center">Ganglia, Nagios y Prometheus</h1>
+            <p class="subtitle text-center">Herramientas fundamentales para la observabilidad en entornos distribuidos
+            </p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Ecosistema de Monitorización</h2>
+            <p>
+                En el ámbito del Big Data, la elección de la herramienta de monitorización depende de la arquitectura
+                del clúster y los objetivos de observabilidad. Mientras que algunas soluciones destacan por su bajo
+                impacto en el rendimiento, otras ofrecen una flexibilidad extrema mediante plugins o un análisis
+                avanzado orientado a métricas temporales.
+            </p>
+        </section>
+
+        <!-- Ganglia Section -->
+        <section>
+            <h2 class="color-secondary">🐘 Ganglia: Monitorización para Alto Rendimiento</h2>
+            <p>
+                Ganglia es una solución altamente escalable diseñada originalmente para entornos de computación de alto
+                rendimiento (HPC). Su arquitectura jerárquica permite supervisar miles de nodos con una sobrecarga
+                mínima.
+            </p>
+
+            <div class="grid-3 mt-2">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Daemon gmond</h4>
+                    <p>Agente liviano presente en cada nodo que recolecta métricas de hardware como CPU, RAM y tráfico
+                        de red.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Daemon gmetad</h4>
+                    <p>Servidor central que agrega la información de los agentes y la almacena en bases de datos
+                        RRDTool.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Visualización</h4>
+                    <p>Interfaz web que permite observar tendencias históricas y comportamientos agregados del clúster.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card secondary-bg mt-2">
+                <h4>✅ Puntos Fuertes y Retos</h4>
+                <ul class="custom-list">
+                    <li><strong>Eficiencia:</strong> Consumo de recursos extremadamente bajo, ideal para clústeres
+                        masivos.</li>
+                    <li><strong>Almacenamiento:</strong> Uso de RRDTool para gestionar datos históricos de forma
+                        compacta.</li>
+                    <li><strong>Limitación:</strong> Capacidad de alerta limitada y una interfaz visual menos moderna
+                        que sus competidores.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box success mt-2">
+                <h4 class="title">Caso de Uso: Optimización de Jobs Spark</h4>
+                <p class="content">
+                    En un clúster de investigación con 200 nodos, se detectó mediante Ganglia que ciertos ejecutores de
+                    Spark saturaban la CPU durante procesos genómicos. Tras analizar las gráficas, se ajustó el número
+                    de núcleos por ejecutor, reduciendo el tiempo de proceso de 12 a 7 horas, lo que supuso una mejora
+                    de eficiencia del 40%.
+                </p>
+            </div>
+        </section>
+
+        <!-- Nagios Section -->
+        <section>
+            <h2 class="color-primary">🛡️ Nagios: Gestión de Estados y Alertas</h2>
+            <p>
+                Nagios se centra en la vigilancia de la salud de los servicios. Es la herramienta por excelencia para
+                asegurar que componentes críticos como el NameNode de Hadoop o el ResourceManager de YARN están
+                operativos.
+            </p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Arquitectura Basada en Plugins</h4>
+                    <p>Permite ejecutar scripts personalizados (Python, Bash) para verificar cualquier condición
+                        específica del sistema.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Alertas y Notificaciones</h4>
+                    <p>Sistema robusto de avisos a través de diferentes canales (email, Slack) cuando se superan
+                        umbrales críticos.</p>
+                </div>
+            </div>
+
+            <div class="card primary-bg mt-2">
+                <h4>🛠️ Plugins Comunes en Big Data</h4>
+                <p>Existen plugins específicos para validar estados de salud en el ecosistema:</p>
+                <ul class="custom-list">
+                    <li><strong>Check HDFS:</strong> Verifica la disponibilidad de los DataNodes.</li>
+                    <li><strong>Check YARN:</strong> Detecta si hay trabajos bloqueados permanentemente.</li>
+                    <li><strong>Check Ceph:</strong> Monitoriza el estado de salud de los OSDs del almacenamiento
+                        distribuido.</li>
+                </ul>
+            </div>
+
+            <div class="important-note">
+                💡 Nagios no solo detecta fallos, sino que puede ejecutar "event handlers" (scripts automáticos) para
+                intentar reiniciar servicios caídos antes de que un humano intervenga.
+            </div>
+        </section>
+
+        <!-- Prometheus Section -->
+        <section>
+            <h2 class="color-secondary">🔥 Prometheus: Observabilidad Basada en Métricas</h2>
+            <p>
+                Prometheus representa el estándar moderno de monitorización. Basado en un modelo de recolección activa
+                (pull) y un potente lenguaje de consulta (PromQL), es ideal para infraestructuras dinámicas y basadas en
+                contenedores.
+            </p>
+
+            <div class="card white shadow mt-2" style="border-left: 5px solid var(--color-secondary);">
+                <ul class="custom-list">
+                    <li><strong>Exporters:</strong> Componentes que exponen métricas de Hadoop, Spark o Kafka para que
+                        Prometheus las recolecte.</li>
+                    <li><strong>TSDB:</strong> Base de datos de series temporales optimizada para millones de registros
+                        por segundo.</li>
+                    <li><strong>Dinámismo:</strong> Reglas de alerta complejas basadas en tendencias de los últimos
+                        minutos.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box secondary mt-2">
+                <h4 class="title">Ejemplo: Prevención de errores OutOfMemory</h4>
+                <p class="content">
+                    Mediante consultas PromQL, un equipo detectó una tendencia alcista en la memoria de los ejecutores
+                    de Spark. Alertmanager disparó un aviso antes de que los procesos fallaran, permitiendo ajustar los
+                    límites de memoria preventivamente y garantizando la continuidad del servicio bancario crítico.
+                </p>
+            </div>
+        </section>
+
+        <!-- Comparativa -->
+        <section>
+            <h2 class="color-primary">Para + info</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Herramienta</th>
+                            <th>Tipo</th>
+                            <th>Ventajas principales</th>
+                            <th>Uso ideal en Big Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Ganglia</strong></td>
+                            <td>Métricas distribuidas (RRDTool)</td>
+                            <td>Ligera, escalable, bajo consumo</td>
+                            <td>HPC o clústeres de investigación</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nagios</strong></td>
+                            <td>Supervisión + alertas</td>
+                            <td>Plugins y scripts personalizados</td>
+                            <td>Monitoreo de <em>servicios críticos</em></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prometheus</strong></td>
+                            <td>Métricas orientadas a series temporales</td>
+                            <td>PromQL, integración con Grafana, alertas dinámicas</td>
+                            <td>Clústeres Hadoop/Spark/K8s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

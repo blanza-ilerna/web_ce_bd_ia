@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código: Consultas PromQL y Alertas - iLERNA</title>
+    <meta name="description"
+        content="Ejemplos prácticos de consultas PromQL para monitorizar Hadoop y Spark, junto con la configuración de alertas dinámicas.">
+    <meta name="keywords" content="PromQL, Prometheus, Grafana, Hadoop, Spark, Alertas, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Código: PromQL y Dashboard</span>
+                </div>
+            </div>
+            <h1 class="text-center">Consultas PromQL y Alertas Dinámicas</h1>
+            <p class="subtitle text-center">Extrayendo valor de las métricas mediante el lenguaje de Prometheus</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">El Lenguaje de las Métricas</h2>
+            <p>
+                PromQL (Prometheus Query Language) es la herramienta fundamental para analizar las series temporales
+                recolectadas del clúster. No solo permite visualizar datos en tiempo real, sino que es la base para
+                definir alertas inteligentes que identifiquen anomalías antes de que el sistema falle.
+            </p>
+        </section>
+
+        <!-- Bloque de Código -->
+        <section>
+            <h2 class="color-secondary">Ejemplos de Consultas y Reglas de Alerta</h2>
+            <p>A continuación, se muestran ejemplos de cómo monitorizar la tasa de lectura en HDFS y cómo disparar una
+                alerta crítica ante el uso excesivo de memoria en Spark:</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>consultas_y_alertas.promql</span>
+                </div>
+                <pre id="code-promql" class="code-content"><code><span class="comment"># Tasa de bloques HDFS leídos en los últimos 5 minutos</span>
+<span class="function">rate</span>(hadoop_datanode_blocks_read_total[<span class="number">5m</span>])
+
+<span class="comment"># Alerta si uso de memoria Spark supera 90%</span>
+<span class="keyword">ALERT</span> SparkMemoryHigh
+  <span class="keyword">IF</span> <span class="function">rate</span>(spark_executor_memory_used[<span class="number">5m</span>]) &gt; <span class="number">0.9</span>
+  <span class="keyword">FOR</span> <span class="number">10m</span>
+  <span class="keyword">LABELS</span> { <span class="string">severity</span> = <span class="string">"critical"</span> }
+  <span class="keyword">ANNOTATIONS</span> {
+    <span class="string">summary</span> = <span class="string">"High memory usage in Spark executor"</span>,
+    <span class="string">description</span> = <span class="string">"Memory usage exceeds 90% for {{ $labels.instance }}."</span>
+  }</code></pre>
+                <div style="padding: 10px; background: #323232; display: flex; justify-content: flex-end;">
+                    <button class="copy-btn" onclick="copyCode('code-promql')">📋 Copiar Código</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explicación de PromQL -->
+        <section>
+            <h2 class="color-primary">Dominando la Sintaxis de PromQL</h2>
+            <p>PromQL es un lenguaje de consulta funcional que permite filtrar y agregar datos de series temporales. Su
+                potencia reside en la capacidad de combinar selectores precisos con operadores potentes.</p>
+
+            <div class="grid-2-cols mt-2">
+                <div class="card white shadow">
+                    <h4>🔍 Selectores y Emparejadores</h4>
+                    <p>Permiten filtrar métricas por sus etiquetas (labels):</p>
+                    <ul class="custom-list">
+                        <li><code>{job="spark"}</code>: Igualdad exacta.</li>
+                        <li><code>{group!="hdfs"}</code>: Desigualdad.</li>
+                        <li><code>{env=~"prod.*"}</code>: Emparejamiento por expresión regular.</li>
+                        <li><code>{node!~"test.+"}</code>: Exclusión por expresión regular.</li>
+                    </ul>
+                </div>
+                <div class="card white shadow">
+                    <h4>📊 Vectores y Tiempo</h4>
+                    <ul class="custom-list">
+                        <li><strong>Vectores Instantáneos:</strong> El valor más reciente (ej.
+                            <code>up{job="hadoop"}</code>).</li>
+                        <li><strong>Vectores de Rango:</strong> Histórico de valores (ej.
+                            <code>node_memory_usage[1h]</code>).</li>
+                        <li><strong>Offset:</strong> Desplazamiento temporal (ej. <code>metric offset 1d</code> para ver
+                            el valor de ayer).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Operadores y Funciones Avanzadas -->
+        <section>
+            <h2 class="color-secondary">Operadores y Funciones Esenciales</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Ejemplo de Sintaxis</th>
+                            <th>Uso en Big Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Aritmética</strong></td>
+                            <td><code>(mem_used / mem_total) * 100</code></td>
+                            <td>Calcular porcentajes de uso en NameNodes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comparación</strong></td>
+                            <td><code>cpu_usage > 85</code></td>
+                            <td>Detectar saturación en DataNodes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Agregación</strong></td>
+                            <td><code>sum by (cluster) (up)</code></td>
+                            <td>Contar nodos activos por cada clúster diferente.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lógica</strong></td>
+                            <td><code>metric_a and metric_b</code></td>
+                            <td>Correlacionar fallos en Spark y YARN a la vez.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid-3 mt-2">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">rate() vs irate()</h4>
+                    <p><code>rate()</code> calcula el promedio en un rango (estable). <code>irate()</code> se fija en
+                        los dos últimos puntos, ideal para detectar picos instantáneos de red.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">predict_linear()</h4>
+                    <p>Predice el valor futuro basándose en la tendencia. Ejemplo:
+                        <code>predict_linear(disk_free[4h], 3600) &lt; 0</code> avisa si el disco se llenará en 1 hora.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">topk() / bottomk()</h4>
+                    <p>Devuelve los N elementos con mayor/menor valor. Ejemplo: <code>topk(5, cpu_usage)</code> muestra
+                        los 5 nodos más saturados del clúster.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuración en Grafana -->
+        <section>
+            <h2 class="color-primary">Configuración del Dashboard en Grafana</h2>
+            <p>Para visualizar estas consultas de forma profesional en Grafana, sigue estos pasos fundamentales:</p>
+
+            <ol class="custom-list">
+                <li><strong>Añadir Data Source:</strong> Configurar Prometheus como fuente primaria (habitualmente en
+                    <code>http://prometheus:9090</code>).</li>
+                <li><strong>Editor de Consultas:</strong> Insertar la query PromQL (ej.
+                    <code>sum(rate(kafka_messages[5m]))</code>) directamente en el panel.</li>
+                <li><strong>Configurar Thresholds:</strong> Establecer umbrales visuales (colores) para que el gráfico
+                    cambie a amarillo o rojo según la criticidad.</li>
+                <li><strong>Prometheus Alertmanager:</strong> Integrar las reglas <code>ALERT</code> definidas en PromQL
+                    con el sistema de notificaciones Slack o correo.</li>
+            </ol>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

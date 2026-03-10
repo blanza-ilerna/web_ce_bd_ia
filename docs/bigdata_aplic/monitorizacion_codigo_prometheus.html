@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código: Configuración de Prometheus y Grafana - iLERNA</title>
+    <meta name="description"
+        content="Ejemplo práctico de configuración de prometheus.yml para la monitorización de clústeres Hadoop, Spark y YARN.">
+    <meta name="keywords" content="Configuración Prometheus, prometheus.yml, Grafana, Hadoop, Spark, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+
+    <!-- CSS Común de Lecciones -->
+    <link rel="stylesheet" href="../css/lecciones.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header con logo -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Big Data Aplicado</a> ›
+                    <span>Código: Configuración Prometheus</span>
+                </div>
+            </div>
+            <h1 class="text-center">Configuración de Prometheus y Grafana</h1>
+            <p class="subtitle text-center">Implementación técnica para la recolección de métricas del clúster</p>
+        </header>
+
+        <!-- Introducción -->
+        <section>
+            <h2 class="color-primary">Laboratorio de Monitorización</h2>
+            <p>
+                A continuación, se presenta un ejemplo de configuración para monitorear un clúster Hadoop con Prometheus
+                y visualizar métricas en Grafana. Esta configuración permite definir los intervalos de recolección y los
+                puntos finales (endpoints) de los diferentes servicios del ecosistema.
+            </p>
+        </section>
+
+        <!-- Bloque de Código -->
+        <section>
+            <h2 class="color-secondary">Archivo de Configuración: prometheus.yml</h2>
+            <p>Este archivo es el corazón de la monitorización. Define qué servicios vigilar, con qué frecuencia
+                recolectar los datos y dónde enviar las alertas en caso de anomalías:</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>/etc/prometheus/prometheus.yml</span>
+                </div>
+                <pre id="code-prometheus" class="code-content"><code><span class="keyword">global</span>:
+  <span class="keyword">scrape_interval</span>: <span class="string">15s</span>
+  <span class="keyword">evaluation_interval</span>: <span class="string">15s</span>
+
+<span class="keyword">scrape_configs</span>:
+  - <span class="keyword">job_name</span>: <span class="string">'hadoop_datanodes'</span>
+    <span class="keyword">static_configs</span>:
+      - <span class="keyword">targets</span>: [<span class="string">'datanode1:9100'</span>, <span class="string">'datanode2:9100'</span>, <span class="string">'datanode3:9100'</span>]
+        <span class="keyword">labels</span>:
+          <span class="keyword">group</span>: <span class="string">'hdfs'</span>
+
+  - <span class="keyword">job_name</span>: <span class="string">'spark_executors'</span>
+    <span class="keyword">static_configs</span>:
+      - <span class="keyword">targets</span>: [<span class="string">'spark-driver:9100'</span>]
+        <span class="keyword">labels</span>:
+          <span class="keyword">group</span>: <span class="string">'spark'</span>
+
+  - <span class="keyword">job_name</span>: <span class="string">'yarn_resource_manager'</span>
+    <span class="keyword">static_configs</span>:
+      - <span class="keyword">targets</span>: [<span class="string">'resourcemanager:9100'</span>]
+        <span class="keyword">labels</span>:
+          <span class="keyword">group</span>: <span class="string">'yarn'</span>
+
+<span class="keyword">alerting</span>:
+  <span class="keyword">alertmanagers</span>:
+    - <span class="keyword">static_configs</span>:
+      - <span class="keyword">targets</span>: [<span class="string">'alertmanager:9093'</span>]</code></pre>
+                <div style="padding: 10px; background: #323232; display: flex; justify-content: flex-end;">
+                    <button class="copy-btn" onclick="copyCode('code-prometheus')">📋 Copiar Código</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explicación Detallada -->
+        <section>
+            <h2 class="color-primary">Desglose de la Configuración</h2>
+            <p>Para entender cómo Prometheus interactúa con el clúster Big Data, debemos analizar sus tres bloques
+                principales:</p>
+
+            <div class="card white shadow mt-2">
+                <h4>🌍 Configuración Global (Global)</h4>
+                <p>Define los parámetros por defecto para toda la instancia:</p>
+                <ul class="custom-list">
+                    <li><strong>scrape_interval:</strong> Frecuencia con la que Prometheus "tira" de los datos desde los
+                        exporters. 15s es un estándar equilibrado para Big Data.</li>
+                    <li><strong>evaluation_interval:</strong> Cada cuánto tiempo se comprueban las reglas de alerta
+                        definidas sobre las métricas recolectadas.</li>
+                </ul>
+            </div>
+
+            <div class="card white shadow mt-2">
+                <h4>🎯 Configuración de Recolección (Scrape Configs)</h4>
+                <p>Aquí listamos los "objetivos" que queremos monitorizar organizados por tipos de trabajo (jobs):</p>
+                <ul class="custom-list">
+                    <li><strong>Targets:</strong> Listado de IPs y puertos donde residen los <em>Node Exporters</em>
+                        (puerto 9100) o exporters específicos del servicio.</li>
+                    <li><strong>Labels:</strong> Etiquetas personalizadas (como <code>group: 'hdfs'</code>) que permiten
+                        filtrar y agrupar métricas fácilmente en los paneles de Grafana.</li>
+                    <li><strong>Static Configs:</strong> Método manual para definir nodos, ideal para clústeres estables
+                        o entornos de aprendizaje.</li>
+                </ul>
+            </div>
+
+            <div class="card white shadow mt-2">
+                <h4>🔔 Sistema de Alertas (Alerting)</h4>
+                <p>Indica a Prometheus dónde debe enviar las notificaciones cuando se dispara una alerta:</p>
+                <ul class="custom-list">
+                    <li><strong>Alertmanager:</strong> Servicio independiente que recibe las alertas, las gestiona
+                        (evitando duplicados) y las encamina a Slack o correo.</li>
+                    <li><strong>Puerto 9093:</strong> Puerto por defecto para la comunicación con el gestor de alertas.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Análisis Técnico -->
+        <section>
+            <h2 class="color-secondary">Recomendaciones de Despliegue</h2>
+            <div class="grid-2-cols mt-1">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Frecuencia de Muestreo</h4>
+                    <p>Configurado en 15 segundos para obtener una resolución alta de las métricas sin saturar el ancho
+                        de banda dedicado a los datos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Observabilidad Holística</h4>
+                    <p>Al agrupar HDFS, Spark y YARN, Grafana puede mostrar la causa raíz de un fallo correlacionando
+                        capas físicas y lógicas.</p>
+                </div>
+            </div>
+            <div class="important-note mt-2">
+                💡 En un entorno productivo, se recomienda usar <strong>Service Discovery</strong> (como Kubernetes SD o
+                Consul) en lugar de <code>static_configs</code> para escalar automáticamente cuando se añadan nuevos
+                nodos.
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
