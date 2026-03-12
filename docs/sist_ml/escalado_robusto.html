@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a aplicar el escalado robusto (RobustScaler) para preprocesar datos con outliers utilizando la mediana y el rango intercuartílico.">
+    <meta name="keywords"
+        content="RobustScaler, Escalado Robusto, Outliers, Preprocesamiento, Sklearn, Machine Learning, IQR, Mediana">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Escalado Robusto (RobustScaler) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos de fórmulas gestionados en lecciones.css -->
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Escalado Robusto</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Escalado Robusto (RobustScaler)</h1>
+            <p class="subtitle">Blindando el preprocesamiento frente a valores atípicos (outliers).</p>
+        </section>
+
+        <!-- Definición -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es el RobustScaler?</h2>
+            <p>
+                El <strong>Escalado Robusto</strong> es una técnica de preprocesamiento diseñada específicamente para
+                minimizar la influencia de los <strong>outliers</strong> (valores atípicos) en el proceso de escalado.
+            </p>
+            <p>
+                A diferencia de otros métodos, el RobustScaler no utiliza ni la media ni el máximo/mínimo, ya que estas
+                estadísticas son extremadamente sensibles a valores extremos:
+            </p>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">❌ MinMaxScaler</h4>
+                    <p>Sensible a los extremos máximos y mínimos que definen el rango de compresión.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">❌ StandardScaler</h4>
+                    <p>La media y la desviación estándar se ven arrastradas por valores muy alejados.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fórmula -->
+        <section class="section">
+            <h2 class="color-primary">La Fórmula del Escalado Robusto</h2>
+            <p>
+                Este método centra los datos utilizando la <strong>mediana</strong> y los escala basándose en el
+                <strong>Rango Intercuartílico (IQR)</strong>. Al basarse en la posición de los datos y no en su valor
+                aritmético, las anomalías dejan de dominar la transformación.
+            </p>
+
+            <div class="formula-block">
+                <span class="math-text">
+                    X' =
+                    <div class="math-frac">
+                        <span class="num">X - Mediana</span>
+                        <span>IQR</span>
+                    </div>
+                </span>
+            </div>
+
+            <p class="mt-2">
+                Conceptualmente, la fórmula es muy similar a la de <em>MinMaxScaler</em>, pero sustituye los valores
+                extremos (Mín/Máx) por cuartiles para cubrirnos ante ruido estadístico.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Mediana</h4>
+                    <p>Valor central (Q₂ / Percentil 50)</p>
+                </div>
+                <div class="stat-card">
+                    <h4>IQR</h4>
+                    <p>Cuartil 3 - Cuartil 1 (Q₃ - Q₁)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- IQR Section -->
+        <section class="section">
+            <h2 class="color-primary">Comprendiendo el Rango Intercuartílico (IQR)</h2>
+            <p>
+                El <strong>Rango Intercuartílico (IQR)</strong> es una medida de dispersión estadística que representa la distancia entre el primer y el tercer cuartil. Es decir, describe dónde se concentra el <strong>50% central</strong> de los datos.
+            </p>
+            
+            <div class="formula-block">
+                <span class="math-text">
+                    IQR = Q<sub>3</sub> - Q<sub>1</sub>
+                </span>
+            </div>
+
+            <div class="highlight-box secondary">
+                <p class="title">¿Por qué es clave para la robustez?</p>
+                <p class="content">
+                    Al ignorar el 25% inferior y el 25% superior de la distribución (donde suelen esconderse los valores atípicos), el IQR proporciona una escala mucho más estable que la desviación estándar o el rango absoluto (Máx - Mín).
+                </p>
+            </div>
+            
+            <p class="mt-2">
+                En términos de percentiles:
+            </p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Q₁</h4>
+                    <p>Percentil 25 (Límite inferior del 50% central)</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Q₃</h4>
+                    <p>Percentil 75 (Límite superior del 50% central)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementación en Python -->
+        <section class="section">
+            <h2 class="color-primary">Implementación con Scikit-Learn</h2>
+            <p>Utilizamos el estimador <code>RobustScaler</code> del módulo <code>preprocessing</code> de Sklearn. Es
+                ideal para datasets con sensores ruidosos o datos financieros con picos atípicos.</p>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>robust_scaling.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-robust')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-robust"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> RobustScaler
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+
+<span class="comment"># Supongamos un dataset con ingresos y algunos valores extremos</span>
+data = {<span class="string">'ingresos'</span>: [<span class="number">25000</span>, <span class="number">30000</span>, <span class="number">28000</span>, <span class="number">32000</span>, <span class="number">1000000</span>]} <span class="comment"># 1M es un outlier</span>
+df = pd.DataFrame(data)
+
+<span class="comment"># Inicializamos el escalador</span>
+<span class="comment"># quantile_range=(25.0, 75.0) es el valor por defecto (IQR)</span>
+scaler = RobustScaler()
+
+<span class="comment"># Ajustamos y transformamos</span>
+<span class="comment"># La mediana de los ingresos será el nuevo 0</span>
+df[<span class="string">'ingresos_escalados'</span>] = scaler.fit_transform(df[[<span class="string">'ingresos'</span>]])
+
+print(df)</code></pre>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section class="section">
+            <h2 class="color-primary">Reflexión Final: ¿Cuál elegir?</h2>
+            <div class="highlight-box primary">
+                <p class="content">
+                    Seleccionar el método adecuado exige comprender tanto la <strong>naturaleza de los datos</strong>
+                    como las <strong>características del modelo</strong> que se va a emplear. Mientras que Min-Max es
+                    útil para redes neuronales y algoritmos que requieren rangos fijos, el RobustScaler es el salvavidas
+                    cuando nuestros datos presentan anomalías que no queremos (o podemos) eliminar del proceso.
+                </p>
+            </div>
+            <p>
+                En conjunto, estas técnicas representan un paso crítico para garantizar la <strong>solidez y
+                    fiabilidad</strong> del proceso de aprendizaje automático.
+            </p>
+        </section>
+
+        <!-- Documentación Externa -->
+        <section class="section">
+            <h2 class="color-primary">Más información y recursos</h2>
+            <p>Explora los parámetros avanzados del RobustScaler, como el ajuste de los rangos de cuantiles
+                personalizados.</p>
+
+            <div class="resources-grid">
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📘</span>
+                    <h4>RobustScaler Documentation</h4>
+                    <p>Accede a la documentación oficial de Scikit-Learn para ver todos los métodos y atributos
+                        disponibles.</p>
+                    <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html"
+                        target="_blank" class="resource-btn">Ir a Sklearn Doc</a>
+                </div>
+
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📖</span>
+                    <h4>Preprocessing Tutorial</h4>
+                    <p>Guía de usuario de Sklearn sobre el preprocesamiento de características y normalización.</p>
+                    <a href="https://scikit-learn.org/stable/modules/preprocessing.html" target="_blank"
+                        class="resource-btn">Tutorial completo</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a aplicar el escalado estándar (StandardScaler) para estandarizar tus datos con media cero y desviación estándar uno.">
+    <meta name="keywords"
+        content="StandardScaler, Z-Score, Estandarización, Escalado de datos, Preprocesamiento, Sklearn, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Escalado Estándar (StandardScaler) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos de fórmulas ahora gestionados en lecciones.css -->
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Escalado Estándar</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-secondary">Escalado Estándar (Z-Score)</h1>
+            <p class="subtitle">Estandarizando la distribución de las variables numéricas.</p>
+        </section>
+
+        <!-- Definición -->
+        <section class="section">
+            <h2 class="color-secondary">¿Qué es el StandardScaler?</h2>
+            <p>
+                El <strong>Escalado Estándar</strong> (también conocido como estandarización o <em>Z-score normalization</em>) transforma los datos de manera que la distribución resultante tenga una media de <strong>0</strong> y una desviación estándar de <strong>1</strong>.
+            </p>
+            <p>
+                A diferencia del Min-Max, este método no comprime los datos en un rango estricto, sino que los centra respecto a su promedio estadístico.
+            </p>
+
+            <div class="formula-block">
+                <span class="math-text">
+                    X' = 
+                    <div class="math-frac">
+                        <span class="num">X - μ</span>
+                        <span>σ</span>
+                    </div>
+                </span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>μ = 0</h4>
+                    <p>Media aritmética</p>
+                </div>
+                <div class="stat-card">
+                    <h4>σ = 1</h4>
+                    <p>Desviación estándar</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diferencias con Min-Max -->
+        <section class="section">
+            <h2 class="color-primary">Diferencias clave con Min-Max</h2>
+            <div class="grid-2-cols">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Manejo de Outliers</h4>
+                    <p>El escalado estándar es <strong>menos sensible</strong> a los valores atípicos. Como no depende de un máximo y mínimo absolutos para definir el rango, los outliers conservan su distancia relativa sin "aplastar" al resto de los datos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Centrado en Cero</h4>
+                    <p>Al tener media cero, los valores se distribuyen tanto en el lado <strong>positivo</strong> como en el <strong>negativo</strong>, lo cual es fundamental para el rendimiento de muchos optimizadores matemáticos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementación en Python -->
+        <section class="section">
+            <h2 class="color-secondary">Implementación en Python</h2>
+            <p>Utilizamos el estimador <code>StandardScaler</code> de Sklearn para realizar esta transformación de forma eficiente.</p>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>standard_scaling.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-standard')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-standard"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+
+<span class="comment"># Inicializamos el estandarizador</span>
+scaler = StandardScaler()
+
+<span class="comment"># Seleccionamos las columnas a procesar</span>
+cols = [<span class="string">'edad'</span>, <span class="string">'altura'</span>, <span class="string">'peso'</span>]
+
+<span class="comment"># Aplicamos la transformación</span>
+<span class="comment"># Los datos ahora tendrán media 0 y desviación 1</span>
+df[cols] = scaler.fit_transform(df[cols])</code></pre>
+            </div>
+        </section>
+
+        <!-- Documentación Externa -->
+        <section class="section">
+            <h2 class="color-secondary">Más información y recursos</h2>
+            <p>Consulta la documentación técnica para explorar parámetros avanzados como <code>with_mean</code> o <code>with_std</code>.</p>
+            
+            <div class="resources-grid">
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📘</span>
+                    <h4>StandardScaler Documentation</h4>
+                    <p>Documentación oficial de Scikit-Learn con todos los detalles técnicos y ejemplos de uso.</p>
+                    <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html" 
+                       target="_blank" class="resource-btn">Ir a la documentación</a>
+                </div>
+
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">🔍</span>
+                    <h4>Z-Score vs Normalization</h4>
+                    <p>Artículo detallado sobre cuándo es preferible usar estandarización frente a la normalización Min-Max.</p>
+                    <a href="https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling" 
+                       target="_blank" class="resource-btn">Ver comparativa</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

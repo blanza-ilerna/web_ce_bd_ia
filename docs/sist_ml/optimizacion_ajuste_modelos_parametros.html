@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende sobre el ajuste de hiperparámetros en Machine Learning: Grid Search, Random Search y Optimización Bayesiana para mejorar modelos.">
+    <meta name="keywords"
+        content="Hiperparámetros, Grid Search, Random Search, Optimización Bayesiana, Tuning, Sklearn, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ajuste de Hiperparámetros | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Ajuste de Hiperparámetros</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Ajuste de Hiperparámetros</h1>
+            <p class="subtitle">Configurando la arquitectura del aprendizaje: Buscando el equilibrio perfecto.</p>
+        </section>
+
+        <!-- Definición e Introducción -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué son los Hiperparámetros?</h2>
+            <p>
+                Los <strong>hiperparámetros</strong> son configuraciones externas al modelo que definen su comportamiento y estructura antes de que comience el proceso de entrenamiento. A diferencia de los parámetros (que el modelo aprende solo), los hiperparámetros son nuestra herramienta para guiar el aprendizaje.
+            </p>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🌳 Árboles de Decisión</h4>
+                    <p><code>max_depth</code> (profundidad máxima) o <code>min_samples_split</code>.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🌲 Random Forest</h4>
+                    <p><code>n_estimators</code> (número de árboles en el bosque).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🛡️ SVM</h4>
+                    <p><code>C</code> (parámetro de regularización) o el tipo de kernel.</p>
+                </div>
+            </div>
+
+            <div class="important-note mt-2">
+                El "tuning" o ajuste fino busca la combinación que maximice la capacidad de generalización. Un ajuste descuidado es una puerta abierta al <strong>sobreajuste (overfitting)</strong>.
+            </div>
+        </section>
+
+        <!-- Grid Search -->
+        <section class="section">
+            <h2 class="color-primary">1. Búsqueda en Rejilla (Grid Search)</h2>
+            <p>
+                Es el enfoque más tradicional y exhaustivo. Definimos una "rejilla" con valores discretos para cada hiperparámetro y el algoritmo evalúa <strong>todas las combinaciones posibles</strong> mediante validación cruzada.
+            </p>
+
+            <div class="comparison-grid">
+                <div class="advantage-box">
+                    <h4>✓ Exhaustividad</h4>
+                    <p>Garantiza encontrar la mejor combinación dentro de los valores definidos en la rejilla.</p>
+                </div>
+                <div class="disadvantage-box">
+                    <h4>✗ Eficiencia</h4>
+                    <p>Es computacionalmente muy costoso; a medida que añadimos parámetros, el tiempo crece exponencialmente.</p>
+                </div>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>grid_search_example.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-grid')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-grid"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV
+<span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier
+
+<span class="comment"># Definimos la rejilla de parámetros</span>
+parametros = {
+    <span class="string">'max_depth'</span>: [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>], 
+    <span class="string">'criterion'</span>: [<span class="string">'gini'</span>, <span class="string">'entropy'</span>]
+}
+
+modelo = DecisionTreeClassifier(random_state=<span class="number">0</span>)
+
+<span class="comment"># Ajuste con CV de 5 carpetas</span>
+grid = GridSearchCV(modelo, parametros, cv=<span class="number">5</span>)
+grid.fit(X, y)
+
+print(<span class="string">"Mejores parámetros encontrados:"</span>, grid.best_params_)</code></pre>
+            </div>
+        </section>
+
+        <!-- Random Search -->
+        <section class="section">
+            <h2 class="color-primary">2. Búsqueda Aleatoria (Random Search)</h2>
+            <p>
+                En lugar de probar todo, este enfoque selecciona combinaciones aleatorias dentro de un espacio definido. Es mucho más <strong>ágil y rápido</strong>, permitiendo explorar rangos continuos de valores.
+            </p>
+
+            <div class="highlight-box secondary">
+                <p class="title">¿Cuándo usarlo?</p>
+                <p class="content">
+                    Es ideal cuando el espacio de búsqueda es inmenso o cuando algunos hiperparámetros influyen mucho más que otros en el rendimiento final.
+                </p>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>random_search_example.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-random')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-random"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV
+<span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint
+
+<span class="comment"># Definimos distribuciones de probabilidad en lugar de listas fijas</span>
+parametros = {
+    <span class="string">'max_depth'</span>: randint(<span class="number">2</span>, <span class="number">10</span>), 
+    <span class="string">'min_samples_split'</span>: randint(<span class="number">2</span>, <span class="number">10</span>)
+}
+
+<span class="comment"># Probamos solo 10 iteraciones aleatorias</span>
+rand_search = RandomizedSearchCV(modelo, parametros, n_iter=<span class="number">10</span>, cv=<span class="number">5</span>, random_state=<span class="number">0</span>)
+rand_search.fit(X, y)
+
+print(<span class="string">"Mejores parámetros aleatorios:"</span>, rand_search.best_params_)</code></pre>
+            </div>
+        </section>
+
+        <!-- Optimización Bayesiana -->
+        <section class="section">
+            <h2 class="color-primary">3. Optimización Bayesiana</h2>
+            <p>
+                Es el método más inteligente. A diferencia de los anteriores, este proceso <strong>aprende de sus propios errores</strong>:
+            </p>
+            
+            <div class="scenario-box primary">
+                <p>Construye un <strong>modelo probabilístico</strong> (sustituto) que predice qué rendimiento dará una combinación. Utiliza una <em>función de adquisición</em> para decidir si seguir explotando lo que funciona o explorar zonas nuevas.</p>
+            </div>
+
+            <div class="grid-features mt-2">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🚀 Eficiencia Extrema</h4>
+                    <p>Converge al óptimo en muchas menos iteraciones que Grid o Random Search.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🧠 Complejidad</h4>
+                    <p>Su implementación es más avanzada y requiere mayor comprensión de la lógica interna.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a codificar variables nominales utilizando One-Hot Encoding y técnicas alternativas para evitar sesgos en modelos de Machine Learning.">
+    <meta name="keywords"
+        content="One-Hot Encoding, Codificación Nominal, Get Dummies, Maldición Dimensionalidad, Multicolinealidad, Machine Learning, Python">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Codificación de Variables Nominales: One-Hot Encoding | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .encoding-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .arrow-right {
+            font-size: 3rem;
+            color: var(--color-primary);
+        }
+
+        .premium-table {
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .premium-table th {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 12px 20px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .premium-table td {
+            padding: 10px 20px;
+            border: 1px solid #eee;
+            color: var(--text-dark);
+        }
+
+        .premium-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .val-true { color: #2e7d32; font-weight: 700; }
+        .val-false { color: #757575; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Codificación Nominal</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">Codificación de Variables Nominales</h1>
+            <p class="subtitle">Eliminando el sesgo de orden en categorías puras.</p>
+        </div>
+
+        <!-- SECCIÓN 1: EL PROBLEMA DEL ORDEN -->
+        <section class="section">
+            <h2 class="color-primary">¿Por qué no usar números correlativos?</h2>
+            <p>
+                A diferencia de las variables ordinales, las <strong>nominales</strong> (como marcas de coches, colores o países) no tienen una jerarquía lógica. Si asignamos números arbitrarios (Seat=1, Citroën=2, Opel=3), el modelo podría interpretar matemáticamente que un "Citroën" es la media entre un "Seat" y un "Opel", lo cual es una conclusión absurda.
+            </p>
+
+            <div class="card bg-warning-light mt-4">
+                <h4 class="color-warning mb-2">⚠️ El peligro de la aritmética falsa</h4>
+                <p>Asignar valores 1, 2, 3... a categorías sin orden induce al modelo a buscar relaciones espaciales y de distancia que no existen, degradando la lógica del aprendizaje.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ONE-HOT ENCODING (PROFUNDIZACIÓN) -->
+        <section class="section">
+            <h2 class="color-secondary">Cómo funciona el One-Hot Encoding</h2>
+            <p>
+                El término "One-Hot" proviene del diseño de circuitos digitales, donde una señal i-ésima está en estado alto (hot/1) mientras las demás están en bajo (cold/0). En Machine Learning, este método crea un <strong>vector binario</strong> para cada categoría.
+            </p>
+            
+            <div class="card secondary-bg mb-4">
+                <h4 class="color-secondary">Mecánica de la exclusividad</h4>
+                <p>Si tenemos 3 categorías (Rojo, Verde, Azul):</p>
+                <ul>
+                    <li><strong>Rojo:</strong> Se representa como <code>[1, 0, 0]</code></li>
+                    <li><strong>Verde:</strong> Se representa como <code>[0, 1, 0]</code></li>
+                    <li><strong>Azul:</strong> Se representa como <code>[0, 0, 1]</code></li>
+                </ul>
+                <p class="mt-2">Esta estructura garantiza que el modelo entienda que las categorías son <strong>mutuamente excluyentes</strong>. Un dato no puede ser "un poco rojo y un poco azul" en este esquema; es una cosa o la otra.</p>
+            </div>
+
+            <div class="encoding-comparison">
+                <table class="premium-table">
+                    <thead><tr><th>color_coche</th></tr></thead>
+                    <tbody>
+                        <tr><td>rojo</td></tr>
+                        <tr><td>negro</td></tr>
+                        <tr><td>azul</td></tr>
+                        <tr><td>rojo</td></tr>
+                    </tbody>
+                </table>
+                <div class="arrow-right">➔</div>
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>c_rojo</th>
+                            <th>c_negro</th>
+                            <th>c_azul</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="val-true">1</td><td class="val-false">0</td><td class="val-false">0</td></tr>
+                        <tr><td class="val-false">0</td><td class="val-true">1</td><td class="val-false">0</td></tr>
+                        <tr><td class="val-false">0</td><td class="val-false">0</td><td class="val-true">1</td></tr>
+                        <tr><td class="val-true">1</td><td class="val-false">0</td><td class="val-false">0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: IMPLEMENTACIÓN EN PYTHON -->
+        <section class="section">
+            <h2 class="color-primary">Implementación Práctica</h2>
+            <p>Con Pandas, podemos generar estas columnas "dummy" de forma extremadamente sencilla:</p>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>one_hot_encoding.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-onehot')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-onehot"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+
+<span class="comment"># Suponiendo que 'Color' es nuestra columna nominal</span>
+df_encoded = pd.get_dummies(df, columns=[<span class="string">'Color'</span>])
+
+<span class="comment"># Para evitar la multicolinealidad (Trampa de Variables Dummy)</span>
+df_encoded_safe = pd.get_dummies(df, columns=[<span class="string">'Color'</span>], drop_first=<span class="keyword">True</span>)</code></pre>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: LIMITACIONES Y DESAFÍOS -->
+        <section class="section">
+            <h2 class="color-secondary">Desventajas a considerar</h2>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Maldición de la Dimensionalidad</h4>
+                    <p>Si la variable tiene muchas categorías únicas (ej. Códigos Postales), generaremos cientos de columnas, disparando el uso de memoria y ralentizando el cálculo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Trampa de Variables Dummy</h4>
+                    <p>Introduce multicolinealidad perfecta (si sabemos que no es negro ni azul, obligatoriamente es rojo). Se soluciona eliminando la primera columna (<code>drop_first=True</code>).</p>
+                </div>
+            </div>
+
+            <h4 class="tech-title mt-4">Visualización con drop_first=True</h4>
+            <div class="encoding-comparison">
+                <table class="premium-table">
+                    <thead><tr><th>color_coche</th></tr></thead>
+                    <tbody>
+                        <tr><td>rojo</td></tr>
+                        <tr><td>negro</td></tr>
+                        <tr><td>azul</td></tr>
+                        <tr><td>rojo</td></tr>
+                    </tbody>
+                </table>
+                <div class="arrow-right">➔</div>
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>c_negro</th>
+                            <th>c_azul</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="val-false">0</td><td class="val-false">0</td></tr>
+                        <tr><td class="val-true">1</td><td class="val-false">0</td></tr>
+                        <tr><td class="val-false">0</td><td class="val-true">1</td></tr>
+                        <tr><td class="val-false">0</td><td class="val-false">0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: TÉCNICAS AVANZADAS Y ALTERNATIVAS -->
+        <section class="section">
+            <h2 class="color-primary">Técnicas para Alta Cardinalidad</h2>
+            <p>
+                Cuando nos enfrentamos a variables con cientos o miles de categorías (como modelos de coches específicos o ciudades), el One-Hot Encoding se vuelve inmanejable. Aquí es donde brillan otras estrategias:
+            </p>
+            
+            <!-- 1. BINARY ENCODING -->
+            <div class="card primary-bg mb-4" style="border-left: 5px solid var(--color-primary);">
+                <h4 class="color-primary">📦 Binary Encoding (Codificación Binaria)</h4>
+                <p>Es una de las técnicas más eficientes para reducir la dimensionalidad. Funciona convirtiendo las categorías en números y luego en bits distribuidos en columnas.</p>
+                
+                <div class="code-window mt-4">
+                    <div class="code-header">
+                        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                        <span>binary_encoding.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-binary')">📋 Copiar</button>
+                    </div>
+                    <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-binary"><span class="keyword">import</span> category_encoders <span class="keyword">as</span> ce
+
+<span class="comment"># Almacenamiento eficiente: 100 categorías en solo 7 columnas</span>
+encoder = ce.BinaryEncoder(cols=[<span class="string">'Ciudad'</span>])
+df_binary = encoder.fit_transform(df)</code></pre>
+                </div>
+            </div>
+
+            <!-- 2. TARGET ENCODING -->
+            <div class="feature-card secondary mb-4">
+                <h4 class="color-secondary">🎯 Target Encoding</h4>
+                <p>Sustituye cada categoría por la <strong>media de la variable objetivo</strong>. Es extremadamente potente pero requiere cuidado con el <em>overfitting</em>.</p>
+                
+                <div class="code-window mt-3">
+                    <div class="code-header">
+                        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                        <span>target_encoding.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-target')">📋 Copiar</button>
+                    </div>
+                    <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-target"><span class="comment"># Mapeo estadístico basado en el objetivo</span>
+means = df.groupby(<span class="string">'Marca'</span>)[<span class="string">'Precio'</span>].mean()
+df[<span class="string">'Marca_Target'</span>] = df[<span class="string">'Marca'</span>].map(means)</code></pre>
+                </div>
+            </div>
+
+            <!-- 3. HASHING ENCODING -->
+            <div class="feature-card primary mb-4">
+                <h4 class="color-primary">🔏 Hashing Encoding</h4>
+                <p>Utiliza una función de hash para mapear categorías a un espacio de columnas fijo. Excelente para datos que crecen constantemente.</p>
+                <div class="code-window mt-3">
+                    <div class="code-header">
+                        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                        <span>hashing_encoding.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-hash')">📋 Copiar</button>
+                    </div>
+                    <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-hash"><span class="keyword">import</span> category_encoders <span class="keyword">as</span> ce
+hasher = ce.HashingEncoder(n_components=<span class="number">8</span>)
+df_hash = hasher.fit_transform(df[<span class="string">'Categoria'</span>])</code></pre>
+                </div>
+            </div>
+
+            <!-- 4. FREQUENCY ENCODING -->
+            <div class="card mt-4" style="background: #f1f8e9; border-left: 5px solid #689f38;">
+                <h4 style="color: #33691e;">📊 Frequency / Count Encoding</h4>
+                <p>Mapea cada categoría con su abundancia estadística dentro del dataset.</p>
+                
+                <div class="code-window mt-3">
+                    <div class="code-header">
+                        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                        <span>frequency_encoding.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-freq')">📋 Copiar</button>
+                    </div>
+                    <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-freq"><span class="comment"># Frecuencias normalizadas (0 a 1)</span>
+frecuencias = df[<span class="string">'Color'</span>].value_counts(normalize=<span class="keyword">True</span>)
+df[<span class="string">'Color_Freq'</span>] = df[<span class="string">'Color'</span>].map(frecuencias)</code></pre>
+                </div>
+            </div>
+
+            <div class="card warning-bg mt-5" style="border-left: 5px solid var(--color-secondary); background: var(--bg-secondary-light);">
+                <h4 class="color-secondary">🚀 Resumen de decisión rápida</h4>
+                <table class="premium-table mt-3" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Situación</th>
+                            <th>Técnica Recomendada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>< 10 categorías</td><td><strong>One-Hot Encoding</strong> (Estándar)</td></tr>
+                        <tr><td>10 - 50 categorías</td><td><strong>Binary Encoding</strong></td></tr>
+                        <tr><td>Categorías masivas (>100)</td><td><strong>Hashing</strong> o <strong>Frequency</strong></td></tr>
+                        <tr><td>Modelos lineales / Regresión</td><td>Cuidado con One-Hot (usar <code>drop_first</code>)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

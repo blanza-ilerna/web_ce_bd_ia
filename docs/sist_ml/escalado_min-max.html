@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende a aplicar el escalado Min-Max (MinMaxScaler) para normalizar tus datos en un rango específico.">
+    <meta name="keywords"
+        content="MinMaxScaler, Normalización, Escalado de datos, Preprocesamiento, Sklearn, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Escalado Min-Max (MinMaxScaler) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos de fórmulas ahora gestionados en lecciones.css -->
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Escalado Min-Max</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Escalado Min-Max</h1>
+            <p class="subtitle">Normalizando datos en un rango acotado de [0, 1].</p>
+        </section>
+
+        <!-- Definición -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es el MinMaxScaler?</h2>
+            <p>
+                El <strong>Escalado Min-Max</strong> (o normalización) es un método de preprocesamiento que transforma las características escalando cada valor a un rango específico, comúnmente entre <strong>0 y 1</strong>.
+            </p>
+            <p>
+                Este proceso es esencial para algoritmos que no manejan bien diferencias de magnitud grandes, permitiendo que todas las variables tengan el mismo peso relativo inicial.
+            </p>
+
+            <div class="formula-block">
+                <span class="math-text">
+                    X' = 
+                    <div class="math-frac">
+                        <span class="num">X - X<sub>min</sub></span>
+                        <span>X<sub>max</sub> - X<sub>min</sub></span>
+                    </div>
+                </span>
+            </div>
+        </section>
+
+        <!-- Ventajas y Desventajas -->
+        <section class="section">
+            <div class="grid-2-cols">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Preservación Visual</h4>
+                    <p>Una de sus grandes ventajas es que <strong>preserva la forma original</strong> de la distribución. No distorsiona la relación relativa entre los datos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Sensibilidad a Outliers</h4>
+                    <p>Es <strong>muy sensible</strong> a valores extremos. Un solo outlier puede "comprimir" el resto de los datos en un rango minúsculo, ya que los valores máximo y mínimo definen el nuevo espacio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parámetros del Estimador -->
+        <section class="section">
+            <h2 class="color-primary">Parámetros principales</h2>
+            <p>Aunque a menudo lo usamos con sus valores por defecto, el <code>MinMaxScaler</code> permite cierta personalización estratégica:</p>
+            
+            <table class="premium-table mt-4" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Parámetro</th>
+                        <th>Defecto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>feature_range</code></td>
+                        <td><code>(0, 1)</code></td>
+                        <td>Define el rango deseado de los datos transformados. Útil si necesitas, por ejemplo, <code>(-1, 1)</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>copy</code></td>
+                        <td><code>True</code></td>
+                        <td>Si es <code>False</code>, intenta realizar la transformación <em>in-place</em> para ahorrar memoria.</td>
+                    </tr>
+                    <tr>
+                        <td><code>clip</code></td>
+                        <td><code>False</code></td>
+                        <td>Si es <code>True</code>, los valores que se salgan del rango en nuevos datos serán forzados a los límites (0 o 1).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Implementación Avanzada -->
+        <section class="section">
+            <h2 class="color-primary">Ejemplo Práctico Avanzado</h2>
+            <p>En este escenario, vamos a escalar un dataset completo de propiedades inmobiliarias, ajustando el rango para que los valores oscilen entre 1 y 10 (útil para sistemas basados en puntuaciones).</p>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>advanced_scaling.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-advanced')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-advanced"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler
+
+<span class="comment"># Configuramos un rango personalizado del 1 al 10</span>
+scaler = MinMaxScaler(feature_range=(<span class="number">1</span>, <span class="number">10</span>))
+
+<span class="comment"># Seleccionamos las columnas numéricas que deseamos normalizar</span>
+cols_to_scale = [<span class="string">'precio'</span>, <span class="string">'habitaciones'</span>, <span class="string">'metros_cuadrados'</span>]
+
+<span class="comment"># Aplicamos el escalado a todo el bloque a la vez</span>
+df[cols_to_scale] = scaler.fit_transform(df[cols_to_scale])
+
+<span class="comment"># Ahora 'precio' y 'metros_cuadrados' son comparables numéricamente</span>
+print(df[cols_to_scale].head())</code></pre>
+            </div>
+            <p class="text-sm mt-2"><strong>Tip Pro:</strong> Al aplicar el escalado a varias columnas a la vez, <code>MinMaxScaler</code> calcula los máximos y mínimos de manera independiente para cada una de ellas.</p>
+        </section>
+
+        <!-- Documentación Externa -->
+        <section class="section">
+            <h2 class="color-secondary">Más información y recursos</h2>
+            <p>Para profundizar en los detalles técnicos y parámetros avanzados, puedes consultar las siguientes fuentes oficiales:</p>
+            
+            <div class="resources-grid">
+                <!-- Recurso 1: Documentación -->
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📘</span>
+                    <h4>Scikit-Learn Documentation</h4>
+                    <p>Guía técnica completa sobre el estimador MinMaxScaler, detallando todos sus parámetros y atributos matemáticos.</p>
+                    <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html" 
+                       target="_blank" class="resource-btn">Explorar documentación</a>
+                </div>
+
+                <!-- Recurso 2: Guía de Usuario -->
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📖</span>
+                    <h4>User Guide: Scaling features</h4>
+                    <p>Comparativa conceptual sobre las diferentes técnicas de escalado y cuándo elegir normalización frente a estandarización.</p>
+                    <a href="https://scikit-learn.org/stable/modules/preprocessing.html#scaling-features-to-a-range" 
+                       target="_blank" class="resource-btn">Leer guía de usuario</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

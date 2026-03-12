@@ -43,6 +43,10 @@ Este directorio contiene los estilos CSS reutilizables para todas las lecciones 
    - `.comparison-grid` - Comparaciones positivo/negativo
    - `.final-card` - Tarjetas de reflexión final
    - `.challenge-box` - Desafíos
+   - `.formula-block` - Bloque de fórmulas matemáticas (fondo azul claro)
+   - `.math-frac` - Fracciones matemáticas estilo LaTeX
+   - `.stats-grid` / `.stat-card` - Rejilla para parámetros estadísticos
+   - `.resources-grid` / `.resource-card` - Cuadrícula de enlaces externos premium
 
 6. **Tablas**
    - Estilos con gradiente en header
@@ -165,6 +169,45 @@ Este directorio contiene los estilos CSS reutilizables para todas las lecciones 
     <p class="quote-text">"Cita textual del experto..."</p>
     <p class="quote-author">— Nombre del Experto, Título</p>
 </div>
+
+### Bloque de Fórmula (Estilo LaTeX)
+```html
+<div class="formula-block">
+    <span class="math-text">
+        X' = 
+        <div class="math-frac">
+            <span class="num">X - μ</span>
+            <span>σ</span>
+        </div>
+    </span>
+</div>
+```
+
+### Rejilla de Estadísticas
+```html
+<div class="stats-grid">
+    <div class="stat-card">
+        <h4>μ = 0</h4>
+        <p>Media aritmética</p>
+    </div>
+    <div class="stat-card">
+        <h4>σ = 1</h4>
+        <p>Desviación estándar</p>
+    </div>
+</div>
+```
+
+### Tarjetas de Recursos Externos
+```html
+<div class="resources-grid">
+    <div class="resource-card read-resource">
+        <span class="resource-icon">📘</span>
+        <h4>Título del Recurso</h4>
+        <p>Descripción breve...</p>
+        <a href="#" target="_blank" class="resource-btn">Acción</a>
+    </div>
+</div>
+```
 ```
 
 ## Paleta de Colores

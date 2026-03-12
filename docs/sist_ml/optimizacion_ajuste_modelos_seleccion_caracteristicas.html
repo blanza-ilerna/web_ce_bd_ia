@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende técnicas de selección de características en Machine Learning: métodos de filtro y envoltura para reducir ruido y mejorar modelos.">
+    <meta name="keywords"
+        content="Selección de características, Feature Selection, Filtro, Envoltura, RFE, Chi2, Machine Learning, Sklearn">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Selección de Características | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Selección de Características</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Selección de Características</h1>
+            <p class="subtitle">Optimizando la eficiencia: Menos es más en la ingeniería de variables.</p>
+        </section>
+
+        <!-- Motivación -->
+        <section class="section">
+            <h2 class="color-primary">Calidad sobre Cantidad</h2>
+            <p>
+                Aunque solemos pensar que disponer de más datos es siempre beneficioso, en el aprendizaje automático esta máxima no se aplica de igual forma a las <strong>características</strong> (dimensiones).
+            </p>
+            <p>
+                Los datasets modernos pueden contener cientos o miles de variables. Sin embargo, procesar variables irrelevantes o redundantes conlleva graves problemas:
+            </p>
+            
+            <div class="grid-features mt-2">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🚫 Ruido Estadístico</h4>
+                    <p>Las variables irrelevantes degradan la capacidad de generalización del modelo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚠️ Sobreajuste (Overfitting)</h4>
+                    <p>Demasiadas dimensiones facilitan que el modelo memorice casos particulares en lugar de patrones.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⏳ Coste Computacional</h4>
+                    <p>Más características significan entrenamientos más lentos y mayor consumo de memoria.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrategia 1: Métodos de Filtro -->
+        <section class="section">
+            <h2 class="color-primary">1. Métodos de Filtro (Filter Methods)</h2>
+            <p>
+                Estos métodos actúan como un **paso de preprocesamiento** independiente. Evalúan la relevancia de cada variable basándose exclusivamente en sus propiedades estadísticas intrínsecas, normalmente comparándolas con el <em>target</em>.
+            </p>
+
+            <div class="highlight-box primary">
+                <p class="title">Técnicas Comunes</p>
+                <p class="content">
+                    Pruebas de correlación de Pearson, <strong>Chi-cuadrado</strong> (variables categóricas) o ANOVA. Se asigna una puntuación y se filtran aquellas que no superan un umbral.
+                </p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="advantage-box">
+                    <h4>✓ Ventajas</h4>
+                    <ul>
+                        <li>Extremadamente rápidos y eficientes.</li>
+                        <li>Independientes del modelo final (agnósticos).</li>
+                    </ul>
+                </div>
+                <div class="disadvantage-box">
+                    <h4>✗ Desventajas</h4>
+                    <ul>
+                        <li>Ignoran por completo las interacciones entre variables.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>metodo_filtro.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-filter')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-filter"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest, chi2
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_breast_cancer
+
+<span class="comment"># Carga de datos</span>
+X, y = load_breast_cancer(return_X_y=True)
+
+<span class="comment"># Seleccionamos las 10 mejores características usando Chi-cuadrado</span>
+selector = SelectKBest(chi2, k=<span class="number">10</span>)
+X_reducido = selector.fit_transform(X, y)
+
+print(<span class="string">"Características originales:"</span>, X.shape[<span class="number">1</span>])
+print(<span class="string">"Características seleccionadas:"</span>, X_reducido.shape[<span class="number">1</span>])</code></pre>
+            </div>
+        </section>
+
+        <!-- Estrategia 2: Métodos de Envoltura -->
+        <section class="section">
+            <h2 class="color-primary">2. Métodos de Envoltura (Wrapper Methods)</h2>
+            <p>
+                A diferencia de los filtros, estos métodos "envuelven" la selección alrededor del algoritmo específico de Machine Learning. El proceso se convierte en un **problema de búsqueda**.
+            </p>
+            <p>
+                Se prueban distintos subconjuntos de variables entrenando el modelo real y evaluando su rendimiento (normalmente mediante validación cruzada) para decidir cuáles son las más efectivas.
+            </p>
+
+            <div class="grid-examples mt-2">
+                <div class="example-item">
+                    <p class="title">RFE (Recursive Feature Elimination)</p>
+                    <p class="description">Elimina iterativamente las variables menos importantes hasta alcanzar el número deseado.</p>
+                </div>
+                <div class="example-item">
+                    <p class="title">Forward Selection</p>
+                    <p class="description">Empieza sin variables y añade paso a paso la que más mejora el rendimiento.</p>
+                </div>
+            </div>
+
+            <div class="code-window mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>metodo_envoltura.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-wrapper')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><span class="copy-btn" style="display:none;"></span><code id="code-wrapper"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> RFE
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_breast_cancer
+
+X, y = load_breast_cancer(return_X_y=True)
+
+<span class="comment"># Usamos Regresión Logística para evaluar la importancia</span>
+modelo = LogisticRegression(max_iter=<span class="number">5000</span>)
+selector = RFE(modelo, n_features_to_select=<span class="number">8</span>)
+
+<span class="comment"># Ajustamos el proceso de selección</span>
+selector.fit(X, y)
+
+<span class="comment"># Resultados</span>
+print(<span class="string">"Máscara de selección:"</span>, selector.support_)
+print(<span class="string">"Ranking de importancia:"</span>, selector.ranking_)</code></pre>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section class="section">
+            <h2 class="color-primary">Hacia un flujo de trabajo optimizado</h2>
+            <div class="highlight-box secondary">
+                <p class="content">
+                    La selección de características no solo busca el mejor rendimiento, sino la <strong>interpretabilidad</strong>. Un modelo con menos variables es más fácil de depurar, más rápido de ejecutar en producción y, sobre todo, mucho menos propenso a aprender ruido aleatorio del dataset.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
