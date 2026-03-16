@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Soluciones al desvanecimiento del gradiente en RNNs: Arquitecturas avanzadas basadas en compuertas como LSTM y GRU.">
+    <meta name="keywords"
+        content="RNN, LSTM, GRU, Compuertas, Gates, Deep Learning, Memoria a largo plazo, Desvanecimiento del Gradiente">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Solución al Desvanecimiento | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Solución al Desvanecimiento</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Solución al Desvanecimiento</h1>
+            <p class="subtitle">Evolucionando las RNN mediante Compuertas (Gates): Arquitecturas LSTM y GRU.</p>
+        </section>
+
+        <!-- Contexto de las Compuertas -->
+        <section class="section">
+            <h2 class="color-primary">Las Compuertas Neuronales</h2>
+            <p>
+                Para solucionar de raíz la fatal pérdida de memoria y la dependencia a largo plazo estropeada por el desvanecimiento del gradiente, los ingenieros diseñaron variaciones arquitectónicas mucho más sofisticadas. El descubrimiento estrella fue incrustar mecanismos matemáticos que actúan como "<strong>válvulas o compuertas</strong>" (<em>gates</em>).
+            </p>
+            <p>
+                Estas compuertas son micro-capas neuronales especializadas que literalmente "saben" y <strong>aprenden a regular de forma activa el canal del flujo de la información</strong>, decidendo qué recordatorio hay que preservar a toda costa, y qué datos irrelevantes deben dejarse fluir y borrarse.
+            </p>
+        </section>
+
+        <!-- LSTM -->
+        <section class="section mt-4">
+            <h2 class="color-secondary">La Revolución LSTM (Long Short-Term Memory)</h2>
+            <p>
+                Las redes LSTM son unánimemente la solución <strong>más popular y robusta</strong> del sector para tratar secuencias. Su magia principal reside en la invención de un segundo "carril" paralelo de información interna, denominado el <strong>Estado de la Celda</strong> (<em>Cell State</em>).
+            </p>
+
+            <div class="highlight-box secondary mt-3 mb-4">
+                <p>
+                    Actúa visualmente como una <strong>cinta transportadora inquebrantable de memoria a largo plazo</strong> que corre recta a lo largo de toda la secuencia entera sin sufrir interferencias masivas.
+                </p>
+            </div>
+
+            <p>
+                Para manipular, escribir y borrar los recuerdos en esa valiosa "cinta transportadora", la celda LSTM hace uso simultáneo de estas <strong>tres compuertas especializadas</strong>:
+            </p>
+
+            <div class="grid-features mt-3">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🗑️ Compuerta de Olvido (Forget Gate)</h4>
+                    <p class="mt-2 text-left">Su única misión es <strong>decidir qué información inútil del estado anterior debe ser descartada u "olvidada"</strong> de manera permanente antes de continuar al siguiente paso.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📥 Compuerta de Entrada (Input Gate)</h4>
+                    <p class="mt-2 text-left">Examina la nueva información actual para <strong>decidir qué nuevos detalles relevantes deben ser grabados y almacenados</strong> definitivamente de cara al futuro.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📤 Compuerta de Salida (Output Gate)</h4>
+                    <p class="mt-2 text-left">Su matemática <strong>decide qué fragmentos valiosos de toda la memoria a largo plazo se utilizan ahora</strong> para generar el dictamen o la memoria a corto plazo procesada para el siguiente paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRU -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">La Alternativa Ágil: Redes GRU (Gated Recurrent Unit)</h2>
+            <p>
+                Dado que una LSTM tiene múltiples compuertas en cada milisegundo temporal y requiere inmensos cálculos matriciales cruzados, se inventaron las arquitecturas GRU para atajar exactamente el mismo problema, logrando un rendimiento casi idéntico pero siendo <strong>computacionalmente mucho más eficientes (haciendo uso de muchísimos menos parámetros)</strong> al agrupar mecanismos lógicos.
+            </p>
+            
+            <div class="info-card mt-3">
+                <h4 class="color-primary">⚡ Simplificando y Fucionando la Celda</h4>
+                <p class="mt-2">
+                    En una GRU, se <strong>combinan</strong> completamente el Estado de la Celda (la memoria a largo plazo) y el Estado Oculto (la memoria a corto plazo) en un único y potente estado fusionado, de modo que solo necesita usar dos compuertas principales para toda su operatoria diaria:
+                </p>
+                <ul class="mt-2 mb-0">
+                    <li class="mb-2"><strong>Compuerta de Actualización (<em>Update Gate</em>):</strong> Actúa combinando y fusionando matemáticamente los poderes de la compuerta analítica de Entrada y la compuerta de Olvido vistas en las LSTM.</li>
+                    <li><strong>Compuerta de Reinicio (<em>Reset Gate</em>):</strong> Se encarga puntualmente de decidir cuánto conocimiento general del pasado remoto de la secuencia se ignora al cruzar bloques lógicos.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducción al aprendizaje profundo (Deep Learning): orígenes, factores de éxito y aplicaciones actuales.">
+    <meta name="keywords"
+        content="Deep Learning, Aprendizaje Profundo, Redes Neuronales, Inteligencia Artificial, Big Data, GPU">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Introducción al Aprendizaje Profundo | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos para el SVG animado del perceptrón */
+        .perceptron-container {
+            background: var(--bg-gray-light);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid var(--border-light);
+        }
+
+        .perceptron-svg {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .signal-pulse {
+            stroke-dasharray: 10;
+            animation: flow 2s linear infinite;
+        }
+
+        @keyframes flow {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .activation-pulse {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; stroke-width: 2; }
+            50% { opacity: 1; stroke-width: 4; }
+        }
+
+        .history-timeline {
+            position: relative;
+            margin: 3rem 0;
+            padding-left: 2rem;
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: calc(-2rem - 8px);
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--bg-primary-light);
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 1.25rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Introducción al Deep Learning</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Introducción al Aprendizaje Profundo</h1>
+            <p class="subtitle">Descifrando la arquitectura de la inteligencia moderna.</p>
+        </section>
+
+        <!-- Concepto -->
+        <section class="section">
+            <h2 class="color-primary">¿Qué es el Deep Learning?</h2>
+            <p>
+                El <strong>Aprendizaje Profundo</strong> (o <em>Deep Learning</em>) constituye una rama avanzada del Machine Learning centrada en el uso de arquitecturas neuronales complejas para identificar patrones y modelar abstracciones de alto nivel en los datos.
+            </p>
+            <p>
+                A diferencia de los métodos de aprendizaje automático más tradicionales, el Deep Learning es capaz de extraer automáticamente características relevantes de los datos brutos (como píxeles de una imagen o frecuencias de audio), reduciendo la necesidad de ingeniería de características manual.
+            </p>
+        </section>
+
+        <!-- Origen y Evolución -->
+        <section class="section">
+            <h2 class="color-primary">Cronología y Evolución</h2>
+            <p>El camino hacia la supremacía del Deep Learning no ha sido lineal, sino una montaña rusa de avances y estancamientos.</p>
+            
+            <div class="history-timeline">
+                <div class="timeline-item">
+                    <span class="timeline-year">1958: El Nacimiento</span>
+                    <p><strong>Frank Rosenblatt</strong> presenta el <strong>Perceptrón</strong>, inspirado en la estructura biológica de las neuronas. Prometía ser el inicio de máquinas capaces de aprender como humanos.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-year">1969: El Primer Invierno</span>
+                    <p>Minsky y Papert demuestran las limitaciones del perceptrón simple (problema XOR). La inversión en IA se desploma durante casi una década.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-year">Años 80: El Renacimiento</span>
+                    <p>Se populariza el algoritmo de <strong>Backpropagation</strong> (retropropagación), permitiendo entrenar redes con varias capas. Yann LeCun desarrolla las primeras redes convolucionales (CNN) para lectura de cheques.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-year">Años 90-2000: El Segundo Invierno</span>
+                    <p>A pesar de los avances, las redes profundas son difíciles de entrenar por falta de potencia de cómputo y el "problema del desvanecimiento del gradiente".</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-year">2006: Acuñando el término</span>
+                    <p>Geoffrey Hinton y su equipo presentan algoritmos eficaces para entrenar redes profundas, acuñando el término <strong>Deep Learning</strong> como lo conocemos hoy.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-year">2012: La Gran Explosión</span>
+                    <p><strong>AlexNet</strong> arrasa en la competición ImageNet usando GPUs para el entrenamiento. El Deep Learning demuestra ser infinitamente superior a cualquier técnica tradicional de visión artificial.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- El Perceptrón -->
+        <section class="section">
+            <h2 class="color-secondary">El Perceptrón: El átomo de la inteligencia</h2>
+            <p>Para entender el Deep Learning, debemos comprender su unidad básica. El perceptrón recibe múltiples entradas, las pondera mediante pesos, les suma un sesgo (bias) y pasa el resultado por una función de activación.</p>
+            
+            <div class="perceptron-container">
+                <svg viewBox="0 0 800 400" class="perceptron-svg">
+                    <!-- Conexiones (Inputs a Suma) -->
+                    <line x1="100" y1="100" x2="350" y2="200" stroke="#ccc" stroke-width="2" class="signal-pulse" />
+                    <line x1="100" y1="200" x2="350" y2="200" stroke="#ccc" stroke-width="2" class="signal-pulse" style="animation-delay: 0.5s;" />
+                    <line x1="100" y1="300" x2="350" y2="200" stroke="#ccc" stroke-width="2" class="signal-pulse" style="animation-delay: 1s;" />
+                    
+                    <!-- Pesos (Labels) -->
+                    <text x="180" y="140" font-family="Montserrat" font-size="14" fill="#777">Peso w₁</text>
+                    <text x="180" y="215" font-family="Montserrat" font-size="14" fill="#777">Peso w₂</text>
+                    <text x="180" y="270" font-family="Montserrat" font-size="14" fill="#777">Peso w₃</text>
+
+                    <!-- Nodos de Entrada -->
+                    <circle cx="100" cy="100" r="25" fill="#49B9CE" opacity="0.8" />
+                    <text x="100" y="105" text-anchor="middle" fill="white" font-weight="bold">x₁</text>
+                    
+                    <circle cx="100" cy="200" r="25" fill="#49B9CE" opacity="0.8" />
+                    <text x="100" y="205" text-anchor="middle" fill="white" font-weight="bold">x₂</text>
+                    
+                    <circle cx="100" cy="300" r="25" fill="#49B9CE" opacity="0.8" />
+                    <text x="100" y="305" text-anchor="middle" fill="white" font-weight="bold">x₃</text>
+
+                    <!-- Nodo de Suma -->
+                    <circle cx="400" cy="200" r="50" fill="white" stroke="#49B9CE" stroke-width="3" />
+                    <text x="400" y="210" text-anchor="middle" fill="#49B9CE" font-size="30">Σ</text>
+                    <text x="400" y="140" text-anchor="middle" fill="#E65100" font-weight="bold">+ bias</text>
+
+                    <!-- Conexión Suma a Activación -->
+                    <line x1="450" y1="200" x2="550" y2="200" stroke="#49B9CE" stroke-width="4" class="activation-pulse" />
+
+                    <!-- Función de Activación -->
+                    <rect x="550" y="150" width="100" height="100" rx="15" fill="white" stroke="#8A7AAF" stroke-width="3" />
+                    <polyline points="570,230 600,230 600,170 630,170" fill="none" stroke="#8A7AAF" stroke-width="3" />
+                    <text x="600" y="140" text-anchor="middle" fill="#8A7AAF" font-weight="bold">Activación</text>
+
+                    <!-- Salida -->
+                    <path d="M 650 200 L 750 200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#arrow)" />
+                    <circle cx="750" cy="200" r="25" fill="#8A7AAF" />
+                    <text x="750" y="205" text-anchor="middle" fill="white" font-weight="bold">y</text>
+
+                    <!-- Definición de flecha -->
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                          <path d="M0,0 L0,6 L9,3 z" fill="#8A7AAF" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="color-primary">Los tres pilares de la revolución actual</h2>
+            <p>La explosión del aprendizaje profundo en la última década ha sido posible gracias a la unión de tres elementos clave:</p>
+            
+            <div class="layout-grid-stack mt-4">
+                <!-- Big Data -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">📊</div>
+                        <h4 class="ra-title color-primary">Big Data</h4>
+                    </div>
+                    <p>La inmensa cantidad de datos disponibles permite alimentar y entrenar modelos con millones de parámetros sin riesgo inmediato de sobreajuste excesivo.</p>
+                </div>
+
+                <!-- Hardware -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">🖥️</div>
+                        <h4 class="ra-title color-primary">Hardware (GPUs)</h4>
+                    </div>
+                    <p>El uso de GPUs permite procesar cálculos matriciales masivos en paralelo, reduciendo tiempos de entrenamiento de meses a días o incluso horas.</p>
+                </div>
+
+                <!-- Algoritmos -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">💡</div>
+                        <h4 class="ra-title color-primary">Algoritmos</h4>
+                    </div>
+                    <p>Innovaciones como ReLU o técnicas de regularización han permitido superar problemas históricos como el desvanecimiento del gradiente en redes profundas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Actuales -->
+        <section class="section">
+            <h2 class="color-secondary">Fuerza motriz de la IA moderna</h2>
+            <p>El aprendizaje profundo es la tecnología que subyace en los hitos más impactantes de la actualidad:</p>
+            <ul class="highlight-list mt-3">
+                <li><strong>Visión por Computadora:</strong> Desde el reconocimiento facial en móviles hasta la detección de objetos en vehículos autónomos.</li>
+                <li><strong>Procesamiento de Lenguaje Natural (NLP):</strong> Traducción automática de alta fidelidad y la creación de modelos de lenguaje masivos (como los LLMs).</li>
+                <li><strong>Reconocimiento de Voz:</strong> Asistentes virtuales capaces de entender el lenguaje hablado con una precisión casi humana.</li>
+            </ul>
+        </section>
+
+        <!-- Documentación Externa -->
+        <section class="section">
+            <h2 class="color-secondary">Recursos adicionales</h2>
+            <div class="resources-grid">
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">🌐</span>
+                    <h4>DeepLearning.AI</h4>
+                    <p>Plataforma de referencia fundada por Andrew Ng con cursos profundos sobre redes neuronales y su aplicación práctica.</p>
+                    <a href="https://www.deeplearning.ai/" target="_blank" class="resource-btn">Visitar sitio</a>
+                </div>
+
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">📖</span>
+                    <h4>Deep Learning Book</h4>
+                    <p>Considerado "la biblia" del campo, escrito por Ian Goodfellow, Yoshua Bengio y Aaron Courville.</p>
+                    <a href="https://www.deeplearningbook.org/" target="_blank" class="resource-btn">Leer online</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

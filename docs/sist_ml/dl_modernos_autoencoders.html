@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Los Autoencoders en el Deep Learning: Arquitecturas para comprimir datos en espacios latentes y restaurarlos usando Encoders y Decoders.">
+    <meta name="keywords"
+        content="Autoencoders, Encoder, Decoder, Representación Latente, Denoising, Dimensionalidad, Deep Learning, No Supervisado">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Autoencoders | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Autoencoders</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Autoencoders</h1>
+            <p class="subtitle">Aprendizaje no supervisado mediante la compresión extrema y la reconstrucción del espacio latente.</p>
+        </section>
+
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="color-primary">El Arte de la Purificación y Compresión</h2>
+            <p>
+                Los <strong>Autoencoders</strong> son exóticas redes neuronales que están diseñadas para aprender representaciones matemáticamente <strong>compactas</strong> (denominadas codificaciones o espacios latentes) de los datos de entrada, logrando esta hazaña <strong>sin ninguna necesidad de etiquetas previas</strong> (aprendizaje no supervisado).
+            </p>
+            <p>
+                Su objetivo principal es tomar una entrada masiva, obligar a la red a que la comprima haciéndola pasar por un "cuello de botella" minúsculo, y luego obligar forzosamente a la red a <strong>reconstruir la entrada original</strong> a partir de esa visión estridentemente comprimida. De esta manera, y mediante ensayo y error, el Autoencoder aprende a capturar intrínsecamente y aislar la <em>estructura esencial</em> pura del conjunto de datos.
+            </p>
+            
+            <div class="highlight-box mt-3 mb-4">
+                <p>
+                    <strong>Entrenamiento:</strong> El entrenamiento busca implacablemente <strong>minimizar el error de reconstrucción</strong>, es decir, conseguir mediante la retro-propagación que la imagen o dato final de salida reconstruido sea lo más fidedigno y parecido posible a los datos originales de entrada.
+                </p>
+            </div>
+        </section>
+
+        <!-- Representación del Encoder/Decoder -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-secondary">La Arquitectura Dual del Autoencoder</h2>
+            <p class="mb-3">
+                Para lograr esta hazaña algorítmica, en general, la estructura de la red siempre consta irrevocablemente de <strong>dos partes fundamentales y simétricas enfrentadas</strong>: el compresor y el descompresor.
+            </p>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">🗜️ 1. Codificador (Encoder)</h4>
+                    <p class="mt-2 text-left">Es la primera mitad de la red. Es el encargado de coger la enorme entrada original <i>x</i> y comprimirla matemáticamente, reduciendo sus dimensiones hasta encotrar su núcleo puro: la representación latente <i>z</i>.</p>
+                    
+                    <div class="info-card mt-3" style="background-color: var(--color-background); border: 1px solid var(--color-primary);">
+                        <p class="text-center" style="font-size: 1.25rem; margin: 0; font-weight: bold; font-style: italic; color: var(--color-primary);">z = f<sub>enc</sub>(x)</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card highlight">
+                    <h4 class="color-secondary text-center">✨ 2. Decodificador (Decoder)</h4>
+                    <p class="mt-2 text-left">Es la mitad inversa de la red. Su tarea es tratar de descifrar la "sopa de números comprimida", o sea <i>z</i>, para estirarla, re-dimensionarla y <strong>reconstruir</strong> la entrada original en un clon bautizado como <i>x'</i>.</p>
+                    
+                    <div class="info-card mt-3" style="background-color: var(--color-background); border: 1px solid var(--color-secondary);">
+                        <p class="text-center" style="font-size: 1.25rem; margin: 0; font-weight: bold; font-style: italic; color: var(--color-secondary);">x' = f<sub>dec</sub>(z)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usos Comunes -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">Aplicaciones de Frontera en el Mundo Real</h2>
+            <p>
+                Aunque inicialmente pudiera pensarse que entrenar una red simplemente para "fotocopiar" la entrada en la salida parece una locura poco útil, el subproducto generado en la zona comprimida del centro (<em>representación latente z</em>) tiene implicaciones increíbles. 
+            </p>
+            <p>Algunos de los usos más comunes impulsados por este fabuloso cuello de botella incluyen:</p>
+            
+            <div class="mt-3" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div class="info-card">
+                    <h4 class="color-primary">📉 Dimensionalidad</h4>
+                    <p class="mt-2">Actúan como un sustituto mucho más potente, no lineal y profundo que técnicas clásicas como PCA (Análisis de Componentes Principales).</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="color-primary">🧼 Eliminación de Ruido</h4>
+                    <p class="mt-2">Si entrenamos al codificador metiéndole una imagen borrosa y al decodificador a que saque su original, aprende a filtrar el ruido visual como magia fotográfica.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="color-primary">🚨 Detección de Anomalías</h4>
+                    <p class="mt-2">Si entrenamos con "datos sanos", meterle a la red el fallo o el ataque hacker generará un error de reconstrucción tan estrepitoso que dispara alarmas.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="color-primary">🏗️ Pre-Aprendizaje</h4>
+                    <p class="mt-2">Usados históricamente para fijar y estabilizar los pesos base iniciales de redes profundas gigantescas antes de refinarlas por aprendizaje supervisado.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

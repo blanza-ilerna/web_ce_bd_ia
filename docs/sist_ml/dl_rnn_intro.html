@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducción a las Redes Neuronales Recurrentes (RNN). Limitaciones de MLP y CNN ante datos secuenciales y la necesidad de memoria.">
+    <meta name="keywords"
+        content="RNN, Red Neuronal Recurrente, Deep Learning, Memoria, Series Temporales, NLP, Datos Secuenciales">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Introducción a las RNN | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Introducción a las RNN</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Introducción a las RNN</h1>
+            <p class="subtitle">Rompiendo el aislamiento de los datos con el poder del contexto y la "memoria".</p>
+        </section>
+
+        <!-- El problema de la independencia -->
+        <section class="section">
+            <h2 class="color-primary">El Mito de la Independencia Absoluta</h2>
+            <p>
+                Hasta este punto, tanto las arquitecturas convencionales <strong>MLP (Perceptrón Multicapa)</strong> como las avanzadas <strong>CNN (Convolucionales)</strong> han compartido una suposición técnica inquebrantable en su núcleo de procesamiento: asumen ciegamente que cada entrada de datos es <strong>completamente independiente aislada</strong> de las demás.
+            </p>
+            <p>
+                Es decir, si procesamos una imagen de un perro y luego la radiografía de un pulmón, la red analiza el pulmón partiendo absolutamente de cero en ese procesamiento, sin ninguna influencia del paso anterior. Este enfoque aislacionista es fantástico para ciertos escenarios, pero <strong>fracasa estrepitosamente</strong> cuando nos acercamos a problemas complejos del mundo real que fluyen continuamente en el tiempo. Nosotros los humanos rara vez pensamos partiendo de cero a cada segundo; nuestras deducciones están impulsadas por lo que acabamos de experimentar o escuchar un segundo atrás.
+            </p>
+
+            <div class="highlight-box mt-3" style="border-left-color: #f44336; background-color: #ffebee;">
+                <p><strong>El problema real:</strong> A los modelos tradicionales les es imposible deducir el momento actual si para ello necesitan comprender ineludiblemente qué fue lo que ocurrió en el momento inmediatamente anterior.</p>
+            </div>
+        </section>
+
+        <!-- Datos Secuenciales en el Mundo Real -->
+        <section class="section mt-4">
+            <h2 class="color-secondary">La Naturaleza de los Datos Secuenciales</h2>
+            <p class="mb-4">
+                El entorno que nos rodea produce constantemente flujos que deben leerse en orden y en conjunto, donde "lo que acaba de suceder" moldea fuertemente "lo que está sucediendo ahora mismo". Considera los siguientes grandes retos tecnológicos dominados únicamente por la secuencia:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🗣️ Lenguaje Natural (NLP)</h4>
+                    <p>En el texto o el habla, el significado puro de una palabra solo cobra vida a través de su <strong>contexto</strong> temporal (analizando cuáles son las palabras que la precedieron en la frase de izquierda a derecha).</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📈 Series Temporales</h4>
+                    <p>En ámbitos financieros, biológicos o meteorológicos, es imposible predecir el valor o temperatura de mañana sin tener en cuenta la curva tendencial, es decir, su valor orgánico en los días o períodos inmediatamente anteriores.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🎙️ Reconocimiento de Voz</h4>
+                    <p>El audio no puede dividirse en milisegundos aislados y ser comprendido; un fonema o sílaba humana debe sumarse fluidamente al contexto envolvente del espectro sonoro que lo rodea para tener sentido lingüístico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solución: Memoria Interna RNN -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">El Despertar de la Funcionalidad: Redes Recurrentes</h2>
+            <p>
+                Para poder procesar con éxito estos problemas secuenciales y cronológicos, nuestra arquitectura de red neuronal profunda necesita introducir de forma urgente un nuevo elemento: <strong>la "memoria" o "estado interno"</strong>. 
+            </p>
+            <p>
+                En lugar de desechar y limpiar todo el procesamiento neuronal tras recibir una entrada, la red se re-diseña de tal forma que ahora poseerá un pequeño bucle o ciclo interno. Esta ingeniería es la justificación y base principal de las maravillosas <strong>Redes Neuronales Recurrentes (RNNs)</strong>. 
+            </p>
+            <div class="highlight-box secondary mt-3">
+                <p>
+                    Las RNNs permiten que <strong>la salida que generan en un instante de tiempo "t" se inyecte retroactivamente a sí misma para usarse como una entrada adicional en el momento temporal actual "t+1"</strong>. Logrando retener de forma temporal la información extraída de los pasos anteriores, dotando por primera vez de contexto fluido al decisor de la red.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

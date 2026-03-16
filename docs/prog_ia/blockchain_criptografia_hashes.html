@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashes Criptográficos | iLERNA</title>
+    <meta name="description" content="Aprende qué es un hash, cómo funciona y sus propiedades fundamentales como pilar de la seguridad en blockchain.">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> &rarr; 
+                    <a href="index.html">Programación IA</a> &rarr; 
+                    <span>Hashes Criptográficos</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>Hashes Criptográficos 🔑</h1>
+                <p class="subtitle">La huella digital de los datos en el mundo digital.</p>
+            </div>
+
+            <section class="section">
+                <h2 class="color-primary">¿Qué es un Hash?</h2>
+                <div class="card primary">
+                    <p>
+                        Un <strong>hash</strong> es una función matemática que recibe un dato de cualquier tamaño (un texto, una imagen, un archivo completo) y lo transforma en una cadena de caracteres de <strong>longitud fija</strong>.
+                    </p>
+                    <p class="mt-2">
+                        El resultado final se conoce como <strong>valor hash</strong> o <em>digest</em>, y funciona como una huella dactilar única para ese conjunto de datos específico.
+                    </p>
+                </div>
+
+                <div class="highlight-box primary">
+                    <p class="title">Ejemplo Conceptual:</p>
+                    <p class="content">
+                        Entrada: &ldquo;Hola&rdquo; &rarr; Función SHA-256 &rarr; Salida:<br>
+                        <code>185f8db32921bd46d35cc2e29c2e...b31e</code>
+                    </p>
+                    <p class="content"><em>Nota: los hashes reales tienen 64 caracteres hexadecimales (256 bits).</em></p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="color-primary">Propiedades Fundamentales</h2>
+                <p>Para que un hash sea útil en seguridad y blockchain, debe cumplir cuatro propiedades críticas:</p>
+                
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">⚙️ Determinístico</h4>
+                        <p>La misma entrada producirá siempre, sin excepción, el mismo valor hash exacto.</p>
+                    </div>
+                    
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🔒 Unidireccional</h4>
+                        <p>Es técnicamente imposible deducir la información original a partir del código hash resultante.</p>
+                    </div>
+
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">⚡ Sensible a cambios</h4>
+                        <p>Si la entrada cambia mínimamente (como un solo punto o espacio), el hash cambia por completo (efecto avalancha).</p>
+                    </div>
+
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🧱 Sin Colisiones</h4>
+                        <p>Es virtualmente imposible que dos conjuntos de datos diferentes generen el mismo hash.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="highlight-box success">
+                    <h3 class="highlight-title color-success">Detección de Manipulación</h3>
+                    <p class="content">
+                        Los hashes son los vigías de la integridad. Si alguien intenta alterar un solo dato dentro de un bloque ya registrado, <strong>su hash cambiará automáticamente</strong>. Como los bloques están encadenados por estos hashes, la red detectará la inconsistencia al instante y rechazará la manipulación.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Demo Interactivo -->
+            <section class="section">
+                <h2 class="color-primary">🧪 Demo Interactivo: SHA-256 en Vivo</h2>
+                <p>Escribe cualquier texto y observa cómo cambia el hash en tiempo real. Prueba a cambiar una sola letra para ver el <strong>efecto avalancha</strong>.</p>
+
+                <div class="hash-demo-box">
+                    <label class="hash-demo-label" for="hash-input">Entrada de texto:</label>
+                    <input type="text" id="hash-input" class="hash-demo-input" placeholder="Escribe aquí..." autocomplete="off">
+                    <label class="hash-demo-label">SHA-256 resultante:</label>
+                    <div id="hash-output" class="hash-demo-output">—</div>
+                    <div id="hash-badge" class="hash-demo-badge"></div>
+                </div>
+
+                <h3 class="color-secondary mt-4">⚡ Comparador: Efecto Avalancha</h3>
+                <p>Introduce dos textos casi iguales y comprueba lo distintos que son sus hashes.</p>
+
+                <div class="hash-demo-box">
+                    <label class="hash-demo-label" for="hash-input-2">Texto alternativo:</label>
+                    <input type="text" id="hash-input-2" class="hash-demo-input" placeholder="Texto ligeramente diferente..." autocomplete="off">
+                    <label class="hash-demo-label">Hash del texto alternativo:</label>
+                    <div id="hash-output-2" class="hash-demo-output">—</div>
+                    <div id="compare-result" class="compare-neutral">&#8592; Escribe en ambos campos para comparar</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/blockchain_hash_demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explora las funciones de pérdida en Deep Learning: Error Cuadrático Medio (MSE), Entropía Cruzada Binaria y Entropía Cruzada Categórica.">
+    <meta name="keywords"
+        content="Función de Pérdida, Loss Function, MSE, Cross-Entropy, Deep Learning, Machine Learning, Redes Neuronales, Optimización">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Funciones de Pérdida en Redes Neuronales | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Funciones de Pérdida</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Funciones de Pérdida</h1>
+            <p class="subtitle">La brújula que guía el aprendizaje de la Red Neuronal evaluando la precisión de sus predicciones.</p>
+        </section>
+
+        <!-- Concepto de Función de Pérdida -->
+        <section class="section">
+            <h2 class="color-primary">El Motor de la Optimización</h2>
+            <p>
+                Como hemos mencionado en unidades anteriores, las redes neuronales son capaces de "aprender" porque evalúan la calidad de sus predicciones mediante una <strong>función de pérdida</strong> (también conocida como función de coste o <em>loss function</em>).
+            </p>
+            <div class="highlight-box primary mt-3">
+                <p>Es, fundamentalmente, <strong>la métrica que el optimizador intenta minimizar</strong> durante el entrenamiento. La selección adecuada de esta función es absolutamente crítica, ya que condiciona la dirección completa del aprendizaje y la forma en que interpretamos las salidas del modelo. Su elección depende al 100% del tipo de problema matemático a resolver.</p>
+            </div>
+        </section>
+
+        <!-- Funciones Comunes -->
+        <section class="section">
+            <h2 class="color-secondary">Funciones de Pérdida más Comunes</h2>
+            <p>A continuación, desglosamos las tres alternativas más utilizadas dependiendo de la naturaleza de nuestro objetivo predictivo.</p>
+
+            <div class="layout-grid-stack mt-4">
+                
+                <!-- MSE (Regresión) -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">📉</div>
+                        <h4 class="ra-title color-primary">Error Cuadrático Medio (MSE) — <em>Regresión</em></h4>
+                    </div>
+                    <p>
+                        Esta función es la opción predilecta cuando nos enfrentamos a problemas de <strong>regresión</strong>, es decir, cuando buscamos predecir un valor numérico continuo (ej. precio de una casa, temperatura, ventas).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Sensibilidad:</strong> Al elevar las diferencias al cuadrado, penaliza de manera muy severa los errores grandes, obligando al modelo a evitarlos.</li>
+                    </ul>
+                    
+                    <div class="formula-block">
+                        L = <sup>1</sup>/<sub>n</sub> ∑ (y<sub>real</sub> - y<sub>pred</sub>)<sup>2</sup>
+                    </div>
+                    
+                    <ul class="mt-2" style="font-size: 0.95rem;">
+                        <li><strong>L (Loss):</strong> El error total que el modelo intentará minimizar.</li>
+                        <li><strong>n:</strong> El número total de ejemplos o datos evaluados en este cálculo.</li>
+                        <li><strong>∑ (Sigma):</strong> Sumatoria, indica que debemos sumar los errores de todos los <em>n</em> ejemplos.</li>
+                        <li><strong>y<sub>real</sub>:</strong> El valor objetivo o respuesta correcta real en nuestro dataset.</li>
+                        <li><strong>y<sub>pred</sub>:</strong> El valor continuo que nuestra red neuronal ha predicho.</li>
+                    </ul>
+
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>mse_example.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-mse')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-mse"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error
+<span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPRegressor
+
+<span class="comment"># Evaluando predicciones de forma manual</span>
+mse_valor = mean_squared_error(y_real, y_predicciones)
+
+<span class="comment"># Configurando la función de pérdida en un modelo MLP</span>
+modelo_regresion = MLPRegressor(
+    hidden_layer_sizes=(<span class="number">100</span>, <span class="number">50</span>),
+    loss=<span class="string">'squared_error'</span>, <span class="comment"># Especificamos MSE</span>
+    max_iter=<span class="number">500</span>
+)</code></pre>
+                    </div>
+                </div>
+
+                <!-- Entropía Cruzada Binaria -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">⚖️</div>
+                        <h4 class="ra-title color-primary">Entropía Cruzada Binaria (BCE)  — <em>Clasificación Binaria</em></h4>
+                    </div>
+                    <p>
+                        Usaremos la Entropía Cruzada Binaria (<em>Binary Cross-Entropy</em>) por defecto en problemas donde solo hay <strong>dos clases posibles</strong> (ej. spam vs. no spam, enfermo vs. sano).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Funcionamiento:</strong> Mide matemáticamente la "distancia" entre la probabilidad predicha <i>p</i> (un valor de 0 a 1) y la etiqueta real <i>y</i> (que es 0 o 1).</li>
+                    </ul>
+
+                    <div class="formula-block">
+                        L = - <sup>1</sup>/<sub>n</sub> ∑ [y · log(p) + (1 - y) · log(1 - p)]
+                    </div>
+                    
+                    <ul class="mt-2" style="font-size: 0.95rem;">
+                        <li><strong>L (Loss):</strong> El valor de la Entropía Cruzada Binaria.</li>
+                        <li><strong>n:</strong> Número de elementos en el lote de datos analizado.</li>
+                        <li><strong>y:</strong> La clase o etiqueta real, que obligatoriamente será 0 o 1.</li>
+                        <li><strong>p:</strong> La probabilidad (entre 0 y 1) predicha por la red de pertenecer a la clase 1.</li>
+                        <li><strong>log:</strong> Logaritmo natural, encargado de castigar severamente las predicciones que están muy seguras pero son incorrectas.</li>
+                    </ul>
+
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>bce_example.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-bce')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-bce"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> log_loss
+<span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPClassifier
+
+<span class="comment"># Calculando la pérdida a partir de probabilidades predichas</span>
+<span class="comment"># (y_probabilidades debe contener la probabilidad de la clase positiva)</span>
+bce_valor = log_loss(y_real, y_probabilidades)
+
+<span class="comment"># Configurando un clasificador MLP binario</span>
+modelo_binario = MLPClassifier(
+    hidden_layer_sizes=(<span class="number">64</span>, <span class="number">32</span>),
+    activation=<span class="string">'logistic'</span>, <span class="comment"># Utiliza sigmoide internamente para clasificación binaria</span>
+    max_iter=<span class="number">500</span>
+) <span class="comment"># Sklearn usa log-loss automáticamente para clasificación iterativa</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- Entropía Cruzada Categórica -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">📊</div>
+                        <h4 class="ra-title color-primary">Entropía Cruzada Categórica (CCE) — <em>Clasificación Multiclase</em></h4>
+                    </div>
+                    <p>
+                        Esta función es el estándar absoluto cuando el problema implica <strong>tres o más clases excluyentes</strong> (como clasificar imágenes de perros, gatos y pájaros).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Distribuciones de Probabilidad:</strong> Compara la distribución de probabilidad generada por la última capa de la red (típicamente una capa <em>Softmax</em>) con la distribución real u objetivo (representada como un 1 en la clase correcta y 0 en todas las demás, conocido como <em>One-Hot Encoding</em>).</li>
+                    </ul>
+
+                    <div class="formula-block">
+                        L = - ∑ [y · log(p)]
+                    </div>
+                    
+                    <ul class="mt-2" style="font-size: 0.95rem;">
+                        <li><strong>L (Loss):</strong> El valor de la Entropía Cruzada Categórica.</li>
+                        <li><strong>∑ (Sigma):</strong> Aquí se suma a través de <em>todas las clases posibles</em> para un solo ejemplo.</li>
+                        <li><strong>y:</strong> El valor real codificado en One-Hot (ej. 1 si es un perro, 0 para gato o pájaro).</li>
+                        <li><strong>p:</strong> La probabilidad que la red asigna a esa clase específica. Dado que <em>y</em> será 0 para las clases incorrectas, la fórmula se centra únicamente en maximizar la probabilidad <em>p</em> de la clase correcta (donde <em>y=1</em>).</li>
+                    </ul>
+
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>cce_example.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-cce')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-cce"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> log_loss
+<span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPClassifier
+
+<span class="comment"># En clasificación multiclase, pasamos un array 2D con las </span>
+<span class="comment"># probabilidades para cada clase</span>
+cce_valor = log_loss(y_real, y_probabilidades_multiclase)
+
+<span class="comment"># Configurando un clasificador MLP multiclase</span>
+modelo_multiclase = MLPClassifier(
+    hidden_layer_sizes=(<span class="number">128</span>, <span class="number">64</span>),
+    max_iter=<span class="number">1000</span>
+) <span class="comment"># Sklearn maneja automáticamente la entropía cruzada categórica internamente</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section class="section">
+            <h2 class="color-primary">En Resumen: ¿Cuándo usar cada una?</h2>
+            <div class="final-grid mt-4">
+                <div class="final-card technical">
+                    <h3 class="color-primary">📉 Regresión</h3>
+                    <p>Utiliza el <strong>Error Cuadrático Medio (MSE)</strong> cuando tu objetivo sea predecir valores numéricos continuos. Penaliza severamente aquellos errores que se alejan de la realidad por estar elevados al cuadrado.</p>
+                </div>
+                <div class="final-card philosophical">
+                    <h3 class="color-secondary">⚖️ Clas. Binaria</h3>
+                    <p>La <strong>Entropía Cruzada Binaria (BCE)</strong> es el estándar inamovible en problemas estadísticos donde sólo hay dos posibles desenlaces excluyentes (0 o 1, Sí o No).</p>
+                </div>
+                <div class="final-card existential">
+                    <h3 style="color: var(--color-warning);">📊 Clas. Multiclase</h3>
+                    <p>Aplica la <strong>Entropía Cruzada Categórica (CCE)</strong> para diferenciar entre tres o más categorías u opciones cuando el objetivo de predicción sólo puede estar etiquetado en una.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

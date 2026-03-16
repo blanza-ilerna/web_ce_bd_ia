@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejemplo práctico paso a paso de una Red Neuronal Convolucional (CNN) en Python usando TensorFlow y Keras para clasificar el dataset MNIST.">
+    <meta name="keywords"
+        content="CNN, Red Neuronal Convolucional, TensorFlow, Keras, MNIST, Deep Learning, Python, Visión Artificial">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ejemplo de Red Convolucional | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Ejemplo de Red Convolucional</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Ejemplo de Red Convolucional</h1>
+            <p class="subtitle">Desarrollando un modelo de Visión Artificial avanzado para leer y reconocer dígitos escritos a mano.</p>
+        </section>
+
+        <!-- Introduccion -->
+        <section class="section">
+            <h2 class="color-primary">Clasificando el Dataset MNIST</h2>
+            <p>
+                Vamos ahora a desarrollar un ejemplo práctico completo de la aplicación de una arquitectura de <strong>Red Neuronal Convolucional (CNN)</strong> a un problema visual real. En concreto, vamos a entrenar desde cero un cerebro artificial capaz de clasificar observaciones visuales del famoso conjunto de datos MNIST.
+            </p>
+            <p>
+                El dataset <strong>MNIST</strong> es un conjunto de datos público que agrupa miles de pequeñas imágenes (con dimensiones de 28x28 píxeles) en escala de grises de dígitos manuscritos del 0 al 9, siendo considerado a día de hoy el "Hola Mundo" del Deep Learning visual.
+            </p>
+            <div class="warning-box" style="border-left-color: #ffb84d; background-color: #fff8e6;">
+                <p class="title" style="color: #cc8800;">⚠️ Atención: Entorno de Ejecución</p>
+                <p class="content">Para que el entrenamiento interactivo no demore muchísimo tiempo, se recomienda fuertemente ejecutar este script en plataformas como Google Colab que brinden soporte de procesamiento por hardware dedicado (GPU/TPU).</p>
+            </div>
+        </section>
+
+        <!-- 1. Carga de librerías -->
+        <section class="section">
+            <h3 class="color-secondary">1. Importación de Librerías</h3>
+            <p>Comenzamos por invocar el ecosistema de <code>TensorFlow/Keras</code>, y en especial, traemos las capas necesarias para construir la topología visual.</p>
+            
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>1_imports.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step1')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step1"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers, models
+<span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> mnist
+<span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical</code></pre>
+            </div>
+        </section>
+
+        <!-- 2. Preparación de datos -->
+        <section class="section">
+            <h3 class="color-secondary">2. Carga y Normalización del Espacio Visual</h3>
+            <p>
+                A diferencia de nuestra anterior red predictiva basada en características comunes (como la longitud de un pétalo), las matrices de un píxel, al estar en blanco y negro puros, miden la luminosidad enviando valores en un espectro que va desde el número <code>0</code> (negro puro) hasta el <code>255</code> (blanco puro).
+            </p>
+            <p>Nuestro primer procedimiento técnico consistirá en <strong>normalizar</strong> todos estos rangos y encogerlos obligatoriamente dentro de un margen microscópico numérico <code>[0.0, 1.0]</code>. Esta práctica acelerará brutalmente el ritmo de la convergencia.</p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>2_load_normalize.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step2')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step2"><span class="comment"># Cargar y preparar los datos nativos</span>
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+<span class="comment"># Normalizar valores de píxeles dividiendo entre el valor lumínico máximo</span>
+X_train = X_train.astype(<span class="string">'float32'</span>) / <span class="number">255.0</span>
+X_test = X_test.astype(<span class="string">'float32'</span>) / <span class="number">255.0</span></code></pre>
+            </div>
+
+            <p class="mt-4">
+                Finalmente procedemos a <strong>redimensionar (reshape)</strong> los datos para amoldarlos explícitamente a que cumplan el requerimiento CNN de poseer un indicador del Canal de color. Al ser Blanco y Negro, definimos 1 capa de profundidad de canal (1). Y naturalmente codificamos One-Hot la etiqueta de salida porque hay 10 clases de resoluciones posibles correspondientes a los 10 dígitos ordinales.
+            </p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>3_reshape_targets.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step3')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step3"><span class="comment"># Redimensionar para incluir el canal de color (-1 es automatismo total de Keras, 28x28 alto x ancho, 1 Canal Grises)</span>
+X_train = X_train.reshape(-<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)
+X_test = X_test.reshape(-<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)
+
+<span class="comment"># Codificar las etiquetas como vectores one-hot identificadores para 10 clases temporales exclusivas</span>
+y_train = to_categorical(y_train, <span class="number">10</span>)
+y_test = to_categorical(y_test, <span class="number">10</span>)</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. Construcción -->
+        <section class="section">
+            <h3 class="color-secondary">3. Ensamblando y Trazando la Red Convolucional</h3>
+            <p>
+                Del mismo modo conceptual visto en la práctica de la unidad pasada, empilaremos ordenadamente módulos dentro de un armazón <code>Sequential</code>:
+            </p>
+            
+            <ul class="mb-5">
+                <li><strong>Capa Principal <code>Conv2D</code>:</strong> Aquí nace toda la magia de extracción. Mapea la silueta enviando simultáneamente **32 filtros matemáticos cuadriculados de 3x3 píxeles** (ventana) a barrer por todo el lienzo en búsqueda natural de curvas o rectas microscópicas (patrones locales visuales). Adhiere al final un filtro de excitación y no linealidad (ReLU). <code>input_shape</code> define firmemente nuestra inconfundible estampa original 28x28 de 1 canal.</li>
+                <li><strong>Sub-capa <code>MaxPooling2D</code>:</strong> Condensador que recibe temporalmente los 32 fotogramas (mapas) provenientes de su homóloga convolucional y la fuerza a dividirse comprimiendo el lienzo y preservando casi la máxima información, todo mediante la observación diminuta 2x2.</li>
+                <li><strong>Capas Profundas (64 filtros):</strong> Agregamos un segundo bloque extractor *Conv2D* combinado a posteriori con otro sumidero volumétrico *MaxPooling*. Como te percatarás, al profundizar internamente la red, incrementamos la búsqueda de hallazgos matemáticos abstractos elevando de 32 hasta **64 filtros**. Aprenderá a fusionar y combinar lo encontrado por los primeros 32 para lograr trazos gruesos reconocibles u ojivas.</li>
+                <li><strong>Capa Extructuradora <code>Flatten</code>:</strong> Bloque que actúa como puente, cogiendo lo que actualmente es puré estructural multidimensional (mapas) y enrollándolos físicamente formando por gravedad un enorme tubo Vector lineal unidireccional.</li>
+                <li><strong>Clasificadores Terminales (Dense):</strong> Finalmente conectará todo ese vector puritano (Output <code>1600</code>) y se lo arrojará a unas capas completamente funcionales ordinarias con su activador lineal interno <code>64</code> (ReLU), donde el peso será dictaminada la certeza bajo la batuta del activador final estadístico de multiclase <code>10</code> (Categorical Softmax).</li>
+            </ul>
+
+            <!-- Representación Visual (Arquitectura de la Red CNN) -->
+            <div class="architecture-diagram mb-4">
+                <div class="layer-box">
+                    <div class="layer-header">Conv2D</div>
+                    <div class="layer-activation">Activation: <strong>relu</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 28, 28, 1)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 26, 26, 32)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+                
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box" style="border-color: #555;">
+                    <div class="layer-header" style="background-color: #333;">MaxPooling2D</div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 26, 26, 32)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 13, 13, 32)</strong></div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Conv2D</div>
+                    <div class="layer-activation">Activation: <strong>relu</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 13, 13, 32)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 11, 11, 64)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box" style="border-color: #555;">
+                    <div class="layer-header" style="background-color: #333;">MaxPooling2D</div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 11, 11, 64)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 5, 5, 64)</strong></div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header" style="background-color: #1976d2;">Flatten</div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 5, 5, 64)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 1600)</strong></div>
+                    </div>
+                </div>
+                
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>relu</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 1600)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 64)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>softmax</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 64)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 10)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>4_cnn_architecture.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step4')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step4"><span class="comment"># Definir la grandiosa topología abstracta de la CNN visual</strong></span>
+model = models.Sequential([
+    layers.Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)),
+    layers.MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)),
+    layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),
+    layers.MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)),
+    layers.Flatten(),
+    layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>),
+    layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)
+])</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Compilacion y Entreno -->
+        <section class="section">
+            <h3 class="color-secondary">4. Compilación, Entrenamiento y Evaluación</h3>
+            <p>
+                Cerramos el ciclo de Deep Learning pidiéndole al entorno que compile todos los engranajes empleando el optimizador maestro <strong>Adam</strong>, ajustando luego la red iterativamente pasándole trozos de memoria con una densidad <code>batch_size</code> fijada estratégicamente en <code>64</code> para acelerar los cómputos. Y finalmente validamos la bondad obtenida evaluando los datos oscurecidos inicialmente.
+            </p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>5_train_evaluate.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step5')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step5"><span class="comment"># Compilar fijando motor matemático y métrica final</span>
+model.compile(optimizer=<span class="string">'adam'</span>,
+              loss=<span class="string">'categorical_crossentropy'</span>,
+              metrics=[<span class="string">'accuracy'</span>])
+
+<span class="comment"># Entrenarlo duramente dando 5 repasos intensivos (epochs) en la GPU</span>
+history = model.fit(X_train, y_train, epochs=<span class="number">5</span>, batch_size=<span class="number">64</span>, validation_split=<span class="number">0.1</span>, verbose=<span class="number">1</span>)
+
+<span class="comment"># Juzgar su desempeño sobre el lote aislado puro</span>
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"\nExactitud en el conjunto de prueba MNIST: {test_acc:.3f}"</span>)</code></pre>
+            </div>
+        </section>
+
+        <!-- Código Completo Unido -->
+        <section class="section">
+            <h2 class="color-primary">Código Completo del Clasificador CNN</h2>
+            <p>Si la configuración fue exitosa, este cerebro debió promediar alrededor de una apabullante fiabilidad técnica en métricas que ronda en torno a <strong>un 99% de Accuracy sobre información externa pura de testing</strong>. ¡Una verdadera maravilla matemática moderna!</p>
+
+            <div class="code-window code-copy-container mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>mnist_cnn_clasificador.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-complete')">📋 Copiar Todo</button>
+                </div>
+                <pre class="code-content" style="max-height: 1300px; overflow-y: auto;"><code id="code-complete"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers, models
+<span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> mnist
+<span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical
+
+<span class="comment"># 1. Cargar y preparar los datos</span>
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+<span class="comment"># 2. Normalizar valores de píxeles (0–255) al rango [0,1]</span>
+X_train = X_train.astype(<span class="string">'float32'</span>) / <span class="number">255.0</span>
+X_test = X_test.astype(<span class="string">'float32'</span>) / <span class="number">255.0</span>
+
+<span class="comment"># 3. Redimensionar para incluir el canal (1 para imágenes en gris)</span>
+X_train = X_train.reshape(-<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)
+X_test = X_test.reshape(-<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)
+
+<span class="comment"># 4. Codificar las etiquetas como vectores one-hot</span>
+y_train = to_categorical(y_train, <span class="number">10</span>)
+y_test = to_categorical(y_test, <span class="number">10</span>)
+
+<span class="comment"># 5. Definir la poderosa arquitectura de la CNN de Extracción</span>
+model = models.Sequential([
+    layers.Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)),
+    layers.MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)),
+    layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),
+    layers.MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)),
+    layers.Flatten(),
+    layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>),
+    layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)
+])
+
+<span class="comment"># 6. Compilar el modelo enlazando las funciones vitales</span>
+model.compile(optimizer=<span class="string">'adam'</span>,
+              loss=<span class="string">'categorical_crossentropy'</span>,
+              metrics=[<span class="string">'accuracy'</span>])
+
+<span class="comment"># 7. Iniciar el Entrenamiento pesando en tarjetas Gráficas recomendadas</span>
+history = model.fit(X_train, y_train, epochs=<span class="number">5</span>, batch_size=<span class="number">64</span>, validation_split=<span class="number">0.1</span>, verbose=<span class="number">1</span>)
+
+<span class="comment"># 8. Comprobar validez resolutiva final </span>
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"\nExactitud en el conjunto de prueba MNIST: {test_acc:.3f}"</span>)</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

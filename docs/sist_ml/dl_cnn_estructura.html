@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Estructura de una Red Neuronal Convolucional (CNN). Capas convolucionales, pooling, flatten y densas.">
+    <meta name="keywords"
+        content="CNN, Convolucional, Deep Learning, MaxPooling, Flatten, Feature Extraction, Filtros, Kernels">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Estructura de una CNN | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .cnn-layer-card {
+            border-left: 5px solid var(--color-primary);
+            background: #fff;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .cnn-layer-card:hover {
+            transform: translateX(5px);
+        }
+        .cnn-layer-title {
+            color: var(--color-primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Estructura de una CNN</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Estructura de una CNN</h1>
+            <p class="subtitle">Descubriendo los engranajes internos: Filtros, Convoluciones y Pooling.</p>
+        </section>
+
+        <!-- Introducción espacial -->
+        <section class="section">
+            <h2 class="color-primary">Entendiendo el Espacio y las Formas</h2>
+            <p>
+                Como comentábamos en el apartado anterior, las <strong>Redes Neuronales Convolucionales (CNN)</strong> han sido diseñadas con la extraordinaria capacidad de comprender las relaciones espaciales dentro de los datos de entrada. En lugar de analizar cada píxel de manera desordenada y aislada, aprovechan la <em>proximidad local</em> entre ellos.
+            </p>
+            <p>
+                Este hito se logra aplicando pequeñas matrices matemáticas llamadas <strong>filtros o kernels</strong>. Estas ventanitas recorren secuencialmente toda la imagen (barriendo de izquierda a derecha y de arriba a abajo) dedicándose a detectar <strong>patrones fundamentales</strong> como bordes, contrastes, texturas o formas geométricas. 
+            </p>
+            
+            <div class="highlight-box accent mt-3">
+                <p><strong>La Magia del Aprendizaje Automático:</strong> Lo verdaderamente revolucionario es que nosotros no le decimos al modelo <em>qué forma debe tener el filtro para detectar la rueda de un coche</em>. La CNN "aprende automáticamente" los valores óptimos de estos filtros a través de la retropropagación del error durante el propio proceso de entrenamiento.</p>
+            </div>
+        </section>
+
+        <!-- Jerarquía de Aprendizaje -->
+        <section class="section mt-4 mb-5">
+            <h2 class="color-secondary mb-3">Jerarquía de la Representación Visual</h2>
+            <div class="comparison-grid">
+                <div class="warning-box" style="margin-top: 0; background: #e3f2fd; border-left-color: #2196f3;">
+                    <p class="title" style="color: #1565c0;">🔬 Capas Iniciales (Bajo nivel)</p>
+                    <p class="content">Se encargan de aprender características muy simples, aisladas y abstractas. Funcionan como detectores de líneas verticales, bordes horizontales, gradientes de color o esquinas pronunciadas.</p>
+                </div>
+                <div class="warning-box" style="margin-top: 0; background: #e8f5e9; border-left-color: #4caf50;">
+                    <p class="title" style="color: #2e7d32;">👁️ Capas Profundas (Alto nivel)</p>
+                    <p class="content">Combinan y agrupan los extractos de la fase anterior para ensamblar la detección de estructuras increíblemente complejas. Acaban identificando ojos, rostros delineados, matrículas o partes enteras de un objeto.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arquitectura Típica -->
+        <section class="section">
+            <h2 class="color-primary">Arquitectura y Tipos de Capas Especializadas</h2>
+            <p class="mb-4">
+                Esta comprensión visual se alcanza introduciendo bloques especializados en la <strong>extracción de características (Feature Extraction)</strong>. Una arquitectura CNN estándar alterna ordenadamente las siguientes capas estructurales:
+            </p>
+
+            <!-- Diagrama Arquitectura CNN Explicativo -->
+            <div style="background: white; border: 1px solid #eee; border-radius: 8px; padding: 2rem 1rem; margin-bottom: 2.5rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow-x: auto;">
+                <svg viewBox="0 0 900 300" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradientes para simular volumen (Feature Maps) -->
+                        <linearGradient id="volGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#bbdefb" />
+                            <stop offset="100%" stop-color="#64b5f6" />
+                        </linearGradient>
+                        <linearGradient id="denseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#c8e6c9" />
+                            <stop offset="100%" stop-color="#81c784" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Capa de Entrada (Ej: 128x128x3) -->
+                    <g transform="translate(50, 100)">
+                        <text x="50" y="-30" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Entrada (Imagen)</text>
+                        <text x="50" y="-15" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">128x128x3</text>
+                        <!-- 3 Capas RGB -->
+                        <rect x="0" y="0" width="100" height="100" fill="rgba(33, 150, 243, 0.2)" stroke="#1976d2" stroke-width="1.5" />
+                        <rect x="10" y="10" width="100" height="100" fill="rgba(33, 150, 243, 0.4)" stroke="#1976d2" stroke-width="1.5" />
+                        <rect x="20" y="20" width="100" height="100" fill="url(#volGradient)" stroke="#1976d2" stroke-width="1.5" />
+                    </g>
+
+                    <path d="M 180 150 L 230 150" stroke="#999" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+                    <text x="205" y="140" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#666">Conv2D</text>
+
+                    <!-- Feature Maps 1 (Ej: 64x64x8) -->
+                    <g transform="translate(240, 115)">
+                        <text x="40" y="-20" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Feature Maps</text>
+                        <text x="40" y="-5" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">64x64x8 (Filtros)</text>
+                        <rect x="0" y="0" width="70" height="70" fill="rgba(156, 39, 176, 0.2)" stroke="#8e24aa" stroke-width="1" />
+                        <rect x="5" y="5" width="70" height="70" fill="rgba(156, 39, 176, 0.4)" stroke="#8e24aa" stroke-width="1" />
+                        <rect x="10" y="10" width="70" height="70" fill="rgba(156, 39, 176, 0.6)" stroke="#8e24aa" stroke-width="1" />
+                        <rect x="15" y="15" width="70" height="70" fill="#ba68c8" stroke="#8e24aa" stroke-width="1.5" />
+                    </g>
+
+                    <path d="M 335 150 L 385 150" stroke="#999" stroke-width="2" stroke-dasharray="4,4" />
+                    <text x="360" y="140" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#666">Max-Pool</text>
+
+                    <!-- Feature Maps 2 (Ej: 32x32x8 tras Pooling) -->
+                    <g transform="translate(395, 130)">
+                        <text x="30" y="-15" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Pooling</text>
+                        <text x="30" y="0" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">32x32x8</text>
+                        <rect x="0" y="10" width="40" height="40" fill="rgba(255, 152, 0, 0.2)" stroke="#f57c00" stroke-width="1" />
+                        <rect x="5" y="15" width="40" height="40" fill="rgba(255, 152, 0, 0.5)" stroke="#f57c00" stroke-width="1" />
+                        <rect x="10" y="20" width="40" height="40" fill="#ffb74d" stroke="#f57c00" stroke-width="1.5" />
+                    </g>
+                    
+                    <path d="M 460 150 L 510 150" stroke="#999" stroke-width="2" stroke-dasharray="4,4" />
+                    <text x="485" y="140" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#666">Flatten</text>
+
+                    <!-- Flattening (Vector) -->
+                    <g transform="translate(520, 70)">
+                        <text x="15" y="-15" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Flatten</text>
+                        <text x="15" y="0" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">1D Vector</text>
+                        <rect x="5" y="10" width="20" height="150" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="1.5" />
+                        <!-- Lineas de división para simular el vector -->
+                        <line x1="5" y1="30" x2="25" y2="30" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="50" x2="25" y2="50" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="70" x2="25" y2="70" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="90" x2="25" y2="90" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="110" x2="25" y2="110" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="130" x2="25" y2="130" stroke="#9e9e9e" stroke-width="1" />
+                        <line x1="5" y1="150" x2="25" y2="150" stroke="#9e9e9e" stroke-width="1" />
+                    </g>
+
+                    <path d="M 555 150 L 615 150" stroke="#999" stroke-width="2" stroke-dasharray="4,4" />
+                    <text x="585" y="140" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#666">Fully Connected</text>
+
+                    <!-- Dense Layers & Output -->
+                    <g transform="translate(630, 90)">
+                        <text x="20" y="-35" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Dense (MLP)</text>
+                        <text x="20" y="-20" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">Capas Finales</text>
+                        <rect x="0" y="0" width="40" height="110" rx="8" fill="url(#denseGradient)" stroke="#388e3c" stroke-width="2" />
+                        
+                        <path d="M 45 55 L 75 55" stroke="#999" stroke-width="2" />
+                        
+                        <text x="110" y="-35" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" font-weight="bold" fill="#333">Clasificador</text>
+                        <text x="110" y="-20" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="10" fill="#666">Salida</text>
+                        <rect x="80" y="30" width="60" height="50" rx="4" fill="#ffc107" stroke="#ffa000" stroke-width="2" />
+                        <text x="110" y="60" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#333">Prob %</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="cnn-layer-card">
+                <div class="cnn-layer-title">
+                    <span>🔍</span>
+                    <strong>1. Capas Convolucionales (Conv2D)</strong>
+                </div>
+                <p>Son el corazón absoluto de las CNN. En lugar de conectar todas las neuronas, aplican matemáticamente ese conjunto de filtros que mencionamos anteriormente a pequeños segmentos de la imagen (por ejemplo, recuadros de 3x3). Como el filtro "barre" y comparte sus pesos paramétricos por toda la instantánea, logramos una reducción radical de estrés computacional a la vez que detectamos formas sin importar <em>en qué parte de la imagen se encuentren</em>.</p>
+            </div>
+
+            <div class="cnn-layer-card">
+                <div class="cnn-layer-title">
+                    <span>⚡</span>
+                    <strong>2. Capas de Activación (ReLU)</strong>
+                </div>
+                <p>Su función es romper con la linealidad matemática introduciendo la función de activación (generalmente <strong>ReLU</strong>). Se aplica sistemáticamente justo después de cada convolución para "apagar" o reemplazar por cero todos los números negativos de nuestro mapa temporal de características, dejando pasar con fuerza únicamente a las características o bordes predominantes identificados.</p>
+            </div>
+
+            <div class="cnn-layer-card">
+                <div class="cnn-layer-title">
+                    <span>🗜️</span>
+                    <strong>3. Capas de Agrupación (Pooling)</strong>
+                </div>
+                <p>Tienen la única e importante labor de reducir la dimensionalidad espacial (encogiendo el ancho y el alto, pero manteniendo la profundidad) de los mapas de datos que nos pasan las convolucionales. </p>
+                <p class="mt-2 text-muted">A menudo usamos <strong>Max Pooling</strong>, que revisa pequeñas agrupaciones de 2x2 píxeles y retiene únicamente "el número más alto" (el rasgo visual dominante). Esto reduce dramáticamente la carga de procesamiento futuro e inmuniza a la red contra la traslación inofensiva de la cámara.</p>
+            </div>
+
+            <div class="cnn-layer-card">
+                <div class="cnn-layer-title">
+                    <span>📏</span>
+                    <strong>4. Capa de Aplanamiento (Flattening)</strong>
+                </div>
+                <p>Actúa como puente intermedio. Cuando finalizamos la fase visual y de extracción de entidades (una vez que los volúmenes son estrechos pero extremadamente profundos en concepto), esta matriz 3D es aplastada o "desenrollada" generando un clásico Vector largo de una sola dimensión. Listo para que las redes tradicionales clásicas puedan interpretarlo.</p>
+            </div>
+
+            <div class="cnn-layer-card">
+                <div class="cnn-layer-title">
+                    <span>🧠</span>
+                    <strong>5. Capas Densas (Fully Connected)</strong>
+                </div>
+                <p>En el último trayecto, este vector aplanado inyecta sus valores lógicos a un Perceptrón Multicapa (MLP) convencional. Estas "Fully Connected Layers" tomarán toda la evidencia visual de alto nivel obtenida por las capas anteriores y dictarán una sentencia, operando a modo de "clasificador final" para escupir una probabilidad entre las clases que buscamos predecir (Por ejemplo: Perro o Gato).</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Algoritmos de optimización en Deep Learning: SGD, RMSProp, Adam y la importancia de la tasa de aprendizaje (Learning Rate).">
+    <meta name="keywords"
+        content="Optimizador, SGD, RMSProp, Adam, Learning Rate, Tasa de Aprendizaje, Deep Learning, Machine Learning, Red Neuronal">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Algoritmos de Optimización | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Algoritmos de Optimización</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Algoritmos de Optimización</h1>
+            <p class="subtitle">El mecanismo que efectúa los ajustes matemáticos reales basados en los gradientes.</p>
+        </section>
+
+        <!-- Concepto -->
+        <section class="section">
+            <h2 class="color-primary">Los Motores de Aprendizaje</h2>
+            <p>
+                Otra pieza fundamental en el aprendizaje de modelos de Deep Learning son los <strong>optimizadores</strong>. Mientras que la función de pérdida determina <em>qué tan lejos</em> estamos del resultado óptimo, los optimizadores son los algoritmos que implementan la lógica de actualización concreta de los pesos basada en los gradientes.
+            </p>
+            <div class="highlight-box secondary mt-3">
+                <p>En otras palabras, el optimizador decide en qué dirección y con qué impulso se deben modificar los pesos y sesgos (parámetros) para reducir el margen de error detectado.</p>
+            </div>
+        </section>
+
+        <!-- Principales Algoritmos -->
+        <section class="section">
+            <h2 class="color-secondary">Las Implementaciones más Destacadas</h2>
+            
+            <div class="layout-grid-stack mt-4">
+                
+                <!-- SGD -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">🚶</div>
+                        <h4 class="ra-title color-primary">SGD (Descenso de Gradiente Estocástico)</h4>
+                    </div>
+                    <p>
+                        Es el optimizador más básico. A diferencia del gradiente descendente tradicional que evalúa todos los datos, el SGD actualiza los pesos procesando un pequeño "lote" (batch) de datos en cada iteración de forma estocástica (aleatoria).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Momentum:</strong> Comúnmente se le asiste con técnicas de "momentum" (momento), un impulso matemático que le ayuda a acelerar en la dirección correcta y suavizar las oscilaciones causadas por muestras ruidosas.</li>
+                    </ul>
+                    
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>sgd_example.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-sgd')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-sgd"><span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPClassifier
+
+<span class="comment"># Configurar una red neuronal utilizando SGD con Momentum</span>
+modelo_sgd = MLPClassifier(
+    hidden_layer_sizes=(<span class="number">64</span>, <span class="number">32</span>),
+    solver=<span class="string">'sgd'</span>,            <span class="comment"># Indicamos el uso de Stochastic Gradient Descent</span>
+    learning_rate_init=<span class="number">0.01</span>, <span class="comment"># Tasa de aprendizaje inicial</span>
+    momentum=<span class="number">0.9</span>,            <span class="comment"># Valor típico para suavizar oscilaciones (fricción y aceleración)</span>
+    max_iter=<span class="number">1000</span>
+)</code></pre>
+                    </div>
+                </div>
+
+                <!-- RMSProp -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">📐</div>
+                        <h4 class="ra-title color-primary">RMSProp (Root Mean Square Propagation)</h4>
+                    </div>
+                    <p>
+                        Este optimizador soluciona uno de los mayores problemas del SGD puro: adapta dinámicamente la tasa de aprendizaje *por cada parámetro individual*.
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Mecanismo:</strong> Divide la tasa de aprendizaje por un promedio móvil de los cuadrados de los gradientes recientes.</li>
+                        <li><strong>Dominio:</strong> Es famosamente efectivo en el entrenamiento de Redes Neuronales Recurrentes (RNN).</li>
+                    </ul>
+                    <div class="important-note mt-2">
+                        <em>Nota: Históricamente, RMSProp es más común en frameworks enfocados puramente en Deep Learning (como TensorFlow o PyTorch) que en librerías generalistas como Scikit-Learn.</em>
+                    </div>
+
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>rmsprop_pytorch.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-rmsprop')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-rmsprop"><span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn
+<span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim
+
+<span class="comment"># Definimos una red neuronal recurrente (RNN) simple en PyTorch</span>
+modelo_rnn = nn.RNN(input_size=<span class="number">10</span>, hidden_size=<span class="number">20</span>, num_layers=<span class="number">2</span>)
+
+<span class="comment"># RMSProp brilla especialmente en redes recurrentes.</span>
+optimizador = optim.RMSprop(
+    modelo_rnn.parameters(),
+    lr=<span class="number">0.01</span>,    <span class="comment"># Tasa de aprendizaje inicial</span>
+    alpha=<span class="number">0.99</span>  <span class="comment"># Constante de suavizado (promedio móvil cuadrado)</span>
+)</code></pre>
+                    </div>
+                </div>
+
+                <!-- Adam -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">👑</div>
+                        <h4 class="ra-title color-primary">Adam (Adaptive Moment Estimation)</h4>
+                    </div>
+                    <p>
+                        Adam es el optimizador dominante hoy en día. Fusiona creativamente las ideas del momentum (usando el promedio de los gradientes en el instante anterior) y de RMSProp (usando el promedio de los cuadrados de los gradientes).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Versatilidad:</strong> Es eficiente, rápido de converger, robusto ante hiperparámetros poco ajustados y funciona excepcionalmente bien en casi cualquier clase de arquitectura de red (CNN, RNN, Transformers).</li>
+                        <li><strong>El Estándar:</strong> Es tan popular que no es de extrañar que en múltiples tutoriales, repositorios de código y papers de investigación se asuma por defecto sin un análisis previo.</li>
+                    </ul>
+                    
+                    <div class="code-window code-copy-container mt-3">
+                        <div class="code-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                            <span>adam_example.py</span>
+                            <button class="copy-btn" onclick="copyCode('code-adam')">📋 Copiar</button>
+                        </div>
+                        <pre class="code-content"><code id="code-adam"><span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPRegressor
+
+<span class="comment"># Utilizando ADAM (El optimizador predeterminado en Sklearn)</span>
+modelo_adam = MLPRegressor(
+    hidden_layer_sizes=(<span class="number">128</span>, <span class="number">64</span>),
+    solver=<span class="string">'adam'</span>,           <span class="comment"># Indicamos explícitamente el uso de Adam</span>
+    learning_rate_init=<span class="number">0.001</span>,<span class="comment"># Tasa de inicio recomendada típicamente</span>
+    max_iter=<span class="number">1000</span>
+)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Rate -->
+        <section class="section">
+            <h2 class="color-primary">La Tasa de Aprendizaje (Learning Rate)</h2>
+            <p>
+                Dentro de la definición matemática y de código de cualquier algoritmo optimizador, existe la obligación de establecer su <strong>tasa de aprendizaje</strong> o <em>Learning Rate</em> ($\alpha$).
+            </p>
+            <p>
+                Este hiperparámetro es un valor escalar pequeño (por ejemplo, <em>0.001</em>, <em>0.01</em>, <em>1e-4</em>) de tremendo impacto en la convergencia. Determina el <strong>tamaño del paso porcentual</strong> que da el optimizador en cada iteración al mover o actualizar los pesos a lo largo de la superficie del gradiente.
+            </p>
+
+            <div class="comparison-grid mt-4">
+                <div class="warning-box" style="margin-top: 0; background: #fff0f0; border-left-color: #ff4d4d;">
+                    <p class="title" style="color: #cc0000;">⛔ Learning Rate demasiado ALTO</p>
+                    <p class="content">Si el paso es excesivamente gigante, el optimizador saltará violentamente el punto ciego del "valle", es decir, del mínimo de error, de un lado al otro. Esto provoca que el entrenamiento <strong>diverja</strong>: la pérdida "explota" matemáticamente, resultando en un modelo completamente inutilizable y errores del tipo <em>NaN (Not a Number)</em>.</p>
+                </div>
+                <div class="warning-box" style="margin-top: 0; background: #fff8e6; border-left-color: #ffb84d;">
+                    <p class="title" style="color: #cc8800;">🐢 Learning Rate demasiado BAJO</p>
+                    <p class="content">Si el optimizador camina dando avances microscópicos, invertirá miles de épocas infructíferas, volviendo el entrenamiento desesperantemente <strong>lento y costoso computacionalmente</strong>. El escenario es aún peor en arquitecturas complejas, ya que puede quedarse atascado crónicamente en un mínimo local o "sillín", en vez de caer en el verdadero mínimo global de la curva.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section class="section">
+            <h2 class="color-primary">Resumen del Optimizado</h2>
+            <div class="final-grid mt-4">
+                <div class="final-card technical">
+                    <h3 class="color-primary">⚙️ SGD + Momentum</h3>
+                    <p>Ideal si tienes tiempo de sobra para ajustar finamente la tasa de aprendizaje combinada con estrategias de caída a lo largo de épocas masivas. Suavidad a base de cálculos.</p>
+                </div>
+                <div class="final-card existential">
+                    <h3 style="color: var(--color-warning);">🔄 RMSProp</h3>
+                    <p>Famoso en el ámbito del procesamiento del lenguaje natural o trabajo directo con señales por ser muy efectivo corrigiendo problemas propios de las Redes Recurrentes y los históricos de gradientes.</p>
+                </div>
+                <div class="final-card philosophical">
+                    <h3 class="color-secondary">👑 ADAM</h3>
+                    <p>Tu <strong>primera y mejor opción</strong>. La fusión de propiedades inteligentes que adaptan sus requerimientos lo convierten casi en "enchufar y listo", garantizando una buena base para la generalidad de las problemáticas.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

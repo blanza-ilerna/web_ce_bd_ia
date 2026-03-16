@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende técnicas para combatir el overfitting en Redes Neuronales: Regularización L2, Dropout y Early Stopping.">
+    <meta name="keywords"
+        content="Overfitting, Regularización, L2, Weight Decay, Dropout, Early Stopping, Deep Learning, Redes Neuronales">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Overfitting y Regularización en Deep Learning | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Animación para L2 (Weight Decay) */
+        @keyframes shrink-weight {
+            0%, 100% { stroke-width: 5; stroke: #ff4d4d; }
+            50% { stroke-width: 1.5; stroke: var(--color-primary); }
+        }
+        .weight-line {
+            animation: shrink-weight 4s ease-in-out infinite;
+        }
+
+        /* Animación para Dropout */
+        @keyframes blink {
+            0%, 45%, 55%, 100% { opacity: 1; fill: #F0EDF5; stroke: #8A7AAF; }
+            50% { opacity: 0.2; fill: #eee; stroke: #ccc; }
+        }
+        .dropout-node {
+            animation: blink 3s infinite;
+        }
+        .dropout-line {
+            animation: blink 3s infinite;
+        }
+
+        /* Animación para Early Stopping */
+        @keyframes progress-val {
+            0% { stroke-dashoffset: 400; } 
+            40% { stroke-dashoffset: 200; }
+            60% { stroke-dashoffset: 250; }
+            100% { stroke-dashoffset: 250; }
+        }
+        .line-val {
+            stroke-dasharray: 400;
+            animation: progress-val 5s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Overfitting y Regularización</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Overfitting y Regularización</h1>
+            <p class="subtitle">Técnicas para mejorar la capacidad de generalización del modelo.</p>
+        </section>
+
+        <!-- El problema del Overfitting -->
+        <section class="section">
+            <h2 class="color-primary">El Desafío de la Generalización</h2>
+            <p>
+                En Deep Learning, el overfitting (sobreajuste) ocurre cuando una red neuronal, debido a su gran capacidad de cómputo, aprende "de memoria" el ruido de los datos de entrenamiento en lugar de capturar los patrones subyacentes.
+            </p>
+            <div class="highlight-box secondary mt-3">
+                <p>Un modelo con overfitting tendrá un error casi nulo en el entrenamiento, pero fallará estrepitosamente al enfrentarse a datos nuevos. Para evitarlo, aplicamos técnicas de <strong>regularización</strong>.</p>
+            </div>
+        </section>
+
+        <!-- Técnicas de Regularización -->
+        <section class="section">
+            <h2 class="color-secondary">Técnicas Principales</h2>
+            
+            <div class="layout-grid-stack mt-4">
+                <!-- Regularización L2 -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">L2</div>
+                        <h4 class="ra-title color-primary">Regularización L2 (Weight Decay)</h4>
+                    </div>
+                    <p>
+                        Esta técnica, también conocida como <strong>reducción de pesos</strong>, introduce un término de penalización en la función de coste. Matemáticamente, sumamos el cuadrado de todos los pesos multiplicados por un valor $\lambda$ (lambda).
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Efecto:</strong> Los pesos grandes son penalizados más fuertemente que los pequeños.</li>
+                        <li><strong>Resultado:</strong> Se incentiva a la red a usar todos los pesos de manera equilibrada y pequeña, lo que reduce la varianza del modelo y lo hace menos sensible a pequeñas fluctuaciones en los datos de entrada.</li>
+                        <li><strong>Simplicidad:</strong> Un modelo con pesos pequeños es "más suave" y tiene una mejor capacidad de generalización.</li>
+                    </ul>
+
+                    <div class="svg-container mt-3" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+                        <svg viewBox="0 0 300 150" style="background: white; border-radius: 0.5rem; border: 1px solid #eee;">
+                            <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#666">Efecto del Weight Decay</text>
+                            <!-- Neuronas -->
+                            <circle cx="50" cy="40" r="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                            <circle cx="50" cy="110" r="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                            <circle cx="250" cy="75" r="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                            <!-- Pesos que se encogen -->
+                            <line x1="62" y1="40" x2="235" y2="75" class="weight-line" />
+                            <line x1="62" y1="110" x2="235" y2="75" class="weight-line" style="animation-delay: -2s;" />
+                            <text x="150" y="140" text-anchor="middle" font-size="11" fill="#888">Grosor de línea = Importancia (Peso)</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Dropout -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">✂️</div>
+                        <h4 class="ra-title color-primary">Dropout (Apagado Neuronal)</h4>
+                    </div>
+                    <p>
+                        El Dropout es una de las técnicas más innovadoras y efectivas. Consiste en "desactivar" aleatoriamente un porcentaje de neuronas durante cada iteración del entrenamiento.
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Co-adaptación:</strong> Evita que las neuronas dependan excesivamente unas de otras para corregir errores, lo que se conoce como co-adaptación compleja.</li>
+                        <li><strong>Redundancia:</strong> Al no saber qué neuronas estarán disponibles en cada paso, la red se ve obligada a aprender representaciones redundantes y mucho más robustas del mismo concepto.</li>
+                        <li><strong>Solo en Entrenamiento:</strong> Es crucial notar que el Dropout solo se aplica durante el aprendizaje; en la fase de inferencia (predicción real), todas las células están activas.</li>
+                    </ul>
+
+                    <div class="svg-container mt-3" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+                        <svg viewBox="0 0 400 200" style="background: white; border-radius: 0.5rem; border: 1px solid #eee;">
+                            <text x="200" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#666">Red Neuronal con Dropout (Inactividad Aleatoria)</text>
+                            <!-- Capa 1 -->
+                            <circle cx="100" cy="60" r="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                            <circle cx="100" cy="140" r="12" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                            <!-- Capa 2 (Dropout) -->
+                            <circle cx="200" cy="40" r="12" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                            <circle cx="200" cy="100" r="12" class="dropout-node" stroke-width="2" />
+                            <circle cx="200" cy="160" r="12" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                            <!-- Capa 3 -->
+                            <circle cx="300" cy="100" r="12" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" />
+                            
+                            <!-- Conexiones -->
+                            <g stroke="#ddd" stroke-width="1.5">
+                                <line x1="112" y1="60" x2="188" y2="40" />
+                                <line x1="112" y1="60" x2="188" y2="100" class="dropout-line" />
+                                <line x1="112" y1="140" x2="188" y2="100" class="dropout-line" />
+                                <line x1="112" y1="140" x2="188" y2="160" />
+                                <line x1="212" y1="40" x2="288" y2="100" />
+                                <line x1="212" y1="100" x2="288" y2="100" class="dropout-line" />
+                                <line x1="212" y1="160" x2="288" y2="100" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Early Stopping -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">🛑</div>
+                        <h4 class="ra-title color-primary">Early Stopping (Detención Temprana)</h4>
+                    </div>
+                    <p>
+                        A diferencia de las anteriores, esta técnica actúa sobre el proceso de entrenamiento global, no sobre los pesos individuales.
+                    </p>
+                    <ul class="mt-1">
+                        <li><strong>Pata de Validación:</strong> Requiere separar una parte de los datos (conjunto de validación) que el modelo no verá para entrenar.</li>
+                        <li><strong>Paciencia:</strong> Se utiliza un parámetro de "paciencia" que define cuántas épocas debemos esperar sin mejora antes de detener el proceso.</li>
+                        <li><strong>Generalización:</strong> Al detenernos antes de que el error de validación empiece a subir (vínculo directo con el overfitting), garantizamos que el modelo guardado sea el que mejor generaliza ante datos nunca vistos.</li>
+                    </ul>
+
+                    <div class="svg-container mt-3" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+                        <svg viewBox="0 0 400 250" style="background: white; border-radius: 0.5rem; border: 1px solid #eee;">
+                            <defs>
+                                <marker id="arrow-head" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                    <path d="M0,0 L10,5 L0,10 z" fill="#333" />
+                                </marker>
+                            </defs>
+                            <text x="200" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="#666">Métrica de Error durante el Entrenamiento</text>
+                            
+                            <!-- Ejes -->
+                            <line x1="40" y1="210" x2="380" y2="210" stroke="#333" stroke-width="2" marker-end="url(#arrow-head)" />
+                            <line x1="40" y1="210" x2="40" y2="40" stroke="#333" stroke-width="2" marker-end="url(#arrow-head)" />
+                            <text x="330" y="235" font-size="11" fill="#999">Épocas</text>
+                            <text x="15" y="35" font-size="11" fill="#999">Loss</text>
+
+                            <!-- Línea Train (Azul) - Ajustada para pasar por debajo del texto -->
+                            <path d="M50,65 Q180,250 360,205" fill="none" stroke="#49B9CE" stroke-width="3" />
+                            <text x="250" y="222" fill="#49B9CE" font-size="11" font-weight="700">Entrenamiento</text>
+                            
+                            <!-- Línea Validation (Naranja) -->
+                            <path d="M50,90 Q180,225 310,95" fill="none" stroke="#FF9800" stroke-width="3" />
+                            <text x="250" y="80" fill="#FF9800" font-size="11" font-weight="700">Validación</text>
+
+                            <!-- Zona de Parada (Punto óptimo) -->
+                            <g>
+                                <!-- Línea discontinua vertical -->
+                                <line x1="180" y1="157" x2="180" y2="210" stroke="red" stroke-width="2" stroke-dasharray="4" />
+                                <!-- Punto rojo en el mínimo absoluto de la curva naranja -->
+                                <circle cx="180" cy="157" r="7" fill="red">
+                                    <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite" />
+                                </circle>
+                                <text x="180" y="145" text-anchor="middle" font-size="12" fill="red" font-weight="700">Punto de parada</text>
+                            </g>
+
+                            <!-- Indicador de Overfitting -->
+                            <g transform="translate(280, 110)">
+                                <rect x="0" y="0" width="85" height="30" fill="#ff000008" rx="5" stroke="#ff000018" />
+                                <text x="42" y="20" text-anchor="middle" font-size="9" fill="#cc0000" font-weight="bold">OVERFITTING</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

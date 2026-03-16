@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejemplo práctico completo paso a paso de una Red Neuronal (MLP) en Python usando TensorFlow y Keras para clasificar el dataset Iris.">
+    <meta name="keywords"
+        content="Red Neuronal, TensorFlow, Keras, MLP, Deep Learning, Python, Dataset Iris, Machine Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ejemplo Básico de Red Neuronal | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Ejemplo de Red Neuronal</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Ejemplo Básico de Red Neuronal</h1>
+            <p class="subtitle">Construyendo un Perceptrón Multicapa (MLP) desde cero con TensorFlow y Keras.</p>
+        </section>
+
+        <!-- Introducción y Advertencia -->
+        <section class="section">
+            <h2 class="color-primary">Llevando la Teoría a la Práctica</h2>
+            <p>
+                A continuación, vamos a implementar nuestra primera red neuronal en Python. Para ello, haremos uso de las librerías <strong>TensorFlow</strong> y <strong>Keras</strong>.
+            </p>
+            <p>
+                Haremos un ejemplo sencillo con un dataset que ya conocemos en Machine Learning: el conjunto de datos <strong>Iris</strong>. Es un problema de clasificación multiclase sencillo de resolver, que usaremos para explicar poco a poco cómo montamos desde cero una arquitectura de Deep Learning capaz de enfrentarse a este escenario.
+            </p>
+            <p>
+                Concretamente, vamos a implementar un <strong>Perceptrón Multicapa (MLP)</strong>, que es una arquitectura de red neuronal relativamente simple, que consta solo de elementos que ya hemos explicado a lo largo de este tema.
+            </p>
+
+            <div class="warning-box" style="border-left-color: #ffb84d; background-color: #fff8e6;">
+                <p class="title" style="color: #cc8800;">⚠️ Atención: Entorno de Ejecución</p>
+                <p class="content">Para el entrenamiento de Redes Neuronales de manera eficiente, es imprescindible contar con una GPU correctamente configurada. En caso de no tener un entorno local de este tipo (o usar un ordenador estándar), es altamente recomendable ejecutar el código en plataformas cloud que sí estén preparadas gratuitamente para este tipo de usos, como puede ser el caso de <strong>Google Colab</strong>.</p>
+            </div>
+        </section>
+
+        <!-- 1. Carga de librerías -->
+        <section class="section">
+            <h3 class="color-secondary">1. Importación de Librerías</h3>
+            <p>Primero, cargaremos todas las librerías que vamos a usar en nuestro script, tanto de manipulación de datos como de <em>deep learning</em>.</p>
+            
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>1_imports.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step1')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step1"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> Sequential
+<span class="keyword">from</span> tensorflow.keras.layers <span class="keyword">import</span> Dense
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+<span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical</code></pre>
+            </div>
+        </section>
+
+        <!-- 2. Preparación de datos -->
+        <section class="section">
+            <h3 class="color-secondary">2. Carga y Preparación de los Datos</h3>
+            <p>
+                A continuación, cargaremos y prepararemos los datos con técnicas que ya hemos visto. Por un lado, escalamos nuestros datos estructurados usando <code>StandardScaler</code>. Luego, como nuestra salida es <strong>multiclase</strong> (3 especies de flores), la codificaremos con un <em>one-hot encoding</em> (<code>to_categorical</code>), de manera que cada neurona de la última capa mapeará la posibilidad de pertenencia a cada una de las clases de salida.
+            </p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>2_data_preparation.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step2')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step2"><span class="comment"># Cargar y extraer variables del dataset</span>
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+<span class="comment"># Escalado de las variables numéricas (para ayudar a la convergencia de la red)</span>
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+<span class="comment"># Codificación one-hot de las etiquetas de la variable objetivo</span>
+y_encoded = to_categorical(y)
+
+<span class="comment"># División en entrenamiento y prueba (80% / 20%)</span>
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, y_encoded, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
+)</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. Construcción -->
+        <section class="section">
+            <h3 class="color-secondary">3. Construcción de la Red Neuronal (Topología)</h3>
+            <p>
+                Ahora vamos a construir la red. Crearemos una red neuronal secuencial (<code>Sequential</code>, las capas se apilan ordenadamente) de tres capas <strong>densas</strong> (cada neurona de una capa está conectada a todas las neuronas de la capa siguiente).
+            </p>
+            <ul class="mb-3">
+                <li><strong>1ª Capa (Entrada + Oculta):</strong> Tendrá 8 neuronas y un tamaño de entrada de 4, ya que nuestros datos tabulares tienen 4 características. Utiliza una función de activación <strong>"ReLU"</strong>, que introduce no linealidad ("apagando" valores negativos) para aprender patrones complejos.</li>
+                <li><strong>2ª Capa (Oculta):</strong> Tiene 6 neuronas, toma de entrada la salida de la primera y vuelve a usar <strong>"ReLU"</strong>.</li>
+                <li><strong>3ª Capa (Salida):</strong> Genera el <em>output</em> (probabilidad). Tiene <strong>3 neuronas</strong> (tantas como clases). Como función de activación, cambiamos a <strong>"Softmax"</strong>, la cual toma los valores resultantes y los transforma en una distribución de probabilidad (conjunto de 3 números que sumarán exactamente 1).</li>
+            </ul>
+
+            <!-- Representación Visual (Arquitectura de la Red) -->
+            <div class="architecture-diagram mb-4">
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>relu</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 4)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 8)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+                
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>relu</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 8)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 6)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>softmax</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 6)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 3)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>3_model_construction.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step3')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step3"><span class="comment"># Construcción de la arquitectura del modelo</span>
+model = Sequential([
+    Dense(<span class="number">8</span>, input_shape=(<span class="number">4</span>,), activation=<span class="string">'relu'</span>),
+    Dense(<span class="number">6</span>, activation=<span class="string">'relu'</span>),
+    Dense(<span class="number">3</span>, activation=<span class="string">'softmax'</span>) <span class="comment"># 3 clases de salida en Softmax</span>
+])</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Compilación -->
+        <section class="section">
+            <h3 class="color-secondary">4. Compilación del Modelo</h3>
+            <p>
+                Una vez definido el modelo, tenemos que "compilarlo". Aquí especificamos el optimizador, la función de pérdida y las métricas:
+            </p>
+            <ul>
+                <li><strong>Optimizador:</strong> Ajusta los pesos internos. Usamos <strong>Adam</strong> por ser el más popular y efectivo.</li>
+                <li><strong>Función de Pérdida (Loss):</strong> Para minimizar el error, al ser un problema multiclase utilizamos <code>categorical_crossentropy</code>.</li>
+                <li><strong>Métricas:</strong> Para entender qué tan bien va (monitorearlo), usamos <code>accuracy</code> (porcentaje de aciertos), que es fácil de interpretar por humanos.</li>
+            </ul>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>4_model_compile.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step4')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step4"><span class="comment"># Compilación del modelo definiendo las piezas clave para el aprendizaje</span>
+model.compile(
+    optimizer=<span class="string">'adam'</span>,
+    loss=<span class="string">'categorical_crossentropy'</span>,
+    metrics=[<span class="string">'accuracy'</span>]
+)</code></pre>
+            </div>
+        </section>
+
+        <!-- 5. Entrenamiento -->
+        <section class="section">
+            <h3 class="color-secondary">5. Entrenamiento del Modelo</h3>
+            <p>
+                Para instruir al modelo, surgen nuevos parámetros respecto al Machine Learning clásico:
+            </p>
+            <div class="grid-features mt-3 mb-3">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔄 Epochs (Épocas)</h4>
+                    <p>Definen cuántas veces el modelo repasará <strong>todo el dataset</strong>. Si ajustamos 100, la red revisará y refinará pesos 100 veces. ¿Poco? Underfitting. ¿Mucho? Overfitting.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📦 Batch Size</h4>
+                    <p>El número de muestras que procesa a la vez. No mira todo de golpe. Si lo fijamos a 8, analizará de 8 en 8, evaluando el error y modificando pesos cada 8 datos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🛡️ Validation Split</h4>
+                    <p>Le indica al modelo que reserve un trozo de los datos (ej: 0.1 = 10%) para <strong>verificar la pérdida de validación</strong> en cada época y alertarnos de posible overfitting.</p>
+                </div>
+            </div>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>5_model_training.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step5')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step5"><span class="comment"># Entrenamiento iterativo del modelo</span>
+history = model.fit(
+    X_train,
+    y_train,
+    epochs=<span class="number">100</span>,
+    batch_size=<span class="number">8</span>,
+    verbose=<span class="number">0</span>, <span class="comment"># Evita que imprima todo el proceso interno en consola</span>
+    validation_split=<span class="number">0.1</span>
+)</code></pre>
+            </div>
+        </section>
+
+        <!-- 6. Validación / Prediccion -->
+        <section class="section">
+            <h3 class="color-secondary">6. Evaluación y Predicciones</h3>
+            <p>En este punto, ya tenemos entrenada nuestra red neuronal y podemos validar su rendimiento sobre los datos que apartamos (Test) o directamente, usarla para realizar predicciones probabilísticas de nuevas flores en producción.</p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>6_model_evaluation.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step6')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step6"><span class="comment"># Evaluación cuantitativa en las métricas dictadas anteriormente</span>
+loss, accuracy = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"Accuracy del modelo en el conjunto de prueba: {accuracy:.2f}"</span>)
+
+<span class="comment"># Predicción sobre nuevas observaciones (sacando únicamente 5 datos como demo)</span>
+predicciones = model.predict(X_test[:<span class="number">5</span>])
+print(<span class="string">"\nEjemplo de predicciones (distribución de probabilidades por clase):\n"</span>, predicciones)</code></pre>
+            </div>
+        </section>
+
+        <!-- Código Completo Unido -->
+        <section class="section">
+            <h2 class="color-primary">Código Completo del Script</h2>
+            <p>En resumen, hemos implementado desde cero una red neuronal capaz de resolver un problema de clasificación multiclase, con una arquitectura adecuada para el problema. A continuación tienes todo el código estructurado listo para ejecutar:</p>
+
+            <div class="code-window code-copy-container mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>keras_mlp_iris_completo.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-complete')">📋 Copiar Todo</button>
+                </div>
+                <pre class="code-content" style="max-height: 1300px; overflow-y: auto;"><code id="code-complete"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> Sequential
+<span class="keyword">from</span> tensorflow.keras.layers <span class="keyword">import</span> Dense
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+<span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical
+
+<span class="comment"># 1. Cargar y preparar los datos</span>
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+<span class="comment"># Escalado de variables numéricas</span>
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+<span class="comment"># Codificación one-hot de las etiquetas</span>
+y_encoded = to_categorical(y)
+
+<span class="comment"># División en entrenamiento y prueba</span>
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, y_encoded, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
+)
+
+<span class="comment"># 2. Construcción del modelo (Arquitectura MLP)</span>
+model = Sequential([
+    Dense(<span class="number">8</span>, input_shape=(<span class="number">4</span>,), activation=<span class="string">'relu'</span>),
+    Dense(<span class="number">6</span>, activation=<span class="string">'relu'</span>),
+    Dense(<span class="number">3</span>, activation=<span class="string">'softmax'</span>) <span class="comment"># 3 clases de salida (Probabilidad)</span>
+])
+
+<span class="comment"># 3. Compilación del modelo</span>
+model.compile(
+    optimizer=<span class="string">'adam'</span>, 
+    loss=<span class="string">'categorical_crossentropy'</span>, 
+    metrics=[<span class="string">'accuracy'</span>]
+)
+
+<span class="comment"># 4. Entrenamiento del modelo</span>
+history = model.fit(
+    X_train,
+    y_train,
+    epochs=<span class="number">100</span>,
+    batch_size=<span class="number">8</span>,
+    verbose=<span class="number">0</span>,
+    validation_split=<span class="number">0.1</span>
+)
+
+<span class="comment"># 5. Evaluación del modelo y extracción de resultados</span>
+loss, accuracy = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"Accuracy del modelo en el conjunto de prueba: {accuracy:.2f}"</span>)
+
+<span class="comment"># 6. Predicción sobre observaciones del lote de test</span>
+predicciones = model.predict(X_test[:<span class="number">5</span>])
+print(<span class="string">"\nEjemplo de predicciones (probabilidades):\n"</span>, predicciones)</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

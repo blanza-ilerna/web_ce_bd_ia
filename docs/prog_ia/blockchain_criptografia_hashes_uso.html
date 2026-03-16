@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uso de Hashes en Blockchain | iLERNA</title>
+    <meta name="description" content="Aprende cómo el encadenamiento de hashes garantiza la inmutabilidad y seguridad de la cadena de bloques.">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> &rarr; 
+                    <a href="index.html">Programación IA</a> &rarr; 
+                    <span>Uso de Hashes</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>El Encadenamiento Hash 🔗</h1>
+                <p class="subtitle">Cómo se construye la arquitectura de confianza bloque a bloque.</p>
+            </div>
+
+            <section class="section">
+                <h2 class="color-primary">Estructura de un Bloque</h2>
+                <p>Para que la red sea inmutable, cada bloque de información debe estar vinculado matemáticamente con el anterior. En términos simplificados, cada bloque contiene:</p>
+                
+                <div class="grid-features">
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">📦 Transacciones</h4>
+                        <p>El conjunto de datos o acciones validadas (quién envió qué a quién).</p>
+                    </div>
+                    <div class="feature-card secondary">
+                        <h4 class="color-secondary">🔑 Hash Propio</h4>
+                        <p>La huella digital única generada al procesar todo el contenido del bloque.</p>
+                    </div>
+                    <div class="feature-card primary">
+                        <h4 class="color-primary">🔗 Hash Anterior</h4>
+                        <p>El valor hash del bloque que le precede, creando el vínculo de la cadena.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Demo Interactivo de Encadenamiento -->
+            <section class="section">
+                <h2 class="color-secondary">🧪 Demo en Vivo: Cadena de Bloques</h2>
+                <p>Los hashes a continuación son <strong>reales</strong>, calculados con SHA-256 en tu propio navegador. 
+                   Pulsa el botón para simular una manipulación y observa cómo se rompe el encadenamiento.</p>
+
+                <div class="chain-controls">
+                    <button id="btn-tamper" class="chain-btn chain-btn-danger">
+                        💀 Manipular Bloque #1
+                    </button>
+                    <button id="btn-restore" class="chain-btn chain-btn-success" style="display:none;">
+                        🔄 Restaurar Cadena
+                    </button>
+                </div>
+
+                <div class="blockchain-visual">
+
+                    <!-- BLOQUE 1 -->
+                    <div id="block-1" class="chain-block block-valid">
+                        <div class="chain-block-header">
+                            <span>⬛ BLOQUE #1 &mdash; Génesis</span>
+                            <span class="status-badge status-ok">✅ VÁLIDO</span>
+                        </div>
+                        <div class="chain-block-body">
+                            <div class="chain-field">
+                                <span class="chain-field-label">📄 Transacciones</span>
+                                <pre class="chain-field-tx block-tx">Alice → Bob: 10€
+Bob → Carlos: 5€
+Carlos → Diana: 3€</pre>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔙 Hash Anterior (Génesis)</span>
+                                <code class="chain-hash chain-hash-prev hash-prev-value">00000000000000000000...000000</code>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔑 Hash de este Bloque</span>
+                                <code class="chain-hash chain-hash-self hash-self-value">calculando...</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="arrow-1" class="chain-connector">
+                        <div class="chain-link-line"></div>
+                        <div class="chain-link-icon">🔗</div>
+                        <div class="chain-link-line"></div>
+                    </div>
+
+                    <!-- BLOQUE 2 -->
+                    <div id="block-2" class="chain-block block-valid">
+                        <div class="chain-block-header">
+                            <span>⬛ BLOQUE #2</span>
+                            <span class="status-badge status-ok">✅ VÁLIDO</span>
+                        </div>
+                        <div class="chain-block-body">
+                            <div class="chain-field">
+                                <span class="chain-field-label">📄 Transacciones</span>
+                                <pre class="chain-field-tx block-tx">Diana → Eva: 7€
+Eva → Fran: 2€</pre>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔙 Hash Anterior (H1)</span>
+                                <code class="chain-hash chain-hash-prev hash-prev-value">calculando...</code>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔑 Hash de este Bloque</span>
+                                <code class="chain-hash chain-hash-self hash-self-value">calculando...</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="arrow-2" class="chain-connector">
+                        <div class="chain-link-line"></div>
+                        <div class="chain-link-icon">🔗</div>
+                        <div class="chain-link-line"></div>
+                    </div>
+
+                    <!-- BLOQUE 3 -->
+                    <div id="block-3" class="chain-block block-valid">
+                        <div class="chain-block-header">
+                            <span>⬛ BLOQUE #3</span>
+                            <span class="status-badge status-ok">✅ VÁLIDO</span>
+                        </div>
+                        <div class="chain-block-body">
+                            <div class="chain-field">
+                                <span class="chain-field-label">📄 Transacciones</span>
+                                <pre class="chain-field-tx block-tx">Fran → Gema: 4€
+Gema → Hector: 1€</pre>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔙 Hash Anterior (H2)</span>
+                                <code class="chain-hash chain-hash-prev hash-prev-value">calculando...</code>
+                            </div>
+                            <div class="chain-field">
+                                <span class="chain-field-label">🔑 Hash de este Bloque</span>
+                                <code class="chain-hash chain-hash-self hash-self-value">calculando...</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chain-status-msg" class="chain-status-ok">
+                    ✅ Cadena íntegra: todos los bloques están correctamente enlazados.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="color-primary">¿Por qué es tan seguro? 🛡️</h2>
+                <div class="card secondary">
+                    <p>Si un atacante intenta modificar una sola transacción del <strong>Bloque #1</strong>:</p>
+                    <ol class="mt-2">
+                        <li>El contenido del Bloque #1 cambia.</li>
+                        <li>Automáticamente su <strong>Hash H1</strong> se convierte en uno completamente diferente.</li>
+                        <li>El Bloque #2 registra el <strong>hash anterior original</strong>, que ya no coincide con el nuevo H1.</li>
+                        <li>La cadena queda rota y todos los bloques posteriores son inválidos.</li>
+                        <li>La red (con miles de nodos con la copia correcta) rechaza estas versiones manipuladas.</li>
+                    </ol>
+                </div>
+                <div class="highlight-box success mt-4">
+                    <h3 class="highlight-title color-success">La contaminación se propaga hacia adelante</h3>
+                    <p class="content">Para reescribir el historial de un bloque, un atacante tendría que <strong>recalcular también todos los bloques posteriores</strong> y superar el poder computacional del resto de la red. Con miles de nodos operando en paralelo, esto es en la práctica imposible.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/lecciones.js"></script>
+    <script src="../js/blockchain_chain_demo.js"></script>
+</body>
+</html>

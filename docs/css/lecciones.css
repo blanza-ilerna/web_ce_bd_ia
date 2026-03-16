@@ -401,9 +401,23 @@ section p {
     margin-bottom: 2rem;
 }
 
+.grid-4-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
 @media (max-width: 768px) {
-    .grid-2-cols {
+    .grid-2-cols,
+    .grid-4-cols {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .grid-4-cols {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -2922,4 +2936,450 @@ html {
 
 .copy-btn.copied {
     background: #27c93f;
+}
+
+/* ===============================================
+   DIAGRAMAS ARQUITECTURA RED NEURONAL
+   =============================================== */
+.layer-box {
+    border: 2px solid #333;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.layer-header {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.layer-activation {
+    background-color: #fff;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 2px solid #333;
+    font-size: 0.95rem;
+}
+.layer-details {
+    display: flex;
+    background-color: #fff;
+    font-size: 0.85rem;
+}
+.layer-details .detail-col {
+    padding: 8px;
+    flex: 1;
+    text-align: center;
+}
+.layer-details .detail-col:not(:last-child) {
+    border-right: 2px solid #333;
+}
+.layer-details .trainable {
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    flex: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arrow-down {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    margin: 5px 0;
+}
+
+/* ===============================================
+   DEMO INTERACTIVO DE HASH
+   =============================================== */
+.hash-demo-box {
+    background: var(--bg-gray-light);
+    border: 2px solid var(--border-light);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.hash-demo-label {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hash-demo-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    border: 2px solid var(--color-primary);
+    border-radius: 0.5rem;
+    outline: none;
+    background: var(--bg-white);
+    color: var(--text-dark);
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hash-demo-input:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(138, 122, 175, 0.2);
+}
+
+.hash-demo-output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    background: var(--bg-code);
+    color: #a6e22e;
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    word-break: break-all;
+    line-height: 1.6;
+    min-height: 3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s ease;
+}
+
+@keyframes hashFade {
+    from { opacity: 0.3; }
+    to   { opacity: 1; }
+}
+
+.hash-animate {
+    animation: hashFade 0.3s ease;
+}
+
+.hash-demo-badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-style: italic;
+    min-height: 1.2rem;
+}
+
+.compare-neutral {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+}
+
+.compare-equal {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: var(--color-success);
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: #e8f5e9;
+    border: 2px solid var(--color-success);
+}
+
+.compare-different {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: var(--color-warning);
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--bg-warning-lighter);
+    border: 2px solid var(--color-warning);
+}
+
+/* ===============================================
+   DEMO INTERACTIVO DE ENCADENAMIENTO HASH
+   =============================================== */
+.chain-controls {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.chain-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chain-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.chain-btn-danger { background: #e53935; color: white; }
+.chain-btn-success { background: var(--color-success); color: white; }
+
+.blockchain-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 2rem 0;
+}
+
+.chain-block {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 1rem;
+    border: 2.5px solid var(--border-light);
+    overflow: hidden;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.chain-block.block-valid {
+    border-color: var(--color-success);
+    box-shadow: 0 4px 16px rgba(56,142,60,0.12);
+}
+
+.chain-block.block-tampered {
+    border-color: #e53935;
+    box-shadow: 0 4px 20px rgba(229,57,53,0.25);
+    animation: shakeBlock 0.4s ease;
+}
+
+@keyframes shakeBlock {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+.chain-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-gray-light);
+    border-bottom: 1px solid var(--border-light);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+.status-ok    { background: #e8f5e9; color: #2e7d32; }
+.status-error { background: #ffebee; color: #c62828; }
+
+.chain-block-body {
+    padding: 1.25rem;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.chain-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.chain-field-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.chain-field-tx {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    background: var(--bg-gray-light);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.4rem;
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    color: var(--text-dark);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.block-tampered .chain-field-tx {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.chain-hash {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.4rem;
+    word-break: break-all;
+    letter-spacing: 0.02em;
+    transition: background 0.4s ease, color 0.4s ease;
+    display: block;
+}
+
+.chain-hash-prev {
+    background: #ede7f6;
+    color: #4527a0;
+    border: 1px dashed #9575cd;
+}
+
+.chain-hash-self {
+    background: var(--bg-code);
+    color: #a6e22e;
+}
+
+.block-tampered .chain-hash-self {
+    background: #b71c1c;
+    color: #ffcdd2;
+}
+
+.block-tampered .chain-hash-prev {
+    background: #ffebee;
+    color: #c62828;
+    border-color: #e53935;
+    text-decoration: line-through;
+}
+
+/* Conector entre bloques */
+.chain-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.chain-link-line {
+    width: 3px;
+    height: 20px;
+    background: var(--color-success);
+    transition: background 0.4s ease;
+}
+
+.chain-link-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.chain-connector.arrow-broken .chain-link-line {
+    background: #e53935;
+}
+
+.chain-connector.arrow-broken .chain-link-icon::after {
+    content: ' ❌';
+}
+
+/* Mensaje de estado global */
+.chain-status-ok {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 2px solid var(--color-success);
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+.chain-status-error {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #ffebee;
+    color: #c62828;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 2px solid #e53935;
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* ===============================================
+   STEP CONTAINER (Flujos paso a paso)
+   =============================================== */
+.step-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.step-item:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin: 0 0 0.4rem 0;
+    color: var(--text-dark);
+}
+
+.step-content p {
+    margin: 0;
+    color: var(--text-medium);
+    line-height: 1.6;
 }

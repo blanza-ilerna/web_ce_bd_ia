@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Estructura interna de las RNN. El estado oculto, el bucle de retroalimentación, el desenrollado en el tiempo y BPTT (Backpropagation Through Time).">
+    <meta name="keywords"
+        content="RNN, Red Neuronal Recurrente, Hidden State, BPTT, Backpropagation Through Time, Bucle, Secuencias, Memoria">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Estructura de una RNN | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Estructura de una RNN</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Estructura de una RNN</h1>
+            <p class="subtitle">Descifrando el núcleo de la memoria: bucles, estado oculto y evolución temporal.</p>
+        </section>
+
+        <!-- El bucle de retroalimentación -->
+        <section class="section">
+            <h2 class="color-primary">El Bucle de Retroalimentación y el Estado Oculto</h2>
+            <p>
+                La verdadera innovación arquitectónica que introducen las Redes Neuronales Recurrentes (RNNs) es el concepto de <strong>bucle de retroalimentación (Feedback Loop)</strong>. 
+            </p>
+            <p>
+                A diferencia de las redes puramente <em>Feedforward</em> (como el MLP o la CNN), donde la información fluye estrictamente y de forma lineal hacia adelante (desde la entrada hasta la salida), una RNN toma un camino distinto: intercepta la salida computada por una neurona (o bloque de neuronas) en el instante temporal <strong style="color: var(--color-primary);"><em>t-1</em></strong> (el pasado inmediato) y la <strong>reintroduce inyectándola como una entrada adicional</strong> y complementaria en el flujo de cálculo del nuevo instante <strong style="color: var(--color-primary);"><em>t</em></strong> (el presente).
+            </p>
+        </section>
+
+        <!-- El Estado Oculto -->
+        <section class="section mt-4">
+            <h2 class="color-secondary">Mantenimiento de la Memoria: The Hidden State</h2>
+            <div class="info-card mt-3">
+                <h4 class="color-primary">🧠 El Estado Oculto</h4>
+                <p class="mt-2">
+                    A esta señal que se retroalimenta temporalmente se le denomina matemáticamente <strong>Estado Oculto o <em>Hidden State (<i>H<sub>t</sub></i>)</em></strong>. Actúa como el verdadero responsable de la <em>memoria</em> de la red; es una matriz de números que se va actualizando a cada milisegundo para acumular fluidamente un "resumen" conceptual de toda la información (o contexto) que ha procesado la RNN hasta ese momento.
+                </p>
+            </div>
+        </section>
+
+        <!-- El de-senrollado de la RNN en el tiempo -->
+        <section class="section mt-4">
+            <h2 class="color-secondary">Mecánica del Desenrollado (Unrolling Through Time)</h2>
+            <p>
+                Aunque gráficamente se pinta como un único bucle aislado que vuelve sobre sí mismo, para que nuestros potentes ordenadores puedan entrenar matemáticamente estas redes sin volverse locos con la matemática circular infinita, empleamos un truco conceptual genial: <strong>la red se "desenrolla" a través del eje del tiempo</strong>.
+            </p>
+            
+            <div class="highlight-box accent mt-3 mb-3">
+                <p><strong>El Desenrollado (Unroll):</strong> Implica clonar o crear una "copia secuencial" de la red entera para y por cada elemento de la secuencia cronológica.</p>
+            </div>
+
+            <p>
+                Es decir, si analizamos la oración "<em>La película fue pésima</em>" (4 palabras = 4 instantes de tiempo), la red se clona 4 veces seguidas conectadas en serie, de donde extraemos el cálculo fundamental:
+            </p>
+            <ul class="mb-4">
+                <li>El estado oculto <strong><i>H<sub>t</sub></i></strong> que se halla en el paso <i>t</i>, es el resultado inexorable de operar matemáticamente y fusionar tanto la entrada o palabra actual (<i>X<sub>t</sub></i>) como el registro memorístico de todo el contexto pasado (<i>H<sub>t-1</sub></i>).</li>
+            </ul>
+        </section>
+
+        <!-- BPTT Entrenamiento Especializado  -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">El Desafío del Entrenamiento (El Nacimiento de BPTT)</h2>
+            <p>
+                Al habernos expandido tanto en la estructura por culpa del eje cronológico (Desenrollado Secuencial), el clásico algoritmo corrector de errores del Deep Learning tradicional (<em>Backpropagation</em>) se queda corto para calcular eficientemente todos estos gigantescos grafos interconectados temporal y simultáneamente.
+            </p>
+
+            <div class="highlight-box secondary mt-3">
+                <p class="title">🔄 Backpropagation Through Time (BPTT)</p>
+                <p class="content">Es el algoritmo rey que permite la viabilidad matemática de las RNN. Se trata de una alteración masiva del núcleo formador que consigue <strong>propagar el error de las predicciones a la inversa, rastreándolo no solo hacia atrás capa tras capa estructurada, sino simultánea y peligrosamente arrastrándose "atrás en el Tiempo"</strong> (a lo largo de todos los instantes <i>t</i> desenroscados que lo precedieron).</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

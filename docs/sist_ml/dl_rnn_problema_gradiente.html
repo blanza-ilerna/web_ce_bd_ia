@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="El problema del desvanecimiento del gradiente en las Redes Neuronales Recurrentes. Entendiendo la incapacidad para retener memoria a largo plazo.">
+    <meta name="keywords"
+        content="RNN, Desvanecimiento del Gradiente, Vanishing Gradient, Deep Learning, NLP, BPTT">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Desvanecimiento del Gradiente | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Desvanecimiento del Gradiente</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">El Desvanecimiento del Gradiente</h1>
+            <p class="subtitle">El gran Talón de Aquiles de la arquitectura RNN básica (Memoria a corto plazo).</p>
+        </section>
+
+        <!-- El problema teórico -->
+        <section class="section">
+            <h2 class="color-primary">Un Problema Crítico de Propagación</h2>
+            <p>
+                La solución secuencial que hemos estudiado previamente (basada en el Estado Oculto inyectado a sí mismo mediante bucles en el tiempo) es conceptualmente muy elegante y teóricamente perfecta. Sin embargo, en la pura práctica matemática presenta un <strong>problema crítico devastador</strong>.
+            </p>
+            <p>
+                La arquitectura RNN básica sufre enormemente del famoso problema técnico bautizado como el <strong>Desvanecimiento del Gradiente (Vanishing Gradient)</strong> operando estrictamente dentro de un contexto temporal.
+            </p>
+            
+            <div class="highlight-box mt-3" style="border-left-color: #f44336; background-color: #ffebee;">
+                <p>
+                    <strong>La Multiplicación Temporal Cero:</strong> Esto significa que, al propagar el error de aprendizaje obligatoriamente hacia atrás (BPTT) forzándole a cruzar a través de muchísimos "pasos del tiempo" encadenados, los gradientes matemáticos originados se multiplican consecutivamente en cada paso decimal. Resultado: <strong>el error tiende rápidamente a desvanecerse (llegar a cero)</strong> e imposibilita entrenar correctamente los pasos más antiguos.
+                </p>
+            </div>
+        </section>
+
+        <!-- El ejemplo del fallo -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">Incapacidad Retentiva a Largo Plazo: Consecuencias</h2>
+            <p>
+                La consecuencia directa en el mundo real de que una RNN adolezca de este desvanecimiento progresivo de la señal en el tiempo, es que <strong>la red se vuelve totalmente incapaz de "conectar" y enlazar eventos que estén muy separados en una misma secuencia continua</strong>. Termina sufriendo una limitante memoria a corto plazo funcional.
+            </p>
+        </section>
+
+        <!-- Ejemplo visual del gato -->
+        <section class="section mb-4">
+            <h2 class="color-primary">El Ejemplo Práctico de la Falta de Retentiva</h2>
+            <div class="info-card mt-3">
+                <h4 class="color-primary">🐈 El Analizador ante Sintaxis Larga</h4>
+                <p class="mt-2 text-center" style="font-style: italic; font-size: 1.1rem; color: #555;">
+                    "El <strong>gato</strong> que vivía en la casa al final de la larga y bulliciosa avenida [...] <strong>estaba</strong> durmiendo"
+                </p>
+                <div class="mt-3">
+                    <p>
+                        Para una mente humana es sumamente obvio que la palabra en singular <em>"estaba"</em>, dicha 20 palabras más adelante, concuerda obligatoriamente con el sujeto inicial <em>"gato"</em> (singular). 
+                    </p>
+                    <p class="mb-0">
+                        Una RNN básica <strong>tendrá enormes dificultades o le será teóricamente imposible</strong> formular esa concordancia y acertar correctamente el verbo, debido a que la larguísima cláusula intermedia hace que la influencia temporal del sujeto "gato" se haya esfumado para siempre al llegar al tramo de análisis final (el error de la secuencia es $0$ o desvanecido y corta el retro-aprendizaje de la palabra <em>gato</em> relacionada al verbo final).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

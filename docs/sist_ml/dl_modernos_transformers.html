@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Los Transformers en el Deep Learning: Conoce el mecanismo de autoatención (self-attention) y la base de los modelos LLMs modernos.">
+    <meta name="keywords"
+        content="Transformers, Self-Attention, Autoatención, Deep Learning, Vaswani, LLM, GPT, BERT, DeepSeek">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Transformers | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Transformers</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Transformers</h1>
+            <p class="subtitle">El advenimiento del mecanismo de autoatención: procesando secuencias sin límites temporales.</p>
+        </section>
+
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="color-primary">La Arquitectura que Revolucionó el Mundo</h2>
+            <p>
+                Los <strong>Transformers</strong> representan la arquitectura que ha monopolizado por completo el campo del aprendizaje profundo desde el año 2017. Fueron introducidos al mundo por Vaswani et al. en su ya legendario trabajo <i>"Attention Is All You Need"</i>.
+            </p>
+            <p>
+                Históricamente, los Transformers son el punto de inflexión donde <strong>se abandonan por completo</strong> los costosos dogmas de la recurrencia (como en las RNNs) y la convolución (como en las CNNs). En su lugar, se asientan sobre un único pilar, rápido y poderoso: un mecanismo de <strong>auto-atención (self-attention)</strong> inmensamente denso que permite evaluar secuencias enteras leyendo todas sus partes en estricto paralelo.
+            </p>
+            
+            <div class="curiosity-box mt-4 mb-4">
+                <h4>📜 El Génesis de la IA Generativa</h4>
+                <div class="inner-box">
+                    <p>
+                        El paper <strong>"Attention Is All You Need"</strong> de la universidad de Toronto y Google (Vaswani et al.) sentó todos los cimientos matemáticos y estructurales absolutos para la inminente e imparable revolución de la Inteligencia Artificial Generativa. 
+                    </p>
+                    <p class="mt-2">
+                        Puedes zambullirte en el estudio original publicado de forma gratuita en la biblioteca académica de Cornell a través de este enlace oficial: <a href="https://arxiv.org/abs/1706.03762" target="_blank" style="color: var(--color-primary); font-weight: bold; text-decoration: underline;">https://arxiv.org/abs/1706.03762</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Autoatención y Fórmulas -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-secondary">Mecanismo de Auto-Atención (Self-Attention)</h2>
+            <p class="mb-3">
+                La clave está en este llamado mecanismo de auto-atención, cuyo principio clave consiste en calcular activamente la importancia relativa de cada elemento de la secuencia (cada letra o palabra) respecto al resto de todos los elementos, <strong>simultáneamente</strong>.
+            </p>
+            <p class="mb-3">
+                Para lograrlo, a cada entrada se le extrae tres densos vectores de números puros bautizados bajo la jerga de las bases de datos:
+            </p>
+
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">🔍 Query (Q)</h4>
+                    <p class="text-center mt-2" style="font-size: 0.95rem;"><strong>La Consulta:</strong> Lo que la palabra "está buscando" o "desea entender" sobre el resto del texto.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary text-center">🔑 Key (K)</h4>
+                    <p class="text-center mt-2" style="font-size: 0.95rem;"><strong>La Llave:</strong> Lo que la palabra "tiene", es decir, su etiqueta descriptiva contra la que se cruzarán los Queries externos.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary text-center">📦 Value (V)</h4>
+                    <p class="text-center mt-2" style="font-size: 0.95rem;"><strong>El Valor:</strong> El "significado semántico real y profundo" subyacente de esa palabra si la llave coincide con la consulta.</p>
+                </div>
+            </div>
+
+            <div class="info-card mt-3 mb-4" style="background-color: var(--color-background); border: 2px solid var(--color-primary);">
+                <p class="text-center" style="font-size: 1.15rem; font-style: italic; font-weight: bold; color: var(--color-primary); display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                    Attention(Q, K, V) = softmax(
+                    <span style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <span style="border-bottom: 2px solid var(--color-primary); padding-bottom: 4px; line-height: 1;">QK<sup>T</sup></span>
+                        <span style="padding-top: 4px; line-height: 1;">&radic;d<sub>k</sub></span>
+                    </span>
+                    ) V
+                </p>
+            </div>
+
+            <p>
+                Esta portentosa fracción matemática es todo lo que la red necesita. Permite que cada palabra en una gigantesca frase (o libro entero) <strong>"atienda" a todas las demás instantáneamente</strong>, capturando relaciones sintácticas y conexiones semánticas complejas con una agilidad inalcanzable, y resolviendo los contextos dudosos de traducción e interpretación sin pasarlas secuencialmente hacia atrás y hacia delante.
+            </p>
+        </section>
+
+        <!-- Características Horizontales -->
+        <section class="section mt-4 mb-4">
+            <h2 class="color-primary">Ventajas y Ecosistema de los Transformers</h2>
+            <p>
+                Al liberarse de la carga de procesar dato-por-dato secuencialmente por el bucle del tiempo (BPTT), la arquitectura Transformers desveló la trifecta perfecta que catapultó su superioridad actual en la industria:
+            </p>
+
+            <div class="mt-3" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div class="info-card">
+                    <h4 class="color-primary">⚡ Procesamiento Infinito en Paralelo</h4>
+                    <p class="mt-2">Al no depender nunca de los instantes <i>t-1</i> u ocultos pasados de secuencias anteriores, absolutamente TODO el bloque de texto es empujado a la malla del tensor matricial simultáneamente. Esto revienta el límite temporal computacional, abriendo las puertas a una mayor, colosal y monstruosa velocidad de entrenamiento en los clústers de TPUs.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="color-primary">🧠 Memoria Sin Degradación (Cero Desvanecimiento)</h4>
+                    <p class="mt-2">Destrozan e ignoran el antiguo y doloroso problema del Desvanecimiento del Gradiente en secuencias largas. Independientemente de si dos palabras están separadas por un espacio o por un millón y medio de páginas en la misma memoria física, el algoritmo es capaz de conectar sus dependencias de largo alcance en una simple multiplicación directa, con la misma fuerza que el primer instante.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="color-primary">👑 Son la Base de los Gigantes (LLMs)</h4>
+                    <p class="mt-2">Debido al escalado masivo e infinito que permiten y la memoria estelar que almacenan en su atención interna, se han alzado inevitablemente y por fuerza bruta como los dueños indiscutibles y absolutos; siendo la mismísima estructura matriz de redes y sistemas de modelado gigantes como <strong>BERT, los modelos GPT (OpenAI) o DeepSeek</strong>, entre incontables trillones de parámetros.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

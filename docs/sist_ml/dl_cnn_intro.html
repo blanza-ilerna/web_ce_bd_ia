@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducción a las Redes Neuronales Convolucionales (CNN). Limitaciones del MLP en el procesamiento de imágenes y la solución convolucional.">
+    <meta name="keywords"
+        content="CNN, Red Neuronal Convolucional, MLP, Visión Artificial, Deep Learning, Procesamiento de Imágenes, Inteligencia Artificial">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Introducción a las CNN | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Introducción a las CNN</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Introducción a las CNN</h1>
+            <p class="subtitle">El cuello de botella de las arquitecturas clásicas al enfrentarse a la Visión Artificial y su solución.</p>
+        </section>
+
+        <!-- Limitaciones del MLP -->
+        <section class="section">
+            <h2 class="color-primary">El Desafío de las Imágenes para un MLP</h2>
+            <p>
+                Hasta este momento, hemos analizado y construido arquitecturas basadas en el <strong>Perceptrón Multicapa (MLP)</strong>, donde todas las neuronas de una capa están conectadas a todas las de la siguiente (redes densas). Sin embargo, estas estructuras clásicas presentan debilidades críticas cuando se enfrentan a datos que poseen una <strong>estructura espacial y bidimensional</strong> intrínseca, siendo el mejor ejemplo de esto: las imágenes digitales.
+            </p>
+            <p>
+                Matemáticamente, podemos conceptualizar una imagen como una <strong>matriz bidimensional de píxeles</strong>. En esta estructura, la ubicación exacta de cada píxel no es aleatoria; su relación de vecindad con los píxeles que lo rodean es la que da forma a los bordes, texturas y objetos visuales.
+            </p>
+
+            <div class="layout-grid-stack mt-4">
+                
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">💥</div>
+                        <h4 class="ra-title color-primary">El Problema de la Explosión de Parámetros</h4>
+                    </div>
+                    <p>
+                        Si intentáramos procesar una fotografía tradicional a través de un MLP, estaríamos obligados a "aplanar" esa matriz en un larguísimo vector unidimensional, ya que estas redes solo entienden este formato de entrada.
+                    </p>
+                    <p class="mt-2">
+                        Imagina una imagen modesta de <strong>1000 píxeles de ancho por 1000 de alto</strong>. Al aplanarla, estaríamos inyectando 1.000.000 de características individuales a la red. Si conectamos este millón de entradas a una primera capa oculta de 500 neuronas, la red tendría que calcular, de un solo golpe, la escandalosa cifra de <strong>500 millones de pesos (parámetros)</strong> solo en el primer escalón. Esto vuelve al algoritmo computacionalmente inviable e imposible de entrenar con recursos normales.
+                    </p>
+                </div>
+
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">🗑️</div>
+                        <h4 class="ra-title color-primary">La Destrucción de la Espacialidad</h4>
+                    </div>
+                    <p>
+                        Incluso si poseyéramos la enorme potencia de cálculo necesaria para entrenar semejante red, nos enfrentaríamos a un problema lógico aún más destructivo: <strong>la pérdida masiva del contexto espacial</strong>.
+                    </p>
+                    <p class="mt-2">
+                        Al "aplanar" la matriz 2D en una sola línea abstracta de datos, el MLP sufre de amnesia visual. <strong>Pierde instantáneamente la noción geométrica</strong> de qué píxeles estaban ubicados cerca de otros. Una matriz estructurada que dibujaba, por ejemplo, el borde curvo de una manzana, se convierte en una lista numérica sin forma aparente, haciendo muy difícil que la red asocie formas compuestas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solucion: CNN -->
+        <section class="section mt-4">
+            <h2 class="color-secondary">La Solución: Redes Neuronales Convolucionales (CNN)</h2>
+            <div class="highlight-box secondary mt-3">
+                <p>Las <strong>Redes Neuronales Convolucionales (CNN o ConvNets)</strong> nacen exclusivamente para erradicar este problema. Son arquitecturas de Deep Learning altamente especializadas en ingerir de manera nativa <strong>datos en forma de cuadrícula (Data Grids)</strong>, como las fotografías, respetando en todo momento sus dimensiones naturales ancho x alto x canales de color.</p>
+            </div>
+
+            <p class="mt-4">
+                En lugar de forzar a todas las neuronas a conectarse con la totalidad de los píxeles (y ahogarse en cálculos matemáticos masivos), las CNNs introducen un truco maravilloso: su diseño <strong>preserva la topología espacial</strong> operando de forma inteligente sobre pequeños sectores y explotando estas relaciones locales.
+            </p>
+
+            <ul class="mt-3" style="font-size: 1.05rem;">
+                <li><strong>Procesamiento en parches:</strong> Analizan la imagen leyendo sectores cuadrados en lugar de líneas planas infinitas.</li>
+                <li><strong>Eficiencia extrema:</strong> Usan una técnica clave llamada <strong>"compartición de pesos" (Parameter Sharing)</strong>. Un mismo filtro entrenado para detectar una línea vertical en la esquina superior izquierda puede reutilizarse automáticamente para buscar esa misma línea en el borde inferior derecho, reduciendo drásticamente los parámetros en memoria y logrando una escala formidable en Visión Artificial (Computer Vision).</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

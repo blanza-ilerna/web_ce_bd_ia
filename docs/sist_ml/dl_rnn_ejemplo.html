@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejemplo práctico completo paso a paso de una Red Neuronal Recurrente (RNN) y LSTM en Python usando TensorFlow y Keras para clasificar el dataset IMDB.">
+    <meta name="keywords"
+        content="RNN, Red Neuronal Recurrente, LSTM, TensorFlow, Keras, IMDB, NLP, Procesamiento de Lenguaje, Deep Learning, Python">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ejemplo de una RNN | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Ejemplo de una RNN</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Ejemplo de una RNN</h1>
+            <p class="subtitle">Creando un analizador de sentimientos usando texto secuencial y una estructura LSTM avanzada.</p>
+        </section>
+
+        <!-- Introduccion -->
+        <section class="section">
+            <h2 class="color-primary">Clasificando Reseñas Literales en IMDB</h2>
+            <p>
+                Vamos ahora a desarrollar un ejemplo práctico fascinante sobre la aplicación directa de una arquitectura de <strong>Red Neuronal Recurrente (RNN)</strong>. En concreto, vamos a usar una estructura evolucionada denominada <strong>LSTM (Long Short-Term Memory)</strong> para llevar a cabo una de las tareas estrella del <em>Procesamiento de Lenguaje Natural (NLP)</em>: el <strong>análisis de sentimientos</strong>.
+            </p>
+            <p>
+                Nuestra misión será entrenar una red capaz de leer texto escrito (clasificar sentencias) y dictaminar si expresan un tono emocional <strong>positivo</strong> o <strong>negativo</strong>, usando como maestro el monumental conjunto de datos público <strong>IMDB</strong>, que acumula hasta 50.000 reseñas genuinas de películas etiquetadas de forma binaria.
+            </p>
+            
+            <div class="warning-box" style="border-left-color: #ffb84d; background-color: #fff8e6;">
+                <p class="title" style="color: #cc8800;">⚠️ Atención: Naturaleza Secuencial</p>
+                <p class="content">Recuerda que a diferencia de una foto estática (CNN), una frase no existe de forma simultánea. Se pronuncia secuencialmente, una palabra detrás de otra, y el significado de la palabra actual depende estrictamente del contexto aportado por la palabra anterior. ¡Ese es el terreno natural de las RNN!</p>
+            </div>
+        </section>
+
+        <!-- 1. Carga de librerías -->
+        <section class="section">
+            <h3 class="color-secondary">1. Importando nuestro arsenal analítico</h3>
+            <p>Lógicamente, requerimos importar herramientas especializadas en la manipulación de secuencias que no habíamos empleado hasta ahora.</p>
+            
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>1_imports.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step1')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step1"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> imdb
+<span class="keyword">from</span> tensorflow.keras.preprocessing.sequence <span class="keyword">import</span> pad_sequences
+<span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> Sequential
+<span class="keyword">from</span> tensorflow.keras.layers <span class="keyword">import</span> Embedding, LSTM, Dense, Dropout</code></pre>
+            </div>
+        </section>
+
+        <!-- 2. Preparación de datos -->
+        <section class="section">
+            <h3 class="color-secondary">2. Carga y Uniformidad de Secuencias Tildadas</h3>
+            <p>
+                El conjunto de entrada tiene un reto singular: <strong>no todas las personas escriben reseñas del mismo tamaño</strong>. Una crítica puede ser solo "<em>mala película</em>" (2 palabras) mientras que otra puede extenderse a miles. Una matriz matemática exige estructura uniforme.
+            </p>
+            <p>
+                Utilizamos dos técnicas clave: Primero filtramos el diccionario reteniendo solo el <em>Top 1.000 de palabras más influyentes</em> (<code>num_words</code>). Y segundo, la estrella de la sección: forzamos matemáticamente a que todas las oraciones midan exactamente lo mismo mediante <code>pad_sequences</code> (rellenando con ceros los huecos en reseñas cortas o podando bruscamente las que excedan una longitud máxima prefijada).
+            </p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>2_load_pad_nlp.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step2')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step2"><span class="comment"># Instanciar Dataset considerando únicamente las 1000 palabras más frecuentes en la jerga</span>
+num_palabras = <span class="number">1000</span> 
+(X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=num_palabras)
+
+print(<span class="string">"Tamaño del conjunto de entrenamiento:"</span>, len(X_train))
+print(<span class="string">"Ejemplo de secuencia codificada (índices numéricos de diccionario):\n"</span>, X_train[<span class="number">0</span>][:<span class="number">20</span>])
+
+<span class="comment"># Preprocesamiento: Padding (Relleno y Truncado uniformizador)</span>
+max_longitud = <span class="number">100</span> <span class="comment"># Fijamos tajantemente: Todas las secuencias medirán exactamente 100 tokens</span>
+
+X_train = pad_sequences(X_train, maxlen=max_longitud, padding=<span class="string">'post'</span>, truncating=<span class="string">'post'</span>)
+X_test = pad_sequences(X_test, maxlen=max_longitud, padding=<span class="string">'post'</span>, truncating=<span class="string">'post'</span>)</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. Construcción -->
+        <section class="section">
+            <h3 class="color-secondary">3. Articulando la Memoria y Comprensión LSTM</h3>
+            <p class="mb-4">
+                Pasemos de los tensores base a modelar el procesador del lenguaje dentro de nuestra jaula <code>Sequential</code>:
+            </p>
+            
+            <ul class="mb-4" style="line-height: 1.7;">
+                <li><strong>Traductor Cuántico (<code>Embedding</code>):</strong> Los cerebros artificiales no asimilan texto desnudo ("casa"). Transforman las letras a identificadores de diccionario ("casa" -> 73), pero para "comprender el semantismo" (es decir, que <em>casa</em>, <em>edificio</em> y <em>hotel</em> están matemáticamente emparentados por su significado), la capa <code>Embedding</code> enhebra y entrena vectorialmente esta asociación ubicando la palabra en una inmensa galaxia matemática de 64 dimensiones espaciales o <code>output_dim</code>. Cuanto mayor es esta dimensión, más rico y contextual es su registro asociativo cerebral.</li>
+                <li><strong>El Núcleo Memorable (<code>LSTM</code>):</strong> La pieza central recurrente. Parametrizada con 128 "neuronas de memoria", se dedica a transitar sobre esas secuencias vectoriales (leyendo secuencialmente tu reseña). Su variable clave es <code>return_sequences=False</code>, que indica amablemente a la capa que <em>sólo nos escupa el desenlace absoluto y final del dictamen de toda la secuencia entera</em> tras haber leído toda la amalgama de texto al unísono, y no que vaya publicando valoraciones intermitentes subyacentes.</li>
+                <li><strong>Amortiguador (<code>Dropout</code>):</strong> Inyectamos un severo castigo apagando deliberadamente la sinápsis de un 20% de su estructura neuronal aleatoria durante el entrenamiento para evitar que experimente <em>Overfitting</em>, previniendo que memorice sentencias específicas por puro músculo.</li>
+                <li><strong>Sentenciador Total (<code>Dense</code>):</strong> Como remate a toda este armatoste, como estamos analizando un dictamen categórico binario ("Opinión Buena o Mala"), finalizamos el entubado inyectándolo dentro de una sola neurona aislada que evaluará la salida mediante la función <strong>sigmoide</strong>, arrojando su sentencia en forma probabilística <code>[0.0 a 1.0]</code>.</li>
+            </ul>
+
+            <!-- Representación Visual (Arquitectura RNN) -->
+            <div class="architecture-diagram mb-4">
+                <div class="layer-box">
+                    <div class="layer-header">Embedding</div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 100)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 100, 64)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+                
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">LSTM</div>
+                    <div class="layer-activation">Activation: <strong>tanh</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 100, 64)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 128)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box" style="border-color: #555;">
+                    <div class="layer-header" style="background-color: #333;">Dropout</div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 128)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 128)</strong></div>
+                    </div>
+                </div>
+                
+                <div class="arrow-down">⬇</div>
+
+                <div class="layer-box">
+                    <div class="layer-header">Dense</div>
+                    <div class="layer-activation">Activation: <strong>sigmoid</strong></div>
+                    <div class="layer-details">
+                        <div class="detail-col">Input shape: <strong>(None, 128)</strong></div>
+                        <div class="detail-col">Output shape: <strong>(None, 1)</strong></div>
+                        <div class="detail-col trainable">Trainable</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>3_rnn_architecture.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step3')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step3"><span class="comment"># Construcción arquitectónica del modelo lingüístico LSTM</span>
+model = Sequential([
+    Embedding(input_dim=num_palabras, output_dim=<span class="number">64</span>, input_length=max_longitud),
+    LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">False</span>),
+    Dropout(<span class="number">0.2</span>),
+    Dense(<span class="number">1</span>, activation=<span class="string">'sigmoid'</span>) <span class="comment"># Salida binaria terminal: (0 = negativo / 1 = positivo)</span>
+])</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Compilacion y Entreno -->
+        <section class="section">
+            <h3 class="color-secondary">4. Certificación y Compilación del Analista</h3>
+            <p>
+                Al ser un escenario de polaridad enfrentada, usamos una función correctiva <code>binary_crossentropy</code> para castigar matemáticamente al motor central si en algo tan obvio dictamina falsamente una probabilidad mal encaminada, midiendo mediante su precisión neta en puros aciertos.
+            </p>
+
+            <div class="code-window code-copy-container mt-3">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>4_train_evaluate.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-step4')">📋 Copiar</button>
+                </div>
+                <pre class="code-content"><code id="code-step4"><span class="comment"># Compilación penalizatoria de tipo Binomial</span>
+model.compile(optimizer=<span class="string">'adam'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])
+
+<span class="comment"># Entrenamiento agresivo en la CPU/GPU asimilando sintaxis de reseñas</span>
+history = model.fit(
+    X_train, y_train,
+    epochs=<span class="number">4</span>,
+    batch_size=<span class="number">128</span>,
+    validation_split=<span class="number">0.2</span>,
+    verbose=<span class="number">1</span>
+)
+
+<span class="comment"># Validación frente al texto que las neuronas jamás han visto antes</span>
+loss, accuracy = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"\nExactitud del modelo en el conjunto de prueba (Lentamente Leyendo): {accuracy:.3f}"</span>)</code></pre>
+            </div>
+        </section>
+
+        <!-- Código Completo Unido -->
+        <section class="section">
+            <h2 class="color-primary">Código Completo de la Red Recurrente (RNN)</h2>
+            <p>Con sólo las 1.000 palabras más repetidas y unos rápidos repasos superficiales limitados a 100 espacios dimensionales, ya este modelo rascó de su contexto secuencial **en torno al 80% de Accuracy inquebrantable en datos de testeo**. Un poder de contextualización abrumador para lidiar contra la subjetividad pura humana en un bloque simple de código.</p>
+
+            <div class="code-window code-copy-container mt-4">
+                <div class="code-header">
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                    <span>imdb_rnn_sentimientos_full.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-complete')">📋 Copiar Todo</button>
+                </div>
+                <pre class="code-content" style="max-height: 1200px; overflow-y: auto;"><code id="code-complete"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> imdb
+<span class="keyword">from</span> tensorflow.keras.preprocessing.sequence <span class="keyword">import</span> pad_sequences
+<span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> Sequential
+<span class="keyword">from</span> tensorflow.keras.layers <span class="keyword">import</span> Embedding, LSTM, Dense, Dropout
+
+<span class="comment"># 1. Cargar el dataset IMDB</span>
+num_palabras = <span class="number">1000</span> <span class="comment"># Se considerarán las 1000 palabras más frecuentes</span>
+(X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=num_palabras)
+
+<span class="comment"># 2. Preprocesamiento: Padding, normalización de longitud estricta a 100 campos</span>
+max_longitud = <span class="number">100</span>
+X_train = pad_sequences(X_train, maxlen=max_longitud, padding=<span class="string">'post'</span>, truncating=<span class="string">'post'</span>)
+X_test = pad_sequences(X_test, maxlen=max_longitud, padding=<span class="string">'post'</span>, truncating=<span class="string">'post'</span>)
+
+<span class="comment"># 3. Ensamblaje secuencial maestro basado en memoria lingüística de tipo RNN</span>
+model = Sequential([
+    <span class="comment"># Traductor numérico dimensional a vecindad semántica generalizada</span>
+    Embedding(input_dim=num_palabras, output_dim=<span class="number">64</span>, input_length=max_longitud),
+    <span class="comment"># Controlador neurálgico maestro</span>
+    LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">False</span>),
+    <span class="comment"># Castigo regulador del autoengaño empírico</span>
+    Dropout(<span class="number">0.2</span>),
+    <span class="comment"># Sigmoide Final binario</span>
+    Dense(<span class="number">1</span>, activation=<span class="string">'sigmoid'</span>)
+])
+
+<span class="comment"># 4. Formulación abstracta en el compilador del ecosistema</span>
+model.compile(optimizer=<span class="string">'adam'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])
+
+<span class="comment"># 5. Iteración formativa en CPU y acopio de fallos graduales</span>
+history = model.fit(
+    X_train, y_train,
+    epochs=<span class="number">4</span>,
+    batch_size=<span class="number">128</span>,
+    validation_split=<span class="number">0.2</span>,
+    verbose=<span class="number">1</span>
+)
+
+<span class="comment"># 6. Refrendo de efectividad con datos de testeo ocultos</span>
+loss, accuracy = model.evaluate(X_test, y_test, verbose=<span class="number">0</span>)
+print(<span class="string">f"\nExactitud del modelo predictivo en el conjunto oscuro de prueba: {accuracy:.3f}"</span>)</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

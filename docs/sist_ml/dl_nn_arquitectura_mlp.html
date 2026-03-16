@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aprende sobre la arquitectura del Perceptrón Multicapa (MLP), las capas ocultas y cómo se organizan las redes neuronales densas.">
+    <meta name="keywords"
+        content="MLP, Perceptrón Multicapa, Capa Oculta, Red Neuronal Densa, Fully Connected, Deep Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Arquitectura de Red Neuronal Multicapa (MLP) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes flow-line {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .flow-path {
+            stroke-dasharray: 10;
+            animation: flow-line 2s linear infinite;
+        }
+
+        .layer-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            fill: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Arquitectura MLP</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Arquitectura del Perceptrón Multicapa</h1>
+            <p class="subtitle">Organizando neuronas para resolver la complejidad.</p>
+        </section>
+
+        <!-- El Poder de las Capas -->
+        <section class="section">
+            <h2 class="color-primary">Más allá de una neurona aislada</h2>
+            <p>
+                Aunque una única neurona artificial es capaz de realizar tareas sencillas, su poder es limitado: solo puede resolver problemas <strong>linealmente separables</strong>. El verdadero potencial del aprendizaje profundo surge cuando organizamos estas unidades en múltiples niveles o <strong>capas</strong>.
+            </p>
+            <div class="highlight-box primary mt-3">
+                <p>El <strong>Perceptrón Multicapa (MLP)</strong> es la arquitectura fundacional del Deep Learning, permitiendo al modelo aprender representaciones jerárquicas y abstractas de los datos.</p>
+            </div>
+        </section>
+
+        <!-- Diagrama MLP -->
+        <section class="section">
+            <h2 class="color-secondary">Visualización de una Red Densa</h2>
+            <p>En un MLP, las neuronas se disponen en columnas llamadas capas, donde cada unidad se conecta con todas las de la capa siguiente.</p>
+            
+            <div class="svg-container">
+                <svg viewBox="0 0 800 400" style="background: white; border-radius: 1rem; border: 1px solid #eee;">
+                    <!-- Capa de Entrada -->
+                    <text x="150" y="50" text-anchor="middle" class="layer-label">ENTRADA</text>
+                    <circle cx="150" cy="120" r="15" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <circle cx="150" cy="200" r="15" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <circle cx="150" cy="280" r="15" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+
+                    <!-- Capa Oculta -->
+                    <text x="400" y="50" text-anchor="middle" class="layer-label">CAPA OCULTA</text>
+                    <circle cx="400" cy="80" r="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                    <circle cx="400" cy="160" r="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                    <circle cx="400" cy="240" r="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+                    <circle cx="400" cy="320" r="15" fill="#F0EDF5" stroke="#8A7AAF" stroke-width="2" />
+
+                    <!-- Capa de Salida -->
+                    <text x="650" y="50" text-anchor="middle" class="layer-label">SALIDA</text>
+                    <circle cx="650" cy="200" r="15" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" />
+
+                    <!-- Conexiones (Entrada -> Oculta) -->
+                    <g stroke="#ddd" stroke-width="1" opacity="0.6">
+                        <line x1="165" y1="120" x2="385" y2="80" />
+                        <line x1="165" y1="120" x2="385" y2="160" />
+                        <line x1="165" y1="120" x2="385" y2="240" />
+                        <line x1="165" y1="120" x2="385" y2="320" />
+
+                        <line x1="165" y1="200" x2="385" y2="80" />
+                        <line x1="165" y1="200" x2="385" y2="160" />
+                        <line x1="165" y1="200" x2="385" y2="240" />
+                        <line x1="165" y1="200" x2="385" y2="320" />
+
+                        <line x1="165" y1="280" x2="385" y2="80" />
+                        <line x1="165" y1="280" x2="385" y2="160" />
+                        <line x1="165" y1="280" x2="385" y2="240" />
+                        <line x1="165" y1="280" x2="385" y2="320" />
+                    </g>
+
+                    <!-- Conexiones (Oculta -> Salida) Animadas -->
+                    <g stroke="var(--color-secondary)" stroke-width="1.5" class="flow-path">
+                        <line x1="415" y1="80" x2="635" y2="200" />
+                        <line x1="415" y1="160" x2="635" y2="200" />
+                        <line x1="415" y1="240" x2="635" y2="200" />
+                        <line x1="415" y1="320" x2="635" y2="200" />
+                    </g>
+                </svg>
+            </div>
+            <p class="text-center text-sm mt-1"><em>Representación de una red "Fully Connected" (Totalmente Conectada).</em></p>
+        </section>
+
+        <!-- Desglose de Capas -->
+        <section class="section">
+            <h2 class="color-primary">Estructura del Perceptrón Multicapa</h2>
+            <p>Cualquier red densa se divide en tres tipos de niveles diferenciados:</p>
+
+            <div class="layout-grid-stack mt-4">
+                <!-- Capa de Entrada -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">1</div>
+                        <h4 class="ra-title color-primary">Capa de Entrada (Input Layer)</h4>
+                    </div>
+                    <p>Es el punto de acceso para los <strong>datos brutos</strong> (características). El número de neuronas aquí coincide exactamente con el número de variables de entrada del problema.</p>
+                </div>
+
+                <!-- Capas Ocultas -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">2</div>
+                        <h4 class="ra-title color-primary">Capas Ocultas (Hidden Layers)</h4>
+                    </div>
+                    <p>Son las capas intermedias responsables del procesamiento central. Aquí es donde se extraen <strong>características abstractas</strong>. Una red es "profunda" cuantas más capas ocultas posea.</p>
+                </div>
+
+                <!-- Capa de Salida -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">3</div>
+                        <h4 class="ra-title color-primary">Capa de Salida (Output Layer)</h4>
+                    </div>
+                    <p>Entrega el resultado final del modelo, ya sea una probabilidad (clasificación), una distribución multiclase o un valor numérico continuo (regresión).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Neuronas y Profundidad -->
+        <section class="section">
+            <h2 class="color-secondary">Dimensionamiento y Profundidad</h2>
+            <p>La elección de la arquitectura es una de las decisiones más críticas en el diseño de un modelo de Deep Learning:</p>
+            
+            <div class="prediction-box mt-3">
+                <p>Configuración según la complejidad:</p>
+                <ul>
+                    <li><strong>Problemas Simples:</strong> Suelen resolverse con una o dos capas ocultas.</li>
+                    <li><strong>Problemas Complejos:</strong> Tareas de visión artificial o lenguaje natural requieren redes de gran profundidad (decenas o cientos de capas).</li>
+                    <li><strong>Conectividad:</strong> Cuando cada neurona se enlaza con todas las del siguiente nivel, hablamos de una <strong>capa densa</strong> o totalmente conectada.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

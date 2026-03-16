@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Descubre la anatomía matemática del perceptrón: entradas, pesos, sesgo y funciones de activación en el aprendizaje profundo.">
+    <meta name="keywords"
+        content="Neurona Artificial, Perceptrón, Pesos, Sesgo, Bias, Función de Activación, Estructura Matemática, Deep Learning">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Estructura Matemática de la Neurona Artificial | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes flow-line {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .flow-path {
+            stroke-dasharray: 10;
+            animation: flow-line 2s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Estructura Matemática</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Estructura Matemática de la Neurona</h1>
+            <p class="subtitle">El motor algorítmico detrás del aprendizaje profundo.</p>
+        </section>
+
+        <!-- Introducción al Perceptrón -->
+        <section class="section">
+            <h2 class="color-primary">El Perceptrón: La Unidad de Cómputo</h2>
+            <p>
+                Una neurona artificial, o <strong>perceptrón</strong> en su versión más elemental, es la abstracción
+                matemática del proceso biológico de disparo neuronal. Su misión es simple pero poderosa: transformar un
+                conjunto de señales de entrada en una única respuesta significativa.
+            </p>
+            <div class="highlight-box secondary mt-3">
+                <p>Este modelo no solo recibe información, sino que la <strong>pondera</strong> y la
+                    <strong>ajusta</strong> dinámicamente para tomar decisiones basadas en patrones aprendidos.
+                </p>
+            </div>
+        </section>
+
+        <!-- Diagrama del Modelo -->
+        <section class="section">
+            <h2 class="color-secondary">Anatomía de la Neurona Artificial</h2>
+            <p>Visualmente, el proceso sigue un flujo lineal de integración y transformación:</p>
+
+            <div class="svg-container">
+                <svg viewBox="0 0 800 400" style="background: white; border-radius: 1rem; border: 1px solid #eee;">
+                    <!-- Entradas -->
+                    <text x="50" y="80" font-weight="700" fill="#666">Entradas (x)</text>
+                    <circle cx="100" cy="120" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <text x="100" y="125" text-anchor="middle" font-size="12">x₁</text>
+
+                    <circle cx="100" cy="200" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <text x="100" y="205" text-anchor="middle" font-size="12">x₂</text>
+
+                    <circle cx="100" cy="280" r="20" fill="#E8F7FA" stroke="#49B9CE" stroke-width="2" />
+                    <text x="100" y="285" text-anchor="middle" font-size="12">xₙ</text>
+
+                    <!-- Pesos -->
+                    <path d="M120,120 L350,200" stroke="#49B9CE" stroke-width="2" class="flow-path" />
+                    <text x="220" y="145" text-anchor="middle" font-size="12" fill="var(--color-primary)">w₁</text>
+
+                    <path d="M120,200 L350,200" stroke="#49B9CE" stroke-width="2" class="flow-path" />
+                    <text x="220" y="190" text-anchor="middle" font-size="12" fill="var(--color-primary)">w₂</text>
+
+                    <path d="M120,280 L350,200" stroke="var(--color-primary)" stroke-width="2" class="flow-path" />
+                    <text x="220" y="235" text-anchor="middle" font-size="12" fill="var(--color-primary)">wₙ</text>
+
+                    <!-- Nodo de Suma -->
+                    <circle cx="400" cy="200" r="50" fill="var(--bg-primary-light)" stroke="var(--color-primary)"
+                        stroke-width="3" />
+                    <text x="400" y="210" text-anchor="middle" font-size="30" font-weight="700"
+                        fill="var(--color-primary)">Σ</text>
+                    <text x="400" y="270" text-anchor="middle" font-weight="700" fill="var(--color-primary)">Suma
+                        Ponderada</text>
+
+                    <!-- Bias -->
+                    <path d="M400,100 L400,140" stroke="var(--color-primary)" stroke-width="2"
+                        marker-end="url(#bias-arrow)" />
+                    <text x="400" y="90" text-anchor="middle" font-weight="700" fill="var(--color-primary)">Sesgo
+                        (b)</text>
+
+                    <!-- Función de Activación -->
+                    <path d="M450,200 L550,200" stroke="var(--color-primary)" stroke-width="3"
+                        marker-end="url(#math-arrow)" />
+                    <rect x="550" y="160" width="100" height="80" rx="10" fill="var(--bg-secondary-light)"
+                        stroke="var(--color-secondary)" stroke-width="3" />
+                    <text x="600" y="200" text-anchor="middle" font-weight="700"
+                        fill="var(--color-secondary)">f(x)</text>
+                    <text x="600" y="260" text-anchor="middle" font-weight="700"
+                        fill="var(--color-secondary)">Activación</text>
+
+                    <!-- Salida -->
+                    <path d="M650,200 L750,200" stroke="#8A7AAF" stroke-width="4" marker-end="url(#math-arrow)" />
+                    <text x="700" y="180" text-anchor="middle" font-weight="700" fill="var(--color-secondary)">Salida
+                        (y)</text>
+
+                    <defs>
+                        <marker id="bias-arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="var(--color-primary)" />
+                        </marker>
+                        <marker id="math-arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="var(--color-secondary)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Ecuación Fundamental -->
+        <section class="section">
+            <h2 class="color-primary">La Ecuación de la Neurona</h2>
+            <p>Todo el comportamiento descrito anteriormente se resume en una única expresión matemática:</p>
+
+            <div class="formula-block secondary">
+                <div class="math-text" style="font-size: 1.8rem;">
+                    y = f ( <span class="math-frac"><span class="num">Σ</span><span>i=1</span></span> wᵢxᵢ + b )
+                </div>
+                <p class="text-medium mt-1">Donde <strong>y</strong> representa la salida o respuesta de la neurona.</p>
+            </div>
+
+            <div class="layout-grid-stack mt-4">
+                <!-- Entradas y Pesos -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">x, w</div>
+                        <h4 class="ra-title color-primary">Entradas y Pesos</h4>
+                    </div>
+                    <p>Los <strong>pesos</strong> son los parámetros que la red "aprende". Un peso alto indica una
+                        conexión fuerte (un dato importante), mientras que un peso negativo actúa como inhibidor.</p>
+                </div>
+
+                <!-- Sesgo -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">b</div>
+                        <h4 class="ra-title color-primary">El Sesgo (Bias)</h4>
+                    </div>
+                    <p>Es un término independiente que permite desplazar la función de activación. Es el "umbral de
+                        flexibilidad" que permite que la neurona se active incluso con entradas nulas.</p>
+                </div>
+
+                <!-- Activación -->
+                <div class="feature-card primary">
+                    <div class="ra-header">
+                        <div class="ra-number">f</div>
+                        <h4 class="ra-title color-primary">Función de Activación</h4>
+                    </div>
+                    <p>Aporta la <strong>no linealidad</strong> necesaria. Sin ella, por muchas capas que tuviera la
+                        red, solo podría resolver tareas extremadamente simples (lineales).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Entrenamiento -->
+        <section class="section">
+            <h2 class="color-primary">¿Cómo aprende la neurona?</h2>
+            <p>El aprendizaje se resume en el ajuste sistemático de los <strong>pesos</strong> y el
+                <strong>sesgo</strong>.
+            </p>
+            <div class="step-item mt-3">
+                <div class="ra-header">
+                    <div class="ra-number">🚀</div>
+                    <h4 class="ra-title color-primary">Descenso del Gradiente</h4>
+                </div>
+                <p>Durante el entrenamiento, un algoritmo de optimización calcula el error de la predicción y modifica
+                    los parámetros (w y b) para minimizar ese error en la siguiente iteración.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
