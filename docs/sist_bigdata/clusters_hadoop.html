@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información Distribuida: El Modelo Hadoop | iLERNA</title>
+    <meta name="description" content="Explora el ecosistema Hadoop: HDFS para almacenamiento distribuido y MapReduce para procesamiento en paralelo de petabytes de datos.">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> &rarr;
+                    <a href="index.html">Sistemas de Big Data</a> &rarr;
+                    <span>El Modelo Hadoop</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>El Ecosistema Hadoop 🐘</h1>
+                <h2>El estándar histórico de la arquitectura de datos masiva</h2>
+                <p>Descubre cómo la combinación de un sistema de archivos tolerante a fallos (HDFS) y un modelo de procesamiento paralelo (MapReduce) sentó las bases de la revolución del Big Data.</p>
+            </section>
+
+            <!-- Introducción Horizontal -->
+            <section class="section">
+                <div class="feature-card primary mb-2">
+                    <h3 class="color-primary">Hadoop y la Fiabilidad Distribuida</h3>
+                    <p>Hadoop no es solo un software, es un modelo que demuestra que es más eficiente repartir el trabajo entre cientos de máquinas modestas que en una sola extremadamente potente. Su éxito se basa en dos piezas maestras: <strong>HDFS</strong> y <strong>MapReduce</strong>.</p>
+                </div>
+            </section>
+
+            <!-- HDFS -->
+            <section class="section">
+                <div class="feature-card secondary">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Hadoop_logo.svg" alt="HDFS Logo" style="height: 40px;">
+                        <h3 class="color-secondary">HDFS: Almacenamiento por Piezas</h3>
+                    </div>
+                    <p>El <strong>Hadoop Distributed File System (HDFS)</strong> es el pilar del almacenamiento. Su estrategia es simple pero infalible:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7;">
+                        <li><strong>Fragmentación:</strong> Los archivos se trocean en bloques de tamaño fijo (por defecto, 128MB o 256MB).</li>
+                        <li><strong>Replicación:</strong> Cada bloque se copia automáticamente en varios nodos (normalmente 3 veces).</li>
+                        <li><strong>Resiliencia:</strong> Si un disco o máquina se estropea, el clúster sabe dónde están las copias de seguridad y las repone automáticamente en nodos sanos.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MapReduce -->
+            <section class="section">
+                <h2>MapReduce: El Algoritmo de la División</h2>
+                <p>Es el modelo que dicta cómo se procesa la información en dos grandes fases coordinadas:</p>
+                
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📍</div>
+                        <h4>Fase Map (Mapeo)</h4>
+                        <p>Cada nodo lee su(s) trozo(s) de datos localmente y extrae la información relevante en parejas llave-valor de forma independiente.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧩</div>
+                        <h4>Fase Reduce (Reducción)</h4>
+                        <p>Los resultados intermedios de todos los mapas se agrupan y combinan para generar la respuesta consolidada final.</p>
+                    </div>
+                </div>
+                
+                <div class="highlight-box mt-2">
+                    <p class="content">Gracias a este enfoque masivamente paralelo, tareas de ordenación o agregación de <strong>terabytes</strong> de información se resuelven en minutos en lugar de días.</p>
+                </div>
+            </section>
+
+            <!-- Caso Práctico -->
+            <section class="section">
+                <div class="feature-card primary">
+                    <h3 class="color-primary">🏢 Caso Práctico: Retail y Hadoop</h3>
+                    <p>Imagina una empresa de comercio electrónico que utiliza un clúster Hadoop con cien nodos para analizar millones de transacciones diarias:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.7; margin-top: 1rem;">
+                        <li><strong>Almacenamiento:</strong> Los registros se guardan en HDFS, asegurando <strong>tres réplicas</strong> por cada bloque de datos.</li>
+                        <li><strong>Procesamiento:</strong> Mediante MapReduce, el sistema agrupa las ventas por <strong>categoría de producto y región</strong> de forma simultánea.</li>
+                        <li><strong>Resultado:</strong> Aunque un nodo falle físicamente, la analítica continúa sin interrupciones ni pérdida de información gracias a la redundancia integrada.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Highlight Box Warning -->
+            <section class="section">
+                <div class="highlight-box warning">
+                    <h3 class="highlight-title">📍 Punto Clave</h3>
+                    <p class="content">La genialidad de Hadoop reside en el concepto de <strong>Data Locality</strong>: en lugar de mover los datos hacia donde está el programa, el sistema envía el programa a los nodos donde ya están almacenados los datos.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
