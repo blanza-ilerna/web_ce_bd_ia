@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Significado de la captura continua en IoT: lectura constante del entorno y envío estructurado de datos.">
+    <meta name="keywords"
+        content="IoT, Captura continua, Sensores, Edge Computing, Cloud, Tiempo Real, Datos">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Qué es la Captura Continua | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comp-card {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .comp-card.off {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+        }
+
+        .comp-card.on {
+            background: var(--bg-primary-light);
+            border: 2px solid var(--color-primary);
+        }
+
+        .timeline-viz {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .point {
+            width: 12px;
+            height: 12px;
+            background: #999;
+            border-radius: 50%;
+        }
+
+        .point.active {
+            background: var(--color-primary);
+            box-shadow: 0 0 10px var(--color-primary);
+            animation: pulse-dot 1s infinite alternate;
+        }
+
+        @keyframes pulse-dot {
+            from { transform: scale(1); opacity: 0.7; }
+            to { transform: scale(1.3); opacity: 1; }
+        }
+
+        .dest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .dest-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            border-bottom: 3px solid var(--color-secondary);
+        }
+
+        .dest-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .comparison-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación de Inteligencia Artificial</a> ›
+                <span>¿Qué es la Captura Continua?</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1 class="color-primary">Definiendo la Continuidad</h1>
+            <p class="subtitle">Entiende las dos dimensiones clave: la lectura constante del entorno y el flujo hacia el sistema central.</p>
+        </section>
+
+        <!-- Lectura Constante -->
+        <section class="section">
+            <h2 class="color-primary">1. La Lectura Ininterrumpida</h2>
+            <p>
+                La captura continua rompe con el modelo de "fotografía aislada". En lugar de preguntar al sensor "¿qué está pasando ahora?", el sensor nos **cuenta una historia temporal** completa.
+            </p>
+
+            <div class="comparison-container">
+                <div class="comp-card off">
+                    <h4>Medición Puntual</h4>
+                    <p>Una lectura aislada al día o bajo demanda.</p>
+                    <div class="timeline-viz">
+                        <div class="point"></div>
+                        <div class="point"></div>
+                        <div class="point active"></div>
+                        <div class="point"></div>
+                        <div class="point"></div>
+                    </div>
+                </div>
+                <div class="comp-card on">
+                    <h4>Captura Continua</h4>
+                    <p>Registro periódico o basado en eventos.</p>
+                    <div class="timeline-viz">
+                        <div class="point active"></div>
+                        <div class="point active" style="animation-delay: 0.2s"></div>
+                        <div class="point active" style="animation-delay: 0.4s"></div>
+                        <div class="point active" style="animation-delay: 0.6s"></div>
+                        <div class="point active" style="animation-delay: 0.8s"></div>
+                    </div>
+                </div>
+            </div>
+
+            <p>Esta periodicidad puede variar según la necesidad del negocio:</p>
+            <ul>
+                <li><strong>Alta frecuencia:</strong> cada segundo o submilisegundo (ej. vibración industrial).</li>
+                <li><strong>Media frecuencia:</strong> cada minuto (ej. temperatura de una sala).</li>
+                <li><strong>Basada en eventos:</strong> capturar solo cuando ocurre un cambio relevante (ej. detección de movimiento).</li>
+            </ul>
+        </section>
+
+        <!-- El Poder del Análisis -->
+        <section class="section">
+            <h3 class="color-secondary">¿Qué ganamos con el flujo temporal?</h3>
+            <div class="grid-2-cols">
+                <div class="highlight-box primary">
+                    <p class="title">📈 Detección de Patrones</p>
+                    <p class="content">Observar cómo evoluciona una variable nos permite ver cambios graduales y tendencias que una lectura única ignoraría.</p>
+                </div>
+                <div class="highlight-box secondary">
+                    <p class="title">🚨 Identificación de Anomalías</p>
+                    <p class="content">Es más fácil detectar algo "inusual" si conocemos perfectamente qué es lo "habitual" gracias al registro histórico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Envío de Datos -->
+        <section class="section">
+            <h2 class="color-primary">2. El Viaje de la Información</h2>
+            <p>
+                El segundo pilar es el **canal de comunicación**. No sirve de nada capturar datos si no pueden llegar a un cerebro que los procese. El destino puede variar según la arquitectura:
+            </p>
+
+            <div class="dest-grid">
+                <div class="dest-item">
+                    <span class="dest-icon">☁️</span>
+                    <strong>Sistemas Cloud</strong>
+                    <p>Para almacenamiento masivo y analítica pesada.</p>
+                </div>
+                <div class="dest-item">
+                    <span class="dest-icon">🏔️</span>
+                    <strong>Edge Computing</strong>
+                    <p>Procesamiento en un gateway local para respuesta rápida.</p>
+                </div>
+                <div class="dest-item">
+                    <span class="dest-icon">📱</span>
+                    <strong>Aplicaciones Móviles</strong>
+                    <p>Alertas y monitorización directa para el usuario.</p>
+                </div>
+                <div class="dest-item">
+                    <span class="dest-icon">🖥️</span>
+                    <strong>Servidores Locales</strong>
+                    <p>Control interno en redes privadas corporativas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section highlight-box primary">
+            <p class="title">💡 Resumen Ejecutivo</p>
+            <p class="content">
+                La captura continua es la suma de una **lectura disciplinada** del entorno y un **transporte eficiente** de esos datos hacia sistemas que puedan visualizarlos, registrarlos o utilizarlos para automatizar el mundo real.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Captura continua de datos en IoT: monitorización constante, automatización reactiva y toma de decisiones en tiempo real.">
+    <meta name="keywords"
+        content="IoT, Captura continua, Datos, Monitorización, Automatización, Tiempo Real, Sensores, Smart Data">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Captura Continua de Datos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-stream: #49B9CE;
+            --color-pulse: #8A7AAF;
+        }
+
+        .data-flow-container {
+            background: #1a1a1a;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--color-primary);
+        }
+
+        .node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            color: white;
+            text-align: center;
+        }
+
+        .node-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 10px rgba(73, 185, 206, 0.5));
+        }
+
+        .node-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stream-line {
+            position: absolute;
+            height: 4px;
+            background: rgba(73, 185, 206, 0.2);
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .pulse {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--color-stream);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 15px var(--color-stream);
+            animation: move-pulse 3s linear infinite;
+        }
+
+        .pulse:nth-child(2) { animation-delay: 1s; }
+        .pulse:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes move-pulse {
+            0% { left: -5%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 105%; opacity: 0; }
+        }
+
+        .objective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .objective-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .objective-card h4 {
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .highlight-gradient {
+            background: linear-gradient(120deg, var(--bg-primary-light) 0%, var(--bg-secondary-light) 100%);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(73, 185, 206, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Programación de Inteligencia Artificial</a> ›
+                <span>Captura Continua de Datos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">El Flujo Permanente</h1>
+            <p class="subtitle">Descubre la esencia del IoT: la captura continua de datos para sistemas inteligentes y autónomos.</p>
+        </section>
+
+        <!-- Definición -->
+        <section class="section">
+            <h2 class="color-primary">Más que una Medición Puntual</h2>
+            <p>
+                A diferencia de los sistemas tradicionales que realizan lecturas aisladas bajo demanda, el pilar fundamental del IoT moderno es la <strong>captura continua</strong>. Esto significa que los dispositivos no descansan; registran información de forma periódica, constante o en tiempo real.
+            </p>
+            <p>
+                Esta capacidad de transformar el entorno físico en un <strong>flujo incesante de bits</strong> es lo que permite que una "cosa" se convierta en una pieza estratégica de un ecosistema inteligente.
+            </p>
+
+            <div class="data-flow-container">
+                <div class="stream-line"></div>
+                <div class="pulse"></div>
+                <div class="pulse"></div>
+                <div class="pulse"></div>
+                
+                <div class="node">
+                    <span class="node-icon">📡</span>
+                    <span class="node-label">Sensor</span>
+                </div>
+                <div class="node">
+                    <span class="node-icon">🌊</span>
+                    <span class="node-label">Flujo de Datos</span>
+                </div>
+                <div class="node">
+                    <span class="node-icon">🧠</span>
+                    <span class="node-label">IA/Nube</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objetivos -->
+        <section class="section">
+            <h2 class="color-secondary">Los Tres Horizontes de la Información</h2>
+            <p>
+                ¿Para qué necesitamos un flujo constante de datos? La captura continua no es un fin en sí mismo, sino un medio para alcanzar tres objetivos críticos:
+            </p>
+
+            <div class="objective-grid">
+                <div class="objective-card">
+                    <h4>👁️ Monitorización Crítica</h4>
+                    <p>Observar en tiempo real el estado exacto de un objeto, proceso o espacio. Permite detectar anomalías instantáneamente antes de que se conviertan en fallos.</p>
+                </div>
+                <div class="objective-card" style="border-left-color: var(--color-secondary);">
+                    <h4>⚙️ Automatización Reactiva</h4>
+                    <p>Activar comportamientos automáticos basados en reglas o algoritmos sin intervención humana. El flujo de datos dicta la acción inmediata de los actuadores.</p>
+                </div>
+                <div class="objective-card" style="border-left-color: #E65100;">
+                    <h4>🎯 Toma de Decisiones</h4>
+                    <p>Alimentar paneles de control en tiempo real (asistencia humana) o sistemas expertos (decisiones automáticas) con información fresca y veraz.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section class="section highlight-gradient">
+            <h2 class="color-primary">Hacia Sistemas Predictivos</h2>
+            <p>
+                La verdadera magia ocurre cuando cruzamos la captura continua con la Inteligencia Artificial. Al disponer de un historial ininterrumpido y datos vivos, podemos construir sistemas que no solo reaccionan al presente, sino que <strong>predicen el futuro</strong>.
+            </p>
+            <div class="highlight-box success mt-3">
+                <p class="title">🚀 La Clave de la Eficiencia</p>
+                <p class="content">
+                    Un flujo constante de datos es el combustible que permite construir ecosistemas más eficientes, resilientes y, sobre todo, plenamente autónomos.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
