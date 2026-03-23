@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Representación del Conocimiento y Bases de Datos | iLERNA</title>
+    <meta name="description"
+        content="Unidad 3.1: Introducción a la Representación del Conocimiento (KR), Bases de Datos Relacionales (SQL), Web Semántica (XML) y Lógica Proposicional.">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        /* Ajustes Prism iLERNA */
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            background: #2d2d2d !important;
+        }
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace !important;
+            text-shadow: none !important;
+            color: #ccc !important;
+        }
+
+        /* Estilos específicos para el formato "diapositiva/segmento" */
+        .slide-segment {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 3px solid var(--bg-primary-light);
+            padding: 5rem 2rem;
+            margin-bottom: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: white;
+        }
+
+        .slide-segment:nth-child(even) {
+            background: var(--bg-gray-light);
+        }
+
+        .slide-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+            font-weight: 700;
+        }
+
+        .slide-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: var(--color-secondary);
+            margin: 0.75rem auto;
+            border-radius: 2px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .concept-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+        }
+
+        .concept-card h5 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-header {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            text-align: center;
+        }
+
+        .deduction-box {
+            background: var(--bg-purple-light);
+            padding: 2rem;
+            border-radius: 1.25rem;
+            border-left: 8px solid var(--color-secondary);
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+        }
+
+        /* Estilos para tablas relacionales */
+        .relational-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .relational-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .relational-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .xml-code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Consolas', monospace;
+            margin: 1rem 0;
+            border-left: 4px solid #F6AD55;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Estilos Lógica Proposicional */
+        .logic-symbols-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .symbol-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 2px solid var(--bg-primary-light);
+        }
+
+        .symbol-char {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            font-weight: 700;
+            display: block;
+        }
+
+        .symbol-name {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            font-weight: 600;
+        }
+
+        .truth-table {
+            width: 100%;
+            margin-top: 2rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+
+        .truth-table th {
+            background: var(--color-secondary);
+            color: white;
+            padding: 0.75rem;
+        }
+
+        .truth-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-light);
+        }
+
+        .truth-table tr:nth-child(even) {
+            background: var(--bg-secondary-light);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="max-width: 100%; padding: 0;">
+        <header style="margin: 0;">
+            <div class="header-container" style="max-width: 1200px;">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="unidad3.html">Unidad 3</a> ›
+                    <span>KR y Lógica</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Diapositiva 1: KR Intro -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <span class="icon-header">🧠</span>
+                    <h1 class="slide-title">Representación del Conocimiento (KR)</h1>
+                    <p style="text-align: center; font-size: 1.4rem; max-width: 800px; margin: 0 auto;">
+                        La base del comportamiento inteligente: formalizar lo que sabemos para que la IA pueda razonar.
+                    </p>
+                    <div class="highlight-box primary" style="margin-top: 3rem;">
+                        <p><strong>KR (Knowledge Representation):</strong> Es el área fundamental que estudia cómo el conocimiento simbólico permite a los sistemas IA actuar de forma racional basándose en lo que "saben" sobre su entorno.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 2: Aplicaciones y Deducción -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Aplicaciones del Razonamiento KR</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary">🩺 Diagnóstico</h5>
+                            <p>Detección de causas ante anomalías del sistema basándose en evidencias detectadas.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">📅 Planificación</h5>
+                            <p>Construcción de secuencias lógicas de acciones para transformar el estado actual en el objetivo deseado.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-primary">🤯 Razonamiento Avanzado</h5>
+                            <p>Gestión de incertidumbre, previsión de oponentes y actualización dinámica del saber sin contradicciones.</p>
+                        </div>
+                    </div>
+                    <div class="deduction-box">
+                        <strong>Silogismo Deductivo (Inferencia):</strong><br>
+                        • Premisa Mayor: Los leoneses son españoles.<br>
+                        • Premisa Menor: Los españoles son europeos.<br>
+                        • Conclusión: Los leoneses son europeos (Deducción lógica).
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 3: Bases de Datos Relacionales (3.1.2) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.1.2. Bases de Datos Relacionales</h2>
+                    <p>Las bases de datos representan el conocimiento mediante modelos y esquemas que actúan como una abstracción de la realidad física.</p>
+                    
+                    <table class="relational-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Sede</th>
+                                <th>N.º de empleados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cliente 1</td><td>Madrid</td><td>245</td></tr>
+                            <tr><td>Cliente 2</td><td>Burgos</td><td>51</td></tr>
+                            <tr><td>Cliente 3</td><td>León</td><td>120</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary">🗄️ Esquema de Datos</h5>
+                            <p>Contiene la semántica y metadatos del dominio: nombres de tablas, atributos y sus tipos.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">⚖️ Restricciones SQL</h5>
+                            <p>La integridad (claves primarias) garantiza que la base de datos sea fiel a la realidad modelada.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 4: Web Semántica y XML (3.1.3) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.1.3. La Web Semántica y el Lenguaje XML</h2>
+                    <p>La Web Semántica enriquece los documentos con significado para facilitar su búsqueda e intercambio automático entre sistemas.</p>
+                    
+                    <div class="highlight-box primary">
+                        <p><strong>XML:</strong> Lenguaje universal para etiquetar estructuras de datos, permitiendo transferir tanto datos como metadatos de forma jerárquica.</p>
+                    </div>
+
+                    <div class="xml-code">
+&lt;clientes&gt;
+  &lt;cliente id="1"&gt;
+    &lt;nombre&gt;Cliente A&lt;/nombre&gt;
+    &lt;sede&gt;León&lt;/sede&gt;
+    &lt;empleados&gt;100&lt;/empleados&gt;
+  &lt;/cliente&gt;
+&lt;/clientes&gt;</div>
+
+                    <p>Mediante los <strong>DTD (Document Type Definition)</strong>, definimos esquemas de intercambio fáciles de procesar mediante gramáticas libres de contexto.</p>
+                </div>
+            </section>
+
+            <!-- Diapositiva 5: Representaciones Formateadas: Lógica (3.2) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.2. Representaciones Formales: Lógica</h2>
+                    <p>La lógica es el lenguaje declarativo por excelencia en IA. Permite validar afirmaciones y generar nuevo conocimiento mediante sentencias que modelan situaciones reales.</p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary">📜 Lenguaje Sintáctico</h5>
+                            <p>Define constantes, propiedades y relaciones para establecer conexiones entre conceptos con una semántica precisa.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">🧠 Lógica Clásica</h5>
+                            <p>Se divide principalmente en Lógica Proposicional (frases simples) y Lógica de Predicados (profundización en sujetos).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 6: Lógica Proposicional (3.2.1) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.2.1. Lógica Proposicional</h2>
+                    <p>Es el lenguaje lógico más simple. Permite relacionar frases declarativas atómicas (P, Q, R) mediante conectivas lógicas.</p>
+                    
+                    <div class="logic-symbols-container">
+                        <div class="concept-card" style="border-left: 5px solid var(--color-primary);">
+                            <span class="symbol-char" style="text-align: left;">^</span>
+                            <h5 class="color-primary">Y (Conjunción)</h5>
+                            <p><strong>Significado:</strong> Une dos proposiciones y solo es verdadera si ambas lo son simultáneamente. Equivale al "y" del lenguaje natural.</p>
+                            <p style="font-size: 0.9rem; font-style: italic;">Ej: "Llueve ^ hace frío" (Solo es verdad si ocurren las dos cosas).</p>
+                        </div>
+                        <div class="concept-card" style="border-left: 5px solid var(--color-secondary);">
+                            <span class="symbol-char" style="text-align: left;">v</span>
+                            <h5 class="color-secondary">O (Disyunción)</h5>
+                            <p><strong>Significado:</strong> Representa una opción entre dos alternativas. Es verdadera si al menos una de las proposiciones es verdadera.</p>
+                            <p style="font-size: 0.9rem; font-style: italic;">Ej: "Voy al cine v voy al parque" (Es verdad si voy a cualquiera de ellos).</p>
+                        </div>
+                        <div class="concept-card" style="border-left: 5px solid #F56565;">
+                            <span class="symbol-char" style="text-align: left;">¬</span>
+                            <h5 style="color: #F56565;">NO (Negación)</h5>
+                            <p><strong>Significado:</strong> Invierte el valor de verdad de una proposición. Si algo es verdadero, su negación es falsa.</p>
+                            <p style="font-size: 0.9rem; font-style: italic;">Ej: "¬P" (Se lee como: "No es cierto que P").</p>
+                        </div>
+                        <div class="concept-card" style="border-left: 5px solid #48BB78;">
+                            <span class="symbol-char" style="text-align: left;">→</span>
+                            <h5 style="color: #48BB78;">Si... entonces (Condicional)</h5>
+                            <p><strong>Significado:</strong> Establece una relación de causa-efecto. Indica que si se cumple la primera, la segunda debe cumplirse obligatoriamente.</p>
+                            <p style="font-size: 0.9rem; font-style: italic;">Ej: "Estudio → apruebo" (Si es verdad el antecedente, debe ser verdad el consecuente).</p>
+                        </div>
+                    </div>
+
+                    <table class="truth-table">
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>A ^ B</th>
+                                <th>A v B</th>
+                                <th>A → B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr>
+                            <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr>
+                            <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td></tr>
+                            <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Diapositiva 7: Metodologías de Validación (Lógica II) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Lógica Proposicional (II): Validación</h2>
+                    <p>Para garantizar que un razonamiento es correcto, la lógica utiliza metodologías que permiten validar si una conclusión se deriva legítimamente de sus premisas.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top: 5px solid var(--color-primary);">
+                            <h5 class="color-primary">🧠 Validación Semántica</h5>
+                            <p>Se centra en el <strong>significado</strong>. Intenta demostrar que para que una conclusión sea válida, debemos partir necesariamente de premisas verdaderas.</p>
+                        </div>
+                        <div class="concept-card" style="border-top: 5px solid var(--color-secondary);">
+                            <h5 class="color-secondary">📐 Validación Sintáctica</h5>
+                            <p>Se basa en la <strong>estructura algebraica</strong> (Álgebra de Boole). Valida la corrección del enunciado operando con los símbolos independientemente de su significado.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 8: Álgebra de Boole -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">El Álgebra de Boole</h2>
+                    <p>Es la base matemática de la lógica computacional. George Boole diseñó un sistema algebraico donde las variables solo pueden tener dos estados: <strong>1 (Verdadero)</strong> o <strong>0 (Falso)</strong>.</p>
+                    
+                    <div class="highlight-box primary">
+                        <p>En el álgebra de Boole, los conectores lógicos se comportan como operaciones matemáticas:</p>
+                        <ul class="list-disc-padded">
+                            <li><strong>AND (^)</strong>: Similar a la multiplicación (1 * 1 = 1; cualquier otro caso es 0).</li>
+                            <li><strong>OR (v)</strong>: Similar a la suma lógica (1 + 0 = 1; solo 0 + 0 es 0).</li>
+                            <li><strong>NOT (¬)</strong>: Inversión del valor (0 → 1; 1 → 0).</li>
+                        </ul>
+                    </div>
+                    <p>Este sistema permite simplificar expresiones lógicas complejas mediante reglas estructurales, facilitando que los procesadores ejecuten razonamientos lógicos a gran velocidad.</p>
+                </div>
+            </section>
+
+            <!-- Diapositiva 9: Ejemplo de Simbolización -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Práctica: Simbolización de Enunciados</h2>
+                    <p>¿Cómo traducimos el lenguaje natural al lenguaje de la lógica proposicional? Analicemos la siguiente proposición:</p>
+                    
+                    <div class="card secondary-bg" style="text-align: center; font-size: 1.5rem; border: 2px dashed var(--color-secondary);">
+                        "O está jugando y corriendo o está saltando en la silla"
+                    </div>
+
+                    <div class="concept-grid" style="margin-top: 2rem;">
+                        <div class="concept-card">
+                            <h5 class="color-primary">📍 1. Atomatización</h5>
+                            <ul class="list-disc-padded" style="font-size: 1rem;">
+                                <li><strong>p:</strong> está jugando</li>
+                                <li><strong>q:</strong> está corriendo</li>
+                                <li><strong>r:</strong> está saltando en la silla</li>
+                            </ul>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">🏗️ 2. Estructuración</h5>
+                            <p style="font-size: 1.1rem;">Identificamos los conectores:</p>
+                            <p style="font-size: 1.1rem;"><strong>(p ^ q)</strong>: jugando Y corriendo (bloque 1)</p>
+                            <p style="font-size: 1.1rem;"><strong>v r</strong>: O saltando (alternativa)</p>
+                        </div>
+                    </div>
+
+                    <div class="deduction-box" style="text-align: center; font-size: 2rem; color: var(--color-primary);">
+                        Solución: ((p ^ q) v r)
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 10: Lógica de Predicados (3.2.2) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.2.2. Lógica de Predicados</h2>
+                    <p>La lógica proposicional es limitada para expresar relaciones complejas. La <strong>Lógica de Predicados</strong> amplía el vocabulario permitiendo añadir parámetros (objetos) a los átomos.</p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card" style="border-left: 5px solid var(--color-primary);">
+                            <h5 class="color-primary">📦 Términos</h5>
+                            <p><strong>Variables (x, y...):</strong> Sujetos a diferentes valores.</p>
+                            <p><strong>Constantes (a, b...):</strong> Valores concretos del universo.</p>
+                            <p><strong>Funciones (f, g...):</strong> Devuelven valores basados en parámetros.</p>
+                        </div>
+                        <div class="concept-card" style="border-left: 5px solid var(--color-secondary);">
+                            <h5 class="color-secondary">🔢 Cuantificadores</h5>
+                            <p><strong>Universal (∀x):</strong> Se cumple para TODO x en el dominio.</p>
+                            <p><strong>Existencial (∃x):</strong> Se cumple para AL MENOS UN x en el dominio.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 11: Validación y Unificación -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Lógica de Predicados (II)</h2>
+                    <p>Para validar razonamientos en predicados, utilizamos potentes técnicas de álgebra lógica:</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card">
+                            <h5 class="color-primary">🧬 Forma Normal de Skolem</h5>
+                            <p>Proceso fundamental en la resolución automática de teoremas. Su objetivo es eliminar los <strong>cuantificadores existenciales (∃x)</strong> para simplificar la fórmula.</p>
+                            <p><strong>Cálculo:</strong> Se sustituye la variable existencial por una constante única (si no está bajo el efecto de un ∀) o por una <strong>función de Skolem</strong> (si depende de un ∀).</p>
+                            <p style="font-size: 0.9rem; font-style: italic; background: #f0f0f0; padding: 0.5rem; border-radius: 4px;">
+                                Ejemplo: ∀x ∃y (Padre(y, x)) → Se convierte en: ∀x (Padre(f(x), x))
+                            </p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">🤝 Unificación</h5>
+                            <p>Sustitución de variables para que dos expresiones diferentes se vuelvan idénticas, permitiendo aplicar reglas de inferencia.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 12: Ejemplo Práctico de Predicados -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Caso Práctico: Atletas y Pasiones</h2>
+                    <p>Analicemos la estructura lógica de este razonamiento:</p>
+                    
+                    <div class="highlight-box primary">
+                        <p style="font-size: 1.3rem; text-align: center;">
+                            "Ningún feo despierta pasiones; todos los atletas despiertan pasiones. Por lo tanto, ningún atleta es feo".
+                        </p>
+                    </div>
+
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary">📍 1. Definición de Predicados</h5>
+                            <p><strong>F(x):</strong> x es feo</p>
+                            <p><strong>D(x):</strong> x despierta pasiones</p>
+                            <p><strong>A(x):</strong> x es atleta</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">👨‍🏫 2. Formalización Lógica</h5>
+                            <div class="deduction-box" style="font-size: 1.1rem; padding: 1rem;">
+                                1. ∀x (F(x) → ¬D(x))<br>
+                                2. ∀x (A(x) → D(x))<br>
+                                <hr style="border: 1px solid var(--color-secondary); margin: 0.5rem 0;">
+                                <strong>C: ∀x (A(x) → ¬F(x))</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 13: Limitaciones de la Lógica (3.2.3) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Límites de la Lógica Clásica</h2>
+                    <p>Aunque potente, la lógica de predicados pura tiene dificultades para modelar ciertos aspectos de la realidad humana y empresarial:</p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 style="color: #48BB78;">🕒 El Tiempo</h5>
+                            <p>Dificultad para representar estados pasados o futuros. Requiere <strong>Lógicas Temporales</strong> específicas.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 style="color: #4299E1;">🤝 Creencias de Otros</h5>
+                            <p>La lógica define lo que el sistema sabe, pero no lo que <em>cree</em> que otros saben. Área de las <strong>Lógicas Epistémicas</strong>.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 style="color: #ED8936;">🎲 Incertidumbre</h5>
+                            <p>La lógica clásica es binaria (V/F). La realidad a menudo es imprecisa, requiriendo <strong>Lógicas Probabilísticas o Difusas</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 14: Representaciones Estructuradas (3.3) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.3. Representaciones Estructuradas</h2>
+                    <p>Programar exclusivamente con lógica es como usar lenguaje ensamblador: potente pero complejo de escalar. Las representaciones estructuradas surgen como "lenguajes de alto nivel" para modelar el conocimiento.</p>
+                    
+                    <div class="highlight-box secondary">
+                        <p><strong>Ventaja:</strong> Facilitan la adquisición y el mantenimiento de grandes volúmenes de información mediante estructuras organizadas y jerárquicas.</p>
+                    </div>
+
+                    <h3 class="color-primary" style="margin-top: 3rem;">3.3.1. Redes Semánticas</h3>
+                    <p>Formalismo basado en un <strong>Grafo</strong> donde los conceptos son nodos y las relaciones son arcos. Su origen está en la psicología cognitiva: los humanos asociamos conceptos por relaciones.</p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>📊 Diagramas Entidad-Relación</h5>
+                            <p>Un ejemplo clásico de red semántica técnica que describe entidades y sus vínculos en una base de datos.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🐍 Implementación (NetworkX)</h5>
+                            <p>En Python, la librería <strong>NetworkX</strong> es el estándar para construir y analizar redes complejas de forma programática, permitiendo deducir relaciones implícitas mediante algoritmos de grafos.</p>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 2rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python"># Ejemplo funcional de Red Semántica en NetworkX
+import networkx as nx
+
+# 1. Instanciamos el grafo de conocimiento
+G = nx.Graph()
+
+# 2. Definimos relaciones con atributos semánticos
+G.add_edge("León", "España", relación="está en")
+G.add_edge("España", "Europa", relación="está en")
+G.add_edge("Catedral", "León", relación="ubicada en")
+
+# 3. Consultamos la ruta lógica entre conceptos
+camino = nx.shortest_path(G, "Catedral", "Europa")
+print(f"Ruta de conocimiento: {camino}")
+# Salida: ['Catedral', 'León', 'España', 'Europa']</code></pre>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 15: Sistemas de Marcos (3.3.2) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.3.2. Sistemas de Marcos (Frames)</h2>
+                    <p>Los Marcos organizan formalmente la información de las redes semánticas. Son colecciones de atributos que describen detalladamente el comportamiento de los elementos.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card">
+                            <h5 class="color-primary">🏰 Estructura Taxonómica</h5>
+                            <p>Utilizan relaciones especiales como <strong>clase/subclase</strong> e <strong>instancia</strong>, permitiendo la herencia de atributos y la jerarquización del saber.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">⚙️ Razonamiento Eficiente</h5>
+                            <p>Su potencia radica en algoritmos rápidos para consultas de propiedades, aunque a costa de no permitir negaciones o conceptos existenciales complejos.</p>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 2rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python"># Analogía con Programación Orientada a Objetos
+class Vehiculo:
+    def __init__(self):
+        self.ruedas = 4  # Atributo heredado
+
+class Coche(Vehiculo):  # Relación de Herencia (Subclase)
+    def arrancar(self):
+        print("El frame 'Coche' ejecuta su método")</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 16: Componentes del Frame -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Anatomía de un Marco</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🔠 Atributos</h5>
+                            <p>Describen conceptos mediante características y modificadores específicos.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🏃 Métodos</h5>
+                            <p>Procedimientos o funciones que realizan cálculos a partir de las instancias accesibles.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🔗 Relaciones</h5>
+                            <p>Enlaces bidireccionales (padre-hijo) que organizan los marcos en una estructura coherente.</p>
+                        </div>
+                    </div>
+                    <div class="highlight-box warning" style="margin-top: 2rem;">
+                        <p><strong>El problema de la Herencia Múltiple:</strong> Si un concepto hereda de varias superclases por distintas rutas, pueden surgir conflictos de atributos que el sistema debe resolver.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 17: Ontologías (3.4) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.4. Ontologías</h2>
+                    <p>La ontología es el estudio de las entidades existentes y su categorización organizada. Es, en esencia, un <strong>vocabulario formal</strong> para representar la realidad de un universo específico.</p>
+                    
+                    <div class="highlight-box primary">
+                        <p><strong>Analogía:</strong> Un diccionario es una ontología lingüística; recopila términos, significados y reglas de uso para que los hablantes se comprendan sin ambigüedad.</p>
+                    </div>
+
+                    <h3 class="color-secondary" style="margin-top: 3rem; text-align: center;">¿Por qué son vitales en IA?</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🚫 Adiós a la Ambigüedad</h5>
+                            <p>Permiten que dos agentes inteligentes compartan la misma estructura de información y se comprendan perfectamente.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>♻️ Reutilización</h5>
+                            <p>Un saber bien definido puede aplicarse a múltiples sistemas sin necesidad de redefinirlo.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>📐 Supuestos Explícitos</h5>
+                            <p>Obliga a formalizar cada detalle del dominio, haciendo que sea más sencillo analizar y modificar el modelo.</p>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 2rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python"># Ejemplo de Ontología de Dominio: "Ecosistema Móvil"
+{
+  "Clases": ["Marca", "Modelo", "SistemaOperativo"],
+  "Propiedades": {
+    "fabricado_por": {"dominio": "Modelo", "rango": "Marca"},
+    "ejecuta_en": {"dominio": "Modelo", "rango": "SistemaOperativo"}
+  },
+  "Instancias": [
+    {"ID": "iPhone15", "tipo": "Modelo", "ejecuta_en": "iOS"},
+    {"ID": "Apple", "tipo": "Marca"}
+  ]
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 18: Desarrollo de una Ontología (3.4.2) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.4.2. Desarrollo de una Ontología</h2>
+                    <p>Definir una ontología es un proceso iterativo que formaliza las clases, propiedades e instancias de un dominio específico.</p>
+                    
+                    <div class="grid-2-cols" style="align-items: stretch;">
+                        <div class="concept-card" style="border-top: 5px solid var(--color-primary); margin-top: 0; flex: 1; display: block;">
+                            <h5 class="color-primary">📋 Requisitos de Definición</h5>
+                            <ul class="list-disc-padded" style="font-size: 0.95rem;">
+                                <li>Identificar las clases del universo.</li>
+                                <li>Organizar la jerarquía por afinidades.</li>
+                                <li>Indicar propiedades y restricciones (tipo, cardinalidad).</li>
+                                <li>Asignar valores para crear instancias.</li>
+                            </ul>
+                        </div>
+                        <div class="caution-box" style="margin: 0; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                            <h4 class="caution-title" style="margin-bottom: 0.5rem;">💡 Sabías que...</h4>
+                            <p style="margin-bottom: 0;">No hay una única forma de definir un universo; la solución óptima depende estrictamente del problema a abordar y requiere múltiples iteraciones.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary" style="margin-top: 3rem;">
+                        <h4 class="title">Etapa 1: Alcance y Preguntas de Competencia</h4>
+                        <p class="content">Antes de modelar, debemos definir el <strong>universo y alcance</strong>. Una técnica eficaz es plantear "Preguntas de Competencia": interrogantes que la ontología debe ser capaz de responder para ser considerada funcional.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 19: Etapas de Desarrollo (II) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Etapas de Desarrollo (II)</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary">♻️ 2. Reutilización</h5>
+                            <p>Las ontologías establecen vocabularios comunes. Es vital investigar si existen componentes previos para evitar redundancias y asegurar la interoperabilidad.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary">🧱 3. Elementos y Jerarquía</h5>
+                            <p>Listar términos prioritarios y estructurarlos mediante relaciones de generalización y especialización (Taxonomías).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-box primary" style="margin-top: 2rem;">
+                        <h4 class="title">Etapa 4: Propiedades y Características</h4>
+                        <p class="content">Definir la estructura interna: cualidades descriptivas, nombres identificadores y relaciones con otras clases. Se deben especificar restricciones como <strong>Cardinalidad</strong>, <strong>Rango</strong> e <strong>Inversas</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 20: Consejos Prácticos (3.4.3) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">3.4.3. Claves para el Éxito</h2>
+                    <div class="grid-2-cols">
+                        <div class="card primary-bg">
+                            <h5 class="color-primary" style="font-size: 1.5rem; margin-bottom: 1rem;">⚠️ Coherencia Terminológica</h5>
+                            <ul style="font-size: 1.1rem;">
+                                <li>Evitar mezclar singulares y plurales.</li>
+                                <li>Distinguir claramente entre el nombre y la esencia (clase vs. identificador).</li>
+                                <li>Mantener un nivel de generalidad uniforme en las subclases.</li>
+                            </ul>
+                        </div>
+                        <div class="card secondary-bg">
+                            <h5 class="color-secondary" style="font-size: 1.5rem; margin-bottom: 1rem;">📐 Estructura Jerárquica</h5>
+                            <ul style="font-size: 1.1rem;">
+                                <li>Nivel ideal: entre 2 y 12 niveles de profundidad.</li>
+                                <li>Evitar ciclos (clase A subclase de B y viceversa).</li>
+                                <li>Vigilar la transitividad en las relaciones.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box warning" style="margin-top: 2rem;">
+                        <p><strong>Principio de Granularidad:</strong> No incluyas todo el universo. Limita la ontología solo a las clases y atributos básicos necesarios para tu aplicación específica.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 21: Implementación con Owlready2 -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Implementación con Owlready2</h2>
+                    <p>En el ecosistema Python, <strong>Owlready2</strong> es la librería líder para la creación y manipulación de ontologías siguiendo el estándar <strong>OWL 2.0</strong>. Permite integrar razonadores (HermiT) directamente sobre objetos nativos de Python.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="concept-card" style="margin-top: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-primary);">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-primary" style="font-size: 1.4rem; margin: 0;">🦉 Ventajas</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Convierte clases de la ontología en clases de Python, permitiendo una <strong>manipulación intuitiva</strong> y el uso de lógica automática para inferir nuevos conocimientos.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box secondary" style="margin: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-secondary); padding: 1.5rem 2rem;">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-secondary" style="font-size: 1.4rem; margin: 0;">🛠️ Estándar</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;"><strong>OWL 2.0:</strong> Proporciona una semántica rica para definir restricciones complejas y jerarquías profundas de forma interoperable.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 2rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python">from owlready2 import *
+
+# 1. Crear la Ontología en memoria
+onto = get_ontology("http://test.org/demo.owl")
+
+with onto:
+    # 2. Definir Clases (Marcos)
+    class Droga(Thing): pass
+    class EfectoSecundario(Thing): pass
+    
+    # 3. Definir Propiedades
+    class tiene_efecto(Droga >> EfectoSecundario): pass
+
+    # 4. Crear Instancia
+    aspirina = Droga("Aspirina")
+    mareo = EfectoSecundario("Mareo")
+    aspirina.tiene_efecto.append(mareo)
+
+# 5. Guardar el resultado en formato OWL (XML)
+onto.save(file="farmacia.owl", format="rdfxml")</code></pre>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 22: Resumen de la Unidad -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Resumen de la Unidad</h2>
+                    <p>En una sociedad impulsada por los datos, el tratamiento eficaz de la información mediante técnicas de <strong>Representación del Conocimiento (KR)</strong> es el pilar de los sistemas inteligentes modernos.</p>
+                    
+                    <div class="highlight-box secondary">
+                        <p><strong>Conclusión:</strong> El conocimiento se organiza en esquemas que permiten la comprensión, almacenamiento y recuperación de información, actuando como predictores esenciales para el razonamiento automático.</p>
+                    </div>
+
+                    <h3 class="color-primary" style="margin-top: 2rem;">Formalismos Clave Analizados:</h3>
+                    <div class="grid-3">
+                        <div class="feature-card primary">
+                            <h4>⚖️ La Lógica</h4>
+                            <p>Lenguaje universal pero complejo. Enfrenta retos con la incertidumbre, el tiempo y el conocimiento de otros agentes.</p>
+                        </div>
+                        <div class="feature-card secondary">
+                            <h4>🏗️ Repr. Estructurada</h4>
+                            <p>Cercana al razonamiento humano (redes y marcos). Facilita la adquisición de grandes volúmenes de saber.</p>
+                        </div>
+                        <div class="feature-card primary">
+                            <h4>🧬 Ontologías</h4>
+                            <p>Vocabulario formal para compartir realidades. Vitales para eliminar ambigüedades en sistemas de IA.</p>
+                        </div>
+                    </div>
+
+                    <div class="caution-box" style="margin-top: 2rem;">
+                        <p><em>"Cualquier información puede proporcionar un escenario para la realización de tareas inteligentes siempre que se formalice adecuadamente."</em></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

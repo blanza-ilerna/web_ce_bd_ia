@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas de Razonamiento y Planificación | iLERNA</title>
+    <meta name="description"
+        content="Unidad 4.1: Sistemas de razonamiento, tipos de lógica, razonamiento probabilístico, borroso y basado en reglas.">
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        /* Ajustes Prism iLERNA */
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            background: #2d2d2d !important;
+        }
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace !important;
+            text-shadow: none !important;
+            color: #ccc !important;
+        }
+
+        /* Estilos específicos para el formato "diapositiva/segmento" */
+        .slide-segment {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            scroll-snap-align: start;
+        }
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+        }
+        .slide-title {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-primary);
+            text-align: center;
+            line-height: 1.1;
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .concept-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--color-primary);
+        }
+        .concept-card:hover {
+            transform: translateY(-10px);
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .badge-logic { background: #EBF8FF; color: #2B6CB0; }
+        .badge-prob { background: #F0FFF4; color: #2F855A; }
+        .badge-fuzzy { background: #FFF5F5; color: #C53030; }
+        .badge-cases { background: #FAF5FF; color: #6B46C1; }
+
+        html {
+            scroll-snap-type: y mandatory;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header con Breadcrumb -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="https://www.ilerna.es/img/logo-ilerna.png" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA <span>Especialización IA & Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="index.html">Inicio</a> > 
+                    <a href="unidad4.html">Unidad 4</a> > 
+                    <span>4.1. Sistemas de Razonamiento</span>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Diapositiva 1: Introducción a la Unidad 4 -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h1 class="slide-title">UD 4. Sistemas de Razonamiento y Planificación</h1>
+                    <div class="highlight-box primary" style="text-align: center; padding: 3rem;">
+                        <p style="font-size: 1.4rem;">Damos un paso más en la automatización: de las estrategias de búsqueda al <strong>razonamiento inteligente</strong>.</p>
+                    </div>
+                    <p style="text-align: center; margin-top: 2rem; font-size: 1.2rem; color: var(--text-medium);">
+                        Tras entender cómo buscar soluciones, ahora aprenderemos cómo las máquinas <strong>conectan ideas</strong> para justificar decisiones.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Diapositiva 2: ¿Qué es el Razonamiento? -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">¿Qué es el Razonamiento?</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 style="font-size: 1.4rem; color: var(--color-primary);">🧠 Actividad Mental</h5>
+                            <p>Proceso de conectar ideas mediante reglas específicas para justificar un pensamiento.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 style="font-size: 1.4rem; color: var(--color-secondary);">🛠️ Facultad Resolutiva</h5>
+                            <p>La capacidad humana (y ahora artificial) orientada específicamente a la resolución de problemas técnicos.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 style="font-size: 1.4rem; color: #48BB78;">📑 Resultado Lógico</h5>
+                            <p>El conjunto de proposiciones enlazadas que sirven de base para defender o demostrar una tesis.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 3: 4.1. Tipos de Razonamiento -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1. Tipos de Razonamiento</h2>
+                    <p style="text-align: center; margin-bottom: 3rem;">Los sistemas inteligentes modernos aplican diferentes arquitecturas según la naturaleza del problema:</p>
+                    
+                    <div class="concept-grid">
+                        <!-- Fila 1 -->
+                        <div class="concept-card" style="border-top-color: #2B6CB0;">
+                            <span class="type-badge badge-logic">Lógica</span>
+                            <h5>Basado en Reglas</h5>
+                            <p>Habilidad de manejar información para adquirir conocimiento y tomar decisiones deductivas.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #2F855A;">
+                            <span class="type-badge badge-prob">Estadística</span>
+                            <h5>Probabilístico</h5>
+                            <p>Ideal para entornos con incertidumbre (clínicos, financieros) mediante <strong>Redes Bayesianas</strong>.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #C53030;">
+                            <span class="type-badge badge-fuzzy">Ambigüedad</span>
+                            <h5>Razonamiento Borroso</h5>
+                            <p>Supera el binario "V/F". Modela la realidad en grados de pertenencia continuos.</p>
+                        </div>
+                        <!-- Fila 2 -->
+                        <div class="concept-card" style="border-top-color: #6B46C1;">
+                            <span class="type-badge badge-cases">Experiencia</span>
+                            <h5>Basado en Casos</h5>
+                            <p>Soluciona problemas nuevos adaptando soluciones utilizadas en escenarios anteriores.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #3182CE;">
+                            <span class="type-badge badge-logic">Evidencia</span>
+                            <h5>Razonamiento Evidencial</h5>
+                            <p>Métodos como <strong>Dempster-Shafer</strong> para combinar evidencias de múltiples fuentes externas.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #48BB78;">
+                            <span class="type-badge badge-prob">Bio-inspirado</span>
+                            <h5>Redes Neuronales</h5>
+                            <p>Modelos computacionales que evolucionan a partir de la estructura del cerebro biológico.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 4: 4.1.1. Razonamiento Basado en Reglas -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.1. Razonamiento Basado en Reglas</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="concept-card" style="margin-top: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-primary);">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-primary" style="font-size: 1.4rem; margin: 0;">🛠️ Concepto</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Consiste en establecer <strong>predicados</strong> que enuncien resultados si se cumplen determinas condiciones previas.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box secondary" style="margin: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-secondary); padding: 1.5rem 2rem;">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-secondary" style="font-size: 1.4rem; margin: 0;">🚀 Aplicación</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Es vital en aplicaciones contextuales. Ejemplo: Uso del <strong>Generic Reasoner</strong> de <strong>Apache Jena</strong> para inferencia semántica.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 3rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python"># Seudocódigo de una regla lógica en Jena/N3
+[regla_alarma: 
+    (?sensor :tipo :temperatura) 
+    (?sensor :valor ?v) 
+    greaterThan(?v, 40) 
+    -> (?sensor :estado :alerta)
+]</code></pre>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 5: 4.1.2. Razonamiento Probabilístico (Redes Bayesianas) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.2. Redes Bayesianas</h2>
+                    <p>Son <strong>grafos acíclicos dirigidos (DAG)</strong> donde los nodos representan variables aleatorias y los arcos simbolizan relaciones causales.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #2F855A;">
+                            <h5 class="color-success">📊 Estructura Matemática</h5>
+                            <p>Se representan mediante una <strong>Matriz de Adyacencia</strong> (1 hay conexión, 0 ausencia).</p>
+                            <div class="table-container" style="margin-top: 1rem;">
+                                <table style="font-size: 0.8rem;">
+                                    <tr><td>0</td><td>1</td><td>0</td></tr>
+                                    <tr><td>0</td><td>0</td><td>1</td></tr>
+                                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #48BB78;">
+                            <h5 class="color-success">🎲 Probabilidades Clave</h5>
+                            <ul style="font-size: 0.9rem;">
+                                <li><strong>A Priori</strong>: Nodos raíz sin predecesores.</li>
+                                <li><strong>CPT (Tablas Condicionadas)</strong>: Probabilidades de nodos hijos dado sus padres.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 6: Casos de Uso y Redes Naïve -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Clasificadores Naïve Bayes</h2>
+                    <p>Una particularización eficiente donde los atributos son <strong>independientes entre sí</strong>, simplificando el grafo a una estructura de árbol.</p>
+                    
+                    <div class="highlight-box success">
+                        <p><strong>Ejemplo: Diagnóstico Médico.</strong> Las causas (enfermedades) son nodos raíz y los efectos (síntomas) son nodos hijos. Dada la presencia de Y1 e Y2, el sistema calcula la probabilidad de la causa X.</p>
+                    </div>
+
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>💰 Sector Financiero</h5>
+                            <p>Evaluar ingresos y depósitos para inferir el riesgo de impago. (Ingresos altos + Depósito alto = 5% riesgo).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🏥 Sector Salud</h5>
+                            <p>Sistemas de triaje online que manejan la incertidumbre de los síntomas para sugerir diagnósticos probables.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 7: 4.1.3. Razonamiento Evidencial -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.3. Teoría Dempster-Shafer</h2>
+                    <p>A diferencia de la probabilidad pura, el razonamiento evidencial trata con <strong>conjuntos de hipótesis</strong> y no requiere un modelo probabilístico completo.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #6B46C1;">
+                            <h5 class="color-secondary">🛡️ Funciones de Creencia</h5>
+                            <p>Utiliza <em>Belief Functions</em> para combinar múltiples fuentes de información (evidencias) y calcular la plausibilidad de un evento.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #8A7AAF;">
+                            <h5 class="color-secondary">📡 Fusión de Sensores</h5>
+                            <p>Ideal para sistemas IoT donde se fusionan datos de distintos sensores para reducir el número de hipótesis de trabajo.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary" style="margin-top: 2rem;">
+                        <p><strong>Deducción Contextual:</strong> A diferencia de las redes bayesianas, este método es superior para tratar la <strong>incertidumbre en computación contextual</strong> gracias a su gestión avanzada de restricciones.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 8: 4.1.4. Razonamiento Borroso (Lógica Fuzzy) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.4. Razonamiento Borroso</h2>
+                    <p>La lógica difusa emula el cerebro humano procesando datos subjetivos o imprecisos, alejándose del binario rígido (V/F) de Aristóteles.</p>
+                    
+                    <div class="grid-3">
+                        <div class="concept-card" style="border-top-color: #C53030;">
+                            <h5>🧪 Fuzzificación</h5>
+                            <p>Conversión de valores reales en grados de pertenencia a conjuntos difusos.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #E53E3E;">
+                            <h5>⚙️ Motor de Inferencia</h5>
+                            <p>Aplicación de reglas difusas para procesar relaciones entre variables.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #F56565;">
+                            <h5>📉 Defuzzificación</h5>
+                            <p>Transformación del resultado difuso en un valor concreto de salida.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box warning" style="margin-top: 2rem;">
+                        <p><strong>Ejemplo de Middleware:</strong> Detectores de red y <em>Fuzzy Context Composers</em> que monitorizan la calidad de la señal para determinar el estado de la conexión en niveles abstractos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 9: 4.1.5. Redes Neuronales Artificiales -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.5. Redes Neuronales</h2>
+                    <p>Sistemas de procesado paralelo que emulan el comportamiento biológico para lograr abstracción y robustez en el razonamiento.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #48BB78;">
+                            <h5 class="color-success" style="font-size: 1.4rem; margin-bottom: 1rem;">🧠 Arquitectura</h5>
+                            <ul style="font-size: 1.1rem;">
+                                <li><strong>Monocapa</strong>: Una única capa de procesamiento.</li>
+                                <li><strong>Multicapa</strong>: Conocido como <strong>Deep Learning</strong>.</li>
+                            </ul>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #38A169;">
+                            <h5 class="color-success" style="font-size: 1.4rem; margin-bottom: 1rem;">🏋️ Entrenamiento</h5>
+                            <p style="font-size: 1.1rem;">Ajuste de pesos mediante el algoritmo de <strong>Retropropagación (Backpropagation)</strong> basado en ejemplos etiquetados.</p>
+                        </div>
+                    </div>
+
+                    <div class="code-copy-container" style="margin-top: 2rem;">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python"># Función de decisión del Perceptrón
+# z = x1*w1 + x2*w2 + ... + xn*wn
+output = 1 if sum(inputs * weights) >= threshold else 0</code></pre>
+                    </div>
+
+                    <div class="caution-box" style="margin-top: 2rem;">
+                        <p><strong>Sabías que...</strong> En entornos <em>Smart Home</em>, los datos de sensores pueden entrenar redes neuronales cuyos resultados se aplican luego a motores de razonamiento CBR (Basado en Casos).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 10: 4.1.6. Razonamiento Basado en Casos (CBR) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.1.6. Razonamiento Basado en Casos</h2>
+                    <p>El <strong>CBR (Case-Based Reasoning)</strong> resuelve problemas nuevos mediante la analogía con escenarios pasados, adaptando soluciones previas a necesidades actuales.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #6B46C1;">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">🔄 Ciclo de Vida</h5>
+                            <p style="font-size: 1.1rem;">Recuperar casos similares, Adaptar la solución, Revisar el resultado y Retener el nuevo saber.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #8A7AAF;">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">⚖️ Crítica Técnica</h5>
+                            <p style="font-size: 1.1rem;">Sus detractores apuntan que acepta la <strong>evidencia anecdótica</strong> sin un modelado estadístico riguroso para la generalización.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary" style="margin-top: 2rem;">
+                        <p><strong>Aplicación Domótica:</strong> Ideal para hogares inteligentes donde no se conocen a priori todas las interdependencias entre electrodomésticos y servicios.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 11: Ampliación OntoCBR -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Fusión Inteligente: OntoCBR</h2>
+                    <p><strong>OntoCBR</strong> es una arquitectura híbrida que utiliza el contexto descrito en <strong>Ontologías</strong> como las características base para los casos del sistema CBR.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="concept-card" style="margin-top: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-primary);">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-primary" style="font-size: 1.4rem; margin: 0;">🔗 Integración</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Combina la riqueza semántica de las ontologías (vocabulario formal) con la capacidad de resolución práctica por analogía del CBR.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box secondary" style="margin: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-secondary); padding: 1.5rem 2rem;">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-secondary" style="font-size: 1.4rem; margin: 0;">💡 Valor Real</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Permite abordar problemas reales de forma granular, facilitando la deducción en dominios dinámicos y altamente interdependientes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 12: 4.2. Razonamiento Basado en Casos (Teoría Profunda) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.2. Razonamiento Basado en Casos</h2>
+                    <p>El CBR se fundamenta en el modo de actuación humano: utilizar <strong>recuerdos y experiencias</strong> pasadas para resolver problemas futuros mediante analogía.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #6B46C1;">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">✅ Éxito Pasado</h5>
+                            <p style="font-size: 1.1rem;">Si una solución fue efectiva en un problema similar previo, parece lógico aplicarla (o adaptarla levemente) al escenario actual.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #8A7AAF;">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">❌ Fracaso Pasado</h5>
+                            <p style="font-size: 1.1rem;">Si el resultado previo no fue bueno, la opción lógica es <strong>modificar la solución</strong> para evitar repetir el mismo error.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary" style="margin-top: 2rem;">
+                        <p><strong>Clave del Modelo:</strong> Problemas similares tienen soluciones similares. En ausencia de base de conocimiento, se recurre a procesos creativos, pero siempre se genera una <strong>nueva experiencia aprendida</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 13: El Caso y la Planificación (CBP) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">El Caso como Lección Aprendida</h2>
+                    <p>Un <strong>caso</strong> es la base del sistema: es una experiencia concreta almacenada que representa una lección tras resolver un problema.</p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card" style="border-top-color: var(--color-primary);">
+                            <h5 class="color-primary" style="font-size: 1.4rem; margin-bottom: 1rem;">⭐ Juicio de Valor</h5>
+                            <p style="font-size: 1.1rem;">Es vital evaluar si la solución fue buena. Un experto puede refinar la base de conocimiento para mejorar exponencialmente las capacidades del sistema.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: var(--color-secondary);">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">🗺️ De CBR a CBP</h5>
+                            <p style="font-size: 1.1rem;">Cuando las soluciones propuestas son <strong>planes de acción</strong>, hablamos de <strong>CBP (Case-Based Planning)</strong>, una especialización del razonamiento por casos.</p>
+                        </div>
+                    </div>
+
+                    <div class="caution-box" style="margin-top: 2rem;">
+                        <p><strong>Nota:</strong> El CBP se profundizará en el último punto de esta unidad como técnica avanzada de planificación inteligente.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 14: 4.2.1. Las 4 Erres del CBR -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Ciclo de vida: Las 4 "Rs"</h2>
+                    <p>La arquitectura de un sistema CBR se define por un proceso secuencial de aprendizaje continuo:</p>
+                    
+                    <div class="grid-features" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                        <div class="concept-card" style="border-top-color: #3182CE;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">🔍 1. Retrieve (Recuperar)</h5>
+                            <p style="font-size: 1.1rem;">Análisis de casos almacenados buscando similitudes con el problema actual (especialmente en la descripción).</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #38A169;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">♻️ 2. Reuse (Reutilizar)</h5>
+                            <p style="font-size: 1.1rem;">Adaptar soluciones previas mediante modificación, combinación o selección de la opción más adecuada.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #D69E2E;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">🛠️ 3. Revise (Revisar)</h5>
+                            <p style="font-size: 1.1rem;">Evaluación de la solución propuesta. ¿Es apropiada? Intervención de expertos para corregir posibles errores.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #E53E3E;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">💾 4. Retain (Retener)</h5>
+                            <p style="font-size: 1.1rem;">Almacenamiento del nuevo caso resuelto en la <strong>Memoria de Casos</strong> para generalizar el aprendizaje.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 15: Memoria de Casos y Base de Conocimiento -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Memoria vs. Conocimiento</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="concept-card" style="margin-top: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-primary);">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-primary" style="font-size: 1.4rem; margin: 0;">📦 Memoria de Casos</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Encargada del mantenimiento y organización de las experiencias. Es la fuente de soluciones anteriores.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box secondary" style="margin: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-secondary); padding: 1.5rem 2rem;">
+                            <div style="flex: 0 0 150px; text-align: center;">
+                                <h5 class="color-secondary" style="font-size: 1.4rem; margin: 0;">📚 Base de Saber</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Contiene teorías, principios y reglas que asisten en las etapas de <strong>Adaptación</strong> y <strong>Revisión</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 16: Implementación con cbrlib (Python) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Case Based Reasoning: cbrlib</h2>
+                    <p>En Python, la librería <strong>cbrlib</strong> permite integrar el razonamiento basado en casos sobre objetos nativos (dataclasses), calculando similitudes ponderadas.</p>
+                    
+                    <div class="code-copy-container">
+                        <button class="copy-code-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L17.43 3.84A2 2 0 0016 3H10a2 2 0 00-2 2z"></path><path d="M16 3v5h5"></path><path d="M16 17H7a2 2 0 01-2-2V7"></path></svg>
+                            <span>Copiar</span>
+                        </button>
+                        <pre><code class="language-python">import dataclasses
+from cbrlib import (WeightedPropertyEvaluatorMapping, ReasoningRequest, casebase, evaluate)
+
+@dataclasses.dataclass(slots=True, frozen=True)
+class DataObject:
+    color: str = None
+    size: int = None
+
+# 1. Definir Mapeos de Evaluación
+def dataobject_evaluator():
+    mappings = (
+        WeightedPropertyEvaluatorMapping("color", evaluate.equality, 2),
+        WeightedPropertyEvaluatorMapping("size", evaluate.numeric, 1),
+    )
+    return functools.partial(evaluate.case_average, mappings)
+
+# 2. Inferencia sobre Memoria de Casos
+memory = [DataObject(color="red", size=20), DataObject(color="blue", size=50)]
+query = DataObject(color="red")
+result = casebase.infer(memory, ReasoningRequest(query=query), dataobject_evaluator())</code></pre>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 17: 4.3. Sistemas de Planificación -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.3. Sistemas de Planificación</h2>
+                    <p>La planificación es un tipo de razonamiento orientado a metas: IA que razona sobre sus propias acciones para alcanzar un estado objetivo.</p>
+                    
+                    <div class="grid-3">
+                        <div class="feature-card primary">
+                            <h4 style="font-size: 1.4rem;">🎯 Eficaces</h4>
+                            <p style="font-size: 1.1rem;">El plan propuesto debe resolver el problema con éxito total.</p>
+                        </div>
+                        <div class="feature-card secondary">
+                            <h4 style="font-size: 1.4rem;">📋 Completos</h4>
+                            <p style="font-size: 1.1rem;">Se deben valorar todos los planes posibles del espacio.</p>
+                        </div>
+                        <div class="feature-card primary">
+                            <h4 style="font-size: 1.4rem;">⚖️ Óptimos</h4>
+                            <p style="font-size: 1.1rem;">Proponer el plan ideal según criterios de tiempo y recursos.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary" style="margin-top: 2rem;">
+                        <p><strong>El Plan:</strong> Es la secuencia de acciones que permite transitar desde un estado inicial hasta el estado final objetivo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 18: 4.3.1. Método CPM (Ruta Crítica) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.3.1. Método de Ruta Crítica (CPM)</h2>
+                    <p>El <strong>Critical Path Method (CPM)</strong> determina la duración mínima de un proyecto analizando la secuencia de actividades relacionadas.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: #3182CE;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">📍 Ruta Crítica</h5>
+                            <p style="font-size: 1.1rem;">Es la trayectoria más larga del proyecto. Cualquier retraso en estas actividades críticas pospone la fecha final.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #38A169;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">⏳ Holguras</h5>
+                            <p style="font-size: 1.1rem;">Margen de tiempo en actividades no críticas que permite retrasos sin afectar al plan global.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box success" style="margin-top: 2rem;">
+                        <p><strong>Certidumbre:</strong> En el CPM, las duraciones son conocidas (sin incertidumbre), lo que facilita el control exhaustivo de costes y avance.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 19: Los Dos Ciclos del CPM -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Fases del Método CPM</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="concept-card" style="margin-top: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-primary);">
+                            <div style="flex: 0 0 160px; text-align: center;">
+                                <h5 class="color-primary" style="font-size: 1.3rem; margin: 0;">❶ Planificación</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Definición de tareas, establecimiento de precedencias y dibujo de la red de actividades.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box secondary" style="margin: 0; width: 100%; display: flex; align-items: center; gap: 2rem; border-left: 8px solid var(--color-secondary); padding: 1.5rem 2rem;">
+                            <div style="flex: 0 0 160px; text-align: center;">
+                                <h5 class="color-secondary" style="font-size: 1.3rem; margin: 0;">❷ Control</h5>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; font-size: 1.1rem;">Aprobación, monitorización de avances y aplicación de medidas correctivas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 20: Representación de la Red CPM -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Representación de la Red</h2>
+                    <p>Un plan de tareas se visualiza mediante una <strong>red de actividades</strong> donde cada flecha es una tarea y cada círculo un suceso de control.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: var(--color-primary);">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">🔘 Nodos y Sucesos</h5>
+                            <p style="font-size: 1.1rem;">Representan instantes de tiempo (inicio/fin). Un suceso precede al inicio de las actividades que salen de él.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: var(--color-secondary);">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">👻 Actividades Ficticias</h5>
+                            <p style="font-size: 1.1rem;">Flechas discontinuas que <strong>no consumen tiempo</strong>. Sirven para salvar precedencias e individualizar actividades.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box primary" style="margin-top: 2rem;">
+                        <h4 class="title" style="font-size: 1.4rem;">Regla de Precedencia (i < j)</h4>
+                        <p class="content" style="font-size: 1.1rem;">Es buena práctica numerar los nodos de forma que el identificador del inicio (i) sea siempre menor que el del fin (j). Esto simplifica el cálculo aritmético posterior.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 21: Relaciones entre Tareas -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Tipos de Relaciones</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5 class="color-primary" style="font-size: 1.3rem;">⏸️ Paralelas</h5>
+                            <p>Tareas que pueden ejecutarse simultáneamente sin afectación mutua parcial o total.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-secondary" style="font-size: 1.3rem;">🔗 Relacionadas</h5>
+                            <p>El inicio de una tarea depende estrictamente de la finalización de la precedente.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5 class="color-primary" style="font-size: 1.3rem;">🔱 Divergentes</h5>
+                            <p>Múltiples actividades que nacen de un único evento común inicial.</p>
+                        </div>
+                    </div>
+
+                    <div class="caution-box" style="margin-top: 2rem;">
+                        <h4 style="font-size: 1.4rem; margin-bottom: 0.5rem;">🔑 Preguntas de Oro</h4>
+                        <p style="font-size: 1.1rem;">Para construir la red, debemos responder: ¿Qué va antes? ¿Qué va después? ¿Qué puede ir al mismo tiempo?</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 22: Algoritmo de Cálculo (Tiempos Tempranos) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Tiempos Tempranos (ES)</h2>
+                    <p>Cálculo del momento más próximo en el que puede arrancar una tarea (<em>Earliest Start</em>).</p>
+                    
+                    <div class="formula-block">
+                        <span class="math-text">ES<sub>j</sub> = max{ ES<sub>i</sub> + t<sub>ij</sub> }</span>
+                    </div>
+
+                    <div class="concept-card" style="border-left: 8px solid var(--color-primary); margin-top: 2rem;">
+                        <h5 class="color-primary" style="font-size: 1.4rem;">Procedimiento Forward</h5>
+                        <ol style="font-size: 1.1rem; padding-left: 1.5rem;">
+                            <li>Asignar 0 al suceso inicial.</li>
+                            <li>Sumar duraciones hacia adelante.</li>
+                            <li>En nodos de convergencia, elegir el valor <strong>máximo</strong>.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 23: Algoritmo de Cálculo (Tiempos Tardíos) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Tiempos Tardíos (LS)</h2>
+                    <p>Cálculo del momento límite para finalizar una tarea sin retrasar el proyecto (<em>Latest Start</em>).</p>
+                    
+                    <div class="formula-block secondary">
+                        <span class="math-text">LS<sub>i</sub> = min{ LS<sub>j</sub> - t<sub>ij</sub> }</span>
+                    </div>
+
+                    <div class="concept-card" style="border-left: 8px solid var(--color-secondary); margin-top: 2rem;">
+                        <h5 class="color-secondary" style="font-size: 1.4rem;">Procedimiento Backward</h5>
+                        <ol style="font-size: 1.1rem; padding-left: 1.5rem;">
+                            <li>Partir de la duración total calculada en ES.</li>
+                            <li>Restar duraciones hacia atrás.</li>
+                            <li>En nodos de divergencia, elegir el valor <strong>mínimo</strong>.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 24: Holguras y Ruta Crítica -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Holgura y Ruta Crítica</h2>
+                    <p>La holgura <strong>TF (Time Free)</strong> indica el retraso tolerable sin afectar a la fecha final de entrega.</p>
+                    
+                    <div class="formula-block" style="background: var(--bg-secondary-light); color: var(--color-secondary);">
+                        <span class="math-text">TF<sub>ij</sub> = LS<sub>j</sub> - ES<sub>i</sub> - t<sub>ij</sub></span>
+                    </div>
+
+                    <div class="grid-2-cols" style="margin-top: 2rem;">
+                        <div class="concept-card" style="border-top: 5px solid #E53E3E;">
+                            <h5 style="font-size: 1.4rem; color: #E53E3E;">🔴 Ruta Crítica (TF = 0)</h5>
+                            <p style="font-size: 1.1rem;">Camino donde todas las actividades tienen holgura cero. Es la trayectoria de mínima duración posible.</p>
+                        </div>
+                        <div class="concept-card" style="border-top: 5px solid #38A169;">
+                            <h5 style="font-size: 1.4rem; color: #38A169;">🟢 Actividades No Críticas</h5>
+                            <p style="font-size: 1.1rem;">Aquellas con holgura mayor a cero; permiten flexibilidad en el uso de recursos.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 25: Ejemplo Visual de Red CPM -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Grafo de Actividades (Ejemplo)</h2>
+                    <p>Visualización de un plan de tareas con nodos de control e interdependencias críticas.</p>
+                    
+                    <div class="concept-card" style="padding: 3rem; background: #f8fafc; border: 1px solid #e2e8f0; border-top: 5px solid var(--color-primary); display: block;">
+                        <!-- Diagrama SVG Premium -->
+                        <div style="max-width: 800px; margin: 0 auto;">
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Definiciones de marcadores (flechas) -->
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+                                    </marker>
+                                    <marker id="arrowhead-crit" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444" />
+                                    </marker>
+                                </defs>
+
+                                <!-- Arcos (Flechas) -->
+                                <!-- Ruta Crítica (Rojo) -->
+                                <line x1="100" y1="150" x2="300" y2="70" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowhead-crit)" />
+                                <line x1="300" y1="70" x2="500" y2="150" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowhead-crit)" />
+                                <line x1="500" y1="150" x2="700" y2="150" stroke="#ef4444" stroke-width="4" marker-end="url(#arrowhead-crit)" />
+
+                                <!-- Rutas Secundarias (Gris) -->
+                                <line x1="100" y1="150" x2="300" y2="230" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+                                <line x1="300" y1="230" x2="500" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+                                
+                                <!-- Actividad Ficticia (Discontinua) -->
+                                <line x1="300" y1="70" x2="300" y2="230" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)" />
+
+                                <!-- Nodos (Círculos) -->
+                                <circle cx="100" cy="150" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="100" y="155" text-anchor="middle" font-family="Montserrat" font-weight="700">1</text>
+
+                                <circle cx="300" cy="70" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="300" y="75" text-anchor="middle" font-family="Montserrat" font-weight="700">2</text>
+
+                                <circle cx="300" cy="230" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="300" y="235" text-anchor="middle" font-family="Montserrat" font-weight="700">3</text>
+
+                                <circle cx="500" cy="150" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="500" y="155" text-anchor="middle" font-family="Montserrat" font-weight="700">4</text>
+
+                                <circle cx="700" cy="150" r="25" fill="white" stroke="#ef4444" stroke-width="3" />
+                                <text x="700" y="155" text-anchor="middle" font-family="Montserrat" font-weight="700" fill="#ef4444">Fin</text>
+
+                                <!-- Etiquetas Actividades -->
+                                <text x="200" y="90" font-family="Montserrat" font-size="12" font-weight="700" fill="#ef4444">Act. A (5d)</text>
+                                <text x="400" y="90" font-family="Montserrat" font-size="12" font-weight="700" fill="#ef4444">Act. B (8d)</text>
+                                <text x="600" y="140" font-family="Montserrat" font-size="14" font-weight="700" fill="#ef4444">CRÍTICA (13d)</text>
+                                
+                                <text x="200" y="210" font-family="Montserrat" font-size="12" fill="#64748b">Act. C (3d)</text>
+                                <text x="310" y="150" font-family="Montserrat" font-size="10" font-style="italic" fill="#94a3b8">Ficticia (0d)</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem;">
+                        <div class="card" style="border-left: 5px solid #ef4444; padding: 1rem;">
+                            <h6 style="color:#ef4444; margin:0">Ruta Crítica</h6>
+                            <p style="font-size:0.85rem; margin:0">Secuencia roja: Actividades sin holgura.</p>
+                        </div>
+                        <div class="card" style="border-left: 5px solid #64748b; padding: 1rem;">
+                            <h6 style="color:#64748b; margin:0">Ruta Secundaria</h6>
+                            <p style="font-size:0.85rem; margin:0">Actividades con holgura (flujo libre).</p>
+                        </div>
+                        <div class="card" style="border-left: 5px solid #94a3b8; padding: 1rem;">
+                            <h6 style="color:#94a3b8; margin:0">Act. Ficticia</h6>
+                            <p style="font-size:0.85rem; margin:0">Sincroniza eventos sin sumar tiempo.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 26: Ejemplo Visual II (Convergencia) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Grafo de Actividades: Escenario II</h2>
+                    <p>En este escenario, se requiere la conclusión de múltiples tareas para iniciar la actividad crítica final.</p>
+                    
+                    <div class="concept-card" style="padding: 3rem; background: #fff; border: 1px solid #e2e8f0; border-top: 5px solid var(--color-secondary); display: block;">
+                        <!-- Diagrama SVG Premium II -->
+                        <div style="max-width: 800px; margin: 0 auto;">
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <marker id="arrowhead-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+                                    </marker>
+                                    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#6B46C1" />
+                                    </marker>
+                                </defs>
+
+                                <!-- Arcos (Flechas) -->
+                                <!-- Ruta Superior (L) -->
+                                <line x1="100" y1="150" x2="400" y2="70" stroke="#6B46C1" stroke-width="4" marker-end="url(#arrowhead-purple)" />
+                                <!-- Ruta Inferior (M) -->
+                                <line x1="100" y1="150" x2="400" y2="230" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead-gray)" />
+                                
+                                <!-- Convergencia en Nodo 4 para Actividad N -->
+                                <line x1="400" y1="70" x2="700" y2="150" stroke="#6B46C1" stroke-width="4" marker-end="url(#arrowhead-purple)" />
+                                <line x1="400" y1="230" x2="700" y2="150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead-gray)" />
+
+                                <!-- Nodos (Círculos) -->
+                                <circle cx="100" cy="150" r="30" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="100" y="155" text-anchor="middle" font-family="Montserrat" font-weight="700">Inicio</text>
+
+                                <circle cx="400" cy="70" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="400" y="75" text-anchor="middle" font-family="Montserrat" font-weight="700">L</text>
+
+                                <circle cx="400" cy="230" r="25" fill="white" stroke="#1e293b" stroke-width="2" />
+                                <text x="400" y="235" text-anchor="middle" font-family="Montserrat" font-weight="700">M</text>
+
+                                <circle cx="700" cy="150" r="30" fill="white" stroke="#6B46C1" stroke-width="3" />
+                                <text x="700" y="155" text-anchor="middle" font-family="Montserrat" font-weight="700" fill="#6B46C1">N</text>
+
+                                <!-- Etiquetas Actividades y Duraciones -->
+                                <text x="250" y="90" font-family="Montserrat" font-size="14" font-weight="700" fill="#6B46C1">Tarea L (10 días)</text>
+                                <text x="250" y="210" font-family="Montserrat" font-size="14" font-weight="700" fill="#94a3b8">Tarea M (4 días)</text>
+                                <text x="550" y="90" font-family="Montserrat" font-size="14" font-weight="700" fill="#6B46C1">Crítica (Max)</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary" style="margin-top: 2rem;">
+                        <h4 style="font-size: 1.4rem; margin-bottom: 0.5rem;">🧠 Lógica de Cálculo</h4>
+                        <p style="font-size: 1.1rem;">Para iniciar la <strong>Tarea N</strong>, se requiere completar L y M. El tiempo temprano (ES) de N será de <strong>10 días</strong> (el máximo de las rutas de entrada). La Tarea M tiene una holgura de 6 días.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Diapositiva 27: 4.3.2. Planificación Basada en Casos (CBP) -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">4.3.2. Planificación Basada en Casos (CBP)</h2>
+                    <p>En el <strong>CBP (Case-Based Planning)</strong>, la solución generada es un <strong>plan de acción</strong>. Es una tarea de memoria donde planificar equivale a recordar.</p>
+                    
+                    <div class="grid-3">
+                        <div class="concept-card" style="border-top-color: #4C51BF;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">🎯 Anticipación</h5>
+                            <p style="font-size: 1.1rem;">Permite identificar y descartar planes que presentaron problemas en el pasado antes de ejecutarlos.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #5A67D8;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">🛠️ Depuración</h5>
+                            <p style="font-size: 1.1rem;">Facilita la corrección de planes fallidos basándose en el aprendizaje de errores previos.</p>
+                        </div>
+                        <div class="concept-card" style="border-top-color: #667EEA;">
+                            <h5 style="font-size: 1.4rem; margin-bottom: 1rem;">💾 Almacenamiento</h5>
+                            <p style="font-size: 1.1rem;">Los planes exitosos se guardan en una <strong>Memoria de Planes</strong> para su reutilización inmediata.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box secondary" style="margin-top: 2rem;">
+                        <p><strong>Diferencia Clave:</strong> A diferencia de otras técnicas que buscan el refinamiento del plan actual, el CBP <strong>adapta casos antiguos</strong> para resolver problemas nuevos con flexibilidad jerárquica o abstracta.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diapositiva 28: Resumen de la Unidad -->
+            <section class="slide-segment">
+                <div class="slide-content">
+                    <h2 class="slide-title">Resumen de la Unidad</h2>
+                    <p>Hemos explorado cómo la IA emula la facultad humana de resolver problemas mediante el razonamiento y la planificación estratégica.</p>
+                    
+                    <div class="grid-2-cols">
+                        <div class="concept-card" style="border-top-color: var(--color-primary);">
+                            <h5 class="color-primary" style="font-size: 1.4rem; margin-bottom: 1rem;">🧠 Tipos de Razonamiento</h5>
+                            <ul style="font-size: 1.1rem; columns: 2;">
+                                <li>Lógico (Reglas)</li>
+                                <li>Probabilístico</li>
+                                <li>Evidencial</li>
+                                <li>Borroso (Fuzzy)</li>
+                                <li>Redes Neuronales</li>
+                                <li><strong>CBR (Casos)</strong></li>
+                            </ul>
+                        </div>
+                        <div class="concept-card" style="border-top-color: var(--color-secondary);">
+                            <h5 class="color-secondary" style="font-size: 1.4rem; margin-bottom: 1rem;">🗺️ Planificación IA</h5>
+                            <p style="font-size: 1.1rem;">Uso de métodos como <strong>CPM</strong> (Ruta Crítica) para la gestión temporal y <strong>CBP</strong> para la generación de planes basados en la experiencia acumulada.</p>
+                        </div>
+                    </div>
+
+                    <div class="caution-box" style="margin-top: 2rem; text-align: center;">
+                        <p style="font-size: 1.2rem; font-weight: 700;">¡Felicidades! Has completado el estudio de los Sistemas de Razonamiento y Planificación.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>iLERNA</h3>
+                <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            </div>
+            <p class="description">Centro oficial de FP online y presencial. Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
