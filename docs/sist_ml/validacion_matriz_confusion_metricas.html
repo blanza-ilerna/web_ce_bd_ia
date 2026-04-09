@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Métricas derivadas de la matriz de confusión: Accuracy, Precision, Recall, F1-Score y curva ROC/AUC. Interpretación y fórmulas.">
+    <meta name="keywords" content="Métricas ML, Accuracy, Precision, Recall, F1 Score, ROC, AUC, Evaluación, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.4.2 Métricas Derivadas y su Interpretación | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Métricas Derivadas</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.4.2 Métricas Derivadas y su Interpretación</h1>
+            <p class="subtitle">Más allá de los aciertos: midiendo la calidad y el equilibrio del modelo.</p>
+        </section>
+
+        <!-- Accuracy -->
+        <section class="section">
+            <h2 class="color-secondary">Métricas Globales: Accuracy</h2>
+            <div class="card bg-light-gradient">
+                <p>La métrica más intuitiva es la <strong>Accuracy (Exactitud)</strong>, que mide la proporción de aciertos totales sobre el total de casos.</p>
+                <div class="formula-block mt-3">
+                    Accuracy = (TP + TN) / (TP + TN + FP + FN)
+                </div>
+                <p class="mt-4">
+                    <strong>Limitación crítica:</strong> Puede ser engañosa en datasets desbalanceados. Si una clase es mayoritaria (ej: 99%), un modelo que prediga siempre esa clase obtendrá un 99% de accuracy sin haber aprendido nada sobre la clase minoritaria.
+                </p>
+            </div>
+        </section>
+
+        <!-- Precision y Recall -->
+        <section class="section">
+            <h2 class="color-primary">Calidad vs. Cantidad: Precision y Recall</h2>
+            <div class="grid-2-cols mt-4">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Precisión (Precision)</h4>
+                    <p>Mide la fiabilidad de las predicciones positivas. Responde a: <em>"Cuando el modelo dice positivo, ¿cuántas veces acierta?"</em></p>
+                    <div class="formula-block mt-2">Precision = TP / (TP + FP)</div>
+                    <p class="mt-2 small">Es vital cuando los <strong>Falsos Positivos</strong> son costosos (ej: marcar correo legítimo como spam).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Sensibilidad (Recall)</h4>
+                    <p>Mide la capacidad de detección. Responde a: <em>"De todos los positivos reales, ¿cuántos detecta el modelo?"</em></p>
+                    <div class="formula-block mt-2">Recall = TP / (TP + FN)</div>
+                    <p class="mt-2 small">Es crítica cuando los <strong>Falsos Negativos</strong> son costosos (ej: no detectar una enfermedad grave).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- F1-Score -->
+        <section class="section">
+            <h2 class="color-secondary">El Compromiso: F1-Score</h2>
+            <div class="card">
+                <p>El <strong>F1-Score</strong> es la media armónica entre Precision y Recall. A diferencia de un promedio simple, penaliza valores muy bajos en cualquiera de las dos métricas, obligando al modelo a buscar un equilibrio real.</p>
+                <div class="formula-block mt-3">
+                    F1 = 2 × (Precision × Recall) / (Precision + Recall)
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejemplo Práctico -->
+        <section class="section">
+            <h2 class="color-primary">Interpretación según el Contexto</h2>
+            <p>La elección de la métrica prioritaria depende del impacto del error:</p>
+            <div class="step-container mt-4">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Prioridad Recall (Salud / Seguridad)</h4>
+                        <p>Preferimos falsas alarmas antes que ignorar un caso real. Aceptamos baja precisión para garantizar que no se escape nada.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Prioridad Precision (Productividad / Experiencia)</h4>
+                        <p>Preferimos que se escape algún caso antes que molestar al usuario con errores constantes. Evitamos los Falsos Positivos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caso Práctico (Ejemplo Resuelto) -->
+        <section class="section">
+            <h2 class="color-primary">Ejemplo Resuelto: Clasificador de Enfermedades</h2>
+            <div class="card bg-light-gradient">
+                <p>Para aplicar estas fórmulas, usemo el caso de un modelo que analiza a <strong>200 pacientes</strong>:</p>
+                
+                <div class="table-container mt-4">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th colspan="2" rowspan="2"></th>
+                                <th colspan="2" style="text-align: center;">PREDICCIÓN</th>
+                            </tr>
+                            <tr>
+                                <th>Pred. Enfermo</th>
+                                <th>Pred. Sano</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg);">REAL</th>
+                                <th>Enfermo</th>
+                                <td style="text-align: center;"><strong>60 (TP)</strong></td>
+                                <td style="text-align: center;">20 (FN)</td>
+                            </tr>
+                            <tr>
+                                <th>Sano</th>
+                                <td style="text-align: center;">20 (FP)</td>
+                                <td style="text-align: center;"><strong>100 (TN)</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grid-2-cols mt-4">
+                    <div class="formula-block">Accuracy = (60+100)/200 = <strong>0.80</strong></div>
+                    <div class="formula-block">Precision = 60/(60+20) = <strong>0.75</strong></div>
+                    <div class="formula-block">Recall = 60/(60+20) = <strong>0.75</strong></div>
+                    <div class="formula-block">F1 Score = 2×(0.75×0.75)/1.50 = <strong>0.75</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curva ROC y AUC -->
+        <section class="section">
+            <h2 class="color-secondary">Evaluación Global: Curva ROC y AUC</h2>
+            <div class="card">
+                <p>La <strong>Curva ROC</strong> representa la relación entre la tasa de verdaderos positivos y la tasa de falsos positivos a distintos umbrales de decisión.</p>
+                <p class="mt-3">El área bajo esta curva, el <strong>AUC (Area Under Curve)</strong>, resume la capacidad de discriminación del modelo:</p>
+                <ul class="mt-3">
+                    <li><strong>AUC = 1.0:</strong> Modelo perfecto.</li>
+                    <li><strong>AUC = 0.5:</strong> El modelo no ha aprendido; sus resultados son equivalentes al azar.</li>
+                    <li><strong>AUC < 0.5:</strong> El modelo está "invertido" (predice lo contrario de lo que ocurre).</li>
+                </ul>
+                <div class="highlight-box primary mt-4">
+                    <p class="title">Ventaja del AUC</p>
+                    <p>No depende de un umbral específico, lo que permite comparar modelos de forma general antes de decidir el punto de operación final.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    Recuerda que estas métricas son complementarias. Un modelo puede tener un AUC excelente pero una Precision pésima si el umbral elegido no es el adecuado para el problema real.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

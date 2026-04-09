@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Análisis detallado de los componentes de la matriz de confusión: Verdaderos Positivos, Falsos Positivos, Verdaderos Negativos y Falsos Negativos.">
+    <meta name="keywords" content="Matriz de Confusión, TP, FN, TN, FP, Error Tipo I, Error Tipo II, Machine Learning, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.4.1 Componentes de la Matriz de Confusión | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Componentes de la Matriz</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.4.1 Componentes de la Matriz de Confusión</h1>
+            <p class="subtitle">Desglosando el rendimiento: los cuatro pilares de la clasificación.</p>
+        </section>
+
+        <!-- Concepto -->
+        <section class="section">
+            <h2 class="color-secondary">La Cuadrícula de la Verdad</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    La matriz de confusión organiza las predicciones del modelo frente a los valores reales en cuatro elementos críticos que resumen todos los resultados posibles.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    Cada componente representa una combinación específica entre lo que el modelo "dijo" que pasaría y lo que "realmente" ocurrió. Entender estas combinaciones es la base para diagnosticar cualquier sistema de clasificación.
+                </p>
+            </div>
+        </section>
+
+        <!-- Los 4 Componentes -->
+        <section class="section">
+            <h2 class="color-primary">Definición de los Componentes</h2>
+            
+            <div class="table-container mb-5">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th colspan="2" rowspan="2" style="border:none; background:transparent;"></th>
+                            <th colspan="2" style="text-align: center; border-bottom: 2px solid var(--color-primary); color: var(--text-dark);">PREDICCIÓN DEL MODELO</th>
+                            <th rowspan="2" style="background: var(--bg-light); border-left: 2px solid #ccc;"></th>
+                        </tr>
+                        <tr>
+                            <th style="background: #fdf2f2; color: var(--text-dark);">Positivo (P)</th>
+                            <th style="background: #fdf2f2; color: var(--text-dark);">Negativo (N)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg); border-right: 2px solid var(--color-secondary); color: var(--text-dark); background: #f0f9ff;">CLASE REAL</th>
+                            <th style="background: #f0f9ff; color: var(--text-dark);">Positivo (P)</th>
+                            <td style="background: #e6fffa; text-align: center;"><strong>TP</strong><br><small>Acierto</small></td>
+                            <td style="text-align: center;"><strong>FN</strong><br><small>Error Tipo II</small></td>
+                            <td style="background: var(--bg-light); font-size: 0.85rem; border-left: 2px solid #ccc; color: var(--text-dark);"><strong>Recall:</strong><br>TP / (TP+FN)</td>
+                        </tr>
+                        <tr>
+                            <th style="background: #f0f9ff; color: var(--text-dark);">Negativo (N)</th>
+                            <td style="text-align: center;"><strong>FP</strong><br><small>Error Tipo I</small></td>
+                            <td style="background: #e6fffa; text-align: center;"><strong>TN</strong><br><small>Acierto</small></td>
+                            <td style="background: var(--bg-light); font-size: 0.85rem; border-left: 2px solid #ccc; color: var(--text-dark);"><strong>Specificity:</strong><br>TN / (TN+FP)</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" style="background: var(--bg-light); border-top: 2px solid #ccc;"></th>
+                            <td style="background: var(--bg-light); font-size: 0.85rem; text-align: center; border-top: 2px solid #ccc; color: var(--text-dark);"><strong>Precision:</strong><br>TP / (TP+FP)</td>
+                            <td style="background: var(--bg-light); font-size: 0.85rem; text-align: center; border-top: 2px solid #ccc; color: var(--text-dark);"><strong>NPV:</strong><br>TN / (TN+FN)</td>
+                            <td style="background: #f3f3f3; font-size: 0.85rem; text-align: center; border-top: 2px solid #ccc; border-left: 2px solid #ccc; color: var(--text-dark);"><strong>Accuracy:</strong><br>(TP+TN) / Total</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">✅ Verdadero Positivo (TP - True Positive)</h4>
+                <p>El modelo predice la clase positiva y el evento <strong>efectivamente ocurre</strong>. Son los aciertos en la detección del caso de interés.</p>
+                <p class="mt-2"><em>Ejemplo: Un sistema de detección de enfermedades identifica correctamente a un paciente enfermo.</em></p>
+            </div>
+
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">⚠️ Falsos Positivos: Error Tipo I (FP)</h4>
+                <p>El modelo predice positivo, pero la realidad es negativa. Es una <strong>falsa alarma</strong>. La métrica que lo controla es la <strong>Precision</strong>.</p>
+                <p class="mt-2"><em>Ejemplo: Un filtro de spam bloquea un correo legítimo, o un detector oncológico da positivo en un paciente sano.</em></p>
+            </div>
+
+            <div class="feature-card primary mb-3" style="border-left-color: #4A5568;">
+                <h4 style="color: #2D3748;">🔘 Verdadero Negativo (TN - True Negative)</h4>
+                <p>El modelo predice negativo y efectivamente el evento no ocurre. Refleja la capacidad para descartar correctamente los casos normales.</p>
+                <p class="mt-2"><em>Ejemplo: Un test de embarazo confirma correctamente que una persona no está embarazada.</em></p>
+            </div>
+
+            <div class="feature-card secondary mb-3" style="border-left-color: #E53E3E;">
+                <h4 style="color: #C53030;">❌ Falsos Negativos: Error Tipo II (FN)</h4>
+                <p>El modelo predice negativo, pero la realidad es positiva. Es una <strong>omisión</strong> o fallo en la detección. La métrica que lo controla es el <strong>Recall</strong>.</p>
+                <p class="mt-2"><em>Ejemplo: Un detector de fraude deja pasar una transacción robada, o un test médico no detecta una enfermedad real.</em></p>
+            </div>
+        </section>
+
+        <!-- Interpretación -->
+        <section class="section">
+            <h2 class="color-secondary">Interpretación del Comportamiento</h2>
+            <p>La distribución de estos cuatro valores define la "personalidad" del modelo:</p>
+            <div class="grid-2-cols mt-4">
+                <div class="highlight-box primary">
+                    <p class="title">Modelo Conservador</p>
+                    <p>Tiene pocos falsos positivos pero muchos falsos negativos. Solo predice positivo cuando está muy seguro, arriesgándose a perder casos reales.</p>
+                </div>
+                <div class="highlight-box secondary">
+                    <p class="title">Modelo Agresivo</p>
+                    <p>Maximiza la detección (pocos falsos negativos) pero a costa de generar muchas falsas alarmas (muchos falsos positivos).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    Para no confundirte, recuerda esta regla nemotécnica: <strong>Positivo/Negativo</strong> indica lo que el modelo predice. <strong>Verdadero/Falso</strong> indica si el modelo ha acertado o no respecto a la realidad.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet de Deep Learning - McCulloch-Pitts, Perceptrón, MLP, Redes Neuronales, Funciones de Activación - iLERNA Repaso">
+    <title>Cheatsheet: Deep Learning — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Deep Learning y Redes Neuronales</h1>
+            <p style="margin-top:6px; font-size:9pt;">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos IA &nbsp;
+                <span class="tag tag-saa">SAA</span> Sistemas Aprendizaje Automático &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA &nbsp;
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado
+            </p>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>A. HISTORIA Y EVOLUCIÓN</h2>
+
+        <table style="margin-bottom:14px;">
+            <thead>
+                <tr><th>Año</th><th>Hito</th><th>Autores</th><th>Aportación clave</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1943</strong></td>
+                    <td>Modelo McCulloch-Pitts</td>
+                    <td>Warren McCulloch &amp; Walter Pitts</td>
+                    <td>Primer modelo matemático de neurona artificial. Entradas binarias, pesos fijos, umbral θ. Demostró que las redes pueden realizar cualquier cálculo lógico (AND, OR, NOT). <strong>Sin aprendizaje.</strong></td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>1957</strong></td>
+                    <td>Perceptrón</td>
+                    <td>Frank Rosenblatt</td>
+                    <td>Primer modelo con <strong>aprendizaje automático</strong>. Pesos ajustables mediante regla delta. Clasificador binario lineal. <em>Limitación: solo separa clases linealmente separables (no resuelve XOR).</em></td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>1969</strong></td>
+                    <td>Crítica de Minsky &amp; Papert</td>
+                    <td>Marvin Minsky &amp; Seymour Papert</td>
+                    <td>Demostraron matemáticamente que el perceptrón no puede resolver XOR. Primer "invierno de la IA".</td>
+                    <td><span class="tag tag-mia">MIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>1986</strong></td>
+                    <td>Backpropagation</td>
+                    <td>Rumelhart, Hinton, Williams</td>
+                    <td>Algoritmo para entrenar redes con varias capas ocultas (MLP). Calcula gradientes capa a capa hacia atrás. Resucita el interés por las redes neuronales.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2006</strong></td>
+                    <td>Deep Learning</td>
+                    <td>Geoffrey Hinton</td>
+                    <td>Pre-entrenamiento capa a capa. Redes profundas (muchas capas ocultas). Inicio de la era moderna del DL.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2012</strong></td>
+                    <td>AlexNet — CNN</td>
+                    <td>Krizhevsky, Sutskever, Hinton</td>
+                    <td>Primera CNN profunda (8 capas) que gana ImageNet. GPU + ReLU + Dropout. Explosión del Deep Learning.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2017</strong></td>
+                    <td>Transformers</td>
+                    <td>Vaswani et al. (Google)</td>
+                    <td>"Attention is All You Need". Mecanismo de atención. Base de BERT, GPT, LLaMA y todos los LLMs modernos.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>B. DE McCULLOCH-PITTS AL MLP</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">McCulloch-Pitts (1943)</span>
+                <p>Entradas binarias (0/1). Pesos fijos (excitatorios + / inhibitorios −). Umbral fijo θ.</p>
+                <div class="formula">Salida = 1 si Σ(wᵢ·xᵢ) ≥ θ, si no → 0</div>
+                <p style="font-size:0.85em; margin-top:4px;">✗ Sin aprendizaje. ✗ Solo binario. ✗ Pesos manuales.</p>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Perceptrón de Rosenblatt (1957)</span>
+                <p>Añade <strong>pesos ajustables</strong>. Aprende mediante la <em>regla delta</em>: si falla, ajusta los pesos.</p>
+                <div class="formula">w ← w + α·(y_real − y_pred)·x</div>
+                <p style="font-size:0.85em; margin-top:4px;">✓ Aprende. ✗ Solo clases linealmente separables. ✗ No resuelve XOR.</p>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">MLP — Perceptrón Multicapa</span>
+                <p>Varias capas ocultas + <strong>funciones de activación no lineales</strong> + <strong>Backpropagation</strong>. Resuelve problemas no lineales (XOR, reconocimiento de patrones…).</p>
+                <div class="formula">y = f(W·x + b) con múltiples capas</div>
+                <p style="font-size:0.85em; margin-top:4px;">✓ No-lineal. ✓ Aprende. ✓ Generalizable. Base del Deep Learning.</p>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+        </div>
+
+        <!-- COMPARATIVA -->
+        <table style="margin-bottom:14px; font-size:9pt;">
+            <thead><tr><th>Aspecto</th><th>McCulloch-Pitts</th><th>Perceptrón</th><th>MLP</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Año</strong></td><td>1943</td><td>1957</td><td>1986+</td></tr>
+                <tr><td><strong>Aprendizaje</strong></td><td>No (pesos fijos)</td><td>Sí (regla delta)</td><td>Sí (backpropagation)</td></tr>
+                <tr><td><strong>Entradas</strong></td><td>Solo binarias (0/1)</td><td>Numéricas</td><td>Numéricas (cualquier tipo)</td></tr>
+                <tr><td><strong>Capas</strong></td><td>1</td><td>1</td><td>Múltiples (profundo)</td></tr>
+                <tr><td><strong>No linealidad</strong></td><td>No</td><td>No</td><td>Sí (funciones de activación)</td></tr>
+                <tr><td><strong>Problemas resueltos</strong></td><td>Lógicos (AND, OR, NOT)</td><td>Clasificación lineal</td><td>Cualquier función aprox. (Universal Approximation Theorem)</td></tr>
+                <tr><td><strong>Limitación principal</strong></td><td>No aprende, solo binario</td><td>No resuelve XOR</td><td>Coste computacional, datos necesarios</td></tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>C. DEFINICIÓN DE DEEP LEARNING</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">¿Qué es el Deep Learning?</span>
+            <p>Subcampo del Machine Learning basado en <strong>Redes Neuronales Artificiales con múltiples capas ocultas</strong> ("profundas"). Aprende representaciones jerárquicas de los datos de forma automática: cada capa extrae características más abstractas que la anterior.</p>
+            <p style="margin-top:6px; font-size:0.9em;"><em>Analogía: como el cerebro visual humano. Capa 1 detecta bordes, capa 2 formas, capa 3 objetos, capa N conceptos abstractos.</em></p>
+            <div class="formula">ML → Aprendizaje de features manuales &nbsp;|&nbsp; DL → Aprendizaje automático de representaciones</div>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span class="tag tag-sbd">SBD</span></div>
+        </div>
+
+        <div class="grid-2col" style="margin-bottom:14px;">
+            <div class="metric-card">
+                <span class="metric-title">¿Cuándo usar Deep Learning?</span>
+                <ul style="font-size:0.9em; padding-left:16px; line-height:1.8;">
+                    <li>Datos en gran volumen (&gt;100K muestras).</li>
+                    <li>Datos no estructurados: imágenes, audio, texto.</li>
+                    <li>Relaciones muy complejas y no lineales.</li>
+                    <li>Features difíciles de diseñar manualmente.</li>
+                    <li>Potencia de cómputo disponible (GPU/TPU).</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">¿Cuándo NO usar Deep Learning?</span>
+                <ul style="font-size:0.9em; padding-left:16px; line-height:1.8;">
+                    <li>Pocos datos etiquetados (&lt;1K).</li>
+                    <li>Se necesita interpretabilidad del modelo.</li>
+                    <li>Datos tabulares simples → Random Forest/XGBoost es mejor.</li>
+                    <li>Recursos limitados (CPU, memoria).</li>
+                    <li>Tiempo de desarrollo corto.</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>D. ANATOMÍA DE UNA NEURONA ARTIFICIAL</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Fórmula Fundamental</span>
+            <div class="formula" style="font-size:11pt; text-align:center;">y = f( Σ wᵢ·xᵢ + b )</div>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Componente</th><th>Símbolo</th><th>Analogía biológica</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Entradas</strong></td>
+                    <td>x₁, x₂, …, xₙ</td>
+                    <td>Dendritas</td>
+                    <td>Señales de entrada. Pueden ser datos brutos (píxeles, temperatura…) o salidas de la capa anterior.</td>
+                </tr>
+                <tr>
+                    <td><strong>Pesos</strong></td>
+                    <td>w₁, w₂, …, wₙ</td>
+                    <td>Sinapsis</td>
+                    <td>Importancia de cada entrada. Parámetros <strong>aprendidos</strong> durante el entrenamiento. Peso alto = conexión fuerte. Peso negativo = inhibición.</td>
+                </tr>
+                <tr>
+                    <td><strong>Sesgo (Bias)</strong></td>
+                    <td>b</td>
+                    <td>Umbral de disparo</td>
+                    <td>Término independiente que desplaza la función de activación. Permite que la neurona se active incluso con entradas nulas. Es el "umbral de flexibilidad".</td>
+                </tr>
+                <tr>
+                    <td><strong>Suma ponderada</strong></td>
+                    <td>z = Σwᵢxᵢ + b</td>
+                    <td>Soma / cuerpo celular</td>
+                    <td>Integra todas las entradas ponderadas más el bias. Es el valor pre-activación.</td>
+                </tr>
+                <tr>
+                    <td><strong>Función de activación</strong></td>
+                    <td>f(z)</td>
+                    <td>Umbral de activación</td>
+                    <td>Decide si la neurona "se dispara" y cuánto. Introduce <strong>no linealidad</strong> indispensable para aprender patrones complejos.</td>
+                </tr>
+                <tr>
+                    <td><strong>Salida</strong></td>
+                    <td>y = f(z)</td>
+                    <td>Axón</td>
+                    <td>Resultado de la neurona. Se propaga a las neuronas de la capa siguiente.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- McCulloch vs Moderna -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">McCulloch-Pitts vs Neurona Moderna</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead><tr><th>Componente</th><th>McCulloch-Pitts</th><th>Neurona Moderna (MLP)</th></tr></thead>
+                <tbody>
+                    <tr><td>Entradas</td><td>Solo binarias (0 o 1)</td><td>Cualquier valor real</td></tr>
+                    <tr><td>Pesos</td><td>Fijos. Definidos manualmente</td><td>Aprendidos automáticamente via gradiente</td></tr>
+                    <tr><td>Bias</td><td>Umbral fijo θ equivalente</td><td>Parámetro aprendido</td></tr>
+                    <tr><td>Función de activación</td><td>Escalonada binaria (0 o 1)</td><td>ReLU, Sigmoid, Tanh, Softmax…</td></tr>
+                    <tr><td>Salida</td><td>Binaria (0 o 1)</td><td>Cualquier valor real (o probabilidad)</td></tr>
+                    <tr><td>Aprendizaje</td><td>No</td><td>Sí — Descenso del gradiente + Backpropagation</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>E. ARQUITECTURA DE UNA RED — CAPAS</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Capa de Entrada (Input Layer)</span>
+                <p>Recibe los datos brutos. <strong>No realiza cálculos.</strong> Número de neuronas = número de features del problema.</p>
+                <p style="font-size:0.85em;"><em>Ej: 784 neuronas para imagen 28×28px (MNIST).</em></p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Capas Ocultas (Hidden Layers)</span>
+                <p>Extraen representaciones. Cada capa aprende características más abstractas. <strong>Más capas = más profundo = más capacidad</strong> de aprender patrones complejos.</p>
+                <p style="font-size:0.85em;"><em>El "corazón" del aprendizaje profundo.</em></p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Capa de Salida (Output Layer)</span>
+                <p>Produce la predicción final. Neuronas = número de clases (clasificación) o 1 (regresión).</p>
+                <p style="font-size:0.85em;"><em>Función de activación: Softmax (multiclase), Sigmoid (binaria) o Lineal (regresión).</em></p>
+            </div>
+        </div>
+
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Backpropagation — ¿Cómo aprende la red?</span>
+            <ol style="font-size:0.9em; padding-left:18px; line-height:1.9; margin-top:6px;">
+                <li><strong>Forward pass:</strong> Los datos fluyen de entrada a salida. Cada neurona calcula z = Σwx+b → f(z).</li>
+                <li><strong>Cálculo del error:</strong> La función de pérdida (Loss) compara la salida real con la predicha.</li>
+                <li><strong>Backward pass:</strong> El gradiente del error se propaga hacia atrás capa a capa (regla de la cadena).</li>
+                <li><strong>Actualización de pesos:</strong> w ← w − α·∂L/∂w &nbsp; (α = learning rate).</li>
+                <li><strong>Repetir</strong> durante N épocas hasta convergencia.</li>
+            </ol>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>F. FUNCIONES DE ACTIVACIÓN</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Función</th><th>Fórmula</th><th>Rango</th><th>Uso típico</th><th>Ventaja / Problema</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Escalón (Step)</strong></td>
+                    <td><code>1 si z≥0, 0 si z&lt;0</code></td>
+                    <td>{0, 1}</td>
+                    <td>McCulloch-Pitts, Perceptrón clásico.</td>
+                    <td>Interpretable. ✗ No diferenciable → no backprop.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Sigmoide (σ)</strong></td>
+                    <td><code>σ(z) = 1/(1+e⁻ᶻ)</code></td>
+                    <td>(0, 1)</td>
+                    <td>Clasificación binaria (capa salida). Regresión logística.</td>
+                    <td>Salida = probabilidad. ✗ Vanishing gradient en capas profundas.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Tanh</strong></td>
+                    <td><code>tanh(z) = (eᶻ−e⁻ᶻ)/(eᶻ+e⁻ᶻ)</code></td>
+                    <td>(−1, 1)</td>
+                    <td>Capas ocultas de RNNs. Señales centradas en 0.</td>
+                    <td>Media cero, mejor que sigmoide. ✗ También vanishing gradient.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>ReLU</strong></td>
+                    <td><code>max(0, z)</code></td>
+                    <td>[0, +∞)</td>
+                    <td><strong>Capas ocultas. Estándar en CNN y MLP.</strong></td>
+                    <td>Rápida, simple, no vanishing. ✗ "Neurona muerta": si z&lt;0 siempre, gradiente=0.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Leaky ReLU</strong></td>
+                    <td><code>z si z≥0, 0.01z si z&lt;0</code></td>
+                    <td>(−∞, +∞)</td>
+                    <td>Capas ocultas. Alternativa a ReLU cuando hay neuronas muertas.</td>
+                    <td>Evita neuronas muertas. Pendiente pequeña para z&lt;0.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Softmax</strong></td>
+                    <td><code>e^zᵢ / Σe^zⱼ</code></td>
+                    <td>(0,1) suma=1</td>
+                    <td><strong>Capa de salida para clasificación multiclase.</strong></td>
+                    <td>Convierte logits en distribución de probabilidad. Una clase por neurona.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Lineal (Identidad)</strong></td>
+                    <td><code>f(z) = z</code></td>
+                    <td>(−∞, +∞)</td>
+                    <td>Capa de salida para regresión. Predice valores continuos.</td>
+                    <td>Sin limitación de rango. ✗ Sin no-linealidad.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>GELU</strong></td>
+                    <td>Aprox. <code>0.5z(1+tanh(√(2/π)(z+0.044z³)))</code></td>
+                    <td>(−0.17, +∞)</td>
+                    <td>Transformers (GPT, BERT). Capas ocultas de LLMs.</td>
+                    <td>Mejor que ReLU en modelos de atención. Suave en z&lt;0.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- GUÍA DE ELECCIÓN -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Guía Rápida: ¿Qué función de activación usar?</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead><tr><th>Capa / Tarea</th><th>Función recomendada</th><th>Motivo</th></tr></thead>
+                <tbody>
+                    <tr><td>Capas ocultas (general)</td><td><strong>ReLU</strong></td><td>Rápida, sin vanishing gradient, estándar actual.</td></tr>
+                    <tr><td>Capas ocultas (RNN)</td><td><strong>Tanh</strong></td><td>Salida centrada en 0, adecuada para secuencias.</td></tr>
+                    <tr><td>Capas ocultas (Transformers)</td><td><strong>GELU</strong></td><td>Mejor comportamiento en contextos de atención.</td></tr>
+                    <tr><td>Salida: clasificación binaria</td><td><strong>Sigmoide</strong></td><td>Probabilidad entre 0 y 1 para una clase.</td></tr>
+                    <tr><td>Salida: clasificación multiclase</td><td><strong>Softmax</strong></td><td>Distribución de probabilidad que suma 1.</td></tr>
+                    <tr><td>Salida: regresión</td><td><strong>Lineal</strong></td><td>Sin restricción de rango, predice valores continuos.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>G. TIPOS DE REDES NEURONALES</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Red</th><th>Arquitectura clave</th><th>Datos ideales</th><th>Aplicaciones</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MLP (Perceptrón Multicapa)</strong></td>
+                    <td>Capas densas completamente conectadas. Forward feed. Backprop.</td>
+                    <td>Datos tabulares, vectores de features.</td>
+                    <td>Clasificación, regresión, reconocimiento de patrones simples.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>CNN (Red Neuronal Convolucional)</strong></td>
+                    <td>Capas convolucionales (filtros) + Pooling + Capas densas. Detecta patrones locales con pesos compartidos.</td>
+                    <td>Imágenes, vídeo, señales 2D/1D.</td>
+                    <td>Visión por computadora, clasificación de imágenes, detección de objetos, reconocimiento facial.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>RNN (Red Neuronal Recurrente)</strong></td>
+                    <td>Conexiones recurrentes. Estado oculto (memoria). Procesa secuencias paso a paso.</td>
+                    <td>Secuencias temporales, texto, audio, series temporales.</td>
+                    <td>Traducción automática, predicción de texto, análisis de sentimiento, series financieras.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>LSTM / GRU</strong></td>
+                    <td>RNN con compuertas (forget, input, output). Controla qué recordar y qué olvidar. Resuelve vanishing gradient en RNN.</td>
+                    <td>Secuencias largas. Texto con dependencias a distancia.</td>
+                    <td>NLP, traducción, generación de texto, reconocimiento de voz, predicción de series largas.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Transformer</strong></td>
+                    <td>Mecanismo de atención (Self-Attention). Sin recurrencia → paralelizable. Codificador + Decodificador.</td>
+                    <td>Texto, imágenes (ViT), audio.</td>
+                    <td>LLMs (GPT, BERT, LLaMA), traducción, resumen, generación de código, visión (ViT).</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Autoencoder</strong></td>
+                    <td>Encoder (comprime) + Bottleneck + Decoder (reconstruye). Aprende representación comprimida sin etiquetas.</td>
+                    <td>Datos sin etiquetar. Imágenes, texto.</td>
+                    <td>Reducción dimensionalidad, detección de anomalías, compresión, generación de datos.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>GAN (Red Generativa Adversarial)</strong></td>
+                    <td>Generador (crea muestras) vs Discriminador (distingue real/falso). Entrenamiento adversarial.</td>
+                    <td>Imágenes, audio, texto.</td>
+                    <td>Generación de imágenes realistas, deepfakes, síntesis de datos, arte IA.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- CNN DETALLE -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">CNN — Capas Internas</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead><tr><th>Capa</th><th>Función</th><th>Parámetros clave</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Conv2D</strong></td><td>Aplica filtros deslizantes que detectan patrones locales (bordes, texturas, formas).</td><td>Nº filtros, kernel_size, stride, padding.</td></tr>
+                    <tr><td><strong>Pooling (MaxPool / AvgPool)</strong></td><td>Reduce resolución espacial y el número de parámetros. Preserva características más relevantes.</td><td>pool_size, stride.</td></tr>
+                    <tr><td><strong>Flatten</strong></td><td>Convierte el mapa de características 3D a un vector 1D para la capa densa final.</td><td>—</td></tr>
+                    <tr><td><strong>Dense (FC)</strong></td><td>Clasificación final con las características extraídas por las capas conv.</td><td>Nº neuronas, activación.</td></tr>
+                    <tr><td><strong>Dropout</strong></td><td>Apaga aleatoriamente neuronas durante entrenamiento. Regularización contra overfitting.</td><td>rate (típico 0.25–0.5).</td></tr>
+                    <tr><td><strong>BatchNorm</strong></td><td>Normaliza activaciones de cada capa. Acelera convergencia y estabiliza el entrenamiento.</td><td>—</td></tr>
+                </tbody>
+            </table>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>H. FUNCIONES DE PÉRDIDA Y OPTIMIZADORES</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Funciones de Pérdida (Loss Functions)</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead><tr><th>Loss</th><th>Tarea</th><th>Fórmula</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>MSE</strong></td><td>Regresión</td><td>Σ(y−ŷ)²/n</td></tr>
+                        <tr><td><strong>MAE</strong></td><td>Regresión robusta</td><td>Σ|y−ŷ|/n</td></tr>
+                        <tr><td><strong>Binary CE</strong></td><td>Clasificación binaria</td><td>−[y·log(ŷ)+(1−y)·log(1−ŷ)]</td></tr>
+                        <tr><td><strong>Categorical CE</strong></td><td>Clasificación multiclase</td><td>−Σyᵢ·log(ŷᵢ)</td></tr>
+                        <tr><td><strong>Huber</strong></td><td>Regresión + outliers</td><td>Mix de MSE y MAE</td></tr>
+                    </tbody>
+                </table>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Optimizadores</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead><tr><th>Optimizador</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>SGD</strong></td><td>Actualiza pesos con cada muestra/mini-batch. Simple, lento, puede no converger.</td></tr>
+                        <tr><td><strong>SGD + Momentum</strong></td><td>Acumula gradientes previos para evitar oscilaciones.</td></tr>
+                        <tr><td><strong>RMSProp</strong></td><td>Adapta el LR por parámetro. Bueno para RNNs.</td></tr>
+                        <tr><td><strong>Adam</strong></td><td>Combina Momentum + RMSProp. <strong>El estándar actual.</strong> Rápido y robusto.</td></tr>
+                        <tr><td><strong>AdamW</strong></td><td>Adam + weight decay. Usado en Transformers y LLMs.</td></tr>
+                    </tbody>
+                </table>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>I. MÉTRICAS DE VALIDACIÓN EN DEEP LEARNING</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Métrica</th><th>Fórmula</th><th>Cuándo usarla</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Accuracy</strong></td>
+                    <td>(TP+TN)/(TP+TN+FP+FN)</td>
+                    <td>Clasificación con clases balanceadas. Fácil de interpretar.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Loss (pérdida)</strong></td>
+                    <td>Cross-Entropy o MSE</td>
+                    <td>Monitorizar curva de entrenamiento. Loss train vs Loss val detecta overfitting.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Precision</strong></td>
+                    <td>TP/(TP+FP)</td>
+                    <td>Cuando los falsos positivos son costosos (spam, fraude).</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Recall (Sensibilidad)</strong></td>
+                    <td>TP/(TP+FN)</td>
+                    <td>Cuando los falsos negativos son críticos (diagnóstico médico).</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>F1-Score</strong></td>
+                    <td>2·(P·R)/(P+R)</td>
+                    <td>Clases desbalanceadas. Balance entre Precision y Recall.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>AUC-ROC</strong></td>
+                    <td>Área bajo curva ROC</td>
+                    <td>Clasificación binaria con umbral variable. 1.0 = perfecto, 0.5 = aleatorio.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>MAE / RMSE</strong></td>
+                    <td>Σ|y−ŷ|/n &nbsp;/&nbsp; √MSE</td>
+                    <td>Regresión. RMSE penaliza más los errores grandes.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Top-K Accuracy</strong></td>
+                    <td>% aciertos en las K clases más probables</td>
+                    <td>Clasificación multiclase con muchas clases (ImageNet: Top-5).</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Perplexity</strong></td>
+                    <td>exp(−(1/N)·Σlog P(wᵢ))</td>
+                    <td>Modelos de lenguaje (LLMs). Menor = mejor. Mide fluidez del texto generado.</td>
+                    <td><span class="tag tag-mia">MIA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- CURVAS DE ENTRENAMIENTO -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Interpretación de Curvas de Entrenamiento (Loss/Accuracy vs Epochs)</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead><tr><th>Patrón observado</th><th>Diagnóstico</th><th>Solución</th></tr></thead>
+                <tbody>
+                    <tr><td>Loss train ↓, Loss val ↓ (paralelas)</td><td>Entrenamiento correcto. Buena convergencia.</td><td>Continuar o Early Stopping.</td></tr>
+                    <tr><td>Loss train ↓↓, Loss val ↑ (divergen)</td><td><strong>Overfitting.</strong> El modelo memoriza.</td><td>Dropout, L2, Data Augmentation, menos capas, más datos.</td></tr>
+                    <tr><td>Ambas Loss altas y estancadas</td><td><strong>Underfitting.</strong> Modelo insuficiente.</td><td>Más capas, más neuronas, más epochs, menos regularización.</td></tr>
+                    <tr><td>Loss oscila mucho sin converger</td><td>Learning rate demasiado alto.</td><td>Reducir learning rate. Usar scheduler.</td></tr>
+                    <tr><td>Loss no baja desde el inicio</td><td>Learning rate muy bajo o pesos mal inicializados.</td><td>Aumentar LR, cambiar inicialización (He, Xavier).</td></tr>
+                </tbody>
+            </table>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- TABLA PRESENCIA -->
+        <h2>PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Tema</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>McCulloch-Pitts / Historia RNA</td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Perceptrón de Rosenblatt</td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>MLP / Backpropagation</td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Definición Deep Learning</td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td></tr>
+                <tr><td>Estructura neurona (pesos, bias)</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Funciones de activación (ReLU, Sigmoid…)</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>CNN</td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td></tr>
+                <tr><td>RNN / LSTM / GRU</td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Transformers / LLMs</td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Autoencoders / GANs</td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Funciones de pérdida / Optimizadores</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Métricas de validación DL</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Curvas de entrenamiento / Overfitting</td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note">● = 1-2 archivos &nbsp;·&nbsp; ●● = 3-5 archivos &nbsp;·&nbsp; ●●● = 6+ archivos &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

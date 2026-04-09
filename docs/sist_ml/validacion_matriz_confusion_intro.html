@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducción a la matriz de confusión en Machine Learning: Análisis detallado de aciertos y errores en modelos de clasificación.">
+    <meta name="keywords" content="Matriz de Confusión, TP, TN, FP, FN, Evaluación ML, Clasificación, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.4 Matriz de Confusión | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Matriz de Confusión</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.4. Matriz de Confusión</h1>
+            <p class="subtitle">El mapa detallado de aciertos y errores de tu modelo.</p>
+        </section>
+
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="color-secondary">¿Qué es una Matriz de Confusión?</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    La matriz de confusión es una herramienta fundamental para evaluar modelos de clasificación más allá de una única métrica agregada. 
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    Su foco está en entender qué está haciendo realmente el modelo en términos de aciertos y errores. No se trata solo de saber si el modelo acierta mucho o poco, sino de <strong>identificar qué tipo de errores comete</strong>, ya que en el mundo real no todos los fallos tienen el mismo impacto ni el mismo coste.
+                </p>
+            </div>
+        </section>
+
+        <!-- Componentes Visual -->
+        <section class="section">
+            <h2 class="color-primary">Estructura Formal de la Matriz</h2>
+            <p>La matriz organiza las predicciones frente a los valores reales, permitiendo visualizar no solo el acierto global, sino la distribución cruzada del error:</p>
+            
+            <div class="table-container mt-4">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th colspan="2" rowspan="2"></th>
+                            <th colspan="2" style="text-align: center; border-bottom: 2px solid var(--color-primary);">PREDICCIÓN DEL MODELO</th>
+                        </tr>
+                        <tr>
+                            <th style="background: #fdf2f2;">Positivo (P)</th>
+                            <th style="background: #fdf2f2;">Negativo (N)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg); border-right: 2px solid var(--color-secondary);">VALOR REAL</th>
+                            <th style="background: #f0f9ff;">Positivo (P)</th>
+                            <td style="background: #e6fffa; text-align: center;"><strong>Verdadero Positivo (TP)</strong><br><small>Acierto</small></td>
+                            <td style="text-align: center;"><strong>Falso Negativo (FN)</strong><br><small>Error Tipo II</small></td>
+                        </tr>
+                        <tr>
+                            <th style="background: #f0f9ff;">Negativo (N)</th>
+                            <td style="text-align: center;"><strong>Falso Positivo (FP)</strong><br><small>Error Tipo I</small></td>
+                            <td style="background: #e6fffa; text-align: center;"><strong>Verdadero Negativo (TN)</strong><br><small>Acierto</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid-features mt-4">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">✓ Verdaderos (TP / TN)</h4>
+                    <p>Cuando la predicción coincide con la realidad. Son los aciertos del modelo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">✗ Falsos (FP / FN)</h4>
+                    <p>Cuando el modelo se equivoca. Es vital distinguir entre una falsa alarma (FP) y un caso omitido (FN).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    El análisis de la matriz de confusión es el paso previo necesario para calcular métricas más avanzadas como la <strong>Precisión</strong>, el <strong>Recall</strong> o el <strong>F1-Score</strong>. Sin entender la matriz, es imposible interpretar correctamente el rendimiento en problemas desbalanceados.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

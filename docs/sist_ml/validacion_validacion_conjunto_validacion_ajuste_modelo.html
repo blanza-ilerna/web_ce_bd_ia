@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Detalles sobre el conjunto de validación y el ajuste de modelos: Hiperparámetros, proporciones de datos y el flujo de trabajo Train-Val-Test.">
+    <meta name="keywords" content="Validación, Hiperparámetros, Model Tuning, Train-Val-Test, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.3.1 Conjunto de Validación y Ajuste | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Conjunto de Validación y Ajuste</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.3.1 Conjunto de Validación y Ajuste</h1>
+            <p class="subtitle">Decisiones maestras: el rol de la validación en la optimización.</p>
+        </section>
+
+        <!-- Concepto Central -->
+        <section class="section">
+            <h2 class="color-secondary">El Rol del Dataset de Validación</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    El conjunto de validación es un subconjunto de datos separado del entrenamiento que se utiliza para <strong>ajustar el modelo en un sentido amplio</strong>.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    Su función no es entrenar parámetros internos (como los pesos), sino permitirnos tomar decisiones sobre su configuración: <strong>hiperparámetros</strong>, algoritmos, arquitecturas o transformaciones. A diferencia de los parámetros, los hiperparámetros se fijan antes del entrenamiento y la validación es el juez que nos dice cuáles son los mejores.
+                </p>
+            </div>
+        </section>
+
+        <!-- Comparativa de Conjuntos -->
+        <section class="section">
+            <h2 class="color-primary">Diferencias Críticas y Flujo de Datos</h2>
+            
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">🏋️ Entrenamiento (Train)</h4>
+                <p>Ajusta los <strong>parámetros internos</strong> (pesos, reglas). Es donde el modelo "aprende" realmente.</p>
+            </div>
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">🧪 Validación (Val)</h4>
+                <p>Evalúa configuraciones externas (<strong>hiperparámetros</strong>). Influye de forma <strong>indirecta</strong> en el modelo al actuar como guía de optimización.</p>
+            </div>
+            <div class="feature-card ani mb-3">
+                <h4 class="color-ml">🏁 Test (Prueba Final)</h4>
+                <p>Evaluación final e <strong>imparcial</strong>. No influye en el proceso de construcción y solo se usa una vez al final.</p>
+            </div>
+        </section>
+
+        <!-- Estrategia de Proporciones -->
+        <section class="section">
+            <h2 class="color-secondary">Proporciones y Estrategia</h2>
+            <div class="grid-2-cols mt-4">
+                <div class="highlight-box primary">
+                    <p class="title">Reparto Estándar</p>
+                    <p>Es habitual reservar entre un <strong>15% y un 20%</strong> para validación. La clave es que sea lo suficientemente representativo sin degradar excesivamente el tamaño del entrenamiento.</p>
+                </div>
+                <div class="highlight-box secondary">
+                    <p class="title">Riesgo de Sobreajuste</p>
+                    <p>Si iteramos demasiadas veces ajustando el modelo basándonos en la validación, el modelo puede terminar "memorizando" accidentalmente este conjunto, introduciendo sesgo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- El Proceso Típico -->
+        <section class="section">
+            <h2 class="color-primary">Flujo de Trabajo Típico</h2>
+            <div class="step-container mt-4">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Iteración de Versiones</h4>
+                        <p>Se entrenan múltiples modelos con diferentes configuraciones (hiperparámetros).</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Selección en Validación</h4>
+                        <p>Se elige la configuración que obtiene mejores resultados en el conjunto de validación.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Certificación en Test</h4>
+                        <p>Una vez fijado el "ganador", se evalúa por primera y única vez en el test para obtener la métrica real.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    El conjunto de <strong>validación se utiliza para AJUSTAR</strong> (tuning) el modelo, mientras que el conjunto de <strong>test se utiliza para EVALUAR</strong> su rendimiento final. El error de validación nunca es imparcial, es una guía de desarrollo.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

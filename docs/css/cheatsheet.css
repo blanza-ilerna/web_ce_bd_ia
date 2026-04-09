@@ -1,0 +1,391 @@
+/* docs/css/cheatsheet.css */
+/* Hoja de estilos para cheatsheets de repaso — optimizada para impresión B/N */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;600;700&display=swap');
+
+/* ─────────────────────────────────────────────
+   VARIABLES
+───────────────────────────────────────────── */
+:root {
+    /* Colores base */
+    --text-main:   #000000;
+    --text-muted:  #333333;
+    --text-light:  #555555;
+    --border-dark: #000000;
+    --border-mid:  #cccccc;
+    --border-dot:  #bbbbbb;
+    --bg-main:     #ffffff;
+    --bg-row-alt:  #f9f9f9;
+    --bg-cell-light:  #f5f5f5;
+    --bg-cell-mid:    #f0f0f0;
+    --bg-cell-dark:   #e8e8e8;
+    --bg-formula:  #fbfbfb;
+
+    /* Tags de asignaturas */
+    --tag-mia-bg:  #000000;
+    --tag-mia-fg:  #ffffff;
+    --tag-saa-bg:  #444444;
+    --tag-saa-fg:  #ffffff;
+    --tag-pia-bg:  #ffffff;
+    --tag-pia-fg:  #000000;
+    --tag-sbd-bg:  #222222;
+    --tag-sbd-fg:  #ffffff;
+    --tag-bda-bg:  #777777;
+    --tag-bda-fg:  #ffffff;
+}
+
+/* ─────────────────────────────────────────────
+   RESET GLOBAL
+───────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background: var(--bg-main);
+    line-height: 1.4;
+    font-size: 11pt;
+    padding: 20px;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER ILERNA (barra superior web)
+───────────────────────────────────────────── */
+.cs-header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    margin: -20px -20px 20px -20px;
+    padding: 0 20px;
+}
+
+.cs-header-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0.75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cs-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+}
+
+.cs-logo img {
+    height: 36px;
+    width: auto;
+}
+
+.cs-logo-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.cs-logo-text span {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+.cs-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ─────────────────────────────────────────────
+   FOOTER ILERNA
+───────────────────────────────────────────── */
+.cs-footer {
+    max-width: 1000px;
+    margin: 2.5rem auto 1rem;
+    text-align: center;
+    font-size: 9pt;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-mid);
+    padding-top: 1rem;
+}
+
+.cs-footer strong {
+    display: block;
+    font-size: 11pt;
+    color: var(--text-main);
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.cs-footer a {
+    color: var(--text-main);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   CONTENEDOR PRINCIPAL
+───────────────────────────────────────────── */
+.cheatsheet-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.cs-title-block {
+    border-bottom: 2px solid var(--border-dark);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+}
+
+/* ─────────────────────────────────────────────
+   TIPOGRAFÍA
+───────────────────────────────────────────── */
+h1 {
+    font-size: 19pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-dark);
+    padding-bottom: 3px;
+    padding-top: 8px;
+    margin-top: 1.2em;
+    margin-bottom: 10px;
+}
+
+h3 { font-size: 11pt; font-weight: 700; margin-top: 1em; margin-bottom: 6px; text-transform: uppercase; }
+h4 { font-size: 10pt; font-weight: 700; margin-bottom: 4px; }
+
+p {
+    margin-bottom: 0.4em;
+    color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────
+   GRIDS
+───────────────────────────────────────────── */
+.grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.grid-3col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* ─────────────────────────────────────────────
+   TABLAS
+───────────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    font-size: 9.5pt;
+}
+
+th, td {
+    border: 1px solid var(--border-dark);
+    padding: 5px 6px;
+    text-align: left;
+}
+
+th {
+    font-weight: 700;
+    background-color: var(--bg-row-alt);
+}
+
+/* Clases para celdas de la matriz de confusión */
+.td-no-border  { border: none !important; background-color: transparent !important; }
+.td-acierto    { background-color: var(--bg-cell-light); }
+.td-margen     { background-color: var(--bg-cell-mid); font-size: 9pt; }
+.td-margen-dk  { background-color: var(--bg-cell-dark); font-size: 9pt; }
+.td-center     { text-align: center; }
+
+/* ─────────────────────────────────────────────
+   FÓRMULAS Y CÓDIGO
+───────────────────────────────────────────── */
+code, .formula {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 9.5pt;
+    font-weight: 500;
+}
+
+.formula {
+    display: block;
+    margin: 6px 0 0 0;
+    padding: 4px 8px;
+    border-left: 3px solid var(--border-dark);
+    background-color: var(--bg-formula);
+}
+
+.formula + .formula {
+    margin-top: 3px;
+}
+
+/* ─────────────────────────────────────────────
+   TARJETAS DE MÉTRICAS
+───────────────────────────────────────────── */
+.metric-card {
+    border: 1px solid var(--border-dark);
+    padding: 10px;
+    break-inside: avoid;
+    border-radius: 3px;
+    margin-bottom: 0;
+}
+
+.metric-card.highlighted {
+    border-width: 2px;
+}
+
+.metric-title {
+    font-weight: 700;
+    font-size: 10.5pt;
+    display: block;
+    border-bottom: 1px dotted var(--border-dot);
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+}
+
+/* ─────────────────────────────────────────────
+   ETIQUETAS DE ASIGNATURAS
+───────────────────────────────────────────── */
+.subject-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dotted var(--border-dot);
+}
+
+.tag {
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 1px 6px;
+    border: 1px solid var(--border-dark);
+    border-radius: 2px;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 0.03em;
+}
+
+.tag-mia { background: var(--tag-mia-bg); color: var(--tag-mia-fg); }
+.tag-saa { background: var(--tag-saa-bg); color: var(--tag-saa-fg); }
+.tag-pia { background: var(--tag-pia-bg); color: var(--tag-pia-fg); }
+.tag-sbd { background: var(--tag-sbd-bg); color: var(--tag-sbd-fg); }
+.tag-bda { background: var(--tag-bda-bg); color: var(--tag-bda-fg); }
+
+/* ─────────────────────────────────────────────
+   TABLA RESUMEN DE PRESENCIA
+───────────────────────────────────────────── */
+.summary-table { font-size: 9pt; }
+.summary-table td, .summary-table th { text-align: center; padding: 5px 6px; }
+.summary-table td:first-child { text-align: left; font-weight: 600; }
+
+.dot-full::before  { content: "●●●"; }
+.dot-med::before   { content: "●●"; }
+.dot-low::before   { content: "●"; }
+.dot-none          { color: #aaa; }
+.dot-none::before  { content: "–"; }
+
+.legend-note {
+    font-size: 8pt;
+    margin-top: 5px;
+    color: var(--text-light);
+}
+
+/* ─────────────────────────────────────────────
+   UTILIDADES
+───────────────────────────────────────────── */
+hr {
+    margin: 1.5em 0;
+    border: 0;
+    border-top: 2px solid var(--border-dark);
+}
+
+.btn-print {
+    padding: 6px 14px;
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+    background: white;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 10pt;
+    transition: background 0.2s;
+}
+
+.btn-print:hover { background: #f0f0f0; }
+
+.back-link {
+    color: var(--text-main);
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 10pt;
+}
+
+/* ─────────────────────────────────────────────
+   IMPRESIÓN
+───────────────────────────────────────────── */
+@media print {
+    body {
+        padding: 0;
+        font-size: 10pt;
+    }
+
+    .no-print { display: none !important; }
+    .cs-header { display: none !important; }
+
+    .cs-footer {
+        border-top: 1px solid #000;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+    }
+
+    @page { margin: 1.5cm; }
+
+    .metric-card {
+        border-radius: 0;
+    }
+
+    th {
+        background-color: transparent !important;
+        border-bottom: 2px solid black !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .formula {
+        background-color: transparent !important;
+        border-left: 4px solid black;
+    }
+
+    /* Forzar colores en tags para impresión */
+    .tag-mia { background: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+    .tag-saa { background: #444 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+    .tag-sbd { background: #222 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+    .tag-bda { background: #777 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+    .td-acierto  { background-color: #f5f5f5 !important; -webkit-print-color-adjust: exact; }
+    .td-margen   { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; }
+    .td-margen-dk { background-color: #e8e8e8 !important; -webkit-print-color-adjust: exact; }
+}

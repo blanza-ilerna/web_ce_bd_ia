@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fundamentos matemáticos y conceptuales de la generalización en Machine Learning: Error empírico, Sesgo y Varianza.">
+    <meta name="keywords" content="Generalización, Bias, Variance, ML, Error Empírico, Overfitting, Underfitting">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Fundamentos de Generalización | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Fundamentos de Generalización</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Fundamentos de Generalización</h1>
+            <p class="subtitle">Desmontando la diferencia entre memorizar y aprender.</p>
+        </section>
+
+        <!-- Concepto Central: La Paradoja de la Memoria -->
+        <section class="section">
+            <h2 class="color-secondary">La Paradoja de la Memoria</h2>
+            <div class="card bg-light-gradient">
+                <p>
+                    La utilidad práctica de un modelo no reside en su capacidad de almacenamiento, sino en su
+                    <strong>capacidad de inferencia</strong>. No evaluamos qué tan bien recuerda el pasado (datos de
+                    entrenamiento), sino qué tan bien se comporta ante lo inédito.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    Matemáticamente, definimos la generalización como la brecha entre el <strong>error esperado</strong>
+                    sobre la distribución real de los datos y el <strong>error empírico</strong> calculado sobre nuestra
+                    muestra de entrenamiento.
+                </p>
+                <div class="formula-block">
+                    Eₚ[L(f(x), y)] ≈ (1/n) Σ L(f(xᵢ), yᵢ)
+                </div>
+                <p class="mt-4">
+                    Aquí reside el núcleo del problema: <strong>L</strong> (nuestra función de pérdida) aplicada al
+                    conjunto de entrenamiento es solo una <em>estimación empírica</em>, no la realidad. El modelo puede
+                    minimizar esta función sin haber aprendido la estructura subyacente, capturando simplemente
+                    fluctuaciones aleatorias de la muestra.
+                </p>
+            </div>
+        </section>
+
+        <!-- Análisis de los Errores -->
+        <section class="section">
+            <h2 class="color-primary">Anatomía del Error: Diagnóstico en Test</h2>
+            <p>La comparación entre el error observado en entrenamiento y en test nos permite diagnosticar la salud del
+                aprendizaje:</p>
+
+            <div class="grid-2-cols mt-4">
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Overfitting: El Espejismo de la Precisión</h4>
+                    <p>
+                        Ocurre cuando el modelo ajusta su <strong>capacidad de representación</strong> a detalles que
+                        son puro ruido o particularidades del dataset.
+                    </p>
+                    <ul class="list-small mt-2">
+                        <li><strong>Síntoma:</strong> Error de entrenamiento bajo vs. Error de test alto.</li>
+                        <li><strong>Causa Real:</strong> Desajuste entre la capacidad efectiva (demasiados parámetros) y
+                            la señal real disponible. El modelo tiene "demasiada libertad" para ajustarse al ruido.</li>
+                    </ul>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Underfitting: La Falta de Capacidad</h4>
+                    <p>
+                        El modelo no alcanza a capturar ni siquiera los patrones básicos de la relación entre variables.
+                    </p>
+                    <ul class="list-small mt-2">
+                        <li><strong>Síntoma:</strong> Error de entrenamiento y test altos y similares.</li>
+                        <li><strong>Causa Real:</strong> Modelos demasiado simples (ej. lineal para datos no-lineales),
+                            optimización fallida o regularización excesiva que "asfixia" el aprendizaje.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sesgo y Varianza: El Equilibrio de Poder -->
+        <section class="section">
+            <h2 class="color-secondary">El Dilema Sesgo-Varianza (Bias-Variance Tradeoff)</h2>
+            <p>Para entender la generalización a nivel profundo, debemos descomponer el error total en tres componentes
+                fundamentales:</p>
+
+            <div class="grid-features mt-4">
+                <div class="feature-card primary">
+                    <div class="icon">🎯</div>
+                    <h4 class="color-primary">Sesgo (Bias)</h4>
+                    <p>Representa el error sistemático introducido al asumir un modelo que no puede representar la
+                        verdadera función. Un modelo con alto bias es "testarudo": no cambiará sus predicciones erróneas
+                        aunque le demos datos infinitos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <div class="icon">📈</div>
+                    <h4 class="color-secondary">Varianza (Variance)</h4>
+                    <p>Mide cuánto varía el modelo si lo entrenamos con diferentes muestras del mismo problema. Un
+                        modelo con alta varianza es "sensible": pequeños cambios en los datos de entrenamiento resultan
+                        en modelos radicalmente distintos.</p>
+                </div>
+            </div>
+
+            <div class="formula-block">
+                Error Total = Sesgo² + Varianza + Ruido Irreducible
+            </div>
+
+            <p>
+                <strong>La relación no es trivial:</strong> Reducir el bias implica aumentar la complejidad, lo cual
+                dispara la varianza. El <strong>"Sweet Spot"</strong> es el punto óptimo de equilibrio donde la suma de
+                ambos se minimiza. Este punto no es fijo; depende de la complejidad intrínseca del problema y de la
+                calidad de los datos.
+            </p>
+        </section>
+
+        <!-- Curiosity Box: Ruido Irreducible -->
+        <section class="section">
+            <div class="curiosity-box">
+                <h4 class="mb-3">🛡️ El Límite de lo Posible: Ruido Irreducible</h4>
+                <p>
+                    Ningún modelo, por perfecto que sea, puede eliminar el <strong>ruido irreducible</strong>. Es la
+                    cota inferior de error causada por variables no medidas o azar puro en la recolección. El objetivo
+                    del científico de datos no es el error cero, sino alcanzar este límite minimizando la suma de sesgo
+                    y varianza mediante validación cruzada.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+            Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

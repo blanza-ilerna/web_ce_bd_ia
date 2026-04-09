@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Cheatsheet de Preprocesamiento de Datos - Limpieza, escalado, codificación, imputación y selección de features - iLERNA Repaso">
+    <title>Cheatsheet: Preprocesamiento de Datos — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Preprocesamiento y Feature Engineering</h1>
+            <p style="margin-top:6px; font-size:9pt;">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos IA &nbsp;
+                <span class="tag tag-saa">SAA</span> Sistemas Aprendizaje Automático &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA &nbsp;
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado
+            </p>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>A. PIPELINE DE PREPROCESAMIENTO — VISIÓN GENERAL</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">¿Por qué preprocesar?</span>
+            <p>Los modelos de ML aprenden de los datos: si los datos tienen errores, el modelo los aprende. <em>"Garbage
+                    in, garbage out."</em> El preprocesamiento transforma datos crudos en datos limpios, consistentes y
+                en la escala adecuada para que el modelo pueda aprender correctamente.</p>
+            <div class="formula">Datos Crudos → Limpieza → Transformación → Escalado → Feature Eng. → Modelo</div>
+            <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                    class="tag tag-sbd">SBD</span><span class="tag tag-bda">BDA</span></div>
+        </div>
+
+        <table style="margin-bottom:14px;">
+            <thead>
+                <tr>
+                    <th>Etapa</th>
+                    <th>Qué hace</th>
+                    <th>Técnicas</th>
+                    <th>En el temario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Inspección</strong></td>
+                    <td>Entender el dataset. Identificar problemas.</td>
+                    <td><code>df.info()</code>, <code>df.describe()</code>, <code>df.isnull().sum()</code>, histogramas.
+                    </td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2. Limpieza</strong></td>
+                    <td>Tratar valores nulos, duplicados y atípicos.</td>
+                    <td>Eliminación, imputación, winsorización, IQR.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span
+                            class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>3. Codificación</strong></td>
+                    <td>Convertir variables categóricas a numéricas.</td>
+                    <td>Label Encoding, One-Hot, Ordinal, Target Encoding.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>4. Escalado</strong></td>
+                    <td>Homogeneizar escalas de variables numéricas.</td>
+                    <td>MinMaxScaler, StandardScaler, RobustScaler.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>5. Feature Engineering</strong></td>
+                    <td>Crear o seleccionar las mejores variables.</td>
+                    <td>PCA, correlación, importancia, creación manual.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span
+                            class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>6. División</strong></td>
+                    <td>Separar Train / Validation / Test.</td>
+                    <td><code>train_test_split</code>, K-Fold, StratifiedKFold.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>B. VALORES NULOS Y DATOS FALTANTES</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Tipos de datos faltantes</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Siglas</th>
+                        <th>Descripción</th>
+                        <th>Estrategia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Missing Completely At Random</strong></td>
+                        <td>MCAR</td>
+                        <td>Ausencia completamente aleatoria. No relacionada con ninguna variable.</td>
+                        <td>Imputación simple o eliminación segura.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Missing At Random</strong></td>
+                        <td>MAR</td>
+                        <td>La ausencia depende de otras variables observables (no del propio valor).</td>
+                        <td>Imputación múltiple, modelos predictivos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Missing Not At Random</strong></td>
+                        <td>MNAR</td>
+                        <td>La ausencia depende del propio valor no observado. Ej: pacientes graves no responden
+                            encuesta.</td>
+                        <td>Modelado específico. No eliminar sin análisis.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                    class="tag tag-sbd">SBD</span></div>
+        </div>
+
+        <table style="margin-bottom:14px;">
+            <thead>
+                <tr>
+                    <th>Estrategia</th>
+                    <th>Cuándo</th>
+                    <th>Código Python</th>
+                    <th>Precaución</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Eliminar filas</strong></td>
+                    <td>Poco % de nulos (&lt;5%) y MCAR.</td>
+                    <td><code>df.dropna()</code></td>
+                    <td>Puede reducir el dataset significativamente.</td>
+                </tr>
+                <tr>
+                    <td><strong>Eliminar columnas</strong></td>
+                    <td>Columna con &gt;50% nulos.</td>
+                    <td><code>df.dropna(axis=1, thresh=0.5)</code></td>
+                    <td>Perder información potencialmente útil.</td>
+                </tr>
+                <tr>
+                    <td><strong>Imputar con Media</strong></td>
+                    <td>Variables numéricas continuas sin outliers.</td>
+                    <td><code>df.fillna(df.mean())</code></td>
+                    <td>Sensible a outliers. Distorsiona la distribución.</td>
+                </tr>
+                <tr>
+                    <td><strong>Imputar con Mediana</strong></td>
+                    <td>Variables numéricas con outliers.</td>
+                    <td><code>df.fillna(df.median())</code></td>
+                    <td>La más recomendada para datos numéricos asimétricos.</td>
+                </tr>
+                <tr>
+                    <td><strong>Imputar con Moda</strong></td>
+                    <td>Variables categóricas.</td>
+                    <td><code>df.fillna(df.mode()[0])</code></td>
+                    <td>Puede sobrerepresentar la categoría más frecuente.</td>
+                </tr>
+                <tr>
+                    <td><strong>Imputar con constante</strong></td>
+                    <td>Cuando el nulo tiene significado (ej: 0 = sin compras).</td>
+                    <td><code>df.fillna(0)</code> / <code>df.fillna('Unknown')</code></td>
+                    <td>Puede introducir sesgo si el nulo no es 0.</td>
+                </tr>
+                <tr>
+                    <td><strong>KNN Imputer</strong></td>
+                    <td>Pocos nulos, relación con otras variables.</td>
+                    <td><code>KNNImputer(n_neighbors=5)</code></td>
+                    <td>Costoso computacionalmente con datasets grandes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Imputación predictiva</strong></td>
+                    <td>MAR. Relación compleja con otras variables.</td>
+                    <td>Entrenar modelo con filas completas para predecir nulos.</td>
+                    <td>Riesgo de data leakage si no se hace con cuidado.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>C. VALORES ATÍPICOS (OUTLIERS)</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Detección de Outliers</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead>
+                        <tr>
+                            <th>Método</th>
+                            <th>Cuándo</th>
+                            <th>Fórmula / Código</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IQR (Intercuartílico)</strong></td>
+                            <td>Distribución no normal. General.</td>
+                            <td>Outlier si x &lt; Q1−1.5·IQR o x &gt; Q3+1.5·IQR</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Z-Score</strong></td>
+                            <td>Distribución aproximadamente normal.</td>
+                            <td>Outlier si |z| &gt; 3 &nbsp; (z = (x−μ)/σ)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Isolation Forest</strong></td>
+                            <td>Multivariante, sin distribución conocida.</td>
+                            <td><code>IsolationForest(contamination=0.05)</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Boxplot / Visualización</strong></td>
+                            <td>Exploración inicial siempre.</td>
+                            <td><code>df.boxplot()</code> / <code>sns.boxplot()</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                        class="tag tag-sbd">SBD</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Tratamiento de Outliers</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead>
+                        <tr>
+                            <th>Estrategia</th>
+                            <th>Descripción</th>
+                            <th>Cuándo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Eliminar</strong></td>
+                            <td>Borrar la fila con el outlier.</td>
+                            <td>Error de medición claro, pocos afectados.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Winsorización / Clipping</strong></td>
+                            <td>Sustituir por el límite (percentil 1/99).</td>
+                            <td>Valor de negocio válido pero extremo.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Imputar</strong></td>
+                            <td>Reemplazar por mediana/media.</td>
+                            <td>Outlier univariado de origen cuestionable.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transformación log</strong></td>
+                            <td>log(x) comprime la cola larga.</td>
+                            <td>Variables con distribución muy sesgada a derecha.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Robustizar el modelo</strong></td>
+                            <td>Usar algoritmos no sensibles (árboles).</td>
+                            <td>Outliers reales con significado de negocio.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.85em; margin-top:6px;"><strong>Regla:</strong> Entender primero el <em>por
+                        qué</em> del outlier antes de actuar. Un valor extremo puede ser información valiosa.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>D. ESCALADO DE VARIABLES NUMÉRICAS</h2>
+
+        <div class="metric-card" style="margin-bottom:10px;">
+            <span class="metric-title">¿Por qué escalar?</span>
+            <p>Algoritmos basados en distancias (KNN, SVM, K-Means) o en gradiente (redes neuronales, regresión
+                logística) son muy sensibles a la escala. Una variable en miles de euros domina sobre una en
+                centímetros. El escalado iguala la influencia de todas las variables.</p>
+            <p style="font-size:0.85em; margin-top:4px;"><strong>No necesitan escalado:</strong> Árboles de decisión,
+                Random Forest, XGBoost (son invariantes a la escala).</p>
+            <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <table style="margin-bottom:14px;">
+            <thead>
+                <tr>
+                    <th>Técnica</th>
+                    <th>Fórmula</th>
+                    <th>Rango</th>
+                    <th>Cuándo usarla</th>
+                    <th>Sensible a outliers</th>
+                    <th>Código sklearn</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Min-Max Scaling<br>(Normalización)</strong></td>
+                    <td><code>X' = (X−Xmin)/(Xmax−Xmin)</code></td>
+                    <td>[0, 1]</td>
+                    <td>Redes neuronales, Imágenes. Distribución no normal. Rango acotado necesario.</td>
+                    <td><strong>Sí</strong> — un outlier comprime todos los valores.</td>
+                    <td><code>MinMaxScaler()</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Standard Scaling<br>(Estandarización)</strong></td>
+                    <td><code>X' = (X−μ)/σ</code></td>
+                    <td>(−∞, +∞) media=0 σ=1</td>
+                    <td>Regresión, SVM, PCA, algoritmos que asumen normalidad. Más habitual en ML clásico.</td>
+                    <td><strong>Moderado</strong> — mejor que Min-Max pero no robusto.</td>
+                    <td><code>StandardScaler()</code></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Robust Scaling</strong></td>
+                    <td><code>X' = (X−Q2)/(Q3−Q1)</code></td>
+                    <td>Sin límite</td>
+                    <td>Dataset con muchos outliers que no puedes eliminar. Usa la mediana (Q2) y el IQR en vez de
+                        media/std.</td>
+                    <td><strong>No</strong> — diseñado para ser robusto a extremos.</td>
+                    <td><code>RobustScaler()</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Log Transform</strong></td>
+                    <td><code>X' = log(X+1)</code></td>
+                    <td>(−∞, +∞)</td>
+                    <td>Variables muy sesgadas a la derecha (precios, salarios, ingresos). Aproxima a normal.</td>
+                    <td><strong>No aplicable</strong> — es transformación, no escalado.</td>
+                    <td><code>np.log1p(X)</code></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Power Transform<br>(Box-Cox / Yeo-Johnson)</strong></td>
+                    <td>Transformación paramétrica que maximiza normalidad.</td>
+                    <td>Variable</td>
+                    <td>Cuando se necesita distribución normal y log no es suficiente. Solo valores positivos (Box-Cox).
+                    </td>
+                    <td>Bajo</td>
+                    <td><code>PowerTransformer()</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- REGLA CLAVE -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Regla de Oro: Fit solo en Training, Transform en todo</span>
+            <div class="formula">scaler.fit(X_train) → scaler.transform(X_train) → scaler.transform(X_test)</div>
+            <p style="font-size:0.9em; margin-top:6px;">Nunca hacer <code>fit_transform(X_completo)</code> antes de
+                dividir: introduce <strong>data leakage</strong>. El escalador debe aprender únicamente los parámetros
+                del Training Set y aplicarlos al Test tal cual.</p>
+            <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>E. CODIFICACIÓN DE VARIABLES CATEGÓRICAS</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Técnica</th>
+                    <th>Tipo de variable</th>
+                    <th>Cuándo</th>
+                    <th>Código Python</th>
+                    <th>Problema</th>
+                    <th>En el temario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Label Encoding</strong></td>
+                    <td>Ordinal (con orden real)</td>
+                    <td>Categorías con jerarquía válida: Básico&lt;Medio&lt;Avanzado. Árboles de decisión.</td>
+                    <td><code>LabelEncoder()</code></td>
+                    <td>Introduce orden artificial en nominales. <strong>No usar con variables nominales.</strong></td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>One-Hot Encoding</strong></td>
+                    <td>Nominal (sin orden)</td>
+                    <td>Pocas categorías (&lt;10–15). Estándar para modelos lineales y redes neuronales.</td>
+                    <td><code>pd.get_dummies(df, drop_first=True)</code></td>
+                    <td>Explosión dimensional con muchas categorías. Trampa de variable dummy (usar
+                        <code>drop_first=True</code>).</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Ordinal Encoding</strong></td>
+                    <td>Ordinal</td>
+                    <td>Categorías con orden definido. Similar a Label pero con mapeo manual explícito.</td>
+                    <td><code>OrdinalEncoder(categories=[['S','M','L','XL']])</code></td>
+                    <td>Requiere saber el orden de antemano.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Target Encoding</strong></td>
+                    <td>Nominal alta cardinalidad</td>
+                    <td>Reemplaza categoría por la media del target. Muy eficaz para variables con muchas categorías.
+                    </td>
+                    <td><code>TargetEncoder()</code> (sklearn 1.3+)</td>
+                    <td>Riesgo de data leakage si se aplica antes de dividir. Riesgo de overfitting.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Binary Encoding</strong></td>
+                    <td>Nominal 10–100 categorías</td>
+                    <td>Codifica categoría como número → bits. 100 categorías = solo 7 columnas binarias.</td>
+                    <td><code>ce.BinaryEncoder()</code></td>
+                    <td>Menos interpretable. Depende de librería <code>category_encoders</code>.</td>
+                    <td><span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Frequency Encoding</strong></td>
+                    <td>Nominal alta cardinalidad</td>
+                    <td>Reemplaza categoría por su frecuencia en el dataset. Captura la rareza de categorías.</td>
+                    <td><code>df['col'].map(df['col'].value_counts(normalize=True))</code></td>
+                    <td>Puede perder información si dos categorías tienen la misma frecuencia.</td>
+                    <td><span class="tag tag-saa">SAA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- GUÍA RÁPIDA CARDINALIDAD -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Guía Rápida — ¿Qué Encoding usar?</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Técnica recomendada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Variable con orden natural (talla S/M/L)</td>
+                        <td><strong>Ordinal Encoding</strong> con mapeo explícito.</td>
+                    </tr>
+                    <tr>
+                        <td>Nominal con &lt;10 categorías + modelo lineal/red neuronal</td>
+                        <td><strong>One-Hot Encoding</strong> con <code>drop_first=True</code>.</td>
+                    </tr>
+                    <tr>
+                        <td>Nominal con &lt;10 categorías + árbol/bosque</td>
+                        <td><strong>Label Encoding</strong> es suficiente.</td>
+                    </tr>
+                    <tr>
+                        <td>Nominal con 10–100 categorías</td>
+                        <td><strong>Binary Encoding</strong> o <strong>Target Encoding</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td>Nominal con &gt;100 categorías (códigos postales, IDs)</td>
+                        <td><strong>Frequency / Hashing Encoding</strong> o embeddings.</td>
+                    </tr>
+                    <tr>
+                        <td>Alta cardinalidad + target bien definido</td>
+                        <td><strong>Target Encoding</strong> con validación cruzada para evitar leakage.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>F. SELECCIÓN Y CREACIÓN DE VARIABLES (FEATURE ENGINEERING)</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Selección de Variables (Feature Selection)</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead>
+                        <tr>
+                            <th>Método</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Correlación de Pearson</strong></td>
+                            <td>Filtro</td>
+                            <td>Elimina variables con correlación &gt;0.9 entre sí (multicolinealidad) o &lt;0.05 con el
+                                target.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chi-cuadrado (χ²)</strong></td>
+                            <td>Filtro</td>
+                            <td>Para variables categóricas vs categóricas. Mide dependencia estadística.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Importancia (Random Forest)</strong></td>
+                            <td>Wrapper/Embedded</td>
+                            <td><code>feature_importances_</code>. Rankea según cuánto reduce la impureza en árboles.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>RFE (Recursive Feature Elimination)</strong></td>
+                            <td>Wrapper</td>
+                            <td>Elimina variables de forma recursiva entrenando el modelo. Lento pero preciso.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LASSO (L1)</strong></td>
+                            <td>Embedded</td>
+                            <td>Penaliza coeficientes → los irrelevantes se vuelven 0. Selección automática.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PCA</strong></td>
+                            <td>Reducción dim.</td>
+                            <td>Crea nuevas variables no correlacionadas que maximizan la varianza. Pierde
+                                interpretabilidad.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                        class="tag tag-sbd">SBD</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Creación de Variables (Feature Creation)</span>
+                <table style="font-size:9pt; margin-top:4px;">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Interacciones</strong></td>
+                            <td>Multiplicar o combinar dos variables.</td>
+                            <td><code>precio_m2 = precio / metros</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Extracción temporal</strong></td>
+                            <td>Extraer partes de fechas.</td>
+                            <td>Año, mes, día de la semana, hora, festivo.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transformaciones</strong></td>
+                            <td>Aplicar funciones matemáticas.</td>
+                            <td>log(salario), edad², distancia_centro²</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Agregaciones</strong></td>
+                            <td>Estadísticas por grupo.</td>
+                            <td>Media de ventas por cliente, total por tienda.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Binning / Discretización</strong></td>
+                            <td>Convertir continua en tramos.</td>
+                            <td>Edad: 0–18, 18–35, 35–65, 65+</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ratios y diferencias</strong></td>
+                            <td>Crear variables relativas.</td>
+                            <td>tasa_morosidad = impagados / total_prestamos</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                        class="tag tag-bda">BDA</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>G. DATOS DESBALANCEADOS — CLASES MINORITARIAS</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">¿Qué es el desequilibrio de clases?</span>
+            <p>Cuando una clase tiene muchas más muestras que otra. Ej: 99% transacciones normales vs 1% fraudes. El
+                modelo aprende a predecir siempre la clase mayoritaria → 99% accuracy pero 0% recall en fraudes.
+                <strong>La accuracy engaña.</strong></p>
+            <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                    class="tag tag-mia">MIA</span><span class="tag tag-bda">BDA</span></div>
+        </div>
+
+        <table style="margin-bottom:14px;">
+            <thead>
+                <tr>
+                    <th>Técnica</th>
+                    <th>Estrategia</th>
+                    <th>Descripción</th>
+                    <th>Cuándo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Oversampling</strong></td>
+                    <td>Aumentar clase minoritaria</td>
+                    <td>Duplicar muestras de la clase minoritaria aleatoriamente.</td>
+                    <td>Pocas muestras. Riesgo de overfitting si es naive.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>SMOTE</strong></td>
+                    <td>Síntesis de muestras</td>
+                    <td>Genera muestras sintéticas interpolando entre vecinos de la clase minoritaria (no duplicados
+                        exactos).</td>
+                    <td>El más usado. Mejor que oversampling simple. Solo en Training.</td>
+                </tr>
+                <tr>
+                    <td><strong>Undersampling</strong></td>
+                    <td>Reducir clase mayoritaria</td>
+                    <td>Eliminar muestras aleatoriamente de la clase con más datos.</td>
+                    <td>Dataset muy grande. Riesgo de perder información importante.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Class Weights</strong></td>
+                    <td>Penalizar modelo</td>
+                    <td>Asignar mayor peso al error en la clase minoritaria durante el entrenamiento.</td>
+                    <td>Fácil de implementar: <code>class_weight='balanced'</code>. Sin modificar datos.</td>
+                </tr>
+                <tr>
+                    <td><strong>Umbral de clasificación</strong></td>
+                    <td>Post-procesado</td>
+                    <td>Bajar el umbral de 0.5 a 0.3 para predecir positivo. Aumenta recall a costa de precisión.</td>
+                    <td>Cuando los FN son más caros que los FP (diagnóstico médico).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Stratified K-Fold</strong></td>
+                    <td>Evaluación</td>
+                    <td>Mantiene proporción de clases en cada fold. Evaluación fiable con clases desbalanceadas.</td>
+                    <td>Siempre que se use validación cruzada con clases desbalanceadas.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <h2>H. SESGO Y VARIANZA — DIAGNÓSTICO DEL MODELO</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Alto Sesgo (Underfitting)</span>
+                <p>El modelo es demasiado simple para capturar los patrones del problema.</p>
+                <p style="font-size:0.85em;"><strong>Síntoma:</strong> Error alto en Train Y en Val.</p>
+                <p style="font-size:0.85em;"><strong>Soluciones:</strong> Modelo más complejo, más features, menos
+                    regularización, más epochs (DL).</p>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Alta Varianza (Overfitting)</span>
+                <p>El modelo memoriza el Training Set pero no generaliza.</p>
+                <p style="font-size:0.85em;"><strong>Síntoma:</strong> Error bajo en Train, alto en Val.</p>
+                <p style="font-size:0.85em;"><strong>Soluciones:</strong> Más datos, regularización L1/L2, Dropout,
+                    Cross-Validation, Data Augmentation, modelo más simple.</p>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Equilibrio Sesgo-Varianza</span>
+                <p>El balance óptimo donde el error de generalización es mínimo.</p>
+                <p style="font-size:0.85em;"><strong>Síntoma:</strong> Error similar en Train y Val. Modelo generaliza
+                    bien.</p>
+                <div class="formula">Error = Sesgo² + Varianza + Ruido</div>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span
+                        class="tag tag-mia">MIA</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- TABLA PRESENCIA -->
+        <h2>PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Tema</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pipeline de preprocesamiento</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-low"></td>
+                </tr>
+                <tr>
+                    <td>Tipos de datos faltantes (MCAR/MAR/MNAR)</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Imputación (media, mediana, KNN…)</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Outliers / IQR / Z-Score</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Min-Max / Standard / Robust Scaling</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-none"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Log / Power Transform</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-none"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>One-Hot / Label / Ordinal Encoding</td>
+                    <td class="dot-low"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Target / Binary / Frequency Encoding</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-none"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Feature Selection (correlación, RFE, LASSO)</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Feature Engineering (interacciones, temporal)</td>
+                    <td class="dot-none"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-low"></td>
+                    <td class="dot-med"></td>
+                </tr>
+                <tr>
+                    <td>Clases desbalanceadas / SMOTE</td>
+                    <td class="dot-low"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-none"></td>
+                    <td class="dot-none"></td>
+                </tr>
+                <tr>
+                    <td>Sesgo vs Varianza (diagnóstico modelo)</td>
+                    <td class="dot-low"></td>
+                    <td class="dot-full"></td>
+                    <td class="dot-med"></td>
+                    <td class="dot-none"></td>
+                    <td class="dot-none"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="legend-note">● = 1-2 archivos &nbsp;·&nbsp; ●● = 3-5 archivos &nbsp;·&nbsp; ●●● = 6+ archivos
+            &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

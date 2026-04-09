@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Problemas y malas prácticas en la evaluación de modelos de Machine Learning: Data Leakage, errores de preprocesamiento y sesgos de selección.">
+    <meta name="keywords" content="Data Leakage, Malas Prácticas ML, Sesgo, Evaluación, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.2.2 Problemas y Malas Prácticas | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Problemas y Malas Prácticas</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.2.2 Problemas y Malas Prácticas</h1>
+            <p class="subtitle">Evitando el autoengaño: fugas de datos y errores de concepto.</p>
+        </section>
+
+        <!-- Data Leakage -->
+        <section class="section">
+            <h2 class="color-secondary">El gran enemigo: Data Leakage</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    El principal riesgo asociado al uso incorrecto del conjunto de test es el <strong>Data Leakage</strong> (fuga de datos). Consiste en la filtración de información del test hacia el proceso de entrenamiento o validación.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    Este fenómeno puede ser evidente o sutil, pero siempre tiene el mismo efecto: el modelo parece rendir mucho mejor de lo que realmente lo hará ante datos nuevos. Al romper la separación sagrada entre entrenamiento y evaluación, <strong>las métricas dejan de ser fiables</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Errores en Transformaciones -->
+        <section class="section">
+            <h2 class="color-primary">Errores comunes en el Preprocesamiento</h2>
+            <p>Muchos errores técnicos esconden fallos conceptuales graves sobre la independencia de los datos.</p>
+            
+            <div class="grid-features mt-4">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">❌ Mala Práctica: Global Scaler</h4>
+                    <p>Aplicar transformaciones (normalización, estandarización) sobre <strong>todo el dataset</strong> antes de dividirlo. Los parámetros de escala contienen información del test.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">✅ Buena Práctica: Fit only Train</h4>
+                    <p>Ajustar el escalador (fit) <strong>solo con el entrenamiento</strong>. Luego, aplicar esa misma escala (transform) al test. Así se mantiene el test "ciego".</p>
+                </div>
+            </div>
+
+            <div class="highlight-box primary mt-4">
+                <p class="title">Ejemplo: Selección de Variables</p>
+                <p>Si eliges las variables más correlacionadas con el objetivo usando todos los datos antes del split, estás incorporando conocimiento del futuro (del test) en la construcción del modelo. El resultado es un modelo artificialmente preciso.</p>
+            </div>
+        </section>
+
+        <!-- Sesgos de Evaluación -->
+        <section class="section">
+            <h2 class="color-secondary">Sesgos en la Toma de Decisiones</h2>
+            
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">🏆 El Test como Árbitro de Modelos</h4>
+                <p>Evaluar varios modelos sobre el test y elegir el mejor. Esto convierte al test en un "pseudo-conjunto de validación". La selección introduce sesgo porque el test influye indirectamente en la elección final.</p>
+            </div>
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">🔄 Reutilización de Resultados</h4>
+                <p>Modificar el modelo porque el resultado en test ha sido malo y volver a probar con el mismo test. El modelo acaba adaptándose a las particularidades de ese conjunto concreto, perdiendo su valor referencial.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    El error más importante es no entender que el conjunto de test es <strong>exclusivamente para evaluar</strong>, no para construir. Si se usa el test para ajustar parámetros o comparar arquitecturas, el procedimiento metodológico es incorrecto.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

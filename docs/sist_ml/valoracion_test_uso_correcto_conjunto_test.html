@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Guía sobre el uso correcto del conjunto de test en Machine Learning: Evitando el sesgo optimista y garantizando la independencia de la evaluación.">
+    <meta name="keywords" content="Test Set, Validación, Independencia, Sesgo Optimista, Machine Learning, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.2.1 Uso Correcto del Conjunto de Test | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Uso Correcto del Conjunto de Test</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.2.1 Uso Correcto del Conjunto de Test</h1>
+            <p class="subtitle">Blindando la objetividad: por qué el test es sagrado.</p>
+        </section>
+
+        <!-- Filosofía del Test -->
+        <section class="section">
+            <h2 class="color-secondary">¿Qué es realmente el conjunto de Test?</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    El conjunto de test es un subconjunto de datos que se reserva <strong>exclusivamente</strong> para evaluar el modelo una vez finalizado todo el proceso de entrenamiento y ajuste.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    No es un dataset adicional para experimentar, ni para mejorar el modelo, sino una aproximación a datos reales no vistos. Su objetivo es estimar el rendimiento del modelo en condiciones similares a producción, donde los datos que llegan no han tenido ninguna influencia en la creación del modelo.
+                </p>
+            </div>
+        </section>
+
+        <!-- Regla de Oro -->
+        <section class="section">
+            <h2 class="color-primary">La Regla de la Independencia</h2>
+            <p>La regla fundamental que define su uso es que el modelo no debe "ver" el conjunto de test en ningún momento antes de la evaluación final.</p>
+            
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">🚫 Sin Entrenamiento</h4>
+                <p>Es la norma más obvia: los datos de test no deben alimentar el algoritmo de optimización.</p>
+            </div>
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">⚖️ Sin Decisiones</h4>
+                <p>No se deben utilizar para tomar decisiones sobre hiperparámetros, selección de variables o arquitectura. Cualquier decisión basada en el test rompe la independencia necesaria.</p>
+            </div>
+            <div class="feature-card ani mb-3">
+                <h4 class="color-ml">📉 Evaluación Invalida</h4>
+                <p>Si la independencia se rompe, la evaluación deja de ser válida y el rendimiento medido será engañosamente alto (optimista).</p>
+            </div>
+        </section>
+
+        <!-- El Flujo Correcto -->
+        <section class="section">
+            <h2 class="color-secondary">El Flujo Estándar de Trabajo</h2>
+            <p>La separación de datos no es arbitraria; responde a la necesidad de evitar la optimización indirecta.</p>
+            
+            <div class="step-container mt-4">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Entrenamiento (Train)</h4>
+                        <p>Se utiliza para ajustar los parámetros internos del modelo (pesos, reglas, etc.).</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Validación (Val)</h4>
+                        <p>Se usa para elegir la mejor configuración y evitar el sobreajuste. Aquí es donde se toman las decisiones.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Evaluación Final (Test)</h4>
+                        <p>Queda completamente aislado hasta el final. Se usa una única vez para el diagnóstico definitivo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Riesgo de Sesgo -->
+        <section class="section">
+            <h2 class="color-primary">El Peligro del Segundo Uso</h2>
+            <div class="card">
+                <p>
+                    Si se evalúa el modelo, se observan los resultados y se realizan cambios para mejorar el rendimiento sobre ese mismo test, <strong>se está introduciendo un sesgo</strong>. 
+                </p>
+                <div class="important-note mt-3">
+                    <p>Aunque el modelo no haya sido entrenado directamente con esos datos, el proceso iterativo humano hace que el sistema se adapte a ese conjunto concreto. La estimación deja de ser fiable y se vuelve una versión idealizada de la realidad.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    Recuerda siempre: <strong>Cualquier uso del conjunto de test para ajustar o comparar modelos se considera un error metodológico grave.</strong> Solo sirve para la distribución de datos del problema final.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

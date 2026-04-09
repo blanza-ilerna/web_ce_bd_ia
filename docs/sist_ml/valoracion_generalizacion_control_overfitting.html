@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Técnicas avanzadas para el control del overfitting: Regularización L1/L2, Dropout, Early Stopping y Data Augmentation.">
+    <meta name="keywords" content="Overfitting, Regularización, L1, L2, Lasso, Ridge, Dropout, Early Stopping, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.1.2 Control del Overfitting | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Control del Overfitting</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">Control del Overfitting</h1>
+            <p class="subtitle">Estrategias para blindar la generalización del modelo.</p>
+        </section>
+
+        <!-- Filosofía del Control -->
+        <section class="section">
+            <h2 class="color-secondary">¿Qué es el control del overfitting?</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    Controlar el overfitting no consiste en “hacer que el modelo sea peor”, sino en <strong>impedir que aprenda patrones espurios</strong> que carecen de valor fuera del conjunto de entrenamiento.
+                </p>
+                <p class="mt-3">
+                    El objetivo técnico es reducir la <strong>varianza</strong> sin disparar excesivamente el <strong>sesgo</strong>. Buscamos modelos que sean "suaves" y robustos, no modelos que memoricen cada fluctuación aleatoria de los datos.
+                </p>
+            </div>
+        </section>
+
+        <!-- 1. Regularización -->
+        <section class="section">
+            <h2 class="color-secondary">1. Regularización: Penalizando la Complejidad</h2>
+            <p>La regularización modifica la función de pérdida añadiendo un castigo por tener parámetros demasiado grandes o numerosos:</p>
+            
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">L2 (Ridge): Pesos Pequeños</h4>
+                <p>Añade la suma de los cuadrados de los parámetros (<strong>λ ∑w²</strong>). Esto obliga a que los pesos se mantengan pequeños pero rara vez llegan a cero. Suaviza el modelo y reduce su sensibilidad ante outliers o ruidos específicos.</p>
+            </div>
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">L1 (Lasso): Selección de Variables</h4>
+                <p>Añade la suma de los valores absolutos (<strong>λ ∑|w|</strong>). Tiene la propiedad de forzar algunos pesos exactamente a <strong>cero</strong>, simplificando el modelo e induciendo esparicidad (Sparsity).</p>
+            </div>
+            <div class="feature-card ani mb-3">
+                <h4 class="color-primary">Elastic-Net: Híbrido L1+L2</h4>
+                <p>Combina penalizaciones L1 y L2 lineales bajo un parámetro de mezcla. Aprovecha la selección de L1 y la estabilidad de L2 en grupos de variables correlacionadas, ofreciendo un control superior.</p>
+            </div>
+        </section>
+
+        <!-- 2. Técnicas Estocásticas y Estructurales -->
+        <section class="section">
+            <h2 class="color-secondary">2. Dropout y Early Stopping</h2>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📉 Dropout</h4>
+                    <p>
+                        Desactivación aleatoria de neuronas durante el entrenamiento. Obliga a la red a no depender de combinaciones específicas de activaciones, forzando una <strong>representación distribuida</strong> del conocimiento y reduciendo la co-adaptación neurona-ruido.
+                    </p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🛑 Early Stopping</h4>
+                    <p>
+                        Consiste en monitorizar el error del conjunto de validación y detener el entrenamiento en el momento exacto en que este deja de mejorar, aunque el error de entrenamiento siga bajando. Es la forma más básica de <strong>regularización implícita</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Aumentando la Señal -->
+        <section class="section">
+            <h2 class="color-primary">3. Data Augmentation y Volumen de Datos</h2>
+            <div class="card">
+                <p>
+                    La forma más efectiva de reducir el overfitting siempre será <strong>aumentar el tamaño del dataset</strong>. A más datos, la estimación del riesgo es más certera y hay menos espacio para que el modelo "ajuste el ruido".
+                </p>
+                <div class="curiosity-box mt-4">
+                    <h4 class="mb-2">🎨 Data Augmentation</h4>
+                    <p>Genera nuevas muestras aplicando transformaciones que no alteran la categoría (rotación, brillo, ruido). No es magia: es una forma de aumentar la <strong>diversidad</strong> de la señal sin recolectar nuevos datos reales.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    Recuerda: <strong>L1 induce sparsity</strong> (ceros), lo cual es ideal para selección de características. <strong>L2 solo reduce magnitudes</strong>, manteniendo el modelo denso. Ambas usan un parámetro λ (lambda) para controlar la intensidad del castigo.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

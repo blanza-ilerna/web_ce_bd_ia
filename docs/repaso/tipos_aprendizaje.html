@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet de Tipos de Aprendizaje Automático - Módulo de Repaso iLERNA">
+    <title>Cheatsheet: Tipos de Aprendizaje — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tipos de Aprendizaje Automático</h1>
+            <p style="margin-top:6px; font-size:9pt;">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos IA &nbsp;
+                <span class="tag tag-saa">SAA</span> Sistemas Aprendizaje Automático &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA &nbsp;
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado
+            </p>
+        </div>
+
+        <!-- TABLA COMPARATIVA RÁPIDA -->
+        <div class="metric-card" style="margin-bottom:14px;">
+            <span class="metric-title">Comparativa General de los 3 Paradigmas</span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Supervisado</th>
+                        <th>No Supervisado</th>
+                        <th>Por Refuerzo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Datos</strong></td>
+                        <td>Etiquetados (X, y)</td>
+                        <td>Sin etiquetas (solo X)</td>
+                        <td>Sin etiquetas; señal = recompensa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Objetivo</strong></td>
+                        <td>Predecir salida conocida</td>
+                        <td>Descubrir estructura oculta</td>
+                        <td>Maximizar recompensa acumulada</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tipo de problema</strong></td>
+                        <td>Clasificación, Regresión</td>
+                        <td>Clustering, Reducción dimensionalidad, Anomalías</td>
+                        <td>Toma de decisiones secuencial</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evaluación</strong></td>
+                        <td>Accuracy, F1, RMSE…</td>
+                        <td>Silhouette, Inercia…</td>
+                        <td>Recompensa total / episodio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coste de datos</strong></td>
+                        <td>Alto (etiquetado manual)</td>
+                        <td>Bajo (datos crudos)</td>
+                        <td>Requiere mucho entrenamiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ejemplo típico</strong></td>
+                        <td>Spam / No spam con histórico</td>
+                        <td>Agrupar clientes sin categorías previas</td>
+                        <td>Agente jugando al ajedrez</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="subject-tags">
+                <span class="tag tag-mia">MIA</span>
+                <span class="tag tag-saa">SAA</span>
+                <span class="tag tag-pia">PIA</span>
+                <span class="tag tag-sbd">SBD</span>
+                <span class="tag tag-bda">BDA</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. APRENDIZAJE SUPERVISADO</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Definición</span>
+            <p>El algoritmo aprende de datos <strong>etiquetados</strong> (pares entrada–salida conocida). Aprende el patrón para predecirlo en datos nuevos sin etiquetar.</p>
+            <p style="font-size:0.9em;"><em>Analogía: "Un profesor que muestra los ejercicios con sus soluciones."</em></p>
+            <div class="formula">Proceso: Datos etiquetados → Entrenamiento → Modelo → Predicción en nuevos datos</div>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span class="tag tag-sbd">SBD</span><span class="tag tag-bda">BDA</span></div>
+        </div>
+
+        <!-- SUBCATEGORÍAS -->
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Clasificación — Salida: Categoría discreta</span>
+                <p>El modelo asigna cada instancia a una clase (binaria o multiclase). <br><em>Ej: Spam/No spam, Benigno/Maligno, Perro/Gato/Conejo.</em></p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Regresión — Salida: Valor numérico continuo</span>
+                <p>El modelo predice un número real.<br><em>Ej: Precio vivienda €285.000, Temperatura 24.5°C, Duración viaje 42 min.</em></p>
+            </div>
+        </div>
+
+        <!-- ALGORITMOS SUPERVISADO -->
+        <h3>Algoritmos de Clasificación</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Algoritmo</th><th>Idea clave</th><th>Cuándo usarlo</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Regresión Logística</strong></td>
+                    <td>Función sigmoide σ(z)=1/(1+e⁻ᶻ) → probabilidad 0-1. A pesar del nombre, <em>clasifica</em>.</td>
+                    <td>Datos linealmente separables. Diagnóstico, churn, crédito.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-mia">MIA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Árbol de Decisión</strong></td>
+                    <td>Serie de preguntas jerárquicas (if/else). Muy interpretable. Riesgo de overfitting.</td>
+                    <td>Aprobación préstamos, diagnóstico médico, segmentación.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>KNN (K-Nearest Neighbors)</strong></td>
+                    <td>Clasifica según mayoría de los K vecinos más cercanos. Sin entrenamiento explícito ("perezoso").</td>
+                    <td>Recomendaciones, reconocimiento de patrones. K impar evita empates.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>SVM (Support Vector Machine)</strong></td>
+                    <td>Busca el hiperplano que maximiza el margen entre clases. Kernels para no-lineal.</td>
+                    <td>Alta dimensionalidad (texto, bioinformática). Lento con datasets grandes.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Naive Bayes</strong></td>
+                    <td>Teorema de Bayes asumiendo independencia entre features. P(C|X)=P(X|C)·P(C)/P(X).</td>
+                    <td>Filtros de spam, NLP, clasificación de texto. Muy rápido, pocos datos.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Random Forest</strong></td>
+                    <td>Ensemble de N árboles → votación. Reduce overfitting (bagging). Mide importancia de features.</td>
+                    <td>Fraude, clasificación de clientes, enfermedades. Alta precisión general.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Gradient Boosting (XGBoost, LightGBM…)</strong></td>
+                    <td>Árboles secuenciales (boosting) que corrigen errores del anterior. Máxima precisión, lento.</td>
+                    <td>Competiciones de ML, datos tabulares complejos, predicción de riesgo.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Algoritmos de Regresión</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Algoritmo</th><th>Fórmula / Idea clave</th><th>Cuándo usarlo</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Regresión Lineal Simple / Múltiple</strong></td>
+                    <td><code>y = β₀ + β₁x₁ + … + βₙxₙ</code><br>Minimiza la suma de errores cuadráticos (OLS). Base de todo el resto.</td>
+                    <td>Precios inmobiliarios, pronóstico de ventas, salarios, tendencias.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Regresión Polinómica</strong></td>
+                    <td><code>y = β₀ + β₁x + β₂x² + β₃x³ + …</code><br>Añade potencias de X para capturar curvas. Cuidado con grado alto → overfitting.</td>
+                    <td>Trayectorias físicas, crecimiento poblacional, curvas no lineales suaves.</td>
+                    <td><span class="tag tag-saa">SAA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Ridge — Regularización L2</strong></td>
+                    <td><code>Coste = MSE + λΣβ²</code><br>Penaliza el cuadrado de los coeficientes. <strong>Los reduce pero NO los elimina.</strong> Bueno cuando todas las features son relevantes.</td>
+                    <td>Multicolinealidad. Muchas features correlacionadas. Cuando no quieres descartar ninguna.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Lasso — Regularización L1</strong></td>
+                    <td><code>Coste = MSE + λΣ|β|</code><br>Penaliza el valor absoluto. Puede llevar coeficientes a <strong>exactamente 0 → selección automática de features.</strong></td>
+                    <td>Cuando sospechas que pocas features son realmente relevantes (sparse). Feature selection implícita.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Elastic Net — L1 + L2</strong></td>
+                    <td><code>Coste = MSE + λ₁Σ|β| + λ₂Σβ²</code><br><strong>Combina Ridge y Lasso.</strong> Parámetro r controla el balance entre ambas penalizaciones. Más estable que Lasso solo.</td>
+                    <td>Datasets con muchas features y correlación entre ellas. Mejor generalización que Lasso o Ridge por separado.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>SVR (Support Vector Regression)</strong></td>
+                    <td>Versión de SVM para regresión. Define un margen de tolerancia ε alrededor de la predicción.</td>
+                    <td>Relaciones no lineales complejas. Robusto a outliers dentro del margen ε.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Random Forest Regressor</strong></td>
+                    <td>Ensemble de árboles de regresión. Promedia predicciones de N árboles. Reduce varianza.</td>
+                    <td>Alta precisión con relaciones complejas. Robusto a outliers. Datos tabulares.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Gradient Boosting Reg. (XGBoost…)</strong></td>
+                    <td>Árboles secuenciales que corrigen residuos del anterior. Minimiza función de pérdida personalizable (MSE, MAE…).</td>
+                    <td>Máxima precisión en datos tabulares. Competiciones. Predicción de demanda, precios.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="metric-card" style="margin-bottom:14px; font-size:9pt;">
+            <span class="metric-title">Comparativa Ridge vs Lasso vs Elastic Net</span>
+            <table style="font-size:9pt; margin-top:4px;">
+                <thead><tr><th>Aspecto</th><th>Ridge (L2)</th><th>Lasso (L1)</th><th>Elastic Net</th></tr></thead>
+                <tbody>
+                    <tr><td>Penalización</td><td>λΣβ²</td><td>λΣ|β|</td><td>λ₁Σ|β| + λ₂Σβ²</td></tr>
+                    <tr><td>¿Elimina features?</td><td>No (solo reduce)</td><td>Sí (a exactamente 0)</td><td>Sí, pero más estable</td></tr>
+                    <tr><td>Multicolinealidad</td><td>Maneja bien</td><td>Elige una, descarta otras</td><td>Agrupa correlacionadas</td></tr>
+                    <tr><td>Resultado</td><td>Coeficientes pequeños</td><td>Modelo sparse</td><td>Balance configurable</td></tr>
+                    <tr><td>Uso recomendado</td><td>Todas las features importan</td><td>Pocas features relevantes</td><td>Muchas features + correlación</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. APRENDIZAJE NO SUPERVISADO</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Definición</span>
+            <p>El algoritmo trabaja con datos <strong>sin etiquetas</strong>. Descubre por sí mismo la estructura, patrones y relaciones ocultas.</p>
+            <p style="font-size:0.9em;"><em>Analogía: "Un radar que descubre lo que no sabías que existía."</em></p>
+            <p>Se usa como <strong>preprocesamiento antes del supervisado</strong> (ej: reducir dimensiones con PCA antes de entrenar un clasificador).</p>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span><span class="tag tag-bda">BDA</span></div>
+        </div>
+
+        <!-- TRES FAMILIAS -->
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">1. Clustering (Agrupamiento)</span>
+                <p>Divide datos en grupos donde los elementos del mismo grupo son más similares entre sí que con los de otros.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">2. Reducción de Dimensionalidad</span>
+                <p>Reduce el número de variables preservando la mayor información posible. Útil para visualización y aceleración de modelos.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">3. Detección de Anomalías</span>
+                <p>Identifica puntos que se desvían del patrón normal ("lo raro"). Crítico en fraude, ciberseguridad y mantenimiento.</p>
+            </div>
+        </div>
+
+        <!-- ALGORITMOS NO SUPERVISADO -->
+        <h3>Algoritmos de Clustering</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Algoritmo</th><th>Idea clave</th><th>Ventaja / Limitación</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>K-Means</strong></td>
+                    <td>Asigna cada punto al centroide más cercano e itera hasta convergencia. Hay que especificar K. Usa el <em>método del codo</em> para elegir K.</td>
+                    <td>Rápido y escalable. Solo detecta clusters esféricos. Sensible a outliers.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>DBSCAN</strong></td>
+                    <td>Agrupa puntos por densidad. Parámetros: ε (radio) y MinPts. Etiqueta outliers como "ruido".</td>
+                    <td>No necesita K. Detecta formas arbitrarias y outliers. Sensible a ε y MinPts.</td>
+                    <td><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Hierarchical Clustering</strong></td>
+                    <td>Crea un árbol (dendrograma) de clusters. Aglomerativo (abajo→arriba) o divisivo.</td>
+                    <td>No requiere K fijo. Costoso computacionalmente en grandes datasets.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>GMM (Gaussian Mixture)</strong></td>
+                    <td>Modelado probabilístico: cada punto pertenece a cada cluster con cierta probabilidad.</td>
+                    <td>Clusters blandos (soft assignment). Más flexible que K-Means.</td>
+                    <td><span class="tag tag-saa">SAA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Reducción de Dimensionalidad y Anomalías</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Algoritmo</th><th>Tipo</th><th>Idea clave</th><th>En el temario</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>PCA</strong></td>
+                    <td>Reducción</td>
+                    <td>Proyección lineal a componentes principales (máxima varianza). Seleccionar componentes que expliquen 80-95% de varianza.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>t-SNE / UMAP</strong></td>
+                    <td>Reducción (visual.)</td>
+                    <td>Visualización de datos de alta dimensión en 2D/3D. UMAP es más rápido y escalable que t-SNE.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-pia">PIA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Isolation Forest</strong></td>
+                    <td>Anomalías</td>
+                    <td>Las anomalías se aíslan más rápido que los puntos normales con árboles aleatorios.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>One-Class SVM</strong></td>
+                    <td>Anomalías</td>
+                    <td>Aprende la frontera de los datos normales. Fuera de ella → anomalía.</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-sbd">SBD</span></td>
+                </tr>
+                <tr>
+                    <td><strong>LOF (Local Outlier Factor)</strong></td>
+                    <td>Anomalías</td>
+                    <td>Compara densidad local con vecinos. Detecta outliers locales (no solo globales).</td>
+                    <td><span class="tag tag-saa">SAA</span> <span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. APRENDIZAJE POR REFUERZO (Reinforcement Learning)</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Definición y Ciclo Fundamental</span>
+            <p>Un <strong>agente</strong> aprende a tomar decisiones interactuando con un <strong>ambiente</strong>. Recibe <strong>recompensas</strong> (positivas) o <strong>penalizaciones</strong> (negativas) según sus acciones. <strong>Objetivo: maximizar la recompensa acumulada</strong>, no solo la inmediata.</p>
+            <div class="formula">Ciclo: Estado (s) → Acción (a) → Recompensa (r) + Nuevo Estado (s') → Actualizar política (π)</div>
+            <p style="font-size:0.9em; margin-top:6px;"><em>Analogía: aprender a montar en bici — sin manual, solo prueba, error y equilibrio ganado.</em></p>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span><span class="tag tag-pia">PIA</span></div>
+        </div>
+
+        <!-- CONCEPTOS CLAVE RL -->
+        <h3>Conceptos Clave</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Concepto</th><th>Símbolo</th><th>Definición</th><th>Ejemplo</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Agente</strong></td><td>—</td><td>El aprendiz / tomador de decisiones.</td><td>Robot, coche autónomo, jugador de ajedrez.</td></tr>
+                <tr><td><strong>Ambiente</strong></td><td>—</td><td>El mundo donde opera el agente.</td><td>Tablero, carretera, simulación.</td></tr>
+                <tr><td><strong>Estado</strong></td><td>s</td><td>Situación actual del ambiente percibida por el agente.</td><td>Posición del robot, configuración del tablero.</td></tr>
+                <tr><td><strong>Acción</strong></td><td>a</td><td>Movimiento o decisión ejecutable en el estado actual.</td><td>Mover arriba/abajo, acelerar/frenar.</td></tr>
+                <tr><td><strong>Recompensa</strong></td><td>r</td><td>Señal numérica que evalúa la acción.</td><td>+10 por ganar, −1 por chocar.</td></tr>
+                <tr><td><strong>Política</strong></td><td>π(s)→a</td><td>Estrategia que mapea estados a acciones.</td><td>"En el estado s, toma la acción a".</td></tr>
+                <tr><td><strong>Factor descuento</strong></td><td>γ</td><td>Peso de recompensas futuras. γ≈0=cortoplacista, γ≈1=largoplacista.</td><td>γ=0.9 → recompensas futuras valen 90% de las inmediatas.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- MDP -->
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">MDP — Proceso de Decisión de Markov</span>
+            <p>Formalización matemática del RL. El futuro depende <em>solo del estado presente</em>, no del pasado (Propiedad de Markov).</p>
+            <div class="formula">MDP = (S, A, P, R, γ) &nbsp;—&nbsp; S: estados | A: acciones | P: probabilidades de transición | R: función de recompensa | γ: descuento</div>
+            <div class="formula" style="margin-top:4px;">Ecuación de Bellman: V(s) = max[R(s,a) + γ Σ P(s'|s,a) V(s')]</div>
+        </div>
+
+        <!-- DILEMA -->
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Explotación vs Exploración</span>
+                <p><strong>Explotación:</strong> usar el conocimiento actual → máxima ganancia a corto plazo.<br>
+                <strong>Exploración:</strong> probar acciones nuevas → posible mejora a largo plazo.</p>
+                <p>Estrategia: <strong>ε-Greedy</strong> — con prob. ε explora, con (1-ε) explota. Reducir ε a lo largo del tiempo.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Desafíos del RL</span>
+                <ul style="font-size:0.9em; padding-left:16px; line-height:1.6;">
+                    <li>Alto coste computacional (millones de interacciones).</li>
+                    <li>Inestabilidad en el entrenamiento.</li>
+                    <li>Diseño de la función de recompensa es un arte.</li>
+                    <li>Sim-to-Real Gap: lo que funciona en simulación puede fallar en el mundo real.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ALGORITMOS RL -->
+        <h3>Algoritmos Principales de RL</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr><th>Algoritmo</th><th>Tipo</th><th>Idea clave</th><th>Casos de uso</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Q-Learning</strong></td>
+                    <td>Off-policy, model-free</td>
+                    <td>Aprende la función Q(s,a) que estima el valor de cada acción en cada estado. Guarda valores en una Q-Table.<br><code>Q(s,a) ← Q(s,a) + α[r + γ maxQ(s',a') − Q(s,a)]</code></td>
+                    <td>Juegos simples, navegación en espacios discretos, optimización de rutas.</td>
+                </tr>
+                <tr>
+                    <td><strong>DQN (Deep Q-Network)</strong></td>
+                    <td>Off-policy + Deep Learning</td>
+                    <td>Sustituye la Q-Table por una red neuronal. Añade Experience Replay y Target Network para estabilidad.</td>
+                    <td>Juegos Atari, robots con percepción visual, trading.</td>
+                </tr>
+                <tr>
+                    <td><strong>Policy Gradient (PPO, A2C…)</strong></td>
+                    <td>On-policy</td>
+                    <td>Aprende directamente la política óptima en lugar de los valores Q. Funciona con espacios de acción continuos.</td>
+                    <td>Drones, brazos robóticos, juegos complejos (Dota2, StarCraft II).</td>
+                </tr>
+                <tr>
+                    <td><strong>Actor-Critic</strong></td>
+                    <td>Híbrido</td>
+                    <td>Actor = política (decide qué hacer). Critic = valor (evalúa qué tan buena fue la decisión). Combina ventajas de Policy Gradient y Value Function.</td>
+                    <td>Control continuo, asistentes conversacionales.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- APLICACIONES RL -->
+        <div class="metric-card highlighted" style="margin-bottom:14px;">
+            <span class="metric-title">Aplicaciones Reales del RL</span>
+            <table>
+                <thead><tr><th>Dominio</th><th>Ejemplos</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Robótica</strong></td><td>Manipulación de objetos, locomoción bípeda, ensamblaje industrial.</td></tr>
+                    <tr><td><strong>Juegos</strong></td><td>AlphaGo (Go), OpenAI Five (Dota 2), AlphaStar (StarCraft II).</td></tr>
+                    <tr><td><strong>Vehículos autónomos</strong></td><td>Control de dirección, planificación de rutas, decisiones en tráfico.</td></tr>
+                    <tr><td><strong>Finanzas</strong></td><td>Trading algorítmico, gestión de portafolio, optimización de precios.</td></tr>
+                    <tr><td><strong>Salud</strong></td><td>Tratamientos personalizados, dosificación de medicamentos, planificación de terapias.</td></tr>
+                    <tr><td><strong>Recomendación</strong></td><td>YouTube, Netflix, feeds de redes sociales.</td></tr>
+                </tbody>
+            </table>
+            <div class="subject-tags"><span class="tag tag-mia">MIA</span><span class="tag tag-saa">SAA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- TABLA PRESENCIA -->
+        <h2>PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Tema</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Aprendizaje Supervisado (concepto)</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-low"></td></tr>
+                <tr><td>Clasificación (algoritmos)</td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-low"></td></tr>
+                <tr><td>Regresión (algoritmos)</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-low"></td><td class="dot-low"></td><td class="dot-med"></td></tr>
+                <tr><td>Aprendizaje No Supervisado (concepto)</td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-low"></td></tr>
+                <tr><td>Clustering (K-Means, DBSCAN…)</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-low"></td></tr>
+                <tr><td>Reducción dimensionalidad (PCA, t-SNE)</td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Detección de anomalías</td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-low"></td></tr>
+                <tr><td>Aprendizaje por Refuerzo (concepto)</td><td class="dot-med"></td><td class="dot-med"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Q-Learning / DQN</td><td class="dot-low"></td><td class="dot-med"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>RL en Robótica / CPS</td><td class="dot-full"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note">● = 1-2 archivos &nbsp;·&nbsp; ●● = 3-5 archivos &nbsp;·&nbsp; ●●● = 6+ archivos &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

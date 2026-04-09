@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Comparativa de técnicas de validación en Machine Learning: K-Fold Cross Validation, Validación Simple y A/B Testing en producción.">
+    <meta name="keywords" content="Cross Validation, K-Fold, A/B Testing, Validación Offline, Producción ML, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>6.3.2 Técnicas de Validación y Evaluación | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> ›
+                <a href="index.html">Sistemas de Aprendizaje Automático</a> ›
+                <span>Técnicas de Validación</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="color-primary">6.3.2 Técnicas de Validación y Evaluación</h1>
+            <p class="subtitle">Estrategias avanzadas para una validación robusta y real.</p>
+        </section>
+
+        <!-- K-Fold Cross Validation -->
+        <section class="section">
+            <h2 class="color-secondary">Validación Cruzada (K-Fold Cross Validation)</h2>
+            <div class="card bg-light-gradient">
+                <p class="lead-text">
+                    Es la técnica reina para mejorar la robustez de la validación. En lugar de una única partición, el dataset se divide en <strong>K subconjuntos o "folds"</strong>.
+                </p>
+                <div class="highlight-line"></div>
+                <p class="mt-4">
+                    El modelo se entrena K veces. En cada iteración, se usan K-1 folds para entrenar y el sobrante para validar. El resultado final es la <strong>media de las métricas</strong>, lo que reduce drásticamente la dependencia de una partición concreta y proporciona una estimación de rendimiento mucho más estable.
+                </p>
+            </div>
+        </section>
+
+        <!-- Comparativa de Técnicas Offline -->
+        <section class="section">
+            <h2 class="color-primary">Validación Simple vs K-Fold</h2>
+            
+            <div class="feature-card primary mb-3">
+                <h4 class="color-primary">🔄 K-Fold: Máxima Robustez</h4>
+                <p>Ideal para <strong>datasets pequeños</strong> porque aprovecha cada dato tanto para entrenar como para validar. Reduce la varianza de la estimación.</p>
+            </div>
+            <div class="feature-card secondary mb-3">
+                <h4 class="color-secondary">⚡ Validación Simple (Hold-out)</h4>
+                <p>Preferible en <strong>datasets masivos</strong> o modelos muy costosos de entrenar, donde el coste computacional de múltiples iteraciones es inasumible.</p>
+            </div>
+            <div class="feature-card ani mb-3">
+                <h4 class="color-ml">⏳ Casos Especiales: Series Temporales</h4>
+                <p>No se puede usar K-Fold estándar; se requieren variantes que respeten el <strong>orden cronológico</strong> para evitar fugas de información del futuro.</p>
+            </div>
+        </section>
+
+        <!-- A/B Testing -->
+        <section class="section">
+            <h2 class="color-secondary">Evaluación en Producción: A/B Testing</h2>
+            <div class="card">
+                <p>Mientras que la validación es "offline" (datos históricos), el <strong>A/B Testing</strong> es la validación definitiva en el mundo "online".</p>
+                <div class="grid-2-cols mt-4">
+                    <div class="highlight-box primary">
+                        <p class="title">¿En qué consiste?</p>
+                        <p>Se asignan diferentes versiones del modelo a distintos grupos de usuarios reales simultáneamente para comparar métricas de negocio (conversión, clics, ingresos).</p>
+                    </div>
+                    <div class="highlight-box secondary">
+                        <p class="title">Por qué es necesario</p>
+                        <p>Factores no capturados en datos históricos (comportamiento social, lags) pueden hacer que el "mejor" modelo en validación falle en la práctica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relación -->
+        <section class="section">
+            <h2 class="color-primary">El Ciclo de Vida de la Validación</h2>
+            <p>Ambas fases son complementarias y necesarias en un entorno profesional:</p>
+            <div class="step-container mt-4">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Fase Offline (Validación)</h4>
+                        <p>Filtro eficiente de modelos candidatos usando datos históricos.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Fase Online (A/B Testing)</h4>
+                        <p>Confirmación del valor real con usuarios e impacto en negocio.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atención -->
+        <section class="section">
+            <div class="highlight-box warning">
+                <p class="title">Atención</p>
+                <p>
+                    Distinguimos dos mundos: la <strong>validación</strong> se hace durante el desarrollo con datos del pasado, mientras que el <strong>A/B Testing</strong> se hace en producción con usuarios vivos y datos del presente.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>iLERNA</h3>
+        <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="footer-info">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>
