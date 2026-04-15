@@ -141,17 +141,17 @@ with DAG(
                 <div class="grid-features">
                     <div class="feature-card primary">
                         <h4>1. Importaciones y Configuración</h4>
-                        <p>Importamos las librerías necesarias, incluyendo los operadores específicos (`BashOperator`
-                            para comandos de terminal y `HiveOperator` para consultas Hive). Definimos `default_args`
+                        <p>Importamos las librerías necesarias, incluyendo los operadores específicos (<code>BashOperator</code>
+                            para comandos de terminal y <code>HiveOperator</code> para consultas Hive). Definimos <code>default_args</code>
                             para establecer reglas globales como el propietario del proceso y la política de reintentos
                             (1 reintento tras 5 minutos si falla).</p>
                     </div>
 
                     <div class="feature-card secondary">
                         <h4>2. Definición del DAG</h4>
-                        <p>Instanciamos el objeto `DAG` con el nombre <code>'sales_pipeline'</code>.
+                        <p>Instanciamos el objeto <code>DAG</code> con el nombre <code>'sales_pipeline'</code>.
                         <ul>
-                            <li><strong>schedule_interval:</strong> Se ejecutará una vez al día (`days=1`).</li>
+                            <li><strong>schedule_interval:</strong> Se ejecutará una vez al día (<code>days=1</code>).</li>
                             <li><strong>start_date:</strong> Comienza a ejecutarse a partir del 13 de octubre de 2025.
                             </li>
                             <li><strong>catchup=False:</strong> Evita que Airflow ejecute tareas pasadas si el DAG se
@@ -164,7 +164,7 @@ with DAG(
                         <h4>3. Tarea 1: Importación (ETL)</h4>
                         <p>La tarea <code>import_data</code> usa <strong>BashOperator</strong> para ejecutar un comando
                             de sistema. En este caso, llama a <strong>Apache Sqoop</strong> para traer datos de una
-                            tabla MySQL (`ventas`) y volcarlos en HDFS. Es el paso de "Extracción" y "Carga" inicial.
+                            tabla MySQL (<code>ventas</code>) y volcarlos en HDFS. Es el paso de "Extracción" y "Carga" inicial.
                         </p>
                     </div>
 
@@ -173,7 +173,7 @@ with DAG(
                         <p>La tarea <code>analyze_data</code> usa <strong>HiveOperator</strong>. Ejecuta una consulta
                             HQL (Hive Query Language) que agrega las ventas por región. Este cálculo se realiza sobre
                             los datos que acabamos de importar. Requiere una conexión configurada en Airflow
-                            (`hive_conn`).</p>
+                            (<code>hive_conn</code>).</p>
                     </div>
                 </div>
 
@@ -181,7 +181,7 @@ with DAG(
                     <p class="title">🔗 Definición de Dependencias</p>
                     <p class="content">
                         La línea final <code>import_data >> analyze_data</code> es crucial. Utiliza el operador de
-                        bitwise shift (`>>`) para establecer que la tarea de análisis <strong>NO debe comenzar</strong>
+                        bitwise shift (<code>>></code>) para establecer que la tarea de análisis <strong>NO debe comenzar</strong>
                         hasta que la importación de datos haya finalizado con éxito.
                     </p>
                 </div>
