@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet de MIA Tema 4: Sistemas Robotizados - Módulo de Repaso iLERNA">
+    <title>Cheatsheet: MIA Tema 4 — Sistemas Robotizados</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 4. Análisis de Sistemas Robotizados</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos de Inteligencia Artificial (Módulo 5071)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. FUNDAMENTOS Y CLASIFICACIÓN</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Robótica vs. Automatización Tradicional</span>
+            <p>La <strong>automatización clásica</strong> se trata de sistemas rígidos diseñados para tareas masivas muy específicas sin variaciones. La <strong>robótica inteligente</strong> (integrada con IA) es flexible, autónoma, percibe cambios en el entorno en tiempo real y adapta su ruta o decisiones frente a imprevistos.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Definición y Características</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Cibernética</strong> (N. Wiener)<br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Estudio del control y comunicación en animales y máquinas. Introdujo el concepto clave de <strong>retroalimentación (feedback)</strong> para el control de errores en tiempo real.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Sistema Ciberfísico (CPS)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Unión profunda de componentes lógicos (software/IA) con componentes físicos (hardware/mecánica) conectados en red para interactuar con el mundo real.</td>
+                </tr>
+                <tr>
+                    <td><strong>Cobot</strong> (Colaborativo)<br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Robot diseñado explícitamente para trabajar <strong>junto a los humanos</strong> sin enjaular, priorizando seguridad, con fuerza limitada y sensores de colisión ultrasensibles.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Bucle Percepción-Acción</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Arquitectura continua: <strong>SENSÓRICA</strong> (lee el dato térmico/visual) → <strong>CONTROLADOR</strong> (toma la decisión algorítmica) → <strong>ACTUADOR</strong> (ejecuta el movimiento físico).</td>
+                </tr>
+                <tr>
+                    <td><strong>Robota Cognitiva</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Subcampo emergente que dota a los robots de capacidades para aprender, razonar y comprender su entorno humano utilizando modelos de Inteligencia Artificial complejos.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. FÍSICA, MODELADO Y CONTROL</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Modelo / Control</th>
+                    <th>Funcionalidad Técnica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Cinemática</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Calcula puramente la parte <strong>geométrica del movimiento</strong> espacial (ángulos, coordenadas y postura) de la máquina <strong>ignorando sus masas</strong> y la gravedad.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Dinámica</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Estudia el movimiento integrando la <strong>fuerza, leyes físicas, inercias y peso de cargas</strong> requeridos en motores y actuadores.</td>
+                </tr>
+                <tr>
+                    <td><strong>Grados de Libertad (DOF)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Cantidad contable de ejes y articulaciones de movimiento independiente libre en el diseño físico del brazo robótico o vehículo (ej: rotación, traslación).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Controlador PID</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Ecuación clásica de bucle cerrado de hardware (Proporcional-Integral-Derivativa). Corrige constantemente el error de la trayectoria para mantener precisión sub-milimétrica suave.</td>
+                </tr>
+                <tr>
+                    <td><strong>Control Adaptativo</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>A diferencia del PID, evalúa cambios bruscos de ambiente en tiempo real y usa modelos matemáticos para <strong>auto-parámetrizar dinámicamente sus límites</strong> de torque/fuerza.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Simulador Virtual</strong> (Gazebo)<br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Entornos de física realista in-silico que prueban el algoritmo de la IA asegurando que el robot esquivará obstáculos y funcionará antes de volcarlo en el hardware real físico.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. PROGRAMACIÓN E INTEGRACIÓN CON IA</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Secuencial vs. Reactiva</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px;">
+                    <li><strong>Secuencial (Determinista):</strong> Se ejecutan instrucciones duras programadas (ir A → bajar 2cm → cerrar pinza). Clásico de industria estructurada sin imprevistos.</li>
+                    <li><strong>Reactiva (Estocástica):</strong> Reacciona dinámicamente usando inferencia sensorial local y prioridades de IA, lidiando muy bien con entornos caóticos o vivos.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Intersección de la IA</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px;">
+                    <li><strong>Visión Artificial (CNN):</strong> Permite que las propias cámaras de los robots reconozcan la pieza desalineada para reorientarse.</li>
+                    <li><strong>Machine Learning:</strong> El robot de manipulación entrena virtualmente probando enfoques caóticos para lograr el éxito sin haber sido estrictamente codificado así.</li>
+                </ul>
+            </div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Software / Tecnología</th>
+                    <th>Uso en Sistemas Robotizados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>C++ / Python</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>C++ otorga altísimo rendimiento determinista al núcleo del control y cálculos cinemáticos pesados; Python añade las APIs rápidas de scripts de Machine Learning moderno.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>ROS (Robot Operating System)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>No es un sistema operativo real, sino un potente <strong>middleware libre de comunicaciones industrial</strong> que interconecta por red los programas lógicos, drivers y visualizadores.</td>
+                </tr>
+                <tr>
+                    <td><strong>Publish / Subscribe (Nodos)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Arquitectura modular clave en ROS. Los <em>nodos</em> publican variables (el láser publica la profundidad) sobre <em>tópicos</em>, a las que se "suscriben" los nodos analíticos del motor.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>SLAM</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Mapeo y Localización Simultánea. Técnica en que el agente navega y "descubre" terreno ignoto usando Lidar y cámaras para inferir coordenadas y construir mapas ciegos.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. ARQUITECTURA EN CAPAS Y CICLO DE VIDA</h2>
+
+        <h3>Arquitectura en 3 Capas Fundamentales</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Capa del Framework</th>
+                    <th>¿Qué hace exactamente en el proceso del Robot?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Capa de Percepción</strong></td>
+                    <td>Digitaliza el mundo. Los sensores de visión profunda (RGB-D), ultrasonidos y térmicos recolectan datos brutos del medioambiente y emiten señales cuantificables.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>2. Capa de Decisión</strong></td>
+                    <td>Aplica lógicas heurísticas, inferencia bayesiana o redes predictivas para planificar la trayectoria, evitar la caja colapsada o gestionar una batería baja emergente.</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Capa de Acción</strong></td>
+                    <td>Convierte el resultado de la planificación en movimiento eléctrico y voltajes a través de servomotores, rotores, cilindros, frenos y extremidades artificiales.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Integración y Gemelos Digitales</h3>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Ciclo de Vida Robotizado</span>
+                <p>Las 6 Fases Críticas de diseño continuo:</p>
+                <ol style="padding-left:16px; margin-top:6px; font-size:0.9rem;">
+                    <li>Análisis exhaustivo de requisitos y métricas. </li>
+                    <li>Modelado Cinemático-Dinámico (diseño de estructura)</li>
+                    <li><strong>Prototipado en Gemelo Digital (Simulación)</strong></li>
+                    <li>Desarrollo algorítmico y Machine Learning/ROS</li>
+                    <li>Despliegue a hardware (ensamblador y pruebas QA)</li>
+                    <li>Mantenimiento Predictivo (con IoT).</li>
+                </ol>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Digital Twin (Gemelo Digital) <span class="tag tag-mia">MIA</span></span>
+                <p>Es la réplica virtual hiperrealista de una máquina conectada a fuentes de datos vivo. Sirve para:</p>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Evitar destrucción física</strong> testeando código pre-despliegue.</li>
+                    <li>Realizar test de estrés virtuales bajo colisiones inducidas.</li>
+                    <li>Capturar datos de telemetría IoT reales y predecir fatiga y rotura en componentes, habilitando el mantenimiento predictivo real.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

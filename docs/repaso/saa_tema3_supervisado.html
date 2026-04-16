@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 3: Aprendizaje Supervisado - SAA iLERNA">
+    <title>Cheatsheet: SAA Tema 3 — Algoritmos Supervisados</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 3. Algoritmos de Machine Learning Supervisado</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background:#555;">SAA</span> Sistemas de Aprendizaje Automático (Módulo 5072)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. FAMILIA DE REGRESIONES LINEALES Y LÓGICAS</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Regresión Logística (Binaria)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">A pesar de llamarse regresión, ¡se usa para <strong>Clasificación estricta</strong>!. Utiliza la famosa <span style="text-decoration:underline;">Función Sigmoide</span> para comprimir cualquier ecuación gigantesca en un porcentaje nítido de entre 0% y 100% de probabilidad (Ej. El cliente pagará vs. no pagará). </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Regresión Polinómica</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Eleva las <em>features</em> iniciales al cuadrado (o al cubo) con el objetivo de retorcer la recta matemática clásica y amoldarla a nubes de datos hipercomplejas que no discurren en línea recta. Altísimo peligro de Overfitting salvaje sin control.</p>
+            </div>
+        </div>
+
+        <h3>El Arnés de Salvamento: Regresiones Regularizadas</h3>
+        <p style="font-size:0.9rem; margin-bottom: 8px;">Técnicas puras dedicadas a castigar matemáticamente los coeficientes del modelo que estalla (overfitting) o ha sobre dimensionado las influencias.</p>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Penalización y Nombre</th>
+                    <th>Cometido Técnico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Lasso (L1 Regularization)</strong></td>
+                    <td>Su dureza radica en el valor absoluto. Su especialidad es "silenciar o apagar variables inútiles", reduciendo mágicamente el coeficiente de features irrelevantes a literalmente la cifra <strong>0.00</strong>.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Ridge (L2 Regularization)</strong></td>
+                    <td>Aplica una penalización al cuadrado severa. A diferencia de Lasso, jamás perdona una variable apagándola a cero puro, simplemente comprime o asfixia en bloque todas las variables excesivamente ruidosas para calmar tu gráfico final.</td>
+                </tr>
+                <tr>
+                    <td><strong>Elastic Net (Híbrida)</strong></td>
+                    <td>La navaja suiza algorítmica. Aplica una cuota balanceada porcentual inyectando tanto matemática Lasso como Ridge simultáneamente.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. ÁRBOLES Y ENSAMBLADOS MÚLTIPLES (Ensemble)</h2>
+        
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Arquitectura Basada en Árboles</th>
+                    <th>¿Cómo operan sus ramificaciones?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Árboles de Decisión Múltiples (CART)</strong></td>
+                    <td>Modelos soberanos extremadamente lógicos basados en preguntas excluyentes jerárquicas directas (<em>If-Then-Else</em>). Muy explicables humanamente, pero muy propensos a hacer overfit (mucha profundidad). Se salvan aplicando cirugías de <strong>PODA (Pruning) o límite de Depth (Profundidad).</strong></td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Bagging (Bootstrap Aggregating)</strong><br><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>Filosofía de construir simultáneamente a ciegas cientos de mini-árboles tontos (<strong>en PARALELO</strong>), dándole a cada uno una muestra triturada al azar de las métricas distintas (Out-of-Bag) neutralizando la alta varianza mediante el voto promedio.</td>
+                </tr>
+                <tr>
+                    <td><strong>Random Forest (El Rey del Bagging)</strong><br><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>El exponente máximo del Bagging en el planeta Data. "El conocimiento masivo de la multitud ignorante siempre bate al experto solitario". Inmune en altísimas cuotas ante el Overfitting salvaje nativo de los árboles, sin requerir reescalado previo en los datos numéricos.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. LA INGENIERÍA ITERATIVA (BOOSTING)</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Secuencialidad del Aprendizaje del Error (En Serie)</span>
+            <p>Los algoritmos Boosting abandonan la ejecución paralela e indiferente y deciden crear una <strong>CADENA iterativa</strong>. El "Bot débil 1", predice los datos con una precisión penosa; el Boosting inyecta inmediatamente <strong>más peso al error</strong> forzando a que nazca un "Bot débil 2" entrenando específicamente en las cagas o fallas del Bot 1 iterativamente. Así, el summun produce un <strong>Strong Learner (Agente Fuerte)</strong> increíblemente robusto.  El mayor exponente en Kaggle Mundial es <strong>XGBoost o (Extreme Gradient Boosting)</strong>, el cual usa integradas derivadas y vectores dispersos logrando inferencias a milisegundos con cero pérdida de precisión.</p>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. MÁQUINAS DE VECTORES DE SOPORTE (SVM)</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Concepto Base de la SVM</th>
+                    <th>¿Cómo resuelve la frontera matemática?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Los Vectores de Soporte Base</strong></td>
+                    <td>El algoritmo prescinde del 90% de la población normal, y únicamente usa para sus ecuaciones a las contadas excepciones fronterizas rebeldes que separan drásticamente en el mapa dos clases enfrentadas.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>El Hiperplano (Margen Duro vs Blando)</strong></td>
+                    <td>La SVM intenta trazar una "autopista" lo más ancha, estricta y recta del mundo separando clusters. Un margen demasiado duro genera Overfitting violento. El parámetro "C" la reblandiza dejando que algunos puntos choquen al otro lado sanamente.</td>
+                </tr>
+                <tr>
+                    <td><strong>El Truco Dimensional (Kernel Trick)</strong></td>
+                    <td>Ante el problema inmenso <em>XOR</em> (cuando los datos están fundidos y diseminados en círculo uno dentro del otro). El algoritmo SVM usa un <strong>Kernel Polinomial o el majestuoso RBF</strong>, que literalmente "levanta los datos curvando la mesa y proyectándolos hacia la dimensión Z en el cielo", donde sí que es facilísimo dar un hachazo limpio plano horizontal para separar manzanas y peras sin sufrir.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 4: Aprendizaje No Supervisado - SAA iLERNA">
+    <title>Cheatsheet: SAA Tema 4 — Algoritmos No Supervisados</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 4. Modelos de Machine Learning NO Supervisado</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background:#555;">SAA</span> Sistemas de Aprendizaje Automático (Módulo 5072)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. EL PARADIGMA SIN ETIQUETAS (El Caos Ciego)</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem;">A diferencia del tema anterior, aquí el Data Scientist entrega una base de datos virgen <strong>sin ninguna columna de "Solución" (sin variable Objetivo 'y')</strong>. El algoritmo no predecirá el futuro, sino que usará puras matemáticas latentes para ordenar el caos, descubriendo sub-familias ocultas de clientes o aplastando variables basuras para ganar rendimiento.</p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. AGRUPACIÓN MASIVA SILENCIOSA (CLUSTERING)</h2>
+        
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Algoritmo Rey de Clustering</th>
+                    <th>¿Cómo operan? ¿Cuál es su gran ventaja/debilidad?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>El Estándar: <br>K-Means</strong></td>
+                    <td>Funciona plantando "K" centroides al azar e iterando mediante distancias euclidianas. <strong>Su debilidad atroz:</strong> Tienes que confesarle antes la cifra de la "K". Además forma clústeres siempre "redondos". Si los datos tienen forma alargada o de luna menguante, K-Means falla y mezcla peras con cebollas.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>El Caza-Anomalías:<br>DBSCAN</strong></td>
+                    <td>La maravilla por "Densidad". No se le dice la "K". El modelo salta de punto a punto armando la nube y se frena si detecta vacío. <strong>Superpoder Supremo:</strong> Los puntos extremos aberrantes los destierra para siempre bautizándolos como "Ruido/Outliers". Insustituible si los datos tienen curvaturas serpentinas.</td>
+                </tr>
+                <tr>
+                    <td><strong>El Biológico: <br>Jerárquico (Hierarchical)</strong></td>
+                    <td>En lugar de iterar rápido, crea un majestuoso mapa visual de emparejamientos genéticos llamado <strong>Dendrograma</strong>. Se arranca cada fila como hoja singular y se van buscando la pareja idónea adyacente hasta colmar la raíz del árbol absoluto universal.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Método del Codo (Elbow Method)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Como la K-Means te exige una 'K', tú no sabes qué agrupar. Haces un bucle graficando del 1 al 10. La curva formará un brazo. El quiebre del "codo" es la Inercia (WCSS) que indica mágicamente tu 'K' óptima.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Silhouette Score (Métrica de calidad) <span class="tag tag-sbd" style="background:#555;">SAA</span></span>
+                <p style="margin-top:6px; font-size:0.9rem;">Un coeficiente (de -1 a 1). Examina qué tan ultra-compacto es un clúster de clientes en sus adentros en matemática (Cohesión) vs qué tan bien asilado está físicamente del clúster vecino más fiero (Separación).</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. LA MALDICIÓN DE LA DIMENSIONALIDAD (REDUCCIÓN)</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">La Pesadilla de la "Alta Dimensión"</span>
+            <p style="margin-top:6px; font-size:0.9rem; margin-bottom: 8px;">Las tablas CSV con miles de características (como imágenes HD pixel a pixel), destruyen el rendimiento de memoria en Python y hunden la precisión creando <em>Sistemas Espurios y sobreajustados a columnas basura colineales</em>. Toca triturarlas destilándolas.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Compresor Vectorial</th>
+                    <th>Cometido Técnico Definitivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>El Padrino Matemático:<br>PCA (Principal Component Analysis)</strong></td>
+                    <td>No elimina columnas sin más; funde y fusiona 1.000 columnas correlacionadas en tan solo 10 <em>"Componentes Principales sintéticos"</em> que no significan nada humano. Ahorra 99% de RAM manteniendo matemáticamente el "98% de la Varianza o Riqueza Informática" original de la compañía.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Para Visualizar Pantallas:<br>t-SNE / UMAP</strong></td>
+                    <td>El cerebro humano es inútil y colapsa visualizando cosas más allá de 3 Dimensiones (XYZ). Estos algoritmos aplastan brutalmente millones de datos de 20 dimensiones en un mapa 2D o 3D conservando las distancias de vecindario a nivel atómico para que el ojo del Data Scientist comprenda su base de clientes gráfica.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. REGLAS DE ASOCIACIÓN MUNDANA</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Market Basket Analysis (Cesta de Compra)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Resuelve el porqué Amazon junta <em>"Quien compró este mando gamer, usualmente llevó también estas baterías recargables"</em> usando los algoritmos de Big Data <strong>Apriori y FP-Growth</strong>.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Las tres métricas universales de recomendación</span>
+                <p style="margin-top:6px; font-size:0.9rem;">
+                    <strong>1. Support:</strong> % de ventas globales que tiene tu regla frente a toda la tienda física. <br>
+                    <strong>2. Confidence:</strong> "Si compró Pañales, ¿Qué probabilidad fidedigna matemática hay de que lleve Cerveza al final?". <br>
+                    <strong>3. LIFT (La Joya):</strong> Factor vital de correlación. Cifras > 1 indican regla fuerte muy superior al azar simple.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

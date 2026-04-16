@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Nuevo Tema 6: Valoración de Calidad y Tests - SAA iLERNA">
+    <title>Cheatsheet: SAA Tema 6 (Nuevo) — Valoración de la Calidad</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Nuevo Tema 6. Valoración de Calidad de Resultados</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background:#555;">SAA</span> Sistemas de Aprendizaje Automático (Módulo 5072)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. EL IDEAL ABSOLUTO: CAPACIDAD DE GENERALIZACIÓN</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem;">El rendimiento de nuestro modelo en el laboratorio no vale nada comercialmente hablando. <strong>El único dogma de éxito es la capacidad de extrapolar</strong>; qué nivel de asertividad tiene la IA cuando enfrenta un documento o paciente que no pre-existía en su tabla matricial original.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Escudo Regulador</th>
+                    <th>¿Cómo extirpan el Overfitting?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Regularización Física (L1/L2)</strong></td>
+                    <td>Frena la memorización extrema del modelo castigando e imponiendo límites a los números grandes de sus coeficientes matemáticos. Si el modelo intenta apegarse ciegamente al dato triturador, la L1/L2 actúa de ancla.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Estrategia Dropout <br>(Redes Neuronales)</strong></td>
+                    <td>La regla letal. Obliga al cerebro de código a apagarse parcialmente. A cada nuevo batche <strong>ejecuta y asesina aleatoriamente a un % de neuronas en su capa al azar</strong>, forzando a que las neuronas débiles colindantes aprendan a reconocer rostros solas sin depender de una neurona alfa dominante.</td>
+                </tr>
+                <tr>
+                    <td><strong>Early Stopping <br>(Parada de Emergencia)</strong><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>Vigilancia continua: El modelo entrena reduciendo su fallo. De repente en la iteración 1.500 su nota de "Validación" empieza a empeorar pese a que la nota de "Entrenamiento" sigue bajando perfecto. <strong>Ese cruce es el brote de Overfitting.</strong> Early Stopping congela todo de un tajazo y guarda los pesos de la iteración 1.499 deteniendo tu PC al instante.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. FUGAS TÓXICAS Y LA HIGIENE DEL TEST</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">La Tragedia del "Data Leakage"</span>
+                <p style="margin-top:6px; font-size:0.9rem;">(Fuga de información). Es la peor mala praxis. Ocurre cuando el científico de datos comete el desliz de contaminar la red permitiéndole <em>asomarse indirectamente</em> al Test. <strong>Ejemplo clásico:</strong> Aplicar un cálculo Median / MinMax al CSV completo *antes* de fragmentarlo. El modelo memorizaría mágicamente el umbral superior de toda la población de examen.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">El Santuario Intocable: Set de Test</span>
+                <p style="margin-top:6px; font-size:0.9rem;">La gran prueba de fuego legal para salir a auditar a la empresa. Su independencia radical garantiza todo. La máquina se optimizó ajustando bucles cruzados en el Validation set, pero jamás (absolutamente nunca) usó el cajón del set de Test hasta el ultimísimo segundo de presentación ante el CEO.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. ESTRATEGIAS CRÍTICAS DE VALORACIÓN CLÍNICA</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Plataforma de Despliegue</th>
+                    <th>Metodología Real Evaluadora</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>En el Laboratorio y Notebook: <br>K-Fold Validation</strong></td>
+                    <td>La navaja suiza que erradica el sesgo pasivo de la pura suerte. El CSV se pica en <strong>K pliegues perfectos (ej: 5)</strong>, entrenamos el modelo desde cero 5 veces distintas y prometemos que, en cada iteración, el grupo que funge como Validación cambia de puesto, entregando la verdadera Media Probabilística general.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>En Producción Final e Internet: <br>A/B Testing MLOps</strong><br><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>El máximo estadio evaluador de calidad. Servimos dos variantes del despliegue en la Web. Lanzamos el *Modelo A (Clásico Regresión)* al 50% de usuarios inadvertidos; y soltamos el nuevo *Modelo B (Red CNN Profunda)* al otro 50%. A los 7 días calculamos en caja ciega cuál desató el mayor CTR real, métrica incuestionable del mercado.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

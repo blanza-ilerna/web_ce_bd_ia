@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 3: Procesamiento del Lenguaje Natural - Modelo de IA iLERNA">
+    <title>Cheatsheet: MIA Tema 3 — Procesamiento del Lenguaje Natural (NLP)</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 3. Procesamiento del Lenguaje Natural (NLP)</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos de Inteligencia Artificial (Módulo 5071)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. FUNDAMENTOS Y DIFICULTADES EN NLP</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Lenguaje Formal vs. Natural</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Lenguaje Formal (Código):</strong> Rígido, de sintaxis binaria explícita; jamás tiene errores de ambigüedad. Comprensión directa por la máquina (ej: Python).</li>
+                    <li><strong>Lenguaje Natural (Humano):</strong> Orgánico, cultural, repleto de ambigüedades, ironía, metáforas y polisemia ("banco" de pez, de dinero, de sentarse). Un reto gigantesco para la IA.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Pilares Funcionales del NLP</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>NLU (Comprensión):</strong> Leer y <em>entender</em> la intención del usuario.</li>
+                    <li><strong>NLG (Generación):</strong> Producir un texto de respuesta coherente con gramática natural humana.</li>
+                    <li><strong>Análisis:</strong> Clasificar datos subyacentes sin intentar responder (Ej: Evaluar el tono de odio en un tweet).</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Evolución Histórica de Arquitecturas NLP</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Época y Modelo Dominante</th>
+                    <th>Definición de su Tecnología Base</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Simbólico / Reglas</strong><br>(1950 - 1990)</td>
+                    <td>Programación dura. Exigía lingüistas que redactaran reglas gramaticales inmensas <em>If-Then</em>. Ej: El chatbot ELIZA (1966), incapaz de salir de plantillas cortas programadas.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Estadístico</strong><br>(1990 - 2013)</td>
+                    <td>Basado netamente en conteo de palabras, frecuencias locales y algoritmos puramente predictivos estadísticos de n-gramas donde se evaluaba qué palabra era más probable que siguiera a la anterior.</td>
+                </tr>
+                <tr>
+                    <td><strong>Redes Neurales / Transformers</strong><br>(2013 - Presente)</td>
+                    <td>La revolución de las redes profundas y la arquitectura Transformers de Google (Self-Attention). Modificó la historia al permitir ver dependencias de texto larguísimas en paralelo, originando los LLM modernos.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. PIPELINE: LAS 5 ETAPAS DE PROCESAMIENTO NLP</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">El Pipeline Funcional Clásico</span>
+            <p>Antes de que una red atienda un texto, necesita que el string humano crudo sea despiezado, saneado y convertido en un formato algebraico vectorial. A esto se le conoce como pipeline de NLP.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Etapa del Pipeline</th>
+                    <th>Acción y Objetivo Técnico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Preprocesamiento</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Normalización inicial. Limpia ruido, usa minúsculas uniformes, remueve artículos o deícticos inútiles (<em>Stop-words</em>) y homogeneiza verbos a su raíz neutra pura (Lematización o Stemming).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>2. Tokenización</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Fragmentación de los strings limpios en trozos analíticos básicos y unificados llamados <strong>tokens</strong> (puede dividirse en párrafos, por palabras enteras o incluso sub-palabras para lenguajes rústicos).</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Análisis Sintáctico</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Fase de Parsing. Descubre el esqueleto relacional y orden jerárquico sujeto/verbo/predicado de la oración para saber cómo depende físicamente cada trozo sintáctico del otro.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>4. Análisis Semántico</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Intenta averiguar el significado "de diccionario" exacto de la frase construida, ejecutando técnicas de desambiguación para separar qué quiere decir.</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Análisis Pragmático</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>El nivel más complejo de inferencia. Añade una visión global a la frase combinándola con el <strong>contexto social, la ironía, bromas, el turno de palabra o la intención</strong> no escrita de la persona.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. APLICACIONES Y MODELOS COMERCIALES</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Ámbito de NLP Profesional</th>
+                    <th>¿Qué Soluciona Empresarialmente?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Análisis de Sentimientos</strong></td>
+                    <td>Barre masivamente de internet reseñas o comentarios de clientes (ej: Amazon/TripAdvisor) valorando si el tono general o "voz del cliente" se inclina hacia <em>Positivo, Neutro o Negativo</em> estadísticamente.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Extracción y Clasificación (NER)</strong></td>
+                    <td>Toma textos opacos empresariales y automatiza la extracción quirúrgica de variables (ej: "Saca todos los DNIs o Nombres Propios de cientos de PDF de contratos").</td>
+                </tr>
+                <tr>
+                    <td><strong>Chatbots y Asistentes Conversacionales</strong></td>
+                    <td>Reemplazo total del primer eslabón del soporte humano (Siri/Alexa) y automatización de FAQs.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">ChatGPT (OpenAI)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Modelos LLM masivos optimizados fuertemente con técnica técnica RLHF (Feedback Humano) logrando diálogos orgánicos impresionantes generalistas.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Gemini (Google)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Su arquitectura difiere de forma radical al ser <strong>multimodal nativo</strong>: es entranado desde el origen leyendo videos, imágenes y texto en paralelo orgánicamente.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">GitHub Copilot</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Implementación corporativa de LLMs enfocada agresivamente 100% al nicho del código de desarrollo <em>Software Engineering</em> predictivo y depurador.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. DESAFÍOS TÉCNICOS Y ÉTICOS EN EL NLP REAL</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Datasets y Sesgos (Bias) Culturales</span>
+                <p style="font-size:0.9rem; margin-top:6px;"><strong>Garbage in, Garbage out:</strong> Las redes neuronales aprenden del corpus gigante de internet el cual está naturalmente repleto de racismo o roles de género anticuados. Los modelos despliegan ese machismo heredado tácitamente sin ser avisados; es esencial la labor de <strong>rebalanceo en IA</strong> y auditoría ética de sets.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Privacidad y Protección PII</span>
+                <p style="font-size:0.9rem; margin-top:6px;">Los LLMs colosales pueden "memorizar" subconscientemente tarjetas de crédito y DNIs inyectados durante el scrapeo sin filtrar. Cumplir regulaciones europeas como RGPD y el uso de software de <strong>Anonimización agresiva y Prevención</strong> son imperativos legales del diseño inicial.</p>
+            </div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Reto Sistémico NLP</th>
+                    <th>¿Cómo afecta a producción?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Costes Computacionales Excesivos</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Desplegar LLMs o retrenarlos mensualmente para incluir nueva información es financieramente monstruoso (consumo altísimo de GPU Clusters).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Model Drift (Deriva del Modelo)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>La inercia caduca: el lenguaje popular está vivo, cada año surgen tecnicismos o eventos ("Pandemia 2020", nuevos políticos, memes nuevos) para los que un modelo viejo es ignorante.</td>
+                </tr>
+                <tr>
+                    <td><strong>Técnica de Mitigaciones: RAG</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Para evitar derrochar presupuesto re-entrenando por culpa del <em>Drift</em>, se utiliza RAG. La IA estática es forzada a leer primero de una Base de Datos viva externa y barata antes de dar una respuesta en vivo.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

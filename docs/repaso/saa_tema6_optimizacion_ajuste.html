@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 6: Optimización y Ajuste de Modelos - SAA iLERNA">
+    <title>Cheatsheet: SAA Tema 6 — Optimización y Tuning</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 6. Optimización y Ajuste de Modelos</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background:#555;">SAA</span> Sistemas de Aprendizaje Automático (Módulo 5072)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. EXTIRPANDO EL RUIDO (Feature Selection)</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem;">Entregarle a un algoritmo 3.000 columnas de Excel aleatorias para predecir no lo hace más inteligente, <strong>lo hunde en la maldición de la dimensionalidad</strong>. La Selección de Características consiste en rastrear y aniquilar sin piedad toda métrica inútil o que reitere la misma historia (colinealidad) antes de gastar GPU.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Familia de Extracción</th>
+                    <th>Corrientes de actuación técnica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Métodos Filter <br>(Filtros Estadísticos)</strong></td>
+                    <td>Se aplican a priori, ajenos al algoritmo final de ML. Usan correlación matemática cruda (Ej: <em>ANOVA, Correlación de Pearson, Prueba Chi-Cuadrado</em>). Es rapidísimo, descarta variables cuya covarianza indica ser basura.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Métodos Wrapper <br>(Envolturas Físicas)</strong></td>
+                    <td>Son de fuerza algorítmica brutal. Miden modelos en paralelo probando: "¿Qué precisión saco si meto la variable A?", "Si quito la B gané 3% ¿qué pasa si ahora sumo la G?". Ej clásico: <strong>RFE (Eliminación Recursiva de Características)</strong>. Efectivo, pero infernal en computación.</td>
+                </tr>
+                <tr>
+                    <td><strong>Métodos Embedded <br>(Embebidos e implícitos)</strong><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>La navaja suiza perfecta. El propio modelo selecciona variables intrínsecamente y ejecuta el descarte vivo y en caliente mientras se estresa entrenando (Ej: <strong>La Regresión Regularizada Lasso</strong> apagando a CERO las variables mediocres directamente asfixiándolas).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. DILEMA MATEMÁTICO: Perilla vs Circuito Automático</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">1. Parámetros del Modelo</span>
+                <p style="margin-top:6px; font-size:0.9rem;">(Ej: <em>Eje Y, los pesos internos W en Redes Neuronales</em>). Tienen vida propia automática, <strong>TÚ no los tocas jamás</strong>. Se calibran solitos a base de derivadas y gradientes ocultos intentando exprimir métricas durante el largo "Train()". </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">2. HIPER - parámetros (El Tuning)</span>
+                <p style="margin-top:6px; font-size:0.9rem;">(Ej: <em>Learning Rate, La variable "K" vecinos o cuantas ramas Depth tendrá mi árbol</em>). <strong>Tú tienes el control manual absoluto</strong>. Son decisiones impuestas de arranque para armar la pista antes incluso de que suene la campana de salida y afectarán a la capacidad final.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. ESTRATEGIAS DE CONFIGURACIÓN (Tuning de Cabina)</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="margin-top:6px; font-size:0.9rem; margin-bottom: 8px;">Ajustar un hiperparámetro al tanteo local volviendo a presionar <em>Enter</em> es de novatos e imperfecto empíricamente. Los Data Scientist declaran diccionarios cerrados <strong>hiper-búsquedas programadas</strong> de cientos de cruces con el objetivo analítico absoluto.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Motor Analítico de Tuning</th>
+                    <th>¿Cómo evalúa e interviene?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Grid Search <br>(La red de Fuerza Bruta)</strong></td>
+                    <td>Genera una hiper-cuadrícula ciega. Testea compulsivamente <strong>TODAS y cada una de las uniones matemáticas listadas</strong> para ver cuál brilla más (5 valores de kernel cruzados por 10 iteraciones = 50 entrenamientos masivos absolutos). Exacta y pura pero dantescamente derrochadora en dinero AWS Cloud.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Random Search <br>(Ataque Aleatorio Empírico)</strong></td>
+                    <td>Alucina la comunidad científica, pero lanzar dardos ciegos al azar en una ventana controlada computacional rinde de forma sobresaliente. Testea apenas el 10% de los cruces evitando asfixia en servidores e inusualmente <strong>suelta casi el resultado perfecto universal en el primer embiste</strong>.</td>
+                </tr>
+                <tr>
+                    <td><strong>Optimización Bayesiana <br>(Instinto Cíclico)</strong><br><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td>La flor y nata moderna. Usa modelos que "toman notas". Prueba un ajuste, saca una nota, el modelo se instruye con sus fallos intentando no volver a testear ese rango inestable previendo a pura estadística cuál es la ladera del río para descender a la configuración celestial de una sentada.</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

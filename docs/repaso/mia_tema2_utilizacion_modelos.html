@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 2: Utilización de modelos de IA - Modelo de IA iLERNA">
+    <title>Cheatsheet: MIA Tema 2 — Utilización de Modelos</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 2. Utilización de Modelos de IA</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos de Inteligencia Artificial (Módulo 5071)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. FUNDAMENTOS DE RESOLUCIÓN DE PROBLEMAS</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Concepto de Problema en IA</span>
+                <p style="margin-top:6px; font-size:0.9rem;">Formalización estricta requerida por la IA, definida por la cuádrupla <strong>P = (Ei, A, Ef, R)</strong>:</p>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Ei (Estado Inicial):</strong> ¿De dónde parte el agente?</li>
+                    <li><strong>A (Acciones):</strong> Transiciones probabilísticas posibles.</li>
+                    <li><strong>Ef (Estado Final):</strong> El objetivo o solución de éxito.</li>
+                    <li><strong>R (Reglas de coste):</strong> Restricciones o sumas penales por cada paso.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Fases Lineales de Resolución</span>
+                <ol style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Formulación:</strong> Traducir la realidad al problema crudo matemático anterior.</li>
+                    <li><strong>Representación:</strong> Abstraerlo como grafo o matriz.</li>
+                    <li><strong>Búsqueda:</strong> Uso de heurística para generar la secuencia de acciones óptimas (Ej: <em>Backtracking</em> en 8 reinas).</li>
+                    <li><strong>Ejecución y Verificación:</strong> Desempeño del grafo.</li>
+                </ol>
+            </div>
+        </div>
+
+        <h3>Tipos de Representación del Espacio de Estados</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Características</th>
+                    <th>Ejemplo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tabular / Discreta</strong></td>
+                    <td>Estados finitos y enumerables. Permite búsqueda exhaustiva.</td>
+                    <td>Tres en raya, Sudoku, 8 reinas</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Simbólica / Reglas</strong></td>
+                    <td>Lógica proposicional o de predicados. Representación IF-THEN interpretable.</td>
+                    <td>MYCIN (diagnóstico médico)</td>
+                </tr>
+                <tr>
+                    <td><strong>Numérica / Vectorial</strong></td>
+                    <td>Espacios continuos ℝⁿ, gradientes calculables.</td>
+                    <td>Redes neuronales, optimización</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Ejemplo Clásico: Problema de las 8 Reinas → Backtracking</span>
+            <p style="margin-top:6px; font-size:0.9rem;"><strong>Objetivo:</strong> Colocar 8 reinas en un tablero 8×8 sin que ninguna se ataque (sin coincidir en fila, columna ni diagonal). P = (tablero_vacío, colocar_reina, 8_reinas_seguras, restricciones_geométricas).</p>
+            <p style="margin-top:4px; font-size:0.9rem;"><strong>Backtracking (DFS + retroceso):</strong> Coloca una reina, verifica seguridad; si hay conflicto, <em>retrocede</em> y prueba otra columna. Explora ~2.057 estados y encuentra las 92 soluciones posibles.</p>
+        </div>
+
+        <h3>Espacio de Estados y Búsqueda</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Estrategia Operativa</th>
+                    <th>Definición y Funcionamiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Búsqueda Ciega</strong><br>(No Informada)</td>
+                    <td>La IA explora sin saber a qué distancia está la meta. <strong>BFS (Anchura):</strong> expande todo el nivel lateral antes de profundizar — garantiza camino mínimo. <strong>DFS (Profundidad):</strong> explora una rama hasta el fondo antes de retroceder — menor consumo de memoria.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Búsqueda Heurística</strong><br>(Informada)</td>
+                    <td>Usa una función h(n) que estima el coste restante para descartar caminos absurdos. <strong>Algoritmo A*:</strong> combina coste real g(n) + estimación h(n). Óptimo y completo si h(n) es admisible. Usado en GPS, videojuegos, planificación de rutas.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Ejemplos Prácticos de Resolución de Problemas (2.1.4)</h3>
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Dominio</th>
+                    <th>Ejemplo Real</th>
+                    <th>Técnica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Logística y rutas</strong></td>
+                    <td>Google Maps: ruta óptima con tráfico en tiempo real.</td>
+                    <td>A* con heurística euclidiana</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Diagnóstico automático</strong></td>
+                    <td>MYCIN: diagnóstico de infecciones sanguíneas. DeepMind: AlphaGo (juego de Go).</td>
+                    <td>SBR / Monte Carlo Tree Search</td>
+                </tr>
+                <tr>
+                    <td><strong>Planificación automática</strong></td>
+                    <td>Amazon Robotics: navegación en almacén con obstáculos dinámicos.</td>
+                    <td>RRT* (Rapidly-exploring Random Tree)</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Juegos y entornos competitivos</strong></td>
+                    <td>Ajedrez (Deep Blue), Go (AlphaGo), Starcraft (AlphaStar).</td>
+                    <td>Minimax + poda Alpha-Beta / Deep RL</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. AUTOMATIZACIÓN DE TAREAS E INDUSTRIA</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Concepto Industrial</th>
+                    <th>¿Cómo ha evolucionado mediante IA?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Automatización Inteligente</strong></td>
+                    <td>Diferencia clave frente a autómatas rígidos <em>hard-coded</em>: un sistema inteligente toma decisiones <strong>ante eventos no contemplados en su programación original</strong>. Arquitectura: Sensores → Procesamiento IA → Actuadores con retroalimentación.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Servicios, Administración y BPM</strong></td>
+                    <td>"Gestión de Procesos de Negocio" (BPM) potenciada con ML: anticipa rupturas de stock, reencamina suministros, gestiona trámites documentales (RPA), responde consultas (chatbots de atención).</td>
+                </tr>
+                <tr>
+                    <td><strong>Logística y Transporte</strong></td>
+                    <td>IA optimiza rutas de reparto (UPS ORION), gestiona flotas autónomas, predice demanda estacional. Vehículos autónomos (Waymo, Tesla) usan fusión sensor: LIDAR + cámara + radar.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Sistemas Diagnósticos Automáticos</strong></td>
+                    <td>IA clasifica y detecta fallos en manufactura (visión artificial) o radiología médica comparando contra bases de datos masivas. Alta precisión, sin fatiga.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Cobots (Robots Colaborativos) — ISO/TS 15066</h3>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div>
+                <table>
+                    <thead>
+                        <tr><th>Aspecto</th><th>Cobot</th><th>Robot Industrial</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Seguridad</strong></td>
+                            <td>Sensores fuerza/par; se detiene al contacto</td>
+                            <td>Aislado en jaula</td>
+                        </tr>
+                        <tr style="background-color:#f9f9f9;">
+                            <td><strong>Programación</strong></td>
+                            <td>Lead-through, tablet intuitiva</td>
+                            <td>Código complejo especializado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Instalación</strong></td>
+                            <td>~1 hora en mesa</td>
+                            <td>Días + vallado perimetral</td>
+                        </tr>
+                        <tr style="background-color:#f9f9f9;">
+                            <td><strong>Entorno</strong></td>
+                            <td>Workspace compartido con humanos</td>
+                            <td>Entorno cerrado y controlado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">4 Modos de Operación (ISO/TS 15066)</span>
+                <ol style="padding-left:16px; line-height:1.7; margin-top:6px; font-size:0.88rem;">
+                    <li><strong>Parada Monitoreada:</strong> Se detiene si el humano entra; se reanuda al salir.</li>
+                    <li><strong>Guiado Manual:</strong> Operario mueve el brazo físicamente para enseñarle trayectorias.</li>
+                    <li><strong>Monitoreo de Velocidad:</strong> Más lento cuanto más cerca esté el operario.</li>
+                    <li><strong>Limitación Potencia/Fuerza:</strong> Puede contactar pero con fuerza máxima limitada.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. SISTEMAS DE RAZONAMIENTO IMPRECISO (LÓGICA DIFUSA)</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Lógica Difusa (Fuzzy Logic)</span>
+            <p>La IA simbólica clásica usaba variables booleanas binarias y cortantes [0, 1]. El razonamiento impreciso soluciona esta rigidez permitiendo valores graduales y superpuestos [0 a 1 entero]. No eres sólo "Alto o Bajo", eres "80% Alto y un 20% Mediano".</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Pilar Estructural Difuso</th>
+                    <th>Explicación Teórica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Conjuntos Difusos</strong><br>(Fuzzy Sets)</td>
+                    <td>En lugar de cajas drásticas o fronteras, el conjunto difuso es una función curva transicional. Ej: Un grifo abierto a 35°C pertenece parcialmente al conjunto "Agua Caliente" y al de "Agua Templada".</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>2. Fuzzificación</strong><br>(Funciones de pertenencia)</td>
+                    <td>El acto conversor directo por el cual la IA mide el dato físico neutro (e.j: 55 Km/h) y lo traduce a porcentajes verbalizados: [10% Muy rápido, 90% Moderado]. Usa curvas trapezoidales o de campana clásica.</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Reglas Difusas</strong></td>
+                    <td>Lógica condicional blanda orquestando el resultado. Ej: <em>"SI Velocidad es Moderada Y Distancia es Corta, ENTONCES Freno Suave"</em>. El motor difuso aglutina estas reglas e infiere una última decisión unificada llamada "Defuzzificación".</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. SISTEMAS BASADOS EN REGLAS VS. BASADOS EN CASOS</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Componente / Concepto</th>
+                    <th>Sistemas Basados en Reglas (SBR)</th>
+                    <th>Sistemas Basados en Casos (CBR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>¿Qué almacena?</strong></td>
+                    <td>Reglas explícitas IF-THEN escritas por expertos humanos.</td>
+                    <td>Casos pasados resueltos (problema + solución aplicada).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>¿Cómo razona?</strong></td>
+                    <td>Motor de inferencia que aplica reglas encadenadas (Forward o Backward).</td>
+                    <td>Ciclo 4R: <strong>Recuperar</strong> caso similar → <strong>Reutilizar</strong> solución → <strong>Revisar</strong> si no encaja → <strong>Retener</strong> como nuevo caso.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ventaja principal</strong></td>
+                    <td>100% explicable, trazable, auditable.</td>
+                    <td>Aprende de la experiencia sin reescribir reglas; funciona bien con poca teoría formal.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Debilidad principal</strong></td>
+                    <td>Frágil ante lo no previsto; mantenimiento costoso.</td>
+                    <td>Requiere una buena base de casos; puede recuperar casos poco relevantes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ejemplo clásico</strong></td>
+                    <td>MYCIN (bacterias), DENDRAL (química), XCON (configuración VAX — 10.000 reglas).</td>
+                    <td>Sistemas de recomendación (Netflix), diagnóstico clínico asistido, helpdesks.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Encadenamiento en SBR</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Forward (datos→conclusión):</strong> Dado lo que sé (síntomas), el motor infiere qué enfermedad es. Útil en monitorización industrial.</li>
+                    <li><strong>Backward (meta→evidencia):</strong> Sospecho "gripe"; el motor busca si hay fiebre y tos para confirmarlo. Útil en diagnóstico dirigido.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Componentes de un SBR</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Base de Conocimientos:</strong> Repositorio estático de reglas IF-THEN escritas por el ingeniero del conocimiento.</li>
+                    <li><strong>Base de Hechos:</strong> Memoria dinámica (RAM) con los datos de la situación actual.</li>
+                    <li><strong>Motor de Inferencia:</strong> Coordina qué reglas disparar y en qué orden; gestiona conflictos.</li>
+                    <li><strong>Módulo de Explicación:</strong> Justifica al usuario por qué se llegó a esa conclusión.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>
