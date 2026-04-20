@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet SBD Tema 2: Cuadros de Mando y Dashboards - Sistemas de Big Data iLERNA">
+    <title>Cheatsheet: SBD Tema 2 — Cuadros de Mando</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 2. Cuadros de Mando y Visualización</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background-color: #8e44ad;">SBD</span> Sistemas de Big Data (Módulo 5074)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. TIPOS DE DASHBOARDS Y LEYES VISUALES GESTALT</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">1. Estratégico (Directivos)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Buscando rentabilidad a años vista. Pinta KPIs de larguísimo plazo (ROI Trimestral). Gráficos súper limpios, sin botones de exploración compleja, hechos solo para de un vistazo macro determinar la salud financiera entera corporativa.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">2. Táctico (Jefes de Dpto)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Monitorea proyectos o campañas (¿Nuestra oferta de Navidad subió ventas un 20%?). Altamente interactivos y llenos de filtros de cruce <em>(Drill-down)</em>.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">3. Operativo (SysOps/Fábrica)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Escudos térmicos para <strong>tiempos reales milimétricos</strong>. Se recargan por segundo mostrando alertas de latido o incidencias de emergencia inminente (Caída de servidores, Picos RAM, Máquinas rojas).
+                </p>
+            </div>
+        </div>
+
+        <div class="metric-card" style="margin-bottom:12px; padding:12px;">
+            <span class="metric-title" style="margin-bottom: 8px; display:inline-block;">Leyes de Gestalt Aplicadas al Cuadro de Mando</span>
+            <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
+                <li><strong>Proximidad:</strong> Si pones y enmarcas dos gráficos cerca, los ojos humanos asumen instantáneamente causa-efecto comercial entre ellos sin necesidad de ponerles texto (Ej: Ventas y Gasto en Marketing justos).</li>
+                <li><strong>Similitud y Color:</strong> Emplea siempre una "paleta estricta". Si el margen de beneficio es naranja brillante en la pestaña uno, DEBE ser naranja en todas las pantallas. Cambiar colores mata el mapa visual del cliente.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. KPIs E INGENIERÍA COLUMNO-BASED (PARQUET)</h2>
+
+        <p style="font-size:0.85rem; margin-bottom: 8px;">Un número aleatorio suelto NO es una métrica; y para que sea un KPI directivo, debe ser inquebrantablemente <strong>SMART</strong>:</p>
+        <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
+            <li><strong style="color:var(--color-primary)">S</strong>pecific: Específica, entendida por cualquiera.</li>
+            <li><strong style="color:var(--color-primary)">M</strong>easurable: Medible como magnitud matemática.</li>
+            <li><strong style="color:var(--color-primary)">A</strong>chievable: Realista y humanamente alcanzable, sin fantasías.</li>
+            <li><strong style="color:var(--color-primary)">R</strong>elevant: Si de su observación no va ligada al éxito comercial, quítala.</li>
+            <li><strong style="color:var(--color-primary)">T</strong>ime-bound: Anclada en un margen de tiempo ("Incrementar un 5% el tráfico <em>en 6 meses</em>").</li>
+        </ul>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">Formatos JSON / CSV (Archivos por Fila)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 67%;">Archivos Apache PARQUET / DELTA (Por Columna)</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">El texto tradicional se lee a lo plano. Si un Analista de Inteligencia quiere "Sumar todas las ganancias de España", el disco duro se ve obligado y ralentizado a escanear a la fuerza DNI, Nombres y códigos postales innecesariamente.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Estructura la información transponiéndola en Bloques de Columnas. Si pides una Suma total en PowerBI de beneficios, la aguja del disco *únicamente lee físicamente* y transporta a la RAM la columna de dólares, evadiendo cargar textos inútiles, ahorrando tiempo hipergaláctico. El rey absoluto de los DataLakes.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. ESTRATEGIAS METODOLÓGICAS (CRISP-DM vs SEMMA)</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">CRISP-DM (El Estándar Global)</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Enfoque Holístico Comercial.</strong> Nació entendiendo que los R2 matemáticos sin utilidad real de oficina no sirven para nada.</li>
+                    <li><em>Consta de 6 Fases Rígidas:</em> <strong>1. Business Unerstanding (El problema)</strong> &rarr; 2. Data Understanding &rarr; 3. Data Prep &rarr; 4. Modeling &rarr; 5. Eval &rarr; <strong>6. Deployment (Despliegue y Puesta en Servidor real)</strong>.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">SEMMA (El Enfoque Purista Matemático)</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Enfoque Estadístico NAS.</strong> Evade al directivo. Su única función metodológica es destilar de algoritmos e inteligencia los CSV sin despistes.</li>
+                    <li><em>Consta de 5 Fases Abstractas:</em> <strong>Sample (Muestra)</strong> &rarr; <strong>Explore (Gráficas)</strong> &rarr; <strong>Modify (Normalizar variables nulas)</strong> &rarr; <strong>Model (Red Neuronal)</strong> &rarr; <strong>Assess (Ver Accuracy y MSE)</strong>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. LIBRERÍAS DE CÓDIGO Y RETO AL DESPLIEGUE</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">Batería de Graficados IT Directos</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    <strong>Vía Programación (Data Scientist):</strong> <em>Matplotlib, Seaborn (Estadístico), Plotly</em> (El gran motor interactivo con ratón) o <em>D3.js</em> (Armamento Web Javascript pesado, manipula SVGs vivos con máxima libertad).<br>
+                    <strong>Vía Herramienta (Business Analysts):</strong> <em>PowerBI (motor DAX), Tableau</em>. Capacidad gigante para unirse a SSAS (SQL Analysis Services) con clústeres detrás.
+                </p>
+            </div>
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">La barrera Final: "Interpretabilidad" (XAI)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Las Redes Neuronales son <em>"Cajas Negras Matemáticas Inescrutables"</em> (Black Box Problem). Si vamos a meter la IA a un Tribunal Bancario, los analistas humanos necesitan justificaciones literales lógicas. <br><br>Necesitamos algoritmos <strong>Explicadores de IA (Técnicas LIME O SHAP)</strong> para decirle al comité directivo cosas legales y claras como: <em>"A esta persona el Random Forest le denegó el préstamo en un 80% influenciado únicamente porque sus ingresos trimestrales estaban a menos de 500€"</em>.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

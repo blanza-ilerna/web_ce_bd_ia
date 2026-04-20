@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen General de BI, KDD y Cuadros de Mando - Módulo de Repaso iLERNA">
+    <title>Resumen: BI, KDD y Visualización — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Business Intelligence (BI), KDD y Visualización</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. MARCOS METODOLÓGICOS (CRISP-DM Y KDD)</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Proceso KDD (Knowledge Discovery)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Transforma "mar de ruido digital" en valor accionable, mediante las fases estrictas de: <strong>Selección</strong> (apuntar a BBDD origen), <strong>Preprocesamiento</strong> (tratar nulos y atípicos, ocupa 80% del tiempo), <strong>Transformación</strong> (Z-Score escalado), <strong>Data Mining</strong> (Redes Neuronales extrayendo patrones) y <strong>Evaluación</strong> (Validación por humanos).</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">CRISP-DM vs SEMMA</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    <strong>CRISP-DM:</strong> Esencialmente orientado a <em>Negocio</em>. Nace bajo la premisa de que todo proyecto ML debe arrancar por entender al cliente final ("Business Understanding") y debe terminar forzosamente en Producción ("Deployment").<br><br>
+                    <strong>SEMMA:</strong> Flujo exclusivista matemático estadístico (Sample, Explore, Modify, Model, Assess). Ignora la rentabilidad real de la empresa.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. INGENIERÍA BI Y CUBOS OLAP</h2>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 12px; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">Formatos y Parquet</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 67%;">Bases y Cubos OLAP</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Frente al JSON (lecturas horizontales masivas), la visualización explota empleando arquitecturas orientadas a Columnas <strong>(Parquet o Delta Lake)</strong>. PowerBI suma los "Euros" leyendo únicamente ESA columna aislada en milisegundos evitando el texto.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Data Warehouse estructurado:</strong> Se puebla mediante rídigos túneles ETL, limpiando antes de almacenar.<br>
+                        <strong>Cubos Multidimensionales OLAP:</strong> Estructuras cruzadas que <em>pre-calculan millones de sumas por adelantado</em> de modo que el directivo pueda pivotar Años frente a Países o Edades arrastrando el ratón sin espera de carga.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. CUADROS DE MANDO Y DISEÑO AVANZADO VISUAL</h2>
+        
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">1. Estratégico (Directivos)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">KPIs de larguísimo plazo (ROI Trimestral). Súper limpios, sin botones de exploración compleja. Reflejan salud financiera total macroscópica.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">2. Táctico (Mandos Medios)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Miden Campañas concretas. Altamente interactivos y repletos de filtros de cruce multinivel <em>(Drill-down)</em>.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">3. Operativo (Fábricas)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Monitores refrescándose al milisegundo mostrando alertas térmicas sobre latido o emergencias IT en vivo para operarios "SysOps".</p>
+            </div>
+        </div>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card" style="border: 2px dashed #666; padding: 12px;">
+                <span class="metric-title">Leyes Gestalt de la Percepción</span>
+                <ul style="padding-left:16px; line-height:1.4; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Proximidad y Alineación:</strong> Al ubicar dos gráficos uno al lado del otro, se presupone mágicamente causa-efecto aunque no haya leyenda.</li>
+                    <li><strong>Similitud de Colores Reglada:</strong> El beneficio en ventas DEBE ser naranja en todo el ecosistema de pantallas, no cambiará, manteniendo el raíl mental lógico.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Definición de KPIs (SMART)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Un número aleatorio NO es métrica de negocio. Exige las métricas <strong>SMART</strong>:</p>
+                <ul style="padding-left:16px; line-height:1.4; font-size:0.85rem;">
+                    <li><strong>S</strong>pecific (Concreta y definida)</li>
+                    <li><strong>M</strong>easurable (Numérica/Medible)</li>
+                    <li><strong>A</strong>chievable (Cifra realista corporativa)</li>
+                    <li><strong>R</strong>elevant (Afecta directamente al beneficio €)</li>
+                    <li><strong>T</strong>ime-Bound (Limitada a un plazo: "Un 5% En Diciembre")</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. HERRAMIENTAS Y VANGUARDIA (STORYTELLING/IA)</h2>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; text-align: left;">
+             <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">Líderes de Mercado BI Tools</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 67%;">El Salto Tecnológico Impulsado por la IA Moderna</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr valign="top">
+                    <td style="padding: 8px;">
+                        <strong>Power BI:</strong> Líder incontestable, inmerso al núcleo Office 365 y Azure. Usa cálculos DAX internos.<br><br>
+                        <strong>Tableau:</strong> Creador del Drag&Drop perfecto libre y estético (Salesforce).<br><br>
+                        <strong>Qlik Sense:</strong> No fuerza joins en la base, funciona en memoria asociando variables a nivel semántico con sus colores verdes-grises.
+                    </td>
+                    <td style="padding: 8px;">
+                        <strong>Delegación y Arquitectura Distribuida Bypass:</strong> PowerBI revienta si le descargas a tu PC el Terabyte corporativo, así que en verdad, lanza la consulta al Master exterior enorme de Apache Spark/Hive, él suma, y unicamente manda un CSV final ridículo resuelto al PC del humano para renderizar.<br><br>
+                        <strong>Data Storytelling Secuencial:</strong> Matamos la filosofía de dar 20 cuadros sueltos. Hoy se enlazan dinámicamente como diapositivas resolviendo causa raíz en A -> B.<br><br>
+                        <strong>NLQ y Copilot Generativo:</strong> El manager agarra el móvil en natural text <em>"Píntame en un pie chart los peores meses del año 2026 en Sevilla"</em> y la IA le construye momentaneamente esa SQL/Gráfica deshechable.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TABLA PRESENCIA -->
+        <h2 style="margin-top: 2rem;">PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Concepto Evaluado</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Fases del Proceso KDD (Minería y Preprocesamiento Mapeado)</td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-full"></td></tr>
+                <tr><td>Metodologías de Proyectos (CRISP-DM Industrial vs SEMMA Matemáticas)</td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td></tr>
+                <tr><td>Estructuras Dimensionales en SQL (Data Warehouse y Cubos OLAP)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-med"></td></tr>
+                <tr><td>Cuadros de Mando, KPIs Directivos y UX de visualización Gestalt</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td></tr>
+                <tr><td>Ecosistema de Plataformas BI (PowerBI, Tableau, Looker)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-full"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note" style="margin-top:10px;">● = 1-2 temas &nbsp;·&nbsp; ●● = 3-5 temas &nbsp;·&nbsp; ●●● = Eje de la asignatura &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

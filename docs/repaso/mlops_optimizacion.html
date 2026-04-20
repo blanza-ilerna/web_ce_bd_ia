@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen de Optimización, Tuning y MLOps - Módulo de Repaso iLERNA">
+    <title>Resumen: Optimización, Tuning y MLOps — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Optimización, Tuning y Fase Producción (MLOps)</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-saa">SAA</span> Sistemas de Aprendizaje Automático
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. ESTRATEGIAS DE DEPURACIÓN (FEATURE SELECTION)</h2>
+        
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">La Maldición de la Dimensionalidad (Depurar columnas basura)</span>
+            <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                <li><strong>Métodos Selectivos Filter (Fríos):</strong> Los estadísticos matemáticos (Cálculos directos de correlación de Pearson y ANOVA). Ignoran qué algoritmo vas a usar. Eliminan ciegamente en base a si una métrica A está estúpidamente repetida con B y por tanto huelen a ruido covariante inútil y confuso.</li>
+                <li><strong>Métodos Wrapper (Fuerza Pura Empírica):</strong> La máquina hace tests reales con el modelo. Usa simulaciones físicas viendo si quitando esta columna gané o perdí décimas de precisión final. Ej: Eliminación Recursiva (RFE). Tremendamente asfixiantes y letos en procesador de clústeres reales.</li>
+                <li><strong>Métodos Embedded (Intrínsecos e implícitos):</strong> Una "Regresión Regularizada LASSO L1" por su propia esencia matemática algorítmica y genética, aniquila y aplasta a CERO los factores de un dataset que no funcionan, depurándolo ella sola en tiempo de ejecución.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. EL ARTE DE AFINAR MOTORES INVISIBLES (TUNING CIENTÍFICO)</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+             <div class="metric-card" style="border: 2px dashed #666; padding: 12px;">
+                <span class="metric-title">Parámetro Fijo vs Hiperparámetro Directivo</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Los <strong>Parámetros</strong> (como los pequeños pesos flotantes ocultos y gradientes entre las neuronas de redes masivas) jamás los tocas manualmente, ellos iteran, se balancean y aprenden matemática y silenciosamente bajo la manta en la ejecución.<br><br>
+                    Los <strong>Hiperparámetros</strong> (ej: Tasa de Learning Rate o Niveles jerárquicos de tu Árbol Decisión RF) lo impone obligatoriamente el Científico Data Scientist *Alteas de Arrancar el Tren*, y de ellos depende inmutablemente la limitación del modelo.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Formato y Tipo de Rastreadores (Searches)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Casi nadie pone el Hiperparámetro a mano. Los Data Scientist programan diccionarios gigantes y exigen las máquinas buscar la mejor matriz usando:<br><br>
+                    <strong>1. Grid Search:</strong> Pura fuerza bruta sistemática probando los 100 escenarios matemáticos sin saltarse uno hasta hallar el récord (infinito coste IT).<br>
+                    <strong>2. Random Search:</strong> Aleatoriedad probabilística; al probar saltos ciegos aleatorios rinde casi idéntico al Grid habiendo testado un 90% menos de veces la CPU.<br>
+                    <strong>3. Opt. Bayesiana Histórica:</strong> Motor de cálculo con "memoria del pasado". Si ese rango numérico fallaba en el test pasado, lo esquiva, no cae la piedra de nuevo, acotando inteligentemente por dónde ir a la perfección en bajada.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. PREVENCIÓN DEL SOBREAJUSTE Y FUGAS (DATA LEAKAGE)</h2>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 12px; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 45%;">El Gran Veneno Culpable: "Data Leakage"</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 55%;">Escudos Defensivos Matemáticos Anti-Overfitting</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>La mala praxis por Fuga Analítica Tácita. </strong> Ocurre si haces algo tan inocente como aplicar un cálculo global Media al CSV gigante para tapar los huecos vacíos antes de aislar el Bloque ciego reservado para *Testear*. Resulta que sin querer les has chivado matemáticamente al Entrenador el secreto de los números tope del Universo Examen. Ese modelo fingirá ser 99% Exacto en laboratorio y será inútil en Internet.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <ul style="margin: 0; padding-left: 16px; line-height: 1.6;">
+                            <li><strong>Regularizaciones Matemáticas (L1 y L2):</strong> Reprimendas de cálculo internas. La L2 (Ridge) impide que los coeficientes matemáticos se disparen hasta las nubes de forma absurda forzándolos contra la pared para desmemorizar detalles residuales.</li>
+                            <li><strong>Caudal Dropout en Deep Learning):</strong> Obliga al azar a desenchufar y fusilar temporalmente y a oscuras parte de las neuronas artificiales del código para que no surjan camarillas hiperlideresas irremplazables con el aprendizaje general.</li>
+                            <li><strong>Early Stopping (El Salvavidas):</strong> Frena el clúster si de repente el modelo está empeorando sus respuestas en el tablero *Validador* aunque en el *Entrenador* parezca feliz mejorando su récord tramposo de memorizado.</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. VALIDACIÓN CLÍNICO-CORPORTATIVA (MLOPS BÁSICO)</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">K-Fold Cross Validation <span style="font-weight:lighter;">(Testing Interno Laboratorio)</span></span>
+                <p style="margin-top:6px; font-size:0.85rem;">Eliminar el "factor suerte ciega" de los Excel. Troceamos la tabla matriz corporativa en X fajos independientes (Ej: 5 K-Folds). Ejecutamos y apagamos el modelo desde origen 5 veces alternando siempre cuál fajo ha sido elegido como "El Examninador Aislador". La suma ponderada de esos 5 ensayos ciegos desentraña la verdad neta total eliminando ilusiones.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">A/B Testing en Vivo <span style="font-weight:lighter;">(Aterrizaje Libre MLOps On-line)</span></span>
+                <p style="margin-top:6px; font-size:0.85rem;">La gran cúpula dictatorial última para pasar a Operaciones el Machine Learning. Sacrificamos a la base de clientes reales. Implementamos sin avisar a un segmento el modelo A viejo transaccional (El 50% tráfico) frente al gigantesco Modelo "LLM" de millones de parámetros entrenado B al otro 50%. Dejamos fluir el servidor dos semanas. ¿Qué modelo indujo orgánicamente más compra pura? Ese se queda vivo corporativamente.</p>
+            </div>
+        </div>
+
+        <!-- TABLA PRESENCIA -->
+        <h2 style="margin-top: 2rem;">PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Concepto Evaluado</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa" style="background:#555;">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Selección de Variables / Feature Engineering Matemático Ciego</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Parametrización vs HyperTuning (GridSearch / RandomSearch CV)</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Fenómeno del Data Leakage y Contaminación en Partición del Dataset</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Penalización Regularizadora profunda (Dropout/L1) & Early Stopping</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Búsqueda del Récord Final en Prod. Generalizada: A/B Testing Crítico</td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note" style="margin-top:10px;">● = 1-2 temas &nbsp;·&nbsp; ●● = 3-5 temas &nbsp;·&nbsp; ●●● = Eje de la asignatura &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

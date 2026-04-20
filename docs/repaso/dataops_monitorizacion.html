@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen de Ingeniería de Datos, DataOps y Monitorización - Módulo de Repaso iLERNA">
+    <title>Resumen: Ingeniería de Datos y DataOps — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Ingeniería de Datos, Pipelines y Monitorización (DataOps)</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. INTEGRIDAD, PIPELINES Y EL VIAJE DEL DATO</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Integridad Física en Storage</span>
+                <p style="margin-top:6px; font-size:0.85rem;">En Big Data los discos van a fallar a diario. No usamos costosos <strong>Hashes Criptográficos (SHA)</strong> hiper pesados de ciberseguridad para validarlo todo, usamos simples <strong>Checksums / CRC32</strong> (sumas rápidas de verificación) para detectar al vuelo cuellos eléctricos y celdas muertas al copiar archivos. Además, sistemas de <strong>Scrubbing</strong> (barridos ocultos automatizados) auditan continuamente que las réplicas en de los discos no se estén pudriendo ("rot") y las autoreparan en silencio.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Higiene en el Pipeline (Great Expectations)</span>
+                <p style="margin-top:6px; font-size:0.85rem;"><strong>Great Expectations:</strong> Es un framework maestro que actúa instalando "Pruebas Unitarias de Software pero exclusivas para los Datos". El guardián absoluto. Si el archivo que viene del proveedor trae 2 DNIs nulos o un correo de paciente mal formateado, lo estrangula y frena el <em>Pipeline ETL Automático</em> antes de que caiga e infecte el Data Warehouse vital corporativo.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. ORQUESTACIÓN, MIGRACIÓN MASIVA Y HERRAMIENTAS CHIEFS</h2>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 12px; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">Migración e Integración Gráfica</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">Orquestadores Batch Puros</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 34%;">El Rey del Streaming</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Hadoop DistCp:</strong> El bulldozer ciego gigante. Mueve Petabytes de un On-Premise a Amazon AWS de golpe forzando miles de nodos paralelos. <br>
+                        <strong>Apache NiFi:</strong> La interfaz gráfica pura (cajitas y flechas). Nacida en la NSA, chupa todo tipo de rios en vivo y los redirige visualmente a puerto seguro en los Lakes.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Oozie / Apache Airflow:</strong> Son directores de orquesta. No suman números, solo programan los cronómetros usando grafos (DAGs) condicionantes: <em>"A las 3AM arranca SQL-> Cuando acabe -> Notifica al Server 2 -> Y luego enciende el modelo de ML (Si algo falla, envía un email y anula todo)"</em>.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Apache Kafka (+ KRaft):</strong> El eje vertebral neurálgico ultra-tolerante de los arquitectos y de Uber. Motor Pub-Sub ingiriendo millones de tramas en vivo por milisegundo mediante <em>Topics</em> segregados. Actualmente evoluciona abandonando los obsoletos notarios externos <em>Zookeeper</em> para auto-auditarse velozmente él mismo usando el protocolo interno <strong>KRaft</strong>.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. DATAOPS Y EL OBSERVATORIO FÍSICO/METADATOS</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Data Lineage (El ADN del proceso)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">En un negocio grande la entropía arruina lo legal. Sistemas visuales como <strong>Apache Atlas</strong> actúan de Gobernanza gráfica, mapeando y catalogando el árbol genealógico completo (Metadata) desde que el dato de Carlos era un CSV crudo, pasando por la limpieza de NiFi hasta volverse un punto amarillo en un PowerBI táctico.</p>
+            </div>
+            <div class="metric-card" style="border: 2px dashed #666; padding: 12px;">
+                <span class="metric-title">El Trípode de la Observabilidad Activa</span>
+                <ul style="padding-left:16px; line-height:1.4; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Logs (Instrumentación):</strong> Trozo de texto natural incrustado en código informando de que un microservicio "Terminó bien, archivo B71" para auditar fallos post-mortem.</li>
+                    <li><strong>Métricas Temporales:</strong> El registro estadístico puro que almacena números y su hora "Cpu=90% a las 11:21".</li>
+                    <li><strong>Trazas (Traces):</strong> Recreación hilada visual de saltos geográficos para ver dónde está el delay en la nube.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. EL STACK MODERNO DE ALERTAS: ELK Y PROMETHEUS</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">ELK Stack (Monopolio de Logs Textuales)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Formado por <strong>Elasticsearch</strong> (El inmenso motor de búsqueda que digiere el texto global rastreándolo neuronalmente), <strong>Logstash</strong> (El capturador/transformador inicial de mensajes) y <strong>Kibana</strong> (el FrontEnd final para que el analista escriba "Fallo Error M3" y saque informes).
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Prometheus + Grafana (Métricas Gráficas)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    <strong>Prometheus</strong> es la base temporal por excelencia que "vampiriza activamente (Pull)" métricas en formato milisegundo de todo el Datacenter usando PromQL. Por detrás, <strong>Grafana</strong> conecta directamente y proyecta de una forma visualmente inmersiva esos números fríos en gigantescos paneles negros saturados en los despachos de alertas SysOps/DevOps.
+                </p>
+            </div>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; text-align: left;">
+             <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg);">Monitorización: Los "4 Fantásticos" Cuellos de Botella Asesinos en Big Data Clústeres</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr valign="top">
+                    <td style="padding: 8px;">
+                        <ul style="margin: 0; padding-left: 16px; line-height: 1.6;">
+                            <li><strong>Inclinación Extrema (Data Skew):</strong> El demonio de la computación distribuida. Provoca cuellos mortales cuando todo el tráfico acaba asignado al Worker A ahogándole mientras los otros 9 Workers bostezan libres esperando para sincronizar la misma query final.</li>
+                            <li><strong>Asfixia por RAM "Out Of Memory" (OOM):</strong> Apache Spark sufre horrores al realizar sub-cálculos o JOINs hiper gigantes cruzados. Al desbordar el contenedor RAM estalla matando el esclavo por prevención.</li>
+                            <li><strong>Latencia por JVM (Stop The World):</strong> El infame <em>Garbage Collector</em> de Java intenta purgar celdas inútiles congelando temporal y globalmente todo procesamiento matemático interrumpiendo latidos.</li>
+                            <li><strong>Saturación pura de Disco I/O y Red LAN:</strong> Los clústeres no se frenan casi nunca por CPU matemática, se mueren "esperando" que los limitados cables ethernet fotocopien Terabytes de disco entre NameNodes.</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TABLA PRESENCIA -->
+        <h2 style="margin-top: 2rem;">PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Concepto Evaluado</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Metadatos, Great Expectations y Calidad Ingesta (Veracidad, Limpieza)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-full"></td></tr>
+                <tr><td>Modelos y Orquestadores (Apache Airflow / NiFi / Oozie)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-full"></td></tr>
+                <tr><td>Tecnología Base Streaming (Apache Kafka) Y Zookeeper/KRaft</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-full"></td></tr>
+                <tr><td>Patrones de Observabilidad y Dashboarding (Prometheus y Grafana)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td></tr>
+                <tr><td>Identificación y Análisis Diagnóstico Táctico de Fallos Graves (OOM / GC)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note" style="margin-top:10px;">● = 1-2 temas &nbsp;·&nbsp; ●● = 3-5 temas &nbsp;·&nbsp; ●●● = Eje de la asignatura &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

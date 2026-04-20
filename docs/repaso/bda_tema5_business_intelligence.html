@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 5: Business Intelligence y KDD - Big Data Aplicado iLERNA">
+    <title>Cheatsheet: BDA Tema 5 — Business Intelligence</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 5. Business Intelligence (BI) y KDD</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. FUNDAMENTOS DEL BUSINESS INTELLIGENCE (BI)</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Proceso ETL</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    (<strong>Extract, Transform, Load</strong>). La espina dorsal clásica del BI. <em>Extrae</em> datos vivos y sucios, los <em>Transforma</em> (cruza) para darles sentido, y los <em>Carga</em> lentamante un Data Warehouse por la noche para su análisis diario.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Data Warehouse (DWH)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    El "Gran Almacén Histórico Cerrado". A diferencia del Data Lake (que guarda basura cruda), el Warehouse exige limpieza rigurosa: alberga bases de datos altamente estructuradas con formato rígido y listas para hacer cuadros de mando financieros directos.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Cubos OLAP</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    (OnLine Analytical Processing). Estructuras hiperdesarrolladas multidimensionales que pre-calculan sumas colosales antes de que preguntes. Permiten rotar 5 años de métricas por ciudad y departamento en el dashboard de PowerBI arrastrando el ratón en en microsegundos.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. EL PROCESO KDD (Knowledge Discovery)</h2>
+
+        <p style="font-size:0.85rem; margin-bottom: 8px;">Metodología canónica (Descubrimiento KDD) para transformar "un inmenso mar de ruido caótico digital" en <strong>conocimiento accionable e inteligencia</strong>. Fases secuenciales inquebrantables:</p>
+        
+        <ol style="padding-left:24px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
+            <li><strong>Selección:</strong> Elegir milimétricamente contra qué sistemas origen atacar (ej: "No volcaremos todo el servidor, me sirven solo las facturas del TPV principal del mes de Julio").</li>
+            <li><strong>Limpieza (Preprocesamiento):</strong> Tratar Valores Ausentes (NaNs), borrar ruido atípico salvaje (Outliers irreales) e imputar vacíos. Históricamente agota entre el 70% u 80% del oxígeno y labor de un Data Scientist.</li>
+            <li><strong>Transformación:</strong> Adaptar matemáticamente la tabla higienizada para los algoritmos (Scaling con Normalización Logarítmica Z-Score, crear Features nuevas, OHE, etc.).</li>
+            <li><strong>Minería de Datos (Data Mining):</strong> Lanzar las Redes Neuronales o Clustering Masivo sobre las matrices listas para buscar y "romper la piñata" matemática de patrones ocultos. Es la tarea "automática e invisible de las máquinas".</li>
+            <li><strong>Evaluación / Interpretación Cognitiva:</strong> Los científicos humanos frenan, examinan los Outputs y los validan para convertirlos finalmente en *Informes Visibles* utilizables en las reuniones de los directivos.</li>
+        </ol>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. ECOSISTEMA DE EXPANSIÓN VISUAL (BI TOOLS)</h2>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Microsoft Power BI</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Tableau</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Qlik (Qlik Sense)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Looker (Google)</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>El rey mundial del mercado general.</strong> Precio y licencias hiperagresivos. Conecta con el ecosistema inmenso de Office 365, DAX y Azure Synapse fluidamente.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        Pionero y soberano en la "Cuidada Estética y Exploración Visual libre". Altísimo rendimiento arrastrando gráficas dinámicas (Drag & Drop). Ahora dentro de Salesforce.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        Arquitectura única basada en su "Motor Asociativo" sobre pura memoria RAM in-memory. Empareja datos de tablas sin forzar joins SQL rígidos previos.
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        Visor Web Nativo nacido dentro la nube. Utiliza sintaxis propia declarativa "LookML" especializándose al máximo en proyectar Queries vivas delegadas sobre la bestia de BigQuery GCP.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. INTEGRACIÓN CON BIG DATA Y DOBLE VALIDACIÓN FÍSICA</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">Bypass y delegación de Poderes (Presto / Spark)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Por muy robusto que sea PowerBI, petaría si intentase exportarse 5.000 millones de filas localmente desde Hadoop para ordenarlas y sumarlas.<br><br>
+                    <strong>La Arquitectura Distribuida Correcta:</strong> PowerBI no descarga nada, simplemente se liga vía conector ODBC lanzando la mega-consulta hacia las decenas de ordenadores del motor <em>Presto (Trino) o Spark SQL</em> remoto. El clúster remoto de Amazon AWS hierve las sumas de petabytes por fuerza bruta en dos segundos y solo le retorna "El numerito final limpio cruzado en megabytes" que PowerBI visualiza plácidamente sobre sus gráficos de tartas.
+                </p>
+            </div>
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">Validación Final (Algorítmica vs Ejecutiva)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Un modelo de fraude en IA, para lanzarse a Producción Industrial, sufre dos tribunales mortales.<br><br>
+                    <strong>1. Validación Estadística (El lado frío):</strong> ¿Gozamos de un AUC-ROC soberbio? ¿Nuestra matriz de confusión está libre de Falsos Positivos críticos? Confirmación Matemática sólida.<br><br>
+                    <strong>2. Validación de Negocio (El lado humo/Business):</strong> Pasa si y solo si reporta valor comercial. ¿Se ajusta esto a las leyes RGPD actuales del banco europeo antes de aplicarlo? ¿Generará realmente ahorros netos en euros? Si la respuesta directiva es NO, el esfuerzo tiró al abismo monetario por más que el AUC fuera un 99%.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

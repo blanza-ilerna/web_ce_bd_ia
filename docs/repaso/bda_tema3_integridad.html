@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 3: Integridad y Movimiento - Big Data Aplicado iLERNA">
+    <title>Cheatsheet: BDA Tema 3 — Integridad</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 3. Integridad y Movimiento de Datos</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. CALIDAD, LIMPIEZA Y NORMALIZACIÓN</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Dimensiones de Calidad</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Exactitud:</strong> El dato refleja el mundo real de forma verídica.</li>
+                    <li><strong>Completitud:</strong> No faltan valores críticos ni campos para el modelo de IA.</li>
+                    <li><strong>Consistencia:</strong> Ausencia de conflictos ilógicos (ej. Fecha de Nacimiento futura respecto a la Edad real).</li>
+                    <li><strong>Trazabilidad:</strong> Saber en todo momento de qué sensor original o máquina vino.</li>
+                </ul>
+            </div>
+            <div class="metric-card" style="display: flex; flex-direction: column; justify-content: center;">
+                <span class="metric-title">Great Expectations <span class="tag tag-bda" style="font-size:0.6rem; vertical-align:top; background-color: #607d8b;">Framework</span></span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Herramienta pura en Python que actúa como un <strong>"test unitario pero para las bases de datos"</strong>. Evalúa los pipelines masivos de extracción bloqueando en seco el flujo de automatización si de repente un CSV externo trae DNIs en blanco o facturas extrañas en negativo antes de ensuciar el Lago de Datos.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. ALGORITMOS DE INTEGRIDAD Y REPARACIÓN</h2>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Hash Criptográfico (ej. SHA-256)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Suma de Verificación / Checksum (ej. CRC32)</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Diseñado primariamente para <strong>imposibilitar robos e interceptaciones por hackers</strong> (Ataques maliciosos intencionados). Computacionalmente es muy pesado y frena agresivamente el rendimiento en pipelines gigantes de Big Data.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Su fin <strong>NO es la ciberseguridad militar, sino la velocidad y confirmación bruta</strong>. Detecta instatáneamente "errores naturales y caídas fortuítas" (ej: cuando un disco HDFS pierde mágicamente 1 bit de voltaje por calor en el centro de datos). Es el rey en HDFS.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
+            <li><strong>Scrubbing (Recolección de basura en Ceph):</strong> El sistema pasa continuamente <em>"una escoba de fondo silenciosa"</em> por la red. Empieza a comparar matemáticamente los checksums de las tres réplicas clonadas de cada archivo en el sótano. Si descubre que un clon tiene un "bit podrido por calor", lo asesina inmediatamente y lo vuelve a fotocopiar impecablemente pidiendo la versión maestra a los 2 discos sanos. (Auto-reparación milagrosa).</li>
+            <li><strong>Erasure Coding (ej: RS 6,3):</strong> Alternativa hipermoderna frente a tener 3 fotocopias de discos. Trocea 6 partes de datos en crudo y el matemático crea 3 partes extra puras de "paridad de emergencia". Su mayor logro es que <strong>aguantar la rotura súbita de 3 servidores físicos perdiendo 0 Bytes y ahorrando casi el 50% de las facturas enormes por discos duros de backup</strong>.</li>
+        </ul>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. MOVIMIENTO DE DATOS Y MIGRACIÓN MASIVA</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Hadoop DistCp</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    (Distributed Copy). Escavadora para enviar de golpe Petabytes entre un viejo Datacenter On-Premise a Amazon AWS sin tumbar la red. Utiliza todo el poder puro matemático de lanzar procesadores mediante <strong>MapReduce</strong> enviándolo por millones de hilos.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Apache NiFi</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Creación inicial secreta de la inteligencia americana NSA. Interfaz 100% visual en navegador estilo "unir cajitas de colores arrastrando flechas". Recibe y migra "el oleaje continuo de información viva de la empresa" hacia búnqueres seguros.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Kafka MirrorMaker</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Pieza ultraespecífica para hacer que todos los millones de clicks generados en Europa de una web y capturados por Apache Kafka Madrid atraviesen el Atlántico automáticamente replicándose intocables en otro cluster Kafka gemelo en EE.UU.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. LINAJE DE DATOS (DATA LINEAGE) Y GOBERNANZA</h2>
+
+        <div class="metric-card" style="margin-bottom:12px; padding:12px;">
+            <span class="metric-title" style="margin-bottom: 8px; display:inline-block;">Apache Atlas (Gobernanza Visual)</span>
+            <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
+                <li><strong>El CAOS empresarial:</strong> Cuando en 10 años juntas decenas de analistas tirando variables de RStudio, "Data Lakes" y miles de Excels cruzados sin ton ni son (Data Silos inútiles y peligrosos para blindajes legales).</li>
+                <li><strong>Solución del Linaje del Dato:</strong> Plataformas como <em>Apache Atlas</em> investigan tus servidores corporativos sin piedad e indexan "Los Metadatos". Al final grafican mapas automáticos con árboles donde ves al milímetro que <em>"El cuadro financiero Mazo-24 salió al sumar la tabla Oozie-5 (limpiada por Paco el Lunes) filtrando el archivo CRM extraído por Kafka.</em>. Garantía de auditoría judicial.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

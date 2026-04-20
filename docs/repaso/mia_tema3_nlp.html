@@ -68,22 +68,31 @@
         <table style="margin-bottom:12px;">
             <thead>
                 <tr>
-                    <th>Época y Modelo Dominante</th>
-                    <th>Definición de su Tecnología Base</th>
+                    <th>Época y Paradigma</th>
+                    <th>Tecnología Base</th>
+                    <th>Modelos Representativos</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Simbólico / Reglas</strong><br>(1950 - 1990)</td>
-                    <td>Programación dura. Exigía lingüistas que redactaran reglas gramaticales inmensas <em>If-Then</em>. Ej: El chatbot ELIZA (1966), incapaz de salir de plantillas cortas programadas.</td>
+                    <td><strong>Simbólico / Reglas</strong><br>(1950 – 1990)</td>
+                    <td>Lingüistas programaban reglas gramaticales <em>If-Then</em> explícitas. Muy precisas en dominios acotados; imposibles de escalar.</td>
+                    <td>ELIZA (1966) — 200 reglas patrón-respuesta. Chatbots basados en árboles de decisión.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
-                    <td><strong>Estadístico</strong><br>(1990 - 2013)</td>
-                    <td>Basado netamente en conteo de palabras, frecuencias locales y algoritmos puramente predictivos estadísticos de n-gramas donde se evaluaba qué palabra era más probable que siguiera a la anterior.</td>
+                    <td><strong>Estadístico / ML Clásico</strong><br>(1990 – 2013)</td>
+                    <td>N-gramas: probabilidad de la siguiente palabra dado el contexto. Mejora cobertura pero sin semántica real.</td>
+                    <td><strong>N-gramas</strong> (bigramas, trigramas), Naive Bayes, SVM para clasificación de texto.</td>
                 </tr>
                 <tr>
-                    <td><strong>Redes Neurales / Transformers</strong><br>(2013 - Presente)</td>
-                    <td>La revolución de las redes profundas y la arquitectura Transformers de Google (Self-Attention). Modificó la historia al permitir ver dependencias de texto larguísimas en paralelo, originando los LLM modernos.</td>
+                    <td><strong>Embeddings Densos</strong><br>(2013 – 2017)</td>
+                    <td>Representación semántica vectorial. Captura relaciones: <em>rey − hombre + mujer ≈ reina</em>.</td>
+                    <td><strong>Word2Vec</strong> (2013, Google), GloVe, FastText.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Transformers / LLMs</strong><br>(2017 – Presente)</td>
+                    <td><strong>Self-Attention</strong>: pondera la importancia de cada palabra según todo el contexto en paralelo. Elimina RNNs. Base de todos los LLM modernos.</td>
+                    <td><strong>BERT</strong> (2018, bidireccional, fine-tuning), <strong>GPT</strong> (2018→GPT-4, generativo), <strong>Gemini</strong>, <strong>Claude</strong>, <strong>LLaMA</strong> (open-source).</td>
                 </tr>
             </tbody>
         </table>
@@ -127,43 +136,79 @@
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. APLICACIONES Y MODELOS COMERCIALES</h2>
+        <h2>C. APLICACIONES DEL NLP (3.2)</h2>
 
+        <h3>Aplicaciones Comunes (3.2.2)</h3>
         <table style="margin-bottom:12px;">
             <thead>
                 <tr>
-                    <th>Ámbito de NLP Profesional</th>
-                    <th>¿Qué Soluciona Empresarialmente?</th>
+                    <th>Aplicación</th>
+                    <th>¿Qué hace? / Ejemplo</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Análisis de Sentimientos</strong></td>
-                    <td>Barre masivamente de internet reseñas o comentarios de clientes (ej: Amazon/TripAdvisor) valorando si el tono general o "voz del cliente" se inclina hacia <em>Positivo, Neutro o Negativo</em> estadísticamente.</td>
+                    <td><strong>Chatbots y Asistentes Virtuales</strong></td>
+                    <td>Atención 24/7, resolución de FAQs, control domótico por voz (Siri, Alexa, Google Assistant). LLMs elevan a diálogos abiertos y contextuales.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
-                    <td><strong>Extracción y Clasificación (NER)</strong></td>
-                    <td>Toma textos opacos empresariales y automatiza la extracción quirúrgica de variables (ej: "Saca todos los DNIs o Nombres Propios de cientos de PDF de contratos").</td>
+                    <td><strong>Traducción Automática</strong></td>
+                    <td>De reglas gramaticales a Transformers. Google Translate (133+ idiomas), DeepL (matices semánticos), Claude/ChatGPT (adaptación de tono y registro).</td>
                 </tr>
                 <tr>
-                    <td><strong>Chatbots y Asistentes Conversacionales</strong></td>
-                    <td>Reemplazo total del primer eslabón del soporte humano (Siri/Alexa) y automatización de FAQs.</td>
+                    <td><strong>Análisis de Sentimientos</strong></td>
+                    <td>Detecta polaridad (Positivo / Neutro / Negativo) en reseñas masivas (Amazon, TripAdvisor) y monitoriza reputación de marca en redes sociales.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Clasificación de Textos</strong></td>
+                    <td>Categoriza automáticamente: filtro de spam, clasificación de noticias, etiquetado de tickets de soporte. Algoritmos: Naive Bayes, BERT fine-tuned.</td>
+                </tr>
+                <tr>
+                    <td><strong>Resumen Automático</strong></td>
+                    <td><strong>Extractivo:</strong> selecciona frases clave del texto original. <strong>Abstractivo:</strong> genera texto nuevo condensado (LLMs). Aplicación en noticias, documentos legales, actas de reuniones.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Extracción de Entidades (NER)</strong></td>
+                    <td>Identifica personas, empresas, fechas, lugares en textos no estructurados. Ej: extraer todos los DNIs o nombres propios de cientos de contratos en PDF.</td>
                 </tr>
             </tbody>
         </table>
 
+        <h3>Modelos LLM Comerciales (3.2.3)</h3>
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">ChatGPT (OpenAI)</span>
-                <p style="margin-top:6px; font-size:0.9rem;">Modelos LLM masivos optimizados fuertemente con técnica técnica RLHF (Feedback Humano) logrando diálogos orgánicos impresionantes generalistas.</p>
+                <p style="margin-top:6px; font-size:0.9rem;">LLM generalista optimizado con <strong>RLHF</strong> (Reinforcement Learning from Human Feedback). Diálogos orgánicos, razonamiento complejo, agentes autónomos multimodales.</p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Gemini (Google)</span>
-                <p style="margin-top:6px; font-size:0.9rem;">Su arquitectura difiere de forma radical al ser <strong>multimodal nativo</strong>: es entranado desde el origen leyendo videos, imágenes y texto en paralelo orgánicamente.</p>
+                <p style="margin-top:6px; font-size:0.9rem;"><strong>Multimodal nativo</strong>: entrenado desde el origen con texto, imagen y vídeo en paralelo. Ventana de contexto masiva (2M tokens). Integrado en Google Workspace.</p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">GitHub Copilot</span>
-                <p style="margin-top:6px; font-size:0.9rem;">Implementación corporativa de LLMs enfocada agresivamente 100% al nicho del código de desarrollo <em>Software Engineering</em> predictivo y depurador.</p>
+                <p style="margin-top:6px; font-size:0.9rem;">LLM especializado en código. Sugiere líneas, genera tests, explica funciones y depura en tiempo real. Transforma la productividad del desarrollador de software.</p>
+            </div>
+        </div>
+
+        <h3>NLP en Entornos Reales (3.2.4)</h3>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Ámbito Empresarial</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.88rem;">
+                    <li><strong>Automatización documental:</strong> análisis de contratos, extracción de cláusulas críticas y fechas de expiración (−70% trabajo legal).</li>
+                    <li><strong>Auditoría y compliance:</strong> detección de patrones de fraude en facturas (Mifid II).</li>
+                    <li><strong>Meeting summarization:</strong> resúmenes inteligentes de reuniones con acuerdos y tareas.</li>
+                    <li><strong>BI + datos no estructurados:</strong> conecta PDFs, emails y actas con dashboards de ventas. Más del 80% de datos empresariales no están estructurados.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Ámbito Educativo</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.88rem;">
+                    <li><strong>Tutores virtuales:</strong> explican conceptos 24/7 adaptándose al ritmo y nivel del estudiante.</li>
+                    <li><strong>Evaluación automática:</strong> feedback sobre redacciones (estructura, coherencia, argumentación). Herramientas: Grammarly, Turnitin.</li>
+                    <li><strong>Aprendizaje de idiomas:</strong> práctica conversacional con corrección en tiempo real (Duolingo IA).</li>
+                    <li><strong>Reto ético:</strong> la IA es probabilística, no infalible; el estudiante debe distinguir guía de sustitución del pensamiento crítico.</li>
+                </ul>
             </div>
         </div>
 
@@ -173,11 +218,11 @@
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">Datasets y Sesgos (Bias) Culturales</span>
-                <p style="font-size:0.9rem; margin-top:6px;"><strong>Garbage in, Garbage out:</strong> Las redes neuronales aprenden del corpus gigante de internet el cual está naturalmente repleto de racismo o roles de género anticuados. Los modelos despliegan ese machismo heredado tácitamente sin ser avisados; es esencial la labor de <strong>rebalanceo en IA</strong> y auditoría ética de sets.</p>
+                <p style="font-size:0.9rem; margin-top:6px;"><strong>Garbage in, Garbage out:</strong> Las redes aprenden del corpus de internet, repleto de sesgos de género, raza e ideología. Los modelos heredan y amplifican esos sesgos tácitamente. Solución: <strong>rebalanceo de datasets</strong>, técnicas de fairness y auditorías éticas periódicas. Caso real: Amazon Recruiting (2018) discriminaba candidatas por sesgos en el histórico de contratación.</p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Privacidad y Protección PII</span>
-                <p style="font-size:0.9rem; margin-top:6px;">Los LLMs colosales pueden "memorizar" subconscientemente tarjetas de crédito y DNIs inyectados durante el scrapeo sin filtrar. Cumplir regulaciones europeas como RGPD y el uso de software de <strong>Anonimización agresiva y Prevención</strong> son imperativos legales del diseño inicial.</p>
+                <p style="font-size:0.9rem; margin-top:6px;">Los LLMs pueden "memorizar" datos sensibles (DNIs, tarjetas, diagnósticos) del corpus de entrenamiento. Riesgo: extracción con prompts adversariales. Obligaciones: <strong>RGPD</strong> (UE), anonimización agresiva, Privacy by Design, minimización de datos. PII = Personally Identifiable Information.</p>
             </div>
         </div>
 
@@ -190,16 +235,54 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Costes Computacionales Excesivos</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
-                    <td>Desplegar LLMs o retrenarlos mensualmente para incluir nueva información es financieramente monstruoso (consumo altísimo de GPU Clusters).</td>
+                    <td><strong>Alucinaciones</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Los LLMs generan texto plausible pero <strong>factualmente incorrecto</strong> con total confianza. Son imitadores probabilísticos, no tienen comprensión real de verdad o falsedad. Requieren supervisión humana experta antes de usarse en decisiones críticas.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
-                    <td><strong>Model Drift (Deriva del Modelo)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
-                    <td>La inercia caduca: el lenguaje popular está vivo, cada año surgen tecnicismos o eventos ("Pandemia 2020", nuevos políticos, memes nuevos) para los que un modelo viejo es ignorante.</td>
+                    <td><strong>Costes Computacionales</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Entrenar y desplegar LLMs requiere clústeres de GPUs enormes (GPT-3: ~$4.6M en compute). Reentrenar mensualmente para actualizar conocimiento es inviable económicamente para la mayoría.</td>
                 </tr>
                 <tr>
-                    <td><strong>Técnica de Mitigaciones: RAG</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
-                    <td>Para evitar derrochar presupuesto re-entrenando por culpa del <em>Drift</em>, se utiliza RAG. La IA estática es forzada a leer primero de una Base de Datos viva externa y barata antes de dar una respuesta en vivo.</td>
+                    <td><strong>Model Drift (Deriva)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>El lenguaje evoluciona: nuevos eventos, tecnicismos, modas lingüísticas dejan obsoleto un modelo estático. Un modelo entrenado hasta 2023 ignora lo ocurrido después (<em>knowledge cutoff</em>).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>RAG (Retrieval-Augmented Generation)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Solución económica al Drift: el LLM estático consulta primero una <strong>base de conocimiento externa actualizada</strong> (vectorstore, web) antes de generar respuesta. Une el razonamiento LLM con datos frescos sin reentrenar.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>E. FUTURO DEL NLP: EL LENGUAJE COMO INTERFAZ (3.1.7)</h2>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Tendencia</th>
+                    <th>¿Qué implica?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Multimodalidad</strong></td>
+                    <td>Sistemas que integran texto, voz, imagen y vídeo en un contexto unificado. El LLM razona sobre múltiples fuentes simultáneamente (ej: Gemini Ultra, GPT-4o, Claude 3.7).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Memoria Persistente (Contexto Infinito)</strong></td>
+                    <td>Modelos que mantienen memoria entre conversaciones. Recuerdan preferencias, identidad del usuario y construyen relación continuada. Elimina el problema de "empezar de cero".</td>
+                </tr>
+                <tr>
+                    <td><strong>Razonamiento Híbrido Neuro-Simbólico</strong></td>
+                    <td>Integración de LLMs con bases de datos estructuradas (SQL, grafos de conocimiento, ontologías). Une la fluidez del lenguaje con la precisión y la verificabilidad del dato estructurado.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>IA Emocional y Adaptativa</strong></td>
+                    <td>Incorpora señales paralingüísticas (tono de voz, pausas, expresión facial) para modular respuestas de forma empática. El sistema ajusta el registro y la actitud según el estado emocional detectado.</td>
+                </tr>
+                <tr>
+                    <td><strong>Lenguaje como Interfaz Universal</strong></td>
+                    <td>El habla natural reemplaza los menús, formularios y comandos. Cualquier persona puede interactuar con tecnología compleja sin conocimientos técnicos. Democratización radical del acceso a la IA.</td>
                 </tr>
             </tbody>
         </table>

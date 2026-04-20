@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet del Tema 2: Ecosistemas Big Data - Big Data Aplicado iLERNA">
+    <title>Cheatsheet: BDA Tema 2 — Ecosistema Big Data</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 2. Sistemas y Ecosistemas Big Data</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. LÍMITES DE LA PARALELIZACIÓN Y LEY DE AMDAHL</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Computación Paralela vs Distribuida</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Paralela:</strong> Varios hilos/núcleos <em>dentro</em> de un mismo ordenador físico (misma placa base/bus) resolviendo partes de un problema.</li>
+                    <li><strong>Distribuida:</strong> Decenas de ordenadores físicos independientes y enteros unidos por red. Si uno estalla, el sistema "master/slave" sobrevive y re-asigna el trabajo.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">La Ley de Amdahl <span class="tag tag-bda" style="font-size:0.6rem; vertical-align:top; background-color: #607d8b;">Fórmula</span></span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    <strong>Freno absoluto:</strong> "Por más procesadores masivos que añadas a un clúster, el rendimiento máximo siempre estará limitado por el fragmento de código que NO se puede paralelizar". <br><br>
+                    <em>Ej: Si el 5% de tu algoritmo es estrictamente secuencial, el clúster jamás funcionará más de 20 veces más rápido (1/0.05) aunque gastes 2M€ en CPUs.</em>
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. TEOREMA CAP EN BASES DE DATOS DISTRIBUIDAS</h2>
+
+        <p style="font-size:0.85rem; margin-bottom: 8px;">En sistemas distribuidos, es <strong>físicamente imposible garantizar las tres propiedades a la vez</strong>. Siempre debes sacrificar una en caso de partición física en la red:</p>
+        
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+            <thead>
+                <tr style="background-color: var(--color-bg);">
+                    <th style="padding:8px; border-bottom: 2px solid var(--color-primary); width: 33%;">Consistency (C) - Consistencia</th>
+                    <th style="padding:8px; border-bottom: 2px solid var(--color-primary); width: 33%;">Availability (A) - Disponibilidad</th>
+                    <th style="padding:8px; border-bottom: 2px solid var(--color-primary); width: 33%;">Partition Tolerance (P)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr valign="top">
+                    <td style="padding:8px; border-bottom: 1px solid #ddd;">Todos los nodos devuelven y ven siempre el mismo dato ultra-actualizado casi al instante. Un cliente nunca vas a leer un precio "antiguo" en tu base de datos.</td>
+                    <td style="padding:8px; border-bottom: 1px solid #ddd;">El sistema siempre tiene que dar respuesta al instante (siempre en pie), aunque en caso de cortes es red el dato que devuelva no sea el último. Lo importante es no "colgar" el portal.</td>
+                    <td style="padding:8px; border-bottom: 1px solid #ddd;"><strong>Indispensable en Big Data.</strong> El sistema sigue funcionando en 2 hemisferios aunque el cable marino entre los datacenter de USA y Europa se rompa físicamente.</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. EL ZOOLÓGICO DE HERRAMIENTAS HADOOP</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Apache Sqoop</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    (SQL-to-Hadoop). El puente perfecto. Importa bases de datos relacionales clásicas (MySQL/Oracle) directamente a HDFS de manera masiva.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Apache Flume</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Fontanería para Logs y telemetría. Recolecta masivamente tráficos asimétricos continuos (eventos de una web) y los inyecta en Hadoop.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Pig & Hive</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Abstracciones. <strong>Hive:</strong> Traduce mágicamente dialecto y consultas "SQL" normales en tareas complejas MapReduce para los analistas sin saber Java.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. ORQUESTACIÓN Y MÚSCULO STREAMING MODERNO</h2>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Tecnología</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 75%;">Función y Rol Arquitectónico</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Oozie & Airflow</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Los Orquestadores (ETL).</strong> Automatizan las secuencias de trabajo. <em>Airflow</em> (AirBnb) usa DAGs (Grafos Dirigidos) en Python para programar que la "Fase 3 de ML" espere a la "Fase 2 ETL" antes de arrancar. Evitan fallos en cadena.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Zookeeper vs KRaft</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong>Los Notarios Consensuadores.</strong> Aseguran que todo el clúster mantenga un estado/configuración sana. <em>Apache Kafka</em> está sustituyendo activamente el uso vetusto del servidor extra Zookeeper, para utilizar el protocolo integrado <strong>KRaft</strong>, que quita cuellos de botella.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Apache Kafka</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        Eje vertebral de las corporaciones actuales Data-Driven. Giga-motor distribuido pub-sub. Organizado por <em>Topics</em> (Canales) y <em>Particiones</em>. Es el estándar en Uber y LinkedIn para inyectar cientos de millones de eventos en tiempo real al clúster tolerando roturas de red.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

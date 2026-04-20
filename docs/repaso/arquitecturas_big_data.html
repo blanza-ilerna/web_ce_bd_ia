@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen General de Arquitecturas y Almacenamiento Masivo en Big Data - Módulo de Repaso iLERNA">
+    <title>Resumen: Arquitecturas Big Data — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Arquitecturas y Almacenamiento Masivo (Big Data)</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. TIPOLOGÍAS FÍSICAS Y ESCALABILIDAD</h2>
+        
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">DAS, NAS y SAN</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>DAS:</strong> Disco físico USB/SATA directo al PC. Súper rápido pero aislado sin red.</li>
+                    <li><strong>NAS:</strong> Discos en red (TCP/IP) con acceso por <em>archivos</em> compartidos. Ideal para ofimática.</li>
+                    <li><strong>SAN:</strong> Red paralela de fibra óptica dedicada a acceso por <em>bloques</em> crudos a gran velocidad. Estándar bancario.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">RAID (Redundancia)</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>0 (Striping):</strong> Rápido, corta archivos en 2, pero sin espejo (rompe 1, pierdes todo).</li>
+                    <li><strong>1 (Mirroring):</strong> Copia de redundancia 1:1. Lento pero 100% seguro.</li>
+                    <li><strong>5:</strong> Usa bits de paridad matemática salvando el disco roto. Mínimo 3 discos.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Scale-Up vs Scale-Out</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Scale-Up (Vertical):</strong> Poner más procesador y RAM a la misma placa base (Tiene un límite físico veloz).</li>
+                    <li><strong>Scale-Out (Horizontal):</strong> El corazón del Big Data. Añadir miles de ordenadores baratos unidos por red al clúster infinitamente.</li>
+                </ul>
+                <div class="subject-tags"><span class="tag tag-bda">BDA</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. ALMACENAMIENTO LÓGICO: WAREHOUSES Y LAKES</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Data Warehouse (SQL Puro)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Búnker tradicional tabular con datos validados 100% estructurados. Inflexibles de modificar pero perfectos para conectar a cuadros de mando (BI).</p>
+            </div>
+           <div class="metric-card">
+                <span class="metric-title">Data Lake (Caos Controlado)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Océano económico gigante. Absorbe cualquier dato tal cual nace (logs, json desnudos). Vital para que los algoritmos rastreen patrones puros.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Data Lakehouse</span>
+                <p style="margin-top:6px; font-size:0.85rem;">Combinación revolucionaria. Ofrece la inmensidad barata de un Lago asumiendo archivos crudos, pero forzándole herramientas que garanticen soporte transaccional ACID.</p>
+            </div>
+        </div>
+        
+        <div class="metric-card" style="margin-bottom:12px; border: 2px dashed #666; padding: 12px;">
+            <span class="metric-title">⚠️ El Peligro del "Data Swamp" (Pantano de Datos)</span>
+            <p style="margin-top:6px; font-size:0.85rem;">Si una corporación abraza el volcado masivo en un Data Lake pero no aplica políticas críticas de <strong>Gobernanza y Catálogos de Metadatos</strong> (obligar a etiquetar quién y para qué subió cada archivo), el lago se pudre convirtiéndose en un <em>Data Swamp</em>: un vertedero opaco, masivo y económicamente inútil donde no se puede encontrar ni extraer valor porque la entropía de los datos es extrema.</p>
+        </div>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Ecosistema Distribuido Hadoop: HDFS + Apache Spark</span>
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 6px; text-align: left;">
+                <tbody style="vertical-align: top;">
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>HDFS (Hadoop File System):</strong> El disco duro infinito de Internet. Trocea archivos de Terabytes en ridículos fajos de 128MB. Un <em>NameNode</em> (El Capataz con el índice) ordena escupir de forma redundante (x3 copias) los bloques por miles de <em>DataNodes</em> (Ordenadores obreroc) para no perder jamás un dato.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>MapReduce (Paradigma Antiguo):</strong> El software iba hacia donde residía el dato (Map), filtraba en los esclavos paralelos y el Master recibía las sumas (Reduce). Grababa todo a disco lentamente.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>Apache Spark:</strong> Sucesor de MapReduce. Calla a Hadoop calculándolo TODO hasta 100 veces más rápido <em>directamente sobre Memoria RAM</em> sin latencias de disco físico.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="subject-tags"><span class="tag tag-sbd">SBD</span> <span class="tag tag-bda">BDA</span></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. TEOREMAS Y BASES DE DATOS (Distribuido)</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card" style="background-color: rgba(94, 106, 210, 0.05); border: 1px solid var(--color-primary);">
+                <span class="metric-title" style="color: var(--color-primary);">Teorema CAP (El Trilema Distribuido)</span>
+                <p style="font-size:0.85rem; margin-top:6px;">Por las leyes de la física de redes, si tienes sedes en España y Australia interconectadas, <strong>solo puedes tener 2 de estas 3 virtudes</strong> simultáneamente:</p>
+                <ul style="padding-left:16px; line-height:1.4; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>(C)onsistency:</strong> Todos los continentes leen en la centésima de segundo exactamente la misma cifra sin demoras.</li>
+                    <li><strong>(A)vailability:</strong> Sistema invulnerable que jamás devuelve un error ante una petición de un cliente, aunque haya cortes.</li>
+                    <li><strong>(P)artition Tolerance:</strong> Sobrevive y sigue de pie aunque los cables del Atlántico se corten partiendo la red física.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">ACID vs BASE (Transaccional vs NoSQL)</span>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 6px; text-align: left;">
+                    <tbody>
+                        <tr><td style="border-bottom: 1px solid #eee; padding-bottom: 4px;"><strong>ACID (SQL Bancario)</strong></td></tr>
+                        <tr><td style="padding-bottom: 8px; color:#555;">Atomicidad (todo el proceso ocurre, o aborta 100%). Asegura Consistencia total. Si envías 500€, restan en origen en el mismo microsegundo.</td></tr>
+                        <tr><td style="border-bottom: 1px solid #eee; padding-bottom: 4px;"><strong>BASE (NoSQL / Eventual)</strong></td></tr>
+                        <tr><td style="color:#555;">Pilar de Cassandra / Big Data. Sacrifica la <em>C</em> por <em>AP</em> pura ("Consistencia Relajada"). No importa si tu Like de YouTube en Madrid la sede de USA no lo suma hasta 2 segundos después.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. ARQUITECTURAS DE PROCESAMIENTO E INGESTA</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">ETL vs ELT</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>ETL (Clásico DW):</strong> Extraes, <em>Transformas y limpias al instante en memoria en tránsito</em>, y lo que sobreviva limpio lo cargas. Crítico si mueres procesando y pierdes original.</li>
+                    <li><strong>ELT (Moderno Cloud):</strong> Extraes y Cargas a plomo el bruto crudo en el Data Lake perenne (barato). Una vez anclado y seguro, usas fuerza bruta cloud infinita para "Transformar". Estandar Actual.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Lambda vs Kappa</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                    <li><strong>Arquitectura Lambda:</strong> Divide el proceso en dos raíles; una autopista rapídisima (Kafka) inexacta sobre la marcha + un raíl enorme nocturno (Hadoop Batch) lento que corrige y asienta cuentas a la mañana.</li>
+                    <li><strong>Arquitectura Kappa:</strong> "Mata" el Batch histórico, simplifica el código basando TODO directamente sobre Streaming vertiginoso (Kafka/Spark Structured) corrigiéndose en vivo.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; text-align: left;">
+             <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Límites Computacionales</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Ingesta Data (Sqoop y Flume)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr valign="top">
+                    <td style="padding: 8px;">
+                        <strong>Ley de Amdahl:</strong> Por muchos PC esclavos millonarios que encadenes, tu clúster volará hasta tropezar con el miserable 5% del código que "No es paralelizable".<br>
+                        <strong>Data Skew (Sesgo del particionamiento):</strong> El muro de <em>Spark</em>. Si distribuyes 5.000 facturas españolas, el Master enviará a un Nodo exclavo la región de "Madrid" que ahogará a ese empleado con 4.500 facturas mientras otros Nodos clústeres de Extremadura descansan vacíos ralentizándote al ritmo del más masificado.
+                    </td>
+                    <td style="padding: 8px;">
+                        <strong>Sqoop:</strong> Vehículo traductor exclusivo para vaciar sin miedo Bases de datos Corporativas transaccionales súper-seguras (MySQL, Oracle SQL) pasándolas al mundo distribuido paralelo HDFS en bloque (Batch).<br>
+                        <strong>Flume:</strong> Fontanería para eventos inconexos y salvajes, atrapando a chorros continuos pequeños tráficos de red, clicks Web o telemetría que no para y metiéndolo al Lake.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TABLA PRESENCIA -->
+        <h2 style="margin-top: 2rem;">PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Concepto Estructural</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>DAS, NAS, SAN y Tipos de Redes RAID</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-full"></td></tr>
+                <tr><td>HDFS, MapReduce y Apache Spark</td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-full"></td></tr>
+                <tr><td>Data Warehouse vs Data Lake vs Lakehouse</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-med"></td></tr>
+                <tr><td>Teorema CAP, ACID Transaccional vs NoSQL</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-full"></td></tr>
+                <tr><td>Arquitecturas Ingesta (Lambda, ETL/ELT)</td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-full"></td><td class="dot-med"></td></tr>
+                <tr><td>Cuellos de botella (Amdahl, Skew, Particionado)</td><td class="dot-none"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-full"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note" style="margin-top:10px;">● = 1-2 temas &nbsp;·&nbsp; ●● = 3-5 temas &nbsp;·&nbsp; ●●● = Eje de la asignatura &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Presentación y material de estudio consolidado: Evaluación de Modelos y Ensemble Learning.">
+    <title>Presentación: Evaluación y Modelos de Aprendizaje | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .slide-container {
+            margin-bottom: 4rem;
+            padding: 3rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            page-break-after: always;
+        }
+        .slide-header {
+            border-bottom: 4px solid var(--color-primary);
+            padding-bottom: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .slide-header h2 {
+            font-size: 2.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border-left: 4px solid var(--color-secondary);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.1rem;
+        }
+        .formula-block {
+            background: #282a36;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-weight: 600;
+        }
+        @media print {
+            .slide-container {
+                box-shadow: none;
+                border: none;
+                margin-bottom: 0;
+                padding: 1rem;
+            }
+            .breadcrumb, header img { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="../index.html">
+                        <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                    </a>
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="index.html">TSU: Fundamentos e IA</a> ›
+                    <span>Presentación Completa: Evaluación ML</span>
+                </div>
+            </div>
+            <h1 class="text-center" style="font-size: 3rem; color: #333; margin-top: 2rem;">📊 Evaluación Exhaustiva y Modelos Avanzados de ML</h1>
+            <p class="subtitle text-center" style="font-size: 1.5rem;">Documento Detallado Formato Presentación</p>
+        </header>
+
+        <main>
+            <!-- DIAPOSITIVA 1: SESGO-VARIANZA -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">1. El Dilema Sesgo-Varianza</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">El objetivo central del ML es la Generalización, no la Memorización.</p>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8;">Para entender cómo evaluar un modelo, debemos conocer qué es lo que intentamos combatir matemáticamente: el error total en Machine Learning no es uniforme. Se descompone en <strong>Sesgo al cuadrado + Varianza + Ruido Irreducible</strong>.</p>
+                
+                <div class="grid-2 mt-2">
+                    <div class="feature-card">
+                        <h3 class="color-primary">Sesgo (Bias) / Underfitting</h3>
+                        <p><strong>El modelo tiene "prejuicios":</strong> Asume que el mundo es tan simple que ignora las complejidades reales de los datos. Se obstina en aplicar una regla sencilla a un patrón complejo.</p>
+                        <div class="highlight-box primary">
+                            <ul>
+                                <li><strong>Medición:</strong> Alto error tanto en los datos de entrenamiento como en validación.</li>
+                                <li><strong>Ejemplo:</strong> Intentar usar una línea quebrada recta (regresión lineal) para modelar una curva parabólica de temperatura anual.</li>
+                                <li><strong>Solución:</strong> Aumentar la complejidad del modelo, crear nuevas características (Feature Engineering), elegir modelos no-lineales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card secondary">
+                        <h3 class="color-secondary">Varianza (Variance) / Overfitting</h3>
+                        <p><strong>El modelo tiene "hipersensibilidad":</strong> Percibe ruido estadístico aleatorio como si fuese un patrón estructurado. Memoriza tan bien que pierde su capacidad predictiva en lo nuevo.</p>
+                        <div class="highlight-box secondary">
+                            <ul>
+                                <li><strong>Medición:</strong> Error muy bajo (o 0) en entrenamiento, pero error muy alto en validación/test.</li>
+                                <li><strong>Ejemplo:</strong> Un modelo que aprende a detectar fraudes "solo si ocurren los martes y si el usuario se llama Juan".</li>
+                                <li><strong>Solución:</strong> Conseguir más datos, aplicar Regularización (L1/L2), aplicar poda (Pruning), o usar Early Stopping.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 2: DIVISIÓN DATOS -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">2. División de Datos: Prevención de Data Leakage</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">Regla de oro: No puedes evaluar un estudiante con el mismo examen que usó para estudiar.</p>
+                </div>
+                
+                <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                    <div class="mermaid" style="width: 100%; max-width: 800px;">
+                        graph LR
+                        A[Dataset Completo 100%] --> B[Training Set 70%]
+                        A --> C[Validation Set 15%]
+                        A --> D[Test Set 15%]
+                        B --> E[Modelo APRENDE Parámetros]
+                        C --> F[Humano AJUSTA Hiperparámetros]
+                        D --> G[Evaluación FINAL Imparcial]
+                    </div>
+                </div>
+
+                <div class="grid-features mt-2">
+                    <div class="card" style="border-left: 4px solid #49B9CE">
+                        <h4>Training Set (60-80%)</h4>
+                        <p>Conjunto sobre el que el algoritmo ajusta sus pesos, coeficientes o reglas matemáticas minimizando una función de coste. Peligro principal: Overfitting.</p>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #8A7AAF">
+                        <h4>Validation Set (10-20%)</h4>
+                        <p>Datos "inéditos" para el modelo. La usamos de iteración en iteración para detener el entrenamiento prematuro o cambiar la profundidad de los árboles/learning rate. Introduce <strong>sesgo humano</strong>.</p>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #C73E1D">
+                        <h4>Test Set (10-20%)</h4>
+                        <p><strong>Aislado.</strong> Sólo se usa una vez al final del proyecto para medir el rendimiento en generalización real. Evita el "Data Leakage" absoluto.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 3: VALIDACIÓN K-FOLD -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">3. Validación Cruzada K-Fold y Bootstrap</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">Maximizando datasets pequeños y asegurando robustez.</p>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8;">Cuando un dataset escatima en muestras, la variabilidad del azar puede hacer que tu Test o Validation set sea demasiado fácil o demasiado complejo, destruyendo la fiabilidad de tu evaluación.</p>
+
+                <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                    <svg viewBox="0 0 900 320" style="width: 100%; max-width: 900px; display: block;">
+                        <defs>
+                            <linearGradient id="foldTrain" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#49B9CE;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#A3E0EA;stop-opacity:0.8" />
+                            </linearGradient>
+                            <linearGradient id="foldVal" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#8A7AAF;stop-opacity:0.9" />
+                                <stop offset="100%" style="stop-color:#C5B9D8;stop-opacity:0.9" />
+                            </linearGradient>
+                        </defs>
+
+                        <rect x="0" y="0" width="900" height="320" rx="15" fill="#f5f5f5" />
+
+                        <text x="450" y="35" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="#333333">
+                            5-Fold Cross-Validation
+                        </text>
+
+                        <!-- Fold 1 -->
+                        <text x="30" y="75" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#333333">Fold 1:</text>
+                        <rect x="100" y="55" width="140" height="30" rx="5" fill="url(#foldVal)" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="170" y="75" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Validación</text>
+                        <rect x="245" y="55" width="560" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+                        <text x="525" y="75" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Entrenamiento</text>
+
+                        <!-- Fold 2 -->
+                        <text x="30" y="120" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#333333">Fold 2:</text>
+                        <rect x="100" y="100" width="140" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="245" y="100" width="140" height="30" rx="5" fill="url(#foldVal)" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="315" y="120" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Validación</text>
+                        <rect x="390" y="100" width="415" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+
+                        <!-- Fold 3 -->
+                        <text x="30" y="165" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#333333">Fold 3:</text>
+                        <rect x="100" y="145" width="280" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="385" y="145" width="140" height="30" rx="5" fill="url(#foldVal)" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="455" y="165" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Validación</text>
+                        <rect x="530" y="145" width="275" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+
+                        <!-- Fold 4 -->
+                        <text x="30" y="210" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#333333">Fold 4:</text>
+                        <rect x="100" y="190" width="420" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="525" y="190" width="140" height="30" rx="5" fill="url(#foldVal)" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="595" y="210" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Validación</text>
+                        <rect x="670" y="190" width="135" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+
+                        <!-- Fold 5 -->
+                        <text x="30" y="255" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#333333">Fold 5:</text>
+                        <rect x="100" y="235" width="560" height="30" rx="5" fill="url(#foldTrain)" stroke="#49B9CE" stroke-width="2" />
+                        <rect x="665" y="235" width="140" height="30" rx="5" fill="url(#foldVal)" stroke="#8A7AAF" stroke-width="2" />
+                        <text x="735" y="255" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#ffffff">Validación</text>
+
+                        <!-- Resultado -->
+                        <text x="450" y="295" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333333">
+                            Promedio de 5 métricas → Estimación robusta del rendimiento
+                        </text>
+                    </svg>
+                </div>
+
+                <div class="grid-2">
+                    <div class="feature-card">
+                        <h3 class="color-secondary">Muestreo Bootstraping</h3>
+                        <p>Mientras K-Fold hace particiones estáticas de los datos, el <strong>Bootstraping</strong> (utilizado en modelos tipo Random Forest) extrae submuestras aleatorias del tamaño del dataset original <em>con reemplazo matricial</em>. Esto significa que una misma fila puede ser seleccionada múltiples veces en la submuestra de entrenamiento, permitiendo crear incontables sets ligeramente diversos.</p>
+                    </div>
+
+                    <div class="feature-card" style="border-left-color: #F39C12;">
+                        <h3 style="color: #F39C12;">La Autoevaluación: Out-Of-Bag (OOB)</h3>
+                        <p>Por pura probabilidad matemática, cuando hacemos un muestro con reemplazo de un dataset finito N, <strong>el ~36.8% de los datos originales nunca llegarán a ser elegidos</strong> para entrenar a un árbol específico.</p>
+                        <p>A este valioso grueso marginado se le conoce como <strong>Out-Of-Bag (Dato Mantenido en la Bolsa)</strong>. </p>
+                        <div class="highlight-box" style="background:#FFF8DC; border-color:#FFA726;">
+                            <p style="margin-top:0;"><strong>El Atajo Maestro:</strong> Como las muestras OOB jamás han sido vistas por su respectivo árbol, funcionan como un <em>Conjunto de Validación Inherente 100% puro</em>. Podemos evaluar cada árbol en la porción OOB inmediatamente después de construirlo. De este modo, <strong>obtenemos una métrica de precisión cruzada completamente confiable sin tener que usar técnica K-Fold ni desperdiciar datos adicionales.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 4: MATRIZ CONFUSIÓN -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">4. Base de la Diferenciación: La Matriz de Confusión</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">Las predicciones tienen impactos en la vida real.</p>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8;">La Matriz de Confusión categoriza sistemáticamente dónde acierta y dónde falla un modelo, destapando sesgos problemáticos que una métrica pura como la exactitud encubriría.</p>
+
+                <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                    <svg viewBox="0 0 700 450" style="max-width: 600px;">
+                        <defs>
+                            <linearGradient id="tpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#81C784;stop-opacity:0.8" />
+                            </linearGradient>
+                            <linearGradient id="fpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FF5252;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#FF8A80;stop-opacity:0.8" />
+                            </linearGradient>
+                            <linearGradient id="fnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFA726;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#FFB74D;stop-opacity:0.8" />
+                            </linearGradient>
+                            <linearGradient id="tnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#81C784;stop-opacity:0.8" />
+                            </linearGradient>
+                        </defs>
+
+                        <rect x="0" y="0" width="700" height="450" rx="15" fill="#f5f5f5" />
+
+                        <!-- Título -->
+                        <text x="350" y="40" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="22" font-weight="700" fill="#333333">
+                            Matriz de Confusión
+                        </text>
+
+                        <!-- Etiquetas superiores -->
+                        <text x="350" y="80" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="16" font-weight="700" fill="#49B9CE">
+                            Predicción del Modelo
+                        </text>
+                        <text x="280" y="110" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333333">
+                            Positivo
+                        </text>
+                        <text x="470" y="110" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333333">
+                            Negativo
+                        </text>
+
+                        <!-- Etiquetas laterales -->
+                        <text x="80" y="200" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="16" font-weight="700" fill="#8A7AAF" transform="rotate(-90 80 200)">
+                            Realidad
+                        </text>
+                        <text x="130" y="210" text-anchor="end" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333333">
+                            Positivo
+                        </text>
+                        <text x="130" y="330" text-anchor="end" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#333333">
+                            Negativo
+                        </text>
+
+                        <!-- Cuadrante TP (Verdadero Positivo) -->
+                        <rect x="160" y="140" width="180" height="110" rx="10" fill="url(#tpGrad)" stroke="#4CAF50" stroke-width="3" />
+                        <text x="250" y="185" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="#ffffff">
+                            TP
+                        </text>
+                        <text x="250" y="210" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Verdadero
+                        </text>
+                        <text x="250" y="230" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Positivo
+                        </text>
+
+                        <!-- Cuadrante FN (Falso Negativo) -->
+                        <rect x="360" y="140" width="180" height="110" rx="10" fill="url(#fnGrad)" stroke="#FFA726" stroke-width="3" />
+                        <text x="450" y="185" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="#ffffff">
+                            FN
+                        </text>
+                        <text x="450" y="210" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Falso
+                        </text>
+                        <text x="450" y="230" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Negativo
+                        </text>
+
+                        <!-- Cuadrante FP (Falso Positivo) -->
+                        <rect x="160" y="270" width="180" height="110" rx="10" fill="url(#fpGrad)" stroke="#FF5252" stroke-width="3" />
+                        <text x="250" y="315" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="#ffffff">
+                            FP
+                        </text>
+                        <text x="250" y="340" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Falso
+                        </text>
+                        <text x="250" y="360" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Positivo
+                        </text>
+
+                        <!-- Cuadrante TN (Verdadero Negativo) -->
+                        <rect x="360" y="270" width="180" height="110" rx="10" fill="url(#tnGrad)" stroke="#4CAF50" stroke-width="3" />
+                        <text x="450" y="315" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="18" font-weight="700" fill="#ffffff">
+                            TN
+                        </text>
+                        <text x="450" y="340" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Verdadero
+                        </text>
+                        <text x="450" y="360" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#ffffff">
+                            Negativo
+                        </text>
+
+                        <!-- Leyenda -->
+                        <text x="350" y="420" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="12" fill="#555555">
+                            Verde = Aciertos | Rojo = Error Tipo I | Naranja = Error Tipo II
+                        </text>
+                    </svg>
+                </div>
+
+                <div class="grid-features mt-2">
+                    <div class="card" style="background:#A3E0EA;">
+                        <p><strong>TN (True Negative)</strong></p>
+                        <p>Predijimos "No" y era "No" ✓</p>
+                    </div>
+
+                    <div class="card" style="background: #FFC1CC;">
+                        <p><strong>FP (False Positive)</strong></p>
+                        <p>Predijimos "Sí" pero era "No" ✗</p>
+                        <p class="color-error"><strong>Falsa alarma</strong></p>
+                    </div>
+
+                    <div class="card" style="background: #FFE5B4;">
+                        <p><strong>FN (False Negative)</strong></p>
+                        <p>Predijimos "No" pero era "Sí" ✗</p>
+                        <p class="color-warning"><strong>Caso perdido</strong></p>
+                    </div>
+
+                    <div class="card" style="background:#C5B9D8;">
+                        <p><strong>TP (True Positive)</strong></p>
+                        <p>Predijimos "Sí" y era "Sí" ✓</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary mt-2">
+                    <h4 style="margin: 0 0 1rem 0;">Ejemplo Didáctico: Detector de Spam</h4>
+                    <p>De 1000 emails analizados por el modelo:</p>
+                    <div class="grid-features mt-1">
+                        <div class="card">
+                            <p class="formula-block color-primary" style="margin:0; font-size:1rem;">TN = 850</p>
+                            <p>Emails legítimos correctos</p>
+                        </div>
+                        <div class="card">
+                            <p class="formula-block color-error" style="margin:0; font-size:1rem;">FP = 30</p>
+                            <p>Legítimos marcados spam</p>
+                        </div>
+                        <div class="card">
+                            <p class="formula-block color-warning" style="margin:0; font-size:1rem;">FN = 20</p>
+                            <p>Spam no detectado</p>
+                        </div>
+                        <div class="card">
+                            <p class="formula-block" style="margin:0; font-size:1rem; color:#8A7AAF;">TP = 100</p>
+                            <p>Spam correctamente detectado</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 5: EXACTITUD VS PRECISION Y RECALL -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">5. Métricas: Accuracy, Precision y Recall</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">¿Qué significa realmente detectar bien?</p>
+                </div>
+
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <h3 class="color-primary">Accuracy (Exactitud)</h3>
+                        <div class="formula-block" style="font-size: 1rem;">(TP + TN) / TOTAL</div>
+                        <p>Aciertos absolutos. <strong>Inútil bajo desbalanceo rotundo.</strong> Si hay un 99% de emails regulares y 1% de Phising, un modelo "perezoso" que acusa de regular a todos tendrá 99% Exactitud.</p>
+                    </div>
+
+                    <div class="feature-card" style="border-left-color: #3498DB;">
+                        <h3 style="color: #3498DB;">Precision (Precisión)</h3>
+                        <div class="formula-block" style="font-size: 1rem; color: #3498DB;">TP / (TP + FP)</div>
+                        <p>Si yo digo que es SPAM, ¿cuánta razón tengo? Maximiza no equivocarse castigando un falso positivo. Perfecto para <strong>filtros de spam, recomendaciones dudosas.</strong></p>
+                    </div>
+
+                    <div class="feature-card" style="border-left-color: #F39C12;">
+                        <h3 style="color: #F39C12;">Recall (Exhaustividad)</h3>
+                        <div class="formula-block" style="font-size: 1rem; color: #F39C12;">TP / (TP + FN)</div>
+                        <p>De todos los tumores REALES que existen, ¿cuántos localicé? Un falso negativo en células cancerígenas es mortal. Se utiliza cuando el evento adverso <strong>es crítico y no se puede quedar sin detectar.</strong></p>
+                    </div>
+                </div>
+
+                <div class="highlight-box primary">
+                    <h4 style="margin: 0 0 1rem 0;">Equilibrar ambas: F1 Score, F2 y F0.5</h4>
+                    <p>El <strong>F1 Score</strong> es la Media Armónica entre Precision y Recall [ 2 * (Prec * Rec)/(Prec + Rec) ]. Es más castigadora porque penaliza cuando una de las métricas es excesivamente baja y la otra alta. Si damos más vitalidad al Recall, pasamos al <strong>F2-Score</strong> (como en salud). Si necesitamos más Precision para no generar costes o penalizaciones innecesarias (ej. Fraude), saltamos al <strong>F0.5-Score</strong>.</p>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 6: CURVA ROC -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-primary">6. Métricas Probabilísticas: ROC AUC y PR AUC</h2>
+                </div>
+
+                <p style="font-size: 1.1rem; line-height: 1.8;">Las matemáticas devuelven una probabilidad (ej. 78% de ser Spam), no absolutos. Las curvas evalúan cómo rinde el modelo si alteramos de forma dinámica la "línea de corte o umbral" (50%, 80%, 30%... para separar Clases).</p>
+
+                <div class="grid-2">
+                    <div class="card" style="border: 1px solid #ddd;">
+                        <h4 class="color-primary text-center">Curva ROC (Receiver Operating Characteristic)</h4>
+                        <p>Una gráfica de la Tasa Verdadera Positiva vs la Tasa Falsa Positiva en diversos umbrales. El Area Bajo la Curva <strong>(AUC)</strong> mide qué tan solvente es el motor en calificar probabilidades.</p>
+                        <ul>
+                            <li><strong>1.0:</strong> Perfecto oráculo de la verdad.</li>
+                            <li><strong>0.8 - 0.9:</strong> Muy buen poder predictivo.</li>
+                            <li><strong>0.5:</strong> Esquinas de la aleatoriedad, modelo inútil (Misma probalidad de tirar moneda).</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="border: 1px solid #ddd;">
+                        <h4 class="color-secondary text-center">Curva PR AUC y Brier Score</h4>
+                        <p>Cuando los datos son colosalmente desbalanceados (Fraude bancario en 0.01%), el ROC AUC miente, porque la cantidad masiva de verdaderos negativos infla la gráfica. </p>
+                        <p>El <strong>PR AUC</strong> se centra exclusivamente en Precision y Recall ignorando los Verdaderos Negativos puros, midiendo realmente la fiabilidad.</p>
+                        <p>A esto le acompaña <strong>El Brier Score</strong>, el error cuadrático puro entre predicción calibrada contra realidad (menor a cero = mejor).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 7: BAGGING Y RANDOM FOREST -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-warning">7. Ensemble Learning paralelo: Bagging</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">"Bootstrap Aggregating" - La Sabiduría Estocástica Multitudinaria</p>
+                </div>
+
+                <p style="font-size: 1.1rem; line-height: 1.8;">Los árboles de decisión son excelentes, pero son inestables y adolecen de alta Varianza. Un sutil cambio en la base de datos destruye el nodo raíz. Aquí nace <strong>Bagging</strong>.</p>
+                
+                <h3 class="color-primary mt-2">La Corona del Bagging: Random Forest 🌲🌲🌲</h3>
+                <p>Es un bloque de cientos de árboles de decisiones matemáticos trabajando paralelamente, logrando reducir tajante la varianza.</p>
+
+                <div class="grid-2">
+                    <div class="highlight-box warning">
+                        <h4>Mecánica Exclusiva RF</h4>
+                        <ul style="margin: 0; padding-left: 1rem;">
+                            <li><strong>Bootstraping:</strong> Cada árbol no aprende de todo tu Excel, si no de muestras extraídas con reemplazo estadístico.</li>
+                            <li><strong>Feature Bagging:</strong> Además de las filas, en CADA split (división logarítmica de la ramificación), solo un subconjunto aleatorio de columnas compite.</li>
+                            <li><strong>Votación Mayoritaria:</strong> Una vez entrenados (paralelizable), las predicciones regresivas se promedian, las clasificadoras se votan en democracia.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box" style="background:#f4f4f4;">
+                        <h4>Hiperparámetros Controladores</h4>
+                        <ul style="margin: 0; padding-left: 1rem;">
+                            <li><code>n_estimators</code>: El número total de árboles (100, 500, etc.).</li>
+                            <li><code>max_depth</code>: La cota de profundización contra overfitting.</li>
+                            <li><code>max_features</code>: Número de variables a escoger por nodo (SQRT logaritmo normal).</li>
+                            <li><code>Out-Of-Bag (OOB)</code>: Alrededor del 36% de datos que estadísticamente no cayeron en la red de bootstrap de cada árbol se usan para una métrica evaluadora gratuíta.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAPOSITIVA 8: BOOSTING Y XGBOOST -->
+            <section class="slide-container">
+                <div class="slide-header">
+                    <h2 class="color-error">8. Ensemble Secuencial: Algoritmos de Boosting</h2>
+                    <p class="color-secondary" style="font-size: 1.2rem; font-weight: 600;">Concentrando la puntería en los errores precedentes (Reducción de Sesgo/Bias).</p>
+                </div>
+
+                <p style="font-size: 1.1rem; line-height: 1.8;">Este algoritmo descarta los grandes modelos complejos y adopta el principio de generar pequeños "Árboles Débiles" de manera <strong>Secuencial</strong>, donde cada árbol asume el trabajo de mitigar los fallos persistentes del árbol numérico que lo antecedió.</p>
+
+                <div class="grid-features mt-2">
+                    <div class="card" style="border-left: 4px solid #F39C12">
+                        <h4>AdaBoost (Ajuste de Pesos)</h4>
+                        <p>Mecánica: El primer árbol comete errores. AdaBoost aumenta dramáticamente el <em>peso matemático</em> de esos errores de fila no resueltos, obligando al segundo mini-árbol jerárquico a especializarse unicamente en corregir este déficit, subyugando el resto.</p>
+                    </div>
+                    
+                    <div class="card" style="border-left: 4px solid #C0392B">
+                        <h4>Gradient Boosting (Enfoque Residuos)</h4>
+                        <p>No se basa en pesos de filas, si no en cálculos analíticos por Regresión. El árbol número (N+1) no entrena usando las variables nominales del label original, se le entrena asumiendo como un <em>target de destino</em> el error residual numérico remanente entre predicción real y proyectada que dejó su predecesor. Usa Decenso por Gradiente.</p>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid #8A7AAF">
+                        <h4>La Fiera del Meta: XGBoost / LightGBM / CatBoost</h4>
+                        <p>La cúpula de algoritmos victoriosos en competencias Kaggle y multinacionales.</p>
+                        <ul style="font-size:0.9rem; padding-left: 1rem; margin-top: 5px;">
+                            <li><strong>XGBoost:</strong> Paralelización de nodos, Poda optimizada, y control drástico de sobreajuste mediande matrices Regularizadoras (L1-Lambda L2-Alpha) integradas desde raíz.</li>
+                            <li><strong>LightGBM:</strong> Uso de histogramas pre-computados (bins) saltando el ordenamiento, con un crecimiento asimétrico que sacrifica nivelado (leaf-wise) por pura velocidad sobre terabytes de data.</li>
+                            <li><strong>CatBoost:</strong> Resiliencia nativa ultra optimizada al One-Hot-Encoding de valores puros categóricos de texto limitando transformaciones pesadas de CPU.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer>
+            <div class="footer-content text-center">
+                <h3>Curso de Especialización en Inteligencia Artificial y Big Data</h3>
+                <p>iLERNA - Documentación Consolidada para Presentaciones</p>
+                <div class="penguin"><span>🐧</span></div>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

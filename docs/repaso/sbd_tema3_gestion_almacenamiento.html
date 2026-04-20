@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cheatsheet SBD Tema 3: Gestión y Almacenamiento - Sistemas de Big Data iLERNA">
+    <title>Cheatsheet: SBD Tema 3 — Gestión de Datos</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Cheatsheet: Tema 3. Gestión y Almacenamiento Masivo</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-sbd" style="background-color: #8e44ad;">SBD</span> Sistemas de Big Data (Módulo 5074)
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. EVOLUCIÓN DE LOS REPOSITORIOS CORPORATIVOS</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">1. Data Warehouse</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Búnker tradicional blindado rígido. Acumula <strong>datos empresariales 100% estructurados</strong> limpiados previamente (ETL puros). Histórico fácil de entender y preparado en bandeja de plata para Dashboards y SQL.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">2. Data Lake</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Océano masivo en bruto infinito y barato. Absorbe toda la información sin discriminación <strong>(texto, logs caóticos, audios)</strong> usando la estrategia del volcado directo ELT. Clave para los algoritmos devoradores del Machine Learning masivo.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">3. Data Lakehouse</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    <em>(Híbrido Delta Lake).</em> La fusión puntera actual. Permite la agresividad y abaratamiento de disco del Lago gigante, pero otorgándole rigidez ACID y compatibilidad transaccional en tiempo real para no sacrificar seguridad de borrado.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. ANATOMÍA DEL ALMACENAMIENTO DISTRIBUIDO (HDFS)</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Fundamentos Core de HDFS (Hadoop File System)</span>
+            <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
+                <li><strong>Misión Básica:</strong> Inyectarle un archivo insostenible de 1 Terabyte a la arquitectura, trocearlo matemáticamente como en cientos de gajos de 128MB, y esparcirlos inteligentemente por discos físicos de cientos de ordenadores baratos diferentes.</li>
+                <li><strong>NameNode (El Capataz / Talón de Aquiles):</strong> Servidor Maestro. Él NO ve, ni guarda archivos reales. Solo incrusta en su Memoria RAM un "Índice de ubicaciones" de dónde está desperdigado cada bloque. Si la placa base del NameNode explota sin backup físico, se pierde la empresa instantáneamente.</li>
+                <li><strong>DataNodes (Los Obreros Replicantes):</strong> Los ordenadores de abajo. Asumen el bloque físico en su disco e, inadvertidamente, la arquitectura les somete a <strong>clonarlo 2 veces por defecto de seguridad hacia de sus compañeros</strong>. Si una máquina entera arde físicamente en el rack 3, el Sistema invoca instantáneamente la copia espejo de los compañeros salvando la web ilesa.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. MOTORES DE IMPORTACIÓN HACIA HADOOP</h2>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Apache Sqoop (El Traductor Relacional SQL)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Apache Flume (El Grifo receptor de Logs)</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: top;">
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Su especialidad exclusiva se centra en cimentar un puente pesado entre Clústeres Big Data gigantes y las bases anticuadas transaccionales de bancos o ERPs clásicos <strong>(Oracle / MySQL)</strong>. Convirtiéndo esos pesados petabytes históricos al formato distribuido veloz HDFS vía comandos rígidos paralelizables en bloque.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Su especialidad son los <strong>flujos indomables continuos y asimétricos de la red</strong> de Internet. "Sus agentes" se anclan para vampirizar sin parar millones de Logs por segundo generados desordenadamente en los servidores Web (Clicks, Twitter) vertiéndolos al DataLake crudo.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. GOBERNANZA, RIESGO LEGAL Y CIBERSEGURIDAD</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">Gobernanza Masiva de Clústeres (Data Governance)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    La Gobernanza IT del Dato NO es poner roles y contraseñas. Significa instaurar el <strong>orden sistemático absoluto corporativo</strong>.<br><br>Se basa en construir Metadatos que vigilan centralmente millones de informes: Obligar a mantener una calidad inflexible matemática, eliminar sin dudar Tablas fantasma inútiles y prohibir completamente los "Silos de Datos Ocultos Clandestinos" por los que un comercial guarda bases de datos en su ordenador.
+                </p>
+            </div>
+            <div class="metric-card" style="height: 100%;">
+                <span class="metric-title">Cumplimiento RGPD Europeo (Escudo Anti-Quiebra)</span>
+                <p style="margin-top:6px; font-size:0.85rem;">
+                    Diseñar la arquitectura bajo el mantra absoluto <em>"Privacy By Design"</em>.<br><br>
+                    <strong>La Seudonimización como pilar vital:</strong> Bajo RGPD, prohibido operar en modelos de ML los nombres y DNI en texto plano de clientes vulnerables. Cualquier almacenamiento Big Data distribuido por el mundo es de facto enmascarado y cifrado por clave temporal. Si ocurre una brecha catastrófica hack, la criptografía anula las mega-multas que quebrarían al instante la corporación en Europa.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>

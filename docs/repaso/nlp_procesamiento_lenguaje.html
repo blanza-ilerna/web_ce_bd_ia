@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen General de Procesamiento del Lenguaje Natural (NLP) e Inteligencia Lingüística - Módulo de Repaso iLERNA">
+    <title>Resumen: Procesamiento del Lenguaje Natural (NLP) — iLERNA Repaso</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .inline-tags { margin-top: 4px; display: block; }
+        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Procesamiento de Lenguaje Natural (NLP) y NLU</h1>
+            <p style="margin-top:6px; ">
+                Leyenda:
+                <span class="tag tag-mia">MIA</span> Modelos IA &nbsp;
+                <span class="tag tag-saa">SAA</span> Sistemas Aprendizaje Automático &nbsp;
+                <span class="tag tag-pia">PIA</span> Programación IA &nbsp;
+                <span class="tag tag-sbd">SBD</span> Sistemas Big Data &nbsp;
+                <span class="tag tag-bda">BDA</span> Big Data Aplicado
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>A. CONCEPTOS FUNDAMENTALES (NLP, NLU, NLG)</h2>
+        
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Lenguaje Formal vs. Natural</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Lenguaje Formal (Código):</strong> Rígido, estructura matemática sin ambigüedades (Ej: Python, C++). Comprensión exacta por máquina y compiladores.</li>
+                    <li><strong>Lenguaje Natural (Humano):</strong> Orgánico, cultural, repleto de ambigüedades, sarcasmo y polisemia. Históricamente, el mayor escollo para la Inteligencia Artificial analítica.</li>
+                </ul>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Las 3 Ramas de Interacción Textual</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>NLP (Procesamiento):</strong> Término paraguas global. Extrae, modela, clasifica y evalúa texto (Ej: Filtro de correos no deseados).</li>
+                    <li><strong>NLU (Comprensión):</strong> Interpreta el <em>significado y la intención real</em> del usuario para entender su demanda.</li>
+                    <li><strong>NLG (Generación):</strong> Sintetiza respuestas lógicamente estructuradas escribiendo texto que un humano creería natural.</li>
+                </ul>
+                <div class="subject-tags"><span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>B. PIPELINE CLÁSICO DE PROCESAMIENTO TEXTUAL</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Fases del Text Mining y Modelado de Strings</span>
+            <p>Antes de que una red atienda un texto, necesita que el texto crudo sea despiezado, saneado y convertido en un formato algebraico vectorial.</p>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Etapa (Orden secuencial)</th>
+                    <th>Objetivo Técnico / Ejemplo de Transformación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Preprocesamiento de Corpus</strong></td>
+                    <td>Limpieza de ruido (caracteres extraños o HTML), conversión a minúsculas absolutas, y eliminación de <em>Stop-words</em> (preposiciones, pronombres que no aportan valor algorítmico).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>2. Normalización, Lemas y Stems</strong></td>
+                    <td>Uniforma conjugaciones. <em>Stemming</em> corta radicalmente desinencias ("corriendo" → "corr"). <em>Lematización</em> rastrea el diccionario buscando la raíz pura gramatical ("corriendo" → "correr").</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Tokenización</strong></td>
+                    <td>Fragmentación de las cadenas purgadas en trozos individuales (palabras entras, sub-palabras o N-gramas) asignándoles su ID para construir el diccionario dimensional.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>4. Análisis Sintáctico (Parsing)</strong></td>
+                    <td>Asignar el rol gramatical (sujeto, verbo, predicado) modelando relaciones de dependencia, para saber qué propiedad se asigna a qué entidad.</td>
+                </tr>
+               <tr>
+                    <td><strong>5. Análisis Semántico y Pragmático</strong></td>
+                    <td>La máquina resuelve dobles sentidos según diccionarios (semántico) y pondera ironías o intenciones sociales abstractas usando una ventana macro del contexto (pragmático).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>C. EVOLUCIÓN HISTÓRICA: DE REGLAS A TRANSFORMERS</h2>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Embeddings (Incrustaciones como Word2Vec)</span>
+                <p style="font-size:0.9rem; margin-top:6px;">Transformación de la palabra en un <strong>vector numérico multidimensional</strong> donde el espacio captura topográficamente el significado abstracto de la palabra midiendo su cercanía matemática a otras. (Revolución 2013). Ej: Distancia <em>Rey-Hombre+Mujer ≈ Reina</em>.</p>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span></div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Arquitectura Transformers (Mecanismo Atención)</span>
+                <p style="font-size:0.9rem; margin-top:6px;">Arquitectura neural (Paper 2017) que abandona la memoria secuencial e introduce <strong>Self-Attention</strong>: evalúa todo el texto en bloque, uniendo en paralelo todas las palabras entre sí con diferentes densidades atencionales. Cimientos de redes fundacionales modernas.</p>
+                <div class="subject-tags"><span class="tag tag-saa">SAA</span> <span class="tag tag-mia">MIA</span></div>
+            </div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Era Metodológica</th>
+                    <th>Funcionamiento General</th>
+                    <th>Modelos Comunes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Reglas Simbólicas</strong></td>
+                    <td>Lingüistas mapeaban respuestas programadas 1 a 1 según coincidencias. Imposible el escalado natural.</td>
+                    <td>Sistemas Chatbot ELIZA o Árboles lógicos (Años 70-80).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Estadística y Probabilidad</strong></td>
+                    <td>Contar frecuencia y probabilidad de palabras juntas dentro de cadenas limitadas (N-Gramas) sin comprensión abstracta.</td>
+                    <td>Naïve Bayes en AntiSpam, TF-IDF.</td>
+                </tr>
+                <tr>
+                    <td><strong>Deep Learning Recurrente</strong></td>
+                    <td>Redes secuenciales con memoria de corto plazo que leen de izquierda a derecha (RNN, LSTM).</td>
+                    <td>Traducción previa al 2017, autocompletado nativo.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Large Language Models (LLMs)</strong></td>
+                    <td>Miles de millones de pesos entrenados en clusters para proyectar secuencias perfectas bajo la heurística Transformer.</td>
+                    <td>ChatGPT, Anthropic Claude, Google Gemini, Meta LLaMA.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>D. CHATBOTS, APLICACIONES Y SISTEMAS RAG</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Teoría de Chatbots y Asistentes</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>Declarativos (Basados en Intenciones):</strong> NLU clásico. El motor detecta la <em>intención</em> (Intent) del mensaje y extrae parámetros clave (Entity). Sigue un diagrama de flujo y árbol de decisiones diseñado por humanos. Seguro, pero rígido.</li>
+                    <li><strong>Generativos (Conversacionales LLM):</strong> No tienen un flujo pre-programado continuo. Generan gramática dinámica entendiendo el bloque de contexto de la charla en tiempo real. Son más orgánicos pero propensos a divagar.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Otras Funcionalidades Corporativas</span>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                    <li><strong>NER (Extracción de Entidades):</strong> Detectar dinámicamente nombres de personas, lugares o importes bancarios atrapados dentro de contratos legales largos en formato texto bruto.</li>
+                    <li><strong>Traducción y Resumen:</strong> Condensar un texto larguísimo en <em>bullet-points</em> (resumen abstracto o extractivo) manteniendo el tono, o cruzarlo a otros lenguajes.</li>
+                    <li><strong>Análisis de Sentimiento:</strong> Categorizar masivamente miles de reseñas de clientes en Positivas/Neutras/Odio.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="metric-card" style="margin-bottom:14px; background-color: rgba(94, 106, 210, 0.05); border: 2px solid var(--color-primary);">
+            <span class="metric-title" style="color: var(--color-primary); font-weight: 700;">Seguridad Predictiva: Alucinaciones y Sistemas RAG</span>
+            <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.95rem;">
+                <li><strong>El problema de las Alucinaciones:</strong> Las inteligencias artificiales generativas nunca buscan información en vivo "por defecto"; emiten texto estadísticamente sólido. Si desconocen una respuesta, la inventarán con pasmosa autoridad gramatical.</li>
+                <li><strong>Sistemas RAG (Retrieval-Augmented Generation):</strong> Patrón de arquitectura donde limitas la libertad al motor NLP/LLM, obligándole procesar una consulta buscando de antemano el texto de los manuales del servidor interno de la empresa, construyendo un resumen cerrado en hechos reales sin necesidad de re-entrenar la IA de base.</li>
+            </ul>
+            <div class="subject-tags"><span class="tag tag-pia">PIA</span> <span class="tag tag-mia">MIA</span> <span class="tag tag-saa">SAA</span></div>
+        </div>
+
+        <hr>
+
+        <!-- TABLA PRESENCIA -->
+        <h2>PRESENCIA EN EL TEMARIO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Competencia Identificada</th>
+                    <th><span class="tag tag-mia">MIA</span></th>
+                    <th><span class="tag tag-saa">SAA</span></th>
+                    <th><span class="tag tag-pia">PIA</span></th>
+                    <th><span class="tag tag-sbd">SBD</span></th>
+                    <th><span class="tag tag-bda">BDA</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Naturaleza del Lenguaje Formal y Obstáculos del Text Mining</td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>El Pipeline de Texto (Tokenización, Lematización, Parsing)</td><td class="dot-full"></td><td class="dot-low"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-low"></td></tr>
+                <tr><td>Representación Matemática con Embeddings Vectoriales</td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Generación Avanzada con Redes de Atención (Transformers)</td><td class="dot-med"></td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+                <tr><td>Aplicabilidad RAG (Bases de Datos Vectoriales y Prompt Engine)</td><td class="dot-low"></td><td class="dot-low"></td><td class="dot-full"></td><td class="dot-low"></td><td class="dot-none"></td></tr>
+                <tr><td>Problemas Operativos e Implicaciones de Sesgos Textuales</td><td class="dot-full"></td><td class="dot-none"></td><td class="dot-med"></td><td class="dot-none"></td><td class="dot-none"></td></tr>
+            </tbody>
+        </table>
+        <p class="legend-note" style="margin-top:10px;">● = 1-2 temas &nbsp;·&nbsp; ●● = 3-5 temas &nbsp;·&nbsp; ●●● = Eje de la asignatura &nbsp;·&nbsp; – = no aparece</p>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+</html>
