@@ -48,15 +48,18 @@
         
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">La Figura de Edward Feigenbaum <span class="tag tag-mia" style="font-size:0.6rem; margin-left:4px;">MIA</span></span>
-                <p style="margin-top:6px; font-size:0.9rem;">Considerado el "Padre de los Sistemas Expertos", acuñó la premisa de que "el poder de un sistema inteligente reside en su conocimiento específico del dominio" más allá de sus puros métodos deductivos o algoritmos base.</p>
+                <span class="metric-title">Edward Feigenbaum: Padre de los Sistemas Expertos <span class="tag tag-mia" style="font-size:0.6rem; margin-left:4px;">MIA</span></span>
+                <p style="margin-top:6px; font-size:0.9rem;">Feigenbaum estableció el principio fundamental de que el desempeño de un sistema inteligente no depende principalmente de métodos deductivos generales, sino del conocimiento específico y profundo del dominio particular en el cual opera. Esta premisa revolucionó el campo, enfatizando que la expertise concentrada es superior a la generalidad algorítmica.</p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">Ciclo de Funcionamiento Vital (<abbr title="Inteligencia Explicable">XAI</abbr>)</span>
+                <span class="metric-title">Ciclo de Vida Completo del Sistema Experto</span>
                 <ol style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
-                    <li><strong>Adquisición:</strong> "Absorber" y traducir en reglas la mente orgánica del especialista o datos del dominio.</li>
-                    <li><strong>Razonamiento Simbólico:</strong> Motor deductivo lógico.</li>
-                    <li><strong>Explicación Activa:</strong> Justificar por qué tomó la decisión.</li>
+                    <li><strong>Adquisición de Conocimiento:</strong> Extracción sistemática de expertise del especialista mediante entrevistas, análisis de documentación y observación de procesos de decisión.</li>
+                    <li><strong>Conceptualización:</strong> Delimitación de conceptos clave, variables relevantes y relaciones entre ellos en el dominio específico.</li>
+                    <li><strong>Formalización:</strong> Traducción de conocimiento cualitativo en reglas computacionales (IF-THEN), estructuras formales y representaciones simbólicas.</li>
+                    <li><strong>Implementación:</strong> Codificación en el motor de inferencia seleccionado, configuración de parámetros y ajuste de pesos heurísticos.</li>
+                    <li><strong>Validación y Pruebas:</strong> Evaluación contra casos reales y contraposición con decisiones de expertos humanos para garantizar alineación.</li>
+                    <li><strong>Mantenimiento y Evolución:</strong> Actualización continua de reglas, incorporación de nuevos casos y refinamiento basado en desempeño operacional.</li>
                 </ol>
             </div>
         </div>
@@ -85,17 +88,22 @@
             </tbody>
         </table>
 
+        <h3>Conceptualización: Delimitación del Dominio</h3>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem; line-height:1.6;">La fase de conceptualización determina los límites y estructura del dominio. Requiere definir explícitamente: (1) <strong>conceptos centrales</strong> del problema (en medicina: síntomas, enfermedades, medicamentos); (2) <strong>variables y atributos</strong> relevantes (temperatura, presión arterial, alergias); (3) <strong>relaciones lógicas</strong> entre conceptos (causa-efecto, jerarquías taxonómicas). Un dominio bien delimitado es prerequisito para la formalización efectiva. Dominios muy amplios o mal definidos tienden al fracaso debido a complejidad no manejable.</p>
+        </div>
+
         <!-- ═══════════════════════════════════════════════════ -->
         <h2>B. ARQUITECTURA CLÁSICA Y COMPONENTES</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
-            <span class="metric-title">Los 5 Pilares Base del Sistema Experto</span>
+            <span class="metric-title">Componentes Fundamentales del Sistema Experto</span>
             <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
-                <li><strong>Base de Conocimientos (Knowledge Base):</strong> El "Disco Duro". Contiene todos los hechos y heurísticas universales pregrabadas ("Si tienes alergia a la amoxicilina, recetar X").</li>
-                <li><strong>Memoria de Trabajo (Base de Hechos):</strong> La "RAM" o entorno actual. Donde residen las variables crudas instantáneas del paciente puntual o el caso actual ("El cliente tiene 38° de fiebre AHORA").</li>
-                <li><strong>Motor de Inferencia:</strong> El "Procesador/Corazón". Algoritmo que machaca y somete la Memoria de Trabajo actual a las Reglas dictaminadas de la Base de Conocimiento para generar resultados.</li>
-                <li><strong>Interfaz Gráfica / Usuario:</strong> El software mediante el cual la enfermera o el ingeniero le envía los datos al motor.</li>
-                <li><strong>Módulo de Explicación:</strong> Subsistema crucial para la auditoría humana que justifica la cascada del árbol deductivo.</li>
+                <li><strong>Base de Conocimientos:</strong> Repositorio estable que almacena el conocimiento del dominio en forma de hechos universales, reglas de producción y heurísticas (ejemplo: "Si paciente tiene alergia documentada a penicilina, no prescribir amoxicilina").</li>
+                <li><strong>Memoria de Trabajo (Base de Hechos):</strong> Almacenamiento dinámico que mantiene información específica del caso actual siendo procesado, que varía según cada consulta del usuario (ejemplo: "Temperatura actual del paciente: 38.5°C, Presión arterial: 140/90").</li>
+                <li><strong>Motor de Inferencia:</strong> Componente computacional que ejecuta el razonamiento mediante evaluación de la Base de Hechos contra las reglas de la Base de Conocimientos, siguiendo estrategias de encadenamiento (forward o backward) para derivar conclusiones.</li>
+                <li><strong>Interfaz de Usuario:</strong> Módulo de interacción que permite al especialista (médico, ingeniero, analista) introducir datos del caso y recibir recomendaciones del sistema de forma legible.</li>
+                <li><strong>Módulo de Explicación:</strong> Subsistema crítico que justifica las conclusiones derivadas, mostrando la cadena de reglas aplicadas y los datos que fundamentaron cada paso del razonamiento. Esencial para auditoría y aceptación por usuarios.</li>
             </ul>
         </div>
 
@@ -114,27 +122,39 @@
                 </tr>
                 <tr style="background-color:#f9f9f9;">
                     <td><strong>Frames y Ontologías</strong></td>
-                    <td>Modos avanzados de encapsular contextos enteros. Las Ontologías diseñan "árboles genealógicos de cosas" definiendo qué relaciones absolutas existen entre conceptos médicos o financieros para mapear un mundo.</td>
+                    <td>Estructuras de encapsulación que agrupan contextos relacionados. Un <em>Frame</em> define una entidad con atributos (ejemplo: Frame "Paciente" con slots: nombre, edad, síntomas). Las <em>Ontologías</em> formalizan jerarquías de conceptos y relaciones (es-un, tiene-un), creando taxonomías que mapean la estructura conceptual del dominio (ejemplo: Enfermedad → Infección → Bacteriana → Neumococo).</td>
                 </tr>
             </tbody>
         </table>
+
+        <h3>Dominios Apropiados para Sistemas Expertos</h3>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem; margin-bottom:8px;"><strong>Los Sistemas Expertos resultan especialmente efectivos en contextos que cumplen criterios específicos:</strong></p>
+            <ul style="padding-left:16px; line-height:1.6; font-size:0.9rem;">
+                <li><strong>Dominio específico y bien acotado:</strong> Medicina especializada, configuración de hardware, diagnóstico de fallos en sistemas industriales (como XCON de DEC).</li>
+                <li><strong>Existencia de expertos humanos reconocidos:</strong> El conocimiento debe ser capturable de profesionales con experiencia verificable en el dominio.</li>
+                <li><strong>Conocimiento explícito y formalizable:</strong> Reglas y relaciones deben poderse articular en lenguaje formal (IF-THEN). Dominios que requieren intuición pura o patrones implícitos complejos se adaptan mejor a Machine Learning.</li>
+                <li><strong>Estabilidad relativa del conocimiento:</strong> Si las reglas cambian radicalmente cada mes, el mantenimiento se vuelve prohibitivo. Dominios estables facilitan ROI positivo.</li>
+            </ul>
+            <p style="margin-top:8px; font-size:0.9rem;"><strong>Contraste con Machine Learning:</strong> SE requiere expertise explícita y pequeños volúmenes de datos históricos; ML requiere grandes volúmenes de datos pero sin necesidad de expertise previa. SE es más interpretable; ML puede ser más flexible ante variabilidad. La elección depende del contexto operacional.</p>
+        </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
         <h2>C. ESTRATEGIAS DE CONFIGURACIÓN Y MOTOR DE INFERENCIA</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">Estrategias de Inferencia Direccional</span>
+                <span class="metric-title">Estrategias de Encadenamiento</span>
                 <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
-                    <li><strong>Forward Chaining (Datos a Meta):</strong> Inducción "Adelante". El motor parte inyectándose los síntomas desnudos de la mesa logrando escalar y adivinar la meta.</li>
-                    <li><strong>Backward Chaining (Meta a Datos):</strong> Deducción "Atrás". Útil cuando no hay datos aparentes, así que asume la meta y desciende ordenando al técnico escanear variables para verificar su validez.</li>
+                    <li><strong>Forward Chaining:</strong> El motor inicia desde hechos conocidos (síntomas iniciales) y aplica reglas progresivamente para derivar conclusiones intermedias hasta alcanzar la conclusión final. Apropiado cuando los datos iniciales están disponibles y se desea explorar todas las implicaciones.</li>
+                    <li><strong>Backward Chaining:</strong> El motor asume una hipótesis objetivo (posible enfermedad) y trabaja hacia atrás identificando qué hechos serían necesarios para confirmarla o refutarla. Útil cuando el objetivo está parcialmente definido y se necesita guiar la búsqueda de evidencia.</li>
                 </ul>
             </div>
             <div class="metric-card">
-                <span class="metric-title">Mecanismos de Trazabilidad</span>
+                <span class="metric-title">Explicabilidad y Auditoría</span>
                 <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
-                    <li><strong>Transparencia ("¿Por qué?"):</strong> El software justifica con un String legible por qué exige recolectar y encarecer una prueba médica más en ese momento.</li>
-                    <li><strong>Respaldo ("¿Cómo?"):</strong> El SE muestra literalmente todo su ramal del árbol de decisiones condicionales IF-THEN impreso probando su legalidad.</li>
+                    <li><strong>Justificación (¿Por qué?):</strong> Capacidad de explicar por qué el sistema requiere información adicional. El usuario comprende la lógica detrás de cada pregunta diagnóstica.</li>
+                    <li><strong>Trazabilidad (¿Cómo?):</strong> El sistema reconstruye la cadena completa de razonamientos que llevaron a la conclusión, mostrando qué reglas se aplicaron en qué orden y con qué datos. Fundamental para auditoría y cumplimiento regulatorio.</li>
                 </ul>
             </div>
         </div>
@@ -150,24 +170,39 @@
             </ol>
         </div>
 
+        <h3>Características Clave en Entornos Críticos</h3>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem; margin-bottom:8px;"><strong>Los Sistemas Expertos ofrecen propiedades particulares valiosas en dominios donde la seguridad y trazabilidad son críticas:</strong></p>
+            <ul style="padding-left:16px; line-height:1.6; font-size:0.9rem;">
+                <li><strong>Razonamiento Determinista y Auditable:</strong> A diferencia de redes neuronales profundas ("caja negra"), cada conclusión puede ser justificada mediante una cadena de razonamiento lógico. Crítico en medicina legal, finanzas reguladas, sistemas de justicia.</li>
+                <li><strong>Confiabilidad Predecible:</strong> El comportamiento está completamente definido por las reglas, sin variabilidad estocástica. En sistemas embarcados o críticos en seguridad (aviación, nuclear), esto es preferible a modelos probabilísticos.</li>
+                <li><strong>Facilita Cumplimiento Regulatorio:</strong> RGPD, normativas médicas y estándares industriales exigen explicabilidad. Los SE pueden demostrar conformidad mediante trazabilidad completa. Machine Learning requiere mayores esfuerzos de interpretabilidad post-hoc.</li>
+            </ul>
+        </div>
+
+        <h3>Objetivos Complementarios en Contextos Operacionales</h3>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem;">Un objetivo fundamental de los Sistemas Expertos es <strong>ampliar la capacidad de decisión</strong> del especialista humano, no reemplazarlo. El SE asume la carga de tareas rutinarias y bien definidas, permitiendo que el experto concentre su tiempo en casos ambiguos, excepcionales o que requieren creatividad. En hospitales, MYCIN fue posicionado como <em>asistente diagnóstico</em>, no como reemplazo de médicos. En DEC, XCON automatizó tareas repetitivas de configuración, liberando ingenieros para problemas complejos. Este modelo colaborativo garantiza que el sistema permanece bajo supervisión humana significativa, mejorando confianza y conformidad ética.</p>
+        </div>
+
         <!-- ═══════════════════════════════════════════════════ -->
         <h2>D. TENDENCIAS: EL FUTURO NEURO-SIMBÓLICO</h2>
         
         <table style="margin-bottom:12px;">
             <thead>
                 <tr>
-                    <th>Integraciones Modernas y Despliegues</th>
-                    <th>¿Cómo expanden a los Sistemas Expertos puros?</th>
+                    <th>Paradigma de Integración</th>
+                    <th>Capacidades Emergentes</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Sistemas Híbridos (Neuro-simbólicos)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
-                    <td>La confluencia tecnológica definitiva que lo domina todo. <strong>Combina la intuición o "sentidos en bruto" del Deep Learning (que escanea el tumor usando una CNN) y se lo inyecta a un Sistema Experto ético (que toma la decisión legal de operar)</strong> unificando lo mejor de dos universos diferentes de IA.</td>
+                    <td><strong>Sistemas Híbridos Neuro-Simbólicos</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Arquitectura que integra capacidades de aprendizaje profundo (reconocimiento visual, procesamiento de patrones complejos) con razonamiento simbólico explícito. Ejemplo: sistema de diagnóstico médico que utiliza CNN para análisis de imágenes radiológicas, pero aplica SE para integrar hallazgos visuales con historial del paciente y protocolos clínicos. Resulta en sistemas más robustos, interpretables y seguros que cualquiera de sus componentes por separado.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
-                    <td><strong>Big Data y Cloud (Sistemas Autoaprendientes)</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
-                    <td>Explotación en la nube para ingestas de miles de transacciones por segundo acopladas a SE. Sus reglas ahora sufren <em>Machine Learning</em>, si una regla simbólica ha fallado 100 veces por la IA predictiva, muta el árbol y ella misma ajusta sus pesos perdiendo nivel de Prioridad internamente.</td>
+                    <td><strong>Sistemas Autoaprendientes en Entornos de Big Data</strong><br><span class="inline-tags"><span class="tag tag-mia">MIA</span></span></td>
+                    <td>Acoplamiento de Sistemas Expertos con infraestructura cloud que permite procesamiento de transacciones masivas. Las reglas simbólicas se refinan continuamente mediante técnicas de Machine Learning que identifican patrones en datos históricos. Si una regla heurística produce fallos sistemáticos, el sistema puede ajustar automáticamente pesos o introducir excepciones. Representa evolución hacia sistemas que combinan confiabilidad simbólica con adaptabilidad basada en datos.</td>
                 </tr>
             </tbody>
         </table>
