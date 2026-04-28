@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Representación JSON en IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Representación JSON</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Representación de Modelos, Datasets y Resultados</h1>
+            <p class="subtitle">JSON como herramienta para documentar, estructurar y validar el ciclo de vida de la IA</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    JSON no solo sirve para mover datos, sino para definirlos. Su flexibilidad lo hace ideal para crear <strong>metadatos de modelos</strong>, definir <strong>esquemas de features</strong> y estructurar las <strong>predicciones</strong> que consumen las aplicaciones finales.
+                </p>
+            </div>
+        </section>
+
+        <!-- METADATOS DE MODELO -->
+        <section>
+            <h2>1. Metadatos de Modelo (Model Cards)</h2>
+            <p>Un "Model Card" es un documento que resume el origen, la arquitectura y el rendimiento de un modelo. JSON permite automatizar este registro.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>model_card.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-model-card')">📋 Copiar</button>
+                </div>
+                <pre id="code-model-card" class="code-content"><code class="language-json">{
+    "modelId": "sentiment-lstm-v3",
+    "framework": "tensorflow",
+    "format": "SavedModel",
+    "createdAt": "2025-09-12T10:30:00Z",
+    "owner": "ml-platform",
+    "training": {
+        "datasetId": "imdb-2025-08",
+        "splits": {"train": 0.8, "val": 0.1, "test": 0.1},
+        "metrics": {"valAccuracy": 0.912, "testAccuracy": 0.905}
+    },
+    "inputs": [
+        {"name": "text", "type": "string", "maxLength": 512}
+    ],
+    "outputs": [
+        {"name": "sentiment", "type": "label", "classes": ["neg","pos"]}
+    ],
+    "constraints": {
+        "languages": ["en"],
+        "maxRPS": 200
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- ESQUEMA DE DATASET -->
+        <section>
+            <h2>2. Esquema de Features y Datasets</h2>
+            <p>Para evitar errores en el pipeline, definimos contratos de entrada que especifican tipos, nulidad y rangos permitidos.</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>schema_config.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-schema')">📋 Copiar</button>
+                </div>
+                <pre id="code-schema" class="code-content"><code class="language-json">{
+    "schema": {
+        "features": [
+            {"name": "age", "type": "number", "nullable": false},
+            {"name": "income", "type": "number", "nullable": true},
+            {"name": "segment", "type": "string", "enum": ["Standard","Premium"], "nullable": false}
+        ],
+        "target": {"name": "churn", "type": "boolean"}
+    },
+    "quality": {
+        "missingAllowed": {"income": 0.15},
+        "ranges": {"age": [18, 100], "income": [0, 250000]}
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- INFERENCIA -->
+        <section>
+            <h2>3. Petición y Respuesta de Inferencia</h2>
+            <p>En producción, las aplicaciones envían instancias de datos y reciben predicciones junto con metadatos de servicio y explicabilidad.</p>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📥 Request</h4>
+                    <div class="code-window" style="margin-top: 10px;">
+                        <pre id="code-req" class="code-content"><code class="language-json">{
+    "requestId": "req-001",
+    "modelId": "image-cnn-v2",
+    "instances": [
+        {"imageUrl": "https://.../img1.jpg"},
+        {"imageUrl": "https://.../img2.jpg"}
+    ],
+    "options": {"topK": 3, "threshold": 0.25}
+}</code></pre>
+                    </div>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📤 Response</h4>
+                    <div class="code-window" style="margin-top: 10px;">
+                        <pre id="code-res" class="code-content"><code class="language-json">{
+    "requestId": "req-001",
+    "predictions": [
+        {
+            "labels": [
+                {"class": "cat", "score": 0.88},
+                {"class": "fox", "score": 0.07}
+            ],
+            "explanations": {"saliencyMapUrl": "..."}
+        }
+    ],
+    "servedBy": "inference-pod-3",
+    "latencyMs": 42
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MONITORIZACIÓN -->
+        <section>
+            <h2>4. Monitorización y Resultados Agregados</h2>
+            <p>Los logs de rendimiento y detección de desviación de datos (drift) se estructuran para ser consumidos por dashboards de monitorización.</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>monitoring.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-monitor')">📋 Copiar</button>
+                </div>
+                <pre id="code-monitor" class="code-content"><code class="language-json">{
+    "window": {"from": "2025-10-05T17:00:00Z", "to": "2025-10-05T18:00:00Z"},
+    "modelId": "image-cnn-v2",
+    "traffic": {"requests": 15820, "errors": 12, "p95LatencyMs": 68},
+    "dataDrift": {"feature": "income", "psi": 0.26, "status": "warning"},
+    "accuracyRolling": 0.902
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- VALIDACIÓN -->
+        <section>
+            <h2>5. Validación de Contratos con JSON Schema</h2>
+            <p>Para asegurar que los datos cumplen con lo esperado, se utilizan esquemas de validación que actúan como "puertas" de calidad.</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>schema_validator.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-validator')">📋 Copiar</button>
+                </div>
+                <pre id="code-validator" class="code-content"><code class="language-json">{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/sentiment-request.schema.json",
+    "type": "object",
+    "required": ["text"],
+    "properties": {
+        "text": {"type": "string", "minLength": 1, "maxLength": 512},
+        "lang": {"type": "string", "enum": ["en","es"], "default": "en"}
+    },
+    "additionalProperties": false
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Conclusión</h3>
+                <p>La representación estructurada en JSON permite que científicos de datos, ingenieros de software y equipos de Ops hablen el mismo idioma, facilitando la auditoría, la reproducibilidad y la escalabilidad de las soluciones inteligentes.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecosistema de Librerías Python | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Evitar duplicidad de botones en el estilo code-window */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Ecosistema de Librerías</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Ecosistema de Librerías Python para IA</h1>
+            <p class="subtitle">Herramientas fundamentales para datos, aprendizaje automático y redes neuronales</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    Una de las principales razones del éxito de Python en la IA es su <strong>vasto ecosistema</strong> de librerías y frameworks. Estas herramientas simplifican tareas complejas como el manejo masivo de datos, la creación de modelos matemáticos y el entrenamiento de redes neuronales profundas.
+                </p>
+            </div>
+            <p>
+                En conjunto, estas librerías cubren todas las etapas de un proyecto: desde la <strong>preparación y análisis</strong> (NumPy, Pandas) hasta el <strong>entrenamiento y evaluación</strong> de modelos avanzados (TensorFlow, PyTorch, Scikit-learn, Keras).
+            </p>
+        </section>
+
+        <!-- NUMPY -->
+        <section>
+            <div class="feature-card primary">
+                <div class="logo-container mb-1">
+                    <span style="font-size: 2rem;">🔢</span>
+                    <h3 class="color-primary d-inline ml-1">NumPy: El Motor Numérico</h3>
+                </div>
+                <p>
+                    <strong>NumPy (Numerical Python)</strong> es la base de todo el cálculo numérico en Python. Su potencia reside en el <code>ndarray</code>, un array multidimensional optimizado que permite operaciones vectorizadas mucho más rápidas que las listas nativas.
+                </p>
+                <ul>
+                    <li><strong>Álgebra Lineal:</strong> Multiplicación de matrices y descomposiciones.</li>
+                    <li><strong>Manipulación:</strong> Redimensionamiento y segmentación eficiente de datos.</li>
+                    <li><strong>Base Tecnológica:</strong> Pandas, TensorFlow y Scikit-learn se apoyan en NumPy.</li>
+                </ul>
+                
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                        <span>analisis_numpy.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-numpy')">📋 Copiar</button>
+                    </div>
+                    <pre id="code-numpy" class="code-content"><code class="language-python">import numpy as np
+# Datos: [altura_cm, peso_kg] de 6 personas
+X = np.array([
+    [170, 65], [165, 59], [180, 80],
+    [175, 74], [160, 55], [172, 68]
+])
+
+# 1) Estadísticos por columna (altura, peso)
+medias = X.mean(axis=0)
+desvs = X.std(axis=0, ddof=1) # ddof=1 -> desviación estándar muestral
+print("Media (altura, peso):", medias)
+print("Desv. típica (altura, peso):", desvs)
+
+# 2) Estandarización (z-score): (x - media) / desv
+X_z = (X - medias) / desvs
+print("\nPrimeras filas estandarizadas:\n", X_z[:3])
+
+# 3) Matriz de covarianzas usando producto matricial
+n = X.shape[0]
+cov_manual = (X_z.T @ X_z) / (n - 1) 
+print("\nMatriz de correlaciones:\n", cov_manual)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANDAS -->
+        <section>
+            <div class="feature-card secondary">
+                <div class="logo-container mb-1">
+                    <span style="font-size: 2rem;">🐼</span>
+                    <h3 class="color-secondary d-inline ml-1">Pandas: Manipulación de Datos</h3>
+                </div>
+                <p>
+                    Diseñada para la limpieza y el análisis, Pandas introduce el <strong>DataFrame</strong>, una estructura tabular potente similar a una hoja de cálculo. Es la herramienta principal para el Análisis Exploratorio de Datos (EDA).
+                </p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                        <span>limpieza_datos.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-pandas')">📋 Copiar</button>
+                    </div>
+                    <pre id="code-pandas" class="code-content"><code class="language-python">import pandas as pd
+import numpy as np
+from io import StringIO
+
+# 1) Cargar el dataset de muestra
+csv = StringIO("""id,nombre,email,segmento,edad,ingresos_anuales,fecha_alta
+1,Ana,ana@example.com,Premium,34,42000,2023-01-15
+2,Luis,,Standard,41,38000,2022-11-03
+3,María,maria@example.com,Premium,,65000,2021-07-20
+4,Pepe,pepe@example.com,Standard,29,,2024-03-10
+5,,sofia@example.com,Premium,36,52000,2020-09-01
+5,,sofia@example.com,Premium,36,52000,2020-09-01
+6,Lucía,lucia@example.com,Standard,33,41000,2023-12-05
+7,Carlos,carlos@example.com,,45,73000,2022-05-18
+""")
+df = pd.read_csv(csv)
+
+# 2) Limpieza básica
+df["fecha_alta"] = pd.to_datetime(df["fecha_alta"], errors="coerce")
+df["segmento"] = df["segmento"].str.strip()
+df = df.drop_duplicates()
+
+# 3) Tratar valores nulos
+df = df.dropna(subset=["id", "email"])
+for col in ["edad", "ingresos_anuales"]:
+    df[col] = df[col].fillna(df[col].median())
+
+# 4) Estadísticas por segmento
+stats_por_segmento = df.groupby("segmento")[["edad", "ingresos_anuales"]].agg(["mean", "median", "std"])
+print("Datos limpios:\n", df.head())
+print("\nEstadísticas por segmento:\n", stats_por_segmento)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- MACHINE LEARNING & DEEP LEARNING -->
+        <section>
+            <h2>Librerías de Modelado y Aprendizaje</h2>
+            <div class="grid-features mt-2">
+                <!-- TENSORFLOW -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">TensorFlow</h4>
+                    <p>Desarrollado por Google. Ideal para <strong>Deep Learning</strong> a gran escala. Su arquitectura modular permite el despliegue en móviles, web y servidores mediante grafos de flujo de datos.</p>
+                </div>
+                <!-- PYTORCH -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">PyTorch</h4>
+                    <p>Desarrollado por Meta. Destaca por su <strong>flexibilidad y ejecución dinámica</strong>, lo que lo convierte en el favorito para investigación y experimentación rápida.</p>
+                </div>
+                <!-- SCIKIT-LEARN -->
+                <div class="feature-card primary">
+                    <h4 class="color-primary">Scikit-learn</h4>
+                    <p>La librería estándar para <strong>Machine Learning tradicional</strong>. Algoritmos de clasificación, regresión y clustering listos para usar con una API muy sencilla.</p>
+                </div>
+                <!-- KERAS -->
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">Keras</h4>
+                    <p>Interfaz de <strong>alto nivel</strong> para redes neuronales. Simplifica la construcción de modelos complejos, funcionando ahora como la API principal de TensorFlow.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="highlight-box success">
+                <h4>🎯 El Flujo de Trabajo Ideal</h4>
+                <p>
+                    Normalmente, un proyecto de IA comienza en <strong>Pandas</strong> para limpiar datos, utiliza <strong>NumPy</strong> para cálculos internos, se apoya en <strong>Scikit-learn</strong> para validaciones y preprocesado, y culmina en <strong>TensorFlow/Keras</strong> o <strong>PyTorch</strong> para el entrenamiento de modelos profundos.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado
+                Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

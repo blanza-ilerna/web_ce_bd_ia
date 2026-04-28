@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript y Node.js en IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>JavaScript en la IA</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>JavaScript y Node.js: IA de Extremo a Extremo</h1>
+            <p class="subtitle">Del navegador interactivo al microservicio backend de alto rendimiento</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    JavaScript es el único lenguaje capaz de llevar la Inteligencia Artificial a cualquier rincón de la web. Permite construir experiencias interactivas directamente en el cliente (navegador) y orquestar servicios complejos en el servidor (Node.js), creando un flujo de trabajo unificado y eficiente.
+                </p>
+            </div>
+        </section>
+
+        <!-- IA EN EL LADO DEL CLIENTE -->
+        <section>
+            <h2>1. IA en el Navegador (Frontend)</h2>
+            <p>Gracias a tecnologías como <strong>WebAssembly</strong> y aceleración por hardware (WebGL/WebGPU), el navegador se ha convertido en un entorno de ejecución potente y privado.</p>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🚀 TensorFlow.js & ml5.js</h4>
+                    <p>Permiten entrenar e inferir modelos de Deep Learning directamente en el navegador. ml5.js ofrece una capa amigable para artistas y creativos.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔐 Privacidad y Latencia</h4>
+                    <p>Al procesar los datos localmente (on-device), las fotos o la voz del usuario nunca viajan al servidor, garantizando seguridad y respuestas instantáneas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO TENSORFLOW.JS -->
+        <section>
+            <h2>Ejemplo: Clasificación en el Cliente</h2>
+            <p>Con solo unas pocas líneas, podemos cargar un modelo pre-entrenado y realizar una predicción sobre una imagen del DOM.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>clasificador.js</span>
+                    <button class="copy-btn" onclick="copyCode('code-tfjs')">📋 Copiar</button>
+                </div>
+                <pre id="code-tfjs" class="code-content"><code class="language-javascript">// Cargar modelo MobileNet para clasificar imágenes
+const model = await mobilenet.load();
+const img = document.getElementById('mi-imagen');
+
+// Realizar la clasificación
+const predictions = await model.classify(img);
+console.log('Predicciones:', predictions);</code></pre>
+            </div>
+        </section>
+
+        <!-- IA EN EL SERVIDOR -->
+        <section>
+            <h2>2. IA en el Servidor (Node.js)</h2>
+            <p>Node.js es ideal para orquestar microservicios de IA debido a su naturaleza asíncrona y su inmenso ecosistema de paquetes (NPM).</p>
+            <div class="comparison-grid">
+                <div class="card primary-bg">
+                    <h3 class="color-primary">Orquestación y Pipelines</h3>
+                    <p>Gestión de flujos de datos, integración con colas de mensajes (Kafka, RabbitMQ) y almacenamiento de objetos para alimentar modelos de IA a escala.</p>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">Bindings y Delegación</h3>
+                    <p>Uso de <code>onnxruntime-node</code> para ejecución local rápida o delegación a motores especializados como TensorFlow Serving vía gRPC.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARQUITECTURA HÍBRIDA -->
+        <section>
+            <div class="highlight-box secondary">
+                <p class="title">El Valor de la Arquitectura JS</p>
+                <div class="content">
+                    <p>Esta combinación habilita arquitecturas modernas donde:</p>
+                    <ul>
+                        <li><strong>Frontend:</strong> Se encarga del preprocesado de imagen/audio y la visualización interactiva de resultados.</li>
+                        <li><strong>Backend (Node.js):</strong> Gestiona el enrutado, la persistencia en base de datos y la integración con el resto de la infraestructura empresarial.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESUMEN FINAL -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Conclusión</h3>
+                <p>JavaScript + Node.js es la combinación perfecta para prototipos rápidos, experiencias interactivas y la integración fluida de la IA en productos web modernos, democratizando el acceso a modelos complejos desde cualquier navegador.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

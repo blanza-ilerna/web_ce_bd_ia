@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limitaciones de JavaScript en IA | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link rel="stylesheet" href="../css/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Limitaciones de JavaScript en IA</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Limitaciones de JavaScript en IA</h1>
+            <p class="subtitle">Desafíos en rendimiento numérico, gestión del Event Loop y dependencias</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    A pesar de su tremenda versatilidad y de dominar el entorno web, <strong>JavaScript y Node.js</strong> presentan barreras técnicas importantes cuando se enfrentan a cargas de trabajo propias de la Inteligencia Artificial profunda. Comprender estas limitaciones es crucial para diseñar arquitecturas eficientes y saber cuándo delegar tareas a otros lenguajes.
+                </p>
+            </div>
+        </section>
+
+        <!-- LAS LIMITACIONES -->
+        <section>
+            <h2>Principales Retos y Cuellos de Botella</h2>
+            <p>Los obstáculos más comunes al implementar IA en JavaScript se centran en el rendimiento puro y la gestión de la concurrencia:</p>
+
+            <div class="layout-grid-stack">
+                <!-- LIMITACIÓN 1 -->
+                <div class="feature-card secondary flex-wrap-center">
+                    <div class="ra-number" style="background: var(--color-secondary);">🐌</div>
+                    <div class="flex-item">
+                        <h4 class="color-secondary">Cómputo Numérico y Entrenamiento Intensivo</h4>
+                        <p>JavaScript no fue diseñado originalmente para el álgebra lineal masiva. En tareas de <strong>entrenamiento profundo o cálculo intensivo</strong>, JS no puede competir con el rendimiento bruto de C++ ni con el ecosistema hiper-optimizado de Python (CUDA, PyTorch). Por ello, en el entorno de Node/JS, es habitual depender casi exclusivamente de modelos preentrenados (inferencia) en lugar de entrenar modelos desde cero.</p>
+                    </div>
+                </div>
+
+                <!-- LIMITACIÓN 2 -->
+                <div class="feature-card primary flex-wrap-center">
+                    <div class="ra-number">🔌</div>
+                    <div class="flex-item">
+                        <h4 class="color-primary">Dependencia de Bindings y Servicios Externos</h4>
+                        <p>Para solventar su falta de velocidad nativa en cálculos pesados, Node.js se ve forzado a utilizar <strong>bindings nativos</strong> (conectores hacia librerías escritas en C/C++) o a delegar el trabajo fuerte a microservicios externos o APIs (por ejemplo, llamadas a OpenAI o a un backend en Python). Esta delegación añade complejidad arquitectónica y latencia de red.</p>
+                    </div>
+                </div>
+                
+                <!-- LIMITACIÓN 3 -->
+                <div class="feature-card secondary flex-wrap-center">
+                    <div class="ra-number" style="background: var(--color-secondary);">⚙️</div>
+                    <div class="flex-item">
+                        <h4 class="color-secondary">Bloqueo del Event Loop</h4>
+                        <p>El motor de Node.js es de un solo hilo (single-threaded) basado en un <strong>Event Loop</strong>. Si un proceso de IA requiere procesamiento síncrono intensivo (cálculos pesados en CPU), bloqueará el Event Loop, impidiendo que la aplicación atienda otras peticiones web. Esto requiere una estricta <strong>observabilidad</strong> y el uso de técnicas como <em>Worker Threads</em> para derivar la carga de trabajo.</p>
+                    </div>
+                </div>
+
+                <!-- LIMITACIÓN 4 -->
+                <div class="feature-card primary flex-wrap-center">
+                    <div class="ra-number">📦</div>
+                    <div class="flex-item">
+                        <h4 class="color-primary">Gestión de Dependencias (NPM)</h4>
+                        <p>Aunque el vasto ecosistema de NPM es una ventaja, también se convierte en un reto de seguridad y estabilidad. Los proyectos de IA en JS suelen heredar árboles de <strong>dependencias muy profundos</strong>, lo que exige una monitorización constante para evitar vulnerabilidades (supply chain attacks) y problemas de compatibilidad de versiones a largo plazo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="highlight-box success mt-2">
+                <h4>🎯 Conclusión Estratégica</h4>
+                <p>
+                    JavaScript es excelente para el <strong>consumo e integración</strong> de IA, pero no para su creación desde los cimientos. El patrón de diseño más exitoso suele combinar un backend de entrenamiento en Python con una capa de servicio (inferencia/API) en Node.js, aprovechando lo mejor de ambos ecosistemas.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="../js/prism.js"></script>
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java en la IA Corporativa | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Java en la IA Corporativa</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Java: El Motor de la IA en Producción</h1>
+            <p class="subtitle">Estabilidad y escalabilidad para arquitecturas de misión crítica</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    Mientras que lenguajes como Python dominan la fase de experimentación, Java es el estándar cuando se trata de poner la Inteligencia Artificial en producción dentro de <strong>entornos corporativos</strong>. Su robustez, madurez y capacidad de integración lo hacen ideal para sistemas que requieren alta disponibilidad y rendimiento constante.
+                </p>
+            </div>
+        </section>
+
+        <!-- VENTAJAS CORPORATIVAS -->
+        <section>
+            <h2>Fortalezas en el Ámbito Empresarial</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🛡️ Estabilidad y Tooling</h4>
+                    <p>Compatibilidad total con ecosistemas empresariales probados: <strong>Spring Boot</strong>, Jakarta EE, Maven y Gradle. Permite un desarrollo estructurado y mantenible a largo plazo.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">⚙️ La Potencia de la JVM</h4>
+                    <p>La Máquina Virtual de Java (JVM) facilita la ejecución de servicios de inferencia con <strong>alta disponibilidad</strong> y monitorización avanzada mediante JMX o Micrometer.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">☁️ Escalabilidad Cloud</h4>
+                    <p>Diseñado para el despliegue moderno en <strong>Kubernetes</strong>. Java permite el escalado horizontal eficiente de microservicios de IA encapsulados en contenedores Docker.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🛰️ Integración de Datos</h4>
+                    <p>Capacidad nativa para conectar con colas de mensajes como <strong>Kafka</strong> y procesar flujos de datos en tiempo real (Real-time Inference) con baja latencia.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MICROSERVICIOS DE INFERENCIA -->
+        <section>
+            <h2>Microservicios de Inferencia</h2>
+            <p>Es habitual que el modelo se entrene en Python y se despliegue en Java como un servicio REST o gRPC para integrarlo en la infraestructura corporativa.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>PredictorService.java</span>
+                    <button class="copy-btn" onclick="copyCode('code-java')">📋 Copiar</button>
+                </div>
+                <pre id="code-java" class="code-content"><code class="language-java">// Ejemplo de controlador REST para inferencia en Spring Boot
+@RestController
+@RequestMapping("/api/v1")
+public class PredictorController {
+
+    @Autowired
+    private ONNXModelService modelService;
+
+    @PostMapping("/predict")
+    public ResponseEntity<PredictionResponse> getPrediction(@RequestBody DataInput input) {
+        // Ejecución del modelo optimizado (p.ej. ONNX Runtime)
+        double score = modelService.predict(input);
+        return ResponseEntity.ok(new PredictionResponse(score));
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- OPTIMIZACIÓN Y MLOPS -->
+        <section>
+            <div class="highlight-box secondary">
+                <p class="title">MLOps y Rendimiento</p>
+                <p class="content">
+                    Java utiliza bindings especializados como <strong>ONNX Runtime</strong> o <strong>TensorFlow Java</strong> para ejecutar modelos pre-entrenados con una latencia mínima. Esto permite aplicar prácticas de <strong>MLOps</strong> integrando la IA directamente en los pipelines de CI/CD (Jenkins, GitLab CI) de la empresa sin necesidad de reescribir toda la infraestructura de red o seguridad.
+                </p>
+            </div>
+        </section>
+
+        <!-- RESUMEN FINAL -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Conclusión</h3>
+                <p>Java no compite con Python en la investigación; lo complementa en la <strong>operacionalización</strong>. Es el lenguaje que garantiza que el "comportamiento inteligente" sea estable, seguro y escalable para millones de usuarios finales.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estandarización de APIs RESTful con JSON | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Estandarización API JSON</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Estandarización para APIs RESTful</h1>
+            <p class="subtitle">JSON como el lenguaje por defecto en el serving y MLOps</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    En el ecosistema de la IA, las APIs RESTful actúan como el puente entre los modelos y las aplicaciones finales. JSON es el formato universal para el cuerpo de las peticiones y respuestas, permitiendo una integración sencilla, escalable y estandarizada.
+                </p>
+            </div>
+        </section>
+
+        <!-- DISEÑO DE RECURSOS -->
+        <section>
+            <h2>1. Diseño Típico de Recursos</h2>
+            <p>Una API de MLOps bien diseñada utiliza verbos HTTP y rutas semánticas para gestionar el ciclo de vida del modelo:</p>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🧠 Inferencia y Metadatos</h4>
+                    <ul>
+                        <li><code>POST /v1/models/{id}:predict</code> → Ejecutar inferencia.</li>
+                        <li><code>GET /v1/models/{id}</code> → Consultar metadatos.</li>
+                    </ul>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">📊 Datos y Auditoría</h4>
+                    <ul>
+                        <li><code>POST /v1/datasets</code> → Registrar un nuevo dataset.</li>
+                        <li><code>GET /v1/predictions</code> → Listar para auditoría.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGINACIÓN Y FILTRADO -->
+        <section>
+            <h2>2. Paginación y Filtrado</h2>
+            <p>Al consultar logs de predicciones o datasets masivos, es vital implementar paginación para no saturar la red ni la memoria.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>GET /v1/predictions?page=2&limit=100</span>
+                    <button class="copy-btn" onclick="copyCode('code-pagination')">📋 Copiar</button>
+                </div>
+                <pre id="code-pagination" class="code-content"><code class="language-json">{
+    "items": [ /* ... array de predicciones ... */ ],
+    "page": 2,
+    "limit": 100,
+    "total": 1345,
+    "links": {
+        "self": "/v1/predictions?page=2&limit=100",
+        "next": "/v1/predictions?page=3&limit=100",
+        "prev": "/v1/predictions?page=1&limit=100"
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- ERRORES NORMALIZADOS -->
+        <section>
+            <h2>3. Errores Normalizados</h2>
+            <p>Una respuesta de error clara ayuda a los desarrolladores a depurar fallos en la integración de forma rápida.</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>error_response.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-error')">📋 Copiar</button>
+                </div>
+                <pre id="code-error" class="code-content"><code class="language-json">{
+    "error": {
+        "code": "INVALID_INPUT",
+        "message": "Field 'text' must be non-empty",
+        "details": [{"field": "text", "issue": "minLength"}],
+        "correlationId": "req-abc-123"
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- IDEMPOTENCIA Y SEGURIDAD -->
+        <section>
+            <h2>4. Idempotencia y Seguridad</h2>
+            <p>En entornos de producción críticos, debemos asegurar que las operaciones sean seguras y repetibles.</p>
+
+            <div class="comparison-grid">
+                <div class="card primary-bg">
+                    <h3 class="color-primary">🛡️ Robustez y Control</h3>
+                    <ul>
+                        <li><strong>Idempotency-Key:</strong> Evita procesar dos veces la misma petición en caso de reintentos de red.</li>
+                        <li><strong>Validación:</strong> Uso obligatorio de JSON Schema para sanitizar las entradas antes de llegar al modelo.</li>
+                    </ul>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">🔐 Seguridad</h3>
+                    <ul>
+                        <li><strong>HTTP 401/403:</strong> Gestión de autenticación y autorización mediante scopes específicos por recurso.</li>
+                        <li><strong>HTTPS:</strong> Cifrado obligatorio para proteger los datos sensibles de los modelos y usuarios.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Conclusión Estratégica</h3>
+                <p>Estandarizar las APIs con JSON no es solo una cuestión de formato, sino de interoperabilidad. Permite que cualquier cliente (Web, Mobile, IoT) consuma servicios de IA de forma predecible y segura.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

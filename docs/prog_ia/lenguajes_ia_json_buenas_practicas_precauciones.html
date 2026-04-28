@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buenas Prácticas y Precauciones JSON | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Buenas Prácticas JSON</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Buenas Prácticas y Precauciones</h1>
+            <p class="subtitle">Guía de diseño para un intercambio de datos robusto, seguro y escalable</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    Dominar JSON no solo consiste en conocer su sintaxis, sino en saber cómo estructurarlo para evitar errores de precisión, problemas de seguridad y cuellos de botella en el rendimiento. Aquí analizamos los estándares que separan un pipeline amateur de uno profesional.
+                </p>
+            </div>
+        </section>
+
+        <!-- TIPOS Y DATOS -->
+        <section>
+            <h2>1. Manejo de Tipos y Valores</h2>
+            <p>JSON tiene limitaciones en sus tipos primitivos que debemos gestionar cuidadosamente en el backend.</p>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🔢 Precisión Numérica</h4>
+                    <p>JSON no tiene un tipo "decimal" nativo. Para datos financieros o de alta precisión, usa <strong>Strings</strong> (ej. "1234.56") y conviértelos en el backend para evitar errores de redondeo de punto flotante.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🕳️ Nulos vs Ausentes</h4>
+                    <p>Diferencia claramente entre <code>null</code> (el valor es conocido pero es nulo) y una <strong>clave ausente</strong> (el dato no se ha enviado). Documentar esta distinción evita errores de lógica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FECHAS Y EVOLUCIÓN -->
+        <section>
+            <h2>2. Estándares y Evolución</h2>
+            <p>La interoperabilidad depende de usar estándares universales y mantener la compatibilidad hacia atrás.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>evolucion_compatible.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-evolution')">📋 Copiar</button>
+                </div>
+                <pre id="code-evolution" class="code-content"><code class="language-json">{
+    "createdAt": "2025-10-05T17:25:43Z",
+    "version": "1.1",
+    "nuevoCampo": "valor", 
+    "obsoleto": "mantener_hasta_v2"
+}</code></pre>
+            </div>
+
+            <div class="highlight-box secondary mt-1">
+                <p><strong>Regla de oro:</strong> Añade campos de forma compatible. Nunca renombres o elimines campos existentes sin un proceso de versionado claro para no romper los clientes actuales.</p>
+            </div>
+        </section>
+
+        <!-- RENDIMIENTO Y PRIVACIDAD -->
+        <section>
+            <h2>3. Rendimiento, Escala y Privacidad</h2>
+            <p>JSON es excelente para las interfaces, pero puede ser ineficiente para el almacenamiento masivo.</p>
+
+            <div class="comparison-grid">
+                <div class="card primary-bg">
+                    <h3 class="color-primary">📦 Tamaño y Formatos</h3>
+                    <p>Usa JSON en los "bordes" (APIs y eventos). Para el <strong>Data Lake</strong>, utiliza formatos columnares como <strong>Parquet o Arrow</strong> que ofrecen mejor compresión y velocidad de consulta.</p>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">🔐 Privacidad (PII)</h3>
+                    <p>Aplica técnicas de <strong>anonimización o masking</strong> antes de exportar datos. Separa siempre los metadatos técnicos del payload sensible y registra todos los accesos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCUMENTACIÓN -->
+        <section>
+            <h2>4. Documentación y Contratos</h2>
+            <p>Un contrato de datos solo es útil si está bien documentado y es fácil de validar.</p>
+
+            <div class="layout-grid-stack">
+                <div class="feature-card primary flex-wrap-center">
+                    <div class="ra-number">📖</div>
+                    <div class="flex-item">
+                        <h4 class="color-primary">OpenAPI y Swagger</h4>
+                        <p>Utiliza estándares como OpenAPI para definir tus APIs REST. Incluye siempre <strong>ejemplos JSON reales</strong> en la documentación para que los equipos de integración tengan una referencia clara.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Resumen Final</h3>
+                <p>Las buenas prácticas en JSON no son opcionales en sistemas de producción. Garantizan que tus pipelines de IA sean escalables, mantenibles y, sobre todo, que los datos en los que se basan tus modelos sean íntegros y seguros.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

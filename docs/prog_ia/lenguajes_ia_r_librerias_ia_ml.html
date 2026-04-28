@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librerías de R para IA y ML | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Librerías de R para IA</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Librerías de R para IA y Machine Learning</h1>
+            <p class="subtitle">Herramientas especializadas para el modelado predictivo y analítico</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    El éxito de R en la Inteligencia Artificial radica en su inmenso catálogo de paquetes (CRAN). Estas librerías permiten transformar datos en bruto en modelos predictivos sofisticados, garantizando la consistencia en el preprocesamiento, el entrenamiento y la validación.
+                </p>
+            </div>
+        </section>
+
+        <!-- LIBRERÍAS PRINCIPALES -->
+        <section>
+            <h2>Pilares del Machine Learning en R</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">⚙️ caret</h4>
+                    <p>El "suizo" del ML en R. Unifica cientos de algoritmos bajo una misma API. Facilita el <strong>partitioning</strong>, <strong>scaling</strong> y la búsqueda de <strong>hiperparámetros</strong> (Grid Search) de forma coherente.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🌲 randomForest</h4>
+                    <p>Implementación robusta de bosques aleatorios. Destaca por su capacidad para estimar la <strong>importancia de las variables</strong> y su resistencia al sobreajuste (overfitting) en datos tabulares.</p>
+                </div>
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🧠 nnet</h4>
+                    <p>Ideal para redes neuronales de una sola capa (MLP) y regresión logística multinomial. Es una herramienta rápida y eficiente para tareas lineales y no lineales de complejidad moderada.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🎨 ggplot2</h4>
+                    <p>La "gramática de gráficos". Permite construir visualizaciones profesionales capa por capa. Es la herramienta estándar para el <strong>EDA</strong> y la comunicación de resultados de IA.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO DE CÓDIGO GGPLOT2 -->
+        <section>
+            <h2>Visualización Declarativa</h2>
+            <p>A diferencia de otros lenguajes, R permite "dibujar" el comportamiento de los datos mediante una sintaxis lógica basada en capas.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>grafico_ia.R</span>
+                    <button class="copy-btn" onclick="copyCode('code-ggplot')">📋 Copiar</button>
+                </div>
+                <pre id="code-ggplot" class="code-content"><code class="language-r"># Visualizar la importancia de variables en un modelo
+library(ggplot2)
+
+ggplot(datos_modelo, aes(x=reorder(variable, importancia), y=importancia)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  coord_flip() +
+  labs(title="Importancia de Características", x="Variable", y="Gini Index") +
+  theme_minimal()</code></pre>
+            </div>
+        </section>
+
+        <!-- ECOSISTEMA COMPLEMENTARIO -->
+        <section>
+            <h2>Ecosistema Extendido</h2>
+            <div class="grid-comparison">
+                <div class="card primary-bg">
+                    <h3 class="color-primary">📦 Tidyverse & Tidymodels</h3>
+                    <ul>
+                        <li><strong>Tidyverse:</strong> Manipulación de datos (dplyr, tidyr, readr).</li>
+                        <li><strong>Tidymodels:</strong> El sucesor moderno de caret para pipelines declarativos y tuning estructurado.</li>
+                    </ul>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">⚡ Algoritmos de Alto Rendimiento</h3>
+                    <ul>
+                        <li><strong>Boosting:</strong> xgboost, lightgbm y catboost para datos tabulares complejos.</li>
+                        <li><strong>Series Temporales:</strong> prophet (Facebook) y fable para predicciones temporales.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTRAS HERRAMIENTAS ESPECIALIZADAS -->
+        <section>
+            <div class="resources-grid">
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">🔮</span>
+                    <h4>Modelos Bayesianos</h4>
+                    <p>Uso de <code>brms</code> y <code>rstan</code> para inferencia estadística avanzada y modelado de incertidumbre.</p>
+                </div>
+                <div class="resource-card read-resource">
+                    <span class="resource-icon">🔥</span>
+                    <h4>Deep Learning</h4>
+                    <p>Integración con <code>torch</code> y <code>keras</code> para entrenar redes neuronales profundas directamente desde R.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Resumen</h3>
+                <p>R ofrece un ecosistema que cubre desde la ingesta básica de datos hasta el despliegue de modelos bayesianos o de deep learning, manteniendo siempre un enfoque centrado en la interpretabilidad y el rigor estadístico.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

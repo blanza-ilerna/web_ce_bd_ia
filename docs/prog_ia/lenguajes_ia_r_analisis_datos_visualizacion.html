@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis y Visualización en R | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Análisis y Visualización en R</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Análisis de Datos y Visualización en R</h1>
+            <p class="subtitle">Del dato en bruto a la narrativa visual estratégica</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    R es el lenguaje líder cuando el objetivo es el <strong>Análisis Exploratorio de Datos (EDA)</strong>. Su capacidad para ingerir datos de fuentes diversas y transformarlos en visualizaciones interactivas o reportes reproducibles lo convierte en una herramienta indispensable para la toma de decisiones basada en evidencias.
+                </p>
+            </div>
+        </section>
+
+        <!-- INGESTA Y PREPARACIÓN -->
+        <section>
+            <h2>1. Ingesta y Preparación (Wrangling)</h2>
+            <p>La preparación de datos consume el 80% del tiempo de un proyecto de IA. R minimiza este esfuerzo con librerías altamente optimizadas:</p>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📥 Conectividad Masiva</h4>
+                    <p>Lectura nativa de archivos CSV, Excel, bases de datos SQL, Parquet y formatos estadísticos propietarios (SAS/SPSS).</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🔄 Tidyverse</h4>
+                    <p>Uso de <code>dplyr</code> para manipulación de filas/columnas, <code>tidyr</code> para remodelado de tablas y <code>lubridate</code> para el complejo manejo de fechas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EDA SISTEMÁTICO -->
+        <section>
+            <h2>2. EDA Sistemático</h2>
+            <div class="highlight-box secondary">
+                <p class="title">Entendiendo los Datos</p>
+                <p class="content">Antes de modelar, R permite realizar perfiles completos de los datos:</p>
+                <ul>
+                    <li><strong>Resúmenes automáticos:</strong> Con paquetes como <code>skimr</code> o <code>summary</code>.</li>
+                    <li><strong>Calidad de datos:</strong> Detección instantánea de valores atípicos (outliers) y valores perdidos (NAs) con <code>DataExplorer</code>.</li>
+                    <li><strong>Relaciones:</strong> Análisis bivariantes y multivariantes para encontrar correlaciones ocultas.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VISUALIZACIÓN -->
+        <section>
+            <h2>3. Visualización de Datos</h2>
+            <p>La comunicación visual en R se basa en la flexibilidad y el control total sobre la estética del gráfico:</p>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🖼️ Calidad de Publicación</h4>
+                    <p><code>ggplot2</code> permite crear gráficos estáticos con precisión matemática. Extensiones como <code>patchwork</code> permiten combinar varios gráficos en una sola imagen profesional.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🖱️ Interactividad</h4>
+                    <p>Con <code>plotly</code> o <code>highcharter</code>, los gráficos estáticos se transforman en elementos web donde el usuario puede hacer zoom, filtrar y explorar detalles al pasar el ratón.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REPORTING Y DASHBOARDS -->
+        <section>
+            <h2>4. Informes y Dashboards</h2>
+            <div class="comparison-grid">
+                <div class="card primary-bg">
+                    <h3 class="color-primary">📑 Quarto / R Markdown</h3>
+                    <p>Documentos que mezclan código y texto. Permiten generar reportes en PDF, HTML o Word que se actualizan automáticamente al cambiar los datos.</p>
+                </div>
+                <div class="card secondary-bg">
+                    <h3 class="color-secondary">📊 Shiny</h3>
+                    <p>Plataforma para crear aplicaciones web interactivas (Dashboards). Permite a los usuarios de negocio jugar con los parámetros (What-if analysis) y ver resultados en tiempo real.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO DE CÓDIGO -->
+        <section>
+            <h2>Ejemplo: Preparación y Visualización</h2>
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>analisis_rapido.R</span>
+                    <button class="copy-btn" onclick="copyCode('code-eda')">📋 Copiar</button>
+                </div>
+                <pre id="code-eda" class="code-content"><code class="language-r"># Limpiar datos y crear gráfico de dispersión
+library(tidyverse)
+
+dataset %>%
+  drop_na(variable_objetivo) %>%
+  mutate(fecha = ymd(fecha_texto)) %>%
+  ggplot(aes(x=fecha, y=valor, color=categoria)) +
+  geom_line() +
+  theme_minimal() +
+  labs(title="Evolución Temporal por Categoría")</code></pre>
+            </div>
+        </section>
+
+        <!-- RESUMEN FINAL -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Conclusión</h3>
+                <p>R no solo procesa datos; cuenta historias con ellos. Su ecosistema de visualización y reportabilidad es el más maduro del mercado, garantizando que los hallazgos técnicos lleguen a los niveles de negocio con claridad absoluta.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

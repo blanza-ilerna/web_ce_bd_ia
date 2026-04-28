@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intercambio de Datos JSON | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Intercambio JSON</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Intercambio de Datos entre Sistemas</h1>
+            <p class="subtitle">Flujos de información y contratos técnicos en pipelines de IA</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    JSON es el tejido conectivo de la IA moderna. Desde la <strong>ingesta inicial</strong> hasta el <strong>serving en producción</strong>, este formato asegura que los datos fluyan sin fricciones entre servicios web (HTTP), colas de mensajería (Kafka) y entornos de ejecución serverless.
+                </p>
+            </div>
+        </section>
+
+        <!-- STREAMING Y EVENTOS -->
+        <section>
+            <h2>1. Streaming y Arquitecturas de Eventos</h2>
+            <p>En sistemas de tiempo real, los datos viajan "empaquetados" con metadatos de trazabilidad que permiten gestionar flujos de inferencia asíncronos.</p>
+            
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>streaming_event.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-event')">📋 Copiar</button>
+                </div>
+                <pre id="code-event" class="code-content"><code class="language-json">{
+    "eventId": "7f9c2b1a",
+    "ts": "2025-10-05T17:25:43Z",
+    "source": "webapp",
+    "type": "review.created",
+    "payload": {
+        "userId": "u-1023",
+        "text": "Great product! I would buy it again",
+        "lang": "en"
+    },
+    "trace": { "correlationId": "req-abc-123" },
+    "version": "1.0"
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- BATCH Y NDJSON -->
+        <section>
+            <h2>2. Procesamiento masivo con NDJSON</h2>
+            <p>Cuando el volumen de datos escala a millones de registros, el formato <strong>NDJSON</strong> (Newline Delimited JSON) es el estándar, permitiendo el procesamiento secuencial sin agotar la memoria del sistema.</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>dataset_batch.ndjson</span>
+                    <button class="copy-btn" onclick="copyCode('code-ndjson')">📋 Copiar</button>
+                </div>
+                <pre id="code-ndjson" class="code-content"><code class="language-json">{"id":1,"age":34,"income":42000}
+{"id":2,"age":41,"income":38000}
+{"id":3,"age":29,"income":null}</code></pre>
+            </div>
+        </section>
+
+        <!-- BUENAS PRÁCTICAS -->
+        <section>
+            <h2>Buenas Prácticas de Intercambio</h2>
+            <p>Para garantizar la robustez de los pipelines de IA, es vital seguir estos estándares técnicos:</p>
+            
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">📅 Fechas e Identidad</h4>
+                    <p>Usa siempre el formato <strong>ISO-8601</strong> (ej. 2025-10-05T17:25:43Z) e incluye un <strong>correlationId</strong> para mantener la trazabilidad completa entre microservicios.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🚀 Eficiencia y Escala</h4>
+                    <p>Activa <strong>compresión HTTP (gzip)</strong> para reducir el ancho de banda y evita enviar binarios en crudo; utiliza <strong>Base64</strong> o URLs firmadas para multimedia.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN -->
+        <section>
+            <div class="challenge-box">
+                <h3>💡 Resumen de Arquitectura</h3>
+                <p>El intercambio de datos con JSON no se trata solo de enviar texto; se trata de establecer <strong>contratos versionados</strong> que permitan que los equipos de Data Engineering y ML Ops colaboren de forma desacoplada y escalable.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>
