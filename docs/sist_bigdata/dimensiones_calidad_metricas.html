@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Métricas de Calidad de Datos (KPIs) en Big Data - iLERNA">
+    <meta name="keywords" content="Métricas de Calidad, KPIs, Completitud, Exactitud, Duplicación, Freshness, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Métricas de Calidad | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- MathJax para fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Métricas de Calidad</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.6.4.1 Métricas y KPIs de Calidad</h1>
+            <p class="subtitle">Cuantificando la veracidad: indicadores objetivos para la monitorización del Data Lake</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Sin métricas, la gestión de la calidad de datos es puramente subjetiva. Los <strong>KPIs (Key Performance Indicators)</strong> de calidad nos permiten transformar percepciones abstractas en valores numéricos comparables. Esto facilita la monitorización continua de los pipelines, la definición de objetivos de negocio claros (SLAs) y la detección proactiva de degradaciones en la información antes de que afecten a la toma de decisiones estratégica.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>"Lo que no se mide, no se puede mejorar". En Big Data, la monitorización de estas métricas es el primer paso hacia una cultura de excelencia en el dato.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_storage_observability_dashboard_visualization_1777732858458.png" alt="Monitorización y KPIs de Calidad" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- MÉTRICA 1: COMPLETITUD (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">1. Tasa de Completitud</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+                <div class="highlight-box primary" style="font-size: 1.5rem; display: inline-block; padding: 1.5rem 3rem; margin-bottom: 2rem;">
+                    \[ \text{Completitud} = \left( \frac{\text{Campos no nulos}}{\text{Total de campos esperados}} \right) \times 100\% \]
+                </div>
+                <p style="text-align: left; line-height: 1.8;">
+                    Mide el porcentaje de información presente frente a la capacidad total del dataset. Es fundamental distinguir entre <strong>nulos legítimos</strong> (datos opcionales) y <strong>faltantes problemáticos</strong> (fallos en la captura). Una caída brusca en esta métrica suele indicar errores en la integración de fuentes o cambios no comunicados en el sistema origen.
+                </p>
+            </div>
+        </section>
+
+        <!-- MÉTRICA 2: EXACTITUD (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2rem;">2. Exactitud (Accuracy)</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+                <div class="highlight-box secondary" style="font-size: 1.5rem; display: inline-block; padding: 1.5rem 3rem; margin-bottom: 2rem;">
+                    \[ \text{Exactitud} = \left( \frac{\text{Registros que superan validaciones}}{\text{Total de registros procesados}} \right) \times 100\% \]
+                </div>
+                <p style="text-align: left; line-height: 1.8;">
+                    Indica el porcentaje de datos que representan fielmente la realidad. Se evalúa mediante reglas de negocio (rangos, tipos de datos, coherencia) y auditorías por muestreo. En sistemas críticos, esta métrica debe aproximarse al 100% para evitar decisiones basadas en información falsa.
+                </p>
+            </div>
+        </section>
+
+        <!-- MÉTRICA 3: DUPLICACIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">3. Tasa de Duplicación</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+                <div class="highlight-box success" style="font-size: 1.5rem; display: inline-block; padding: 1.5rem 3rem; margin-bottom: 2rem; color: white;">
+                    \[ \text{Duplicación} = \left( \frac{\text{Registros duplicados identificados}}{\text{Total de registros}} \right) \times 100\% \]
+                </div>
+                <p style="text-align: left; line-height: 1.8;">
+                    Detecta la redundancia innecesaria que distorsiona las métricas agregadas (como el conteo de clientes únicos). Incluye tanto duplicados exactos como <strong>duplicados semánticos</strong>, que requieren algoritmos de lógica difusa (*fuzzy matching*) para ser identificados.
+                </p>
+            </div>
+        </section>
+
+        <!-- MÉTRICA 4: FRESHNESS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2rem;">4. Vigencia (Freshness)</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+                <div class="highlight-box primary" style="font-size: 1.5rem; display: inline-block; padding: 1.5rem 3rem; margin-bottom: 2rem;">
+                    \[ \text{Freshness} = \text{Tiempo actual} - \text{Timestamp de última actualización} \]
+                </div>
+                <p style="text-align: left; line-height: 1.8;">
+                    Mide la antigüedad del dato disponible. Un valor de *Freshness* elevado indica que el sistema está trabajando con información obsoleta. Esta métrica es el principal indicador de salud para arquitecturas de tiempo real y pipelines de streaming.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

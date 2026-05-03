@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Procesos ETL (Extract, Transform, Load) en Sistemas de Big Data - iLERNA">
+    <meta name="keywords" content="ETL, Extracción, Transformación, Carga, Big Data, Data Warehouse, Python, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>ETL: Extract, Transform, Load | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>ETL Detallado</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.3.2.1 El Proceso ETL al Detalle</h1>
+            <p class="subtitle">Extract, Transform, Load: El estándar de oro de la integración de datos</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        El proceso <strong>ETL</strong> es la arquitectura clásica para mover datos desde fuentes operacionales hacia sistemas analíticos. Su objetivo es garantizar que la información sea consistente, limpia y esté optimizada para la toma de decisiones. A diferencia de otros enfoques, el ETL pone especial énfasis en la <strong>transformación profunda</strong> antes de que el dato llegue a su destino final.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Cada una de sus tres fases cumple un rol vital: la extracción asegura la conectividad, la transformación la calidad, y la carga la persistencia analítica.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_hibrida_hero.png" alt="Arquitectura ETL" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE EXTRACCIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Fase 1: Extracción (E)</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    El reto principal de la extracción es capturar los datos sin impactar el rendimiento de los sistemas de producción. Dependiendo del volumen y la criticidad, se aplican diferentes estrategias:
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <div style="background: #f8fafc; padding: 2rem; border-radius: 1rem;">
+                        <h4 class="color-primary" style="margin-bottom: 0.8rem;">Estrategia Completa</h4>
+                        <p>Se copian todos los registros disponibles en cada ejecución. Es simple y garantiza consistencia, pero ineficiente para grandes volúmenes. Ideal para tablas de referencia pequeñas.</p>
+                    </div>
+                    <div style="background: #f8fafc; padding: 2rem; border-radius: 1rem;">
+                        <h4 class="color-secondary" style="margin-bottom: 0.8rem;">Estrategia Incremental</h4>
+                        <p>Captura solo datos nuevos o modificados mediante <strong>timestamps</strong> o <strong>CDC</strong> (Change Data Capture). Reduce drásticamente la carga sobre el origen y el tiempo de proceso.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE TRANSFORMACIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Fase 2: Transformación (T)</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧼</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Limpieza y Normalización</h4>
+                        <p style="margin: 0;">Eliminación de duplicados, corrección de valores anómalos (fechas futuras, edades negativas) y estandarización de formatos (ISO 8601, códigos de país, mayúsculas).</p>
+                    </div>
+                </div>
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📈</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Agregación y Filtrado</h4>
+                        <p style="margin: 0;">Cálculo de métricas resumidas (totales diarios) para acelerar consultas y selección de registros relevantes (por región o importe) para reducir el volumen de procesamiento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO CÓDIGO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Transformación Práctica en Ventas (Python)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">etl_transform.py</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-python"># 1. Limpieza de duplicados por ID de pedido
+datos_unicos = datos.drop_duplicates(subset=['id_pedido'])
+
+# 2. Normalización de fechas a formato estándar
+datos['fecha'] = pd.to_datetime(datos['fecha'], format='%Y-%m-%d')
+
+# 3. Derivación de nuevas métricas (Cálculo de impuestos)
+datos['total_con_iva'] = datos['subtotal'] * 1.21
+
+# 4. Filtrado de registros irrelevantes
+datos_final = datos[datos['total_con_iva'] > 0]</code></pre>
+            </div>
+        </section>
+
+        <!-- FASE CARGA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Fase 3: Carga (L)</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); border-left: 10px solid var(--color-success);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark);">
+                    La fase final inserta los datos en el sistema de destino (Data Warehouse o Data Lake). Dependiendo de los requisitos históricos, se opta por:
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem; margin-top: 1.5rem;">
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Carga Completa (Full Load)</h4>
+                        <p>Sustitución total de los datos previos. Ideal para refrescar datasets estáticos o dimensiones maestras.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Carga Incremental</h4>
+                        <p>Adición de nuevos registros o actualización de existentes. Crucial para mantener series históricas sin duplicar el esfuerzo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

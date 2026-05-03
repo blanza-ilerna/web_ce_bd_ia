@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arquitectura ELT (Extract, Load, Transform) en Big Data - iLERNA">
+    <meta name="keywords" content="ELT, Big Data, Data Lake, Spark, Snowflake, BigQuery, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>ELT: Extract, Load, Transform | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>ELT Detallado</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.3.2.2 Arquitectura ELT: Extract, Load, Transform</h1>
+            <p class="subtitle">Potencia en el destino: aprovechando el almacenamiento masivo y el cómputo distribuido</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La arquitectura <strong>ELT</strong> invierte el orden tradicional del ETL para adaptarse a la era del almacenamiento barato y el cómputo elástico. En este enfoque, los datos se cargan en bruto (*Raw Data*) directamente en el sistema de destino (Data Lake o Data Warehouse en la nube) y es allí donde se aplican las transformaciones, aprovechando la potencia de motores como <strong>Snowflake</strong>, <strong>BigQuery</strong> o clústeres de <strong>Spark</strong>.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Al desacoplar la carga de la transformación, el ELT ofrece una agilidad sin precedentes, permitiendo que los datos estén disponibles para exploración casi inmediatamente después de su extracción.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_elasticidad_hero.png" alt="Arquitectura ELT Cloud" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTAJAS ESTRATÉGICAS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">¿Por qué elegir ELT en Big Data?</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Disponibilidad Inmediata -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🚀</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Disponibilidad y Exploración Rápida</h4>
+                        <p style="margin: 0;">Los analistas pueden acceder a los datos crudos sin esperar a que se completen procesos de limpieza complejos. Esto acelera el descubrimiento de insights y la validación de hipótesis.</p>
+                    </div>
+                </div>
+                <!-- Flexibilidad -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧩</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Flexibilidad y Reprocesamiento</h4>
+                        <p style="margin: 0;">Si las reglas de negocio cambian, no es necesario volver a extraer los datos de origen. Basta con ejecutar una nueva transformación sobre los datos ya cargados en el Data Lake.</p>
+                    </div>
+                </div>
+                <!-- Paralelismo -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚡</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Escalabilidad Lineal</h4>
+                        <p style="margin: 0;">Aprovecha el procesamiento masivamente paralelo (MPP). Operaciones que tardarían horas en un servidor de integración tradicional se resuelven en minutos en un clúster distribuido.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO CÓDIGO SPARK (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Pipeline ELT en un Data Lake (PySpark)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">elt_pyspark_pipeline.py</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-python"># 1. EXTRACT & LOAD: Carga directa de datos crudos en el clúster
+df_raw = spark.read.json('hdfs://data-lake/sensores_raw/')
+
+# 2. TRANSFORM: Transformación bajo demanda aprovechando el cómputo distribuido
+df_processed = df_raw.filter(df_raw.temperatura.isNotNull()) \
+                     .filter((df_raw.temperatura > -50) & (df_raw.temperatura < 150)) \
+                     .withColumn('fecha_ingesta', current_date())
+
+# 3. WRITE: Almacenamiento del resultado procesado (Parquet)
+df_processed.write.mode('overwrite').parquet('hdfs://data-lake/sensores_clean/')</code></pre>
+            </div>
+        </section>
+
+        <!-- TRAZABILIDAD (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Gobernanza y Auditoría</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); border-left: 10px solid var(--color-bigdata);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark);">
+                    Al mantener los datos crudos en el destino, el ELT proporciona un registro inmutable para auditoría. Si se descubre un error en una transformación realizada hace meses, es posible reprocesar toda la historia sin depender de los sistemas operacionales de origen, algo fundamental en sectores regulados como el financiero o el de salud.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

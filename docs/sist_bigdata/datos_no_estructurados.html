@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Extracción de Datos No Estructurados: NLP y Procesamiento de Texto en Big Data - iLERNA">
+    <meta name="keywords" content="Datos No Estructurados, NLP, Procesamiento de Lenguaje Natural, Tokenización, NER, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Datos No Estructurados | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Datos No Estructurados</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.3.3.3 Extracción de Datos No Estructurados</h1>
+            <p class="subtitle">NLP: Extrayendo estructura y significado del lenguaje humano</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La mayor parte de la información generada hoy en día —emails, documentos, redes sociales o transcripciones— carece de un formato rígido. Extraer valor de estos <strong>datos no estructurados</strong> requiere técnicas de **Procesamiento de Lenguaje Natural (NLP)** para transformar el texto libre en variables cuantitativas que una máquina pueda analizar.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>El objetivo no es solo leer las palabras, sino comprender el contexto, identificar entidades y cuantificar el sentimiento oculto en el mensaje.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_ia_ml_hero.png" alt="Inteligencia Artificial y NLP" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- TÉCNICAS FUNDAMENTALES (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Arquitectura del Procesamiento de Texto</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Tokenización y Stopwords -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">✂️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Tokenización y Limpieza de Ruido</h4>
+                        <p style="margin: 0;">División del texto en unidades básicas (**tokens**). Se eliminan las *stopwords* (palabras frecuentes sin valor analítico como "el", "de", "y") para reducir el ruido y centrar el análisis en términos informativos.</p>
+                    </div>
+                </div>
+                <!-- Stemming y Lemmatización -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🌱</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Normalización Morfológica</h4>
+                        <p style="margin: 0;">Reducción a la raíz o forma base. El **Stemming** corta sufijos de forma heurística ("corr-"), mientras que la **Lematización** usa diccionarios para obtener el lema correcto ("correr"), permitiendo agrupar variaciones de una misma idea.</p>
+                    </div>
+                </div>
+                <!-- NER -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🏷️</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Reconocimiento de Entidades (NER)</h4>
+                        <p style="margin: 0;">Identificación automática de nombres propios, organizaciones, lugares y fechas. Convierte un párrafo en una lista estructurada de actores y ubicaciones, facilitando el análisis de red.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO CÓDIGO NLP (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Análisis de Sentimiento y Filtrado (Python / NLTK)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">sentiment_analysis.py</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-python">from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+def analizar_opinion_cliente(texto):
+    # 1. Normalización y Tokenización
+    tokens = word_tokenize(texto.lower())
+    
+    # 2. Filtrado de Stopwords y caracteres especiales
+    stop_words = set(stopwords.words('spanish'))
+    limpios = [t for t in tokens if t not in stop_words and t.isalpha()]
+    
+    # 3. Análisis de Sentimiento Cuantitativo
+    sia = SentimentIntensityAnalyzer()
+    puntuacion = sia.polarity_scores(texto)
+    
+    return {
+        'riqueza_lexica': len(set(limpios)),
+        'sentimiento_global': puntuacion['compound'] # -1 (negativo) a +1 (positivo)
+    }</code></pre>
+            </div>
+        </section>
+
+        <!-- APLICACIÓN PRÁCTICA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">De Opiniones a Datos Cuantitativos</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">📊</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Cuantificación del Lenguaje</h3>
+                    <p>Al aplicar este pipeline, una empresa puede transformar un millón de reseñas de productos en un dashboard de control. Podemos saber no solo si los clientes están contentos, sino identificar qué productos (vía NER) se asocian a términos negativos o detectar tendencias emergentes mediante el análisis de la frecuencia de tokens normalizados. Es la base de la escucha activa en Big Data.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

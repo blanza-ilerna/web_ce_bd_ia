@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modelado de Series Temporales en Big Data: Estrategias y Patrones - iLERNA">
+    <meta name="keywords" content="Series Temporales, Time Series, Big Data, IoT, Bucket Pattern, Particionado Temporal, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Modelado de Series Temporales | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Series Temporales</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.4.3.2 Modelado de Series Temporales</h1>
+            <p class="subtitle">Gestionando el flujo del tiempo: eficiencia y agregación en datos secuenciales</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Las <strong>series temporales</strong> son flujos de datos indexados cronológicamente, fundamentales en entornos de sensores IoT, mercados financieros y monitorización de sistemas. A diferencia de los datos transaccionales comunes, su valor reside en la secuencia y la evolución temporal. Modelarlas requiere estrategias específicas para manejar volúmenes masivos de lecturas que crecen indefinidamente.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>En las series temporales, el tiempo no es solo un atributo más, sino la columna vertebral que determina cómo particionamos, comprimimos y consultamos la información.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_global_hero.png" alt="Series Temporales Globales" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTRATEGIAS DE EFICIENCIA (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Estrategias de Almacenamiento y Acceso</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Particionado -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📅</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Particionado Temporal</h4>
+                        <p style="margin: 0;">Organizar los datos en bloques diarios o mensuales. Esto permite que las consultas de rango ("datos de la última semana") escaneen solo los fragmentos necesarios, ignorando el resto del histórico.</p>
+                    </div>
+                </div>
+                <!-- Retención y Agregación -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⏳</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Políticas de Retención y Downsampling</h4>
+                        <p style="margin: 0;">No todo el histórico requiere la misma resolución. Almacenamos datos recientes al segundo, pero agregamos los antiguos en promedios por minuto u hora para ahorrar espacio sin perder la tendencia.</p>
+                    </div>
+                </div>
+                <!-- Compresión -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🗜️</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Compresión de Alta Densidad</h4>
+                        <p style="margin: 0;">Bases de datos como InfluxDB aprovechan que valores consecutivos suelen ser similares para lograr ratios de 10:1, permitiendo guardar miles de millones de puntos con un coste mínimo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PATRÓN BUCKET (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">El Patrón Bucket para Alta Ingesta (IoT)</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    En lugar de crear un documento por cada lectura de sensor (lo que generaría millones de registros individuales), agrupamos las lecturas en un único documento de "cubo" o **bucket** que representa un periodo (ej. una hora).
+                </p>
+                <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1rem; overflow: hidden;">
+                    <div style="background: #2d2d2d; padding: 1rem 2rem; color: #ccc; font-family: monospace; font-size: 0.9rem;">sensor_bucket_example.json</div>
+                    <pre style="margin: 0; padding: 2rem; font-size: 0.9rem; line-height: 1.5;"><code class="language-json">{
+  "sensor_id": "iot_term_05",
+  "fecha": "2024-10-07",
+  "ventana": "10:00 - 11:00",
+  "num_lecturas": 3600,
+  "lecturas": [
+    {"offset": 0, "temp": 22.5},
+    {"offset": 1, "temp": 22.6},
+    {"offset": 2, "temp": 22.5}
+    // ... 3597 lecturas adicionales
+  ],
+  "agregados": {
+    "min": 21.8, "max": 23.4, "avg": 22.6
+  }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEFICIOS ANALÍTICOS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Impacto en el Rendimiento Analítico</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">🚀 Reducción de Indexación</h4>
+                    <p>Al agrupar 3.600 lecturas en un solo documento, el motor de base de datos solo gestiona 1 índice en lugar de 3.600, acelerando la velocidad de ingesta exponencialmente.</p>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">📊 Consultas Pre-Agregadas</h4>
+                    <p>Incluir estadísticas (mín, máx, promedio) en el propio documento permite generar gráficos de tendencia instantáneos sin necesidad de calcular nada en tiempo de ejecución.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+</html>

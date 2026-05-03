@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplo práctico de arquitectura híbrida: Apache Spark uniendo computación paralela y distribuida - iLERNA">
+    <meta name="keywords" content="Apache Spark, Arquitectura Híbrida, Computación Paralela, Computación Distribuida, Clúster, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Ejemplo Híbrido: Apache Spark | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Ejemplo Híbrido</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.1.4 Ejemplo Práctico: Arquitectura Híbrida</h1>
+            <p class="subtitle">Apache Spark: Sinergia total entre distribución y paralelismo</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        En el mundo real del Big Data, los paradigmas no suelen aplicarse de forma aislada. <strong>Apache Spark</strong> es el ejemplo perfecto de una arquitectura híbrida de alto rendimiento. Spark no elige entre computación paralela o distribuida; en su lugar, orquesta ambas simultáneamente para maximizar la velocidad de procesamiento sobre datasets que superan la capacidad de cualquier máquina individual.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>La potencia de Spark reside en su capacidad para coordinar un clúster de servidores mientras exprime cada ciclo de reloj de cada núcleo disponible en el hardware local.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_herramientas_ecosistema_hero.png" alt="Ecosistema Spark Híbrido" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- FUNCIONAMIENTO (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">¿Cómo se aplica la dualidad en Spark?</h2>
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- Nivel Distribuido -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                    <div style="font-size: 5rem; flex-shrink: 0;">🌐</div>
+                    <div>
+                        <h3 class="color-primary" style="margin-bottom: 1rem;">Capa Distribuida (Clúster)</h3>
+                        <p>Spark utiliza la computación distribuida para fragmentar y <strong>repartir el dataset</strong> a través de múltiples nodos del clúster. Cada servidor recibe una porción de los datos, permitiendo que el volumen total almacenado sea virtualmente ilimitado.</p>
+                    </div>
+                </div>
+                <!-- Nivel Paralelo -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                    <div style="font-size: 5rem; flex-shrink: 0;">⚡</div>
+                    <div>
+                        <h3 class="color-secondary" style="margin-bottom: 1rem;">Capa Paralela (Local)</h3>
+                        <p>Una vez que los datos están en el nodo, Spark aplica computación paralela interna. Utiliza <strong>todos los núcleos de la CPU</strong> (o incluso GPUs) para procesar las particiones de datos asignadas a ese servidor de forma simultánea e independiente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESCENARIO REAL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Escenario: Procesamiento de 1 Terabyte</h2>
+            <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                    <span style="font-size: 3.5rem;">📊</span>
+                    <h3 class="color-primary" style="margin: 0;">Cálculo de Rendimiento en Clúster</h3>
+                </div>
+                <p style="font-size: 1.2rem; color: var(--text-dark); line-height: 1.8; margin-bottom: 1.5rem;">
+                    Imaginemos un clúster de Spark compuesto por <strong>10 nodos</strong>. Cada uno de estos servidores dispone de <strong>16 núcleos de procesamiento</strong> de última generación.
+                </p>
+                <div class="highlight-box primary" style="font-size: 1.125rem;">
+                    <p>Al procesar un dataset de <strong>1 TB</strong>, Spark orquesta el trabajo de forma que:</p>
+                    <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                        <li><strong>160 núcleos totales</strong> (10x16) trabajan al mismo tiempo.</li>
+                        <li>Cada núcleo gestiona una partición individual del dataset.</li>
+                        <li>El tiempo de procesamiento se reduce exponencialmente gracias a esta doble capa de eficiencia.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

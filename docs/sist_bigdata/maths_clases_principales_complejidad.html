@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Clases Principales de Complejidad Computacional (Big O) en Big Data - iLERNA">
+    <meta name="keywords" content="Notación Big O, Complejidad Computacional, Algoritmos, Escalabilidad, MapReduce, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Clases de Complejidad | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Clases de Complejidad</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.2.5.1 Clases Principales de Complejidad</h1>
+            <p class="subtitle">Notación Big O: Midiendo la eficiencia en la frontera del Petabyte</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La <strong>complejidad computacional</strong> no mide el tiempo exacto en segundos, sino cómo crece el número de operaciones a medida que aumenta el volumen de datos (<strong>n</strong>). En Big Data, comprender estas clases es la diferencia entre un sistema que escala suavemente y uno que colapsa catastróficamente al recibir carga real.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Elegir un algoritmo con la clase de complejidad correcta es el primer paso para garantizar la viabilidad técnica de cualquier pipeline de datos masivo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_escalabilidad_hero.png" alt="Complejidad y Escalabilidad" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CLASES DE COMPLEJIDAD (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Jerarquía de la Eficiencia</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- O(1) -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 3rem; flex-shrink: 0; font-weight: bold; font-family: monospace;">O(1)</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Complejidad Constante</h4>
+                        <p style="margin: 0;">El tiempo de ejecución es fijo e independiente del tamaño de entrada. Ejemplos: acceder a un elemento de un array por su índice o realizar una búsqueda exitosa en una **Tabla Hash** bien diseñada.</p>
+                    </div>
+                </div>
+                <!-- O(log n) -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 3rem; flex-shrink: 0; font-weight: bold; font-family: monospace;">O(log n)</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Complejidad Logarítmica</h4>
+                        <p style="margin: 0;">Crece muy lentamente. Es el "santo grial" de las búsquedas masivas. Ejemplos: la **búsqueda binaria** en datasets ordenados o las operaciones de búsqueda en árboles balanceados (B-Trees).</p>
+                    </div>
+                </div>
+                <!-- O(n) -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 3rem; flex-shrink: 0; font-weight: bold; font-family: monospace; color: var(--color-success);">O(n)</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Complejidad Lineal</h4>
+                        <p style="margin: 0;">El esfuerzo es proporcional al número de elementos. Si duplicamos los datos, el tiempo se duplica. Ejemplos: recorrer una lista completa para encontrar un valor o el procesamiento batch simple.</p>
+                    </div>
+                </div>
+                <!-- O(n log n) -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 3rem; flex-shrink: 0; font-weight: bold; font-family: monospace; color: var(--color-bigdata);">O(n log n)</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Complejidad Lineal-Logarítmica</h4>
+                        <p style="margin: 0;">Típica de los algoritmos de ordenación más eficientes (MergeSort, HeapSort) y de muchas fases de **MapReduce**. Es el límite superior aceptable para el procesamiento de Big Data a gran escala.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EL PELIGRO DE O(n2) (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">El Muro de la Inviabilidad</h2>
+            <div class="card" style="border-left: 10px solid #e11d48; background: #fff1f2; padding: 3rem; border-radius: 1.5rem;">
+                <h3 style="color: #e11d48; margin-bottom: 1.5rem;">Complejidad Cuadrática: O(n²)</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #991b1b;">
+                    En Big Data, los algoritmos con complejidad **O(n²)** (como las comparaciones cruzadas "todos contra todos") son una trampa mortal. Con solo **1 millón de elementos**, un algoritmo cuadrático requiere **1 billón de operaciones**. A escalas de Petabytes, estos algoritmos son físicamente imposibles de ejecutar.
+                </p>
+                <div class="highlight-box" style="margin-top: 1.5rem; background: #fee2e2; border-color: #f87171; color: #991b1b; text-align: center; font-weight: bold;">
+                    ⚠️ Evitar a toda costa en pipelines de producción masiva.
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARATIVA MAPREDUCE (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Caso Práctico: Procesando 1.000 Millones de Registros</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee; text-align: center;">
+                    <h4 style="color: #e11d48; margin-bottom: 1rem;">Enfoque Ineficiente [O(n²)]</h4>
+                    <span style="font-size: 2rem; font-weight: bold;">10¹⁸</span>
+                    <p style="margin-top: 0.5rem; color: var(--text-medium);">Operaciones estimadas</p>
+                    <div style="margin-top: 1.5rem; color: #e11d48; font-weight: 700;">🚫 IMPOSIBLE</div>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee; text-align: center;">
+                    <h4 style="color: var(--color-success); margin-bottom: 1rem;">Enfoque MapReduce [O(n log n)]</h4>
+                    <span style="font-size: 2rem; font-weight: bold;">3 × 10¹⁰</span>
+                    <p style="margin-top: 0.5rem; color: var(--text-medium);">Operaciones estimadas</p>
+                    <div style="margin-top: 1.5rem; color: var(--color-success); font-weight: 700;">✅ FACTIBLE</div>
+                </div>
+            </div>
+            <div class="highlight-box success" style="margin-top: 2rem; text-align: center;">
+                Esta diferencia abismal de magnitud es lo que permite que el Big Data exista. Sin optimización algorítmica, el hardware más potente del mundo sería inútil.
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

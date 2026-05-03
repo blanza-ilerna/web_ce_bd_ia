@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comparativa técnica entre Computación Paralela y Distribuida: Diferencias, ventajas y aplicaciones - iLERNA">
+    <meta name="keywords" content="Computación Paralela, Computación Distribuida, HPC, Big Data, Escalabilidad, Tolerancia a Fallos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Comparativa: Paralela vs. Distribuida | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Comparativa Paralela vs Distribuida</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.1.3 Comparativa: Paralela vs. Distribuida</h1>
+            <p class="subtitle">Análisis técnico de arquitecturas para el procesamiento de alto rendimiento</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Aunque tanto la computación <strong>paralela</strong> como la <strong>distribuida</strong> persiguen el mismo fin —acelerar el procesamiento mediante la ejecución simultánea—, sus arquitecturas internas, métodos de comunicación y modelos de tolerancia a fallos son radicalmente distintos. Entender estas diferencias es clave para seleccionar la infraestructura adecuada según la naturaleza del problema (análisis numérico puro vs. procesamiento de datos masivos).
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Mientras que la computación paralela busca la máxima velocidad de ejecución en un entorno controlado, la distribuida prioriza la resiliencia y la escalabilidad masiva.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Comparativa de Arquitecturas" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLA COMPARATIVA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Cuadro Comparativo Técnico</h2>
+            <div class="comparison-table" style="background: var(--bg-white); padding: 1.5rem; border-radius: 1.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Computación Paralela</th>
+                            <th>Computación Distribuida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Ubicación</strong></td>
+                            <td>Un solo sistema o clúster físico local (alto acoplamiento).</td>
+                            <td>Nodos dispersos geográficamente en múltiples sistemas.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comunicación</strong></td>
+                            <td>Compartición directa de memoria a través de buses internos.</td>
+                            <td>Intercambio de mensajes vía red (TCP/IP, gRPC, HTTP).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tolerancia a fallos</strong></td>
+                            <td>Baja; un fallo en un componente suele detener todo el proceso.</td>
+                            <td>Alta; las tareas se reasignan dinámicamente entre nodos vivos.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escalabilidad</strong></td>
+                            <td>Vertical; limitada por las ranuras físicas de hardware local.</td>
+                            <td>Horizontal; prácticamente ilimitada mediante adición de nodos.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Coste de Infraestructura</strong></td>
+                            <td>Elevado debido a hardware especializado (GPUs, Supercomputadoras).</td>
+                            <td>Más económico mediante el uso de hardware comercial (Commodity).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ejemplos</strong></td>
+                            <td>Clústeres HPC, núcleos CUDA de NVIDIA, CPUs multinúcleo.</td>
+                            <td>Hadoop, Apache Spark, Kubernetes, Cassandra.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aplicaciones</strong></td>
+                            <td>Simulaciones científicas, renderizado 3D, análisis numérico.</td>
+                            <td>Procesamiento de Big Data, almacenamiento distribuido masivo.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PUNTOS CRÍTICOS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Diferencias Estratégicas</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Gestión de Fallos -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🛡️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Resiliencia vs. Rendimiento Puro</h4>
+                        <p style="margin: 0;">En sistemas paralelos, la velocidad es la prioridad máxima, asumiendo que el hardware es fiable. En sistemas distribuidos, <strong>se asume que el hardware fallará</strong>, por lo que el software está diseñado para recuperarse automáticamente.</p>
+                    </div>
+                </div>
+                <!-- Escalabilidad -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📈</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Escalabilidad Vertical vs. Horizontal</h4>
+                        <p style="margin: 0;">La computación paralela suele escalar "hacia arriba" (mejores componentes), mientras que la distribuida escala "hacia afuera" (más componentes), lo que resulta mucho más rentable para volúmenes masivos de datos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

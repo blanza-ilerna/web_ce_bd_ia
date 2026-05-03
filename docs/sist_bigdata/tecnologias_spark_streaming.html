@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Spark Streaming: Procesamiento de Tiempo Real basado en Micro-batches - iLERNA">
+    <meta name="keywords" content="Spark Streaming, Micro-batch, DStreams, Structured Streaming, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Spark Streaming | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Spark Streaming</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.5.3.3 Spark Streaming</h1>
+            <p class="subtitle">La potencia del ecosistema unificado: procesamiento de tiempo real mediante micro-batches</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        <strong>Spark Streaming</strong> es la extensión de Apache Spark diseñada para el procesamiento de datos en tiempo real. A diferencia del "True Streaming" de Flink, Spark utiliza un enfoque de <strong>Micro-batching</strong>: agrupa los eventos entrantes en pequeñas ventanas temporales (típicamente de 1 a 5 segundos) y los procesa como lotes ultra-rápidos utilizando el motor central de Spark.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Su mayor fortaleza no es la latencia mínima, sino la <strong>unificación</strong>: permite usar el mismo código, bibliotecas y APIs tanto para procesos históricos (Batch) como para flujos en vivo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_herramientas_ecosistema_hero.png" alt="Ecosistema Spark Streaming" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CRITERIO DE ELECCIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Criterio de Decisión Técnica</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: #fdf2f2; border: 1px solid #fee2e2; text-align: center;">
+                    <h4 style="color: #c53030; margin-bottom: 1rem;">Apache Flink</h4>
+                    <p>Elegir cuando la latencia debe ser de **milisegundos** y la precisión evento-a-evento es innegociable (Detección de fraude, trading).</p>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: #f0fdf4; border: 1px solid #dcfce7; text-align: center;">
+                    <h4 style="color: var(--color-success); margin-bottom: 1rem;">Spark Streaming</h4>
+                    <p>Elegir cuando una latencia de **segundos** es aceptable y se busca integración con SQL, ML o Grafos en un solo ecosistema.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTAJAS ESTRATÉGICAS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Ventajas del Micro-batching</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Reutilización -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">♻️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Reutilización de Código y Conocimiento</h4>
+                        <p style="margin: 0;">Los desarrolladores que ya conocen Spark pueden aplicar sus habilidades al streaming sin curva de aprendizaje. Las mismas funciones de transformación funcionan en ambos mundos.</p>
+                    </div>
+                </div>
+                <!-- Integración Total -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔗</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Integración con MLlib y Spark SQL</h4>
+                        <p style="margin: 0;">Permite aplicar modelos de Machine Learning entrenados en batch directamente sobre el stream de datos, o realizar consultas SQL complejas sobre el flujo en vivo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- APIS DE PROGRAMACIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Evolución de las APIs</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">DStreams (Discretized Streams)</h4>
+                    <p>La API original. Representa el flujo como una secuencia de RDDs (resilient distributed datasets). Ofrece control total pero es más compleja de programar.</p>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">Structured Streaming</h4>
+                    <p>La API moderna. Trata el stream como una **tabla infinita** que crece continuamente. Permite usar exactamente el mismo código SQL para batch y streaming.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOLERANCIA A FALLOS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Resiliencia Basada en Linaje</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">🛠️</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Recuperación Inteligente</h3>
+                    <p>Spark garantiza la tolerancia a fallos mediante el **linaje de RDDs**. Si un nodo falla, el sistema conoce exactamente qué pasos se siguieron para generar ese micro-batch y puede reconstruirlo desde la fuente original. Esto evita la necesidad de replicar datos costosos en memoria, optimizando los recursos del clúster.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

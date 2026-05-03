@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dimensión de Calidad: Completitud (Completeness) en Big Data - iLERNA">
+    <meta name="keywords" content="Completitud, Completeness, Calidad de Datos, Big Data, Valores Nulos, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Completitud (Completeness) | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Completitud</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.6.1.2 Dimensión: Completitud (Completeness)</h1>
+            <p class="subtitle">La visión integral del dato: ¿tenemos toda la información necesaria para decidir?</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La <strong>completitud</strong> evalúa si el dataset contiene todos los elementos necesarios para un análisis válido. Los datos incompletos no solo limitan la profundidad del conocimiento, sino que pueden introducir sesgos peligrosos si los valores faltantes no son aleatorios (ej. si solo faltan los ingresos de los usuarios de una región específica). Garantizar la completitud es vital para asegurar que la muestra sea representativa de la población total.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Un dataset con una exactitud del 100% en sus registros pero con una completitud del 10% es prácticamente inútil para la toma de decisiones estratégicas.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_flexibilidad_operativa_hero.png" alt="Análisis de Completitud" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPOS DE INCOMPLETITUD (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Niveles de Falta de Información</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Registro Faltante -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">👤</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Ausencia de Registros Completos</h4>
+                        <p style="margin: 0;">Entidades que deberían existir en el sistema pero no se han capturado (ej. clientes que abandonan el proceso de registro antes de finalizar).</p>
+                    </div>
+                </div>
+                <!-- Campo Faltante -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📑</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Huecos de Atributos (Nulos)</h4>
+                        <p style="margin: 0;">Registros existentes donde faltan campos críticos (ej. facturas sin fecha de vencimiento o perfiles sin número de teléfono).</p>
+                    </div>
+                </div>
+                <!-- Incompletitud Temporal -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📅</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Incompletitud Temporal (Brechas)</h4>
+                        <p style="margin: 0;">Periodos de tiempo sin datos en una serie temporal (ej. tenemos métricas de enero y marzo, pero un fallo en el servidor borró los datos de febrero).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANÁLISIS DE IMPACTO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Evaluando el Impacto y la Causa</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <div class="grid-2-cols" style="gap: 3rem;">
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 1rem;">¿Por qué faltan los datos?</h4>
+                        <ul class="content-index-list">
+                            <li><strong>Diseño:</strong> Campos marcados como opcionales en el formulario original.</li>
+                            <li><strong>Técnico:</strong> Fallos en la integración o pérdida de paquetes en el transporte.</li>
+                            <li><strong>Usuario:</strong> Abandono del proceso por complejidad o desconfianza.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 1rem;">Análisis de Criticidad</h4>
+                        <p>Un 5% de nulos aleatorios suele ser tolerable mediante técnicas de imputación. Sin embargo, si falta el 90% de un campo clave (ej. email en una campaña de marketing), la base de datos pierde su valor operativo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO CÓDIGO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Auditoría de Completitud Automática (Python)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">completeness_audit.py</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-python">import pandas as pd
+
+def generar_informe_completitud(df):
+    """Calcula el porcentaje de datos no nulos por cada columna"""
+    resumen = []
+    total_filas = len(df)
+    
+    for columna in df.columns:
+        datos_presentes = df[columna].notna().sum()
+        tasa = (datos_presentes / total_filas) * 100
+        
+        resumen.append({
+            'Campo': columna,
+            'Registros Presentes': datos_presentes,
+            'Tasa Completitud': f"{tasa:.2f}%"
+        })
+    
+    return pd.DataFrame(resumen).sort_values(by='Tasa Completitud', ascending=False)
+
+# Ejecución de la auditoría sobre un dataset de ejemplo
+df_auditoria = generar_informe_completitud(df_ventas)
+print(df_auditoria)</code></pre>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <div class="highlight-box success" style="padding: 3rem; border-radius: 1.5rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">Hacia una Visión 360º</h3>
+                <p style="font-size: 1.1rem;">La completitud es el termómetro de nuestra cobertura informativa. Monitorizar esta métrica nos permite identificar qué canales de captura están fallando y dónde estamos perdiendo oportunidades de conocimiento crítico para el negocio.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

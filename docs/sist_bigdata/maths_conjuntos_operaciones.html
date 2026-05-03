@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conjuntos y Operaciones en Big Data: Unión, Intersección y Diferencia - iLERNA">
+    <meta name="keywords" content="Teoría de Conjuntos, Big Data, Spark, Venn, Unión, Intersección, Diferencia, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Conjuntos y Operaciones | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Conjuntos y Operaciones</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.2.2 Conjuntos y Operaciones en el Análisis de Datos</h1>
+            <p class="subtitle">Lógica de colecciones: combinando y filtrando información a gran escala</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Los <strong>conjuntos</strong> son las estructuras más elementales de la matemática discreta. Representan colecciones no ordenadas de elementos únicos y bien definidos. En el contexto de Big Data, esta aparente simplicidad es la base para integrar múltiples fuentes de información, detectar solapamientos entre audiencias y realizar filtrados masivos de forma eficiente.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Frameworks como <strong>Apache Spark</strong> implementan estas operaciones de forma distribuida, permitiendo manipular conjuntos con miles de millones de registros en paralelo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Teoría de Conjuntos" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- OPERACIONES FUNDAMENTALES (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Las Tres Operaciones Maestras</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Union -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">➕</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Unión (A ∪ B): Integración</h4>
+                        <p style="margin: 0;">Combina todos los elementos de ambos conjuntos eliminando duplicados. Es la base de la <strong>integración de datos</strong>. Ejemplo: unir listas de clientes de diferentes sedes para obtener una visión única del mercado.</p>
+                    </div>
+                </div>
+                <!-- Intersection -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">💎</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Intersección (A ∩ B): Coincidencia</h4>
+                        <p style="margin: 0;">Identifica únicamente los elementos comunes. Vital para la <strong>segmentación de audiencias</strong>. Ejemplo: encontrar usuarios que visitaron la web Y además abrieron la newsletter.</p>
+                    </div>
+                </div>
+                <!-- Difference -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: #e11d48;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">➖</div>
+                    <div>
+                        <h4 style="color: #e11d48; margin-bottom: 0.5rem;">Diferencia (A - B): Exclusión</h4>
+                        <p style="margin: 0;">Extrae los elementos de A que no están en B. Clave para detectar <strong>churn o ausencias</strong>. Ejemplo: identificar clientes del mes pasado que no han comprado en el actual.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISUALIZACIÓN VENN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Lógica de Venn en el E-commerce</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <div class="grid-2-cols" style="gap: 3rem; align-items: center;">
+                    <div>
+                        <h3 class="color-secondary" style="margin-bottom: 1.5rem;">Análisis de Conversión</h3>
+                        <ul class="content-index-list">
+                            <li style="margin-bottom: 1rem;"><strong>Conjunto A:</strong> Usuarios que compraron en el último mes.</li>
+                            <li><strong>Conjunto B:</strong> Usuarios que añadieron productos al carrito.</li>
+                        </ul>
+                        <div class="highlight-box success" style="margin-top: 1.5rem;">
+                            La <strong>intersección (A ∩ B)</strong> representa la tasa de conversión real, mientras que la <strong>diferencia (B - A)</strong> revela la oportunidad perdida: los carritos abandonados.
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-size: 1.2rem; line-height: 1.5; color: var(--text-dark);">
+                        <div style="display: inline-block; padding: 2rem; border: 2px dashed var(--color-primary); border-radius: 1rem; background: #f8fafc;">
+                            <span style="font-size: 3rem;">⭕ ∩ ⭕</span><br>
+                            <strong>A ∩ B = Ventas</strong><br><br>
+                            <span style="font-size: 3rem;">⭕ - ⭕</span><br>
+                            <strong>B - A = Churn</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Escalabilidad en Spark</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">⚡</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Procesamiento Distribuido</h3>
+                    <p>En entornos Big Data, estas operaciones no se realizan de forma secuencial. Spark utiliza transformaciones como `union()`, `intersection()` y `subtract()` que se ejecutan en paralelo a través de los nodos del clúster. Esto permite que el cálculo de la diferencia entre dos conjuntos de 1.000 millones de registros se complete en cuestión de segundos, algo imposible para sistemas relacionales tradicionales sin una optimización extrema.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

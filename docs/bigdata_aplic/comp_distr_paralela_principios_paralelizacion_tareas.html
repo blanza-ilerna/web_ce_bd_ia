@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Principios de Paralelización de Tareas: División, Programación y Tipos de Paralelismo - iLERNA">
+    <meta name="keywords" content="Paralelización, Computación Paralela, Spark, GPU, CUDA, Data Parallelism, Task Parallelism, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Principios de Paralelización | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Paralelización de Tareas</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.1.2 Principios de Paralelización de Tareas</h1>
+            <p class="subtitle">Multiplicando el rendimiento: ejecución simultánea y optimización de recursos</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La <strong>computación paralela</strong> tiene como objetivo fundamental reducir el tiempo de respuesta mediante la ejecución concurrente de múltiples procesos. A diferencia del enfoque distribuido, el paralelismo suele ocurrir en entornos de <strong>alto acoplamiento</strong>, como un servidor multiprocesador, una unidad de procesamiento gráfico (<strong>GPU</strong>) o un clúster de alto rendimiento (HPC).
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>La clave del éxito reside en la capacidad de fragmentar un problema complejo en subproblemas independientes que puedan resolverse al mismo tiempo sin interferencias.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_elasticidad_hero.png" alt="Paralelización de Tareas y Flujos" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- PRINCIPIOS OPERATIVOS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">El Ciclo del Paralelismo</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- División -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔪</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">División (Decomposition)</h4>
+                        <p style="margin: 0;">Fragmentación del problema original en unidades de trabajo manejables. Puede ser <strong>homogénea</strong> (tareas idénticas sobre datos distintos) o <strong>heterogénea</strong> (tareas funcionales distintas).</p>
+                    </div>
+                </div>
+                <!-- Programación -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🗓️</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Programación (Task Scheduling)</h4>
+                        <p style="margin: 0;">Asignación inteligente de estas subtareas a los recursos disponibles (núcleos o hilos). Sistemas como <strong>YARN</strong> o el <strong>Spark Driver</strong> se encargan de equilibrar la carga para evitar procesadores ociosos.</p>
+                    </div>
+                </div>
+                <!-- Sincronización -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔄</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Sincronización y Comunicación</h4>
+                        <p style="margin: 0;">Gestión del intercambio de estados entre procesos. Un diseño eficiente minimiza esta comunicación, ya que el exceso de tráfico de red o memoria puede anular las ventajas del paralelismo.</p>
+                    </div>
+                </div>
+                <!-- Combinación -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧩</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Combinación (Aggregation)</h4>
+                        <p style="margin: 0;">Integración final de los resultados parciales obtenidos por cada procesador para generar la respuesta única y coherente solicitada por el sistema.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPOS DE PARALELISMO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2rem;">Modalidades de Paralelismo</h2>
+            <div class="flex-wrap-center" style="gap: 1.5rem;">
+                <div class="card" style="flex: 1; min-width: 300px; padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">🔹 A nivel de Datos</h4>
+                    <p>Procesamiento masivo de fragmentos de un dataset único. Fundamental en algoritmos de clustering o análisis estadístico sobre particiones.</p>
+                </div>
+                <div class="card" style="flex: 1; min-width: 300px; padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">🔸 A nivel de Tareas</h4>
+                    <p>Ejecución simultánea de algoritmos o funciones diferentes. Por ejemplo, entrenar 10 variaciones de un modelo ML a la vez.</p>
+                </div>
+                <div class="card" style="flex: 1; min-width: 300px; padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <h4 style="color: var(--color-bigdata); margin-bottom: 1rem;">🏁 A nivel de Pipeline</h4>
+                    <p>Encadenamiento de etapas donde cada una procesa datos en paralelo. Clásico en flujos ETL (Extracción, Transformación y Carga).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASOS PRÁCTICOS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Potencia en Acción</h2>
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- Apache Spark -->
+                <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🧨</span>
+                        <h3 class="color-primary" style="margin: 0;">Big Data: Procesamiento a escala Petabyte</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Utilizando <strong>Apache Spark</strong>, una organización procesa un dataset de 1 PB dividiéndolo en 1.000 particiones. Cada partición es gestionada por un núcleo distinto dentro de un clúster de 100 nodos. 
+                    </p>
+                    <div class="highlight-box primary" style="border-radius: 1rem; padding: 1.5rem; margin-top: 1rem;">
+                        Este paralelismo de datos extremo permite reducir tiempos de cómputo de semanas a tan solo unas pocas horas.
+                    </div>
+                </div>
+                <!-- Bioinformática -->
+                <div class="card" style="border-left: 10px solid var(--color-secondary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🧬</span>
+                        <h3 class="color-secondary" style="margin: 0;">Bioinformática: ADN y CUDA</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Un laboratorio de investigación utiliza <strong>GPUs NVIDIA con 4.096 núcleos CUDA</strong> para alinear secuencias de ADN. Al dividir el dataset en fragmentos minúsculos procesados en paralelo, logran un rendimiento masivo.
+                    </p>
+                    <div class="highlight-box secondary" style="border-radius: 1rem; padding: 1.5rem; margin-top: 1rem;">
+                        El resultado es un **speedup de 50x**, transformando procesos que tardaban semanas en ejecuciones de pocos días.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

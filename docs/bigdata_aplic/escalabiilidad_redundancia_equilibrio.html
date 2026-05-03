@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="El equilibrio crítico entre escalabilidad y redundancia en Big Data - iLERNA">
+    <meta name="keywords" content="Escalabilidad, Redundancia, Spotify, Hadoop, HDFS, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Equilibrio entre Escalabilidad y Redundancia | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Equilibrio Crítico</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.2.3.3 Equilibrio entre Escalabilidad y Redundancia</h1>
+            <p class="subtitle">Diseñando arquitecturas resilientes y económicamente viables</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Diseñar un sistema de almacenamiento masivo es un ejercicio de <strong>compromiso estratégico</strong>. No se trata solo de añadir más capacidad (escalar) o más copias (redundancia), sino de encontrar el punto óptimo donde el sistema es capaz de crecer sin comprometer la seguridad del dato ni disparar los costes operativos.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Un sistema con redundancia extrema (ej. replicación triple o RAID 6) es ultra-resiliente pero caro. Por el contrario, priorizar solo el escalado horizontal con baja redundancia reduce costes pero aumenta el riesgo de pérdida catastrófica ante un fallo de hardware múltiple.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_scalability_redundancy_balance.png" alt="Equilibrio Escalabilidad y Redundancia" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- El Trade-off -->
+        <section class="section">
+            <h2 class="color-secondary">El Trade-off en la Arquitectura</h2>
+            <div class="grid-2-cols">
+                <div class="card secondary">
+                    <h3>🛡️ Priorizar Redundancia</h3>
+                    <p>Enfoque común en servicios financieros o registros médicos. Se utilizan técnicas como <strong>Erasure Coding</strong> avanzado o replicación síncrona en múltiples centros de datos.</p>
+                    <p><strong>Impacto:</strong> Mayor latencia de escritura (al esperar confirmación de copias) y mayor coste de almacenamiento por cada Terabyte útil de información.</p>
+                </div>
+                <div class="card primary">
+                    <h3>📈 Priorizar Escalabilidad</h3>
+                    <p>Común en análisis de logs, archivos históricos o telemetría IoT. Se prioriza la capacidad de ingerir petabytes a bajo coste, aceptando un factor de replicación mínimo o almacenamiento "frío".</p>
+                    <p><strong>Impacto:</strong> Máxima eficiencia económica y capacidad de absorción de datos, pero mayor dependencia de planes de recuperación lentos ante desastres.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO: SPOTIFY -->
+        <section class="section">
+            <div style="background-color: #f0fdf4; padding: 2.5rem; border-radius: 1.5rem; border: 1px solid #dcfce7;">
+                <h2 style="color: #166534; margin-top: 0;">🎧 Caso de Estudio: Spotify y Hadoop HDFS</h2>
+                <p>
+                    Spotify gestiona petabytes de datos musicales para millones de usuarios. Para lograr un equilibrio perfecto, utilizan una arquitectura basada en <strong>Hadoop HDFS</strong>.
+                </p>
+                <div class="grid-2-cols" style="align-items: center; margin-top: 1.5rem;">
+                    <div class="highlight-box primary" style="background: white; border-color: #22c55e;">
+                        <p class="content">
+                            <strong>Escalabilidad Horizontal:</strong> Añaden nuevos nodos de almacenamiento al clúster para soportar el crecimiento constante del catálogo y de la base de usuarios sin afectar el rendimiento ni requerir paradas de mantenimiento.
+                        </p>
+                    </div>
+                    <div class="highlight-box secondary" style="background: white; border-color: #22c55e;">
+                        <p class="content">
+                            <strong>Redundancia Geográfica:</strong> Replican los datos en múltiples regiones. Esto no solo protege contra fallos de un centro de datos entero, sino que mejora la experiencia de usuario al servir la música desde la ubicación más cercana.
+                        </p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; font-style: italic; color: #166534; text-align: center; font-weight: 700;">
+                    Resultado: Disponibilidad global del 99.99% con un coste de almacenamiento optimizado para una escala de petabytes.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

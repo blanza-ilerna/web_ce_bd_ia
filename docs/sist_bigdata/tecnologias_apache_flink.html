@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apache Flink: Procesamiento de Streams de Alta Precisión y Baja Latencia - iLERNA">
+    <meta name="keywords" content="Apache Flink, Streaming, Event Time, Exactly-once, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Apache Flink | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Apache Flink</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.5.3.2 Apache Flink</h1>
+            <p class="subtitle">Procesamiento de streams de baja latencia con estado y precisión absoluta</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        <strong>Apache Flink</strong> es el framework de referencia para el procesamiento de flujos de datos distribuidos que requieren la máxima precisión. A diferencia de otros sistemas que agrupan eventos en micro-lotes, Flink implementa el <strong>True Streaming</strong>: procesa cada evento de forma individual en el instante en que llega. Esta arquitectura permite latencias de milisegundos y una gestión de estado extremadamente robusta.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Flink no solo procesa datos rápido; garantiza que cada evento se compute exactamente una vez, incluso ante fallos críticos del clúster.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Resiliencia en Apache Flink" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CARACTERÍSTICAS TÉCNICAS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Diferenciadores Clave de Flink</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- True Streaming -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚡</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">True Streaming vs. Micro-batch</h4>
+                        <p style="margin: 0;">Procesa eventos uno a uno. Mientras que Spark Streaming espera segundos para formar un lote, Flink actúa inmediatamente, siendo ideal para alertas críticas y detección de fraude en tiempo real.</p>
+                    </div>
+                </div>
+                <!-- Stateful Processing -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧠</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Procesamiento con Estado (Stateful)</h4>
+                        <p style="margin: 0;">Mantiene información histórica (contadores, ventanas temporales) en memoria distribuida. Si un nodo falla, el sistema recupera el estado exacto mediante **checkpoints** persistentes.</p>
+                    </div>
+                </div>
+                <!-- Event Time -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📅</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Event Time & Out-of-Order</h4>
+                        <p style="margin: 0;">Ordena los eventos según su timestamp original (*Event Time*), no por su hora de llegada. Esto garantiza resultados correctos incluso si los datos llegan desordenados por latencias de red.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXACTLY ONCE SEMANTICS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Garantía de Precisión: Exactly-once</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); border-left: 10px solid var(--color-bigdata); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark);">
+                    En aplicaciones financieras o de facturación, no podemos permitirnos perder un evento ni duplicarlo. Flink utiliza un algoritmo de <strong>checkpointing distribuido</strong> que realiza instantáneas consistentes de toda la aplicación sin detener el procesamiento. Esto asegura que, tras un reinicio por fallo, el sistema retome el trabajo exactamente donde lo dejó, garantizando la semántica **Exactly-once**.
+                </p>
+            </div>
+        </section>
+
+        <!-- CAPACIDADES ANALÍTICAS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">APIs de Alto Nivel y Ventanas</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">🪟 Ventanas Temporales</h4>
+                    <p>Soporte nativo para ventanas fijas (*Tumbling*), deslizantes (*Sliding*) y de sesión. Permite calcular métricas como "promedio de los últimos 5 minutos" de forma sencilla.</p>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">🔗 Joins de Streams</h4>
+                    <p>Capacidad para unir flujos de datos en tiempo real (ej. unir transacciones con perfiles de usuario) manteniendo la consistencia temporal absoluta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESUMEN FINAL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <div class="highlight-box success" style="padding: 3rem; border-radius: 1.5rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">El Estándar para el Tiempo Real Crítico</h3>
+                <p style="font-size: 1.1rem;">Apache Flink se ha consolidado como la tecnología preferida para empresas que no pueden sacrificar ni un milisegundo de latencia ni un ápice de precisión. Su capacidad para manejar datos desordenados y garantizar la consistencia lo sitúa en la cúspide de las tecnologías de streaming.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Extracción de Datos Estructurados: Change Data Capture (CDC) - iLERNA">
+    <meta name="keywords" content="CDC, Change Data Capture, Datos Estructurados, Big Data, SQL, ETL, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Extracción de Datos Estructurados | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Datos Estructurados</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.3.3.1 Extracción de Datos Estructurados</h1>
+            <p class="subtitle">Change Data Capture (CDC): Sincronización incremental de alta precisión</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        En el análisis de datos masivos, extraer repetidamente tablas relacionales completas es una estrategia insostenible. El <strong>Change Data Capture (CDC)</strong> es una técnica avanzada que captura únicamente las variaciones (inserciones, actualizaciones y eliminaciones) realizadas en la base de datos origen. Esto permite mantener sincronizado el sistema de análisis con el operativo de forma casi instantánea y con un impacto mínimo.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>El CDC transforma la extracción de una "foto fija" pesada en un "flujo continuo" de cambios, optimizando drásticamente el uso de red y almacenamiento.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Change Data Capture" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- ENFOQUES CDC (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Metodologías de Captura de Cambios</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Timestamp-based -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🕒</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Enfoque basado en Timestamps</h4>
+                        <p style="margin: 0;">Utiliza columnas como `last_updated` para filtrar registros. Es el más fácil de implementar, pero requiere modificar el esquema de la tabla y tiene dificultades para detectar eliminaciones físicas (*hard deletes*).</p>
+                    </div>
+                </div>
+                <!-- Log-based -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📜</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Enfoque basado en Logs (Binlog/WAL)</h4>
+                        <p style="margin: 0;">Lee directamente los registros de transacciones del motor de la base de datos. Es el método más preciso y eficiente, ya que captura eliminaciones y no requiere alterar las tablas originales.</p>
+                    </div>
+                </div>
+                <!-- Trigger-based -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚡</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Enfoque basado en Triggers</h4>
+                        <p style="margin: 0;">Disparadores que graban cada cambio en una tabla de auditoría. Ofrece un control absoluto sobre el proceso de captura, pero introduce una penalización de rendimiento en cada operación de escritura (*overhead*).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO LÓGICO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Implementación Lógica de CDC (Timestamp)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">incremental_extraction.sql</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-sql">-- 1. Definimos la marca de agua de la última extracción exitosa
+SET @ultima_fecha = '2024-05-01 10:00:00';
+
+-- 2. Consultamos solo los cambios ocurridos después de ese instante
+SELECT 
+    id_cliente, nombre, email, fecha_modificacion
+FROM 
+    clientes
+WHERE 
+    fecha_modificacion > @ultima_fecha
+ORDER BY 
+    fecha_modificacion ASC;
+
+-- 3. Tras el éxito, actualizamos la 'ultima_fecha' en nuestro sistema de control</code></pre>
+            </div>
+        </section>
+
+        <!-- COMPARATIVA TÉCNICA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Comparativa de Métodos CDC</h2>
+            <div class="card" style="padding: 0; background: var(--bg-white); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                    <thead style="background: var(--color-primary); color: white;">
+                        <tr>
+                            <th style="padding: 1.5rem; text-align: left;">Criterio</th>
+                            <th style="padding: 1.5rem; text-align: left;">Basado en Logs</th>
+                            <th style="padding: 1.5rem; text-align: left;">Basado en Timestamps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Impacto en Origen</td>
+                            <td style="padding: 1.5rem; color: var(--color-success);">Mínimo (Lectura asíncrona)</td>
+                            <td style="padding: 1.5rem;">Moderado (Queries SQL)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee; background: #fafafa;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Detección de Deletes</td>
+                            <td style="padding: 1.5rem; color: var(--color-success);">Soportado nativamente</td>
+                            <td style="padding: 1.5rem; color: #e11d48;">No soportado (requiere soft-delete)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Dificultad Implementación</td>
+                            <td style="padding: 1.5rem;">Alta (Requiere acceso a logs)</td>
+                            <td style="padding: 1.5rem; color: var(--color-success);">Baja (SQL estándar)</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Precisión Temporal</td>
+                            <td style="padding: 1.5rem; color: var(--color-success);">Absoluta (Orden de log)</td>
+                            <td style="padding: 1.5rem;">Depende del reloj del servidor</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+</body>
+</html>

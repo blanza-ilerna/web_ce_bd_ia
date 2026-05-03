@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introducción a los Sistemas de Almacenamiento Distribuidos y Tolerancia a Fallos - iLERNA">
+    <meta name="keywords" content="Almacenamiento Distribuido, Tolerancia a Fallos, Teorema CAP, Big Data, HDFS, Cassandra, S3, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Sistemas de Almacenamiento Distribuidos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Almacenamiento Distribuido</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.2 Sistemas de Almacenamiento Distribuidos</h1>
+            <p class="subtitle">Arquitecturas resilientes para la era de los datos masivos</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        El crecimiento exponencial de la información digital ha dejado obsoletos los sistemas centralizados tradicionales. Hoy en día, la escalabilidad y la disponibilidad no son opciones, sino requisitos críticos. El <strong>almacenamiento distribuido</strong> surge como la respuesta robusta a este desafío, permitiendo gestionar volúmenes de datos sin precedentes mediante una red de nodos que colaboran para ofrecer un servicio ininterrumpido.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>A diferencia del modelo clásico, el almacenamiento distribuido fragmenta y replica la información, garantizando que el dato sobreviva incluso ante fallos graves de hardware o red.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Resiliencia en Almacenamiento" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPTO FUNDAMENTAL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">¿Qué define al Almacenamiento Distribuido?</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+                <p style="font-size: 1.2rem; color: var(--text-dark); line-height: 1.8;">
+                    Es un paradigma donde los datos no residen en una única ubicación física. En su lugar, la información se <strong>divide, replica y distribuye</strong> entre múltiples servidores interconectados. Su objetivo primordial es asegurar la <strong>alta disponibilidad (HA)</strong> y la <strong>tolerancia a fallos</strong>, permitiendo que el sistema siga operando con normalidad aunque varios de sus componentes dejen de funcionar.
+                </p>
+                <div class="flex-wrap-center" style="margin-top: 2rem; gap: 1rem;">
+                    <span class="tag" style="background: var(--bg-primary-light); color: var(--color-primary); padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600;">HDFS</span>
+                    <span class="tag" style="background: var(--bg-secondary-light); color: var(--color-secondary); padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600;">Cassandra</span>
+                    <span class="tag" style="background: var(--bg-purple-light); color: var(--color-ml); padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600;">Ceph</span>
+                    <span class="tag" style="background: var(--bg-warning-light); color: var(--color-bigdata); padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600;">Amazon S3</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEOREMA CAP (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">El Teorema CAP: El Trilema de la Distribución</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">⚖️</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">El Compromiso Ineludible</h3>
+                    <p>Cualquier sistema distribuido se rige por el <strong>Teorema CAP</strong>, que postula que es físicamente imposible garantizar simultáneamente la <strong>Consistencia</strong> (datos idénticos en todos los nodos), la <strong>Disponibilidad</strong> (respuesta garantizada ante peticiones) y la <strong>Tolerancia a Particiones</strong> (supervivencia ante fallos de red).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTRATEGIAS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Diferentes Enfoques para Diferentes Necesidades</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 2rem; border-radius: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                    <h4 class="color-primary">Enfoque en Consistencia (CP)</h4>
+                    <p>Sistemas como <strong>HDFS</strong> priorizan que todos los usuarios vean exactamente el mismo dato en el mismo instante, aunque esto signifique que el sistema pueda no estar disponible temporalmente durante una partición crítica.</p>
+                </div>
+                <div class="card" style="border-left: 10px solid var(--color-secondary); background: var(--bg-white); padding: 2rem; border-radius: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                    <h4 class="color-secondary">Enfoque en Disponibilidad (AP)</h4>
+                    <p>Tecnologías como <strong>Cassandra</strong> o <strong>Amazon S3</strong> priorizan que el sistema siempre responda, aceptando una "consistencia eventual" donde los datos pueden tardar milisegundos en propagarse a todos los nodos del globo.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

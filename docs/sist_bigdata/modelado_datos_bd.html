@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modelado de Datos para Big Data: Niveles y Consideraciones Técnicas - iLERNA">
+    <meta name="keywords" content="Modelado de Datos, Big Data, Diseño Conceptual, Diseño Lógico, Diseño Físico, ETL vs ELT, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Modelado de Datos para Big Data | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Modelado de Datos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.4.1 Modelado de Datos para Big Data</h1>
+            <p class="subtitle">Estructurando el cimiento de la analítica masiva y la escalabilidad</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        El <strong>modelado de datos</strong> es el proceso de crear una representación estructurada de la información que determinará la eficiencia de todo el ecosistema. En entornos de Big Data, este proceso debe trascender las técnicas relacionales tradicionales para garantizar que el sistema pueda escalar, responder con baja latencia y absorber la inmensa variedad de fuentes heterogéneas.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Un modelo mal diseñado es el principal cuello de botella de un sistema distribuido: no importa cuántos nodos añadas si la estructura no permite la paralelización.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_analisis_ciclo_madurez_hero.png" alt="Ciclo de Modelado" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- NIVELES DE MODELADO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">De la Abstracción a la Implementación</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <div class="grid-2-cols" style="gap: 3rem; align-items: center;">
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: #fdf2f2; padding: 1.5rem; border-radius: 1rem; border-left: 5px solid #c53030;">
+                            <h4 style="color: #c53030; margin-bottom: 0.5rem;">1. Diseño Conceptual</h4>
+                            <p style="margin: 0;">Representación de alto nivel de las entidades de negocio y sus relaciones, independiente de la tecnología.</p>
+                        </div>
+                        <div style="background: #fff5f5; padding: 1.5rem; border-radius: 1rem; border-left: 5px solid #9b2c2c;">
+                            <h4 style="color: #9b2c2c; margin-bottom: 0.5rem;">2. Diseño Lógico</h4>
+                            <p style="margin: 0;">Traducción del modelo conceptual a estructuras de datos específicas (tablas, documentos, grafos).</p>
+                        </div>
+                        <div style="background: #fff5f5; padding: 1.5rem; border-radius: 1rem; border-left: 5px solid #742a2a;">
+                            <h4 style="color: #742a2a; margin-bottom: 0.5rem;">3. Diseño Físico</h4>
+                            <p style="margin: 0;">Implementación técnica: particionado, indexación y estrategias de almacenamiento en el hardware real.</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://i.imgur.com/vHqY7bE.png" alt="Niveles de Modelado" style="max-width: 100%; border-radius: 1rem;">
+                        <p style="font-size: 0.9rem; color: var(--text-medium); margin-top: 1rem;">Jerarquía descendente del modelado de datos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSIDERACIONES 4Vs (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Los Pilares del Modelado Masivo</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📦</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Volumen: Escalabilidad a Petabytes</h4>
+                        <p style="margin: 0;">El modelo debe permitir el particionado horizontal (*sharding*) para que el almacenamiento pueda crecer añadiendo nodos sin límites teóricos.</p>
+                    </div>
+                </div>
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚡</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Velocidad: Soporte de Alta Concurrencia</h4>
+                        <p style="margin: 0;">Optimización para escrituras y lecturas masivas simultáneas, minimizando los bloqueos y garantizando latencias bajas en tiempo real.</p>
+                    </div>
+                </div>
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🌈</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Variedad y Veracidad</h4>
+                        <p style="margin: 0;">Flexibilidad para integrar datos poliestructurados y mecanismos de validación que aseguren la calidad ante fuentes de fiabilidad variable.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÉTICA Y LEGAL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Consideraciones Éticas y Legales</h2>
+            <div class="card" style="border-left: 10px solid #e11d48; background: #fff1f2; padding: 3rem; border-radius: 1.5rem;">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #991b1b; margin-bottom: 1.5rem;">
+                    El modelado y la extracción de datos no son solo retos técnicos; están sujetos a un marco legal estricto. Antes de cualquier proceso de captura masiva (Scraping/Ingesta), es obligatorio validar:
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <ul class="content-index-list" style="color: #991b1b;">
+                        <li><strong>robots.txt:</strong> Respetar las rutas prohibidas por el servidor.</li>
+                        <li><strong>Términos de Servicio:</strong> Verificar permisos explícitos de uso.</li>
+                    </ul>
+                    <ul class="content-index-list" style="color: #991b1b;">
+                        <li><strong>RGPD:</strong> Protección de datos personales y privacidad.</li>
+                        <li><strong>Rate Limiting:</strong> Evitar la denegación de servicio (DoS) accidental.</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center; font-weight: 700; color: #e11d48;">
+                    ⚠️ La violación de estas normas puede acarrear graves consecuencias legales y reputacionales.
+                </div>
+            </div>
+        </section>
+
+        <!-- AUTOEVALUACIÓN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Pon a Prueba tus Conocimientos</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 style="margin-bottom: 1rem;">Pregunta 3: ¿Cuál es la principal diferencia entre ETL y ELT?</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem; background: #f0fdf4; border-radius: 0.5rem; border: 1px solid var(--color-success); font-weight: bold;">✅ a) En ETL se transforman antes de cargar; en ELT se cargan primero y transforman después.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">b) ETL es más moderno que ELT.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">c) ETL solo funciona con datos estructurados.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">d) ELT es más rápido, pero menos preciso.</li>
+                    </ul>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 style="margin-bottom: 1rem;">Pregunta 4: Change Data Capture (CDC) es una técnica que:</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">a) Captura todos los datos cada hora.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem; background: #f0fdf4; border-radius: 0.5rem; border: 1px solid var(--color-success); font-weight: bold;">✅ b) Detecta y extrae únicamente los datos que han cambiado.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">c) Convierte datos no estructurados en estructurados.</li>
+                        <li style="margin-bottom: 0.5rem; padding: 0.8rem;">d) Comprime datos para reducir almacenamiento.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

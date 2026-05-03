@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introducción al Procesamiento en Tiempo Real (Streaming) en Big Data - iLERNA">
+    <meta name="keywords" content="Streaming, Real-time, Batch vs Streaming, Big Data, Latencia, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Introducción al Streaming | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Introducción al Streaming</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.5.1 Introducción al Procesamiento en Streaming</h1>
+            <p class="subtitle">Análisis en movimiento: del procesamiento por lotes a la respuesta en milisegundos</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        El procesamiento en <strong>streaming</strong> es un paradigma de análisis donde la información se procesa y analiza continuamente conforme llega al sistema, en lugar de almacenarla primero para procesarla después. Esta capacidad de generar *insights* en milisegundos es vital para aplicaciones críticas como la detección de fraude, la monitorización de constantes vitales o el trading financiero de alta frecuencia.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>En el mundo del streaming, el valor del dato decrece con el tiempo; la capacidad de reacción inmediata es la mayor ventaja competitiva.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_global_hero.png" alt="Procesamiento en Tiempo Real" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPTOS CLAVE (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Arquitectura: El Flujo Ininterrumpido</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <div class="grid-2-cols" style="gap: 3rem; align-items: center;">
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 1rem;">Paradigma de Procesamiento</h4>
+                        <p style="line-height: 1.8;">
+                            A diferencia de las arquitecturas tradicionales donde el dato espera al proceso (Batch), en el <strong>Streaming</strong> es el proceso el que espera al dato. Los eventos fluyen desde las fuentes (sensores, clicks, transacciones) y son analizados "al vuelo" por motores de cómputo distribuido que mantienen el estado de forma efímera.
+                        </p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://i.imgur.com/uW6L9ZJ.png" alt="Comparación Batch vs Streaming" style="max-width: 100%; border-radius: 1rem;">
+                        <p style="font-size: 0.9rem; color: var(--text-medium); margin-top: 1rem;">Esquema visual del procesamiento continuo frente al procesamiento por lotes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARATIVA TÉCNICA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Diferencias Clave: Batch vs. Streaming</h2>
+            <div class="card" style="padding: 0; background: var(--bg-white); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <table style="width: 100%; border-collapse: collapse; font-size: 1rem;">
+                    <thead style="background: var(--color-primary); color: white;">
+                        <tr>
+                            <th style="padding: 1.5rem; text-align: left;">Aspecto</th>
+                            <th style="padding: 1.5rem; text-align: left;">Procesamiento Batch (Lotes)</th>
+                            <th style="padding: 1.5rem; text-align: left;">Procesamiento Streaming</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Acumulación</td>
+                            <td style="padding: 1.5rem;">Horas / Días / Meses</td>
+                            <td style="padding: 1.5rem; color: var(--color-success); font-weight: bold;">Continuo (Evento a evento)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee; background: #fafafa;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Periodicidad</td>
+                            <td style="padding: 1.5rem;">Programada (Noches, fines de semana)</td>
+                            <td style="padding: 1.5rem; color: var(--color-success); font-weight: bold;">24 / 7 / 365 (Tiempo real)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Latencia</td>
+                            <td style="padding: 1.5rem;">Minutos a Horas</td>
+                            <td style="padding: 1.5rem; color: var(--color-success); font-weight: bold;">Milisegundos a Segundos</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="padding: 1.5rem; font-weight: 700;">Volumen de Datos</td>
+                            <td style="padding: 1.5rem;">Gigabytes a Petabytes (Finitos)</td>
+                            <td style="padding: 1.5rem; color: var(--color-success); font-weight: bold;">Infinito (Flujo sin fin)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CASOS DE USO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">¿Cuándo es Imprescindible el Streaming?</h2>
+            <div class="grid-3-cols" style="gap: 1.5rem;">
+                <div class="card" style="padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                    <h4 class="color-primary">Detección de Fraude</h4>
+                    <p>Bloquear una transacción bancaria sospechosa antes de que se complete.</p>
+                </div>
+                <div class="card" style="padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏥</div>
+                    <h4 class="color-secondary">Monitorización Crítica</h4>
+                    <p>Alertas inmediatas ante cambios en sensores médicos o industriales.</p>
+                </div>
+                <div class="card" style="padding: 2rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
+                    <h4 style="color: var(--color-success);">Sistemas de Recomendación</h4>
+                    <p>Ajustar las sugerencias de compra basadas en el comportamiento actual del usuario.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

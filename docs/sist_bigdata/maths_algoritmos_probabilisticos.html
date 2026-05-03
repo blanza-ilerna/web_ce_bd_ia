@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Algoritmos Probabilísticos en Big Data: Eficiencia y Aproximación - iLERNA">
+    <meta name="keywords" content="Algoritmos Probabilísticos, HyperLogLog, Filtros de Bloom, Big Data, Sketching, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Algoritmos Probabilísticos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Algoritmos Probabilísticos</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.2.4.1 b Algoritmos Probabilísticos</h1>
+            <p class="subtitle">Velocidad vs Precisión: Escalabilidad masiva mediante aproximaciones inteligentes</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        En el ecosistema Big Data, procesar cada registro con precisión absoluta puede ser prohibitivamente costoso en términos de tiempo y memoria. Los <strong>algoritmos probabilísticos</strong> introducen la aleatoriedad como herramienta para ganar escalabilidad, aceptando un margen de error mínimo a cambio de respuestas casi instantáneas.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Son la base de los sistemas que operan a escala de billones de eventos, donde una respuesta "suficientemente precisa" es mucho más valiosa que una exacta que llega demasiado tarde.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_ia_ml_hero.png" alt="Algoritmos Probabilísticos" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPTOS CLAVE (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Estrategias de Aproximación</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Sketching -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📉</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Técnicas de Sketching</h4>
+                        <p style="margin: 0;">Consisten en crear "resúmenes" compactos de grandes volúmenes de datos. Permiten responder consultas sobre la estructura del dataset sin necesidad de almacenar los elementos originales.</p>
+                    </div>
+                </div>
+                <!-- HyperLogLog -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧮</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">HyperLogLog: Conteo de Únicos</h4>
+                        <p style="margin: 0;">Permite estimar la cardinalidad (elementos únicos) en conjuntos masivos usando memoria constante. Mientras que un conteo exacto de miles de millones de usuarios requeriría gigabytes, HyperLogLog usa solo unos **kilobytes** con un error menor al 2%.</p>
+                    </div>
+                </div>
+                <!-- Bloom Filters -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🛡️</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Filtros de Bloom: Membresía Eficiente</h4>
+                        <p style="margin: 0;">Determinan si un elemento pertenece a un conjunto. Son extremadamente rápidos y ahorran espacio. Pueden tener **falsos positivos** (decir que algo está cuando no), pero nunca falsos negativos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANÁLISIS DE RENDIMIENTO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Comparativa de Eficiencia</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <div style="background: #fff1f2; padding: 2.5rem; border-radius: 1rem; border: 1px solid #ffe4e6;">
+                        <h3 style="color: #e11d48; margin-bottom: 1.5rem;">Enfoque Determinista</h3>
+                        <ul class="content-index-list">
+                            <li style="margin-bottom: 0.8rem;"><strong>Memoria:</strong> Proporcional al número de elementos únicos (GBs).</li>
+                            <li style="margin-bottom: 0.8rem;"><strong>Tiempo:</strong> Elevado debido a comparaciones y almacenamiento.</li>
+                            <li><strong>Precisión:</strong> 100% Exacta.</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f0fdf4; padding: 2.5rem; border-radius: 1rem; border: 1px solid #dcfce7;">
+                        <h3 style="color: var(--color-success); margin-bottom: 1.5rem;">Enfoque Probabilístico</h3>
+                        <ul class="content-index-list">
+                            <li style="margin-bottom: 0.8rem;"><strong>Memoria:</strong> Constante y mínima (KBs).</li>
+                            <li style="margin-bottom: 0.8rem;"><strong>Tiempo:</strong> Cuasi-instantáneo.</li>
+                            <li><strong>Precisión:</strong> ~98% (Aproximación controlada).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box primary" style="margin-top: 2rem; text-align: center; font-weight: 600;">
+                    En Big Data, HyperLogLog es el estándar para análisis de tráfico web y métricas en tiempo real.
+                </div>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Caso de Estudio: Métricas de Tráfico Global</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">🌐</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Estimación de Usuarios Únicos</h3>
+                    <p>Imagina una plataforma que recibe **5.000 millones de eventos diarios**. Utilizar un set tradicional para contar usuarios únicos desbordaría la memoria RAM de cualquier servidor estándar. Al implementar **HyperLogLog**, la plataforma puede estimar el tráfico diario con una precisión asombrosa usando solo **12 KB** de memoria por cada periodo analizado. Esta eficiencia permite realizar análisis históricos comparativos en tiempo real sin saturar la infraestructura.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

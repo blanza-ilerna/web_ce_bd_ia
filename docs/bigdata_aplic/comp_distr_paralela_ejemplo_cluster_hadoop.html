@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplos prácticos en clústeres Apache Hadoop: HDFS, YARN y MapReduce - iLERNA">
+    <meta name="keywords" content="Hadoop, HDFS, YARN, MapReduce, Big Data Clúster, IoT, Bioinformática, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Entornos de Clúster Hadoop | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Clúster Hadoop</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.1.6 Entornos de Clúster Apache Hadoop</h1>
+            <p class="subtitle">La arquitectura de referencia para el almacenamiento y procesamiento masivo</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        El ecosistema <strong>Apache Hadoop</strong> es el pilar fundamental sobre el que se asienta la computación distribuida moderna. Su diseño permite transformar grandes volúmenes de datos en conocimiento utilizando hardware convencional (*commodity*), gracias a una arquitectura de software extremadamente robusta capaz de gestionar la escalabilidad y la tolerancia a fallos de forma transparente para el desarrollador.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Hadoop no es solo una herramienta, es un entorno completo que orquesta el almacenamiento masivo y el procesamiento paralelo en clústeres de cualquier tamaño.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_escalabilidad_hero.png" alt="Escalabilidad en Clúster Hadoop" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPONENTES (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Arquitectura del Ecosistema</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- HDFS -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📦</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">HDFS: Almacenamiento Resiliente</h4>
+                        <p style="margin: 0;">El sistema de archivos que fragmenta los datos en bloques (128 MB) y los replica en múltiples nodos. Su jerarquía de <strong>NameNode</strong> (metadatos) y <strong>DataNodes</strong> (almacenamiento) garantiza que el dato siempre esté disponible aunque falle el hardware.</p>
+                    </div>
+                </div>
+                <!-- YARN -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🚦</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">YARN: Orquestación de Recursos</h4>
+                        <p style="margin: 0;">El "sistema operativo" de Hadoop. Gestiona y planifica los recursos del clúster, asignando dinámicamente memoria y CPU a frameworks como <strong>MapReduce, Spark o Flink</strong> mediante su arquitectura de ResourceManager.</p>
+                    </div>
+                </div>
+                <!-- MapReduce -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚙️</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">MapReduce: Modelo de Procesamiento</h4>
+                        <p style="margin: 0;">Divide el trabajo en dos fases críticas: <strong>Map</strong> (procesamiento paralelo de fragmentos generando pares clave-valor) y <strong>Reduce</strong> (agregación de resultados parciales para obtener la salida final).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLOS PRÁCTICOS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Hadoop en Acción: Casos de Uso Reales</h2>
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- Logs Web -->
+                <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🌐</span>
+                        <h3 class="color-primary" style="margin: 0;">Retail: Análisis de 5 TB de Logs</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Un gigante del e-commerce utiliza Hadoop para procesar sus logs diarios. Almacenados en HDFS y procesados con MapReduce, el sistema identifica patrones de navegación y URLs críticas en tiempo real.
+                    </p>
+                    <div class="highlight-box primary" style="border-radius: 1rem; padding: 1.5rem; margin-top: 1rem;">
+                        **Resultado:** El tiempo de análisis bajó de varios días a solo **2 horas**, permitiendo optimizar la experiencia de usuario de forma ágil.
+                    </div>
+                </div>
+                <!-- Finanzas -->
+                <div class="card" style="border-left: 10px solid var(--color-secondary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🏦</span>
+                        <h3 class="color-secondary" style="margin: 0;">Banca: Detección de Fraude Regional</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Utilizando YARN para orquestar recursos, un banco aplica algoritmos de detección de anomalías en paralelo sobre transacciones históricas segmentadas por geografía.
+                    </p>
+                    <div class="highlight-box secondary" style="border-radius: 1rem; padding: 1.5rem; margin-top: 1rem;">
+                        **Resultado:** La detección de fraudes mejoró un **25%**, generando alertas críticas en menos de **5 minutos**.
+                    </div>
+                </div>
+                <!-- Bioinformática -->
+                <div class="card" style="border-left: 10px solid var(--color-success); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🧬</span>
+                        <h3 style="color: var(--color-success); margin: 0;">Bioinformática: Genómica Masiva</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Un laboratorio compara secuencias de ADN distribuyendo el genoma en fragmentos procesados por MapReduce.
+                    </p>
+                    <div class="highlight-box success" style="border-radius: 1rem; padding: 1.5rem; margin-top: 1rem;">
+                        **Resultado:** El tiempo de investigación se redujo de semanas a solo **12 horas**, acelerando descubrimientos médicos.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO IoT (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Caso de Estudio: IoT en la Industria 4.0</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 1.5rem;">
+                    Una planta de manufactura genera **10 TB diarios** de datos mediante sensores en su maquinaria. Los datos se ingieren con **Kafka**, se almacenan en **HDFS** y son analizados por un clúster Hadoop gestionado por **YARN**.
+                </p>
+                <div class="flex-wrap-center" style="gap: 1.5rem;">
+                    <div class="highlight-box primary" style="flex: 1; text-align: center;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 0.5rem;">-30%</h4>
+                        <p>Inactividad por mantenimiento</p>
+                    </div>
+                    <div class="highlight-box secondary" style="flex: 1; text-align: center;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 0.5rem;">+20%</h4>
+                        <p>Vida útil de los equipos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECURSOS ADICIONALES (VIDEO) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Recursos para Profundizar</h2>
+            <div class="resources-grid">
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/y2V-NViTVcc" title="Cómo funciona un job MapReduce" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h4>Cómo funciona un job MapReduce paso a paso</h4>
+                        <p>Visualización detallada del flujo de datos entre las fases Map, Shuffle y Reduce.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

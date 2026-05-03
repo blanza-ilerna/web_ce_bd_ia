@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MapReduce: Modelo de programación distribuida y paralela para Big Data - iLERNA">
+    <meta name="keywords" content="MapReduce, Hadoop, Big Data, Procesamiento Paralelo, Shuffle and Sort, WordCount, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Modelo MapReduce | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>MapReduce</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.3.1 El Modelo de Programación MapReduce</h1>
+            <p class="subtitle">Fragmentación y consolidación: el motor del procesamiento distribuido</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        <strong>MapReduce</strong> es el paradigma de programación distribuida que revolucionó el manejo de datos masivos. Originalmente diseñado por Google y popularizado por Apache Hadoop, este modelo permite procesar petabytes de información en paralelo dividiendo el trabajo en tareas atómicas ejecutadas de forma independiente a través de un clúster de servidores.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Su potencia reside en la simplicidad: abstrae la complejidad de la red y la sincronización, permitiendo al desarrollador centrarse únicamente en la lógica de transformación y agregación.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_herramientas_ecosistema_hero.png" alt="MapReduce en el Ecosistema Big Data" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- FASES DEL MODELO (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Las Tres Fases del Ciclo de Vida</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Phase Map -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🗺️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Fase Map: Transformación</h4>
+                        <p style="margin: 0;">Cada nodo procesa una fracción de la entrada mediante una función `map()`. Esta función convierte registros brutos en pares <strong>clave-valor</strong>. Por ejemplo, en un análisis de logs, emitiría `(ID_Usuario, 1)` por cada evento detectado.</p>
+                    </div>
+                </div>
+                <!-- Phase Shuffle -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔀</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Fase Shuffle & Sort: Redistribución</h4>
+                        <p style="margin: 0;">El framework agrupa automáticamente todos los pares con la misma clave y los envía al mismo nodo reductor. Esta fase garantiza que los datos lleguen ordenados y listos para la consolidación final.</p>
+                    </div>
+                </div>
+                <!-- Phase Reduce -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🧩</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Fase Reduce: Agregación</h4>
+                        <p style="margin: 0;">La función `reduce()` recibe la clave y todos los valores asociados, ejecutando una operación de suma, promedio o conteo. El resultado es el valor final consolidado para esa clave específica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTAJAS Y LIMITACIONES (FILA INDIVIDUAL) -->
+        <section class="section">
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: #f0fdf4; border: 1px solid #dcfce7;">
+                    <h3 style="color: var(--color-success); margin-bottom: 1.5rem;">✅ Ventajas</h3>
+                    <ul class="content-index-list" style="margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.8rem;"><strong>Paralelismo Masivo:</strong> Procesamiento simultáneo de Terabytes.</li>
+                        <li style="margin-bottom: 0.8rem;"><strong>Resiliencia:</strong> Reasignación automática de tareas ante fallos.</li>
+                        <li><strong>Escalabilidad:</strong> Crecimiento horizontal sin límites teóricos.</li>
+                    </ul>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: #fff1f2; border: 1px solid #ffe4e6;">
+                    <h3 style="color: #e11d48; margin-bottom: 1.5rem;">⚠️ Limitaciones</h3>
+                    <ul class="content-index-list" style="margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.8rem;"><strong>Latencia Batch:</strong> No apto para tiempo real (streaming).</li>
+                        <li style="margin-bottom: 0.8rem;"><strong>E/S de Disco:</strong> Escribe resultados intermedios, restando velocidad.</li>
+                        <li><strong>Rigidez:</strong> El modelo Map-Reduce puede ser complejo para ciertos algoritmos.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PSEUDOCÓDIGO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2rem;">Lógica de un Job WordCount</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">MapReduce_Pseudocode</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 1rem; line-height: 1.5;"><code class="language-javascript">map(String key, String value):
+    // key: número de línea | value: texto de la línea
+    for palabra in value.split():
+        emit(palabra, 1)
+
+reduce(String key, Iterator valores):
+    // key: palabra | valores: lista de ocurrencias (1, 1, 1...)
+    suma = 0
+    for v in valores:
+        suma += v
+    emit(key, suma)</code></pre>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Caso de Estudio: Redes Sociales y ROI</h2>
+            <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 3rem;">📊</span>
+                    <h3 class="color-primary" style="margin: 0;">Análisis de 100 TB de Logs</h3>
+                </div>
+                <p style="font-size: 1.1rem; color: var(--text-dark); line-height: 1.8;">
+                    Una plataforma social procesa sus interacciones diarias en un clúster de **50 nodos**. La fase Map extrae clics y *likes*, mientras que la fase Reduce consolida las estadísticas globales en solo 3 horas.
+                </p>
+                <div class="highlight-box primary" style="margin-top: 1.5rem; font-weight: 600; text-align: center;">
+                    Este procesamiento masivo permitió optimizar campañas publicitarias, logrando un incremento del 15% en el Retorno de Inversión (ROI).
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</body>
+</html>

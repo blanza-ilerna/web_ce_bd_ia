@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Código de ejemplo: Pipeline de análisis predictivo con AWS SageMaker y S3 - iLERNA">
+    <meta name="keywords" content="AWS SageMaker, Amazon S3, Python, Machine Learning Pipeline, Boto3, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Código: Pipeline AWS SageMaker | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Código SageMaker</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.7 Pipeline con AWS SageMaker y S3</h1>
+            <p class="subtitle">Implementación práctica de un flujo de entrenamiento y despliegue en la nube</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        A continuación, se presenta un ejemplo de código en <strong>Python</strong> utilizando las bibliotecas <strong>Boto3</strong> y el <strong>SDK de SageMaker</strong>. Este script implementa un pipeline completo de análisis predictivo para una empresa de retail, cubriendo desde la ingesta de datos en S3 hasta el despliegue de un endpoint para predicciones en tiempo real.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Este flujo permite automatizar el ciclo de vida del modelo, asegurando que el entrenamiento sea escalable y el despliegue sea altamente disponible.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_ia_ml_hero.png" alt="AWS SageMaker Pipeline" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE DE CÓDIGO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Implementación del Pipeline</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">pipeline_sagemaker.py</span>
+                    <!-- El botón de copia lo añade automáticamente lecciones.js -->
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 1rem; line-height: 1.5;"><code class="language-python">import boto3
+import sagemaker
+from sagemaker.estimator import Estimator
+from sagemaker.inputs import TrainingInput
+
+# Configurar cliente de AWS y sesión de SageMaker
+s3_client = boto3.client('s3')
+sagemaker_session = sagemaker.Session()
+
+# Definir bucket y rutas de datos
+bucket = 'retail-data'
+train_data = f's3://{bucket}/train/sales_data.csv'
+output_path = f's3://{bucket}/output/'
+
+# Configurar el modelo en SageMaker (Linear Learner)
+role = 'arn:aws:iam::YOUR_ACCOUNT_ID:role/SageMakerRole'
+estimator = Estimator(
+    image_uri=sagemaker.image_uris.retrieve('linear-learner', region='us-east-1'),
+    role=role,
+    instance_count=1,
+    instance_type='ml.m5.large',
+    output_path=output_path,
+    sagemaker_session=sagemaker_session
+)
+
+# Configurar los datos de entrada para el entrenamiento
+train_input = TrainingInput(s3_data=train_data, content_type='text/csv')
+
+# Iniciar el entrenamiento del modelo
+estimator.fit({'train': train_input})
+
+# Desplegar el modelo como un endpoint de inferencia
+predictor = estimator.deploy(
+    initial_instance_count=1,
+    instance_type='ml.t2.medium',
+    endpoint_name='retail-demand-prediction'
+)
+
+# Realizar una predicción de prueba
+# [ventas_históricas, índice_estacional, promoción]
+data = [[1000, 1.2, 1]] 
+prediction = predictor.predict(data)
+print(f"Predicción de demanda generada: {prediction}")</code></pre>
+            </div>
+        </section>
+
+        <!-- EXPLICACIÓN TÉCNICA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Análisis del Flujo</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">⚙️</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Componentes del Pipeline</h3>
+                    <p>Este código ilustra un pipeline robusto que carga datos directamente desde <strong>Amazon S3</strong>, entrena un modelo de regresión (Linear Learner) en la infraestructura escalable de <strong>SageMaker</strong> y lo implementa automáticamente como un <strong>endpoint RESTful</strong>. Este patrón es la base de las arquitecturas MLOps modernas, permitiendo la integración con servicios de procesamiento masivo como <strong>Amazon EMR</strong> para datasets de escala petabyte.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <!-- Prism JS para el resaltado -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

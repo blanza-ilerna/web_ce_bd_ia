@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructura Clara y Coherente | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Estructura Clara</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Estructura Clara y Coherente</h1>
+            <p class="subtitle">Jerarquía, anidamiento y legibilidad técnica</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box primary">
+                <p>
+                    Un documento de marcado profesional debe mantener una estructura jerárquica perfectamente definida. Esto implica que las etiquetas deben abrirse y cerrarse de forma ordenada, respetando el <strong>anidamiento</strong> y evitando cualquier tipo de solapamiento que confunda a los sistemas de procesamiento.
+                </p>
+            </div>
+        </section>
+
+        <!-- REGLAS DE ORO -->
+        <section>
+            <h2>Anidamiento Correcto</h2>
+            <p>La regla fundamental es: <em>"Lo último que se abre es lo primero que se cierra"</em>. Observa la diferencia entre una estructura válida y una errónea:</p>
+            
+            <div class="comparison-grid">
+                <!-- Correcto -->
+                <div class="comparison-card success">
+                    <h4 class="color-success">✅ Ejemplo Correcto</h4>
+                    <p>Las etiquetas se anidan sin solaparse:</p>
+                    <pre class="language-html"><code>&lt;p&gt;Este es un &lt;strong&gt;texto importante&lt;/strong&gt; dentro de un párrafo.&lt;/p&gt;</code></pre>
+                </div>
+                <!-- Incorrecto -->
+                <div class="comparison-card danger">
+                    <h4 class="color-danger">❌ Ejemplo Incorrecto</h4>
+                    <p>Las etiquetas se cierran en el orden equivocado:</p>
+                    <pre class="language-html"><code>&lt;p&gt;Este es un &lt;strong&gt;texto importante&lt;/p&gt;&lt;/strong&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="challenge-box mt-2">
+                <h3>⚠️ Consecuencias del solapamiento</h3>
+                <p>El ejemplo incorrecto produce un <strong>error de interpretación</strong> (parsing error). Un navegador podría intentar corregirlo, pero un sistema de IA o un servicio web de intercambio de datos podría fallar completamente o interpretar la información de forma sesgada.</p>
+            </div>
+        </section>
+
+        <!-- INDENTACIÓN -->
+        <section>
+            <h2>Legibilidad mediante Indentación</h2>
+            <p>Aunque las máquinas suelen ignorar los espacios en blanco, para los humanos es vital <strong>indentar el contenido</strong> (dejar sangrías) para visualizar la jerarquía rápidamente:</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>datos_estructurados.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-indent')">📋 Copiar</button>
+                </div>
+                <pre id="code-indent" class="code-content"><code class="language-json">{
+    "imagen": "gato1.jpg",
+    "etiquetas": [
+        "animal",
+        "mamífero",
+        "gato"
+    ]
+}</code></pre>
+            </div>
+
+            <div class="layout-grid-stack mt-2">
+                <div class="feature-card primary flex-wrap-center">
+                    <div class="ra-number">📐</div>
+                    <div class="flex-item">
+                        <p><strong>Estructura Visual</strong>: La indentación permite identificar de un vistazo qué elementos pertenecen a una categoría superior.</p>
+                    </div>
+                </div>
+                <div class="feature-card primary flex-wrap-center">
+                    <div class="ra-number">🛠️</div>
+                    <div class="flex-item">
+                        <p><strong>Mantenimiento</strong>: Un código limpio y ordenado es mucho más fácil de depurar y escalar en el futuro.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

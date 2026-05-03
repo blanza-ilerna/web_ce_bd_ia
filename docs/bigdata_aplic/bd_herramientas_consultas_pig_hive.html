@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Consultas Analíticas con Apache Pig y Apache Hive - iLERNA">
+    <meta name="keywords" content="Pig Latin, HiveQL, Big Data, SQL, ETL, HDFS, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Consultas con Pig y Hive | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Pig y Hive</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.3.5 Consultas con Apache Pig y Apache Hive</h1>
+            <p class="subtitle">Abstracciones de alto nivel: simplificando el procesamiento distribuido</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Escribir jobs MapReduce en Java puro puede ser una tarea ardua y propensa a errores. Para solventar este cuello de botella, surgieron herramientas como <strong>Apache Pig</strong> y <strong>Apache Hive</strong>. Estas capas de abstracción permiten a los analistas e ingenieros de datos ejecutar transformaciones complejas y consultas analíticas sobre HDFS utilizando lenguajes mucho más sencillos y potentes.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Mientras que Pig se enfoca en flujos de datos procedimentales (ETL), Hive ofrece una interfaz declarativa similar al SQL tradicional para el Data Warehousing masivo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_herramientas_ecosistema_hero.png" alt="Herramientas de Análisis" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- APACHE PIG (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Apache Pig: Procesamiento Flujo a Flujo</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    <strong>Pig Latin</strong> es un lenguaje procedimental que permite definir transformaciones de datos de forma concisa. El motor de Pig traduce estos scripts automáticamente en una serie de trabajos MapReduce o Spark altamente optimizados.
+                </p>
+                <div style="background: #1d1d1d; border-radius: 1rem; overflow: hidden;">
+                    <div style="background: #2d2d2d; padding: 0.8rem 1.5rem; color: #ccc; font-size: 0.85rem; font-family: monospace; border-bottom: 1px solid #444;">script_ventas.pig</div>
+                    <pre style="margin: 0; padding: 1.5rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-pig">-- Carga de datos con esquema definido
+ventas = LOAD '/data/ventas.csv' USING PigStorage(',') 
+         AS (id:int, producto:chararray, precio:float);
+
+-- Filtrado de productos premium
+filtradas = FILTER ventas BY precio > 100;
+
+-- Agrupación y conteo
+agrupadas = GROUP filtradas BY producto;
+totales = FOREACH agrupadas GENERATE group, COUNT(filtradas);
+
+-- Almacenamiento en HDFS
+STORE totales INTO '/salidas/totales' USING PigStorage(',');</code></pre>
+                </div>
+                <div class="highlight-box primary" style="margin-top: 1.5rem;">
+                    <strong>Impacto:</strong> Reduce el tiempo de desarrollo en un 50% comparado con MapReduce puro, permitiendo transformaciones complejas en pocas líneas de código.
+                </div>
+            </div>
+        </section>
+
+        <!-- APACHE HIVE (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Apache Hive: Data Warehousing sobre Hadoop</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    <strong>HiveQL</strong> es un lenguaje declarativo muy similar al SQL tradicional. Está diseñado específicamente para consultas analíticas sobre grandes volúmenes de datos almacenados en HDFS o S3, permitiendo a analistas de BI trabajar sin conocimientos de programación distribuida.
+                </p>
+                
+                <div class="grid-2-cols" style="gap: 1.5rem;">
+                    <div style="background: #1d1d1d; border-radius: 1rem; overflow: hidden;">
+                        <div style="background: #2d2d2d; padding: 0.8rem 1.5rem; color: #ccc; font-size: 0.85rem; font-family: monospace;">definicion_tabla.sql</div>
+                        <pre style="margin: 0; padding: 1.2rem; font-size: 0.85rem;"><code class="language-sql">CREATE EXTERNAL TABLE ventas (
+    id INT,
+    producto STRING,
+    precio FLOAT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/data/ventas/';</code></pre>
+                    </div>
+                    <div style="background: #1d1d1d; border-radius: 1rem; overflow: hidden;">
+                        <div style="background: #2d2d2d; padding: 0.8rem 1.5rem; color: #ccc; font-size: 0.85rem; font-family: monospace;">consulta_analitica.sql</div>
+                        <pre style="margin: 0; padding: 1.2rem; font-size: 0.85rem;"><code class="language-sql">SELECT producto, COUNT(*) AS total
+FROM ventas
+WHERE precio > 100
+GROUP BY producto;</code></pre>
+                    </div>
+                </div>
+
+                <div class="highlight-box secondary" style="margin-top: 2rem;">
+                    <strong>Diferencia Crítica:</strong> A diferencia del SQL relacional, HiveQL no está diseñado para transacciones en tiempo real; es un motor optimizado para el procesamiento batch masivo.
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSULTAS ANALÍTICAS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Ejemplos de Consultas Analíticas</h2>
+            <div class="grid-2-cols" style="gap: 1.5rem;">
+                <div class="card" style="padding: 2rem; border-radius: 1.5rem; background: var(--bg-white);">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">💰 Ingresos por Región</h4>
+                    <div style="background: #1d1d1d; border-radius: 1rem; overflow: hidden; margin-bottom: 1rem;">
+                        <pre style="margin: 0; padding: 1.2rem; font-size: 0.85rem;"><code class="language-sql">SELECT region, SUM(precio) AS total_ventas
+FROM ventas
+GROUP BY region;</code></pre>
+                    </div>
+                </div>
+                <div class="card" style="padding: 2rem; border-radius: 1.5rem; background: var(--bg-white);">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">🏆 Top 10 Productos</h4>
+                    <div style="background: #1d1d1d; border-radius: 1rem; overflow: hidden; margin-bottom: 1rem;">
+                        <pre style="margin: 0; padding: 1.2rem; font-size: 0.85rem;"><code class="language-sql">SELECT producto, COUNT(*) AS frecuencia
+FROM ventas
+GROUP BY producto
+ORDER BY frecuencia DESC
+LIMIT 10;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Caso de Estudio: Retail de Alta Escala (1 PB)</h2>
+            <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 3rem;">🏬</span>
+                    <h3 class="color-primary" style="margin: 0;">Optimización de Inventario en 2 Horas</h3>
+                </div>
+                <p style="font-size: 1.1rem; color: var(--text-dark); line-height: 1.8;">
+                    Una empresa de retail procesa **1 Petabyte** de datos históricos de ventas utilizando **Hive sobre Spark SQL**. Las consultas analíticas permiten detectar tendencias de compra regionales y ajustar el stock de forma predictiva.
+                </p>
+                <div class="highlight-box success" style="margin-top: 1.5rem; text-align: center;">
+                    Este sistema genera reportes integrales en solo 2 horas, logrando una mejora del **25% en la eficiencia de la planificación de inventarios**.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        // Añadimos un pequeño resaltado manual para Pig Latin si no está en Prism CDN
+        Prism.languages.pig = {
+            'comment': /\-\-.*/,
+            'string': /'[^']*'/,
+            'keyword': /\b(LOAD|FILTER|GROUP|FOREACH|GENERATE|STORE|USING|AS|BY|INTO|PigStorage|COUNT)\b/i,
+            'number': /\b\d+(\.\d+)?\b/,
+            'operator': /[=><!+\-*/]/
+        };
+    </script>
+</body>
+</html>

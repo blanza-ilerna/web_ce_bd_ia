@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Código de ejemplo: Configuración y verificación de replicación en HDFS - iLERNA">
+    <meta name="keywords" content="HDFS, Python, Snakebite, Replicación, hdfs-site.xml, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Código: Replicación HDFS | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Código Replicación</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.2.4 Código: Configuración de Replicación en HDFS</h1>
+            <p class="subtitle">Implementación y verificación de la durabilidad del dato en Hadoop</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Para garantizar que un clúster <strong>HDFS</strong> sea tolerante a fallos, es necesario configurar correctamente el factor de replicación. A continuación, exploramos cómo establecer este parámetro de forma global en el sistema y cómo verificar programáticamente la integridad de los bloques utilizando <strong>Python</strong> y la biblioteca <strong>Snakebite</strong>.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Este flujo permite asegurar que la información crítica esté siempre triplicada, permitiendo al sistema recuperarse automáticamente ante la caída de cualquier nodo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_resiliencia_hero.png" alt="Verificación de Integridad HDFS" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CONFIGURACIÓN XML (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">1. Configuración Global (HDFS)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">hdfs-site.xml</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 1rem; line-height: 1.5;"><code class="language-xml">&lt;configuration&gt;
+    &lt;!-- Factor de replicación por defecto para cada bloque en el clúster --&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.replication&lt;/name&gt;
+        &lt;value&gt;3&lt;/value&gt;
+        &lt;description&gt;Asegura que cada bloque se guarde en 3 nodos distintos.&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;</code></pre>
+            </div>
+        </section>
+
+        <!-- SCRIPT PYTHON (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2rem;">2. Verificación Programática (Python)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">verify_hdfs_replication.py</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-python">from snakebite.client import Client
+
+# Configurar cliente HDFS conectando al NameNode
+hdfs_client = Client("namenode_host", 8020, use_trash=False)
+
+# Establecer factor de replicación específico para un archivo
+file_path = "/data/sample_data.txt"
+hdfs_client.set_replication(file_path, 3)
+
+# Función para verificar el estado de los bloques tras un fallo
+def check_replication_status(file_path):
+    try:
+        # Obtener metadatos del archivo
+        file_info = hdfs_client.stat([file_path])[0]
+        replication_factor = file_info['replication']
+        print(f"Factor de replicación para {file_path}: {replication_factor}")
+
+        # Escanear bloques para detectar corrupciones o ausencias
+        for block in hdfs_client.ls([file_path], include_toplevel=True):
+            if block['corrupt']:
+                print(f"⚠️ Bloque corrupto detectado en {file_path}")
+            else:
+                print(f"✅ Bloques intactos para {file_path}")
+                
+    except Exception as e:
+        print(f"Error crítico al verificar el estado: {e}")
+
+# Ejecutar la auditoría de integridad
+check_replication_status(file_path)
+
+# Nota: En producción, se complementaría con comandos como `hdfs fsck /`
+# para realizar una reparación profunda y rebalanceo del clúster.</code></pre>
+            </div>
+        </section>
+
+        <!-- ANÁLISIS TÉCNICO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Resumen del Flujo</h2>
+            <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 3rem; border-radius: 1.5rem;">
+                <div style="font-size: 5rem; flex-shrink: 0;">🛠️</div>
+                <div>
+                    <h3 class="color-primary" style="margin-bottom: 1rem;">Auditoría y Mantenimiento</h3>
+                    <p>Este ejemplo demuestra la dualidad de la gestión en Hadoop: la configuración declarativa mediante <strong>XML</strong> para el comportamiento por defecto y la manipulación imperativa mediante <strong>Python</strong> para auditorías dinámicas. La capacidad de verificar si un bloque está corrupto permite a los administradores de datos programar tareas de mantenimiento proactivas antes de que un fallo de hardware afecte la disponibilidad del negocio.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-xml.min.js"></script>
+</body>
+</html>

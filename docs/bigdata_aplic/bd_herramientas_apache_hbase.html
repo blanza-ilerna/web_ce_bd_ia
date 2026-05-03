@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apache HBase: Base de datos NoSQL orientada a columnas para Big Data - iLERNA">
+    <meta name="keywords" content="Apache HBase, NoSQL, Column-oriented, HDFS, Real-time Big Data, Zookeeper, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Apache HBase | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Apache HBase</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.3.6.2 Apache HBase</h1>
+            <p class="subtitle">Bases de datos masivas: acceso aleatorio y tiempo real sobre HDFS</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        <strong>Apache HBase</strong> es una base de datos NoSQL de código abierto orientada a columnas que se ejecuta sobre el sistema de archivos HDFS. A diferencia del procesamiento *batch* tradicional de Hadoop, HBase está diseñada para proporcionar acceso aleatorio y lectura/escritura en tiempo real sobre miles de millones de filas y millones de columnas.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Es la solución ideal cuando se requiere la escalabilidad masiva de Hadoop pero con la latencia baja de una base de datos tradicional.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_ia_ml_hero.png" alt="Arquitectura HBase" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- CARACTERÍSTICAS (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Pilares Técnicos de HBase</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Column Oriented -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📊</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Orientación a Columnas</h4>
+                        <p style="margin: 0;">Optimizado para el almacenamiento de datos dispersos (sparse) y semiestructurados. Permite consultas extremadamente rápidas sobre conjuntos específicos de atributos sin leer toda la fila.</p>
+                    </div>
+                </div>
+                <!-- Scalability -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🚀</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Escalabilidad por Regiones</h4>
+                        <p style="margin: 0;">Las tablas se fragmentan horizontalmente en "regiones" distribuidas automáticamente entre los nodos del clúster, permitiendo un crecimiento lineal y fluido.</p>
+                    </div>
+                </div>
+                <!-- Integration -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔗</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Integración con el Ecosistema</h4>
+                        <p style="margin: 0;">Utiliza <strong>HDFS</strong> para el almacenamiento persistente y se apoya en <strong>Apache Zookeeper</strong> para la gestión de estados y coordinación de alta disponibilidad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO PRÁCTICO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Aplicación Práctica: Mensajería Instantánea</h2>
+            <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 3rem;">💬</span>
+                    <h3 class="color-primary" style="margin: 0;">Almacenamiento de Mensajes en Tiempo Real</h3>
+                </div>
+                <p style="font-size: 1.1rem; color: var(--text-dark); line-height: 1.8;">
+                    Las redes sociales modernas utilizan HBase para gestionar el flujo incesante de mensajes de usuarios. La capacidad de realizar lecturas y escrituras atómicas en milisegundos asegura que las conversaciones sean fluidas, independientemente del número de usuarios activos.
+                </p>
+            </div>
+        </section>
+
+        <!-- CASO DE ESTUDIO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Caso de Estudio: Facebook y la Gestión de Petabytes</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: #f8fafc; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                <div style="text-align: center; margin-bottom: 2.5rem;">
+                    <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">📱</span>
+                    <h3 class="color-primary" style="font-size: 2rem;">Latencia Inferior a 100 ms</h3>
+                    <p style="color: var(--text-medium); font-weight: 600;">Actualización masiva de feeds de usuario</p>
+                </div>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    Facebook implementó HBase para gestionar la actividad frenética de sus usuarios. Gracias a la distribución por regiones, el sistema puede procesar petabytes de actualizaciones diarias, permitiendo que el muro de cada usuario se refresque instantáneamente.
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <div style="background: white; padding: 2rem; border-radius: 1rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <h4 class="color-primary" style="font-size: 1.5rem;">&lt; 100 ms</h4>
+                        <p>Latencia de consulta</p>
+                    </div>
+                    <div style="background: white; padding: 2rem; border-radius: 1rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <h4 class="color-secondary" style="font-size: 1.5rem;">PBs</h4>
+                        <p>Volumen de datos gestionado</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

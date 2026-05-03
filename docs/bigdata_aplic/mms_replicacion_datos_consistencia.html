@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Replicación de Datos y Modelos de Consistencia en Sistemas Distribuidos - iLERNA">
+    <meta name="keywords" content="Replicación Síncrona, Replicación Asíncrona, Teorema CAP, Consistencia Eventual, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Replicación y Consistencia | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Replicación y Consistencia</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">2.2.2 Replicación de Datos y Consistencia</h1>
+            <p class="subtitle">Estrategias de redundancia: garantizando la integridad en entornos globales</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La <strong>replicación</strong> es el motor que permite a los sistemas distribuidos sobrevivir a los fallos de hardware. Al duplicar la información en múltiples nodos, aseguramos que el dato esté siempre disponible. Sin embargo, esta redundancia introduce un desafío técnico crítico: la <strong>consistencia</strong>. ¿Cómo garantizamos que todos los usuarios vean la misma versión del dato en un sistema disperso por todo el mundo?
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>La elección entre velocidad y precisión absoluta define la arquitectura del sistema, obligándonos a navegar entre diferentes modelos de replicación.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_global_hero.png" alt="Replicación Global de Datos" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPOS DE REPLICACIÓN (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Estrategias de Replicación</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⏱️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Replicación Síncrona</h4>
+                        <p style="margin: 0;">Actualiza todas las copias en tiempo real antes de confirmar la operación al usuario. Garantiza una <strong>consistencia fuerte</strong> pero introduce mayor latencia. Es el modelo por defecto en el clúster <strong>HDFS</strong>.</p>
+                    </div>
+                </div>
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🚀</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Replicación Asíncrona</h4>
+                        <p style="margin: 0;">Prioriza el rendimiento. Escribe en un nodo maestro y propaga las copias en segundo plano. Esto permite una <strong>consistencia eventual</strong>, donde el sistema converge tras unos milisegundos. Es la base de <strong>Apache Cassandra</strong>.</p>
+                    </div>
+                </div>
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🌍</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Replicación Geográfica</h4>
+                        <p style="margin: 0;">Distribuye los datos entre centros de datos situados en diferentes regiones del planeta. Ofrece la máxima resiliencia ante desastres regionales. Un ejemplo líder es la <strong>Cross-Region Replication de Amazon S3</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEOREMA CAP (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">El Teorema CAP en Profundidad</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem; text-align: center;">
+                    Formulado por Eric Brewer, el teorema establece que en presencia de una partición de red (P), solo podemos elegir entre:
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <div style="border-top: 5px solid var(--color-primary); padding: 1.5rem; background: #fdfdfd; border-radius: 1rem;">
+                        <h4 class="color-primary">CP: Consistencia + Partición</h4>
+                        <p>Sistemas como <strong>HDFS</strong> que aseguran la integridad total del dato. Si el nodo crítico falla, el sistema prefiere detenerse antes que dar datos incorrectos.</p>
+                    </div>
+                    <div style="border-top: 5px solid var(--color-secondary); padding: 1.5rem; background: #fdfdfd; border-radius: 1rem;">
+                        <h4 class="color-secondary">AP: Disponibilidad + Partición</h4>
+                        <p>Sistemas como <strong>Cassandra</strong> que garantizan respuesta inmediata. El sistema sigue funcionando incluso con fallos de red, sincronizando datos cuando la conexión vuelve.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARA + INFO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Para + Info: Comparativa de Modos</h2>
+            <div class="comparison-table" style="background: var(--bg-white); padding: 1rem; border-radius: 1.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Modo de actualización</th>
+                            <th>Ventajas</th>
+                            <th>Desventajas</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Síncrona</strong></td>
+                            <td>Actualiza todas las copias antes de confirmar.</td>
+                            <td>Consistencia fuerte.</td>
+                            <td>Mayor latencia.</td>
+                            <td>HDFS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asíncrona</strong></td>
+                            <td>Actualiza primero un nodo maestro.</td>
+                            <td>Mayor rendimiento.</td>
+                            <td>Consistencia eventual.</td>
+                            <td>Cassandra</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Geográfica</strong></td>
+                            <td>Répicas entre centros de datos.</td>
+                            <td>Resiliencia global.</td>
+                            <td>Mayor complejidad.</td>
+                            <td>Amazon S3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CASOS PRÁCTICOS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Sistemas en el Mundo Real</h2>
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- E-commerce -->
+                <div class="card" style="border-left: 10px solid var(--color-secondary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🛒</span>
+                        <h3 class="color-secondary" style="margin: 0;">E-commerce: Agilidad en el Carrito</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Utilizando **Cassandra** con replicación asíncrona, una tienda online permite que los usuarios añadan productos instantáneamente incluso en el Black Friday. El sistema prioriza que el botón de "Comprar" siempre funcione, sincronizando el estado final del pedido en milisegundos.
+                    </p>
+                </div>
+                <!-- Banca -->
+                <div class="card" style="border-left: 10px solid var(--color-primary); background: var(--bg-white); padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border-radius: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem;">🏦</span>
+                        <h3 class="color-primary" style="margin: 0;">Banca: Integridad en Transacciones</h3>
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.7;">
+                        Un banco emplea **HDFS** con replicación síncrona (factor 3). Cada transferencia se escribe en tres nodos distintos antes de confirmarse. Esto asegura que ante cualquier auditoría o fallo, el saldo del cliente sea siempre exacto y consistente.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

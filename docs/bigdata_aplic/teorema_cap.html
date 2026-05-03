@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="El Teorema CAP (Teorema de Brewer): Consistencia, Disponibilidad y Tolerancia a Particiones - iLERNA">
+    <meta name="keywords" content="Teorema CAP, Consistencia, Disponibilidad, Tolerancia a Particiones, Big Data, Brewer, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Teorema CAP | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Teorema CAP</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">El Teorema CAP (Teorema de Brewer)</h1>
+            <p class="subtitle">El trilema fundamental del almacenamiento distribuido</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Formulado por Eric Brewer en el año 2000, el <strong>Teorema CAP</strong> es la piedra angular del diseño de bases de datos y sistemas distribuidos. Establece una limitación física ineludible: en un sistema informático distribuido, es imposible garantizar simultáneamente más de dos de las tres propiedades fundamentales. Este teorema obliga a los arquitectos de Big Data a tomar decisiones estratégicas basadas en las necesidades reales del negocio.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>No existe el "sistema perfecto"; existe el sistema que mejor equilibra estas tres fuerzas según el caso de uso.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_intro_hero.png" alt="El Trilema de Brewer" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- LOS TRES PILARES (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Los Tres Pilares del Teorema</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Consistencia -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🎯</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">C - Consistencia (Consistency)</h4>
+                        <p style="margin: 0;">Todos los nodos del sistema ven los mismos datos al mismo tiempo. Una lectura garantiza devolver el valor de la escritura más reciente o un error.</p>
+                    </div>
+                </div>
+                <!-- Disponibilidad -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🟢</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">A - Disponibilidad (Availability)</h4>
+                        <p style="margin: 0;">Cada solicitud recibe una respuesta (éxito o fallo), sin la garantía de que contenga el dato más actualizado. El sistema nunca deja de responder.</p>
+                    </div>
+                </div>
+                <!-- Tolerancia a Particiones -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🏗️</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">P - Tolerancia a Particiones (Partition Tolerance)</h4>
+                        <p style="margin: 0;">El sistema continúa funcionando a pesar de que la red sufra cortes o fallos que dividan el clúster en subgrupos de nodos que no pueden comunicarse entre sí.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAS COMBINACIONES (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Seleccionando el Par Ganador</h2>
+            <div class="grid-3-cols" style="gap: 1.5rem;">
+                <div class="card" style="padding: 2rem; border-radius: 1rem; background: var(--bg-white); border-top: 8px solid var(--color-primary); text-align: center;">
+                    <h3 class="color-primary">CA</h3>
+                    <p class="subtitle">Consistencia + Disponibilidad</p>
+                    <p style="font-size: 0.9rem; margin-top: 1rem;">Sistemas no distribuidos o con red infalible. Típico de bases de datos relacionales (RDBMS) clásicas.</p>
+                </div>
+                <div class="card" style="padding: 2rem; border-radius: 1rem; background: var(--bg-white); border-top: 8px solid var(--color-secondary); text-align: center;">
+                    <h3 class="color-secondary">CP</h3>
+                    <p class="subtitle">Consistencia + Partición</p>
+                    <p style="font-size: 0.9rem; margin-top: 1rem;">Sistemas que priorizan la integridad. Si hay un fallo de red, prefieren no responder. Ejemplo: **HDFS, MongoDB, Redis**.</p>
+                </div>
+                <div class="card" style="padding: 2rem; border-radius: 1rem; background: var(--bg-white); border-top: 8px solid var(--color-success); text-align: center;">
+                    <h3 style="color: var(--color-success);">AP</h3>
+                    <p class="subtitle">Disponibilidad + Partición</p>
+                    <p style="font-size: 0.9rem; margin-top: 1rem;">Sistemas que priorizan la respuesta. Garantizan el servicio con consistencia eventual. Ejemplo: **Cassandra, DynamoDB**.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIÓN ESTRATÉGICA (FILA INDIVIDUAL) -->
+        <section class="section">
+            <div class="highlight-box primary" style="padding: 2.5rem; border-radius: 1.5rem; text-align: center;">
+                <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">La Realidad del Big Data</h4>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    En sistemas de escala masiva, los fallos de red son inevitables. Por lo tanto, en la práctica, la <strong>Tolerancia a Particiones (P)</strong> es un requisito obligatorio. La verdadera decisión para un arquitecto de datos se reduce a elegir entre <strong>Consistencia (CP)</strong> o <strong>Disponibilidad (AP)</strong>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

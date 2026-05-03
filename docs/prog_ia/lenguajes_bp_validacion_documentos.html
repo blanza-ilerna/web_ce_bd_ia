@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Documentos | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Parche crítico: Evitar duplicidad de botones en el estilo code-window manual */
+        .code-window .copy-code-btn,
+        .code-window .copy-btn:not(.code-header .copy-btn) {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../img/logo-ilerna.svg" alt="iLERNA Logo">
+                    <div class="logo-text">
+                        iLERNA
+                        <span>Curso de Especialización en IA y Big Data</span>
+                    </div>
+                </div>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Inicio</a> ›
+                    <a href="index.html">Programación para IA</a> ›
+                    <span>Validación de Documentos</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <div class="hero">
+            <h1>Validación de Documentos</h1>
+            <p class="subtitle">Asegurando la integridad y cumplimiento de estándares técnicos</p>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <div class="highlight-box success">
+                <p>
+                    La validación es el proceso técnico de comprobar que un documento cumple estrictamente con las reglas del lenguaje y las restricciones de su esquema. Este proceso permite detectar errores de sintaxis, etiquetas mal cerradas o estructuras de datos inconsistentes antes de que causen fallos en el sistema.
+                </p>
+            </div>
+        </section>
+
+        <!-- MECANISMOS POR LENGUAJE -->
+        <section>
+            <h2>Herramientas de Validación</h2>
+            <div class="grid-features">
+                <div class="feature-card primary">
+                    <h4 class="color-primary">🌐 HTML</h4>
+                    <p>Uso de servicios como el <strong>W3C Validator</strong> (<a href="https://validator.w3.org" target="_blank">validator.w3.org</a>) para verificar el cumplimiento del estándar web.</p>
+                </div>
+                <div class="feature-card secondary">
+                    <h4 class="color-secondary">🏗️ XML</h4>
+                    <p>Validación mediante <strong>DTD</strong> (reglas básicas) o <strong>XML Schema (XSD)</strong> para definiciones complejas y tipos de datos estrictos.</p>
+                </div>
+                <div class="feature-card tertiary">
+                    <h4 class="color-tertiary">📄 JSON</h4>
+                    <p>Implementación de <strong>JSON Schema</strong>, estableciendo un "contrato" de datos para APIs y bases de datos NoSQL.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO XML/XSD -->
+        <section>
+            <h2>Validación Estricta: XML y XSD</h2>
+            <p>El esquema XSD actúa como un molde que define qué elementos son obligatorios y qué tipo de información pueden contener:</p>
+
+            <div class="grid-comparison">
+                <div class="code-window">
+                    <div class="code-header"><span>datos_producto.xml</span></div>
+                    <pre class="code-content"><code class="language-xml">&lt;producto&gt;
+    &lt;codigo&gt;AI-100&lt;/codigo&gt;
+    &lt;stock&gt;45&lt;/stock&gt;
+&lt;/producto&gt;</code></pre>
+                </div>
+                <div class="code-window">
+                    <div class="code-header"><span>esquema.xsd</span></div>
+                    <pre class="code-content"><code class="language-xml">&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="producto"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="codigo" type="xs:string"/&gt;
+        &lt;xs:element name="stock" type="xs:integer"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO JSON SCHEMA -->
+        <section>
+            <h2>Validación Moderna: JSON Schema</h2>
+            <p>Define reglas lógicas para asegurar que los objetos recibidos en una API sean válidos:</p>
+
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span>validacion_api.json</span>
+                    <button class="copy-btn" onclick="copyCode('code-js-schema')">📋 Copiar</button>
+                </div>
+                <pre id="code-js-schema" class="code-content"><code class="language-json">{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "sku": { "type": "string", "minLength": 5 },
+        "precio": { "type": "number", "minimum": 0 },
+        "categoria": { "enum": ["hardware", "software", "servicio"] }
+    },
+    "required": ["sku", "precio"]
+}</code></pre>
+            </div>
+            <div class="highlight-box tertiary mt-2">
+                <p>Este esquema asegura que el campo <strong>sku</strong> sea texto, el <strong>precio</strong> sea un número positivo y la <strong>categoría</strong> pertenezca a una lista predefinida.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>iLERNA</h3>
+            <p class="footer-course">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+            <p class="footer-info">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+            <p class="footer-info">Titulaciones 100% oficiales.</p>
+            <div class="penguin">
+                <span>🐧</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prism.js con Autoloader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Scripts de la lección -->
+    <script src="../js/copy-code.js"></script>
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introducción a la Extracción de Información en Big Data - iLERNA">
+    <meta name="keywords" content="Extracción de Datos, ETL, RDBMS, NoSQL, APIs, Streaming, Big Data, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Introducción a la Extracción | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Introducción a la Extracción</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.3.1 Introducción a la Extracción de Datos</h1>
+            <p class="subtitle">El primer paso del pipeline: capturando valor desde fuentes heterogéneas</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        La <strong>extracción de información</strong> es la fase crítica donde comienza el ciclo de vida del dato. Consiste en recuperar información relevante desde fuentes diversas —desde bases de datos tradicionales hasta sensores en tiempo real— para transformarla en un formato estructurado y accionable. La eficiencia de esta etapa dicta la calidad de todo el análisis posterior.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>No se trata solo de mover datos, sino de entender la semántica de cada fuente para garantizar la integridad y el valor de la información extraída.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_flexibilidad_operativa_hero.png" alt="Fuentes de Extracción" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- FUENTES HETEROGÉNEAS (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">Tipología de Fuentes de Datos</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- RDBMS & NoSQL -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🗄️</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Bases de Datos (SQL & NoSQL)</h4>
+                        <p style="margin: 0;">Desde sistemas relacionales (MySQL, PostgreSQL) hasta soluciones <strong>NoSQL</strong> como MongoDB (documentos JSON flexibles) o Cassandra (alto rendimiento distribuido). Cada una exige estrategias de consulta específicas para evitar saturar el sistema origen.</p>
+                    </div>
+                </div>
+                <!-- Files & Logs -->
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📄</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">Archivos y Logs</h4>
+                        <p style="margin: 0;">Fuentes ubicuas en Big Data. Los archivos <strong>CSV</strong> son ideales para tablas planas, <strong>JSON/XML</strong> para jerarquías complejas y los <strong>Logs</strong> del sistema para auditar comportamientos mediante *parsing* especializado.</p>
+                    </div>
+                </div>
+                <!-- Web APIs -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🌐</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Web APIs: REST & GraphQL</h4>
+                        <p style="margin: 0;">Acceso programático a servicios externos. Mientras que <strong>REST</strong> usa endpoints estándar, <strong>GraphQL</strong> permite solicitar solo los campos necesarios, optimizando el tráfico. Requieren gestionar autenticación y paginación.</p>
+                    </div>
+                </div>
+                <!-- Streaming -->
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-bigdata);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">📡</div>
+                    <div>
+                        <h4 style="color: var(--color-bigdata); margin-bottom: 0.5rem;">Streaming e IoT</h4>
+                        <p style="margin: 0;">Captura de eventos en tiempo real (redes sociales, sensores). A diferencia de la extracción batch, aquí se procesan flujos continuos con baja latencia mediante tecnologías como <strong>Apache Kafka</strong> o AWS Kinesis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESUMEN TÉCNICO (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Desafíos de la Extracción</h2>
+            <div class="grid-2-cols" style="gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-secondary" style="margin-bottom: 1rem;">⚙️ Operativos</h4>
+                    <p>Manejo de conectividad, control de límites de velocidad (Rate Limits) y gestión de ventanas de tiempo para evitar impactos en el rendimiento de los sistemas transaccionales.</p>
+                </div>
+                <div class="card" style="padding: 2.5rem; border-radius: 1.5rem; background: var(--bg-white); border: 1px solid #eee;">
+                    <h4 class="color-primary" style="margin-bottom: 1rem;">🏗️ Estructurales</h4>
+                    <p>Normalización de formatos heterogéneos, validación de esquemas dinámicos y limpieza inicial de datos corruptos o incompletos antes de entrar al Data Lake.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REFLEXIÓN FINAL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <div class="highlight-box success" style="padding: 3rem; border-radius: 1.5rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">Calidad desde el Origen</h3>
+                <p style="font-size: 1.1rem;">Un proceso de extracción robusto es el seguro de vida de cualquier sistema de IA. Sin una captura fiable y limpia, los modelos predictivos posteriores perderán toda su utilidad ("Garbage In, Garbage Out").</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>

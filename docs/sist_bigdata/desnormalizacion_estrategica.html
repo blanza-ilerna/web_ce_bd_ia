@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Desnormalización Estratégica en Big Data: Optimizando el Rendimiento - iLERNA">
+    <meta name="keywords" content="Desnormalización, Big Data, NoSQL, MongoDB, JOIN, Rendimiento, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Desnormalización Estratégica | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <!-- Prism.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Sistemas de Big Data</a> › 
+                <span>Desnormalización Estratégica</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.4.3.1 Desnormalización Estratégica</h1>
+            <p class="subtitle">Rendimiento sobre redundancia: eliminando el coste de los JOINs en escala masiva</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        En las bases de datos relacionales tradicionales, la normalización es ley: eliminar la redundancia dividiendo los datos en múltiples tablas. Sin embargo, en Big Data, el <strong>coste de unir (JOIN)</strong> tablas de miles de millones de registros distribuidos entre cientos de nodos es prohibitivo. La <strong>desnormalización estratégica</strong> consiste en duplicar información intencionalmente para ganar velocidad de lectura y escalabilidad.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Sacrificamos la eficiencia del almacenamiento (barato) en favor de la eficiencia del cómputo y el tiempo de respuesta (crítico).</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_cloud_costes_hero.png" alt="Optimización de Costes y Rendimiento" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- EL PROBLEMA DEL JOIN (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2.5rem;">El Muro del JOIN en Sistemas Distribuidos</h2>
+            <div class="card" style="padding: 3rem; border-radius: 1.5rem; background: var(--bg-white); box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 2rem;">
+                    En un clúster distribuido, realizar un JOIN requiere el movimiento masivo de datos entre servidores (*Data Shuffling*). Este proceso satura la red y multiplica la latencia.
+                </p>
+                <div class="grid-2-cols" style="gap: 2rem;">
+                    <div style="background: #fff1f2; padding: 2.5rem; border-radius: 1rem; border: 1px solid #ffe4e6;">
+                        <h4 style="color: #e11d48; margin-bottom: 1rem;">Modelo Normalizado</h4>
+                        <p>Tabla <strong>Pedidos</strong> + Tabla <strong>Clientes</strong>. <br>Requiere un JOIN costoso para mostrar el nombre del cliente en cada factura. <br><strong>Impacto:</strong> Lento en escala masiva.</p>
+                    </div>
+                    <div style="background: #f0fdf4; padding: 2.5rem; border-radius: 1rem; border: 1px solid #dcfce7;">
+                        <h4 style="color: var(--color-success); margin-bottom: 1rem;">Modelo Desnormalizado</h4>
+                        <p>El nombre del cliente se guarda <strong>dentro</strong> de cada pedido. <br>Toda la información necesaria está en una sola lectura. <br><strong>Impacto:</strong> Respuesta instantánea.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPROMISOS Y ESTRATEGIA (FILAS INDIVIDUALES) -->
+        <section class="section">
+            <h2 class="color-primary" style="text-align: center; margin-bottom: 2.5rem;">Los Compromisos del Modelado</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">💾</div>
+                    <div>
+                        <h4 class="color-primary" style="margin-bottom: 0.5rem;">Coste de Almacenamiento</h4>
+                        <p style="margin: 0;">Duplicar datos incrementa el volumen en disco. Sin embargo, en la era del almacenamiento elástico y barato, este coste suele ser despreciable frente al ahorro en tiempo de CPU.</p>
+                    </div>
+                </div>
+                <div class="feature-card secondary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem;">
+                    <div style="font-size: 4rem; flex-shrink: 0;">🔄</div>
+                    <div>
+                        <h4 class="color-secondary" style="margin-bottom: 0.5rem;">El Desafío de la Consistencia</h4>
+                        <p style="margin: 0;">Si un dato duplicado (ej. nombre de usuario) cambia, debemos actualizarlo en múltiples lugares. Esto es costoso y puede generar inconsistencias temporales.</p>
+                    </div>
+                </div>
+                <div class="feature-card primary" style="display: flex; align-items: center; gap: 2rem; padding: 2.5rem; border-radius: 1.5rem; border-color: var(--color-success);">
+                    <div style="font-size: 4rem; flex-shrink: 0;">⚖️</div>
+                    <div>
+                        <h4 style="color: var(--color-success); margin-bottom: 0.5rem;">Optimización según el Patrón de Uso</h4>
+                        <p style="margin: 0;">La desnormalización brilla en sistemas **Read-Heavy** (muchas lecturas, pocas actualizaciones). Si el 99% de las operaciones son consultas, la redundancia es la mejor estrategia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJEMPLO NO-SQL (FILA INDIVIDUAL) -->
+        <section class="section">
+            <h2 class="color-secondary" style="text-align: center; margin-bottom: 2rem;">Desnormalización en MongoDB (Documental)</h2>
+            <div class="card" style="padding: 0; background: #1d1d1d; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                <div style="background: #2d2d2d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444;">
+                    <span style="color: #ccc; font-family: monospace; font-size: 0.9rem;">pedido_desnormalizado.json</span>
+                </div>
+                <pre style="margin: 0; padding: 2rem; font-size: 0.95rem; line-height: 1.5;"><code class="language-json">{
+  "_id": 98765,
+  "fecha": "2024-10-05",
+  "total": 156.80,
+  "usuario": {
+    "nombre": "María González",
+    "email": "maria@ejemplo.com"
+  },
+  "items": [
+    {
+      "producto": "Zapatillas Running",
+      "cantidad": 2,
+      "precio": 45.50
+    }
+  ],
+  "metadatos": "Almacenamos todo el contexto en un único documento para evitar JOINs"
+}</code></pre>
+            </div>
+            <div class="highlight-box success" style="margin-top: 1.5rem; text-align: center;">
+                En NoSQL, una sola operación recupera todo el pedido, incluyendo los detalles del usuario y los productos.
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/lecciones.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+</html>

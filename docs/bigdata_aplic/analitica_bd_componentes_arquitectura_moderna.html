@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Componentes de una arquitectura de datos moderna para Big Data - iLERNA">
+    <meta name="keywords" content="Arquitectura Big Data, Kafka, Spark, Hadoop, HDFS, Data Lake, Machine Learning, iLERNA">
+    <meta name="author" content="Bjlanza">
+    <meta name="organization" content="ILERNA">
+    <title>Componentes de la Arquitectura Moderna | iLERNA</title>
+    <link rel="stylesheet" href="../css/lecciones.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.html">
+                    <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                </a>
+                <div class="logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <a href="../index.html">Inicio</a> › 
+                <a href="index.html">Big Data Aplicado</a> › 
+                <span>Arquitectura Moderna</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="color-primary">1.4.1.1 Componentes de una Arquitectura de Datos Moderna</h1>
+            <p class="subtitle">Estructuras modulares para el ciclo de vida completo del dato masivo</p>
+        </div>
+
+        <!-- Introducción -->
+        <section class="section">
+            <div class="flex-wrap-center">
+                <div class="flex-item">
+                    <p>
+                        Una arquitectura de Big Data no es un bloque monolítico, sino un ecosistema de <strong>capas modulares</strong> interconectadas. Cada nivel tiene la misión crítica de gestionar una fase específica del ciclo de vida del dato, garantizando que la información fluya desde su origen hasta la generación de valor estratégico.
+                    </p>
+                    <div class="highlight-box primary">
+                        <p>Este diseño desacoplado permite escalar cada componente de forma independiente y utilizar las tecnologías más eficientes para cada tarea, desde la ingesta en tiempo real hasta el modelado predictivo.</p>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <img src="../img/bigdata_aplic_mms_fundamentals.png" alt="Arquitectura Modular de Datos" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </section>
+
+        <!-- SVG RESUMEN REDISEÑADO -->
+        <section class="section" style="text-align: center;">
+            <h2 class="color-secondary">Mapa de Capacidades de la Arquitectura</h2>
+            <div style="margin: 2rem 0; background: white; padding: 2rem; border-radius: 1rem; box-shadow: inset 0 0 15px rgba(0,0,0,0.05);">
+                <svg width="800" height="150" viewBox="0 0 800 150" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Flow Line -->
+                    <line x1="50" y1="75" x2="750" y2="75" stroke="#e2e8f0" stroke-width="4" stroke-dasharray="10,10" />
+                    
+                    <!-- Capas con Texto Horizontal -->
+                    <g transform="translate(30, 35)">
+                        <rect width="130" height="80" rx="15" fill="#3b82f6" />
+                        <text x="65" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14" font-family="Montserrat">INGESTA</text>
+                    </g>
+                    
+                    <g transform="translate(185, 35)">
+                        <rect width="130" height="80" rx="15" fill="#6366f1" />
+                        <text x="65" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14" font-family="Montserrat">ALMACÉN</text>
+                    </g>
+                    
+                    <g transform="translate(340, 35)">
+                        <rect width="130" height="80" rx="15" fill="#8b5cf6" />
+                        <text x="65" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14" font-family="Montserrat">PROCESO</text>
+                    </g>
+                    
+                    <g transform="translate(495, 35)">
+                        <rect width="130" height="80" rx="15" fill="#d946ef" />
+                        <text x="65" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14" font-family="Montserrat">ANÁLISIS</text>
+                    </g>
+                    
+                    <g transform="translate(650, 35)">
+                        <rect width="130" height="80" rx="15" fill="#10b981" />
+                        <text x="65" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14" font-family="Montserrat">CONSUMO</text>
+                    </g>
+                </svg>
+                <p style="color: #64748b; font-size: 1rem; margin-top: 0.5rem;">Flujo lógico: el dato se refina y enriquece horizontalmente en cada etapa.</p>
+            </div>
+        </section>
+
+        <!-- CAPA 1: INGESTA -->
+        <section class="section">
+            <h2 class="color-primary">1. Capa de Ingesta: El punto de entrada</h2>
+            <div class="card" style="border-left: 5px solid #3b82f6;">
+                <p style="font-size: 1.1rem;">Es la puerta de enlace que recopila información de fuentes heterogéneas (sensores IoT, logs, bases de datos, redes sociales) tanto en tiempo real (streaming) como en lotes (batch).</p>
+                <div class="grid-2-cols mt-1">
+                    <div>
+                        <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">Tecnologías Clave:</strong>
+                        <ul class="content" style="font-size: 1.1rem;">
+                            <li><strong>Apache Kafka:</strong> El estándar para flujos en tiempo real (Pub/Sub).</li>
+                            <li><strong>Apache NiFi:</strong> Pipelines visuales y automatizados.</li>
+                            <li><strong>AWS Kinesis / Flume:</strong> Optimización para nube y logs de eventos.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box primary" style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong style="color: var(--color-primary);">Caso Práctico:</strong> Netflix gestiona miles de millones de eventos diarios (pausas, clics) mediante <strong>Kafka</strong> para alimentar su motor de recomendaciones de forma instantánea.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPA 2: ALMACENAMIENTO -->
+        <section class="section">
+            <h2 class="color-primary">2. Capa de Almacenamiento: El repositorio masivo</h2>
+            <div class="card" style="border-left: 5px solid #6366f1;">
+                <p style="font-size: 1.1rem;">Responsable de guardar los datos de forma distribuida y escalable, garantizando la integridad y el bajo coste operativo.</p>
+                <div class="grid-2-cols mt-1">
+                    <div>
+                        <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">Tecnologías Clave:</strong>
+                        <ul class="content" style="font-size: 1.1rem;">
+                            <li><strong>HDFS:</strong> Almacenamiento distribuido con replicación por bloques.</li>
+                            <li><strong>Cloud Object Storage:</strong> Amazon S3, Azure Data Lake o Google Cloud Storage.</li>
+                            <li><strong>Lakehouses (Delta Lake/Iceberg):</strong> Datos crudos con gobernanza de Data Warehouse.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box secondary" style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong style="color: var(--color-secondary);">Caso de Estudio:</strong> Una empresa de retail utiliza un <strong>Lakehouse</strong> basado en <strong>Delta Lake</strong> para gestionar ventas globales, reduciendo el tiempo de generación de informes de horas a solo minutos gracias a las transacciones ACID.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPA 3: PROCESAMIENTO -->
+        <section class="section">
+            <h2 class="color-primary">3. Capa de Procesamiento: El motor analítico</h2>
+            <div class="card" style="border-left: 5px solid #8b5cf6;">
+                <p style="font-size: 1.1rem;">Transforma los datos crudos en información útil mediante frameworks de cálculo distribuido de alto rendimiento.</p>
+                <div class="grid-2-cols mt-1">
+                    <div>
+                        <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">Tecnologías Clave:</strong>
+                        <ul class="content" style="font-size: 1.1rem;">
+                            <li><strong>Apache Spark:</strong> Procesamiento en memoria ultrarrápido para análisis masivo.</li>
+                            <li><strong>Apache Flink:</strong> Especializado en flujos continuos en tiempo real.</li>
+                            <li><strong>Apache Beam:</strong> Pipeline unificado para tareas batch y streaming.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box primary" style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong style="color: var(--color-primary);">Caso Logístico:</strong> Una flota de vehículos usa <strong>Flink</strong> para procesar datos GPS en vivo y ajustar rutas dinámicamente según el tráfico, optimizando tiempos de entrega.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPA 4: ANÁLISIS Y MODELADO -->
+        <section class="section">
+            <h2 class="color-primary">4. Capa de Análisis y Modelado: El núcleo de la inteligencia</h2>
+            <div class="card" style="border-left: 5px solid #d946ef;">
+                <p style="font-size: 1.1rem;">Donde se aplican algoritmos de Machine Learning y Deep Learning para generar predicciones y conocimiento profundo a partir de los datos.</p>
+                <div class="grid-2-cols mt-1">
+                    <div>
+                        <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">Tecnologías Clave:</strong>
+                        <ul class="content" style="font-size: 1.1rem;">
+                            <li><strong>Spark MLlib / Scikit-learn:</strong> Machine Learning tradicional escalable.</li>
+                            <li><strong>TensorFlow / PyTorch:</strong> Modelos complejos de redes neuronales profundas.</li>
+                            <li><strong>H2O.ai:</strong> Automatización de procesos de IA (AutoML).</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box secondary" style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong style="color: var(--color-secondary);">Caso Bancario:</strong> Un banco emplea <strong>TensorFlow</strong> para predecir el riesgo de fuga de clientes (churn) con una precisión del 92%, analizando patrones de comportamiento histórico.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPA 5: CONSUMO -->
+        <section class="section">
+            <h2 class="color-primary">5. Capa de Consumo: La entrega de valor</h2>
+            <div class="card" style="border-left: 5px solid #10b981;">
+                <p style="font-size: 1.1rem;">Presentación de resultados a los usuarios finales y sistemas externos para la toma de decisiones informada.</p>
+                <div class="grid-2-cols mt-1">
+                    <div>
+                        <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">Tecnologías Clave:</strong>
+                        <ul class="content" style="font-size: 1.1rem;">
+                            <li><strong>Power BI / Tableau:</strong> Visualización interactiva y dashboards empresariales dinámicos.</li>
+                            <li><strong>APIs RESTful:</strong> Integración de resultados en aplicaciones de terceros.</li>
+                            <li><strong>Apache Superset:</strong> Exploración de datos open-source de alto nivel.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box primary" style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong style="color: var(--color-primary);">Caso Retail:</strong> Dashboards en <strong>Power BI</strong> exponen métricas de ventas en tiempo real a los equipos de marketing para ajustar campañas promocionales instantáneamente.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="margin-bottom: 1.5rem;">
+            <h3>iLERNA</h3>
+            <p class="subtitle">Curso de Especialización en Inteligencia Artificial y Big Data</p>
+            <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a>
+        </div>
+        <p class="description">Centro oficial de FP online y presencial. Ciclos formativos de Grado Medio y Grado Superior.</p>
+        <p class="description">Titulaciones 100% oficiales. ¡Sin pruebas libres!</p>
+
+        <div class="penguin">
+            <span>🐧</span>
+        </div>
+    </footer>
+
+    <script src="../js/lecciones.js"></script>
+</body>
+</html>
