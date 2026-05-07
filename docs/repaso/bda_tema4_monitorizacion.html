@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 4: Monitorización y Resolución - Big Data Aplicado iLERNA">
-    <title>Cheatsheet: BDA Tema 4 — Monitorización</title>
+    <meta name="description" content="Repaso del Tema 4: Monitorización y Resolución - Big Data Aplicado iLERNA">
+    <title>Repaso: BDA Tema 4 — Monitorización</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
@@ -34,117 +34,117 @@
     <div class="cheatsheet-container">
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 4. Monitorización y Optimización de Clústeres</h1>
+            <h1>Repaso: Tema 4. Monitorización y Optimización de Clústeres</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. EL TRÍPODE DE LA OBSERVABILIDAD</h2>
+        <h2>EL TRÍPODE DE LA OBSERVABILIDAD Y OBJETIVOS</h2>
 
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">1. Instrumentación (Logs)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    El origen y radar ciego. Implementar que cada pequeña app o servidor <em>emita proactivamente mensajes</em> (Push/Pull) detallando siempre qué está procesando, calculando o fallando.
+                <p style="margin-top:6px; ">
+                    Implementar que cada app o servidor <em>emita mensajes</em> detallando su estado. Incluye <strong>Etiquetas de Severidad</strong> (ERROR, WARN, INFO) para una clasificación rápida.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">2. Métricas y Series Temp.</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Almacenes o Bases de datos ultra-especializadas en guardar secuencias de números puros atados a marcas de tiempo continuas <em>(ej: Uso de disco = 90% a las 10:04h)</em>.
+                <p style="margin-top:6px; ">
+                    Bases de datos que guardan secuencias numéricas con marcas de tiempo. Permiten medir el <strong>Throughput</strong> (tasa de transferencia) y la latencia.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">3. Visualización y Alertas</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Paneles que "dibujan" visualmente las secuencias estadísticas, y configuraciones que envían triggers/emails instantáneos si se rebasa un KPI o umbral de seguridad.
+                <p style="margin-top:6px; ">
+                    Paneles que "dibujan" tendencias estadísticas y envían triggers si se rebasa un KPI. Su fin es <strong>anticipar fallos y optimizar recursos</strong> de hardware.
                 </p>
             </div>
         </div>
 
-        <p style="font-size:0.85rem; margin-bottom: 8px;"><strong>Los 4 Jinetes del desgaste de un Clúster (SO puro):</strong></p>
-        <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
-            <li><strong>CPU (%):</strong> Tasas o latencias muy altas aquí, suelen avisar de código ineficiente o bucles infinitos en MapReduce sin purgar.</li>
-            <li><strong>RAM:</strong> Agotarla obliga al disco a funcionar temporalmente como RAM (Swap). Esto entraña penalizaciones catastróficas del 10.000% en rendimiento masivo de herramientas que procesan todo in-memory como Spark.</li>
-            <li><strong>Disco I/O:</strong> Saturación escribiendo físicamente hacia los platos o SDDs internos. Hadoop clama alto throughput per se.</li>
-            <li><strong>Red:</strong> Cuellos de botella asfixiantes al fotocopiar petabytes entre DataNodes.</li>
+        <p style=" margin-bottom: 8px;"><strong>Los 4 Jinetes del desgaste de un Clúster (SO puro):</strong></p>
+        <ul style="padding-left:16px; line-height:1.6;  margin-bottom: 12px;">
+            <li><strong>CPU (%):</strong> Tasas altas avisan de código ineficiente o bucles infinitos en MapReduce.</li>
+            <li><strong>RAM:</strong> Agotarla obliga al uso de Swap (disco como RAM), causando penalizaciones de rendimiento catastróficas en Spark.</li>
+            <li><strong>Disco I/O:</strong> Saturación escribiendo en platos físicos. HDFS permite monitorizar la escritura de bloques y <strong>fallos de checksum</strong>.</li>
+            <li><strong>Red:</strong> Cuellos de botella al mover petabytes entre nodos. Requiere <strong>Sincronización NTP</strong> para la correlación temporal de eventos.</li>
         </ul>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. PANELES Y HERRAMIENTAS NATIVAS DE HADOOP</h2>
+        <h2>PANELES NATIVOS Y GESTIÓN DE EVENTOS</h2>
 
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse;  text-align: left;">
             <thead>
                 <tr>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">NameNode Web UI</th>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">ResourceManager UI (YARN)</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">JobHistory Server</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">JobHistory & Event Logs</th>
                 </tr>
             </thead>
             <tbody style="vertical-align: top;">
                 <tr>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>Salud del Disco.</strong> Diagnostica el sistema de archivos (HDFS). Te avisa si han saltado "DataNodes muertos", capacidad global en bruto restante, el recuento de gigas bloqueados y alerta enseguida de bloques totalmente corruptos en el mapa distribuido.
+                        <strong>Salud del HDFS.</strong> Avisa de DataNodes muertos, capacidad restante y bloques corruptos en el mapa distribuido.
                     </td>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>Salud de CPU y RAM.</strong> Es el panel de control maestro del gerente (antiguo "JobTracker"). Te devuelve la fotografía del estado transaccional (Workers en IDLE/libre versus saturados), cuñas o colas activas de queries y las cuotas de RAM YARN.
+                        <strong>Salud de CPU/RAM.</strong> Estado transaccional de workers, colas activas de queries y cuotas de RAM YARN.
                     </td>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>Investigación Forense Post-mortem.</strong> Acumula de forma imperturbable errores, volcados y las duraciones medidas con exactitud atómica de programas <em>que ya terminaron exitosamente o reventaron ayer</em>, perfectos para detectar los cuellos en frío.
+                        <strong>Investigación Forense.</strong> Los <strong>Event Logs (Hive/Oozie)</strong> registran la <strong>duración y dependencias</strong> de tareas pasadas para detectar cuellos de botella.
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. EL STACK DE MONITORIZACIÓN MODERNO DE LA INDUSTRIA</h2>
+        <h2>STACK DE MONITORIZACIÓN Y OBSERVABILIDAD HISTÓRICA</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">Prometheus + Grafana <span class="tag tag-bda" style="font-size:0.6rem; vertical-align:top; background-color: #607d8b;">Top 1 Mercado</span></span>
-                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
-                    <li><strong>Prometheus:</strong> Base de datos militar temporal. Ella solita "succiona intermitentemente" (Pull) los sensores. Emplea su propio lenguaje complejo <strong>PromQL</strong> para alertar de variabilidades extrañas.</li>
-                    <li><strong>Grafana:</strong> El "Pintor Maestro" final. Se conecta en milisegundos a Prometheus y genera lienzos visuales, dashboards y gráficas espaciales hiperprofesionales para monitorear clústeres.</li>
-                </ul>
+                <span class="metric-title">Prometheus + Grafana</span>
+                <p>Proporcionan <strong>métricas homogéneas y visualización en tiempo real</strong>. Prometheus succiona los sensores (Pull) y Grafana genera dashboards dinámicos para monitorear clústeres.</p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">ELK Stack (Logs en Texto Masivo)</span>
-                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
-                    <li><strong>Elasticsearch:</strong> El giga-buscador neuronal capaz de rastrear petabytes de texto.</li>
-                    <li><strong>Logstash:</strong> El recolector o manguera que purga y normaliza los mensajes de texto de los DataNodes.</li>
-                    <li><strong>Kibana:</strong> La interfaz que te ayuda a teclear "Error CRÍTICO de conexión" e indexarlo sobre 5 miles de millones de líneas escritas de log ayer.</li>
-                </ul>
+                <span class="metric-title">ELK Stack (Logs de Texto)</span>
+                <p>Especializado en rastrear petabytes de texto. Permite indexar y buscar errores críticos sobre miles de millones de líneas escritas.</p>
             </div>
         </div>
 
-        <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
-            <li><strong>Clásicos de infraestructura tradicional:</strong> <em>Nagios</em> (el abuelo de alertas por caídas ON/OFF) y <em>Ganglia</em> (típico viejo visor histórico de gráficas de colmenas de clústeres densos estilo 2005). Sustituidos progresivamente, pero muy presentes en Legacy.</li>
-        </ul>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Análisis Histórico y Tendencias</span>
+            <p>
+                Permite comprender la evolución del clúster para <strong>prever degradaciones</strong> de rendimiento. La visualización de tendencias facilita identificar <strong>correlaciones</strong> entre diferentes métricas del sistema.
+            </p>
+        </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. OPTIMIZACIÓN Y TUNING: ENEMIGOS PÚBLICOS</h2>
+        <h2>OPTIMIZACIÓN Y TUNING: ENEMIGOS PÚBLICOS</h2>
 
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse;  text-align: left;">
             <thead>
                 <tr>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">1. Inclinación del Dato (Data Skew)</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">2. OOM (Out Of Memory) en Spark</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 34%;">3. Bloqueos JVM (Garbage Collector)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 33%;">2. OOM (Out Of Memory)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 34%;">3. Bloqueos JVM (GC)</th>
                 </tr>
             </thead>
             <tbody style="vertical-align: top;">
                 <tr>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>El gran cuello de botella.</strong> Ocurre si agrupamos o filtramos un archivo por "País"; y Estados Unidos tiene el 95% de tráfico histórico. Literalmente Un 1 Ordenador esclavo americano se comerá el 95% del peso quedándose colgado de por vida (Skew), mientras los otros 9 ordenadores esclavos acaban rápido y duermen en inactividad. Se arregla "Salsificando" (Salting Key).
+                        <strong>Cuello de botella masivo.</strong> Ocurre cuando un nodo procesa el 90% del peso por una mala distribución de claves. Se arregla con "Salting".
                     </td>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        Causa más repetida de fallas destructivas al cruzar excels/archivos inmensos con <em>Apache Spark</em> (Tirar Joins de Terabytes). Al agotarse violentamente las cuotas físicas, la RAM del contenedor worker grita "Asesinado" por los supervisores. Requiere afinar memorias y aplicar los "Broadcast Joins" (Map-Side Joins) sobre la tabla menor de antemano.
+                        Fallas destructivas en Spark al agotar la RAM en Joins inmensos. Requiere afinar memorias y usar "Broadcast Joins".
                     </td>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        Como Hadoop y Spark funcionan programados sobre Java y la máquina virtual (JVM), sufren del pesado camión de la basua que limpia viejas celdas inútiles ("Garbage Collector"). Si la memoria libre se asfixia muy rápidamente durante segundos, el GC entra repentinamente y congela por fuerza bruta el 100% de la CPU para intentar limpiar celdas (Stop the World).
+                        <strong>Garbage Collector.</strong> Si la memoria se asfixia, el GC congela la CPU para limpiar (Stop the World), parando el procesamiento distribuido.
                     </td>
                 </tr>
             </tbody>

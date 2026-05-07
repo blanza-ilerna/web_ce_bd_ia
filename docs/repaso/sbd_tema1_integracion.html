@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet SBD Tema 1: Integración y Análisis - Sistemas de Big Data iLERNA">
-    <title>Cheatsheet: SBD Tema 1 — Integración y Análisis</title>
+    <meta name="description" content="Repaso SBD Tema 1: Integración y Análisis - Sistemas de Big Data iLERNA">
+    <title>Repaso: SBD Tema 1 — Integración y Análisis</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { font-size: 0.85rem; padding: 2px 6px; }
     </style>
 </head>
 
@@ -34,93 +34,153 @@
     <div class="cheatsheet-container">
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 1. Integración, Procesamiento y Análisis</h1>
+            <h1>Repaso: Tema 1. Integración, Procesamiento y Análisis</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-sbd" style="background-color: #8e44ad;">SBD</span> Sistemas de Big Data (Módulo 5074)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. ALGORITMIA Y COMPLEJIDAD DISTRIBUIDA</h2>
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>ALGORITMIA, COMPLEJIDAD Y FUNDAMENTOS</h2>
 
-        <div class="grid-2col" style="margin-bottom:12px;">
+        <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">MapReduce (Divide y Vencerás)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Paradigma histórico creado por Google para procesar Petabytes. <strong>Map:</strong> Trocea masivamente el trabajo filtrándolo en las CPU de 1,000 servidores esclavos. <strong>Reduce:</strong> Vuelve a juntar matemáticamente y resume los cálculos parciales hacia el master.
-                </p>
+                <span class="metric-title">MapReduce y Complejidad</span>
+                <p><strong>Paradigma:</strong> Map (filtra/trocea) y Reduce (resume/junta).</p>
+                <p style="margin-top:4px;"><strong>Complejidad Big O:</strong> Mide eficiencia. <strong>O(1)</strong> es ideal; <strong>O(n²)</strong> es inviable para Big Data.</p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Amdahl, Grafos y Árboles</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    <span style="font-weight: 600;">Ley de Amdahl:</span> Por muchísimos PCs que añadas, tu velocidad "tope" la dictará la porción de código no-paralelizable.<br>
-                    <span style="font-weight: 600;">Grafos (Nodos/Aristas):</span> Para algoritmos de Recomendación/Redes y Pagerank.<br>
-                    <span style="font-weight: 600;">B-Trees:</span> Árboles ultra eficientes para acelerar los índices de Base de Datos DBs.
-                </p>
+                <p><strong>Ley de Amdahl:</strong> El código no-paralelizable limita la velocidad máxima.</p>
+                <p style="margin-top:4px;"><strong>Grafos:</strong> Relaciones (Nodos/Aristas) para Pagerank. <strong>B-Trees:</strong> Índices eficientes para DBs.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Fundamentos Matemáticos</span>
+                <p><strong>M. Discreta:</strong> Estudia elementos contables (bits, registros). No existen "medios registros".</p>
+                <p style="margin-top:4px;"><strong>Latencia:</strong> Retraso de red; factor crítico junto al cómputo distribuido.</p>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. EXTRACCIÓN MASIVA Y PIPELINES (ETL vs ELT)</h2>
+        <h2>INTEGRACIÓN Y ARQUITECTURAS DE DATOS</h2>
 
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; text-align: left;">
             <thead>
                 <tr>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">ETL Clásico (Extract &rarr; Transform &rarr; Load)</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">ELT Moderno (Extract &rarr; Load &rarr; Transform)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">ETL (Extract, Transform, Load)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">ELT (Extract, Load, Transform)</th>
                 </tr>
             </thead>
             <tbody style="vertical-align: top;">
                 <tr>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">El servidor intermedio tiene que limpiar los datos <em>físicamente "al vuelo en el aire"</em> antes de inyectarlos. Si te equivocas limpiando, el dato sucio original se borro y la empresa lo pierde para siempre. Arquitectura soberana para poblar los viejos <strong>Data Warehouses</strong>.</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Aspiras todo crudo volcándolo rápido y sin tocar al pozo final (Load), y *una vez guardado* usas la fuerza bruta ilimitada del propio Cloud (Transform) para limpiarlo. No hay riesgo de perder de la historia y es <strong>el estándar incuestionable actual en Data Lakes modernos.</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">El servidor intermedio limpia los datos "al vuelo" antes de inyectarlos. Si hay error en la limpieza, el dato sucio original se pierde. Arquitectura clásica para poblar <strong>Data Warehouses</strong>.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Carga los datos crudos rápido al pozo final (Load) y usa la fuerza del Cloud para procesarlos después (Transform). Estándar en <strong>Data Lakes</strong>; no hay riesgo de perder la historia original.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Arquitectura Lambda</span>
+                <p><strong>Batch:</strong> Datos históricos (precisión).<br><strong>Speed:</strong> Tiempo real (latencia).<br><strong>Serving:</strong> Consulta unificada.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Arquitectura Kappa</span>
+                <p>Todo es <strong>Streaming</strong>. Elimina la capa Batch y trata la historia como un flujo continuo infinito (Apache Kafka).</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Data Skew (Sesgo)</span>
+                <p>Fallo de rendimiento donde la carga se distribuye <strong>desigualmente</strong>; un nodo trabaja al 100% mientras otros esperan.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>ECOSISTEMA DE ALMACENAMIENTO NoSQL</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Teorema CAP (El Trilema)</span>
+                <p>
+                    Consistencia, Disponibilidad y Tolerancia a Particiones. Es matemáticamente <strong>imposible tener las 3</strong>. Si se corta la red, hay que elegir entre detener el sistema (CP) o dar datos desactualizados (AP).
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">ACID vs BASE (Propiedades)</span>
+                <p>
+                    <strong>ACID (SQL):</strong> <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>solation (Aislamiento), <strong>D</strong>urabilidad. Garantiza integridad total.
+                </p>
+                <p style="margin-top:4px;">
+                    <strong>BASE (NoSQL):</strong> <strong>B</strong>asically <strong>A</strong>vailable (Básicamente disponible), <strong>S</strong>oft state (Estado blando), <strong>E</strong>ventual consistency (Consistencia eventual).
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Redis (Clave-Valor)</span>
+                <p>
+                    Motor de altísimo rendimiento ideal para el almacenamiento de <strong>sesiones de usuario y cachés rápidas</strong> debido a su bajísima latencia.
+                </p>
+            </div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Modelo NoSQL</th>
+                    <th>Ejemplos Clave</th>
+                    <th>Uso Ideal / Características</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Documentales</strong></td>
+                    <td><strong>MongoDB</strong> / CouchDB</td>
+                    <td>JSON/BSON. Esquema flexible para apps web y catálogos.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Columnares</strong></td>
+                    <td><strong>Cassandra</strong> / HBase</td>
+                    <td>Escalabilidad masiva y consultas analíticas rápidas (OLAP).</td>
+                </tr>
+                <tr>
+                    <td><strong>Grafos</strong></td>
+                    <td><strong>Neo4j</strong> / Amazon Neptune</td>
+                    <td>Redes sociales, detección de fraude y caminos óptimos.</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Clave-Valor</strong></td>
+                    <td><strong>Redis</strong> / Memcached</td>
+                    <td>Bajísima latencia. Sesiones de usuario y cachés en RAM.</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. ARQUITECTURAS E INFRAESTRUCTURA NO-SQL</h2>
-
-        <div class="grid-3col" style="margin-bottom:12px;">
-            <div class="metric-card">
-                <span class="metric-title">Teorema CAP (El Trilema)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    (Consistencia, Altísima Disponibilidad, y Tolerancia a Partición de Red). Es matemáticamente <strong>imposible tener las 3</strong>. Si se corta el cable de red entre Europa-USA, debes elegir dolorosamente si "tumbas la red" (CP) o ofreces a tu cliente información de inventario caducada (AP).
-                </p>
-            </div>
-            <div class="metric-card">
-                <span class="metric-title">ACID vs BASE</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    <strong>ACID (SQL Bancario):</strong> O el servidor garantiza guardar los euros 100% de los pasos (Atomicidad) o aborta.<br><strong>BASE (NoSQL):</strong> "Consistencia Relajada y Eventual". Sistema para guardar los Likes de YouTube en clúster; no pasa nada si Australia tarda 2 segundos más en computar en pantalla un Like que dio EE.UU.
-                </p>
-            </div>
-            <div class="metric-card">
-                <span class="metric-title">Modelo Lambda vs Kappa</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    <strong>Arquitectura Lambda:</strong> Mantiene dos flujos simultáneos: una vía de Streaming rápida de Kafka + una capa Batch lenta pesada correctiva de Hadoop.<br><strong>Arquitectura Kappa:</strong> Mata al viejo Hadoop. TODO en la compañía se procesa siempre en Streaming contaste (Kafka).
-                </p>
-            </div>
-        </div>
-
-        <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. OPTIMIZACIÓN Y CALIDAD DEL DATO</h2>
+        <h2>CALIDAD Y GESTIÓN DEL DATO</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
-            <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Regla Logarítmica 1-10-100</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Escala de costes (en dinero) ocultos en un departamento por calidad del Dato:<br>
-                    <strong>1€:</strong> Es el coste minúsculo de detener un dato erróneo al originarse en el sensor o formulario.<br>
-                    <strong>10€:</strong> Coste que asume el Data Scientist si tiene que limpiar errores ya guardados en Base de Datos.<br>
-                    <strong>100€:</strong> Dinero quemado si el dato podrido se usa, las directivas toman una decisión errónea y el cliente desiste.
-                </p>
+            <div class="metric-card">
+                <span class="metric-title">Regla 1-10-100 (Coste del Error)</span>
+                <p>Mide el <strong>coste creciente</strong> de no corregir errores:</p>
+                <ul style="padding-left:16px; margin-top:4px; line-height:1.4;">
+                    <li><strong>1€:</strong> Al capturar el dato erróneo (Prevención).</li>
+                    <li><strong>10€:</strong> Al tener que limpiarlo en la DB (Corrección).</li>
+                    <li><strong>100€:</strong> Cuando el error impacta en el negocio (Fallo).</li>
+                </ul>
             </div>
-            <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Data Skew (Sesgo de Particionamiento)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    El "Muro Mortal y Principal de Cuello de Botella" al repartir procesos distribuidos. Si tenemos 20 ordenadores esclavos analizando tiendas del mundo, pero el 90% están en Madrid, el algoritmo agrupando por ciudad ahogará a un solo ordenador Master asumiendo 90% de procesos, y los otros 19 ordenadores estarán sin hacer absolutamente nada. (Se solventa usando técnicas matemáticas <em>Salting o re-hasheo</em>).
-                </p>
+            <div class="metric-card">
+                <span class="metric-title">Dimensiones de la Calidad</span>
+                <ul style="padding-left:16px; margin-top:4px; font-size:10pt;">
+                    <li><strong>Completitud:</strong> Grado de valores no nulos.</li>
+                    <li><strong>Exactitud:</strong> Fidelidad del dato con la realidad.</li>
+                    <li><strong>Consistencia:</strong> Datos iguales en distintos sistemas.</li>
+                    <li><strong>Validez:</strong> Cumplimiento de formatos y reglas.</li>
+                    <li><strong>Trazabilidad:</strong> Conocer el origen y cambios (Linaje).</li>
+                </ul>
             </div>
         </div>
 

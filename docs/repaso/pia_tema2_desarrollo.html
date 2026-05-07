@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 2: Desarrollo de Aplicaciones de IA - Programación de IA iLERNA">
-    <title>Cheatsheet: PIA Tema 2 — Desarrollo de Aplicaciones de IA</title>
+    <meta name="description" content="Repaso del Tema 2: Desarrollo de Aplicaciones de IA - Programación de IA iLERNA">
+    <title>Repaso: PIA Tema 2 — Desarrollo de Aplicaciones de IA</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { padding: 2px 6px; }
     </style>
 </head>
 
@@ -36,39 +36,43 @@
 
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 2. Desarrollo de Aplicaciones de IA</h1>
+            <h1>Repaso: Tema 2. Desarrollo de Aplicaciones de IA</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-pia">PIA</span> Programación de Inteligencia Artificial (Módulo 5073)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. ENTORNOS DE MODELADO DE IA (PIPELINE DE DATOS)</h2>
+        <h2>ENTORNOS DE MODELADO DE IA (PIPELINE DE DATOS)</h2>
 
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">1. Recolección de Datos</span>
-                <p style="margin-top:6px; font-size:0.9rem;">
-                    Las IAs no son nada sin datos. Se usa Scrapy para <em>web scraping</em>, APIs REST conectadas a la nube o bases de datos directas para hacer <strong>Data Ingestion</strong> de datos estructurados o no estructurados.
+                <p>
+                    Las IAs no son nada sin datos. El <strong>Dataset</strong> es el recurso fundamental del ciclo de vida. Se usa Scrapy para scraping o APIs para <strong>Data Ingestion</strong> de datos estructurados o no estructurados.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">2. Manipulación (Pandas)</span>
-                <p style="margin-top:6px; font-size:0.9rem;">
-                    Proceso para curar el <em>Dataset</em>: imputación de valores nulos, estandarización númerica, eliminación de clases sucias o unificación a través de <em>pipelines</em>.
+                <p>
+                    Uso de <strong>NumPy y Pandas</strong> para manipular, limpiar y curar el dataset: imputación de valores nulos, estandarización númerica y eliminación de clases sucias.
                 </p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">3. Modelado Evaluativo</span>
-                <p style="margin-top:6px; font-size:0.9rem;">
-                    Se expone el modelo a herramientas como Scikit-learn, haciendo un particionado (Train/Test) para que pueda aprender de ellos, optimizar hiperparámetros y evaluar métricas como el MSE o Accuracy final.
+                <span class="metric-title">3. Modelado y Evaluación</span>
+                <p>
+                    Un <strong>Modelo</strong> es una representación matemática del aprendizaje. Se usa <strong>Validación</strong> para evaluar precisión y eficacia, optimizando parámetros para mejorar resultados.
                 </p>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. REDES NEURONALES: TENSORFLOW Y MÓDULOS PREDEFINIDOS</h2>
+        <h2>REDES NEURONALES: TENSORFLOW Y MÓDULOS PREDEFINIDOS</h2>
 
         <table style="margin-bottom:12px;">
             <thead>
@@ -92,7 +96,15 @@
                 </tr>
                 <tr style="background-color:#f9f9f9;">
                     <td><strong>Transformers</strong></td>
-                    <td>Arquitectura paralela que usa <em>Self-Attention</em>. Destaca por relacionar cada elemento con todos los demás de fondo y en paralelo. Es <strong>el estándar por excelencia actual en NLP (texto masivo)</strong>.</td>
+                    <td>Modelo con <strong>atención global</strong> y altamente paralelizable. El estándar actual en NLP (BERT, GPT).</td>
+                </tr>
+                <tr>
+                    <td><strong>Scikit-learn</strong></td>
+                    <td>Referencia para ML tradicional, <strong>Clustering</strong> (agrupar sin etiquetas) y <strong>PCA</strong> (reducción de dimensionalidad).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Otras Librerías</strong></td>
+                    <td>• <strong>OpenCV:</strong> Visión artificial.<br>• <strong>PyTorch:</strong> Flexibilidad y prototipado rápido en investigación.</td>
                 </tr>
             </tbody>
         </table>
@@ -100,29 +112,33 @@
         <div class="grid-2col" style="margin-bottom:12px;">
             <div>
                 <h3>Módulos de Entrenamiento y Transfer Learning</h3>
-                <ul style="padding-left:16px; line-height:1.6; font-size:0.9rem;">
-                    <li><strong>Módulos predefinidos:</strong> En vez de codificar un modelo desde cero, cargamos modelos pre-entrenados por grandes empresas (ej: ResNet, YOLO o BERT) mediante TensorFlow o Keras. Ahorran meses de cálculo.</li>
-                    <li><strong>Feature Extraction:</strong> Cargamos el modelo pre-entrenado, "congelamos" TODAS sus capas previas e insertamos una capa final (cabecera) propia para que las predicciones cuadren con nuestro dominio a bajo coste.</li>
-                    <li><strong>Fine-Tuning:</strong> Descongelamos varias (o todas) las capas superiores del modelo original para readaptar minuciosamente sus pesos con nuestros datos. Gasta más coste pero más preciso.</li>
+                <ul style="padding-left:16px; line-height:1.6;">
+                    <li><strong>Google Colab:</strong> Entorno para programar Python de forma <strong>interactiva y online</strong>.</li>
+                    <li><strong>Módulos predefinidos:</strong> En vez de codificar desde cero, cargamos modelos pre-entrenados (ej: ResNet, YOLO o BERT) mediante TensorFlow o Keras. Ahorran meses de cálculo.</li>
+                    <li><strong>Feature Extraction:</strong> Cargamos el modelo, "congelamos" TODAS sus capas previas e insertamos una capa final (cabecera) propia para que las predicciones cuadren con nuestro dominio a bajo coste.</li>
+                    <li><strong>Fine-Tuning:</strong> Descongelamos capas superiores del modelo original para readaptar minuciosamente sus pesos con nuestros datos. Gasta más coste pero es más preciso.</li>
+                    <li><strong>Reinforcement Learning:</strong> Aprendizaje basado en un <strong>Entorno</strong> donde el agente interactúa y aprende por recompensas.</li>
                 </ul>
             </div>
             <div>
-                <h3>Componentes Auxiliares Keras <span class="tag tag-pia" style="font-size:0.6rem; vertical-align:top;">PIA</span></h3>
-                <div class="metric-card" style="padding:12px; height:80%;">
-                    <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
+                <h3>Componentes Auxiliares Keras <span class="tag tag-pia" style="vertical-align:top;">PIA</span></h3>
+                <div class="metric-card" style="padding:12px;">
+                    <ul style="padding-left:16px; line-height:1.6;">
                         <li><strong>Optimizador (AdamW / SGD):</strong> Decide "cómo y a qué ritmo" alteraremos los pesos y corregiremos el rumbo.</li>
-                        <li><strong>Función de Pérdida (Loss Factor):</strong> Juez matemático que calcula empíricamente cuán equivocada es la predicción de la IA en cada <em>Epoch</em>.</li>
-                        <li><strong>Schedulers:</strong> Decelera el Learning Rate del modelo de forma progresiva automáticamente.</li>
-                        <li><strong>Callbacks (Early Stopping):</strong> Automatizaciones capaces de interrumpir el entrenamiento de golpe si el modelo entra en sobreajuste (overfitting).</li>
+                        <li><strong>Función de Pérdida (Loss Factor):</strong> Juez matemático que calcula empíricamente cuán equivocada es la predicción en cada <strong>Epoch</strong>.</li>
+                        <li><strong>Schedulers:</strong> Decelera el <em>Learning Rate</em> del modelo de forma progresiva automáticamente.</li>
+                        <li><strong>Callbacks (Early Stopping):</strong> Automatizaciones capaces de interrumpir el entrenamiento de golpe si el modelo entra en <strong>sobreajuste (overfitting)</strong>.</li>
+                        <li><strong>Recomendación:</strong> Sistemas que sugieren elementos según preferencias.</li>
+                        <li><strong>Árbol de Decisión:</strong> Modelo predictivo estructurado en forma de árbol.</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. GENERACIÓN DE CÓDIGO E IA GENERATIVA (GenAI)</h2>
+        <h2>GENERACIÓN DE CÓDIGO E IA GENERATIVA (GenAI)</h2>
 
-        <p style="margin-bottom:12px; font-size:0.9rem;">
+        <p style="margin-bottom:12px; ">
             La revolución del desarrollo de software no pasa por ignorar el código, sino aprovechar modelos masivos (LLMs) para automatizar la sintaxis por nosotros. Se debe auditar siempre posibles <em>alucinaciones</em> (código inventado o erróneo).
         </p>
 
@@ -135,27 +151,23 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>VibeCoding / Agentes Autónomos</strong></td>
-                    <td>La evolución total. Entornos como <strong>Cursor, Windsurf o Lovable</strong> entienden todo tu proyecto y editan/crean ficheros simultáneamente leyendo "tu intención general". Programan por ti en bloque de forma iterativa.</td>
+                    <td><strong>VibeCoding / Agentes</strong></td>
+                    <td>Herramientas como <strong>Cursor o Windsurf</strong> que facilitan la <strong>refactorización</strong> de código mediante IA.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
-                    <td><strong>Asistentes IA (Co-Pilots)</strong></td>
-                    <td>Extensiones (ej: <strong>GitHub Copilot, Tabnine</strong>) usadas frecuentemente dentro del IDE clásico (VS Code). Efectúan autocompletado avanzado línea a línea ahorrando horas de búsquedas simples.</td>
-                </tr>
-                <tr>
-                    <td><strong>Plataformas Low-Code / No-Code</strong></td>
-                    <td>Herramientas de interfaces visuales enfocadas a un usuario más de 'Negocio'. La IA interpreta lenguaje natural y te autoconfigura menús y bloques, limitando sin embargo la personalización dura en la arquitectura.</td>
+                    <td><strong>Low-Code / No-Code</strong></td>
+                    <td>Permiten crear aplicaciones sin necesidad de escribir <strong>grandes volúmenes de código</strong>.</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. FRAMEWORKS, APIs REST Y GESTIÓN DE COSTES APLICADA</h2>
+        <h2>FRAMEWORKS, APIs REST Y GESTIÓN DE COSTES APLICADA</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div>
                 <h3>Orquestación (LangChain y LlamaIndex)</h3>
-                <ul style="padding-left:16px; line-height:1.6; font-size:0.9rem;">
+                <ul style="padding-left:16px; line-height:1.6; ">
                     <li><strong>APIs GenAI (OpenAI):</strong> Todo interactúa mediante endpoints REST. La API envía el texto ("Prompt") y devuelve la respuesta. Es inútil sin integración de un buen framework en backend.</li>
                     <li><strong>LangChain:</strong> El rey de orquestación en Python. Permite la creación de <em>cadenas</em> cognitivas que dotan al LLM de uso de herramientas (navegar, usar API externa) y memoria en bucle.</li>
                     <li><strong>LlamaIndex:</strong> Extremadamente sofisticado para gestionar inyecciones documentales (Sistemas <strong>RAG</strong>) de cara a que el LLM extraiga información sobre tu propio PDF o base de datos empresarial.</li>
@@ -163,7 +175,7 @@
             </div>
             <div class="metric-card" style="padding:12px;">
                 <span class="metric-title" style="margin-bottom: 8px;">Facturación, Tokens y Costes</span>
-                <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
+                <ul style="padding-left:16px; line-height:1.6; ">
                     <li><strong>Tokens:</strong> La IA generativa no facturiza "por palabra" sino por fragmentos silábicos (aprox. 1 Token ≈ 0.75 a 4 caracteres ingleses). Todo el prompt (entrada y salida) gasta saldo.</li>
                     <li><strong>Optimización (Pruning):</strong> Fundamental reducir <em>Data Leakage</em> o dar mucho contexto que no sirve de nada, para evitar reventar el presupuesto Cloud (gastos imprevistos de API Limit).</li>
                     <li><strong>Seguridad (API Keys):</strong> Una clave <code>OPENAI_API_KEY</code> jamás debe ser <em>hardcodeada</em> en el repositorio GIT de cara al código público. Obligatorio el uso de variables de entorno <code>.env</code>.</li>

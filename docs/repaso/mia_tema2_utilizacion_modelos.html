@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 2: Utilización de modelos de IA - Modelo de IA iLERNA">
-    <title>Cheatsheet: MIA Tema 2 — Utilización de Modelos</title>
+    <meta name="description" content="Repaso del Tema 2: Utilización de modelos de IA - Modelo de IA iLERNA">
+    <title>Repaso: MIA Tema 2 — Utilización de Modelos</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { padding: 2px 6px; }
     </style>
 </head>
 
@@ -36,21 +36,25 @@
 
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 2. Utilización de Modelos de IA</h1>
+            <h1>Repaso: Tema 2. Utilización de Modelos de IA</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-mia">MIA</span> Modelos de Inteligencia Artificial (Módulo 5071)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. FUNDAMENTOS DE RESOLUCIÓN DE PROBLEMAS</h2>
+        <h2>FUNDAMENTOS DE RESOLUCIÓN DE PROBLEMAS</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">Formalización de Problemas en IA</span>
-                <p style="margin-top:6px; font-size:0.9rem;">La resolución computacional de problemas requiere una formalización rigurosa mediante la cuádrupla <strong>P = (Ei, A, Ef, R)</strong>:</p>
-                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                <p style="margin-top:6px; ">La resolución computacional de problemas requiere una formalización rigurosa mediante la cuádrupla <strong>P = (Ei, A, Ef, R)</strong>:</p>
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; ">
                     <li><strong>Ei (Estado Inicial):</strong> Configuración inicial del problema desde la cual parte el agente de búsqueda.</li>
                     <li><strong>A (Acciones):</strong> Conjunto de transiciones posibles entre estados, frecuentemente con probabilidades asociadas.</li>
                     <li><strong>Ef (Estado Final):</strong> Objetivo o estado solución que satisface los criterios del problema.</li>
@@ -59,7 +63,7 @@
             </div>
             <div class="metric-card">
                 <span class="metric-title">Ciclo de Resolución Sistemática</span>
-                <ol style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                <ol style="padding-left:16px; line-height:1.6; margin-top:6px; ">
                     <li><strong>Formulación:</strong> Traducción de la situación real a su representación matemática formal.</li>
                     <li><strong>Representación:</strong> Abstracción mediante estructuras de datos como grafos, matrices o espacios vectoriales.</li>
                     <li><strong>Búsqueda:</strong> Aplicación de algoritmos heurísticos para generar la secuencia óptima de acciones (ejemplo: Backtracking para el problema de las 8 reinas).</li>
@@ -98,8 +102,8 @@
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Ejemplo Paradigmático: Problema de las 8 Reinas y Backtracking</span>
-            <p style="margin-top:6px; font-size:0.9rem;"><strong>Especificación formal:</strong> P = (tablero_vacío, colocar_reina, 8_reinas_sin_conflictos, restricciones_geométricas). El objetivo requiere posicionar 8 reinas en un tablero 8×8 sin coincidencias en fila, columna o diagonal.</p>
-            <p style="margin-top:4px; font-size:0.9rem;"><strong>Metodología Backtracking:</strong> Estrategia de búsqueda en profundidad con retroceso. Coloca una reina, verifica restricciones de seguridad; ante conflicto, retrocede y prueba alternativas. Explora aproximadamente 2.057 estados para descubrir las 92 soluciones válidas.</p>
+            <p style="margin-top:6px; "><strong>Especificación formal:</strong> P = (tablero_vacío, colocar_reina, 8_reinas_sin_conflictos, restricciones_geométricas). El objetivo requiere posicionar 8 reinas en un tablero 8×8 sin coincidencias en fila, columna o diagonal.</p>
+            <p style="margin-top:4px; "><strong>Metodología Backtracking:</strong> Estrategia de búsqueda en profundidad con retroceso. Coloca una reina, verifica restricciones de seguridad; ante conflicto, retrocede y prueba alternativas. Explora aproximadamente 2.057 estados para descubrir las 92 soluciones válidas.</p>
         </div>
 
         <h3>Estrategias Operativas de Búsqueda</h3>
@@ -113,7 +117,7 @@
             <tbody>
                 <tr>
                     <td><strong>Búsqueda Ciega</strong><br>(No Informada)</td>
-                    <td>Exploración sin conocimiento de proximidad al objetivo. <strong>BFS (Búsqueda por Amplitud):</strong> expande todos los nodos de nivel n antes de explorar nivel n+1, garantizando camino mínimo. <strong>DFS (Búsqueda por Profundidad):</strong> explora una rama hasta su profundidad máxima antes de retroceder, consumiendo menor memoria.</td>
+                    <td>Exploración secuencial del espacio de estados sin pistas heurísticas sobre la proximidad al objetivo.<br><br>• <strong>Búsqueda BFS (Breadth-First Search)</strong>, conocida en español indistintamente como <strong>Búsqueda en Anchura</strong> o <strong>Búsqueda por Amplitud</strong>: Expande todos los nodos de un nivel horizontal antes de pasar al nivel más profundo. Ideal para garantizar encontrar el camino más corto, aunque consume mucha memoria.<br>• <strong>Búsqueda DFS (Depth-First Search)</strong> o <strong>Búsqueda en Profundidad</strong>: Sigue una sola rama hasta su límite máximo antes de retroceder. Consume menos memoria, pero no garantiza la solución más corta.</td>
                 </tr>
                 <tr style="background-color:#f9f9f9;">
                     <td><strong>Búsqueda Heurística</strong><br>(Informada)</td>
@@ -152,25 +156,30 @@
                     <td>Deep Blue: ajedrez. AlphaGo: Go. AlphaStar: Starcraft con comportamiento adaptativo multiagente.</td>
                     <td>Minimax con poda Alpha-Beta / Aprendizaje por Refuerzo profundo</td>
                 </tr>
+                <tr>
+                    <td><strong>Centros de Distribución</strong></td>
+                    <td>Sistemas de clasificación inteligente logística. Identifican paquetes mediante visión artificial y los redirigen automáticamente hacia las rutas de reparto correctas, sin intervención manual.</td>
+                    <td>Visión Computacional y Automatización</td>
+                </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. SELECCIÓN Y EVALUACIÓN DE MODELOS</h2>
+        <h2>SELECCIÓN Y EVALUACIÓN DE MODELOS</h2>
 
         <h3>Sesgo-Varianza: Equilibrio Fundamental en Aprendizaje</h3>
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">Underfitting (Sesgo Alto)</span>
-                <p style="margin-top:6px; font-size:0.9rem;"><strong>Característica:</strong> El modelo es demasiado simple para capturar la estructura subyacente de los datos.</p>
-                <p style="margin-top:4px; font-size:0.9rem;"><strong>Indicadores:</strong> Error elevado tanto en conjunto de entrenamiento como en validación. La curva de aprendizaje permanece plana.</p>
-                <p style="margin-top:4px; font-size:0.9rem;"><strong>Remedios:</strong> Aumentar complejidad del modelo, agregar características relevantes, reducir regularización.</p>
+                <p style="margin-top:6px; "><strong>Característica:</strong> El modelo es demasiado simple para capturar la estructura subyacente de los datos.</p>
+                <p style="margin-top:4px; "><strong>Indicadores:</strong> Error elevado tanto en conjunto de entrenamiento como en validación. La curva de aprendizaje permanece plana.</p>
+                <p style="margin-top:4px; "><strong>Remedios:</strong> Aumentar complejidad del modelo, agregar características relevantes, reducir regularización.</p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Overfitting (Varianza Alta)</span>
-                <p style="margin-top:6px; font-size:0.9rem;"><strong>Característica:</strong> El modelo memoriza patrones específicos del entrenamiento incluyendo ruido, perdiendo capacidad generalizadora.</p>
-                <p style="margin-top:4px; font-size:0.9rem;"><strong>Indicadores:</strong> Error bajo en entrenamiento pero muy alto en validación. Gran divergencia entre ambos conjuntos.</p>
-                <p style="margin-top:4px; font-size:0.9rem;"><strong>Remedios:</strong> Aumentar datos de entrenamiento, simplificar modelo, aplicar regularización (L1/L2, dropout), validación cruzada.</p>
+                <p style="margin-top:6px; "><strong>Característica:</strong> El modelo memoriza patrones específicos del entrenamiento incluyendo ruido, perdiendo capacidad generalizadora.</p>
+                <p style="margin-top:4px; "><strong>Indicadores:</strong> Error bajo en entrenamiento pero muy alto en validación. Gran divergencia entre ambos conjuntos.</p>
+                <p style="margin-top:4px; "><strong>Remedios:</strong> Aumentar datos de entrenamiento, simplificar modelo, aplicar regularización (L1/L2, dropout), validación cruzada.</p>
             </div>
         </div>
 
@@ -205,14 +214,14 @@
         <h3>Optimización de Hiperparámetros</h3>
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Ajuste Sistemático de Hiperparámetros</span>
-            <p style="margin-top:6px; font-size:0.9rem;">Los hiperparámetros (learning rate, regularización λ, número de capas, tamaño de batch) controlan el proceso de aprendizaje pero no se ajustan automáticamente mediante descenso de gradiente.</p>
-            <p style="margin-top:4px; font-size:0.9rem;"><strong>Grid Search:</strong> Explora todas las combinaciones posibles en una malla discreta. Exhaustivo pero computacionalmente prohibitivo en espacios grandes.</p>
-            <p style="margin-top:4px; font-size:0.9rem;"><strong>Random Search:</strong> Muestrea aleatoriamente el espacio de hiperparámetros. Más eficiente que grid search en espacios de alta dimensión.</p>
-            <p style="margin-top:4px; font-size:0.9rem;"><strong>Bayesian Optimization:</strong> Utiliza modelos probabilísticos (procesos gaussianos) para guiar búsqueda inteligente, balanceando exploración-explotación.</p>
+            <p style="margin-top:6px; ">Los hiperparámetros (learning rate, regularización λ, número de capas, tamaño de batch) controlan el proceso de aprendizaje pero no se ajustan automáticamente mediante descenso de gradiente.</p>
+            <p style="margin-top:4px; "><strong>Grid Search:</strong> Explora todas las combinaciones posibles en una malla discreta. Exhaustivo pero computacionalmente prohibitivo en espacios grandes.</p>
+            <p style="margin-top:4px; "><strong>Random Search:</strong> Muestrea aleatoriamente el espacio de hiperparámetros. Más eficiente que grid search en espacios de alta dimensión.</p>
+            <p style="margin-top:4px; "><strong>Bayesian Optimization:</strong> Utiliza modelos probabilísticos (procesos gaussianos) para guiar búsqueda inteligente, balanceando exploración-explotación.</p>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. AUTOMATIZACIÓN DE TAREAS E INDUSTRIA</h2>
+        <h2>AUTOMATIZACIÓN DE TAREAS E INDUSTRIA</h2>
 
         <table style="margin-bottom:12px;">
             <thead>
@@ -284,11 +293,11 @@
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. SISTEMAS DE RAZONAMIENTO IMPRECISO (LÓGICA DIFUSA)</h2>
+        <h2>SISTEMAS DE RAZONAMIENTO IMPRECISO (LÓGICA DIFUSA)</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Fundamentos de Lógica Difusa (Fuzzy Logic)</span>
-            <p style="margin-top:6px; font-size:0.9rem;">La inteligencia artificial simbólica clásica utilizaba variables booleanas binarias y fronteras abruptas en [0, 1]. El razonamiento bajo incertidumbre mediante lógica difusa resuelve esta limitación al permitir valores graduales continuos en el intervalo [0, 1] entero. Un objeto no es únicamente "caliente" o "frío", sino que posee un grado de pertenencia a múltiples categorías simultáneamente: "80% caliente y 20% templado".</p>
+            <p style="margin-top:6px; ">La inteligencia artificial simbólica clásica utilizaba variables booleanas binarias y fronteras abruptas en [0, 1]. El razonamiento bajo incertidumbre mediante lógica difusa resuelve esta limitación al permitir valores graduales continuos en el intervalo [0, 1] entero. Un objeto no es únicamente "caliente" o "frío", sino que posee un grado de pertenencia a múltiples categorías simultáneamente: "80% caliente y 20% templado".</p>
         </div>
 
         <table style="margin-bottom:12px;">
@@ -318,8 +327,13 @@
             </tbody>
         </table>
 
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Ejemplo Clásico: El Aire Acondicionado Difuso</span>
+            <p style="margin-top:6px; ">Frente a un termostato binario clásico que simplemente enciende o apaga bruscamente el compresor al llegar a una temperatura exacta, un sistema de aire acondicionado con lógica difusa es capaz de <strong>reducir su potencia gradualmente si la temperatura es ligeramente superior a un umbral</strong>. Esto logra una climatización continua y suave, ahorrando energía al evitar picos de encendido/apagado.</p>
+        </div>
+
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>E. SISTEMAS BASADOS EN REGLAS VS. BASADOS EN CASOS</h2>
+        <h2>SISTEMAS BASADOS EN REGLAS VS. BASADOS EN CASOS</h2>
 
         <table style="margin-bottom:12px;">
             <thead>
@@ -361,14 +375,14 @@
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">Encadenamiento en Sistemas Basados en Reglas</span>
-                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; ">
                     <li><strong>Forward Chaining (Encadenamiento Directo):</strong> Desde datos observados hacia conclusiones. Dado conjunto de síntomas, el motor infiere diagnóstico probable. Idóneo en monitorización industrial continua.</li>
                     <li><strong>Backward Chaining (Encadenamiento Inverso):</strong> Desde meta hipotética hacia evidencia que la soporta. Hipótesis inicial "probablemente gripe" dispara búsqueda de síntomas confirmatorios. Aplicable en diagnóstico dirigido e investigación.</li>
                 </ul>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Arquitectura de un Sistema Basado en Reglas</span>
-                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+                <ul style="padding-left:16px; line-height:1.6; margin-top:6px; ">
                     <li><strong>Base de Conocimientos:</strong> Repositorio estático de reglas IF-THEN formalizadas por ingeniero de conocimiento; fundamental para comportamiento del sistema.</li>
                     <li><strong>Base de Hechos:</strong> Memoria dinámica que contiene los datos de la situación actual bajo análisis; se actualiza con cada inferencia.</li>
                     <li><strong>Motor de Inferencia:</strong> Coordinador de ejecución que determina qué reglas son aplicables, en qué secuencia dispararse, cómo resolver conflictos de reglas múltiples.</li>
@@ -378,11 +392,11 @@
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>F. APRENDIZAJE POR REFUERZO (RL)</h2>
+        <h2>APRENDIZAJE POR REFUERZO (RL)</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Paradigma Fundamental del Aprendizaje por Refuerzo</span>
-            <p style="margin-top:6px; font-size:0.9rem;">El aprendizaje por refuerzo permite a un agente descubrir estrategias óptimas de actuación mediante interacción iterativa con un entorno, recibiendo recompensas (refuerzos positivos) o penalizaciones (refuerzos negativos) sin supervisión explícita. A diferencia del aprendizaje supervisado que requiere pares entrada-salida etiquetados, RL aprende mediante ensayo-error dirigido optimizando una función de recompensa acumulada a largo plazo.</p>
+            <p style="margin-top:6px; ">El aprendizaje por refuerzo permite a un agente descubrir estrategias óptimas de actuación mediante interacción iterativa con un entorno, recibiendo recompensas (refuerzos positivos) o penalizaciones (refuerzos negativos) sin supervisión explícita. A diferencia del aprendizaje supervisado que requiere pares entrada-salida etiquetados, RL aprende mediante ensayo-error dirigido optimizando una función de recompensa acumulada a largo plazo.</p>
         </div>
 
         <table style="margin-bottom:12px;">
@@ -446,16 +460,16 @@
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Exploración vs Explotación</span>
-            <p style="margin-top:6px; font-size:0.9rem;"><strong>Dilema fundamental:</strong> El agente debe equilibrar exploración de acciones potencialmente mejores desconocidas versus explotación de acciones ya verificadas como buenas. <strong>Estrategias:</strong> ε-greedy (probabilidad ε de acción aleatoria), softmax (probabilidades proporcionales a valores), Upper Confidence Bound (UCB). Resolución inadecuada conduce a convergencia prematura en óptimos locales o desperdicio de iteraciones en exploración ineficaz.</p>
+            <p style="margin-top:6px; "><strong>Dilema fundamental:</strong> El agente debe equilibrar exploración de acciones potencialmente mejores desconocidas versus explotación de acciones ya verificadas como buenas. <strong>Estrategias:</strong> ε-greedy (probabilidad ε de acción aleatoria), softmax (probabilidades proporcionales a valores), Upper Confidence Bound (UCB). Resolución inadecuada conduce a convergencia prematura en óptimos locales o desperdicio de iteraciones en exploración ineficaz.</p>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>G. PROBLEMAS AMBIGUOS Y NO ESTRUCTURADOS</h2>
+        <h2>PROBLEMAS AMBIGUOS Y NO ESTRUCTURADOS</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Caracterización de Problemas Ambiguos</span>
-            <p style="margin-top:6px; font-size:0.9rem;"><strong>Definición:</strong> Problemas donde la especificación formal no es inequívocamente determinable a priori, permitiendo múltiples interpretaciones válidas del enunciado. La definición del mismo problema puede variar según perspectiva del observador, contexto situacional o dominio disciplinario.</p>
-            <p style="margin-top:4px; font-size:0.9rem;"><strong>Característica clave:</strong> No existe consenso único sobre qué constituye una "solución correcta". Múltiples soluciones pueden ser simultáneamente válidas, o su validez requiere criterios adicionales (preferencias humanas, restricciones de contexto, objetivos multicriterio).</p>
+            <p style="margin-top:6px; "><strong>Definición:</strong> Problemas donde la especificación formal no es inequívocamente determinable a priori, permitiendo múltiples interpretaciones válidas del enunciado. La definición del mismo problema puede variar según perspectiva del observador, contexto situacional o dominio disciplinario.</p>
+            <p style="margin-top:4px; "><strong>Característica clave:</strong> No existe consenso único sobre qué constituye una "solución correcta". Múltiples soluciones pueden ser simultáneamente válidas, o su validez requiere criterios adicionales (preferencias humanas, restricciones de contexto, objetivos multicriterio).</p>
         </div>
 
         <h3>Ejemplos de Problemas Ambiguos en IA</h3>
@@ -493,13 +507,31 @@
 
         <div class="metric-card" style="margin-bottom:12px;">
             <span class="metric-title">Estrategia: Delimitación Progresiva del Dominio</span>
-            <p style="margin-top:6px; font-size:0.9rem;">Ante problemas ambiguos, la estrategia práctica consiste en:</p>
-            <ol style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.9rem;">
+            <p style="margin-top:6px; ">Ante problemas ambiguos, la estrategia práctica consiste en:</p>
+            <ol style="padding-left:16px; line-height:1.6; margin-top:6px; ">
                 <li><strong>Elicitación de Criterios:</strong> Consultar a expertos y stakeholders para identificar criterios de validación implícitos (preferencias ocultas, restricciones contextuales).</li>
                 <li><strong>Formalización Progresiva:</strong> Convertir ambigüedad en problema bien-definido restringiendo el espacio de soluciones válidas mediante criterios explícitos.</li>
                 <li><strong>Validación Iterativa:</strong> Mostrar soluciones tentativas a usuarios, recopilar feedback, refinar especificación. Ciclo: prototipo → retroalimentación → especificación mejorada.</li>
                 <li><strong>Aceptación de Incertidumbre:</strong> Cuando ambigüedad es inherente (ej: arte), documentar explícitamente múltiples soluciones válidas; permitir flexibilidad en evaluación.</li>
             </ol>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>SÍNTESIS Y REFLEXIÓN FINAL</h2>
+
+        <div class="grid-3col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">El Corazón de la IA</span>
+                <p style="margin-top:6px; ">La resolución sistemática de problemas es el <strong>pilar fundamental</strong>. Formular correctamente el espacio de estados y buscar eficientemente es el primer paso indispensable de cualquier sistema inteligente moderno.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Coexistencia Productiva</span>
+                <p style="margin-top:6px; ">La automatización inteligente no busca sustituir, sino <strong>amplificar</strong>. La IA asume el procesamiento masivo y de patrones mientras el ser humano aporta el juicio crítico, la creatividad y la ética.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">El Legado de las Reglas</span>
+                <p style="margin-top:6px; ">Los Sistemas Expertos demostraron que codificar el saber es inteligencia. Hoy perduran en la <strong>IA Híbrida</strong>, garantizando que el aprendizaje conexionista cumpla con restricciones lógicas innegociables.</p>
+            </div>
         </div>
 
     </div>

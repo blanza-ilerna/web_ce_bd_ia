@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 6: Optimización y Ajuste de Modelos - SAA iLERNA">
-    <title>Cheatsheet: SAA Tema 6 — Optimización y Tuning</title>
+    <meta name="description" content="Repaso del Tema 6: Optimización y Ajuste de Modelos - SAA iLERNA">
+    <title>Repaso: SAA Tema 6 — Optimización y Tuning</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { padding: 2px 6px; }
     </style>
 </head>
 
@@ -36,17 +36,21 @@
 
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 6. Optimización y Ajuste de Modelos</h1>
+            <h1>Repaso: Tema 6. Optimización y Ajuste de Modelos</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-sbd" style="background:#555;">SAA</span> Sistemas de Aprendizaje Automático (Módulo 5072)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. EXTIRPANDO EL RUIDO (Feature Selection)</h2>
+        <h2>EXTIRPANDO EL RUIDO (Feature Selection)</h2>
         <div class="metric-card" style="margin-bottom:12px;">
-            <p style="font-size:0.9rem;">Entregarle a un algoritmo 3.000 columnas de Excel aleatorias para predecir no lo hace más inteligente, <strong>lo hunde en la maldición de la dimensionalidad</strong>. La Selección de Características consiste en rastrear y aniquilar sin piedad toda métrica inútil o que reitere la misma historia (colinealidad) antes de gastar GPU.</p>
+            <p style="">Entregarle a un algoritmo 3.000 columnas de Excel aleatorias para predecir no lo hace más inteligente, <strong>lo hunde en la maldición de la dimensionalidad</strong>. La Selección de Características consiste en rastrear y aniquilar sin piedad toda métrica inútil o que reitere la misma historia (colinealidad) antes de gastar GPU.</p>
         </div>
 
         <table style="margin-bottom:12px;">
@@ -66,31 +70,31 @@
                     <td>Son de fuerza algorítmica brutal. Miden modelos en paralelo probando: "¿Qué precisión saco si meto la variable A?", "Si quito la B gané 3% ¿qué pasa si ahora sumo la G?". Ej clásico: <strong>RFE (Eliminación Recursiva de Características)</strong>. Efectivo, pero infernal en computación.</td>
                 </tr>
                 <tr>
-                    <td><strong>Métodos Embedded <br>(Embebidos e implícitos)</strong><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td><strong>Métodos Embedded <br>(Embebidos e implícitos)</strong></td>
                     <td>La navaja suiza perfecta. El propio modelo selecciona variables intrínsecamente y ejecuta el descarte vivo y en caliente mientras se estresa entrenando (Ej: <strong>La Regresión Regularizada Lasso</strong> apagando a CERO las variables mediocres directamente asfixiándolas).</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. DILEMA MATEMÁTICO: Perilla vs Circuito Automático</h2>
+        <h2>DILEMA MATEMÁTICO: Perilla vs Circuito Automático</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">1. Parámetros del Modelo</span>
-                <p style="margin-top:6px; font-size:0.9rem;">(Ej: <em>Eje Y, los pesos internos W en Redes Neuronales</em>). Tienen vida propia automática, <strong>TÚ no los tocas jamás</strong>. Se calibran solitos a base de derivadas y gradientes ocultos intentando exprimir métricas durante el largo "Train()". </p>
+                <p style="margin-top:6px; ">(Ej: <em>Eje Y, los pesos internos W en Redes Neuronales</em>). Tienen vida propia automática, <strong>TÚ no los tocas jamás</strong>. Se calibran solitos a base de derivadas y gradientes ocultos intentando exprimir métricas durante el largo "Train()". </p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">2. HIPER - parámetros (El Tuning)</span>
-                <p style="margin-top:6px; font-size:0.9rem;">(Ej: <em>Learning Rate, La variable "K" vecinos o cuantas ramas Depth tendrá mi árbol</em>). <strong>Tú tienes el control manual absoluto</strong>. Son decisiones impuestas de arranque para armar la pista antes incluso de que suene la campana de salida y afectarán a la capacidad final.</p>
+                <span class="metric-title">2. HIPER-parámetros (El Tuning)</span>
+                <p style="margin-top:6px; ">Decisiones externas (<em>Learning Rate</em>, profundidad de árboles, nº de vecinos). Tú tienes el control manual y se deben ajustar utilizando el <strong>conjunto de validación</strong> como "banco de pruebas" para comparar configuraciones sin contaminar el test final.</p>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. ESTRATEGIAS DE CONFIGURACIÓN (Tuning de Cabina)</h2>
+        <h2>ESTRATEGIAS DE CONFIGURACIÓN (Tuning de Cabina)</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
-            <p style="margin-top:6px; font-size:0.9rem; margin-bottom: 8px;">Ajustar un hiperparámetro al tanteo local volviendo a presionar <em>Enter</em> es de novatos e imperfecto empíricamente. Los Data Scientist declaran diccionarios cerrados <strong>hiper-búsquedas programadas</strong> de cientos de cruces con el objetivo analítico absoluto.</p>
+            <p style="margin-top:6px;  margin-bottom: 8px;">Ajustar un hiperparámetro al tanteo local volviendo a presionar <em>Enter</em> es de novatos e imperfecto empíricamente. Los Data Scientist declaran diccionarios cerrados <strong>hiper-búsquedas programadas</strong> de cientos de cruces con el objetivo analítico absoluto.</p>
         </div>
 
         <table style="margin-bottom:12px;">
@@ -110,11 +114,24 @@
                     <td>Alucina la comunidad científica, pero lanzar dardos ciegos al azar en una ventana controlada computacional rinde de forma sobresaliente. Testea apenas el 10% de los cruces evitando asfixia en servidores e inusualmente <strong>suelta casi el resultado perfecto universal en el primer embiste</strong>.</td>
                 </tr>
                 <tr>
-                    <td><strong>Optimización Bayesiana <br>(Instinto Cíclico)</strong><br><span class="inline-tags"><span class="tag tag-sbd" style="background:#555;">SAA</span></span></td>
+                    <td><strong>Optimización Bayesiana <br>(Instinto Cíclico)</strong></td>
                     <td>La flor y nata moderna. Usa modelos que "toman notas". Prueba un ajuste, saca una nota, el modelo se instruye con sus fallos intentando no volver a testear ese rango inestable previendo a pura estadística cuál es la ladera del río para descender a la configuración celestial de una sentada.</td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>MECANISMOS DE CONTROL Y OPTIMIZACIÓN</h2>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Función de Pérdida (Loss Function)</span>
+                <p style="margin-top:6px; ">Es la brújula del aprendizaje. Mide la discrepancia o <strong>"distancia" entre las predicciones del modelo y la realidad</strong> de los datos. El optimizador trabaja incansablemente para minimizar este valor, guiando al modelo hacia una mayor precisión.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Dropout (Regularización Dinámica)</span>
+                <p style="margin-top:6px; ">Consiste en <strong>desactivar aleatoriamente neuronas</strong> durante el entrenamiento. Esto fuerza a la red a no depender de conexiones específicas (co-adaptación), creando modelos más robustos y equilibrados que <strong>previenen el sobreajuste</strong> de forma efectiva.</p>
+            </div>
+        </div>
         
     </div>
 

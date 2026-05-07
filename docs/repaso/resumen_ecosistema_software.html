@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumen del Ecosistema de Software: IA, Big Data y Visualización - iLERNA">
+    <title>Resumen: Ecosistema de Software y Librerías</title>
+    <link rel="stylesheet" href="../css/cheatsheet.css">
+    <style>
+        .software-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .sw-card { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+        .sw-name { font-weight: 700; color: var(--color-primary); display: block; margin-bottom: 4px; border-bottom: 1px solid #eee; }
+        .sw-desc { font-size: 0.95rem; line-height: 1.4; color: #444; }
+        .sw-tag { font-size: 0.7rem; background: #eee; padding: 2px 5px; border-radius: 3px; float: right; margin-top: -2px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER ILERNA -->
+    <header class="cs-header no-print">
+        <div class="cs-header-inner">
+            <a href="../index.html" class="cs-logo">
+                <img src="../img/logo-ilerna.svg" alt="Logo iLERNA">
+                <div class="cs-logo-text">
+                    iLERNA
+                    <span>Curso de Especialización en IA y Big Data</span>
+                </div>
+            </a>
+            <div class="cs-nav-actions">
+                <a href="index.html" class="back-link">&larr; Módulo de Repaso</a>
+                <button onclick="window.print()" class="btn-print">Imprimir</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-container">
+
+        <!-- TÍTULO -->
+        <div class="cs-title-block">
+            <h1>Resumen: Ecosistema de Software y Librerías</h1>
+            <p style="margin-top:6px; ">
+                Diccionario técnico de herramientas de Ingesta, Procesamiento, IA, BI y Monitorización
+            </p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>1. INGESTA Y MOVIMIENTO (DATA PIPELINES)</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">Apache Sqoop <span class="sw-tag">SQL-Hadoop</span></span>
+                <p class="sw-desc">Transferencia masiva de datos entre bases de datos relacionales (RDBMS) y Hadoop/HDFS usando conectores <strong>JDBC</strong>.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache Kafka <span class="sw-tag">Streaming</span></span>
+                <p class="sw-desc">Plataforma de mensajería asíncrona "Pub-Sub". <strong>MirrorMaker</strong> se usa para replicar topics entre clústeres distantes.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache NiFi <span class="sw-tag">Orquestación</span></span>
+                <p class="sw-desc">Herramienta visual para automatizar flujos de datos. Ideal para mover información entre sistemas con seguridad y control de errores.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache Flume <span class="sw-tag">Logs</span></span>
+                <p class="sw-desc">Servicio distribuido y fiable para recolectar, agregar y mover grandes volúmenes de <strong>logs</strong> hacia HDFS.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Hadoop DistCp <span class="sw-tag">Copia</span></span>
+                <p class="sw-desc">Herramienta de copia distribuida basada en MapReduce para mover petabytes entre clústeres Hadoop de forma masiva.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>2. ALMACENAMIENTO, BASES DE DATOS Y FORMATOS</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">HDFS <span class="sw-tag">Storage</span></span>
+                <p class="sw-desc">Sistema de Archivos Distribuido de Hadoop. Basado en <strong>NameNode</strong> (metadatos) y <strong>DataNodes</strong> (bloques de datos).</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Delta Lake <span class="sw-tag">ACID Layer</span></span>
+                <p class="sw-desc">Capa de almacenamiento de código abierto que aporta transacciones ACID al Data Lake sobre formatos como Parquet.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache HBase <span class="sw-tag">NoSQL</span></span>
+                <p class="sw-desc">Base de datos NoSQL orientada a columnas sobre HDFS. Permite acceso aleatorio, lectura/escritura en tiempo real.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Formatos (Parquet/Avro) <span class="sw-tag">Serialización</span></span>
+                <p class="sw-desc"><strong>Parquet:</strong> Almacenamiento columnar (rápido para lectura). <strong>Avro:</strong> Basado en esquemas (rápido para escritura).</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>3. PROCESAMIENTO Y CÓMPUTO DISTRIBUIDO</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">Apache Spark <span class="sw-tag">In-Memory</span></span>
+                <p class="sw-desc">Motor de procesamiento ultrarrápido en memoria. Incluye <strong>Spark SQL</strong>, <strong>MLlib</strong> (IA) y <strong>Spark Streaming</strong>.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache Flink <span class="sw-tag">Real-Time</span></span>
+                <p class="sw-desc">Motor de procesamiento de flujos de datos (streams) de muy baja latencia y alta tolerancia a fallos.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache Hive / Presto <span class="sw-tag">SQL Engine</span></span>
+                <p class="sw-desc">Permiten ejecutar consultas SQL sobre el Data Lake. Presto destaca por su velocidad en análisis interactivos.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Apache Airflow / Oozie <span class="sw-tag">Scheduler</span></span>
+                <p class="sw-desc"><strong>Airflow:</strong> Programación de tareas mediante DAGs en Python. <strong>Oozie:</strong> Orquestador basado en XML para trabajos Hadoop.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>4. INTELIGENCIA ARTIFICIAL Y LIBRERÍAS</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">Scikit-Learn <span class="sw-tag">Machine Learning</span></span>
+                <p class="sw-desc">Librería estándar para ML clásico en Python: regresiones, clasificación (Random Forest) y clustering (K-Means).</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Keras / TensorFlow <span class="sw-tag">Google Deep Learning</span></span>
+                <p class="sw-desc">Ecosistema desarrollado por <strong>Google</strong> para el entrenamiento de redes neuronales profundas (MLP, CNN, RNN).</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">PyTorch <span class="sw-tag">Meta Deep Learning</span></span>
+                <p class="sw-desc">Framework de Deep Learning desarrollado por <strong>Meta (Facebook)</strong>. Destaca por su flexibilidad y es ampliamente usado en investigación y producción.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Jupyter / Colab <span class="sw-tag">Notebooks</span></span>
+                <p class="sw-desc">Entornos interactivos que facilitan la <strong>experimentación rápida</strong> y el prototipado de modelos mediante celdas de código ejecutables.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Great Expectations <span class="sw-tag">Data Quality</span></span>
+                <p class="sw-desc">Framework de validación de datos que actúa como <strong>"tests unitarios para bases de datos"</strong> asegurando la calidad del pipeline.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Pandas / NumPy <span class="sw-tag">Data Prep</span></span>
+                <p class="sw-desc">Librerías fundamentales para <strong>manipular y limpiar datos</strong>, así como operaciones de álgebra lineal sobre matrices masivas.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>5. VISUALIZACIÓN, BI Y MONITORIZACIÓN</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">Power BI / Tableau <span class="sw-tag">BI Tools</span></span>
+                <p class="sw-desc">Líderes en Dashboards interactivos. Power BI usa <strong>DAX</strong>; Tableau destaca en exploración visual libre.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Qlik Sense / Looker <span class="sw-tag">BI Tools</span></span>
+                <p class="sw-desc">Qlik usa un motor asociativo in-memory; Looker se basa en modelado de datos con <strong>LookML</strong>.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Prometheus / Grafana <span class="sw-tag">Observability</span></span>
+                <p class="sw-desc"><strong>Prometheus:</strong> Recolección de métricas de tiempo real. <strong>Grafana:</strong> Creación de paneles visuales para monitorizar hardware.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">ELK Stack <span class="sw-tag">Log Analysis</span></span>
+                <p class="sw-desc">Elasticsearch (Búsqueda), Logstash (Procesado) y Kibana (Visualización) para gestionar petabytes de logs.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>6. GOBERNANZA, OPS Y ROBÓTICA</h2>
+        <div class="software-grid">
+            <div class="sw-card">
+                <span class="sw-name">Apache Atlas <span class="sw-tag">Gobernanza</span></span>
+                <p class="sw-desc">Catálogo de metadatos y gestión de <strong>Data Lineage</strong> (linaje del dato) para auditoría y cumplimiento.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">Docker / Kubernetes <span class="sw-tag">Containers</span></span>
+                <p class="sw-desc">Aislamiento de aplicaciones en contenedores ligeros y orquestación masiva de los mismos en clústeres.</p>
+            </div>
+            <div class="sw-card">
+                <span class="sw-name">ROS / MQTT <span class="sw-tag">Robotics/IoT</span></span>
+                <p class="sw-desc"><strong>ROS:</strong> Middleware para robótica. <strong>MQTT:</strong> Protocolo pub-sub ultra-ligero para sensores IoT de bajo consumo.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER ILERNA -->
+    <footer class="cs-footer">
+        <strong>iLERNA</strong>
+        Curso de Especialización en Inteligencia Artificial y Big Data<br>
+        <a href="https://www.ilerna.es/" target="_blank">www.ilerna.es</a><br>
+        Centro oficial de FP online y presencial · Titulaciones 100% oficiales
+    </footer>
+
+</body>
+
+</html>

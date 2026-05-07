@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 1: Almacenamiento Masivo - Big Data Aplicado iLERNA">
-    <title>Cheatsheet: BDA Tema 1 — Almacenamiento</title>
+    <meta name="description" content="Repaso del Tema 1: Almacenamiento Masivo - Big Data Aplicado iLERNA">
+    <title>Repaso: BDA Tema 1 — Almacenamiento</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { padding: 2px 6px; }
     </style>
 </head>
 
@@ -34,38 +34,50 @@
     <div class="cheatsheet-container">
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 1. Almacenamiento Masivo y Herramientas</h1>
+            <h1>Repaso: Tema 1. Almacenamiento Masivo y Herramientas</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. TIPOLOGÍAS DE ALMACENAMIENTO (DAS, NAS Y SAN)</h2>
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>TIPOLOGÍAS DE ALMACENAMIENTO (DAS, NAS Y SAN) Y ALTA DISPONIBILIDAD</h2>
 
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
                 <span class="metric-title">DAS (Direct Attached)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
+                <p style="margin-top:6px; ">
                     Almacenamiento directamente conectado al servidor (USB, SATA). Muy rápido y barato, pero <strong>no se puede compartir por red</strong>. Si el servidor cae, los datos quedan aislados.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">NAS (Network Attached)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
+                <p style="margin-top:6px; ">
                     Almacenamiento compartido conectado a la red TCP/IP (como una "carpeta compartida" gigante). Opera a <strong>nivel de archivos</strong> (NFS, SMB/CIFS). Ideal para ofimática y archivos compartidos.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">SAN (Storage Area Net.)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
+                <p style="margin-top:6px; ">
                     Red independiente de ultra-alta velocidad (Fibra Óptica/iSCSI) dedicada 100% al almacenamiento. Opera a <strong>nivel de bloques puros</strong>. Es el estándar para Bases de Datos masivas críticas y clústeres.
                 </p>
             </div>
         </div>
 
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Alta Disponibilidad (HA) y Redundancia</span>
+            <p>
+                La <strong>Alta Disponibilidad (HA)</strong> garantiza que los datos sigan accesibles incluso ante fallos críticos de hardware. Este estado se logra fundamentalmente mediante la <strong>redundancia</strong> (duplicidad de componentes y caminos de datos), evitando puntos únicos de fallo.
+            </p>
+        </div>
+
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse;  text-align: left;">
             <thead>
                 <tr>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 55%;">Configuraciones RAID (Redundancia y Rendimiento)</th>
@@ -75,55 +87,78 @@
             <tbody style="vertical-align: top;">
                 <tr>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>RAID 0 (Striping):</strong> Suma velocidad, 0% redundancia (Si rompe 1 disco pierdes todo).<br>
-                        <strong>RAID 1 (Mirroring):</strong> Doble coste, es un espejo 1:1. Máxima seguridad.<br>
-                        <strong>RAID 5 (Paridad simple):</strong> Requiere min 3 discos. Tolerancia a rotura de 1 disco.<br>
-                        <strong>RAID 10:</strong> Suma velocidad (Striping) de varios espejos (Mirroring). El más caro/seguro.
+                        <strong>RAID 0 (Striping):</strong> Suma velocidad, 0% redundancia. Si falla 1 disco, pierdes todo.<br>
+                        <strong>RAID 1 (Mirroring):</strong> Espejo 1:1. Máxima seguridad pero doble coste de almacenamiento.<br>
+                        <strong>RAID 5 (Paridad simple):</strong> Requiere mín 3 discos. Tolera el fallo de 1 disco.<br>
+                        <strong>RAID 6 (Doble paridad):</strong> Requiere mín 4 discos. Tolera el fallo de <strong>2 discos</strong> simultáneos.<br>
+                        <strong>RAID 01 vs 10:</strong> El <strong>RAID 10</strong> (Divisiones de Espejos) es más robusto y rápido de reconstruir que el <strong>RAID 01</strong> (Espejo de Divisiones).
                     </td>
                     <td style="padding: 8px; border-bottom: 1px solid #ddd;">
                         <strong>Scale-Up (Vertical):</strong> Añades más RAM a la misma placa base. Límite físico rápido.<br>
-                        <strong>Scale-Out (Horizontal):</strong> Añades millones de ordenadores baratos estándar interconectados. Es el <strong>pilar del Big Data.</strong> (ej: Cassandra).
+                        <strong>Scale-Out (Horizontal):</strong> Añades millones de ordenadores baratos estándar interconectados. Es el <strong>pilar del Big Data</strong> para aumentar capacidad sin interrumpir operaciones.
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. ECOSISTEMA HADOOP Y DATA LAKES AVANZADOS</h2>
+        <h2>ECOSISTEMA HADOOP, DATA LAKES Y CALIDAD DEL DATO</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Calidad de los Datos</span>
+                <p>
+                    Se define por el grado en que los datos son <strong>precisos, completos y consistentes</strong>. Es el requisito indispensable para que el análisis sea fiable y aporte valor real al negocio.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Orquestación: Apache Oozie</span>
+                <p>
+                    Herramienta encargada de coordinar y gestionar los trabajos de Hadoop mediante flujos de trabajo (workflows) definidos en archivos <strong>XML</strong>.
+                </p>
+            </div>
+        </div>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div>
                 <h3>Apache Hadoop (La Arquitectura Clásica)</h3>
-                <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
-                    <li><strong>HDFS:</strong> Sistema de archivos. Trocea archivos enormes en <em>Bloques de 128MB</em> y los reparte y clona por miles de nodos (Replicación x3).</li>
-                    <li><strong>MapReduce:</strong> El "trabajador". El código va hacia donde está el dato (Map), filtra y luego agrupa todas las respuestas parciales en un resultado final (Reduce).</li>
-                    <li><strong>YARN:</strong> El orquestador/gerente. Asigna la CPU y RAM necesaria a cada nodo.</li>
-                    <li><strong>Modelo WORM:</strong> <em>Write Once, Read Many</em>. En HDFS es casi imposible "editar/hacer Update" en una celda existente. El dato inmutable garantiza protección absoluta en bancos.</li>
+                <ul style="padding-left:16px; line-height:1.6; ">
+                    <li><strong>HDFS:</strong> Divide archivos en bloques (128MB). El <strong>NameNode</strong> guarda el mapa de archivos en RAM; los <strong>DataNodes</strong> almacenan los bloques físicos replicados (x3).</li>
+                    <li><strong>MapReduce:</strong> Paradigma donde el cálculo viaja al dato. <strong>Map</strong> (filtra/trocea) y <strong>Reduce</strong> (resume/agrega).</li>
+                    <li><strong>YARN:</strong> El sistema operativo de Hadoop; gestiona y asigna recursos (CPU/RAM) a las aplicaciones.</li>
+                    <li><strong>Modelo WORM:</strong> <em>Write Once, Read Many</em>. Datos inmutables; una vez escritos en HDFS, no se pueden modificar, solo borrar o añadir.</li>
                 </ul>
             </div>
             <div>
                 <h3>Data Lakes, Spark y Delta Lake</h3>
-                <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
-                    <li><strong>Data Lake:</strong> "Lago" gigante donde se vierten petabytes de datos en <em>crudo</em> (sin esquema inicial) abaratando el almacenamiento masivo.</li>
-                    <li><strong>Apache Spark:</strong> La evolución de Hadoop: procesa la información hasta <strong>100 veces más rápido</strong> ya que lo ejecuta todo sobre Memoria RAM y no grabando en discos como MapReduce.</li>
-                    <li><strong>Delta Lake:</strong> Es la capa que añade "ACID" (Integridad relacional transaccional) a un Data Lake en bruto. Permite hacer <em>Updates, Time Travel (volver a datos de ayer)</em> usando ficheros parquet.</li>
+                <ul style="padding-left:16px; line-height:1.6; ">
+                    <li><strong>Data Lake:</strong> Almacén de datos en crudo (sin esquema previo). Ideal para Big Data por su bajo coste y flexibilidad.</li>
+                    <li><strong>Apache Spark:</strong> Procesa en memoria (RAM), siendo hasta 100 veces más rápido que MapReduce. Usa <strong>RDDs</strong> (colecciones de objetos tolerantes a fallos).</li>
+                    <li><strong>Delta Lake:</strong> Añade **propiedades ACID** y versionado (Time Travel) al Data Lake, permitiendo actualizaciones seguras.</li>
                 </ul>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. ANÁLISIS DE DATOS Y FRAMEWORKS DE PROCESAMIENTO</h2>
+        <h2>ANÁLISIS DE DATOS, INTELIGENCIA Y MONITORIZACIÓN</h2>
+
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">ETL, DWH e IA Aplicada</span>
+            <p>
+                El proceso <strong>ETL</strong> permite transformar datos de múltiples fuentes <strong>antes de la carga</strong> central. El <strong>Data Warehouse</strong> almacena volúmenes de <strong>datos estructurados</strong> para análisis. La <strong>IA</strong> se aplica sobre estos datos para hacer predicciones o tomar decisiones basadas en patrones.
+            </p>
+        </div>
 
         <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; text-align: left;">
             <thead>
-                <tr style="background-color: var(--color-bg); font-size: 0.9rem;">
+                <tr style="background-color: var(--color-bg); ">
                     <th style="padding:8px; width: 33%; border-bottom: 2px solid var(--color-primary);">Análisis Descriptivo</th>
                     <th style="padding:8px; width: 33%; border-bottom: 2px solid var(--color-primary);">Análisis Predictivo</th>
                     <th style="padding:8px; width: 33%; border-bottom: 2px solid var(--color-primary);">Análisis Prescriptivo</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="font-size: 0.85rem;" valign="top">
+                <tr style="" valign="top">
                     <td style="padding:8px;"><strong>¿Qué ha pasado?</strong><br>Mirada al pasado usando BI tradicional. Ej: "Ventas de Abril cayeron 10%".</td>
                     <td style="padding:8px;"><strong>¿Qué pasará?</strong><br>Aplicación de Machine Learning sobre históricos. Ej: "Caeremos 10% en Mayo".</td>
                     <td style="padding:8px;"><strong>¿Qué debo hacer?</strong><br>IA avanzada que receta acciones. Ej: "Aplica descuento del 5% ahora para no caer".</td>
@@ -131,25 +166,33 @@
             </tbody>
         </table>
 
-        <div class="metric-card" style="margin-bottom:12px; padding:12px;">
-            <p style="font-size:0.85rem; margin-bottom: 8px;"><strong>Spark Streaming vs Apache Flink (La Guerra del Tiempo Real):</strong></p>
-            <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
-                <li><strong>Spark Streaming (Micro-Batching):</strong> Realmente no es "tiempo real puro". Recoge los eventos como si fuesen mini-fotos/lotes cada X milisegundos (Latencia ~Segundos). Muy fácil de integrar con código viejo SQL.</li>
-                <li><strong>Apache Flink (True Streaming):</strong> Motor nativo por eventos. Procesa gota a gota conforme nace el evento en el mundo físico. Es el estándar de Netflix/Uber (Latencia submilisegundo).</li>
-            </ul>
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Monitorización: Prometheus</span>
+                <p>
+                    Herramienta estándar para la recolección de métricas en tiempo real. Permite monitorizar la salud del clúster y el rendimiento de las aplicaciones masivas.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Tiempo Real (Spark vs Flink)</span>
+                <p>
+                    <strong>Spark Streaming:</strong> Micro-Batching (Lotes cada X ms). Fácil integración SQL.<br>
+                    <strong>Apache Flink:</strong> True Streaming (Evento a evento). Latencia submilisegundo (Uber/Netflix).
+                </p>
+            </div>
         </div>
         
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. CLOUD Y MODELOS DE SERVICIO EN ALMACENAMIENTO</h2>
+        <h2>CLOUD Y MODELOS DE SERVICIO EN ALMACENAMIENTO</h2>
 
-        <p style="font-size:0.85rem; padding-bottom: 12px; line-height: 1.6;">
-            La adopción de tecnologías Cloud (AWS S3, Google Cloud Storage, Azure Blob) habilita el <strong>desacoplamiento de almacenamiento y computación</strong>, ofreciendo facturación nativa por gigabyte subido y facilitando el uso de servicios gestionados sin adquirir hardware millonario.
+        <p style=" padding-bottom: 12px; line-height: 1.6;">
+            La adopción de tecnologías Cloud (AWS S3, Google Cloud Storage, Azure Blob) habilita el <strong>desacoplamiento de almacenamiento y computación</strong>, ofreciendo facturación nativa por gigabyte.
         </p>
 
-        <ul style="padding-left:16px; line-height:1.6; font-size:0.85rem;">
-            <li><strong>IaaS en Big Data (Discos Brutos):</strong> Te alquilan volúmenes vacíos (Amazon EBS). Tú formateas, particionas, instalas HDFS y cruzas los dedos. Máxima personalización y complejidad.</li>
-            <li><strong>PaaS en Big Data (DDBB Gestionadas):</strong> Servicios como <em>Google BigQuery</em> o <em>Amazon RDS</em>. El Cloud asume la responsabilidad si un disco físico se quema y auto-escala la capacidad. Tú solo lanzas queries SQL y subes tus Dataframes y modelos.</li>
-            <li><strong>SaaS en Big Data (Analítica Llave en mano):</strong> Como <em>Power BI Cloud</em> o <em>Salesforce Einstein</em>. Entras usando el navegador; el software y las bases de datos están 100% cerrados para ti, tú solo usas los gráficos finales.</li>
+        <ul style="padding-left:16px; line-height:1.6; ">
+            <li><strong>IaaS en Big Data:</strong> Te alquilan infraestructura (discos brutos). Tú instalas HDFS y gestionas todo.</li>
+            <li><strong>PaaS en Big Data:</strong> Servicios gestionados (BigQuery, RDS). El Cloud asume la responsabilidad del hardware y auto-escala.</li>
+            <li><strong>SaaS en Big Data:</strong> Analítica llave en mano (Power BI Cloud). El software está cerrado, tú solo usas los gráficos finales.</li>
         </ul>
 
     </div>

@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet del Tema 5: Business Intelligence y KDD - Big Data Aplicado iLERNA">
-    <title>Cheatsheet: BDA Tema 5 — Business Intelligence</title>
+    <meta name="description" content="Repaso del Tema 5: Business Intelligence y KDD - Big Data Aplicado iLERNA">
+    <title>Repaso: BDA Tema 5 — Business Intelligence</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
@@ -34,96 +34,105 @@
     <div class="cheatsheet-container">
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 5. Business Intelligence (BI) y KDD</h1>
+            <h1>Repaso: Tema 5. Business Intelligence (BI) y KDD</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-bda" style="background-color: #607d8b;">BDA</span> Big Data Aplicado (Módulo 5075)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
-        <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. FUNDAMENTOS DEL BUSINESS INTELLIGENCE (BI)</h2>
+        <!-- ═══════════════        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>FUNDAMENTOS DEL BUSINESS INTELLIGENCE (BI) Y ESTRATEGIA</h2>
 
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">Proceso ETL</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    (<strong>Extract, Transform, Load</strong>). La espina dorsal clásica del BI. <em>Extrae</em> datos vivos y sucios, los <em>Transforma</em> (cruza) para darles sentido, y los <em>Carga</em> lentamante un Data Warehouse por la noche para su análisis diario.
+                <span class="metric-title">Proceso ETL / ELT</span>
+                <p style="margin-top:6px; ">
+                    (<strong>Extract, Transform, Load</strong>). Espina dorsal del BI. Los pipelines garantizan la calidad en la carga. <strong>Apache Spark</strong> permite transformaciones avanzadas en memoria para datasets masivos.
                 </p>
             </div>
             <div class="metric-card">
                 <span class="metric-title">Data Warehouse (DWH)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    El "Gran Almacén Histórico Cerrado". A diferencia del Data Lake (que guarda basura cruda), el Warehouse exige limpieza rigurosa: alberga bases de datos altamente estructuradas con formato rígido y listas para hacer cuadros de mando financieros directos.
+                <p style="margin-top:6px; ">
+                    Almacén histórico estructurado. La <strong>Arquitectura de Datos</strong> define aquí el almacenamiento y los esquemas. Debe garantizar la <strong>Gobernanza</strong> y calidad de los datos.
                 </p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">Cubos OLAP</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    (OnLine Analytical Processing). Estructuras hiperdesarrolladas multidimensionales que pre-calculan sumas colosales antes de que preguntes. Permiten rotar 5 años de métricas por ciudad y departamento en el dashboard de PowerBI arrastrando el ratón en en microsegundos.
+                <span class="metric-title">Métricas y ROI</span>
+                <p style="margin-top:6px; ">
+                    La convergencia BI/Big Data aporta capacidad <strong>predictiva y prescriptiva</strong>. El <strong>ROI</strong> mide el impacto económico real de los modelos analíticos.
                 </p>
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. EL PROCESO KDD (Knowledge Discovery)</h2>
+        <div class="metric-card" style="margin-bottom:12px;">
+            <span class="metric-title">Análisis Multidimensional (Cubos OLAP)</span>
+            <p>
+                Estructuras pre-calculadas que permiten analizar datos desde múltiples dimensiones. Operaciones estándar:
+            </p>
+            <ul style="padding-left:16px; margin-top:8px;">
+                <li><strong>Drill-down / Roll-up:</strong> Aumentar o disminuir el nivel de detalle (ej: de Año a Mes).</li>
+                <li><strong>Slice and Dice:</strong> Selección de subconjuntos de datos y rotación de dimensiones.</li>
+            </ul>
+        </div>
 
-        <p style="font-size:0.85rem; margin-bottom: 8px;">Metodología canónica (Descubrimiento KDD) para transformar "un inmenso mar de ruido caótico digital" en <strong>conocimiento accionable e inteligencia</strong>. Fases secuenciales inquebrantables:</p>
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>EL PROCESO KDD (Knowledge Discovery)</h2>
+
+        <p style=" margin-bottom: 8px;">Metodología para transformar ruido digital en <strong>conocimiento accionable</strong>. Es un proceso <strong>iterativo</strong> que permite revertir fases si el modelo no es útil:</p>
         
-        <ol style="padding-left:24px; line-height:1.6; font-size:0.85rem; margin-bottom: 12px;">
-            <li><strong>Selección:</strong> Elegir milimétricamente contra qué sistemas origen atacar (ej: "No volcaremos todo el servidor, me sirven solo las facturas del TPV principal del mes de Julio").</li>
-            <li><strong>Limpieza (Preprocesamiento):</strong> Tratar Valores Ausentes (NaNs), borrar ruido atípico salvaje (Outliers irreales) e imputar vacíos. Históricamente agota entre el 70% u 80% del oxígeno y labor de un Data Scientist.</li>
-            <li><strong>Transformación:</strong> Adaptar matemáticamente la tabla higienizada para los algoritmos (Scaling con Normalización Logarítmica Z-Score, crear Features nuevas, OHE, etc.).</li>
-            <li><strong>Minería de Datos (Data Mining):</strong> Lanzar las Redes Neuronales o Clustering Masivo sobre las matrices listas para buscar y "romper la piñata" matemática de patrones ocultos. Es la tarea "automática e invisible de las máquinas".</li>
-            <li><strong>Evaluación / Interpretación Cognitiva:</strong> Los científicos humanos frenan, examinan los Outputs y los validan para convertirlos finalmente en *Informes Visibles* utilizables en las reuniones de los directivos.</li>
+        <ol style="padding-left:24px; line-height:1.6;  margin-bottom: 12px;">
+            <li><strong>Selección:</strong> Elegir milimétricamente los sistemas origen.</li>
+            <li><strong>Limpieza (Preprocesamiento):</strong> Eliminar <strong>duplicados, nulos e inconsistencias</strong>. Incluye el tratamiento de <strong>Outliers</strong> (valores atípicos).</li>
+            <li><strong>Transformación:</strong> Adaptar los datos (Scaling, Normalización). Incluye técnicas como <strong>One-hot Encoding</strong> para variables categóricas.</li>
+            <li><strong>Minería de Datos (Data Mining):</strong> Búsqueda de patrones. Algoritmo <strong>K-Means</strong> para la <strong>segmentación</strong> de datasets.</li>
+            <li><strong>Evaluación / Interpretación:</strong> Validación de los resultados para su uso ejecutivo.</li>
         </ol>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. ECOSISTEMA DE EXPANSIÓN VISUAL (BI TOOLS)</h2>
+        <h2>ECOSISTEMA DE HERRAMIENTAS BI</h2>
 
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse;  text-align: left;">
             <thead>
                 <tr>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Microsoft Power BI</th>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Tableau</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Qlik (Qlik Sense)</th>
+                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Qlik Sense</th>
                     <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 25%;">Looker (Google)</th>
                 </tr>
             </thead>
             <tbody style="vertical-align: top;">
                 <tr>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong>El rey mundial del mercado general.</strong> Precio y licencias hiperagresivos. Conecta con el ecosistema inmenso de Office 365, DAX y Azure Synapse fluidamente.
-                    </td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        Pionero y soberano en la "Cuidada Estética y Exploración Visual libre". Altísimo rendimiento arrastrando gráficas dinámicas (Drag & Drop). Ahora dentro de Salesforce.
-                    </td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        Arquitectura única basada en su "Motor Asociativo" sobre pura memoria RAM in-memory. Empareja datos de tablas sin forzar joins SQL rígidos previos.
-                    </td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        Visor Web Nativo nacido dentro la nube. Utiliza sintaxis propia declarativa "LookML" especializándose al máximo en proyectar Queries vivas delegadas sobre la bestia de BigQuery GCP.
-                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Conecta con el ecosistema Office 365, DAX y Azure Synapse fluidamente.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Líder en estética y exploración visual libre (Drag & Drop).</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Arquitectura basada en un "Motor Asociativo" sobre memoria RAM in-memory.</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Analítica nativa cloud sobre esquemas definidos con LookML (BigQuery).</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. INTEGRACIÓN CON BIG DATA Y DOBLE VALIDACIÓN FÍSICA</h2>
+        <h2>INTEGRACIÓN Y DOBLE VALIDACIÓN FINAL</h2>
 
         <div class="grid-2col" style="margin-bottom:12px;">
             <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Bypass y delegación de Poderes (Presto / Spark)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Por muy robusto que sea PowerBI, petaría si intentase exportarse 5.000 millones de filas localmente desde Hadoop para ordenarlas y sumarlas.<br><br>
-                    <strong>La Arquitectura Distribuida Correcta:</strong> PowerBI no descarga nada, simplemente se liga vía conector ODBC lanzando la mega-consulta hacia las decenas de ordenadores del motor <em>Presto (Trino) o Spark SQL</em> remoto. El clúster remoto de Amazon AWS hierve las sumas de petabytes por fuerza bruta en dos segundos y solo le retorna "El numerito final limpio cruzado en megabytes" que PowerBI visualiza plácidamente sobre sus gráficos de tartas.
+                <span class="metric-title">Arquitectura Bypass (Spark / Presto)</span>
+                <p style="margin-top:6px; ">
+                    PowerBI se liga vía conector <strong>ODBC/JDBC</strong> lanzando consultas hacia motores remotos (Spark SQL). El clúster procesa petabytes y retorna solo el resultado limpio para su visualización.
                 </p>
             </div>
             <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Validación Final (Algorítmica vs Ejecutiva)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Un modelo de fraude en IA, para lanzarse a Producción Industrial, sufre dos tribunales mortales.<br><br>
-                    <strong>1. Validación Estadística (El lado frío):</strong> ¿Gozamos de un AUC-ROC soberbio? ¿Nuestra matriz de confusión está libre de Falsos Positivos críticos? Confirmación Matemática sólida.<br><br>
+                <span class="metric-title">Validación (Estadística vs Negocio)</span>
+                <p style="margin-top:6px; ">
+                    <strong>1. Validación Estadística:</strong> ¿Goza el modelo de métricas matemáticas sólidas (AUC, precisión)?<br><br>
+                    <strong>2. Validación de Negocio:</strong> ¿Aporta valor real? ¿Es viable legalmente (RGPD)? Si no hay valor ejecutivo, el modelo se descarta.
+                </p>
+            </div>
+        </div>sos Positivos críticos? Confirmación Matemática sólida.<br><br>
                     <strong>2. Validación de Negocio (El lado humo/Business):</strong> Pasa si y solo si reporta valor comercial. ¿Se ajusta esto a las leyes RGPD actuales del banco europeo antes de aplicarlo? ¿Generará realmente ahorros netos en euros? Si la respuesta directiva es NO, el esfuerzo tiró al abismo monetario por más que el AUC fuera un 99%.
                 </p>
             </div>

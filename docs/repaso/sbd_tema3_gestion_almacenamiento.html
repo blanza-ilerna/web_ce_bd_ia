@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cheatsheet SBD Tema 3: Gestión y Almacenamiento - Sistemas de Big Data iLERNA">
-    <title>Cheatsheet: SBD Tema 3 — Gestión de Datos</title>
+    <meta name="description" content="Repaso SBD Tema 3: Gestión y Almacenamiento - Sistemas de Big Data iLERNA">
+    <title>Repaso: SBD Tema 3 — Gestión de Datos</title>
     <link rel="stylesheet" href="../css/cheatsheet.css">
     <style>
         .inline-tags { margin-top: 4px; display: block; }
-        .inline-tags .tag { font-size: 0.65rem; padding: 2px 6px; }
+        .inline-tags .tag { padding: 2px 6px; }
     </style>
 </head>
 
@@ -34,85 +34,144 @@
     <div class="cheatsheet-container">
         <!-- TÍTULO -->
         <div class="cs-title-block">
-            <h1>Cheatsheet: Tema 3. Gestión y Almacenamiento Masivo</h1>
+            <h1>Repaso: Tema 3. Gestión y Almacenamiento Masivo</h1>
             <p style="margin-top:6px; ">
                 Leyenda:
                 <span class="tag tag-sbd" style="background-color: #8e44ad;">SBD</span> Sistemas de Big Data (Módulo 5074)
             </p>
-        </div>
+        
+            <div style="margin-top: 15px; padding: 12px; background-color: #f5f5f5; border-left: 4px solid #666666; color: #333333;  border-radius: 4px; text-align: left;">
+                <strong>⚠️ Aviso Importante:</strong> Es obligación del estudiante repasar el material didáctico completo. Este resumen puede omitir conceptos y no estar completamente alineado con el contenido final del examen.
+            </div>
+</div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>A. EVOLUCIÓN DE LOS REPOSITORIOS CORPORATIVOS</h2>
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>REPOSITORIOS Y ESTRATEGIAS DE ALMACENAMIENTO</h2>
 
         <div class="grid-3col" style="margin-bottom:12px;">
             <div class="metric-card">
-                <span class="metric-title">1. Data Warehouse</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Búnker tradicional blindado rígido. Acumula <strong>datos empresariales 100% estructurados</strong> limpiados previamente (ETL puros). Histórico fácil de entender y preparado en bandeja de plata para Dashboards y SQL.
+                <span class="metric-title">Data Warehouse (Estructurado)</span>
+                <p>
+                    Búnker tradicional blindado. Acumula <strong>datos empresariales 100% estructurados</strong> limpiados previamente (ETL puros). Histórico fácil de entender y preparado para Dashboards y SQL.
                 </p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">2. Data Lake</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Océano masivo en bruto infinito y barato. Absorbe toda la información sin discriminación <strong>(texto, logs caóticos, audios)</strong> usando la estrategia del volcado directo ELT. Clave para los algoritmos devoradores del Machine Learning masivo.
+                <span class="metric-title">Data Lake (Crudo)</span>
+                <p>
+                    Océano masivo en bruto. Absorbe información sin discriminación (texto, logs, audios) usando la estrategia del volcado directo ELT. Clave para algoritmos de Machine Learning.
                 </p>
             </div>
             <div class="metric-card">
-                <span class="metric-title">3. Data Lakehouse</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    <em>(Híbrido Delta Lake).</em> La fusión puntera actual. Permite la agresividad y abaratamiento de disco del Lago gigante, pero otorgándole rigidez ACID y compatibilidad transaccional en tiempo real para no sacrificar seguridad de borrado.
+                <span class="metric-title">Data Lakehouse (Híbrido)</span>
+                <p>
+                    La fusión puntera (ej: Delta Lake). Combina la flexibilidad del Lago con la rigidez del Warehouse, permitiendo <strong>propiedades ACID</strong> y consultas SQL en tiempo real.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Almacenamiento en la Nube (Tiers)</span>
+                <p>Clasificación según acceso y coste:</p>
+                <ul style="padding-left:16px; margin-top:4px;">
+                    <li><strong>Hot Storage:</strong> Datos críticos de uso frecuente y baja latencia.</li>
+                    <li><strong>Nearline (Warm):</strong> Punto intermedio para consultas ocasionales.</li>
+                    <li><strong>Cold / Archival:</strong> Datos históricos o legales de acceso muy poco frecuente.</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">OLTP vs OLAP</span>
+                <p>
+                    <strong>OLTP:</strong> Sistemas transaccionales que gestionan el día a día operativo.<br>
+                    <strong>OLAP:</strong> Sistemas analíticos para procesar consultas complejas sobre grandes históricos de datos.
                 </p>
             </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════ -->
-        <h2>B. ANATOMÍA DEL ALMACENAMIENTO DISTRIBUIDO (HDFS)</h2>
+        <h2>ARQUITECTURA DISTRIBUIDA Y ZONAS DE DATOS</h2>
 
         <div class="metric-card" style="margin-bottom:12px;">
-            <span class="metric-title">Fundamentos Core de HDFS (Hadoop File System)</span>
-            <ul style="padding-left:16px; line-height:1.6; margin-top:6px; font-size:0.85rem;">
-                <li><strong>Misión Básica:</strong> Inyectarle un archivo insostenible de 1 Terabyte a la arquitectura, trocearlo matemáticamente como en cientos de gajos de 128MB, y esparcirlos inteligentemente por discos físicos de cientos de ordenadores baratos diferentes.</li>
-                <li><strong>NameNode (El Capataz / Talón de Aquiles):</strong> Servidor Maestro. Él NO ve, ni guarda archivos reales. Solo incrusta en su Memoria RAM un "Índice de ubicaciones" de dónde está desperdigado cada bloque. Si la placa base del NameNode explota sin backup físico, se pierde la empresa instantáneamente.</li>
-                <li><strong>DataNodes (Los Obreros Replicantes):</strong> Los ordenadores de abajo. Asumen el bloque físico en su disco e, inadvertidamente, la arquitectura les somete a <strong>clonarlo 2 veces por defecto de seguridad hacia de sus compañeros</strong>. Si una máquina entera arde físicamente en el rack 3, el Sistema invoca instantáneamente la copia espejo de los compañeros salvando la web ilesa.</li>
+            <span class="metric-title">HDFS: El Corazón de Hadoop</span>
+            <p>Divide archivos masivos en bloques y los distribuye en un clúster:</p>
+            <ul style="padding-left:16px; margin-top:4px;">
+                <li><strong>NameNode (Maestro):</strong> Gestiona el índice de ubicaciones en RAM. Si falla sin backup, se pierde el acceso a todo el clúster.</li>
+                <li><strong>DataNodes (Esclavos):</strong> Almacenan bloques físicos y los <strong>replican</strong> (por defecto 3 copias) para garantizar la tolerancia a fallos.</li>
             </ul>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════ -->
-        <h2>C. MOTORES DE IMPORTACIÓN HACIA HADOOP</h2>
-
-        <table style="width: 100%; margin-bottom: 12px; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
-            <thead>
-                <tr>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Apache Sqoop (El Traductor Relacional SQL)</th>
-                    <th style="padding: 6px; border-bottom: 2px solid var(--color-primary); background-color: var(--color-bg); width: 50%;">Apache Flume (El Grifo receptor de Logs)</th>
-                </tr>
-            </thead>
-            <tbody style="vertical-align: top;">
-                <tr>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Su especialidad exclusiva se centra en cimentar un puente pesado entre Clústeres Big Data gigantes y las bases anticuadas transaccionales de bancos o ERPs clásicos <strong>(Oracle / MySQL)</strong>. Convirtiéndo esos pesados petabytes históricos al formato distribuido veloz HDFS vía comandos rígidos paralelizables en bloque.</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Su especialidad son los <strong>flujos indomables continuos y asimétricos de la red</strong> de Internet. "Sus agentes" se anclan para vampirizar sin parar millones de Logs por segundo generados desordenadamente en los servidores Web (Clicks, Twitter) vertiéndolos al DataLake crudo.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- ═══════════════════════════════════════════════════ -->
-        <h2>D. GOBERNANZA, RIESGO LEGAL Y CIBERSEGURIDAD</h2>
-
         <div class="grid-2col" style="margin-bottom:12px;">
-            <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Gobernanza Masiva de Clústeres (Data Governance)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    La Gobernanza IT del Dato NO es poner roles y contraseñas. Significa instaurar el <strong>orden sistemático absoluto corporativo</strong>.<br><br>Se basa en construir Metadatos que vigilan centralmente millones de informes: Obligar a mantener una calidad inflexible matemática, eliminar sin dudar Tablas fantasma inútiles y prohibir completamente los "Silos de Datos Ocultos Clandestinos" por los que un comercial guarda bases de datos en su ordenador.
+            <div class="metric-card">
+                <span class="metric-title">Zonificación de Datos</span>
+                <p>
+                    <strong>Zona de Entrada (Landing/Raw):</strong> Donde aterrizan los datos crudos.<br>
+                    <strong>Zona de Transformación (Curated):</strong> Donde los datos se <strong>limpian y enriquecen</strong> antes de su uso.
                 </p>
             </div>
-            <div class="metric-card" style="height: 100%;">
-                <span class="metric-title">Cumplimiento RGPD Europeo (Escudo Anti-Quiebra)</span>
-                <p style="margin-top:6px; font-size:0.85rem;">
-                    Diseñar la arquitectura bajo el mantra absoluto <em>"Privacy By Design"</em>.<br><br>
-                    <strong>La Seudonimización como pilar vital:</strong> Bajo RGPD, prohibido operar en modelos de ML los nombres y DNI en texto plano de clientes vulnerables. Cualquier almacenamiento Big Data distribuido por el mundo es de facto enmascarado y cifrado por clave temporal. Si ocurre una brecha catastrófica hack, la criptografía anula las mega-multas que quebrarían al instante la corporación en Europa.
+            <div class="metric-card">
+                <span class="metric-title">Virtualización de Datos</span>
+                <p>
+                    Permite consultar fuentes heterogéneas <strong>sin mover los datos físicamente</strong>, facilitando el acceso unificado en tiempo real.
                 </p>
             </div>
         </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>INGESTA, GOBERNANZA Y HERRAMIENTAS</h2>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Apache Sqoop (El Traductor SQL)</span>
+                <p>
+                    Conecta bases de datos clásicas (SQL) con Hadoop. Paraleliza la carga mediante múltiples <strong>mappers</strong>. Debe ser <strong>idempotente</strong> para evitar duplicados.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Apache Flume (El Grifo de Logs)</span>
+                <p>
+                    Especializado en recolectar, agregar y mover grandes volúmenes de <strong>datos de streaming y logs</strong> de servidores directamente hacia HDFS.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid-2col" style="margin-bottom:12px;">
+            <div class="metric-card">
+                <span class="metric-title">Data Governance (Gobernanza)</span>
+                <p>
+                    Es el <strong>"Gobierno" del dato</strong>: políticas, roles y estándares que aseguran que el activo sea confiable, seguro y cumpla el RGPD.
+                </p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-title">Data Lineage (Linaje/Trazabilidad)</span>
+                <p>
+                    Es la <strong>"Historia" del dato</strong>: registro visual del recorrido completo y transformaciones desde su origen hasta el informe.
+                </p>
+            </div>
+        </div>
+
+        <table style="margin-bottom:12px;">
+            <thead>
+                <tr>
+                    <th>Herramienta / Lenguaje</th>
+                    <th>Especialidad y Casos de Uso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Neo4j (Grafos)</strong></td>
+                    <td>Ideal para representar <strong>relaciones complejas</strong> entre entidades (Vértices y Aristas).</td>
+                </tr>
+                <tr style="background-color:#f9f9f9;">
+                    <td><strong>Python (Pandas)</strong></td>
+                    <td>Librería fundamental para manejar <strong>estructuras tabulares</strong> (DataFrames).</td>
+                </tr>
+                <tr>
+                    <td><strong>R (Reticulate)</strong></td>
+                    <td>Potencia estadística que permite llamar a módulos de <strong>Python</strong> mediante Reticulate.</td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
 
