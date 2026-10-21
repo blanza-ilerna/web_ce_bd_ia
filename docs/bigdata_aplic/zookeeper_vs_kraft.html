@@ -260,62 +260,62 @@
                 <div class="feature-cards">
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Limitaciones de Escalabilidad</h4>
-                        <p>
-                            <strong>Problema:</strong> Zookeeper no fue diseñado para millones de particiones.<br><br>
-                            - Con 100,000+ particiones: latencia metadata >1 segundo<br>
-                            - Controller log alcanza varios GB, pausas GC largas<br>
-                            - Límite práctico: ~200,000 particiones por clúster
-                        </p>
+                        <p><strong>Problema:</strong> Zookeeper no fue diseñado para millones de particiones.</p>
+                        <ul>
+                            <li>Con 100,000+ particiones: latencia metadata >1 segundo</li>
+                            <li>Controller log alcanza varios GB, pausas GC largas</li>
+                            <li>Límite práctico: ~200,000 particiones por clúster</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Dependencia Externa Crítica</h4>
-                        <p>
-                            <strong>Problema:</strong> Si Zookeeper falla, Kafka se paraliza completamente.<br><br>
-                            - Requiere ensemble de 3-7 nodos independientes<br>
-                            - Split-brain puede corromper metadata<br>
-                            - Operaciones de Kafka dependen de latencia ZK
-                        </p>
+                        <p><strong>Problema:</strong> Si Zookeeper falla, Kafka se paraliza completamente.</p>
+                        <ul>
+                            <li>Requiere ensemble de 3-7 nodos independientes</li>
+                            <li>Split-brain puede corromper metadata</li>
+                            <li>Operaciones de Kafka dependen de latencia ZK</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Recuperación Lenta</h4>
-                        <p>
-                            <strong>Problema:</strong> Failover del controller tarda minutos.<br><br>
-                            - Nueva elección: 30-60 segundos<br>
-                            - Cargar metadata: 1-3 minutos con clústeres grandes<br>
-                            - Sincronización ISR: 2-5 minutos adicionales
-                        </p>
+                        <p><strong>Problema:</strong> Failover del controller tarda minutos.</p>
+                        <ul>
+                            <li>Nueva elección: 30-60 segundos</li>
+                            <li>Cargar metadata: 1-3 minutos con clústeres grandes</li>
+                            <li>Sincronización ISR: 2-5 minutos adicionales</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Complejidad Operacional</h4>
-                        <p>
-                            <strong>Problema:</strong> Gestionar dos sistemas distribuidos es 2x complejo.<br><br>
-                            - Monitorización duplicada (Kafka + ZK)<br>
-                            - Upgrades coordinados complicados<br>
-                            - Debugging distribuido entre 2 sistemas
-                        </p>
+                        <p><strong>Problema:</strong> Gestionar dos sistemas distribuidos es 2x complejo.</p>
+                        <ul>
+                            <li>Monitorización duplicada (Kafka + ZK)</li>
+                            <li>Upgrades coordinados complicados</li>
+                            <li>Debugging distribuido entre 2 sistemas</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Costes Elevados</h4>
-                        <p>
-                            <strong>Problema:</strong> Infraestructura adicional significativa.<br><br>
-                            - Mínimo 3 nodos ZK dedicados (16GB RAM cada uno)<br>
-                            - Producción: 5-7 nodos para alta disponibilidad<br>
-                            - Cloud: $500-1000/mes solo en instancias ZK
-                        </p>
+                        <p><strong>Problema:</strong> Infraestructura adicional significativa.</p>
+                        <ul>
+                            <li>Mínimo 3 nodos ZK dedicados (16GB RAM cada uno)</li>
+                            <li>Producción: 5-7 nodos para alta disponibilidad</li>
+                            <li>Cloud: $500-1000/mes solo en instancias ZK</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card danger">
                         <h4 style="color: #F44336;">Modelo de Datos Ineficiente</h4>
-                        <p>
-                            <strong>Problema:</strong> Zookeeper usa árbol jerárquico, no log.<br><br>
-                            - Watchers crean overhead de notificaciones<br>
-                            - Sin replay de eventos (no event-sourcing)<br>
-                            - Metadata no versionada causa inconsistencias
-                        </p>
+                        <p><strong>Problema:</strong> Zookeeper usa árbol jerárquico, no log.</p>
+                        <ul>
+                            <li>Watchers crean overhead de notificaciones</li>
+                            <li>Sin replay de eventos (no event-sourcing)</li>
+                            <li>Metadata no versionada causa inconsistencias</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -445,62 +445,62 @@
                 <div class="feature-cards">
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Performance Extrema</h4>
-                        <p>
-                            - Metadata operations: <strong>25ms vs 500ms</strong> (10x mejora)<br>
-                            - Throughput metadata: <strong>100K ops/s vs 10K ops/s</strong><br>
-                            - Eliminación de latencia red ZK (~5-20ms cada llamada)<br>
-                            - Batch metadata updates (1 write vs múltiples a ZK)
-                        </p>
+                        <ul>
+                            <li>Metadata operations: <strong>25ms vs 500ms</strong> (10x mejora)</li>
+                            <li>Throughput metadata: <strong>100K ops/s vs 10K ops/s</strong></li>
+                            <li>Eliminación de latencia red ZK (~5-20ms cada llamada)</li>
+                            <li>Batch metadata updates (1 write vs múltiples a ZK)</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Escalabilidad Sin Límites</h4>
-                        <p>
-                            - Probado con <strong>10 millones de particiones</strong> en tests<br>
-                            - Controller log crece linealmente (no exponencial)<br>
-                            - Sin bottleneck de watchers ZK<br>
-                            - Clústeres de 1000+ brokers sin degradación
-                        </p>
+                        <ul>
+                            <li>Probado con <strong>10 millones de particiones</strong> en tests</li>
+                            <li>Controller log crece linealmente (no exponencial)</li>
+                            <li>Sin bottleneck de watchers ZK</li>
+                            <li>Clústeres de 1000+ brokers sin degradación</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Failover Instantáneo</h4>
-                        <p>
-                            - Elección de líder: <strong>menor a 5 segundos</strong> vs 30-60s ZK<br>
-                            - Carga metadata: <strong>menor a 10 segundos</strong> vs 1-3 min<br>
-                            - Downtime total: <strong>15s vs 3-5 minutos</strong><br>
-                            - Replica ISR sync automática inmediata
-                        </p>
+                        <ul>
+                            <li>Elección de líder: <strong>menor a 5 segundos</strong> vs 30-60s ZK</li>
+                            <li>Carga metadata: <strong>menor a 10 segundos</strong> vs 1-3 min</li>
+                            <li>Downtime total: <strong>15s vs 3-5 minutos</strong></li>
+                            <li>Replica ISR sync automática inmediata</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Arquitectura Simplificada</h4>
-                        <p>
-                            - <strong>Un solo sistema</strong> en lugar de dos<br>
-                            - Monitorización unificada (solo Kafka)<br>
-                            - Upgrades sincronizados automáticamente<br>
-                            - Debugging simplificado (un log de eventos)
-                        </p>
+                        <ul>
+                            <li><strong>Un solo sistema</strong> en lugar de dos</li>
+                            <li>Monitorización unificada (solo Kafka)</li>
+                            <li>Upgrades sincronizados automáticamente</li>
+                            <li>Debugging simplificado (un log de eventos)</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Reducción de Costes</h4>
-                        <p>
-                            - Elimina 3-7 nodos Zookeeper dedicados<br>
-                            - <strong>Ahorro: 30-40% infraestructura</strong> en cloud<br>
-                            - Reducción operacional: -50% tiempo DevOps<br>
-                            - Consolidación de licencias y herramientas
-                        </p>
+                        <ul>
+                            <li>Elimina 3-7 nodos Zookeeper dedicados</li>
+                            <li><strong>Ahorro: 30-40% infraestructura</strong> en cloud</li>
+                            <li>Reducción operacional: -50% tiempo DevOps</li>
+                            <li>Consolidación de licencias y herramientas</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card success">
                         <h4 style="color: #4CAF50;">Event Sourcing Nativo</h4>
-                        <p>
-                            - Metadata como log inmutable (filosofía Kafka)<br>
-                            - <strong>Time-travel</strong>: replay completo de historia<br>
-                            - Auditabilidad perfecta de cambios<br>
-                            - Consistent snapshots para disaster recovery
-                        </p>
+                        <ul>
+                            <li>Metadata como log inmutable (filosofía Kafka)</li>
+                            <li><strong>Time-travel</strong>: replay completo de historia</li>
+                            <li>Auditabilidad perfecta de cambios</li>
+                            <li>Consistent snapshots para disaster recovery</li>
+                        </ul>
                     </div>
                 </div>
 
